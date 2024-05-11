@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ball_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_level.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="particle_generator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="post_processor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite_renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="text_renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Learning2DEngine\Render\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ball_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_level.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="game_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="particle_generator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="post_processor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="power_up.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite_renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="text_renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\RenderManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\Singleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\EventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\Texture2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\ResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Fonts\arial.ttf" />
+    <Font Include="Fonts\OCRAEXT.TTF" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\awesomeface.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\background.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\block.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\block_solid.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\paddle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\particle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\powerup_chaos.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\powerup_confuse.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\powerup_increase.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\powerup_passthrough.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\powerup_speed.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\powerup_sticky.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Levels\four.lvl" />
+    <None Include="Levels\one.lvl" />
+    <None Include="Levels\three.lvl" />
+    <None Include="Levels\two.lvl" />
+    <None Include="Shaders\particle.frag" />
+    <None Include="Shaders\particle.vs" />
+    <None Include="Shaders\post_processing.frag" />
+    <None Include="Shaders\post_processing.vs" />
+    <None Include="Shaders\sprite.frag" />
+    <None Include="Shaders\sprite.vs" />
+    <None Include="Shaders\text_2d.fs" />
+    <None Include="Shaders\text_2d.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\bleep.mp3" />
+    <Media Include="Sounds\bleep.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Sounds\breakout.mp3" />
+    <Media Include="Sounds\powerup.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Sounds\solid.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
+</Project>
