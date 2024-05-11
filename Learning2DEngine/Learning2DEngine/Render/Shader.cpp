@@ -54,7 +54,7 @@ namespace Learning2DEngine
             glDeleteProgram(id);
         }
 
-        const std::string Shader::ToString(const ShaderType type)
+        std::string Shader::ToString(ShaderType type)
         {
             switch (type)
             {
@@ -69,7 +69,7 @@ namespace Learning2DEngine
             return "Unknow";
         }
 
-        void Shader::CheckShaderErrors(unsigned int shaderId, const ShaderType type)
+        void Shader::CheckShaderErrors(unsigned int shaderId, ShaderType type)
         {
             int success;
             char infoLog[1024];

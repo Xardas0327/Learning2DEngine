@@ -13,10 +13,10 @@ namespace Learning2DEngine
         {
         private:
             enum ShaderType {Vertex, Fragment, Geometry};
-            static const std::string ToString(const ShaderType type);
+            static std::string ToString(ShaderType type);
 
             unsigned int id;
-            void CheckShaderErrors(unsigned int shaderId, const ShaderType type);
+            void CheckShaderErrors(unsigned int shaderId, ShaderType type);
             void CheckProgramErrors(unsigned int programId);
         public:
             void Create(const char* vertexSource, const char* fragmentSource, const char* geometrySource = nullptr);

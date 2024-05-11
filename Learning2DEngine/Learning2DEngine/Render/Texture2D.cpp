@@ -11,7 +11,7 @@ namespace Learning2DEngine
             glGenTextures(1, &id);
         }
 
-        void Texture2D::Create(unsigned int width, unsigned int height, unsigned char* data)
+        void Texture2D::Create(unsigned int width, unsigned int height, const unsigned char* data)
         {
             this->width = width;
             this->height = height;

@@ -14,7 +14,7 @@ namespace Learning2DEngine
 
         }
 
-        void RenderManager::Init(const int& majorVersion, const int& minorVersion, const int& screenWith, const int& screenHeight, const char* title)
+        void RenderManager::Init(int majorVersion, int minorVersion, int screenWith, int screenHeight, const char* title)
         {
             glfwInit();
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion);
@@ -97,32 +97,32 @@ namespace Learning2DEngine
             glViewport(0, 0, screenWith, screenHeight);
         }
 
-        void RenderManager::AddKeyboardEvent(EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func)
+        void RenderManager::AddKeyboardEvent(const EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func)
         {
             keyboardEventHandler.Add(func);
         }
 
-        void RenderManager::RemoveKeyboardEvent(EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func)
+        void RenderManager::RemoveKeyboardEvent(const EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func)
         {
             keyboardEventHandler.Remove(func);
         }
 
-        void RenderManager::AddUpdateEvent(EventHandler<float>::EventFunction func)
+        void RenderManager::AddUpdateEvent(const EventHandler<float>::EventFunction func)
         {
             updateEventHandler.Add(func);
         }
 
-        void RenderManager::RemoveUpdateEvent(EventHandler<float>::EventFunction func)
+        void RenderManager::RemoveUpdateEvent(const EventHandler<float>::EventFunction func)
         {
             updateEventHandler.Remove(func);
         }
 
-        void RenderManager::AddRenderEvent(EventHandler<>::EventFunction func)
+        void RenderManager::AddRenderEvent(const EventHandler<>::EventFunction func)
         {
             renderEventHandler.Add(func);
         }
 
-        void RenderManager::RemoveRenderEvent(EventHandler<>::EventFunction func)
+        void RenderManager::RemoveRenderEvent(const EventHandler<>::EventFunction func)
         {
             renderEventHandler.Remove(func);
         }

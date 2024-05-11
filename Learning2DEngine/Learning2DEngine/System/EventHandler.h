@@ -16,12 +16,12 @@ namespace Learning2DEngine
 			std::list<EventFunction> events;
 
 		public:
-			inline void Add(EventFunction e)
+			inline void Add(const EventFunction e)
 			{
 				events.push_back(e);
 			}
 
-			inline void Remove(EventFunction e)
+			inline void Remove(const EventFunction e)
 			{
 				events.remove(e);
 			}

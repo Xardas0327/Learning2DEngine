@@ -29,17 +29,17 @@ namespace Learning2DEngine
 			static void CallbackFramebufferSizeWrapper(GLFWwindow* window, int width, int height);
 			void CallbackFramebufferSize(GLFWwindow* window, int width, int height);
 		public:
-			void Init(const int& majorVersion, const int& minorVersion, const int& screenWith, const int& screenHeight, const char* title);
+			void Init(int majorVersion, int minorVersion, int screenWith, int screenHeight, const char* title);
 			void Run();
 			void CloseWindow();
 			void Terminate();
 
-			void AddKeyboardEvent(System::EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func);
-			void RemoveKeyboardEvent(System::EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func);
-			void AddUpdateEvent(System::EventHandler<float>::EventFunction func);
-			void RemoveUpdateEvent(System::EventHandler<float>::EventFunction func);
-			void AddRenderEvent(System::EventHandler<>::EventFunction func);
-			void RemoveRenderEvent(System::EventHandler<>::EventFunction func);
+			void AddKeyboardEvent(const System::EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func);
+			void RemoveKeyboardEvent(const System::EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func);
+			void AddUpdateEvent(const System::EventHandler<float>::EventFunction func);
+			void RemoveUpdateEvent(const System::EventHandler<float>::EventFunction func);
+			void AddRenderEvent(const System::EventHandler<>::EventFunction func);
+			void RemoveRenderEvent(const System::EventHandler<>::EventFunction func);
 		};
 	}
 }

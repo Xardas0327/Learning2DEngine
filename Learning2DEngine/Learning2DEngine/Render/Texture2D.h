@@ -28,7 +28,7 @@ namespace Learning2DEngine
             // Filtering mode if texture pixels > screen pixels
             unsigned int filterMax; 
             Texture2D();
-            void Create(unsigned int width, unsigned int height, unsigned char* data);
+            void Create(unsigned int width, unsigned int height, const unsigned char* data);
             void Destroy();
             void Bind() const;
             inline unsigned int GetId() { return id; }

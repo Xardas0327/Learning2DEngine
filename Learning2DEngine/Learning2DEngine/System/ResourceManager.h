@@ -25,14 +25,14 @@ namespace Learning2DEngine
             std::string LoadShaderFile(const char* file);
             Render::Texture2D LoadTextureFromFile(const char* file, bool alpha);
         public:
-            Render::Shader LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, std::string name);
-            Render::Shader GetShader(std::string name);
-            bool IsShaderExist(std::string name);
-            void DestroyShader(std::string name);
-            Render::Texture2D LoadTexture(const char* file, bool alpha, std::string name);
-            Render::Texture2D GetTexture(std::string name);
-            bool IsTextureExist(std::string name);
-            void DestroyTexture2D(std::string name);
+            Render::Shader LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, const std::string& name);
+            Render::Shader GetShader(const std::string& name);
+            bool IsShaderExist(const std::string& name);
+            void DestroyShader(const std::string& name);
+            Render::Texture2D LoadTexture(const char* file, bool alpha, const std::string& name);
+            Render::Texture2D GetTexture(const std::string& name);
+            bool IsTextureExist(const std::string& name);
+            void DestroyTexture2D(const std::string& name);
             void Clear();
         };
 	}

@@ -68,45 +68,45 @@ namespace Learning2DEngine
             return texture;
         }
 
-        Render::Shader ResourceManager::LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, std::string name)
+        Render::Shader ResourceManager::LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, const std::string& name)
         {
             shaders[name] = LoadShaderFromFile(vertexFile, fragmentFile, geometryFile);
             return shaders[name];
         }
 
-        Render::Shader ResourceManager::GetShader(std::string name)
+        Render::Shader ResourceManager::GetShader(const std::string& name)
         {
             return shaders[name];
         }
 
-        bool ResourceManager::IsShaderExist(std::string name)
+        bool ResourceManager::IsShaderExist(const std::string& name)
         {
             return shaders.count(name);
         }
 
-        void ResourceManager::DestroyShader(std::string name)
+        void ResourceManager::DestroyShader(const std::string& name)
         {
             shaders[name].Destroy();
             shaders.erase(name);
         }
 
-        Render::Texture2D ResourceManager::LoadTexture(const char* file, bool alpha, std::string name)
+        Render::Texture2D ResourceManager::LoadTexture(const char* file, bool alpha, const std::string& name)
         {
             textures[name] = LoadTextureFromFile(file, alpha);
             return textures[name];
         }
 
-        Render::Texture2D ResourceManager::GetTexture(std::string name)
+        Render::Texture2D ResourceManager::GetTexture(const std::string& name)
         {
             return textures[name];
         }
 
-        bool ResourceManager::IsTextureExist(std::string name)
+        bool ResourceManager::IsTextureExist(const std::string& name)
         {
             return textures.count(name);
         }
 
-        void ResourceManager::DestroyTexture2D(std::string name)
+        void ResourceManager::DestroyTexture2D(const std::string& name)
         {
             textures[name].Destroy();
             textures.erase(name);
