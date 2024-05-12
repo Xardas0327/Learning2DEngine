@@ -152,11 +152,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ball_object.cpp" />
+    <ClCompile Include="Learning2DEngine\Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_level.cpp" />
     <ClCompile Include="game_object.cpp" />
-    <ClCompile Include="glad.c" />
     <ClCompile Include="Learning2DEngine\Render\Shader.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp" />
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
@@ -184,28 +184,28 @@
     <ClInclude Include="text_renderer.h" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="Fonts\arial.ttf" />
-    <Font Include="Fonts\OCRAEXT.TTF" />
+    <Font Include="Assets\Fonts\arial.ttf" />
+    <Font Include="Assets\Fonts\OCRAEXT.TTF" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Images\awesomeface.png" />
-    <Image Include="Images\background.jpg" />
-    <Image Include="Images\block.png" />
-    <Image Include="Images\block_solid.png" />
-    <Image Include="Images\paddle.png" />
-    <Image Include="Images\particle.png" />
-    <Image Include="Images\powerup_chaos.png" />
-    <Image Include="Images\powerup_confuse.png" />
-    <Image Include="Images\powerup_increase.png" />
-    <Image Include="Images\powerup_passthrough.png" />
-    <Image Include="Images\powerup_speed.png" />
-    <Image Include="Images\powerup_sticky.png" />
+    <Image Include="Assets\Images\awesomeface.png" />
+    <Image Include="Assets\Images\background.jpg" />
+    <Image Include="Assets\Images\block.png" />
+    <Image Include="Assets\Images\block_solid.png" />
+    <Image Include="Assets\Images\paddle.png" />
+    <Image Include="Assets\Images\particle.png" />
+    <Image Include="Assets\Images\powerup_chaos.png" />
+    <Image Include="Assets\Images\powerup_confuse.png" />
+    <Image Include="Assets\Images\powerup_increase.png" />
+    <Image Include="Assets\Images\powerup_passthrough.png" />
+    <Image Include="Assets\Images\powerup_speed.png" />
+    <Image Include="Assets\Images\powerup_sticky.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Levels\four.lvl" />
-    <None Include="Levels\one.lvl" />
-    <None Include="Levels\three.lvl" />
-    <None Include="Levels\two.lvl" />
+    <None Include="Assets\Levels\four.lvl" />
+    <None Include="Assets\Levels\one.lvl" />
+    <None Include="Assets\Levels\three.lvl" />
+    <None Include="Assets\Levels\two.lvl" />
     <None Include="Shaders\particle.frag" />
     <None Include="Shaders\particle.vs" />
     <None Include="Shaders\post_processing.frag" />
@@ -216,11 +216,11 @@
     <None Include="Shaders\text_2d.vs" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="Sounds\bleep.mp3" />
-    <Media Include="Sounds\bleep.wav" />
-    <Media Include="Sounds\breakout.mp3" />
-    <Media Include="Sounds\powerup.wav" />
-    <Media Include="Sounds\solid.wav" />
+    <Media Include="Assets\Sounds\bleep.mp3" />
+    <Media Include="Assets\Sounds\bleep.wav" />
+    <Media Include="Assets\Sounds\breakout.mp3" />
+    <Media Include="Assets\Sounds\powerup.wav" />
+    <Media Include="Assets\Sounds\solid.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

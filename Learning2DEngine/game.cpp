@@ -63,18 +63,18 @@ void Game::Init()
     particle.SetInteger("sprite", 0);
     particle.SetMatrix4("projection", projection);
     // load textures
-    resourceManager.LoadTexture("Images/background.jpg", false, "background");
-    resourceManager.LoadTexture("Images/awesomeface.png", true, "face");
-    resourceManager.LoadTexture("Images/block.png", false, "block");
-    resourceManager.LoadTexture("Images/block_solid.png", false, "block_solid");
-    resourceManager.LoadTexture("Images/paddle.png", true, "paddle");
-    resourceManager.LoadTexture("Images/particle.png", true, "particle");
-    resourceManager.LoadTexture("Images/powerup_speed.png", true, "powerup_speed");
-    resourceManager.LoadTexture("Images/powerup_sticky.png", true, "powerup_sticky");
-    resourceManager.LoadTexture("Images/powerup_increase.png", true, "powerup_increase");
-    resourceManager.LoadTexture("Images/powerup_confuse.png", true, "powerup_confuse");
-    resourceManager.LoadTexture("Images/powerup_chaos.png", true, "powerup_chaos");
-    resourceManager.LoadTexture("Images/powerup_passthrough.png", true, "powerup_passthrough");
+    resourceManager.LoadTexture("Assets/Images/background.jpg", false, "background");
+    resourceManager.LoadTexture("Assets/Images/awesomeface.png", true, "face");
+    resourceManager.LoadTexture("Assets/Images/block.png", false, "block");
+    resourceManager.LoadTexture("Assets/Images/block_solid.png", false, "block_solid");
+    resourceManager.LoadTexture("Assets/Images/paddle.png", true, "paddle");
+    resourceManager.LoadTexture("Assets/Images/particle.png", true, "particle");
+    resourceManager.LoadTexture("Assets/Images/powerup_speed.png", true, "powerup_speed");
+    resourceManager.LoadTexture("Assets/Images/powerup_sticky.png", true, "powerup_sticky");
+    resourceManager.LoadTexture("Assets/Images/powerup_increase.png", true, "powerup_increase");
+    resourceManager.LoadTexture("Assets/Images/powerup_confuse.png", true, "powerup_confuse");
+    resourceManager.LoadTexture("Assets/Images/powerup_chaos.png", true, "powerup_chaos");
+    resourceManager.LoadTexture("Assets/Images/powerup_passthrough.png", true, "powerup_passthrough");
     // set render-specific controls
     Renderer = new SpriteRenderer(sprite);
     Particles = new ParticleGenerator(
@@ -84,10 +84,10 @@ void Game::Init()
     );
     Effects = new PostProcessor(resourceManager.GetShader("postprocessing"), this->Width, this->Height);
     // load levels
-    GameLevel one; one.Load("Levels/one.lvl", this->Width, this->Height / 2);
-    GameLevel two; two.Load("Levels/two.lvl", this->Width, this->Height / 2);
-    GameLevel three; three.Load("Levels/three.lvl", this->Width, this->Height / 2);
-    GameLevel four; four.Load("Levels/four.lvl", this->Width, this->Height / 2);
+    GameLevel one; one.Load("Assets/Levels/one.lvl", this->Width, this->Height / 2);
+    GameLevel two; two.Load("Assets/Levels/two.lvl", this->Width, this->Height / 2);
+    GameLevel three; three.Load("Assets/Levels/three.lvl", this->Width, this->Height / 2);
+    GameLevel four; four.Load("Assets/Levels/four.lvl", this->Width, this->Height / 2);
     this->Levels.push_back(one);
     this->Levels.push_back(two);
     this->Levels.push_back(three);
@@ -104,11 +104,11 @@ void Game::Init()
     Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, resourceManager.GetTexture("face"));
 
     //Sounds
-    SoundEngine->play2D("Sounds/breakout.mp3", true);
+    SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
 
     //Text
     Text = new TextRenderer(this->Width, this->Height);
-    Text->Load("Fonts/OCRAEXT.TTF", 24);
+    Text->Load("Assets/Fonts/OCRAEXT.TTF", 24);
     this->State = GAME_MENU;
 }
 
@@ -263,13 +263,13 @@ void Game::Render()
 void Game::ResetLevel()
 {
     if (this->Level == 0)
-        this->Levels[0].Load("levels/one.lvl", this->Width, this->Height / 2);
+        this->Levels[0].Load("Assets/Levels/one.lvl", this->Width, this->Height / 2);
     else if (this->Level == 1)
-        this->Levels[1].Load("levels/two.lvl", this->Width, this->Height / 2);
+        this->Levels[1].Load("Assets/Levels/two.lvl", this->Width, this->Height / 2);
     else if (this->Level == 2)
-        this->Levels[2].Load("levels/three.lvl", this->Width, this->Height / 2);
+        this->Levels[2].Load("Assets/Levels/three.lvl", this->Width, this->Height / 2);
     else if (this->Level == 3)
-        this->Levels[3].Load("levels/four.lvl", this->Width, this->Height / 2);
+        this->Levels[3].Load("Assets/Levels/four.lvl", this->Width, this->Height / 2);
 
     this->Lives = 3;
 }
@@ -393,13 +393,13 @@ void Game::DoCollisions()
                 {
                     box.Destroyed = true;
                     this->SpawnPowerUps(box);
-                    SoundEngine->play2D("Sounds/bleep.mp3", false);
+                    SoundEngine->play2D("Assets/Sounds/bleep.mp3", false);
                 }
                 else
                 {   // if block is solid, enable shake effect
                     ShakeTime = 0.05f;
                     Effects->Shake = true;
-                    SoundEngine->play2D("Sounds/solid.wav", false);
+                    SoundEngine->play2D("Assets/Sounds/solid.wav", false);
                 }
                 // collision resolution
                 Direction dir = std::get<1>(collision);
@@ -445,7 +445,7 @@ void Game::DoCollisions()
                 ActivatePowerUp(powerUp);
                 powerUp.Destroyed = true;
                 powerUp.Activated = true;
-                SoundEngine->play2D("Sounds/powerup.wav", false);
+                SoundEngine->play2D("Assets/Sounds/powerup.wav", false);
             }
         }
     }
@@ -468,7 +468,7 @@ void Game::DoCollisions()
         Ball->Velocity.y = -1.0f * abs(Ball->Velocity.y);
         Ball->Stuck = Ball->Sticky;
 
-        SoundEngine->play2D("Sounds/bleep.wav", false);
+        SoundEngine->play2D("Assets/Sounds/bleep.wav", false);
     }
 }
 
