@@ -88,6 +88,7 @@ namespace Learning2DEngine
                 };
                 characters.insert(std::pair<char, FreeTypeCharacter>(ch, character));
             }
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
             glBindTexture(GL_TEXTURE_2D, 0);
 
             FT_Done_Face(face);
