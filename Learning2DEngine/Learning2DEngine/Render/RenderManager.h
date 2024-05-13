@@ -29,7 +29,7 @@ namespace Learning2DEngine
 			static void CallbackFramebufferSizeWrapper(GLFWwindow* window, int width, int height);
 			void CallbackFramebufferSize(GLFWwindow* window, int width, int height);
 		public:
-			void Init(int majorVersion, int minorVersion, int screenWith, int screenHeight, const char* title);
+			void Init(int majorVersion, int minorVersion, int screenWidth, int screenHeight, const char* title);
 			void Run();
 			void CloseWindow();
 			void Terminate();

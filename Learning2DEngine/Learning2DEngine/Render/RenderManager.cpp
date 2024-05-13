@@ -14,7 +14,7 @@ namespace Learning2DEngine
 
         }
 
-        void RenderManager::Init(int majorVersion, int minorVersion, int screenWith, int screenHeight, const char* title)
+        void RenderManager::Init(int majorVersion, int minorVersion, int screenWidth, int screenHeight, const char* title)
         {
             glfwInit();
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion);
@@ -25,7 +25,7 @@ namespace Learning2DEngine
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-            window = glfwCreateWindow(screenWith, screenHeight, title, nullptr, nullptr);
+            window = glfwCreateWindow(screenWidth, screenHeight, title, nullptr, nullptr);
             if (window == NULL)
             {
                 glfwTerminate();
@@ -40,7 +40,7 @@ namespace Learning2DEngine
                 throw std::exception("ERROR::GLAD: Failed to initialize GLAD");
             }
 
-            glViewport(0, 0, screenWith, screenHeight);
+            glViewport(0, 0, screenWidth, screenHeight);
         }
 
         void RenderManager::Run()
@@ -87,14 +87,14 @@ namespace Learning2DEngine
             keyboardEventHandler.Invoke(window, key, scancode, action, mode);
         }
 
-        void RenderManager::CallbackFramebufferSizeWrapper(GLFWwindow* window, int screenWith, int screenHeight)
+        void RenderManager::CallbackFramebufferSizeWrapper(GLFWwindow* window, int width, int height)
         {
-            RenderManager::GetInstance().CallbackFramebufferSize(window, screenWith, screenHeight);
+            RenderManager::GetInstance().CallbackFramebufferSize(window, width, height);
         }
 
-        void RenderManager::CallbackFramebufferSize(GLFWwindow* window, int screenWith, int screenHeight)
+        void RenderManager::CallbackFramebufferSize(GLFWwindow* window, int width, int height)
         {
-            glViewport(0, 0, screenWith, screenHeight);
+            glViewport(0, 0, width, height);
         }
 
         void RenderManager::AddKeyboardEvent(const EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func)
