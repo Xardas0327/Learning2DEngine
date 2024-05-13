@@ -1,18 +1,19 @@
 #include "game.h"
 
 #include "Learning2DEngine/System/ResourceManager.h"
+#include "Learning2DEngine/UI/Text2DRenderer.h"
 #include "sprite_renderer.h"
 #include "game_object.h"
 #include "ball_object.h"
 #include "particle_generator.h"
 #include "post_processor.h"
-#include "text_renderer.h"
 
 #include <irrklang/irrKlang.h>
 
 #include <sstream> 
 
 using namespace Learning2DEngine::System;
+using namespace Learning2DEngine::UI;
 using namespace irrklang;
 
 // Game-related State data
@@ -22,7 +23,7 @@ BallObject* Ball;
 ParticleGenerator* Particles;
 PostProcessor* Effects;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
-TextRenderer* Text;
+Text2DRenderer* Text;
 
 float ShakeTime = 0.0f;
 
@@ -107,7 +108,7 @@ void Game::Init()
     SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
 
     //Text
-    Text = new TextRenderer(this->Width, this->Height);
+    Text = new Text2DRenderer(this->Width, this->Height);
     Text->Load("Assets/Fonts/OCRAEXT.TTF", 24);
     this->State = GAME_MENU;
 }
