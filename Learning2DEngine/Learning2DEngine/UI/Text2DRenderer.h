@@ -15,14 +15,19 @@ namespace Learning2DEngine
     {
         class Text2DRenderer
         {
+        public:
+            typedef std::pair<std::string, unsigned int> FontSizePair;
+            typedef std::map<char, FreeTypeCharacter> CharacterMap;
         private:
             unsigned int vao, vbo;
-            std::map<char, FreeTypeCharacter> characters;
+            std::map<FontSizePair, CharacterMap> characters;
             Render::Shader textShader;
         public:
             Text2DRenderer(unsigned int width, unsigned int height);
             void Load(std::string font, unsigned int fontSize);
-            void RenderText(std::string text, float x, float y, float scale, glm::vec3 color = glm::vec3(1.0f));
+            void Unload(std::string font, unsigned int fontSize);
+            void Clear();
+            void RenderText(std::string font, unsigned int fontSize, std::string text, float x, float y, float scale = 1.0f, glm::vec3 color = glm::vec3(1.0f));
         };
     }
 }
