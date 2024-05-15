@@ -34,7 +34,7 @@ namespace Learning2DEngine
 
         void Text2DRenderer::Load(std::string font, unsigned int fontSize)
         {
-            auto fontSizePair = FontSizePair(font, fontSize);
+            const FontSizePair  fontSizePair = FontSizePair(font, fontSize);
             if (characters.count(fontSizePair))
                 return;
 
@@ -100,11 +100,10 @@ namespace Learning2DEngine
 
         void Text2DRenderer::Unload(std::string font, unsigned int fontSize)
         {
-            auto fontSizePair = FontSizePair(font, fontSize);
+            const FontSizePair fontSizePair = FontSizePair(font, fontSize);
             if (characters.count(fontSizePair))
             {
-                CharacterMap& characterMap = characters[fontSizePair];
-                int a = characterMap.size();
+                const CharacterMap& characterMap = characters[fontSizePair];
                 unsigned int* textureIds = new unsigned int[characterMap.size()];
                 unsigned int index = 0;
                 for (auto i = characterMap.begin(); i != characterMap.end(); ++i)
@@ -141,7 +140,7 @@ namespace Learning2DEngine
         void Text2DRenderer::RenderText(std::string font, unsigned int fontSize, std::string text, float x, float y, float scale, glm::vec3 color)
         {
             Load(font, fontSize);
-            auto fontSizePair = FontSizePair(font, fontSize);
+            const FontSizePair fontSizePair = FontSizePair(font, fontSize);
             CharacterMap& characterMap = characters[fontSizePair];
 
             textShader.Use();
