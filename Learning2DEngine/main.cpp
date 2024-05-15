@@ -6,9 +6,11 @@
 #include "game.h"
 #include "Learning2DEngine/System/ResourceManager.h"
 #include "Learning2DEngine/Render/RenderManager.h"
+#include "Learning2DEngine/UI/Text2DRenderer.h"
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
+using namespace Learning2DEngine::UI;
 
 // GLFW function declarations
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -41,8 +43,7 @@ int main()
 
     renderManager.Run();
 
-    // delete all resources as loaded using the resource manager
-    // ---------------------------------------------------------
+    Text2DRenderer::GetInstance().Clear();
     ResourceManager::GetInstance().Clear();
 
     renderManager.Terminate();

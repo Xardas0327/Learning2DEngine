@@ -7,6 +7,7 @@
 #include FT_FREETYPE_H
 
 #include "../System/ResourceManager.h"
+#include "../Render/RenderManager.h"
 
 using namespace Learning2DEngine::System;
 
@@ -14,11 +15,16 @@ namespace Learning2DEngine
 {
     namespace UI
     {
-        Text2DRenderer::Text2DRenderer(unsigned int width, unsigned int height)
+        Text2DRenderer::Text2DRenderer()
         {
+            auto& renderManager = Render::RenderManager::GetInstance();
+
             textShader = ResourceManager::LoadShader("Shaders/text_2d.vs", "Shaders/text_2d.fs");
             textShader.Use();
-            textShader.SetMatrix4("projection", glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f));
+            textShader.SetMatrix4(
+                "projection", 
+                glm::ortho(0.0f, static_cast<float>(renderManager.GetScreenWidth()), static_cast<float>(renderManager.GetScreenHeight()),
+                0.0f));
             textShader.SetInteger("text", 0);
 
             glGenVertexArrays(1, &vao);
@@ -30,6 +36,21 @@ namespace Learning2DEngine
             glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
+
+            renderManager.AddFramebufferSizeEvent(CallbackRefreshScreenSize);
+        }
+
+        void Text2DRenderer::CallbackRefreshScreenSize(GLFWwindow* window, int width, int height)
+        {
+            Text2DRenderer::GetInstance().RefreshScreenSize(window, width, height);
+        }
+
+        void Text2DRenderer::RefreshScreenSize(GLFWwindow* window, int width, int height)
+        {
+            textShader.SetMatrix4(
+                "projection",
+                glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height),
+                    0.0f));
         }
 
         void Text2DRenderer::Load(std::string font, unsigned int fontSize)
@@ -139,7 +160,6 @@ namespace Learning2DEngine
 
         void Text2DRenderer::RenderText(std::string font, unsigned int fontSize, std::string text, float x, float y, float scale, glm::vec3 color)
         {
-            Load(font, fontSize);
             const FontSizePair fontSizePair = FontSizePair(font, fontSize);
             CharacterMap& characterMap = characters[fontSizePair];
 

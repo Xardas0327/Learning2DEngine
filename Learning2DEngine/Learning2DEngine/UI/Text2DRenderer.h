@@ -4,8 +4,10 @@
 #include <string>
 
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include "../System/Singleton.h"
 #include "../Render/Shader.h"
 #include "FreeTypeCharacter.h"
 
@@ -13,8 +15,9 @@ namespace Learning2DEngine
 {
     namespace UI
     {
-        class Text2DRenderer
+        class Text2DRenderer : public virtual System::Singleton<Text2DRenderer>
         {
+            friend class System::Singleton<Text2DRenderer>;
         public:
             typedef std::pair<std::string, unsigned int> FontSizePair;
             typedef std::map<char, FreeTypeCharacter> CharacterMap;
@@ -22,8 +25,14 @@ namespace Learning2DEngine
             unsigned int vao, vbo;
             std::map<FontSizePair, CharacterMap> characters;
             Render::Shader textShader;
+
+            Text2DRenderer();
+
+            // Callbacks
+
+            static void CallbackRefreshScreenSize(GLFWwindow* window, int width, int height);
+            void RefreshScreenSize(GLFWwindow* window, int width, int height);
         public:
-            Text2DRenderer(unsigned int width, unsigned int height);
             void Load(std::string font, unsigned int fontSize);
             void Unload(std::string font, unsigned int fontSize);
             void Clear();

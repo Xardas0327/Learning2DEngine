@@ -9,13 +9,17 @@ namespace Learning2DEngine
     namespace Render
     {
         RenderManager::RenderManager() :
-            window(nullptr), keyboardEventHandler(), updateEventHandler(), renderEventHandler()
+            window(nullptr), screenWidth(0), screenHeight(0),
+            keyboardEventHandler(), updateEventHandler(), renderEventHandler(), framebufferSizeEventHandler()
         {
 
         }
 
         void RenderManager::Init(int majorVersion, int minorVersion, int screenWidth, int screenHeight, const char* title)
         {
+            this->screenWidth = screenWidth;
+            this->screenHeight = screenHeight;
+
             glfwInit();
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minorVersion);
@@ -95,6 +99,9 @@ namespace Learning2DEngine
         void RenderManager::CallbackFramebufferSize(GLFWwindow* window, int width, int height)
         {
             glViewport(0, 0, width, height);
+            screenWidth = screenWidth;
+            screenHeight = screenHeight;
+            framebufferSizeEventHandler.Invoke(window, width, height);
         }
 
         void RenderManager::AddKeyboardEvent(const EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func)
@@ -125,6 +132,16 @@ namespace Learning2DEngine
         void RenderManager::RemoveRenderEvent(const EventHandler<>::EventFunction func)
         {
             renderEventHandler.Remove(func);
+        }
+
+        void RenderManager::AddFramebufferSizeEvent(const System::EventHandler<GLFWwindow*, int, int>::EventFunction func)
+        {
+            framebufferSizeEventHandler.Add(func);
+        }
+
+        void RenderManager::RemoveFramebufferSizeEvent(const System::EventHandler<GLFWwindow*, int, int>::EventFunction func)
+        {
+            framebufferSizeEventHandler.Remove(func);
         }
     }
 }
