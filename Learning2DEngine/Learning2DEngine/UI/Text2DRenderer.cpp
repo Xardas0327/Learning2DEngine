@@ -16,7 +16,7 @@ namespace Learning2DEngine
     {
         Text2DRenderer::Text2DRenderer(unsigned int width, unsigned int height)
         {
-            textShader = ResourceManager::GetInstance().LoadShader("Shaders/text_2d.vs", "Shaders/text_2d.fs", nullptr, "Text2DRenderer");
+            textShader = ResourceManager::LoadShader("Shaders/text_2d.vs", "Shaders/text_2d.fs");
             textShader.Use();
             textShader.SetMatrix4("projection", glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f));
             textShader.SetInteger("text", 0);
