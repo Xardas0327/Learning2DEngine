@@ -28,11 +28,14 @@ Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
 int main()
 {
     auto& renderManager = RenderManager::GetInstance();
+    auto& textRenderer = Text2DRenderer::GetInstance();
 
     renderManager.Init(3, 3, SCREEN_WIDTH, SCREEN_HEIGHT, "Breakout");
     renderManager.AddKeyboardEvent(key_callback);
     renderManager.AddUpdateEvent(update_callback);
     renderManager.AddRenderEvent(render_callback);
+
+    textRenderer.Init();
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -43,9 +46,8 @@ int main()
 
     renderManager.Run();
 
-    Text2DRenderer::GetInstance().Clear();
     ResourceManager::GetInstance().Clear();
-
+    textRenderer.Clear();
     renderManager.Terminate();
     return 0;
 }

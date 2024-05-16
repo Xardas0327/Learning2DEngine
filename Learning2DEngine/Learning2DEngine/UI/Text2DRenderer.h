@@ -33,6 +33,15 @@ namespace Learning2DEngine
             static void CallbackRefreshScreenSize(GLFWwindow* window, int width, int height);
             void RefreshScreenSize(GLFWwindow* window, int width, int height);
         public:
+            /// <summary>
+            /// It should be inited after RenderManager
+            /// </summary>
+            void Init();
+            /// <summary>
+            /// It loads the first 128 characters from the file
+            /// </summary>
+            /// <param name="font"></param>
+            /// <param name="fontSize"></param>
             void Load(std::string font, unsigned int fontSize);
             void Unload(std::string font, unsigned int fontSize);
             void Clear();

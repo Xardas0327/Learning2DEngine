@@ -15,16 +15,22 @@ namespace Learning2DEngine
 {
     namespace UI
     {
-        Text2DRenderer::Text2DRenderer()
+        Text2DRenderer::Text2DRenderer() :
+            vao(0), vbo(0), characters(), textShader()
+        {
+
+        }
+
+        void Text2DRenderer::Init()
         {
             auto& renderManager = Render::RenderManager::GetInstance();
 
             textShader = ResourceManager::LoadShader("Shaders/text_2d.vs", "Shaders/text_2d.fs");
             textShader.Use();
             textShader.SetMatrix4(
-                "projection", 
+                "projection",
                 glm::ortho(0.0f, static_cast<float>(renderManager.GetScreenWidth()), static_cast<float>(renderManager.GetScreenHeight()),
-                0.0f));
+                    0.0f));
             textShader.SetInteger("text", 0);
 
             glGenVertexArrays(1, &vao);
@@ -75,7 +81,7 @@ namespace Learning2DEngine
             characters.insert(std::pair<FontSizePair, CharacterMap>(fontSizePair, CharacterMap()));
 
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-            for (GLubyte ch = 0; ch < 128; ch++)
+            for (GLubyte ch = 0; ch < 128; ++ch)
             {
                 if (FT_Load_Char(face, ch, FT_LOAD_RENDER))
                 {
