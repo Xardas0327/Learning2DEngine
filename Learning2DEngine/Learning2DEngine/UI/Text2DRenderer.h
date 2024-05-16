@@ -22,7 +22,7 @@ namespace Learning2DEngine
             typedef std::pair<std::string, unsigned int> FontSizePair;
             typedef std::map<char, FreeTypeCharacter> CharacterMap;
         private:
-            unsigned int vao, vbo;
+            unsigned int vao, vbo, ebo;
             std::map<FontSizePair, CharacterMap> characters;
             Render::Shader textShader;
 

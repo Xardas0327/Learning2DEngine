@@ -16,7 +16,7 @@ namespace Learning2DEngine
     namespace UI
     {
         Text2DRenderer::Text2DRenderer() :
-            vao(0), vbo(0), characters(), textShader()
+            vao(0), vbo(0), ebo(0), characters(), textShader()
         {
 
         }
@@ -33,11 +33,20 @@ namespace Learning2DEngine
                     0.0f));
             textShader.SetInteger("text", 0);
 
+            unsigned int indices[] = {
+                0, 1, 3,
+                1, 2, 3
+            };
+
             glGenVertexArrays(1, &vao);
             glGenBuffers(1, &vbo);
+            glGenBuffers(1, &ebo);
             glBindVertexArray(vao);
             glBindBuffer(GL_ARRAY_BUFFER, vbo);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 4, NULL, GL_DYNAMIC_DRAW);
+
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
             glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
             glEnableVertexAttribArray(0);
@@ -189,14 +198,11 @@ namespace Learning2DEngine
                 float w = ch.size.x * scale;
                 float h = ch.size.y * scale;
 
-                float vertices[6][4] = {
-                    { xpos,     ypos + h,   0.0f, 1.0f },
+                float vertices[4][4] = {
+                    { xpos + w, ypos + h,   1.0f, 1.0f },
                     { xpos + w, ypos,       1.0f, 0.0f },
                     { xpos,     ypos,       0.0f, 0.0f },
-
-                    { xpos,     ypos + h,   0.0f, 1.0f },
-                    { xpos + w, ypos + h,   1.0f, 1.0f },
-                    { xpos + w, ypos,       1.0f, 0.0f }
+                    { xpos,     ypos + h,   0.0f, 1.0f }
                 };
 
                 glBindTexture(GL_TEXTURE_2D, ch.textureId);
@@ -205,7 +211,7 @@ namespace Learning2DEngine
                 glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-                glDrawArrays(GL_TRIANGLES, 0, 6);
+                glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
                 // bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
                 x += (ch.advance >> 6) * scale; 
