@@ -17,7 +17,7 @@ namespace Learning2DEngine
         {
         }
 
-        Render::Shader ResourceManager::LoadShaderFromFile(const char* vertexFile, const char* fragmentFile, const char* geometryFile)
+        Render::Shader ResourceManager::LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile)
         {
             std::string vertexSource;
             std::string fragmentSource;
@@ -52,25 +52,9 @@ namespace Learning2DEngine
             return stream.str();
         }
 
-        Render::Texture2D ResourceManager::LoadTextureFromFile(const char* file, bool alpha)
-        {
-            Render::Texture2D texture;
-            if (alpha)
-            {
-                texture.internalFormat = GL_RGBA;
-                texture.imageFormat = GL_RGBA;
-            }
-
-            int width, height, nrChannels;
-            unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
-            texture.Create(width, height, data);
-            stbi_image_free(data);
-            return texture;
-        }
-
         Render::Shader ResourceManager::LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, const std::string& name)
         {
-            shaders[name] = LoadShaderFromFile(vertexFile, fragmentFile, geometryFile);
+            shaders[name] = LoadShader(vertexFile, fragmentFile, geometryFile);
             return shaders[name];
         }
 
@@ -90,9 +74,25 @@ namespace Learning2DEngine
             shaders.erase(name);
         }
 
+        Render::Texture2D ResourceManager::LoadTexture(const char* file, bool alpha)
+        {
+            Render::Texture2D texture;
+            if (alpha)
+            {
+                texture.internalFormat = GL_RGBA;
+                texture.imageFormat = GL_RGBA;
+            }
+
+            int width, height, nrChannels;
+            unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
+            texture.Create(width, height, data);
+            stbi_image_free(data);
+            return texture;
+        }
+
         Render::Texture2D ResourceManager::LoadTexture(const char* file, bool alpha, const std::string& name)
         {
-            textures[name] = LoadTextureFromFile(file, alpha);
+            textures[name] = LoadTexture(file, alpha);
             return textures[name];
         }
 

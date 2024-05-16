@@ -21,14 +21,26 @@ namespace Learning2DEngine
             std::map<std::string, Render::Texture2D> textures;
 
             ResourceManager();
-            Render::Shader LoadShaderFromFile(const char* vertexFile, const char* fragmentFile, const char* geometryFile = nullptr);
-            std::string LoadShaderFile(const char* file);
-            Render::Texture2D LoadTextureFromFile(const char* file, bool alpha);
+            static std::string LoadShaderFile(const char* file);
         public:
+            /// <summary>
+            /// It won't be saved, that's why you can't get it with GetShader
+            /// </summary>
+            /// <param name="file"></param>
+            /// <param name="alpha"></param>
+            /// <returns></returns>
+            static Render::Shader LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile = nullptr);
             Render::Shader LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, const std::string& name);
             Render::Shader GetShader(const std::string& name);
             bool IsShaderExist(const std::string& name);
             void DestroyShader(const std::string& name);
+            /// <summary>
+            /// It won't be saved, that's why you can't get it with GetTexture
+            /// </summary>
+            /// <param name="file"></param>
+            /// <param name="alpha"></param>
+            /// <returns></returns>
+            static Render::Texture2D LoadTexture(const char* file, bool alpha);
             Render::Texture2D LoadTexture(const char* file, bool alpha, const std::string& name);
             Render::Texture2D GetTexture(const std::string& name);
             bool IsTextureExist(const std::string& name);

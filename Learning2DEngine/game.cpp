@@ -1,18 +1,19 @@
 #include "game.h"
 
 #include "Learning2DEngine/System/ResourceManager.h"
+#include "Learning2DEngine/UI/Text2DRenderer.h"
 #include "sprite_renderer.h"
 #include "game_object.h"
 #include "ball_object.h"
 #include "particle_generator.h"
 #include "post_processor.h"
-#include "text_renderer.h"
 
 #include <irrklang/irrKlang.h>
 
 #include <sstream> 
 
 using namespace Learning2DEngine::System;
+using namespace Learning2DEngine::UI;
 using namespace irrklang;
 
 // Game-related State data
@@ -22,9 +23,11 @@ BallObject* Ball;
 ParticleGenerator* Particles;
 PostProcessor* Effects;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
-TextRenderer* Text;
 
 float ShakeTime = 0.0f;
+
+const std::string font = "Assets/Fonts/OCRAEXT.TTF";
+const unsigned int fontSize = 24;
 
 
 Game::Game(unsigned int width, unsigned int height)
@@ -40,7 +43,6 @@ Game::~Game()
     delete Ball;
     delete Particles;
     delete Effects;
-    delete Text;
     SoundEngine->drop();
 }
 
@@ -107,8 +109,7 @@ void Game::Init()
     SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
 
     //Text
-    Text = new TextRenderer(this->Width, this->Height);
-    Text->Load("Assets/Fonts/OCRAEXT.TTF", 24);
+    Text2DRenderer::GetInstance().Load(font, fontSize);
     this->State = GAME_MENU;
 }
 
@@ -212,6 +213,7 @@ void Game::ProcessInput(float dt)
 
 void Game::Render()
 {
+    Text2DRenderer& textRenderer = Text2DRenderer::GetInstance();
     if (this->State == GAME_ACTIVE || this->State == GAME_MENU || this->State == GAME_WIN)
     {
         // begin rendering to postprocessing framebuffer
@@ -239,22 +241,22 @@ void Game::Render()
 
         std::stringstream ss;
         ss << this->Lives;
-        Text->RenderText("Lives:" + ss.str(), 5.0f, 5.0f, 1.0f);
+        textRenderer.RenderText(font, fontSize,"Lives:" + ss.str(), 5.0f, 5.0f, 1.0f);
     }
 
     if (this->State == GAME_MENU)
     {
-        Text->RenderText("Press ENTER to start", 250.0f, Height / 2, 1.0f);
-        Text->RenderText("Press W or S to select level", 245.0f, Height / 2 + 20.0f, 0.75f);
+        textRenderer.RenderText(font, fontSize, "Press ENTER to start", 250.0f, Height / 2, 1.0f);
+        textRenderer.RenderText(font, fontSize, "Press W or S to select level", 245.0f, Height / 2 + 20.0f, 0.75f);
     }
 
     if (this->State == GAME_WIN)
     {
-        Text->RenderText(
-            "You WON!!!", 320.0, Height / 2 - 20.0, 1.0, glm::vec3(0.0, 1.0, 0.0)
+        textRenderer.RenderText(
+            font, fontSize, "You WON!!!", 320.0, Height / 2 - 20.0, 1.0, glm::vec3(0.0, 1.0, 0.0)
         );
-        Text->RenderText(
-            "Press ENTER to retry or ESC to quit", 130.0, Height / 2, 1.0, glm::vec3(1.0, 1.0, 0.0)
+        textRenderer.RenderText(
+            font, fontSize, "Press ENTER to retry or ESC to quit", 130.0, Height / 2, 1.0, glm::vec3(1.0, 1.0, 0.0)
         );
     }
 }

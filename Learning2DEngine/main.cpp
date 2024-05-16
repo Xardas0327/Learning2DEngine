@@ -6,9 +6,11 @@
 #include "game.h"
 #include "Learning2DEngine/System/ResourceManager.h"
 #include "Learning2DEngine/Render/RenderManager.h"
+#include "Learning2DEngine/UI/Text2DRenderer.h"
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
+using namespace Learning2DEngine::UI;
 
 // GLFW function declarations
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -26,11 +28,14 @@ Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
 int main()
 {
     auto& renderManager = RenderManager::GetInstance();
+    auto& textRenderer = Text2DRenderer::GetInstance();
 
     renderManager.Init(3, 3, SCREEN_WIDTH, SCREEN_HEIGHT, "Breakout");
     renderManager.AddKeyboardEvent(key_callback);
     renderManager.AddUpdateEvent(update_callback);
     renderManager.AddRenderEvent(render_callback);
+
+    textRenderer.Init();
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -41,10 +46,8 @@ int main()
 
     renderManager.Run();
 
-    // delete all resources as loaded using the resource manager
-    // ---------------------------------------------------------
     ResourceManager::GetInstance().Clear();
-
+    textRenderer.Clear();
     renderManager.Terminate();
     return 0;
 }

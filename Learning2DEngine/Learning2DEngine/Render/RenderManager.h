@@ -15,10 +15,13 @@ namespace Learning2DEngine
 			friend class System::Singleton<RenderManager>;
 		private:
 			GLFWwindow* window;
+			int screenWidth,
+				screenHeight;
 			System::EventHandler<GLFWwindow*, int, int, int, int> keyboardEventHandler;
 			// float is the delta time
 			System::EventHandler<float> updateEventHandler;
 			System::EventHandler<> renderEventHandler;
+			System::EventHandler<GLFWwindow*, int, int> framebufferSizeEventHandler;
 
 			RenderManager();
 
@@ -29,10 +32,12 @@ namespace Learning2DEngine
 			static void CallbackFramebufferSizeWrapper(GLFWwindow* window, int width, int height);
 			void CallbackFramebufferSize(GLFWwindow* window, int width, int height);
 		public:
-			void Init(int majorVersion, int minorVersion, int screenWith, int screenHeight, const char* title);
+			void Init(int majorVersion, int minorVersion, int screenWidth, int screenHeight, const char* title);
 			void Run();
 			void CloseWindow();
 			void Terminate();
+			inline int GetScreenWidth() { return screenWidth; }
+			inline int GetScreenHeight() { return screenHeight; }
 
 			void AddKeyboardEvent(const System::EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func);
 			void RemoveKeyboardEvent(const System::EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func);
@@ -40,6 +45,8 @@ namespace Learning2DEngine
 			void RemoveUpdateEvent(const System::EventHandler<float>::EventFunction func);
 			void AddRenderEvent(const System::EventHandler<>::EventFunction func);
 			void RemoveRenderEvent(const System::EventHandler<>::EventFunction func);
+			void AddFramebufferSizeEvent(const System::EventHandler<GLFWwindow*, int, int>::EventFunction func);
+			void RemoveFramebufferSizeEvent(const System::EventHandler<GLFWwindow*, int, int>::EventFunction func);
 		};
 	}
 }

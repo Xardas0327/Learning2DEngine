@@ -160,11 +160,11 @@
     <ClCompile Include="Learning2DEngine\Render\Shader.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp" />
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
+    <ClCompile Include="Learning2DEngine\UI\Text2DRenderer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="particle_generator.cpp" />
     <ClCompile Include="post_processor.cpp" />
     <ClCompile Include="sprite_renderer.cpp" />
-    <ClCompile Include="text_renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ball_object.h" />
@@ -177,11 +177,12 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="game_level.h" />
     <ClInclude Include="game_object.h" />
+    <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h" />
+    <ClInclude Include="Learning2DEngine\UI\Text2DRenderer.h" />
     <ClInclude Include="particle_generator.h" />
     <ClInclude Include="post_processor.h" />
     <ClInclude Include="power_up.h" />
     <ClInclude Include="sprite_renderer.h" />
-    <ClInclude Include="text_renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\arial.ttf" />
@@ -212,8 +213,8 @@
     <None Include="Shaders\post_processing.vs" />
     <None Include="Shaders\sprite.frag" />
     <None Include="Shaders\sprite.vs" />
-    <None Include="Shaders\text_2d.fs" />
-    <None Include="Shaders\text_2d.vs" />
+    <None Include="Learning2DEngine\Shaders\Text2D.fs" />
+    <None Include="Learning2DEngine\Shaders\Text2D.vs" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Assets\Sounds\bleep.mp3" />
