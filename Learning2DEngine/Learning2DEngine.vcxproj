@@ -213,8 +213,8 @@
     <None Include="Shaders\post_processing.vs" />
     <None Include="Shaders\sprite.frag" />
     <None Include="Shaders\sprite.vs" />
-    <None Include="Shaders\text_2d.fs" />
-    <None Include="Shaders\text_2d.vs" />
+    <None Include="Learning2DEngine\Shaders\Text2D.fs" />
+    <None Include="Learning2DEngine\Shaders\Text2D.vs" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Assets\Sounds\bleep.mp3" />

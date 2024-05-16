@@ -25,7 +25,7 @@ namespace Learning2DEngine
         {
             auto& renderManager = Render::RenderManager::GetInstance();
 
-            textShader = ResourceManager::LoadShader("Shaders/text_2d.vs", "Shaders/text_2d.fs");
+            textShader = ResourceManager::LoadShader("Learning2DEngine/Shaders/Text2D.vs", "Learning2DEngine/Shaders/Text2D.fs");
             textShader.Use();
             textShader.SetMatrix4(
                 "projection",
@@ -38,8 +38,12 @@ namespace Learning2DEngine
             glBindVertexArray(vao);
             glBindBuffer(GL_ARRAY_BUFFER, vbo);
             glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+
+            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
             glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+            glEnableVertexAttribArray(1);
+
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
 
