@@ -4,12 +4,12 @@
 #include <string>
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
 #include "../Render/Shader.h"
 #include "FreeTypeCharacter.h"
+#include "Text.h"
 
 namespace Learning2DEngine
 {
@@ -18,8 +18,6 @@ namespace Learning2DEngine
         class Text2DRenderer : public virtual System::Singleton<Text2DRenderer>
         {
             friend class System::Singleton<Text2DRenderer>;
-        public:
-            typedef std::pair<std::string, unsigned int> FontSizePair;
             typedef std::map<char, FreeTypeCharacter> CharacterMap;
         private:
             unsigned int vao, vbo, ebo;
@@ -30,8 +28,8 @@ namespace Learning2DEngine
 
             // Callbacks
 
-            static void CallbackRefreshScreenSize(GLFWwindow* window, int width, int height);
-            void RefreshScreenSize(GLFWwindow* window, int width, int height);
+            static void CallbackRefreshScreenSize(int width, int height);
+            void RefreshScreenSize(int width, int height);
         public:
             /// <summary>
             /// It should be inited after RenderManager
@@ -40,12 +38,15 @@ namespace Learning2DEngine
             /// <summary>
             /// It loads the first 128 characters from the file
             /// </summary>
-            /// <param name="font"></param>
-            /// <param name="fontSize"></param>
-            void Load(std::string font, unsigned int fontSize);
-            void Unload(std::string font, unsigned int fontSize);
+            void Load(const std::string& font, unsigned int fontSize);
+            /// <summary>
+            /// It loads the first 128 characters from the file
+            /// </summary>
+            void Load(const FontSizePair& fontSizePair);
+            void Unload(const std::string& font, unsigned int fontSize);
+            void Unload(const FontSizePair& fontSizePair);
             void Clear();
-            void RenderText(std::string font, unsigned int fontSize, std::string text, float x, float y, float scale = 1.0f, glm::vec3 color = glm::vec3(1.0f));
+            void RenderText(const Text& text);
         };
     }
 }

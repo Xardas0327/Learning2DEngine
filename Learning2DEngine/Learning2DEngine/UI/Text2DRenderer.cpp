@@ -59,12 +59,12 @@ namespace Learning2DEngine
             renderManager.AddFramebufferSizeEvent(CallbackRefreshScreenSize);
         }
 
-        void Text2DRenderer::CallbackRefreshScreenSize(GLFWwindow* window, int width, int height)
+        void Text2DRenderer::CallbackRefreshScreenSize(int width, int height)
         {
-            Text2DRenderer::GetInstance().RefreshScreenSize(window, width, height);
+            Text2DRenderer::GetInstance().RefreshScreenSize(width, height);
         }
 
-        void Text2DRenderer::RefreshScreenSize(GLFWwindow* window, int width, int height)
+        void Text2DRenderer::RefreshScreenSize(int width, int height)
         {
             textShader.SetMatrix4(
                 "projection",
@@ -72,9 +72,15 @@ namespace Learning2DEngine
                     0.0f));
         }
 
-        void Text2DRenderer::Load(std::string font, unsigned int fontSize)
+        void Text2DRenderer::Load(const std::string& font, unsigned int fontSize)
         {
-            const FontSizePair  fontSizePair = FontSizePair(font, fontSize);
+            Load(FontSizePair(font, fontSize));
+        }
+
+        void Text2DRenderer::Load(const FontSizePair& fontSizePair)
+        {
+            // fontSizePair.first is the font name
+            // fontSizePair.second is the size
             if (characters.count(fontSizePair))
                 return;
 
@@ -85,12 +91,14 @@ namespace Learning2DEngine
             }
 
             FT_Face face;
-            if (FT_New_Face(ft, font.c_str(), 0, &face))
+
+            if (FT_New_Face(ft, fontSizePair.first.c_str(), 0, &face))
             {
-                throw std::exception("ERROR::FREETYPE: Failed to load font");
+                std::string message = "ERROR::FREETYPE: Failed to load font: " + fontSizePair.first;
+                throw std::exception(message.c_str());
             }
 
-            FT_Set_Pixel_Sizes(face, 0, fontSize);
+            FT_Set_Pixel_Sizes(face, 0, fontSizePair.second);
             characters.insert(std::pair<FontSizePair, CharacterMap>(fontSizePair, CharacterMap()));
 
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -138,25 +146,29 @@ namespace Learning2DEngine
             FT_Done_FreeType(ft);
         }
 
-        void Text2DRenderer::Unload(std::string font, unsigned int fontSize)
+        void Text2DRenderer::Unload(const std::string& font, unsigned int fontSize)
         {
-            const FontSizePair fontSizePair = FontSizePair(font, fontSize);
-            if (characters.count(fontSizePair))
+            Unload(FontSizePair(font, fontSize));
+        }
+
+        void Text2DRenderer::Unload(const FontSizePair& fontSizePair)
+        {
+            if (!characters.count(fontSizePair))
+                return;
+
+            const CharacterMap& characterMap = characters[fontSizePair];
+            unsigned int* textureIds = new unsigned int[characterMap.size()];
+            unsigned int index = 0;
+            for (auto i = characterMap.begin(); i != characterMap.end(); ++i)
             {
-                const CharacterMap& characterMap = characters[fontSizePair];
-                unsigned int* textureIds = new unsigned int[characterMap.size()];
-                unsigned int index = 0;
-                for (auto i = characterMap.begin(); i != characterMap.end(); ++i)
-                {
-                    textureIds[index] = i->second.textureId;
-                    ++index;
-                }
-
-                glDeleteTextures(index, textureIds);
-                delete[] textureIds;
-
-                characters.erase(fontSizePair);
+                textureIds[index] = i->second.textureId;
+                ++index;
             }
+
+            glDeleteTextures(index, textureIds);
+            delete[] textureIds;
+
+            characters.erase(fontSizePair);
         }
 
         void Text2DRenderer::Clear()
@@ -177,26 +189,28 @@ namespace Learning2DEngine
             characters.clear();
         }
 
-        void Text2DRenderer::RenderText(std::string font, unsigned int fontSize, std::string text, float x, float y, float scale, glm::vec3 color)
+        void Text2DRenderer::RenderText(const Text& text)
         {
-            const FontSizePair fontSizePair = FontSizePair(font, fontSize);
-            CharacterMap& characterMap = characters[fontSizePair];
+            Load(text.fontSizePair);
+
+            CharacterMap& characterMap = characters[text.fontSizePair];
 
             textShader.Use();
-            textShader.SetVector3f("textColor", color);
+            textShader.SetVector3f("textColor", text.color);
             glActiveTexture(GL_TEXTURE0);
             glBindVertexArray(vao);
 
             std::string::const_iterator c;
-            for (c = text.begin(); c != text.end(); c++)
+            int xPosition = text.x;
+            for (c = text.text.begin(); c != text.text.end(); c++)
             {
                 auto& ch = characterMap[*c];
 
-                float xpos = x + ch.bearing.x * scale;
-                float ypos = y + (characterMap['H'].bearing.y - ch.bearing.y) * scale;
+                float xpos = xPosition + ch.bearing.x * text.scale;
+                float ypos = text.y + (characterMap['H'].bearing.y - ch.bearing.y) * text.scale;
 
-                float w = ch.size.x * scale;
-                float h = ch.size.y * scale;
+                float w = ch.size.x * text.scale;
+                float h = ch.size.y * text.scale;
 
                 float vertices[4][4] = {
                     { xpos + w, ypos + h,   1.0f, 1.0f },
@@ -214,7 +228,7 @@ namespace Learning2DEngine
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
                 // bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
-                x += (ch.advance >> 6) * scale; 
+                xPosition += (ch.advance >> 6) * text.scale;
             }
             glBindVertexArray(0);
             glBindTexture(GL_TEXTURE_2D, 0);

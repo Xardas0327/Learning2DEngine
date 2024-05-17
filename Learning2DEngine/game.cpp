@@ -26,12 +26,16 @@ ISoundEngine* SoundEngine = createIrrKlangDevice();
 
 float ShakeTime = 0.0f;
 
-const std::string font = "Assets/Fonts/OCRAEXT.TTF";
-const unsigned int fontSize = 24;
+const FontSizePair fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24);
 
 
 Game::Game(unsigned int width, unsigned int height)
-    : State(GAME_ACTIVE), Keys(), Width(width), Height(height), Level(0), Lives(3)
+    : State(GAME_ACTIVE), Keys(), Width(width), Height(height), Level(0), Lives(3), 
+    liveText{ fontSizePair, "Lives: 0", 5.0f, 5.0f},
+    startText{ fontSizePair, "Press ENTER to start", 250.0f,  static_cast<float>(Height / 2) },
+    levelSelectorText{ fontSizePair, "Press W or S to select level", 245.0f,  static_cast<float>(Height / 2) + 20.0f, 0.75f },
+    winText{ fontSizePair, "You WON!!!", 320.0f,  static_cast<float>(Height / 2) - 20.0f, 1.0, glm::vec3(0.0f, 1.0f, 0.0f) },
+    retryText{ fontSizePair, "Press ENTER to retry or ESC to quit", 130.0f,  static_cast<float>(Height / 2), 1.0f, glm::vec3(1.0f, 1.0f, 0.0f) }
 {
 
 }
@@ -109,7 +113,7 @@ void Game::Init()
     SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
 
     //Text
-    Text2DRenderer::GetInstance().Load(font, fontSize);
+    Text2DRenderer::GetInstance().Load(fontSizePair);
     this->State = GAME_MENU;
 }
 
@@ -241,23 +245,20 @@ void Game::Render()
 
         std::stringstream ss;
         ss << this->Lives;
-        textRenderer.RenderText(font, fontSize,"Lives:" + ss.str(), 5.0f, 5.0f, 1.0f);
+        liveText.text = "Lives: " + ss.str();
+        textRenderer.RenderText(liveText);
     }
 
     if (this->State == GAME_MENU)
     {
-        textRenderer.RenderText(font, fontSize, "Press ENTER to start", 250.0f, Height / 2, 1.0f);
-        textRenderer.RenderText(font, fontSize, "Press W or S to select level", 245.0f, Height / 2 + 20.0f, 0.75f);
+        textRenderer.RenderText(startText);
+        textRenderer.RenderText(levelSelectorText);
     }
 
     if (this->State == GAME_WIN)
     {
-        textRenderer.RenderText(
-            font, fontSize, "You WON!!!", 320.0, Height / 2 - 20.0, 1.0, glm::vec3(0.0, 1.0, 0.0)
-        );
-        textRenderer.RenderText(
-            font, fontSize, "Press ENTER to retry or ESC to quit", 130.0, Height / 2, 1.0, glm::vec3(1.0, 1.0, 0.0)
-        );
+        textRenderer.RenderText(winText);
+        textRenderer.RenderText(retryText);
     }
 }
 
