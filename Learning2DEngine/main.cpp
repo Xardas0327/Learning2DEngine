@@ -13,7 +13,7 @@ using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::UI;
 
 // GLFW function declarations
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
+void key_callback(int key, int scancode, int action, int mode);
 
 void update_callback(float deltaTime);
 void render_callback();
@@ -52,7 +52,7 @@ int main()
     return 0;
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+void key_callback(int key, int scancode, int action, int mode)
 {
     // when a user presses the escape key, we set the WindowShouldClose property to true, closing the application
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)

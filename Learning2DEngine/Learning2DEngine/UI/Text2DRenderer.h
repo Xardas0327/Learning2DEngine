@@ -4,7 +4,6 @@
 #include <string>
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
@@ -30,8 +29,8 @@ namespace Learning2DEngine
 
             // Callbacks
 
-            static void CallbackRefreshScreenSize(GLFWwindow* window, int width, int height);
-            void RefreshScreenSize(GLFWwindow* window, int width, int height);
+            static void CallbackRefreshScreenSize(int width, int height);
+            void RefreshScreenSize(int width, int height);
         public:
             /// <summary>
             /// It should be inited after RenderManager

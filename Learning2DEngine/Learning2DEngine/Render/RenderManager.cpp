@@ -88,7 +88,7 @@ namespace Learning2DEngine
 
         void RenderManager::CallbackKeyboard(GLFWwindow* window, int key, int scancode, int action, int mode)
         {
-            keyboardEventHandler.Invoke(window, key, scancode, action, mode);
+            keyboardEventHandler.Invoke(key, scancode, action, mode);
         }
 
         void RenderManager::CallbackFramebufferSizeWrapper(GLFWwindow* window, int width, int height)
@@ -101,15 +101,15 @@ namespace Learning2DEngine
             glViewport(0, 0, width, height);
             screenWidth = screenWidth;
             screenHeight = screenHeight;
-            framebufferSizeEventHandler.Invoke(window, width, height);
+            framebufferSizeEventHandler.Invoke(width, height);
         }
 
-        void RenderManager::AddKeyboardEvent(const EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func)
+        void RenderManager::AddKeyboardEvent(const EventHandler<int, int, int, int>::EventFunction func)
         {
             keyboardEventHandler.Add(func);
         }
 
-        void RenderManager::RemoveKeyboardEvent(const EventHandler<GLFWwindow*, int, int, int, int>::EventFunction func)
+        void RenderManager::RemoveKeyboardEvent(const EventHandler<int, int, int, int>::EventFunction func)
         {
             keyboardEventHandler.Remove(func);
         }
@@ -134,12 +134,12 @@ namespace Learning2DEngine
             renderEventHandler.Remove(func);
         }
 
-        void RenderManager::AddFramebufferSizeEvent(const System::EventHandler<GLFWwindow*, int, int>::EventFunction func)
+        void RenderManager::AddFramebufferSizeEvent(const System::EventHandler<int, int>::EventFunction func)
         {
             framebufferSizeEventHandler.Add(func);
         }
 
-        void RenderManager::RemoveFramebufferSizeEvent(const System::EventHandler<GLFWwindow*, int, int>::EventFunction func)
+        void RenderManager::RemoveFramebufferSizeEvent(const System::EventHandler<int, int>::EventFunction func)
         {
             framebufferSizeEventHandler.Remove(func);
         }

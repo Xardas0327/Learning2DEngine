@@ -59,12 +59,12 @@ namespace Learning2DEngine
             renderManager.AddFramebufferSizeEvent(CallbackRefreshScreenSize);
         }
 
-        void Text2DRenderer::CallbackRefreshScreenSize(GLFWwindow* window, int width, int height)
+        void Text2DRenderer::CallbackRefreshScreenSize(int width, int height)
         {
-            Text2DRenderer::GetInstance().RefreshScreenSize(window, width, height);
+            Text2DRenderer::GetInstance().RefreshScreenSize(width, height);
         }
 
-        void Text2DRenderer::RefreshScreenSize(GLFWwindow* window, int width, int height)
+        void Text2DRenderer::RefreshScreenSize(int width, int height)
         {
             textShader.SetMatrix4(
                 "projection",
