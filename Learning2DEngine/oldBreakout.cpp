@@ -1,4 +1,4 @@
-#include "game.h"
+#include "oldBreakout.h"
 
 #include "Learning2DEngine/System/ResourceManager.h"
 #include "Learning2DEngine/UI/Text2DRenderer.h"
@@ -29,7 +29,7 @@ float ShakeTime = 0.0f;
 const FontSizePair fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24);
 
 
-Game::Game(unsigned int width, unsigned int height)
+OldBreakout::OldBreakout(unsigned int width, unsigned int height)
     : State(GAME_ACTIVE), Keys(), Width(width), Height(height), Level(0), Lives(3), 
     liveText{ fontSizePair, "Lives: 0", 5.0f, 5.0f},
     startText{ fontSizePair, "Press ENTER to start", 250.0f,  static_cast<float>(Height / 2) },
@@ -40,7 +40,7 @@ Game::Game(unsigned int width, unsigned int height)
 
 }
 
-Game::~Game()
+OldBreakout::~OldBreakout()
 {
     delete Renderer;
     delete Player;
@@ -50,7 +50,7 @@ Game::~Game()
     SoundEngine->drop();
 }
 
-void Game::Init()
+void OldBreakout::Init()
 {
     auto& resourceManager = ResourceManager::GetInstance();
     // load shaders
@@ -117,7 +117,7 @@ void Game::Init()
     this->State = GAME_MENU;
 }
 
-void Game::Update(float dt)
+void OldBreakout::Update(float dt)
 {
     Ball->Move(dt, this->Width);
     // check for collisions
@@ -155,7 +155,7 @@ void Game::Update(float dt)
     }
 }
 
-void Game::ProcessInput(float dt)
+void OldBreakout::ProcessInput(float dt)
 {
     if (this->State == GAME_MENU)
     {
@@ -215,7 +215,7 @@ void Game::ProcessInput(float dt)
     }
 }
 
-void Game::Render()
+void OldBreakout::Render()
 {
     Text2DRenderer& textRenderer = Text2DRenderer::GetInstance();
     if (this->State == GAME_ACTIVE || this->State == GAME_MENU || this->State == GAME_WIN)
@@ -263,7 +263,7 @@ void Game::Render()
 }
 
 
-void Game::ResetLevel()
+void OldBreakout::ResetLevel()
 {
     if (this->Level == 0)
         this->Levels[0].Load("Assets/Levels/one.lvl", this->Width, this->Height / 2);
@@ -277,7 +277,7 @@ void Game::ResetLevel()
     this->Lives = 3;
 }
 
-void Game::ResetPlayer()
+void OldBreakout::ResetPlayer()
 {
     // reset player/ball stats
     Player->Size = PLAYER_SIZE;
@@ -382,7 +382,7 @@ void ActivatePowerUp(PowerUp& powerUp)
     }
 }
 
-void Game::DoCollisions()
+void OldBreakout::DoCollisions()
 {
     for (GameObject& box : this->Levels[this->Level].Bricks)
     {
@@ -480,7 +480,7 @@ bool ShouldSpawn(unsigned int chance)
     unsigned int random = rand() % chance;
     return random == 0;
 }
-void Game::SpawnPowerUps(GameObject& block)
+void OldBreakout::SpawnPowerUps(GameObject& block)
 {
     auto& resourceManager = ResourceManager::GetInstance();
 
@@ -521,7 +521,7 @@ bool IsOtherPowerUpActive(std::vector<PowerUp>& powerUps, std::string type)
     return false;
 }
 
-void Game::UpdatePowerUps(float dt)
+void OldBreakout::UpdatePowerUps(float dt)
 {
     for (PowerUp& powerUp : this->PowerUps)
     {

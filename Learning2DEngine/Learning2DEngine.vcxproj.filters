@@ -18,7 +18,7 @@
     <ClCompile Include="ball_object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game.cpp">
+    <ClCompile Include="oldBreakout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="game_level.cpp">
@@ -62,7 +62,7 @@
     <ClInclude Include="ball_object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
+    <ClInclude Include="oldBreakout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="game_level.h">
@@ -108,6 +108,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\UI\Text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\InputStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

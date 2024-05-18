@@ -37,7 +37,7 @@ const float BALL_RADIUS = 12.5f;
 // Game holds all game-related state and functionality.
 // Combines all game-related data into a single class for
 // easy access to each of the components and manageability.
-class Game
+class OldBreakout
 {
 public:
     // game state
@@ -55,8 +55,8 @@ public:
     Learning2DEngine::UI::Text  winText;
     Learning2DEngine::UI::Text  retryText;
     // constructor/destructor
-    Game(unsigned int width, unsigned int height);
-    ~Game();
+    OldBreakout(unsigned int width, unsigned int height);
+    ~OldBreakout();
     // initialize game state (load all shaders/textures/levels)
     void Init();
     // game loop

@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "game.h"
+#include "oldBreakout.h"
 #include "Learning2DEngine/System/ResourceManager.h"
 #include "Learning2DEngine/Render/RenderManager.h"
 #include "Learning2DEngine/UI/Text2DRenderer.h"
@@ -23,7 +23,7 @@ const unsigned int SCREEN_WIDTH = 800;
 // The height of the screen
 const unsigned int SCREEN_HEIGHT = 600;
 
-Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
+OldBreakout Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 int main()
 {
