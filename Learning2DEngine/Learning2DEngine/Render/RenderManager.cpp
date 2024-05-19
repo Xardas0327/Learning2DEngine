@@ -10,7 +10,7 @@ namespace Learning2DEngine
     {
         RenderManager::RenderManager() :
             window(nullptr), screenWidth(0), screenHeight(0),
-            keyboardEventHandler(), updateEventHandler(), renderEventHandler(), framebufferSizeEventHandler()
+            keyboardEventHandler(), framebufferSizeEventHandler()
         {
 
         }
@@ -36,8 +36,8 @@ namespace Learning2DEngine
                 throw std::exception("ERROR::GLFW: Failed to create GLFW window");
             }
             glfwMakeContextCurrent(window);
-            glfwSetKeyCallback(window, CallbackKeyboardWrapper);
-            glfwSetFramebufferSizeCallback(window, CallbackFramebufferSizeWrapper);
+            glfwSetKeyCallback(window, CallbackUpdateKeyboardMouse);
+            glfwSetFramebufferSizeCallback(window, CallbackUpdateFramebufferSize);
 
             if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             {
@@ -47,28 +47,9 @@ namespace Learning2DEngine
             glViewport(0, 0, screenWidth, screenHeight);
         }
 
-        void RenderManager::Run()
+        void RenderManager::Terminate()
         {
-            float deltaTime = 0.0f;
-            float lastFrame = 0.0f;
-            while (!glfwWindowShouldClose(window))
-            {
-                // Calc deltaTime
-                float currentFrame = glfwGetTime();
-                deltaTime = currentFrame - lastFrame;
-                lastFrame = currentFrame;
-                glfwPollEvents();
-
-                updateEventHandler.Invoke(deltaTime);
-
-
-                glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-                glClear(GL_COLOR_BUFFER_BIT);
-
-                renderEventHandler.Invoke();
-
-                glfwSwapBuffers(window);
-            }
+            glfwTerminate();
         }
 
         void RenderManager::CloseWindow()
@@ -76,27 +57,43 @@ namespace Learning2DEngine
             glfwSetWindowShouldClose(window, true);
         }
 
-        void RenderManager::Terminate()
+        bool RenderManager::IsWindowClosed()
         {
-            glfwTerminate();
+            return glfwWindowShouldClose(window);
         }
 
-        void RenderManager::CallbackKeyboardWrapper(GLFWwindow* window, int key, int scancode, int action, int mode)
+        void RenderManager::SetVSync(bool value)
         {
-            RenderManager::GetInstance().CallbackKeyboard(window, key, scancode, action, mode);
+            glfwSwapInterval(value);
         }
 
-        void RenderManager::CallbackKeyboard(GLFWwindow* window, int key, int scancode, int action, int mode)
+        void RenderManager::UpdateScreen()
+        {
+            glfwSwapBuffers(window);
+        }
+
+        void RenderManager::ClearScreen()
+        {
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+        }
+
+        void RenderManager::CallbackUpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode)
+        {
+            RenderManager::GetInstance().UpdateKeyboardMouse(window, key, scancode, action, mode);
+        }
+
+        void RenderManager::UpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode)
         {
             keyboardEventHandler.Invoke(key, scancode, action, mode);
         }
 
-        void RenderManager::CallbackFramebufferSizeWrapper(GLFWwindow* window, int width, int height)
+        void RenderManager::CallbackUpdateFramebufferSize(GLFWwindow* window, int width, int height)
         {
-            RenderManager::GetInstance().CallbackFramebufferSize(window, width, height);
+            RenderManager::GetInstance().UpdateFramebufferSize(window, width, height);
         }
 
-        void RenderManager::CallbackFramebufferSize(GLFWwindow* window, int width, int height)
+        void RenderManager::UpdateFramebufferSize(GLFWwindow* window, int width, int height)
         {
             glViewport(0, 0, width, height);
             screenWidth = screenWidth;
@@ -112,26 +109,6 @@ namespace Learning2DEngine
         void RenderManager::RemoveKeyboardEvent(const EventHandler<int, int, int, int>::EventFunction func)
         {
             keyboardEventHandler.Remove(func);
-        }
-
-        void RenderManager::AddUpdateEvent(const EventHandler<float>::EventFunction func)
-        {
-            updateEventHandler.Add(func);
-        }
-
-        void RenderManager::RemoveUpdateEvent(const EventHandler<float>::EventFunction func)
-        {
-            updateEventHandler.Remove(func);
-        }
-
-        void RenderManager::AddRenderEvent(const EventHandler<>::EventFunction func)
-        {
-            renderEventHandler.Add(func);
-        }
-
-        void RenderManager::RemoveRenderEvent(const EventHandler<>::EventFunction func)
-        {
-            renderEventHandler.Remove(func);
         }
 
         void RenderManager::AddFramebufferSizeEvent(const System::EventHandler<int, int>::EventFunction func)

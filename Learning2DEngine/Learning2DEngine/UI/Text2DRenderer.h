@@ -15,6 +15,8 @@ namespace Learning2DEngine
 {
     namespace UI
     {
+#define FONT_NUMBER 128
+
         class Text2DRenderer : public virtual System::Singleton<Text2DRenderer>
         {
             friend class System::Singleton<Text2DRenderer>;
@@ -36,11 +38,11 @@ namespace Learning2DEngine
             /// </summary>
             void Init();
             /// <summary>
-            /// It loads the first 128 characters from the file
+            /// It loads FONT_NUMBER characters from the file begining
             /// </summary>
             void Load(const std::string& font, unsigned int fontSize);
             /// <summary>
-            /// It loads the first 128 characters from the file
+            /// It loads FONT_NUMBER characters from the file begining
             /// </summary>
             void Load(const FontSizePair& fontSizePair);
             void Unload(const std::string& font, unsigned int fontSize);
