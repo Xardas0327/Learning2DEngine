@@ -77,7 +77,7 @@ namespace Learning2DEngine
                     inputKeys[key] = InputStatus::KEY_DOWN;
                     break;
                 case GLFW_REPEAT:
-                    inputKeys[key] = InputStatus::KEY_STAY;
+                    inputKeys[key] = InputStatus::KEY_HOLD;
                     break;
                 //default:
                 //    std::string message = "ERROR::GAME: Unknow action: " + action;
@@ -91,7 +91,7 @@ namespace Learning2DEngine
             for (int i = 0; i < INPUT_KEY_SIZE; ++i)
             {
                 if(inputKeys[i] == InputStatus::KEY_DOWN)
-                    inputKeys[i] = InputStatus::KEY_STAY;
+                    inputKeys[i] = InputStatus::KEY_HOLD;
             }
         }
     }

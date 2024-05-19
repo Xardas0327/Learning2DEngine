@@ -9,7 +9,7 @@ namespace Learning2DEngine
             // The key or mouse button was pressed.
             KEY_DOWN,
             // The key was held down until it repeated.
-            KEY_STAY
+            KEY_HOLD
         };
     }
 }

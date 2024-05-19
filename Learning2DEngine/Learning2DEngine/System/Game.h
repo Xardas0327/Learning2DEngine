@@ -36,7 +36,7 @@ namespace Learning2DEngine
             static void CallbackRefreshKeyboardMouse(int key, int scancode, int action, int mode);
             /// <summary>
             /// The glfwPollEvents doesn't refresh the data on every frame.
-            /// That's why this function update the InputStatus::KEY_DOWN to InputStatus::KEY_STAY.
+            /// That's why this function update the InputStatus::KEY_DOWN to InputStatus::KEY_HOLD.
             /// </summary>
             void FixKeyboardMouse();
         protected:
