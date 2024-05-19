@@ -1,5 +1,11 @@
-#include "oldBreakout.h"
+#include "Breakout.h"
 
+#include <glm/glm.hpp>
+#include <irrklang/irrKlang.h>
+
+#include <sstream> 
+
+#include "Learning2DEngine/Render/RenderManager.h"
 #include "Learning2DEngine/System/ResourceManager.h"
 #include "Learning2DEngine/UI/Text2DRenderer.h"
 #include "sprite_renderer.h"
@@ -8,10 +14,8 @@
 #include "particle_generator.h"
 #include "post_processor.h"
 
-#include <irrklang/irrKlang.h>
 
-#include <sstream> 
-
+using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::UI;
 using namespace irrklang;
@@ -28,19 +32,13 @@ float ShakeTime = 0.0f;
 
 const FontSizePair fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24);
 
-
-OldBreakout::OldBreakout(unsigned int width, unsigned int height)
-    : State(GAME_ACTIVE), Keys(), Width(width), Height(height), Level(0), Lives(3), 
-    liveText{ fontSizePair, "Lives: 0", 5.0f, 5.0f},
-    startText{ fontSizePair, "Press ENTER to start", 250.0f,  static_cast<float>(Height / 2) },
-    levelSelectorText{ fontSizePair, "Press W or S to select level", 245.0f,  static_cast<float>(Height / 2) + 20.0f, 0.75f },
-    winText{ fontSizePair, "You WON!!!", 320.0f,  static_cast<float>(Height / 2) - 20.0f, 1.0, glm::vec3(0.0f, 1.0f, 0.0f) },
-    retryText{ fontSizePair, "Press ENTER to retry or ESC to quit", 130.0f,  static_cast<float>(Height / 2), 1.0f, glm::vec3(1.0f, 1.0f, 0.0f) }
+Breakout::Breakout() :
+    State(GAME_ACTIVE), Level(0), Lives(3)
 {
 
 }
 
-OldBreakout::~OldBreakout()
+Breakout::~Breakout()
 {
     delete Renderer;
     delete Player;
@@ -50,16 +48,27 @@ OldBreakout::~OldBreakout()
     SoundEngine->drop();
 }
 
-void OldBreakout::Init()
+void Breakout::Init()
 {
+    Game::Init();
+
+    auto& renderManager = RenderManager::GetInstance();
+    const int middleHeight = renderManager.GetScreenHeight() / 2;
+
     auto& resourceManager = ResourceManager::GetInstance();
     // load shaders
     resourceManager.LoadShader("Shaders/sprite.vs", "Shaders/sprite.frag", nullptr, "sprite");
     resourceManager.LoadShader("Shaders/particle.vs", "Shaders/particle.frag", nullptr, "particle");
     resourceManager.LoadShader("Shaders/post_processing.vs", "Shaders/post_processing.frag", nullptr, "postprocessing");
     // configure shaders
-    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(this->Width),
-        static_cast<float>(this->Height), 0.0f, -1.0f, 1.0f);
+    glm::mat4 projection = glm::ortho(
+        0.0f,
+        static_cast<float>(renderManager.GetScreenWidth()),
+        static_cast<float>(renderManager.GetScreenHeight()),
+        0.0f,
+        -1.0f,
+        1.0f
+    );
     auto sprite = resourceManager.GetShader("sprite");
     sprite.Use();
     sprite.SetInteger("image", 0);
@@ -88,21 +97,20 @@ void OldBreakout::Init()
         resourceManager.GetTexture("particle"),
         2000
     );
-    Effects = new PostProcessor(resourceManager.GetShader("postprocessing"), this->Width, this->Height);
+    Effects = new PostProcessor(resourceManager.GetShader("postprocessing"), renderManager.GetScreenWidth(), renderManager.GetScreenHeight());
     // load levels
-    GameLevel one; one.Load("Assets/Levels/one.lvl", this->Width, this->Height / 2);
-    GameLevel two; two.Load("Assets/Levels/two.lvl", this->Width, this->Height / 2);
-    GameLevel three; three.Load("Assets/Levels/three.lvl", this->Width, this->Height / 2);
-    GameLevel four; four.Load("Assets/Levels/four.lvl", this->Width, this->Height / 2);
+    GameLevel one; one.Load("Assets/Levels/one.lvl", renderManager.GetScreenWidth(), middleHeight);
+    GameLevel two; two.Load("Assets/Levels/two.lvl", renderManager.GetScreenWidth(), middleHeight);
+    GameLevel three; three.Load("Assets/Levels/three.lvl", renderManager.GetScreenWidth(), middleHeight);
+    GameLevel four; four.Load("Assets/Levels/four.lvl", renderManager.GetScreenWidth(), middleHeight);
     this->Levels.push_back(one);
     this->Levels.push_back(two);
     this->Levels.push_back(three);
     this->Levels.push_back(four);
     this->Level = 0;
 
-    // configure game objects
     //Player
-    glm::vec2 playerPos = glm::vec2(this->Width / 2.0f - PLAYER_SIZE.x / 2.0f, this->Height - PLAYER_SIZE.y);
+    glm::vec2 playerPos = glm::vec2(renderManager.GetScreenWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, renderManager.GetScreenHeight() - PLAYER_SIZE.y);
     Player = new GameObject(playerPos, PLAYER_SIZE, resourceManager.GetTexture("paddle"));
 
     //Ball
@@ -113,76 +121,93 @@ void OldBreakout::Init()
     SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
 
     //Text
-    Text2DRenderer::GetInstance().Load(fontSizePair);
-    this->State = GAME_MENU;
+    auto& textRenderer = Text2DRenderer::GetInstance();
+    textRenderer.Init();
+    textRenderer.Load(fontSizePair);
+
+    liveText = { 
+        fontSizePair,
+        "Lives: 0",
+        5.0f,
+        5.0f
+    };
+    startText = { 
+        fontSizePair,
+        "Press ENTER to start",
+        250.0f,
+        static_cast<float>(middleHeight)
+    };
+    levelSelectorText = { 
+        fontSizePair,
+        "Press W or S to select level",
+        245.0f,
+        static_cast<float>(middleHeight) + 20.0f,
+        0.75f
+    };
+    winText = {
+        fontSizePair,
+        "You WON!!!",
+        320.0f,
+        static_cast<float>(middleHeight) - 20.0f,
+        1.0,
+        glm::vec3(0.0f, 1.0f, 0.0f)
+    };
+    retryText = {
+        fontSizePair,
+        "Press ENTER to retry or ESC to quit",
+        130.0f,
+        static_cast<float>(middleHeight),
+        1.0f,
+        glm::vec3(1.0f, 1.0f, 0.0f)
+    };
+
+    //State
+    State = GAME_MENU;
+
+    //Blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void OldBreakout::Update(float dt)
+void Breakout::Terminate()
 {
-    Ball->Move(dt, this->Width);
-    // check for collisions
-    this->DoCollisions();
-    // update particles
-    Particles->Update(dt, *Ball, 1, glm::vec2(Ball->Radius / 2.0f));
-    // update PowerUps
-    this->UpdatePowerUps(dt);
-    // reduce shake time
-    if (ShakeTime > 0.0f)
-    {
-        ShakeTime -= dt;
-        if (ShakeTime <= 0.0f)
-            Effects->Shake = false;
-    }
-    // check loss condition
-    if (Ball->Position.y >= this->Height) // did ball reach bottom edge?
-    {
-        --this->Lives;
-        // did the player lose all his lives? : Game over
-        if (this->Lives == 0)
-        {
-            this->ResetLevel();
-            this->State = GAME_MENU;
-        }
-        this->ResetPlayer();
-    }
-    // check win condition
-    if (this->State == GAME_ACTIVE && this->Levels[this->Level].IsCompleted())
-    {
-        this->ResetLevel();
-        this->ResetPlayer();
-        Effects->Chaos = true;
-        this->State = GAME_WIN;
-    }
+    ResourceManager::GetInstance().Clear();
+    Text2DRenderer::GetInstance().Clear();
+    Game::Terminate();
 }
 
-void OldBreakout::ProcessInput(float dt)
+void Breakout::ProcessInput(float deltaTime)
 {
+    if (inputKeys[GLFW_KEY_ESCAPE] == InputStatus::KEY_DOWN)
+    {
+        RenderManager::GetInstance().CloseWindow();
+        return;
+    }
+
     if (this->State == GAME_MENU)
     {
-        if (this->Keys[GLFW_KEY_ENTER] && !this->KeysProcessed[GLFW_KEY_ENTER])
+        if (inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
             this->State = GAME_ACTIVE;
-            this->KeysProcessed[GLFW_KEY_ENTER] = true;
         }
-        if (this->Keys[GLFW_KEY_W] && !this->KeysProcessed[GLFW_KEY_W])
+
+        if (inputKeys[GLFW_KEY_W] == InputStatus::KEY_DOWN)
         {
             this->Level = (this->Level + 1) % 4;
-            this->KeysProcessed[GLFW_KEY_W] = true;
         }
-        if (this->Keys[GLFW_KEY_S] && !this->KeysProcessed[GLFW_KEY_S])
+        if (inputKeys[GLFW_KEY_S] == InputStatus::KEY_DOWN)
         {
             if (this->Level > 0)
                 --this->Level;
             else
                 this->Level = 3;
-            this->KeysProcessed[GLFW_KEY_S] = true;
         }
     }
     if (this->State == GAME_ACTIVE)
     {
-        float velocity = PLAYER_VELOCITY * dt;
+        float velocity = PLAYER_VELOCITY * deltaTime;
         // move playerboard
-        if (this->Keys[GLFW_KEY_A])
+        if (inputKeys[GLFW_KEY_A])
         {
             if (Player->Position.x >= 0.0f)
             {
@@ -191,58 +216,98 @@ void OldBreakout::ProcessInput(float dt)
                     Ball->Position.x -= velocity;
             }
         }
-        if (this->Keys[GLFW_KEY_D])
+        if (inputKeys[GLFW_KEY_D])
         {
-            if (Player->Position.x <= this->Width - Player->Size.x)
+            if (Player->Position.x <= RenderManager::GetInstance().GetScreenWidth() - Player->Size.x)
             {
                 Player->Position.x += velocity;
                 if (Ball->Stuck)
                     Ball->Position.x += velocity;
             }
         }
-        if (this->Keys[GLFW_KEY_SPACE])
+        if (inputKeys[GLFW_KEY_SPACE])
             Ball->Stuck = false;
     }
 
     if (this->State == GAME_WIN)
     {
-        if (this->Keys[GLFW_KEY_ENTER])
+        if (inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
-            this->KeysProcessed[GLFW_KEY_ENTER] = true;
             Effects->Chaos = false;
             this->State = GAME_MENU;
         }
     }
 }
 
-void OldBreakout::Render()
+void Breakout::Update(float deltaTime)
 {
-    Text2DRenderer& textRenderer = Text2DRenderer::GetInstance();
+    auto& renderManager = RenderManager::GetInstance();
+
+    Ball->Move(deltaTime, renderManager.GetScreenWidth());
+    DoCollisions();
+    Particles->Update(deltaTime, *Ball, 1, glm::vec2(Ball->Radius / 2.0f));
+    UpdatePowerUps(deltaTime);
+
+    if (ShakeTime > 0.0f)
+    {
+        ShakeTime -= deltaTime;
+        if (ShakeTime <= 0.0f)
+            Effects->Shake = false;
+    }
+
+    // Lose live
+    if (Ball->Position.y >= renderManager.GetScreenHeight()) 
+    {
+        --Lives;
+        // Game over
+        if (Lives == 0)
+        {
+            ResetLevel();
+            State = GAME_MENU;
+        }
+        ResetPlayer();
+    }
+
+    // check win condition
+    if (State == GAME_ACTIVE && Levels[Level].IsCompleted())
+    {
+        ResetLevel();
+        ResetPlayer();
+        Effects->Chaos = true;
+        State = GAME_WIN;
+    }
+}
+
+void Breakout::Render()
+{
+    auto& renderManager = RenderManager::GetInstance();
+    auto& textRenderer = Text2DRenderer::GetInstance();
     if (this->State == GAME_ACTIVE || this->State == GAME_MENU || this->State == GAME_WIN)
     {
-        // begin rendering to postprocessing framebuffer
+        // Begin rendering to postprocessing framebuffer
         Effects->BeginRender();
 
-        // draw background
+        // Draw background
         auto backgroundTexture = ResourceManager::GetInstance().GetTexture("background");
-        Renderer->DrawSprite(backgroundTexture, glm::vec2(0.0f, 0.0f), glm::vec2(this->Width, this->Height), 0.0f);
-        // draw level
+        Renderer->DrawSprite(backgroundTexture, glm::vec2(0.0f, 0.0f), glm::vec2(renderManager.GetScreenWidth(), renderManager.GetScreenHeight()), 0.0f);
+        // Draw level
         this->Levels[this->Level].Draw(*Renderer);
-        // draw player
+        // Draw player
         Player->Draw(*Renderer);
-        // draw PowerUps
+        // Draw PowerUps
         for (PowerUp& powerUp : this->PowerUps)
             if (!powerUp.Destroyed)
                 powerUp.Draw(*Renderer);
-        // draw particles	
+        // Draw Particles
         Particles->Draw();
-        // draw ball
+        // Draw Player
         Ball->Draw(*Renderer);
-        // end rendering to postprocessing framebuffer
+        // End rendering to postprocessing framebuffer
         Effects->EndRender();
-        // render postprocessing quad
+        // Render postprocessing quad
         Effects->Render(glfwGetTime());
 
+        //Update live
         std::stringstream ss;
         ss << this->Lives;
         liveText.text = "Lives: " + ss.str();
@@ -262,32 +327,36 @@ void OldBreakout::Render()
     }
 }
 
-
-void OldBreakout::ResetLevel()
+void ActivatePowerUp(PowerUp& powerUp)
 {
-    if (this->Level == 0)
-        this->Levels[0].Load("Assets/Levels/one.lvl", this->Width, this->Height / 2);
-    else if (this->Level == 1)
-        this->Levels[1].Load("Assets/Levels/two.lvl", this->Width, this->Height / 2);
-    else if (this->Level == 2)
-        this->Levels[2].Load("Assets/Levels/three.lvl", this->Width, this->Height / 2);
-    else if (this->Level == 3)
-        this->Levels[3].Load("Assets/Levels/four.lvl", this->Width, this->Height / 2);
-
-    this->Lives = 3;
-}
-
-void OldBreakout::ResetPlayer()
-{
-    // reset player/ball stats
-    Player->Size = PLAYER_SIZE;
-    Player->Position = glm::vec2(this->Width / 2.0f - PLAYER_SIZE.x / 2.0f, this->Height - PLAYER_SIZE.y);
-    Ball->Reset(Player->Position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
-    // also disable all active powerups
-    Effects->Chaos = Effects->Confuse = false;
-    Ball->PassThrough = Ball->Sticky = false;
-    Player->Color = glm::vec3(1.0f);
-    Ball->Color = glm::vec3(1.0f);
+    if (powerUp.Type == "speed")
+    {
+        Ball->Velocity *= 1.2;
+    }
+    else if (powerUp.Type == "sticky")
+    {
+        Ball->Sticky = true;
+        Player->Color = glm::vec3(1.0f, 0.5f, 1.0f);
+    }
+    else if (powerUp.Type == "pass-through")
+    {
+        Ball->PassThrough = true;
+        Ball->Color = glm::vec3(1.0f, 0.5f, 0.5f);
+    }
+    else if (powerUp.Type == "pad-size-increase")
+    {
+        Player->Size.x += 50;
+    }
+    else if (powerUp.Type == "confuse")
+    {
+        if (!Effects->Chaos)
+            Effects->Confuse = true; // only activate if chaos wasn't already active
+    }
+    else if (powerUp.Type == "chaos")
+    {
+        if (!Effects->Confuse)
+            Effects->Chaos = true;
+    }
 }
 
 bool CheckCollision(GameObject& one, GameObject& two) // AABB - AABB collision
@@ -301,7 +370,6 @@ bool CheckCollision(GameObject& one, GameObject& two) // AABB - AABB collision
     // collision only if on both axes
     return collisionX && collisionY;
 }
-
 
 // calculates which direction a vector is facing (N,E,S or W)
 Direction VectorDirection(glm::vec2 target)
@@ -350,39 +418,7 @@ Collision CheckCollision(BallObject& one, GameObject& two) // AABB - Circle coll
         return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
 }
 
-void ActivatePowerUp(PowerUp& powerUp)
-{
-    if (powerUp.Type == "speed")
-    {
-        Ball->Velocity *= 1.2;
-    }
-    else if (powerUp.Type == "sticky")
-    {
-        Ball->Sticky = true;
-        Player->Color = glm::vec3(1.0f, 0.5f, 1.0f);
-    }
-    else if (powerUp.Type == "pass-through")
-    {
-        Ball->PassThrough = true;
-        Ball->Color = glm::vec3(1.0f, 0.5f, 0.5f);
-    }
-    else if (powerUp.Type == "pad-size-increase")
-    {
-        Player->Size.x += 50;
-    }
-    else if (powerUp.Type == "confuse")
-    {
-        if (!Effects->Chaos)
-            Effects->Confuse = true; // only activate if chaos wasn't already active
-    }
-    else if (powerUp.Type == "chaos")
-    {
-        if (!Effects->Confuse)
-            Effects->Chaos = true;
-    }
-}
-
-void OldBreakout::DoCollisions()
+void Breakout::DoCollisions()
 {
     for (GameObject& box : this->Levels[this->Level].Bricks)
     {
@@ -440,7 +476,7 @@ void OldBreakout::DoCollisions()
         if (!powerUp.Destroyed)
         {
             // first check if powerup passed bottom edge, if so: keep as inactive and destroy
-            if (powerUp.Position.y >= this->Height)
+            if (powerUp.Position.y >= RenderManager::GetInstance().GetScreenHeight())
                 powerUp.Destroyed = true;
 
             if (CheckCollision(*Player, powerUp))
@@ -466,7 +502,7 @@ void OldBreakout::DoCollisions()
         Ball->Velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
         //Ball->Velocity.y = -Ball->Velocity.y;
         // keep speed consistent over both axes (multiply by length of old velocity, so total strength is not changed)
-        Ball->Velocity = glm::normalize(Ball->Velocity) * glm::length(oldVelocity); 
+        Ball->Velocity = glm::normalize(Ball->Velocity) * glm::length(oldVelocity);
         // fix sticky paddle
         Ball->Velocity.y = -1.0f * abs(Ball->Velocity.y);
         Ball->Stuck = Ball->Sticky;
@@ -475,37 +511,71 @@ void OldBreakout::DoCollisions()
     }
 }
 
+void Breakout::ResetLevel()
+{
+    auto& renderManager = RenderManager::GetInstance();
+    const int middleHeight = renderManager.GetScreenHeight() / 2;
+
+    if (Level == 0)
+        Levels[0].Load("Assets/Levels/one.lvl", renderManager.GetScreenWidth(), middleHeight);
+    else if (Level == 1)
+        Levels[1].Load("Assets/Levels/two.lvl", renderManager.GetScreenWidth(), middleHeight);
+    else if (Level == 2)
+        Levels[2].Load("Assets/Levels/three.lvl", renderManager.GetScreenWidth(), middleHeight);
+    else if (Level == 3)
+        Levels[3].Load("Assets/Levels/four.lvl", renderManager.GetScreenWidth(), middleHeight);
+
+    Lives = 3;
+}
+
+void Breakout::ResetPlayer()
+{
+    auto& renderManager = RenderManager::GetInstance();
+
+    // reset player/ball stats
+    Player->Size = PLAYER_SIZE;
+    Player->Position = glm::vec2(renderManager.GetScreenWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, renderManager.GetScreenHeight() - PLAYER_SIZE.y);
+    Ball->Reset(Player->Position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
+
+    // also disable all active powerups
+    Effects->Chaos = Effects->Confuse = false;
+    Ball->PassThrough = Ball->Sticky = false;
+    Player->Color = glm::vec3(1.0f);
+    Ball->Color = glm::vec3(1.0f);
+}
+
 bool ShouldSpawn(unsigned int chance)
 {
     unsigned int random = rand() % chance;
     return random == 0;
 }
-void OldBreakout::SpawnPowerUps(GameObject& block)
+
+void Breakout::SpawnPowerUps(GameObject& block)
 {
     auto& resourceManager = ResourceManager::GetInstance();
 
     if (ShouldSpawn(75)) // 1 in 75 chance
-        this->PowerUps.push_back(
+        PowerUps.push_back(
             PowerUp("speed", glm::vec3(0.5f, 0.5f, 1.0f), 0.0f, block.Position, resourceManager.GetTexture("powerup_speed")
             ));
     if (ShouldSpawn(75))
-        this->PowerUps.push_back(
+        PowerUps.push_back(
             PowerUp("sticky", glm::vec3(1.0f, 0.5f, 1.0f), 20.0f, block.Position, resourceManager.GetTexture("powerup_sticky")
             ));
     if (ShouldSpawn(75))
-        this->PowerUps.push_back(
+        PowerUps.push_back(
             PowerUp("pass-through", glm::vec3(0.5f, 1.0f, 0.5f), 10.0f, block.Position, resourceManager.GetTexture("powerup_passthrough")
             ));
     if (ShouldSpawn(75))
-        this->PowerUps.push_back(
+        PowerUps.push_back(
             PowerUp("pad-size-increase", glm::vec3(1.0f, 0.6f, 0.4), 0.0f, block.Position, resourceManager.GetTexture("powerup_increase")
             ));
     if (ShouldSpawn(15)) // negative powerups should spawn more often
-        this->PowerUps.push_back(
+        PowerUps.push_back(
             PowerUp("confuse", glm::vec3(1.0f, 0.3f, 0.3f), 15.0f, block.Position, resourceManager.GetTexture("powerup_confuse")
             ));
     if (ShouldSpawn(15))
-        this->PowerUps.push_back(
+        PowerUps.push_back(
             PowerUp("chaos", glm::vec3(0.9f, 0.25f, 0.25f), 15.0f, block.Position, resourceManager.GetTexture("powerup_chaos")
             ));
 }
@@ -521,14 +591,14 @@ bool IsOtherPowerUpActive(std::vector<PowerUp>& powerUps, std::string type)
     return false;
 }
 
-void OldBreakout::UpdatePowerUps(float dt)
+void Breakout::UpdatePowerUps(float deltaTime)
 {
     for (PowerUp& powerUp : this->PowerUps)
     {
-        powerUp.Position += powerUp.Velocity * dt;
+        powerUp.Position += powerUp.Velocity * deltaTime;
         if (powerUp.Activated)
         {
-            powerUp.Duration -= dt;
+            powerUp.Duration -= deltaTime;
 
             if (powerUp.Duration <= 0.0f)
             {

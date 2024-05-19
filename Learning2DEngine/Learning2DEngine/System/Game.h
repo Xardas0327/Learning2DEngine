@@ -32,7 +32,13 @@ namespace Learning2DEngine
         private:
             float deltaTime, lastFrame;
 
-            static void CallbackRefreshKeyboard(int key, int scancode, int action, int mode);
+            void UpdateKeyboardMouseEvents();
+            static void CallbackRefreshKeyboardMouse(int key, int scancode, int action, int mode);
+            /// <summary>
+            /// The glfwPollEvents doesn't refresh the data on every frame.
+            /// That's why this function update the InputStatus::KEY_DOWN to InputStatus::KEY_STAY.
+            /// </summary>
+            void FixKeyboardMouse();
         protected:
             static InputStatus inputKeys[INPUT_KEY_SIZE];
 
@@ -47,15 +53,18 @@ namespace Learning2DEngine
             /// It will initialize the RenderManager.
             /// After that, the Init() will be called.
             /// </summary>
-            void Init(int majorRenderVersion, int minorRenderVersion, int screenWidth, int screenHeight, const char* title);
+            void InitWithRender(int majorRenderVersion, int minorRenderVersion, int screenWidth, int screenHeight, const char* title);
             /// <summary>
             /// The RenderManager have to be initialized before this.
+            /// If this function is override, it must call the Game::Init() in the first line.
             /// </summary>
-            void Init();
-            void Terminate();
+            virtual void Init();
+            /// <summary>
+            /// It calls the RenderManager::Terminate()
+            /// If this function is override, it must call the Game::Terminate() in the last line.
+            /// </summary>
+            virtual void Terminate();
             void Run();
         };
-
-        InputStatus Game::inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
     }
 }

@@ -8,6 +8,8 @@ namespace Learning2DEngine
 {
     namespace System
     {
+        InputStatus Game::inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
+
         Game::Game() :
             deltaTime(0.0f), lastFrame(0.0f)
         {
@@ -18,7 +20,7 @@ namespace Learning2DEngine
 
         }
 
-        void Game::Init(int majorRenderVersion, int minorRenderVersion, int screenWidth, int screenHeight, const char* title)
+        void Game::InitWithRender(int majorRenderVersion, int minorRenderVersion, int screenWidth, int screenHeight, const char* title)
         {
             RenderManager::GetInstance().Init(majorRenderVersion, minorRenderVersion, screenWidth, screenHeight, title);
             Init();
@@ -27,7 +29,7 @@ namespace Learning2DEngine
         void Game::Init()
         {
             auto& renderManager = RenderManager::GetInstance();
-            renderManager.AddKeyboardEvent(CallbackRefreshKeyboard);
+            renderManager.AddKeyboardEvent(CallbackRefreshKeyboardMouse);
         }
 
         void Game::Terminate()
@@ -45,8 +47,7 @@ namespace Learning2DEngine
                 deltaTime = currentFrame - lastFrame;
                 lastFrame = currentFrame;
 
-                //Refresh Keyboard and Mouse events
-                glfwPollEvents();
+                UpdateKeyboardMouseEvents();
 
                 ProcessInput(deltaTime);
                 Update(deltaTime);
@@ -58,7 +59,13 @@ namespace Learning2DEngine
             }
         }
 
-        void Game::CallbackRefreshKeyboard(int key, int scancode, int action, int mode)
+        void Game::UpdateKeyboardMouseEvents()
+        {
+            FixKeyboardMouse();
+            glfwPollEvents();
+        }
+
+        void Game::CallbackRefreshKeyboardMouse(int key, int scancode, int action, int mode)
         {
             if (key >= 0 && key < 1024)
             {
@@ -77,6 +84,15 @@ namespace Learning2DEngine
                 //    std::string message = "ERROR::GAME: Unknow action: " + action;
                 //    throw new exception(message);
                 }
+            }
+        }
+
+        void Game::FixKeyboardMouse()
+        {
+            for (int i = 0; i < INPUT_KEY_SIZE; ++i)
+            {
+                if(inputKeys[i] == InputStatus::KEY_DOWN)
+                    inputKeys[i] = InputStatus::KEY_STAY;
             }
         }
     }
