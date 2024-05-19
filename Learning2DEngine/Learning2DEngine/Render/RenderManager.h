@@ -33,9 +33,13 @@ namespace Learning2DEngine
 			void CallbackFramebufferSize(GLFWwindow* window, int width, int height);
 		public:
 			void Init(int majorVersion, int minorVersion, int screenWidth, int screenHeight, const char* title);
+			void Terminate();
 			void Run();
 			void CloseWindow();
-			void Terminate();
+			bool IsWindowClosed();
+			void SetVSync(bool value);
+			void UpdateScreen();
+			void ClearScreen();
 			inline int GetScreenWidth() { return screenWidth; }
 			inline int GetScreenHeight() { return screenHeight; }
 

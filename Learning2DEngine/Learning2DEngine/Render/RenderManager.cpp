@@ -47,6 +47,11 @@ namespace Learning2DEngine
             glViewport(0, 0, screenWidth, screenHeight);
         }
 
+        void RenderManager::Terminate()
+        {
+            glfwTerminate();
+        }
+
         void RenderManager::Run()
         {
             float deltaTime = 0.0f;
@@ -76,9 +81,25 @@ namespace Learning2DEngine
             glfwSetWindowShouldClose(window, true);
         }
 
-        void RenderManager::Terminate()
+        bool RenderManager::IsWindowClosed()
         {
-            glfwTerminate();
+            return glfwWindowShouldClose(window);
+        }
+
+        void RenderManager::SetVSync(bool value)
+        {
+            glfwSwapInterval(value);
+        }
+
+        void RenderManager::UpdateScreen()
+        {
+            glfwSwapBuffers(window);
+        }
+
+        void RenderManager::ClearScreen()
+        {
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
         }
 
         void RenderManager::CallbackKeyboardWrapper(GLFWwindow* window, int key, int scancode, int action, int mode)
