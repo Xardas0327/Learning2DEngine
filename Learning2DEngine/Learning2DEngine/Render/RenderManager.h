@@ -18,23 +18,17 @@ namespace Learning2DEngine
 			int screenWidth,
 				screenHeight;
 			System::EventHandler<int, int, int, int> keyboardEventHandler;
-			// float is the delta time
-			System::EventHandler<float> updateEventHandler;
-			System::EventHandler<> renderEventHandler;
 			System::EventHandler<int, int> framebufferSizeEventHandler;
 
 			RenderManager();
 
-			// Callbacks
-
-			static void CallbackKeyboardWrapper(GLFWwindow* window, int key, int scancode, int action, int mode);
-			void CallbackKeyboard(GLFWwindow* window, int key, int scancode, int action, int mode);
-			static void CallbackFramebufferSizeWrapper(GLFWwindow* window, int width, int height);
-			void CallbackFramebufferSize(GLFWwindow* window, int width, int height);
+			static void CallbackUpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode);
+			void UpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode);
+			static void CallbackUpdateFramebufferSize(GLFWwindow* window, int width, int height);
+			void UpdateFramebufferSize(GLFWwindow* window, int width, int height);
 		public:
 			void Init(int majorVersion, int minorVersion, int screenWidth, int screenHeight, const char* title);
 			void Terminate();
-			void Run();
 			void CloseWindow();
 			bool IsWindowClosed();
 			void SetVSync(bool value);
@@ -45,10 +39,6 @@ namespace Learning2DEngine
 
 			void AddKeyboardEvent(const System::EventHandler<int, int, int, int>::EventFunction func);
 			void RemoveKeyboardEvent(const System::EventHandler<int, int, int, int>::EventFunction func);
-			void AddUpdateEvent(const System::EventHandler<float>::EventFunction func);
-			void RemoveUpdateEvent(const System::EventHandler<float>::EventFunction func);
-			void AddRenderEvent(const System::EventHandler<>::EventFunction func);
-			void RemoveRenderEvent(const System::EventHandler<>::EventFunction func);
 			void AddFramebufferSizeEvent(const System::EventHandler<int, int>::EventFunction func);
 			void RemoveFramebufferSizeEvent(const System::EventHandler<int, int>::EventFunction func);
 		};

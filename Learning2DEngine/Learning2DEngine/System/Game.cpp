@@ -28,8 +28,7 @@ namespace Learning2DEngine
 
         void Game::Init()
         {
-            auto& renderManager = RenderManager::GetInstance();
-            renderManager.AddKeyboardEvent(CallbackRefreshKeyboardMouse);
+            RenderManager::GetInstance().AddKeyboardEvent(CallbackRefreshKeyboardMouse);
         }
 
         void Game::Terminate()
