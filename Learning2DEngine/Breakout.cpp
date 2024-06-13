@@ -52,8 +52,8 @@ void Breakout::Init()
 {
     Game::Init();
 
-    auto& renderManager = RenderManager::GetInstance();
-    const int middleHeight = renderManager.GetScreenHeight() / 2;
+    const Resolution resolution = RenderManager::GetInstance().GetResolution();
+    const int middleHeight = resolution.GetHeight() / 2;
 
     auto& resourceManager = ResourceManager::GetInstance();
     // load shaders
@@ -63,8 +63,8 @@ void Breakout::Init()
     // configure shaders
     glm::mat4 projection = glm::ortho(
         0.0f,
-        static_cast<float>(renderManager.GetScreenWidth()),
-        static_cast<float>(renderManager.GetScreenHeight()),
+        static_cast<float>(resolution.GetWidth()),
+        static_cast<float>(resolution.GetHeight()),
         0.0f,
         -1.0f,
         1.0f
@@ -97,12 +97,12 @@ void Breakout::Init()
         resourceManager.GetTexture("particle"),
         2000
     );
-    Effects = new PostProcessor(resourceManager.GetShader("postprocessing"), renderManager.GetScreenWidth(), renderManager.GetScreenHeight());
+    Effects = new PostProcessor(resourceManager.GetShader("postprocessing"), resolution.GetWidth(), resolution.GetHeight());
     // load levels
-    GameLevel one; one.Load("Assets/Levels/one.lvl", renderManager.GetScreenWidth(), middleHeight);
-    GameLevel two; two.Load("Assets/Levels/two.lvl", renderManager.GetScreenWidth(), middleHeight);
-    GameLevel three; three.Load("Assets/Levels/three.lvl", renderManager.GetScreenWidth(), middleHeight);
-    GameLevel four; four.Load("Assets/Levels/four.lvl", renderManager.GetScreenWidth(), middleHeight);
+    GameLevel one; one.Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
+    GameLevel two; two.Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
+    GameLevel three; three.Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
+    GameLevel four; four.Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
     this->Levels.push_back(one);
     this->Levels.push_back(two);
     this->Levels.push_back(three);
@@ -110,7 +110,7 @@ void Breakout::Init()
     this->Level = 0;
 
     //Player
-    glm::vec2 playerPos = glm::vec2(renderManager.GetScreenWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, renderManager.GetScreenHeight() - PLAYER_SIZE.y);
+    glm::vec2 playerPos = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
     Player = new GameObject(playerPos, PLAYER_SIZE, resourceManager.GetTexture("paddle"));
 
     //Ball
@@ -218,7 +218,7 @@ void Breakout::ProcessInput(float deltaTime)
         }
         if (inputKeys[GLFW_KEY_D])
         {
-            if (Player->Position.x <= RenderManager::GetInstance().GetScreenWidth() - Player->Size.x)
+            if (Player->Position.x <= RenderManager::GetInstance().GetResolution().GetWidth() - Player->Size.x)
             {
                 Player->Position.x += velocity;
                 if (Ball->Stuck)
@@ -243,9 +243,9 @@ void Breakout::Update(float deltaTime)
 {
     ProcessInput(deltaTime);
 
-    auto& renderManager = RenderManager::GetInstance();
+    const Resolution resolution = RenderManager::GetInstance().GetResolution();
 
-    Ball->Move(deltaTime, renderManager.GetScreenWidth());
+    Ball->Move(deltaTime, resolution.GetWidth());
     DoCollisions();
     Particles->Update(deltaTime, *Ball, 1, glm::vec2(Ball->Radius / 2.0f));
     UpdatePowerUps(deltaTime);
@@ -258,7 +258,7 @@ void Breakout::Update(float deltaTime)
     }
 
     // Lose live
-    if (Ball->Position.y >= renderManager.GetScreenHeight()) 
+    if (Ball->Position.y >= resolution.GetHeight())
     {
         --Lives;
         // Game over
@@ -282,7 +282,6 @@ void Breakout::Update(float deltaTime)
 
 void Breakout::Render()
 {
-    auto& renderManager = RenderManager::GetInstance();
     auto& textRenderer = Text2DRenderer::GetInstance();
     if (this->State == GAME_ACTIVE || this->State == GAME_MENU || this->State == GAME_WIN)
     {
@@ -291,7 +290,11 @@ void Breakout::Render()
 
         // Draw background
         auto backgroundTexture = ResourceManager::GetInstance().GetTexture("background");
-        Renderer->DrawSprite(backgroundTexture, glm::vec2(0.0f, 0.0f), glm::vec2(renderManager.GetScreenWidth(), renderManager.GetScreenHeight()), 0.0f);
+        Renderer->DrawSprite(
+            backgroundTexture, 
+            glm::vec2(0.0f, 0.0f),
+            RenderManager::GetInstance().GetResolution().ToVec2(),
+            0.0f);
         // Draw level
         this->Levels[this->Level].Draw(*Renderer);
         // Draw player
@@ -478,7 +481,7 @@ void Breakout::DoCollisions()
         if (!powerUp.Destroyed)
         {
             // first check if powerup passed bottom edge, if so: keep as inactive and destroy
-            if (powerUp.Position.y >= RenderManager::GetInstance().GetScreenHeight())
+            if (powerUp.Position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
                 powerUp.Destroyed = true;
 
             if (CheckCollision(*Player, powerUp))
@@ -515,28 +518,28 @@ void Breakout::DoCollisions()
 
 void Breakout::ResetLevel()
 {
-    auto& renderManager = RenderManager::GetInstance();
-    const int middleHeight = renderManager.GetScreenHeight() / 2;
+    const Resolution resolution = RenderManager::GetInstance().GetResolution();
+    const int middleHeight = resolution.GetHeight() / 2;
 
     if (Level == 0)
-        Levels[0].Load("Assets/Levels/one.lvl", renderManager.GetScreenWidth(), middleHeight);
+        Levels[0].Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
     else if (Level == 1)
-        Levels[1].Load("Assets/Levels/two.lvl", renderManager.GetScreenWidth(), middleHeight);
+        Levels[1].Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
     else if (Level == 2)
-        Levels[2].Load("Assets/Levels/three.lvl", renderManager.GetScreenWidth(), middleHeight);
+        Levels[2].Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
     else if (Level == 3)
-        Levels[3].Load("Assets/Levels/four.lvl", renderManager.GetScreenWidth(), middleHeight);
+        Levels[3].Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
 
     Lives = 3;
 }
 
 void Breakout::ResetPlayer()
 {
-    auto& renderManager = RenderManager::GetInstance();
+    const Resolution resolution = RenderManager::GetInstance().GetResolution();
 
     // reset player/ball stats
     Player->Size = PLAYER_SIZE;
-    Player->Position = glm::vec2(renderManager.GetScreenWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, renderManager.GetScreenHeight() - PLAYER_SIZE.y);
+    Player->Position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
     Ball->Reset(Player->Position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
 
     // also disable all active powerups
