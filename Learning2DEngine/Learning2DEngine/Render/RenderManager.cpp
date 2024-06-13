@@ -9,7 +9,7 @@ namespace Learning2DEngine
     namespace Render
     {
         RenderManager::RenderManager() :
-            window(nullptr), screenWidth(0), screenHeight(0),
+            window(nullptr), screenWidth(0), screenHeight(0), clearColor(0.0f, 0.0f, 0.0f, 1.0f),
             keyboardEventHandler(), framebufferSizeEventHandler()
         {
 
@@ -74,8 +74,13 @@ namespace Learning2DEngine
 
         void RenderManager::ClearScreen()
         {
-            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+            glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
             glClear(GL_COLOR_BUFFER_BIT);
+        }
+
+        void RenderManager::SetClearColort(float r, float g, float b, float a)
+        {
+            clearColor = glm::vec4(r, g, b, a);
         }
 
         void RenderManager::CallbackUpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode)

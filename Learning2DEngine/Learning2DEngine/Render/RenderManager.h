@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
 #include "../System/EventHandler.h"
@@ -17,6 +18,7 @@ namespace Learning2DEngine
 			GLFWwindow* window;
 			int screenWidth,
 				screenHeight;
+			glm::vec4 clearColor;
 			System::EventHandler<int, int, int, int> keyboardEventHandler;
 			System::EventHandler<int, int> framebufferSizeEventHandler;
 
@@ -36,6 +38,8 @@ namespace Learning2DEngine
 			void ClearScreen();
 			inline int GetScreenWidth() { return screenWidth; }
 			inline int GetScreenHeight() { return screenHeight; }
+			void SetClearColort(float r, float g, float b, float a);
+			inline glm::vec4 GetClearColort() { return clearColor; }
 
 			void AddKeyboardEvent(const System::EventHandler<int, int, int, int>::EventFunction func);
 			void RemoveKeyboardEvent(const System::EventHandler<int, int, int, int>::EventFunction func);
