@@ -44,9 +44,9 @@ private:
     Learning2DEngine::UI::Text  winText;
     Learning2DEngine::UI::Text  retryText;
 protected:
-    void ProcessInput(float deltaTime) override;
     void Update(float deltaTime) override;
     void Render() override;
+    void ProcessInput(float deltaTime);
     void DoCollisions();
 
     void ResetLevel();

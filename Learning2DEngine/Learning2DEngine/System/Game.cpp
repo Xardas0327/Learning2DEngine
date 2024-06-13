@@ -2,10 +2,10 @@
 
 #include "../Render/RenderManager.h"
 
-using namespace Learning2DEngine::Render;
-
 namespace Learning2DEngine
 {
+    using namespace Render;
+
     namespace System
     {
         InputStatus Game::inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
@@ -20,9 +20,9 @@ namespace Learning2DEngine
 
         }
 
-        void Game::InitWithRender(int majorRenderVersion, int minorRenderVersion, int screenWidth, int screenHeight, const char* title)
+        void Game::InitWithRender(int majorRenderVersion, int minorRenderVersion, Resolution resolution, const char* title)
         {
-            RenderManager::GetInstance().Init(majorRenderVersion, minorRenderVersion, screenWidth, screenHeight, title);
+            RenderManager::GetInstance().Init(majorRenderVersion, minorRenderVersion, resolution, title);
             Init();
         }
 
@@ -48,7 +48,6 @@ namespace Learning2DEngine
 
                 UpdateKeyboardMouseEvents();
 
-                ProcessInput(deltaTime);
                 Update(deltaTime);
 
                 renderManager.ClearScreen();
