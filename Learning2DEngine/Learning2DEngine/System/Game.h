@@ -7,10 +7,9 @@
 * The Function order in the Run() (in a frame):
 *    Calculate deltaTime
 *    Refresh Keyboard and Mouse events
-* 1. ProcessInput(float deltaTime)
-* 2. Update(float deltaTime)
+* 1. Update(float deltaTime)
 *    Clear Screen to default color
-* 3. Render()
+* 2. Render()
 *    Update Screen
 * 
 * Note: those functions, which start with number, are virtual function
@@ -23,9 +22,8 @@ namespace Learning2DEngine
 #define INPUT_KEY_SIZE 1024
         /// <summary>
         /// Function order in the Run()
-        /// 1. ProcessInput
-        /// 2. Update
-        /// 3. Render
+        /// 1. Update
+        /// 2. Render
         /// </summary>
         class Game
         {
@@ -42,7 +40,6 @@ namespace Learning2DEngine
         protected:
             static InputStatus inputKeys[INPUT_KEY_SIZE];
 
-            virtual void ProcessInput(float deltaTime) {};
             virtual void Update(float deltaTime) {};
             virtual void Render() {};
         public:

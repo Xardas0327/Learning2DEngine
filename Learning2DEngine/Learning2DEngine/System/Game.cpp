@@ -48,7 +48,6 @@ namespace Learning2DEngine
 
                 UpdateKeyboardMouseEvents();
 
-                ProcessInput(deltaTime);
                 Update(deltaTime);
 
                 renderManager.ClearScreen();

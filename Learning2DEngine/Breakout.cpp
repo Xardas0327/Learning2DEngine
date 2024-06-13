@@ -241,6 +241,8 @@ void Breakout::ProcessInput(float deltaTime)
 
 void Breakout::Update(float deltaTime)
 {
+    ProcessInput(deltaTime);
+
     auto& renderManager = RenderManager::GetInstance();
 
     Ball->Move(deltaTime, renderManager.GetScreenWidth());
