@@ -8,6 +8,7 @@
 
 #include "../System/Singleton.h"
 #include "../Render/Shader.h"
+#include "../Render/Resolution.h"
 #include "FreeTypeCharacter.h"
 #include "Text.h"
 
@@ -30,8 +31,8 @@ namespace Learning2DEngine
 
             // Callbacks
 
-            static void CallbackRefreshScreenSize(int width, int height);
-            void RefreshScreenSize(int width, int height);
+            static void CallbackRefreshScreenResolution(Render::Resolution resolution);
+            void RefreshScreenResolution(Render::Resolution resolution);
         public:
             /// <summary>
             /// It should be inited after RenderManager

@@ -50,7 +50,7 @@ namespace Learning2DEngine
             /// It will initialize the RenderManager.
             /// After that, the Init() will be called.
             /// </summary>
-            void InitWithRender(int majorRenderVersion, int minorRenderVersion, int screenWidth, int screenHeight, const char* title);
+            void InitWithRender(int majorRenderVersion, int minorRenderVersion, Render::Resolution resolution, const char* title);
             /// <summary>
             /// The RenderManager have to be initialized before this.
             /// If this function is override, it must call the Game::Init() in the first line.

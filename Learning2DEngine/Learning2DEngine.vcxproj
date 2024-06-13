@@ -170,6 +170,7 @@
   <ItemGroup>
     <ClInclude Include="ball_object.h" />
     <ClInclude Include="Breakout.h" />
+    <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />
     <ClInclude Include="Learning2DEngine\System\InputStatus.h" />
     <ClInclude Include="Learning2DEngine\System\ResourceManager.h" />

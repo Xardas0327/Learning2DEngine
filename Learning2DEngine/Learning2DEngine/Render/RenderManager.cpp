@@ -9,16 +9,15 @@ namespace Learning2DEngine
     namespace Render
     {
         RenderManager::RenderManager() :
-            window(nullptr), screenWidth(0), screenHeight(0), clearColor(0.0f, 0.0f, 0.0f, 1.0f),
+            window(nullptr), resolution(0, 0), clearColor(0.0f, 0.0f, 0.0f, 1.0f),
             keyboardEventHandler(), framebufferSizeEventHandler()
         {
 
         }
 
-        void RenderManager::Init(int majorVersion, int minorVersion, int screenWidth, int screenHeight, const char* title)
+        void RenderManager::Init(int majorVersion, int minorVersion, Resolution resolution, const char* title)
         {
-            this->screenWidth = screenWidth;
-            this->screenHeight = screenHeight;
+            this->resolution = resolution;
 
             glfwInit();
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion);
@@ -29,7 +28,7 @@ namespace Learning2DEngine
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-            window = glfwCreateWindow(screenWidth, screenHeight, title, nullptr, nullptr);
+            window = glfwCreateWindow(resolution.GetWidth(), resolution.GetHeight(), title, nullptr, nullptr);
             if (window == NULL)
             {
                 glfwTerminate();
@@ -44,7 +43,7 @@ namespace Learning2DEngine
                 throw std::exception("ERROR::GLAD: Failed to initialize GLAD");
             }
 
-            glViewport(0, 0, screenWidth, screenHeight);
+            glViewport(0, 0, resolution.GetWidth(), resolution.GetHeight());
         }
 
         void RenderManager::Terminate()
@@ -101,9 +100,8 @@ namespace Learning2DEngine
         void RenderManager::UpdateFramebufferSize(GLFWwindow* window, int width, int height)
         {
             glViewport(0, 0, width, height);
-            screenWidth = screenWidth;
-            screenHeight = screenHeight;
-            framebufferSizeEventHandler.Invoke(width, height);
+            resolution = Resolution(width, height);
+            framebufferSizeEventHandler.Invoke(resolution);
         }
 
         void RenderManager::AddKeyboardEvent(const EventHandler<int, int, int, int>::EventFunction func)
@@ -116,12 +114,12 @@ namespace Learning2DEngine
             keyboardEventHandler.Remove(func);
         }
 
-        void RenderManager::AddFramebufferSizeEvent(const System::EventHandler<int, int>::EventFunction func)
+        void RenderManager::AddFramebufferSizeEvent(const System::EventHandler<Resolution>::EventFunction func)
         {
             framebufferSizeEventHandler.Add(func);
         }
 
-        void RenderManager::RemoveFramebufferSizeEvent(const System::EventHandler<int, int>::EventFunction func)
+        void RenderManager::RemoveFramebufferSizeEvent(const System::EventHandler<Resolution>::EventFunction func)
         {
             framebufferSizeEventHandler.Remove(func);
         }

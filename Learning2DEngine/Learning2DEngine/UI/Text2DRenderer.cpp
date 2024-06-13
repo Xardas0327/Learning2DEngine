@@ -29,7 +29,10 @@ namespace Learning2DEngine
             textShader.Use();
             textShader.SetMatrix4(
                 "projection",
-                glm::ortho(0.0f, static_cast<float>(renderManager.GetScreenWidth()), static_cast<float>(renderManager.GetScreenHeight()),
+                glm::ortho(
+                    0.0f,
+                    static_cast<float>(renderManager.GetResolution().GetWidth()),
+                    static_cast<float>(renderManager.GetResolution().GetHeight()),
                     0.0f));
             textShader.SetInteger("text", 0);
 
@@ -56,19 +59,22 @@ namespace Learning2DEngine
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
 
-            renderManager.AddFramebufferSizeEvent(CallbackRefreshScreenSize);
+            renderManager.AddFramebufferSizeEvent(CallbackRefreshScreenResolution);
         }
 
-        void Text2DRenderer::CallbackRefreshScreenSize(int width, int height)
+        void Text2DRenderer::CallbackRefreshScreenResolution(Render::Resolution resolution)
         {
-            Text2DRenderer::GetInstance().RefreshScreenSize(width, height);
+            Text2DRenderer::GetInstance().RefreshScreenResolution(resolution);
         }
 
-        void Text2DRenderer::RefreshScreenSize(int width, int height)
+        void Text2DRenderer::RefreshScreenResolution(Render::Resolution resolution)
         {
             textShader.SetMatrix4(
                 "projection",
-                glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height),
+                glm::ortho(
+                    0.0f,
+                    static_cast<float>(resolution.GetWidth()),
+                    static_cast<float>(resolution.GetHeight()),
                     0.0f));
         }
 

@@ -119,6 +119,9 @@
     <ClInclude Include="Breakout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\Resolution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\arial.ttf" />
