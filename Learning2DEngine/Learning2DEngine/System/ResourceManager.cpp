@@ -7,6 +7,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
+#include "Log.h"
 
 namespace Learning2DEngine
 {
@@ -34,8 +35,7 @@ namespace Learning2DEngine
             }
             catch (std::exception e)
             {
-                std::string errorMessage(e.what());
-                throw std::exception(("ERROR::SHADER: Failed to read shader files Message: " + errorMessage).c_str());
+                Log::Error(std::string("SHADER: Failed to read shader files Message: ") + e.what());
             }
 
             Render::Shader shader;
@@ -46,6 +46,11 @@ namespace Learning2DEngine
         std::string ResourceManager::LoadShaderFile(const char* file)
         {
             std::ifstream shaderFile(file);
+            if (!shaderFile.is_open())
+            {
+                Log::Error(std::string("SHADER: File is not found: ") + file);
+            }
+
             std::stringstream stream;
             stream << shaderFile.rdbuf();
             shaderFile.close();

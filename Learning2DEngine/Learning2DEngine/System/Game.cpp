@@ -1,6 +1,7 @@
 #include "Game.h"
 
 #include "../Render/RenderManager.h"
+#include "Log.h"
 
 namespace Learning2DEngine
 {
@@ -78,9 +79,8 @@ namespace Learning2DEngine
                 case GLFW_REPEAT:
                     inputKeys[key] = InputStatus::KEY_HOLD;
                     break;
-                //default:
-                //    std::string message = "ERROR::GAME: Unknow action: " + action;
-                //    throw new exception(message);
+                default:
+                    Log::Warning("GAME: Unknow input action: " + action);
                 }
             }
         }

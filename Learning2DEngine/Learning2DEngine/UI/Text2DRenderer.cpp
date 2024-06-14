@@ -1,12 +1,11 @@
 #include "Text2DRenderer.h"
 
-#include <exception>
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
 #include "../System/ResourceManager.h"
+#include "../System/Log.h"
 #include "../Render/RenderManager.h"
 
 using namespace Learning2DEngine::System;
@@ -93,15 +92,16 @@ namespace Learning2DEngine
             FT_Library ft;
             if (FT_Init_FreeType(&ft))
             {
-                throw std::exception("ERROR::FREETYPE: Could not init FreeType Library");
+                Log::Error("FREETYPE: Could not init FreeType Library");
+                return;
             }
 
             FT_Face face;
 
             if (FT_New_Face(ft, fontSizePair.first.c_str(), 0, &face))
             {
-                std::string message = "ERROR::FREETYPE: Failed to load font: " + fontSizePair.first;
-                throw std::exception(message.c_str());
+                Log::Error("FREETYPE: Failed to load font: " + fontSizePair.first);
+                return;
             }
 
             FT_Set_Pixel_Sizes(face, 0, fontSizePair.second);
@@ -112,8 +112,7 @@ namespace Learning2DEngine
             {
                 if (FT_Load_Char(face, ch, FT_LOAD_RENDER))
                 {
-                    //This one should be only warning
-                    //throw std::exception("ERROR::FREETYTPE: Failed to load Glyph");
+                    Log::Warning("FREETYTPE: Failed to load Glyph: " + ch);
                     continue;
                 }
 

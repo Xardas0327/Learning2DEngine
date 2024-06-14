@@ -1,8 +1,8 @@
 #include "Shader.h"
 
-#include <exception>
-
 #include <glm/gtc/type_ptr.hpp>
+
+#include "../System/Log.h"
 
 namespace Learning2DEngine
 {
@@ -78,8 +78,7 @@ namespace Learning2DEngine
             if (!success)
             {
                 glGetShaderInfoLog(shaderId, 1024, NULL, infoLog);
-                std::string text = "Error::SHADER::" + Shader::ToString(type) + ": " + infoLog;
-                throw std::exception(text.c_str());
+                System::Log::Error("SHADER::" + Shader::ToString(type) + ": " + infoLog);
             }
         }
 
@@ -91,9 +90,7 @@ namespace Learning2DEngine
             if (!success)
             {
                 glGetProgramInfoLog(programId, 1024, NULL, infoLog);
-                std::string text("Error::SHADER::PROGRAM: ");
-                text += infoLog;
-                throw std::exception(text.c_str());
+                System::Log::Error(std::string("SHADER::PROGRAM: ") + infoLog);
             }
         }
 
