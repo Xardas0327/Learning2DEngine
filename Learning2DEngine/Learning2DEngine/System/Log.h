@@ -30,6 +30,8 @@ namespace Learning2DEngine
 		class Log
 		{
 		private:
+			Log() {};
+
 			inline static std::string GetMessage(const std::string& message, const std::string& filePath, int fileLine)
 			{
 				return message + "\n " + filePath + " Line: " + std::to_string(fileLine);

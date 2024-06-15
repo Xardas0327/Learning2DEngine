@@ -160,6 +160,7 @@
     <ClCompile Include="game_object.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Shader.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp" />
+    <ClCompile Include="Learning2DEngine\System\Random.cpp" />
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
     <ClCompile Include="Learning2DEngine\UI\Text2DRenderer.cpp" />
     <ClCompile Include="main.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Learning2DEngine\System\Game.h" />
     <ClInclude Include="Learning2DEngine\System\InputStatus.h" />
     <ClInclude Include="Learning2DEngine\System\Log.h" />
+    <ClInclude Include="Learning2DEngine\System\Random.h" />
     <ClInclude Include="Learning2DEngine\System\ResourceManager.h" />
     <ClInclude Include="Learning2DEngine\Render\Shader.h" />
     <ClInclude Include="Learning2DEngine\Render\Texture2D.h" />

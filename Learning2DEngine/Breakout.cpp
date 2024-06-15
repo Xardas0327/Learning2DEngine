@@ -7,6 +7,7 @@
 
 #include "Learning2DEngine/Render/RenderManager.h"
 #include "Learning2DEngine/System/ResourceManager.h"
+#include "Learning2DEngine/System/Random.h"
 #include "Learning2DEngine/UI/Text2DRenderer.h"
 #include "sprite_renderer.h"
 #include "game_object.h"
@@ -549,9 +550,9 @@ void Breakout::ResetPlayer()
     Ball->Color = glm::vec3(1.0f);
 }
 
-bool ShouldSpawn(unsigned int chance)
+bool ShouldSpawn(int chance)
 {
-    unsigned int random = rand() % chance;
+    int random = Random::GetNumber(0, chance);
     return random == 0;
 }
 
