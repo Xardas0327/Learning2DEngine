@@ -11,13 +11,21 @@ namespace Learning2DEngine
 #define LOG_ERROR_COLOR "\033[31m"
 #define LOG_CLEAR_COLOR "\033[0m"
 
-		
-#define LOG_INFO(message) Log::Info(message,__FILE__, __LINE__)
-#define LOG_WARNING(message) Log::Warning(message,__FILE__, __LINE__)
-#define LOG_ERROR(message) Log::Error(message,__FILE__, __LINE__)
+#if _DEBUG || LEARNING2DENGINE_DEBUG
+#define LOG_INFO(message) Learning2DEngine::System::Log::Info(message,__FILE__, __LINE__)
+#define LOG_WARNING(message) Learning2DEngine::System::Log::Warning(message,__FILE__, __LINE__)
+#define LOG_ERROR(message) Learning2DEngine::System::Log::Error(message,__FILE__, __LINE__)
+#else
+#define LOG_INFO(message)
+#define LOG_WARNING(message)
+#define LOG_ERROR(message)
+#endif
+
 
 		/// <summary>
+		/// Use this Log class only, if you want to the logs everytime.
 		/// The LOG_INFO, LOG_WARNING, LOG_ERROR macros are defined.
+		/// These macros run only, if _DEBUG or LEARNING2DENGINE_DEBUG macros are defined as 1.
 		/// </summary>
 		class Log
 		{
