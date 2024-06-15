@@ -21,7 +21,14 @@ namespace Learning2DEngine
             std::map<std::string, Render::Texture2D> textures;
 
             ResourceManager();
-            static std::string LoadShaderFile(const char* file);
+            /// <summary>
+            /// Return false, if the std::ifstream or the std::stringstream thrown exception by std::ifstream::failbit or std::ifstream::badbit.
+            /// Otherwise, it returns true.
+            /// </summary>
+            /// <param name="file"></param>
+            /// <param name="outSource"></param>
+            /// <returns></returns>
+            static bool LoadShaderFile(const char* file, std::string& outSource);
         public:
             /// <summary>
             /// It won't be saved, that's why you can't get it with GetShader

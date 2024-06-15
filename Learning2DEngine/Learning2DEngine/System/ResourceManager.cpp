@@ -7,6 +7,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
+#include "Log.h"
 
 namespace Learning2DEngine
 {
@@ -19,37 +20,52 @@ namespace Learning2DEngine
 
         Render::Shader ResourceManager::LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile)
         {
+            Render::Shader shader;
+
             std::string vertexSource;
             std::string fragmentSource;
             std::string geometrySource;
-            try
-            {
-                vertexSource = LoadShaderFile(vertexFile);
-                fragmentSource = LoadShaderFile(fragmentFile);
 
-                if (geometryFile != nullptr)
-                {
-                    geometrySource = LoadShaderFile(geometryFile);
-                }
-            }
-            catch (std::exception e)
+            //It can show all file errors.
+            bool isFine = true;
+            isFine = LoadShaderFile(vertexFile, vertexSource) && isFine;
+            isFine = LoadShaderFile(fragmentFile, fragmentSource) && isFine;
+            if (geometryFile != nullptr)
             {
-                std::string errorMessage(e.what());
-                throw std::exception(("ERROR::SHADER: Failed to read shader files Message: " + errorMessage).c_str());
+                isFine = LoadShaderFile(geometryFile, geometrySource) && isFine;
             }
 
-            Render::Shader shader;
-            shader.Create(vertexSource.c_str(), fragmentSource.c_str(), geometryFile != nullptr ? geometrySource.c_str() : nullptr);
+            if (isFine)
+            {
+                shader.Create(vertexSource.c_str(), fragmentSource.c_str(), geometryFile != nullptr ? geometrySource.c_str() : nullptr);
+            }
+
             return shader;
         }
 
-        std::string ResourceManager::LoadShaderFile(const char* file)
+        bool ResourceManager::LoadShaderFile(const char* file, std::string& outSource)
         {
-            std::ifstream shaderFile(file);
+            std::ifstream shaderFile;
+            shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
             std::stringstream stream;
-            stream << shaderFile.rdbuf();
-            shaderFile.close();
-            return stream.str();
+            stream.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+            try
+            {
+                shaderFile.open(file);
+                stream << shaderFile.rdbuf();
+                shaderFile.close();
+            }
+            catch (std::exception e)
+            {
+                if (shaderFile.is_open())
+                    shaderFile.close();
+
+                LOG_ERROR(std::string("SHADER: Failed to read shader file.\n File: ") + file + "\n Message: " + e.what());
+                return false;
+            }
+
+            outSource = stream.str();
+            return true;
         }
 
         Render::Shader ResourceManager::LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, const std::string& name)

@@ -173,6 +173,7 @@
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />
     <ClInclude Include="Learning2DEngine\System\InputStatus.h" />
+    <ClInclude Include="Learning2DEngine\System\Log.h" />
     <ClInclude Include="Learning2DEngine\System\ResourceManager.h" />
     <ClInclude Include="Learning2DEngine\Render\Shader.h" />
     <ClInclude Include="Learning2DEngine\Render\Texture2D.h" />

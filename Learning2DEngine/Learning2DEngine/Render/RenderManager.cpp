@@ -1,6 +1,6 @@
 #include "RenderManager.h"
 
-#include <exception>
+#include "../System/Log.h"
 
 namespace Learning2DEngine
 {
@@ -32,7 +32,8 @@ namespace Learning2DEngine
             if (window == NULL)
             {
                 glfwTerminate();
-                throw std::exception("ERROR::GLFW: Failed to create GLFW window");
+                LOG_ERROR("GLFW: Failed to create GLFW window");
+                return;
             }
             glfwMakeContextCurrent(window);
             glfwSetKeyCallback(window, CallbackUpdateKeyboardMouse);
@@ -40,7 +41,8 @@ namespace Learning2DEngine
 
             if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             {
-                throw std::exception("ERROR::GLAD: Failed to initialize GLAD");
+                LOG_ERROR("GLAD: Failed to initialize GLAD");
+                return;
             }
 
             glViewport(0, 0, resolution.GetWidth(), resolution.GetHeight());
