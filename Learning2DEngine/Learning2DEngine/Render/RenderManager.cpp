@@ -32,7 +32,7 @@ namespace Learning2DEngine
             if (window == NULL)
             {
                 glfwTerminate();
-                Log::Error("GLFW: Failed to create GLFW window");
+                LOG_ERROR("GLFW: Failed to create GLFW window");
                 return;
             }
             glfwMakeContextCurrent(window);
@@ -41,7 +41,7 @@ namespace Learning2DEngine
 
             if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             {
-                Log::Error("GLAD: Failed to initialize GLAD");
+                LOG_ERROR("GLAD: Failed to initialize GLAD");
                 return;
             }
 

@@ -80,7 +80,7 @@ namespace Learning2DEngine
                     inputKeys[key] = InputStatus::KEY_HOLD;
                     break;
                 default:
-                    Log::Warning("GAME: Unknow input action: " + action);
+                    LOG_WARNING("GAME: Unknow input action: " + action);
                 }
             }
         }
