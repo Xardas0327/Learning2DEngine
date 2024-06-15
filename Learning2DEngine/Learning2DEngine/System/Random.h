@@ -20,15 +20,7 @@ namespace Learning2DEngine
 		private:
 
 			Random() { }
-			static void Init()
-			{
-				if (isInited)
-					return;
-
-				std::srand(std::time(nullptr));
-
-				isInited = true;
-			}
+			static void Init();
 		public:
 			static bool isInited;
 
@@ -38,20 +30,7 @@ namespace Learning2DEngine
 			/// <param name="minInclusive"></param>
 			/// <param name="maxExclusive"></param>
 			/// <returns></returns>
-			static int GetNumber(int minInclusive, int maxExclusive)
-			{
-				if (minInclusive >= maxExclusive)
-				{
-					const char* errorMessage = "Random::GetNumber: The minInclusive is bigger or equal than maxExclusive";
-					LOG_ERROR(errorMessage);
-					throw std::exception(errorMessage);
-				}
-
-				Init();
-				int range = maxExclusive - minInclusive;
-
-				return (rand() % range) + minInclusive;
-			}
+			static int GetNumber(int minInclusive, int maxExclusive);
 
 			/// <summary>
 			/// Return a random float within [minInclusive..maxInclusive]
@@ -59,25 +38,7 @@ namespace Learning2DEngine
 			/// <param name="minInclusive"></param>
 			/// <param name="maxInclusive"></param>
 			/// <returns></returns>
-			static float GetNumber(float minInclusive, float maxInclusive)
-			{
-				if (minInclusive >= maxInclusive)
-				{
-					const char* errorMessage = "Random::GetNumber: The minInclusive is bigger or equal than maxInclusive";
-					LOG_ERROR(errorMessage);
-					throw std::exception(errorMessage);
-				}
-
-				Init();
-
-				//Between [0..1]
-				float number = static_cast<float>(std::rand()) / RAND_MAX;
-
-				float range = maxInclusive - minInclusive;
-
-				return number * range + minInclusive;
-			}
+			static float GetNumber(float minInclusive, float maxInclusive);
 		};
-
 	}
 }
