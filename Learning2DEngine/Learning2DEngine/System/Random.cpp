@@ -1,6 +1,11 @@
 #include "Random.h"
 
+#include <cstdlib>
+#include <ctime>
+#include <exception>
 #include <string>
+
+#include "Log.h"
 
 namespace Learning2DEngine
 {

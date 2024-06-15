@@ -1,11 +1,5 @@
 #pragma once
 
-#include <cstdlib>
-#include <ctime>
-#include <exception>
-
-#include "Log.h"
-
 namespace Learning2DEngine
 {
 	namespace System
