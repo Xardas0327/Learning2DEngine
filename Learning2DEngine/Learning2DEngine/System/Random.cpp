@@ -1,5 +1,7 @@
 #include "Random.h"
 
+#include <string>
+
 namespace Learning2DEngine
 {
 	namespace System
@@ -20,9 +22,10 @@ namespace Learning2DEngine
 		{
 			if (minInclusive >= maxExclusive)
 			{
-				const char* errorMessage = "Random::GetNumber: The minInclusive is bigger or equal than maxExclusive";
+				std::string errorMessage = "Random::GetNumber: The minInclusive ("+std::to_string(minInclusive)
+					+ ") is not lesser than maxExclusive ("+ std::to_string(maxExclusive) + ").";
 				LOG_ERROR(errorMessage);
-				throw std::exception(errorMessage);
+				throw std::exception(errorMessage.c_str());
 			}
 
 			Init();
@@ -35,9 +38,10 @@ namespace Learning2DEngine
 		{
 			if (minInclusive >= maxInclusive)
 			{
-				const char* errorMessage = "Random::GetNumber: The minInclusive is bigger or equal than maxInclusive";
+				std::string errorMessage = "Random::GetNumber: The minInclusive (" + std::to_string(minInclusive) 
+					+ ") is not lesser than maxInclusive (" + std::to_string(maxInclusive) + ").";
 				LOG_ERROR(errorMessage);
-				throw std::exception(errorMessage);
+				throw std::exception(errorMessage.c_str());
 			}
 
 			Init();
