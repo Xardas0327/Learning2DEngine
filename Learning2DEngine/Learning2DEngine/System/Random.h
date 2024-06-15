@@ -12,7 +12,6 @@ namespace Learning2DEngine
 		class Random
 		{
 		private:
-
 			Random() { }
 			static void Init();
 		public:

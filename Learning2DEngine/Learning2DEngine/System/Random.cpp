@@ -53,7 +53,6 @@ namespace Learning2DEngine
 
 			//Between [0..1]
 			float number = static_cast<float>(std::rand()) / RAND_MAX;
-
 			float range = maxInclusive - minInclusive;
 
 			return number * range + minInclusive;
