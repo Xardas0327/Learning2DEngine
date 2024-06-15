@@ -1,6 +1,9 @@
 #include "particle_generator.h"
 
+#include "Learning2DEngine/System/Random.h"
+
 using namespace Learning2DEngine::Render;
+using namespace Learning2DEngine::System;
 
 ParticleGenerator::ParticleGenerator(Shader shader, Texture2D texture, unsigned int amount)
     : shader(shader), texture(texture), amount(amount)
@@ -105,8 +108,8 @@ unsigned int ParticleGenerator::firstUnusedParticle()
 
 void ParticleGenerator::respawnParticle(Particle& particle, GameObject& object, glm::vec2 offset)
 {
-    float random = ((rand() % 100) - 50) / 10.0f;
-    float rColor = 0.5f + ((rand() % 100) / 100.0f);
+    float random = (Random::GetNumber(-50, 50)) / 10.0f;
+    float rColor = 0.5f + (Random::GetNumber(0, 100) / 100.0f);
     particle.Position = object.Position + random + offset;
     particle.Color = glm::vec4(rColor, rColor, rColor, 1.0f);
     particle.Life = 1.0f;
