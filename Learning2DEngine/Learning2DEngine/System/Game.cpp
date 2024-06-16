@@ -39,22 +39,33 @@ namespace Learning2DEngine
 
         void Game::Run()
         {
-            auto& renderManager = RenderManager::GetInstance();
-            while (!renderManager.IsWindowClosed())
+            try
             {
-                // Calc deltaTime
-                float currentFrame = glfwGetTime();
-                deltaTime = currentFrame - lastFrame;
-                lastFrame = currentFrame;
+                auto& renderManager = RenderManager::GetInstance();
+                while (!renderManager.IsWindowClosed())
+                {
+                    // Calc deltaTime
+                    float currentFrame = glfwGetTime();
+                    deltaTime = currentFrame - lastFrame;
+                    lastFrame = currentFrame;
 
-                UpdateKeyboardMouseEvents();
+                    UpdateKeyboardMouseEvents();
 
-                Update(deltaTime);
+                    Update(deltaTime);
 
-                renderManager.ClearScreen();
-                Render();
+                    renderManager.ClearScreen();
+                    Render();
 
-                renderManager.UpdateScreen();
+                    renderManager.UpdateScreen();
+                }
+            }
+            catch (std::exception e)
+            {
+                LOG_ERROR(std::string("GAME: Unhandled Exception: ") +  e.what());
+            }
+            catch (...)
+            {
+                LOG_ERROR(std::string("GAME: Unknown Exception."));
             }
         }
 
