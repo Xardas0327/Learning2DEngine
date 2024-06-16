@@ -20,6 +20,8 @@ namespace Learning2DEngine
     namespace System
     {
 #define INPUT_KEY_SIZE 1024
+#define TIME_SCALE_DEFAULT 1.0f
+
         /// <summary>
         /// Function order in the Run()
         /// 1. Update
@@ -28,7 +30,9 @@ namespace Learning2DEngine
         class Game
         {
         private:
-            float deltaTime, lastFrame;
+            float deltaTime,
+                  lastFrame,
+                  timeScale;
 
             void UpdateKeyboardMouseEvents();
             static void CallbackRefreshKeyboardMouse(int key, int scancode, int action, int mode);
@@ -62,6 +66,21 @@ namespace Learning2DEngine
             /// </summary>
             virtual void Terminate();
             void Run();
+
+            inline void ResetTimeScale() 
+            {
+                timeScale = TIME_SCALE_DEFAULT;
+            }
+
+            inline void SetTimeScale(float value)
+            {
+                timeScale = value;
+            }
+
+            inline float GetTimeScale()
+            {
+                return timeScale;
+            }
         };
     }
 }

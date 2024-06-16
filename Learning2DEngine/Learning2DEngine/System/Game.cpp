@@ -12,7 +12,7 @@ namespace Learning2DEngine
         InputStatus Game::inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
 
         Game::Game() :
-            deltaTime(0.0f), lastFrame(0.0f)
+            deltaTime(0.0f), lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT)
         {
         }
 
@@ -51,7 +51,7 @@ namespace Learning2DEngine
 
                     UpdateKeyboardMouseEvents();
 
-                    Update(deltaTime);
+                    Update(deltaTime * timeScale);
 
                     renderManager.ClearScreen();
                     Render();
