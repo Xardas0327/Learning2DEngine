@@ -12,7 +12,7 @@ namespace Learning2DEngine
         InputStatus Game::inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
 
         Game::Game() :
-            deltaTime(0.0f), lastFrame(0.0f)
+            deltaTime(0.0f), lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT)
         {
         }
 
@@ -39,22 +39,33 @@ namespace Learning2DEngine
 
         void Game::Run()
         {
-            auto& renderManager = RenderManager::GetInstance();
-            while (!renderManager.IsWindowClosed())
+            try
             {
-                // Calc deltaTime
-                float currentFrame = glfwGetTime();
-                deltaTime = currentFrame - lastFrame;
-                lastFrame = currentFrame;
+                auto& renderManager = RenderManager::GetInstance();
+                while (!renderManager.IsWindowClosed())
+                {
+                    // Calc deltaTime
+                    float currentFrame = glfwGetTime();
+                    deltaTime = currentFrame - lastFrame;
+                    lastFrame = currentFrame;
 
-                UpdateKeyboardMouseEvents();
+                    UpdateKeyboardMouseEvents();
 
-                Update(deltaTime);
+                    Update(deltaTime * timeScale);
 
-                renderManager.ClearScreen();
-                Render();
+                    renderManager.ClearScreen();
+                    Render();
 
-                renderManager.UpdateScreen();
+                    renderManager.UpdateScreen();
+                }
+            }
+            catch (std::exception e)
+            {
+                LOG_ERROR(std::string("GAME: Unhandled Exception: ") +  e.what());
+            }
+            catch (...)
+            {
+                LOG_ERROR(std::string("GAME: Unknown Exception."));
             }
         }
 
