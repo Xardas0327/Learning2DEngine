@@ -30,9 +30,9 @@ namespace Learning2DEngine
         class Game
         {
         private:
-            float deltaTime,
-                  lastFrame,
-                  timeScale;
+            float deltaTime;
+            float lastFrame;
+            float timeScale;
 
             void UpdateKeyboardMouseEvents();
             static void CallbackRefreshKeyboardMouse(int key, int scancode, int action, int mode);

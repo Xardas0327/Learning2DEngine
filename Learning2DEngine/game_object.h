@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 
 #include "Learning2DEngine/Render/Texture2D.h"
+#include "Learning2DEngine/System/Transform.h"
 #include "sprite_renderer.h"
 
 
@@ -14,9 +15,9 @@ class GameObject
 {
 public:
     // object state
-    glm::vec2   Position, Size, Velocity;
+    Learning2DEngine::System::Transform transform;
+    glm::vec2   Velocity;
     glm::vec3   Color;
-    float       Rotation;
     bool        IsSolid;
     bool        Destroyed;
     // render state
