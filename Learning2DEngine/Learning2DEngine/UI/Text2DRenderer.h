@@ -23,7 +23,9 @@ namespace Learning2DEngine
             friend class System::Singleton<Text2DRenderer>;
             typedef std::map<char, FreeTypeCharacter> CharacterMap;
         private:
-            unsigned int vao, vbo, ebo;
+            unsigned int vao;
+            unsigned int vbo;
+            unsigned int ebo;
             std::map<FontSizePair, CharacterMap> characters;
             Render::Shader textShader;
 
