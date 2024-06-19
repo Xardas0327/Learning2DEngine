@@ -51,7 +51,7 @@
     <ClCompile Include="Learning2DEngine\Plugins\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\UI\Text2DRenderer.cpp">
+    <ClCompile Include="Learning2DEngine\Render\Text2DRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\System\Game.cpp">
@@ -107,7 +107,7 @@
     <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\UI\Text2DRenderer.h">
+    <ClInclude Include="Learning2DEngine\Render\Text2DRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\UI\Text.h">

@@ -6,9 +6,9 @@
 #include <sstream> 
 
 #include "Learning2DEngine/Render/RenderManager.h"
+#include "Learning2DEngine/Render/Text2DRenderer.h"
 #include "Learning2DEngine/System/ResourceManager.h"
 #include "Learning2DEngine/System/Random.h"
-#include "Learning2DEngine/UI/Text2DRenderer.h"
 #include "sprite_renderer.h"
 #include "game_object.h"
 #include "ball_object.h"

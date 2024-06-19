@@ -162,7 +162,7 @@
     <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp" />
     <ClCompile Include="Learning2DEngine\System\Random.cpp" />
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
-    <ClCompile Include="Learning2DEngine\UI\Text2DRenderer.cpp" />
+    <ClCompile Include="Learning2DEngine\Render\Text2DRenderer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="particle_generator.cpp" />
     <ClCompile Include="post_processor.cpp" />
@@ -187,7 +187,7 @@
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
     <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h" />
     <ClInclude Include="Learning2DEngine\UI\Text.h" />
-    <ClInclude Include="Learning2DEngine\UI\Text2DRenderer.h" />
+    <ClInclude Include="Learning2DEngine\Render\Text2DRenderer.h" />
     <ClInclude Include="particle_generator.h" />
     <ClInclude Include="post_processor.h" />
     <ClInclude Include="power_up.h" />

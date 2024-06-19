@@ -6,13 +6,14 @@
 
 #include "../System/ResourceManager.h"
 #include "../System/Log.h"
-#include "../Render/RenderManager.h"
+#include "RenderManager.h"
 
 using namespace Learning2DEngine::System;
+using namespace Learning2DEngine::UI;
 
 namespace Learning2DEngine
 {
-    namespace UI
+    namespace Render
     {
         Text2DRenderer::Text2DRenderer() :
             vao(0), vbo(0), ebo(0), characters(), textShader()
@@ -22,7 +23,7 @@ namespace Learning2DEngine
 
         void Text2DRenderer::Init()
         {
-            auto& renderManager = Render::RenderManager::GetInstance();
+            auto& renderManager = RenderManager::GetInstance();
 
             textShader = ResourceManager::LoadShader("Learning2DEngine/Shaders/Text2D.vs", "Learning2DEngine/Shaders/Text2D.fs");
             textShader.Use();
@@ -61,12 +62,12 @@ namespace Learning2DEngine
             renderManager.AddFramebufferSizeEvent(CallbackRefreshScreenResolution);
         }
 
-        void Text2DRenderer::CallbackRefreshScreenResolution(Render::Resolution resolution)
+        void Text2DRenderer::CallbackRefreshScreenResolution(Resolution resolution)
         {
             Text2DRenderer::GetInstance().RefreshScreenResolution(resolution);
         }
 
-        void Text2DRenderer::RefreshScreenResolution(Render::Resolution resolution)
+        void Text2DRenderer::RefreshScreenResolution(Resolution resolution)
         {
             textShader.SetMatrix4(
                 "projection",
