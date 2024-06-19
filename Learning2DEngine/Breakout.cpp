@@ -210,20 +210,20 @@ void Breakout::ProcessInput(float deltaTime)
         // move playerboard
         if (inputKeys[GLFW_KEY_A])
         {
-            if (Player->Position.x >= 0.0f)
+            if (Player->transform.position.x >= 0.0f)
             {
-                Player->Position.x -= velocity;
+                Player->transform.position.x -= velocity;
                 if (Ball->Stuck)
-                    Ball->Position.x -= velocity;
+                    Ball->transform.position.x -= velocity;
             }
         }
         if (inputKeys[GLFW_KEY_D])
         {
-            if (Player->Position.x <= RenderManager::GetInstance().GetResolution().GetWidth() - Player->Size.x)
+            if (Player->transform.position.x <= RenderManager::GetInstance().GetResolution().GetWidth() - Player->transform.size.x)
             {
-                Player->Position.x += velocity;
+                Player->transform.position.x += velocity;
                 if (Ball->Stuck)
-                    Ball->Position.x += velocity;
+                    Ball->transform.position.x += velocity;
             }
         }
         if (inputKeys[GLFW_KEY_SPACE])
@@ -259,7 +259,7 @@ void Breakout::Update(float deltaTime)
     }
 
     // Lose live
-    if (Ball->Position.y >= resolution.GetHeight())
+    if (Ball->transform.position.y >= resolution.GetHeight())
     {
         --Lives;
         // Game over
@@ -351,7 +351,7 @@ void ActivatePowerUp(PowerUp& powerUp)
     }
     else if (powerUp.Type == "pad-size-increase")
     {
-        Player->Size.x += 50;
+        Player->transform.size.x += 50;
     }
     else if (powerUp.Type == "confuse")
     {
@@ -368,11 +368,11 @@ void ActivatePowerUp(PowerUp& powerUp)
 bool CheckCollision(GameObject& one, GameObject& two) // AABB - AABB collision
 {
     // collision x-axis?
-    bool collisionX = one.Position.x + one.Size.x >= two.Position.x &&
-        two.Position.x + two.Size.x >= one.Position.x;
+    bool collisionX = one.transform.position.x + one.transform.size.x >= two.transform.position.x &&
+        two.transform.position.x + two.transform.size.x >= one.transform.position.x;
     // collision y-axis?
-    bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
-        two.Position.y + two.Size.y >= one.Position.y;
+    bool collisionY = one.transform.position.y + one.transform.size.y >= two.transform.position.y &&
+        two.transform.position.y + two.transform.size.y >= one.transform.position.y;
     // collision only if on both axes
     return collisionX && collisionY;
 }
@@ -403,12 +403,12 @@ Direction VectorDirection(glm::vec2 target)
 Collision CheckCollision(BallObject& one, GameObject& two) // AABB - Circle collision
 {
     // get center point circle first 
-    glm::vec2 center(one.Position + one.Radius);
+    glm::vec2 center(one.transform.position + one.Radius);
     // calculate AABB info (center, half-extents)
-    glm::vec2 aabb_half_extents(two.Size.x / 2.0f, two.Size.y / 2.0f);
+    glm::vec2 aabb_half_extents(two.transform.size.x / 2.0f, two.transform.size.y / 2.0f);
     glm::vec2 aabb_center(
-        two.Position.x + aabb_half_extents.x,
-        two.Position.y + aabb_half_extents.y
+        two.transform.position.x + aabb_half_extents.x,
+        two.transform.position.y + aabb_half_extents.y
     );
     // get difference vector between both centers
     glm::vec2 difference = center - aabb_center;
@@ -457,9 +457,9 @@ void Breakout::DoCollisions()
                         // relocate
                         float penetration = Ball->Radius - std::abs(diff_vector.x);
                         if (dir == LEFT)
-                            Ball->Position.x += penetration; // move ball to right
+                            Ball->transform.position.x += penetration; // move ball to right
                         else
-                            Ball->Position.x -= penetration; // move ball to left;
+                            Ball->transform.position.x -= penetration; // move ball to left;
                     }
                     else // vertical collision
                     {
@@ -467,9 +467,9 @@ void Breakout::DoCollisions()
                         // relocate
                         float penetration = Ball->Radius - std::abs(diff_vector.y);
                         if (dir == UP)
-                            Ball->Position.y -= penetration; // move ball bback up
+                            Ball->transform.position.y -= penetration; // move ball bback up
                         else
-                            Ball->Position.y += penetration; // move ball back down
+                            Ball->transform.position.y += penetration; // move ball back down
                     }
                 }
             }
@@ -482,7 +482,7 @@ void Breakout::DoCollisions()
         if (!powerUp.Destroyed)
         {
             // first check if powerup passed bottom edge, if so: keep as inactive and destroy
-            if (powerUp.Position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
+            if (powerUp.transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
                 powerUp.Destroyed = true;
 
             if (CheckCollision(*Player, powerUp))
@@ -499,9 +499,9 @@ void Breakout::DoCollisions()
     if (!Ball->Stuck && std::get<0>(result))
     {
         // check where it hit the board, and change velocity based on where it hit the board
-        float centerBoard = Player->Position.x + Player->Size.x / 2.0f;
-        float distance = (Ball->Position.x + Ball->Radius) - centerBoard;
-        float percentage = distance / (Player->Size.x / 2.0f);
+        float centerBoard = Player->transform.position.x + Player->transform.size.x / 2.0f;
+        float distance = (Ball->transform.position.x + Ball->Radius) - centerBoard;
+        float percentage = distance / (Player->transform.size.x / 2.0f);
         // then move accordingly
         float strength = 2.0f;
         glm::vec2 oldVelocity = Ball->Velocity;
@@ -539,9 +539,9 @@ void Breakout::ResetPlayer()
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
 
     // reset player/ball stats
-    Player->Size = PLAYER_SIZE;
-    Player->Position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
-    Ball->Reset(Player->Position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
+    Player->transform.size = PLAYER_SIZE;
+    Player->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
+    Ball->Reset(Player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
 
     // also disable all active powerups
     Effects->Chaos = Effects->Confuse = false;
@@ -562,27 +562,27 @@ void Breakout::SpawnPowerUps(GameObject& block)
 
     if (ShouldSpawn(75)) // 1 in 75 chance
         PowerUps.push_back(
-            PowerUp("speed", glm::vec3(0.5f, 0.5f, 1.0f), 0.0f, block.Position, resourceManager.GetTexture("powerup_speed")
+            PowerUp("speed", glm::vec3(0.5f, 0.5f, 1.0f), 0.0f, block.transform.position, resourceManager.GetTexture("powerup_speed")
             ));
     if (ShouldSpawn(75))
         PowerUps.push_back(
-            PowerUp("sticky", glm::vec3(1.0f, 0.5f, 1.0f), 20.0f, block.Position, resourceManager.GetTexture("powerup_sticky")
+            PowerUp("sticky", glm::vec3(1.0f, 0.5f, 1.0f), 20.0f, block.transform.position, resourceManager.GetTexture("powerup_sticky")
             ));
     if (ShouldSpawn(75))
         PowerUps.push_back(
-            PowerUp("pass-through", glm::vec3(0.5f, 1.0f, 0.5f), 10.0f, block.Position, resourceManager.GetTexture("powerup_passthrough")
+            PowerUp("pass-through", glm::vec3(0.5f, 1.0f, 0.5f), 10.0f, block.transform.position, resourceManager.GetTexture("powerup_passthrough")
             ));
     if (ShouldSpawn(75))
         PowerUps.push_back(
-            PowerUp("pad-size-increase", glm::vec3(1.0f, 0.6f, 0.4), 0.0f, block.Position, resourceManager.GetTexture("powerup_increase")
+            PowerUp("pad-size-increase", glm::vec3(1.0f, 0.6f, 0.4), 0.0f, block.transform.position, resourceManager.GetTexture("powerup_increase")
             ));
     if (ShouldSpawn(15)) // negative powerups should spawn more often
         PowerUps.push_back(
-            PowerUp("confuse", glm::vec3(1.0f, 0.3f, 0.3f), 15.0f, block.Position, resourceManager.GetTexture("powerup_confuse")
+            PowerUp("confuse", glm::vec3(1.0f, 0.3f, 0.3f), 15.0f, block.transform.position, resourceManager.GetTexture("powerup_confuse")
             ));
     if (ShouldSpawn(15))
         PowerUps.push_back(
-            PowerUp("chaos", glm::vec3(0.9f, 0.25f, 0.25f), 15.0f, block.Position, resourceManager.GetTexture("powerup_chaos")
+            PowerUp("chaos", glm::vec3(0.9f, 0.25f, 0.25f), 15.0f, block.transform.position, resourceManager.GetTexture("powerup_chaos")
             ));
 }
 
@@ -601,7 +601,7 @@ void Breakout::UpdatePowerUps(float deltaTime)
 {
     for (PowerUp& powerUp : this->PowerUps)
     {
-        powerUp.Position += powerUp.Velocity * deltaTime;
+        powerUp.transform.position += powerUp.Velocity * deltaTime;
         if (powerUp.Activated)
         {
             powerUp.Duration -= deltaTime;

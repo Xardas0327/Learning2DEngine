@@ -14,31 +14,31 @@ glm::vec2 BallObject::Move(float dt, unsigned int window_width)
     if (!this->Stuck)
     {
         // move the ball
-        this->Position += this->Velocity * dt;
+        this->transform.position += this->Velocity * dt;
         // then check if outside window bounds and if so, reverse velocity and restore at correct position
-        if (this->Position.x <= 0.0f)
+        if (this->transform.position.x <= 0.0f)
         {
             this->Velocity.x = -this->Velocity.x;
-            this->Position.x = 0.0f;
+            this->transform.position.x = 0.0f;
         }
-        else if (this->Position.x + this->Size.x >= window_width)
+        else if (this->transform.position.x + this->transform.size.x >= window_width)
         {
             this->Velocity.x = -this->Velocity.x;
-            this->Position.x = window_width - this->Size.x;
+            this->transform.position.x = window_width - this->transform.size.x;
         }
-        if (this->Position.y <= 0.0f)
+        if (this->transform.position.y <= 0.0f)
         {
             this->Velocity.y = -this->Velocity.y;
-            this->Position.y = 0.0f;
+            this->transform.position.y = 0.0f;
         }
     }
-    return this->Position;
+    return this->transform.position;
 }
 
 // resets the ball to initial Stuck Position (if ball is outside window bounds)
 void BallObject::Reset(glm::vec2 position, glm::vec2 velocity)
 {
-    this->Position = position;
+    this->transform.position = position;
     this->Velocity = velocity;
     this->Stuck = true;
     this->Sticky = false;
