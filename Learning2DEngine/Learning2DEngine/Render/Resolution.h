@@ -30,19 +30,9 @@ namespace Learning2DEngine
                 return width;
             }
 
-            void SetWidth(int w)
-            {
-                width = w;
-            }
-
             inline int GetHeight() const
             {
                 return height;
-            }
-
-            void SetHeight(int h)
-            {
-                height = h;
             }
 
             inline std::string ToString() const
