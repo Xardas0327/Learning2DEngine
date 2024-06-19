@@ -173,7 +173,7 @@ void Breakout::Init()
 void Breakout::Terminate()
 {
     ResourceManager::GetInstance().Clear();
-    Text2DRenderer::GetInstance().Clear();
+    Text2DRenderer::GetInstance().Terminate();
     Game::Terminate();
 }
 

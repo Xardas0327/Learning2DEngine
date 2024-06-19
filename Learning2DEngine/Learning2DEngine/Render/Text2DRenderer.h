@@ -41,6 +41,10 @@ namespace Learning2DEngine
             /// </summary>
             void Init();
             /// <summary>
+            /// It should be terminated before RenderManager
+            /// </summary>
+            void Terminate();
+            /// <summary>
             /// It loads FONT_NUMBER characters from the file begining
             /// </summary>
             void Load(const std::string& font, unsigned int fontSize);

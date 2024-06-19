@@ -62,6 +62,15 @@ namespace Learning2DEngine
             renderManager.AddFramebufferSizeEvent(CallbackRefreshScreenResolution);
         }
 
+        void Text2DRenderer::Terminate()
+        {
+            Clear();
+
+            glDeleteVertexArrays(1, &vao);
+            glDeleteBuffers(1, &vbo);
+            glDeleteBuffers(1, &ebo);
+        }
+
         void Text2DRenderer::CallbackRefreshScreenResolution(Resolution resolution)
         {
             Text2DRenderer::GetInstance().RefreshScreenResolution(resolution);
