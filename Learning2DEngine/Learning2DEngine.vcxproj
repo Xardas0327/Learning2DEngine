@@ -185,8 +185,8 @@
     <ClInclude Include="game_level.h" />
     <ClInclude Include="game_object.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
-    <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h" />
-    <ClInclude Include="Learning2DEngine\UI\Text.h" />
+    <ClInclude Include="Learning2DEngine\System\FreeTypeCharacter.h" />
+    <ClInclude Include="Learning2DEngine\System\Text.h" />
     <ClInclude Include="Learning2DEngine\Render\Text2DRenderer.h" />
     <ClInclude Include="particle_generator.h" />
     <ClInclude Include="post_processor.h" />

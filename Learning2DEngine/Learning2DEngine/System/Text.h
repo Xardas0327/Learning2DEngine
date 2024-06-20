@@ -6,7 +6,7 @@
 
 namespace Learning2DEngine
 {
-    namespace UI
+    namespace System
     {
         // First is the font name.
         // Second is the size.

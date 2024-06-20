@@ -7,10 +7,10 @@
 #include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
+#include "../System/FreeTypeCharacter.h"
+#include "../System/Text.h"
 #include "Shader.h"
 #include "Resolution.h"
-#include "../UI/FreeTypeCharacter.h"
-#include "../UI/Text.h"
 
 namespace Learning2DEngine
 {
@@ -21,12 +21,12 @@ namespace Learning2DEngine
         class Text2DRenderer : public virtual System::Singleton<Text2DRenderer>
         {
             friend class System::Singleton<Text2DRenderer>;
-            typedef std::map<char, UI::FreeTypeCharacter> CharacterMap;
+            typedef std::map<char, System::FreeTypeCharacter> CharacterMap;
         private:
             unsigned int vao;
             unsigned int vbo;
             unsigned int ebo;
-            std::map<UI::FontSizePair, CharacterMap> characters;
+            std::map<System::FontSizePair, CharacterMap> characters;
             Shader textShader;
 
             Text2DRenderer();
@@ -51,11 +51,11 @@ namespace Learning2DEngine
             /// <summary>
             /// It loads FONT_NUMBER characters from the file begining
             /// </summary>
-            void Load(const UI::FontSizePair& fontSizePair);
+            void Load(const System::FontSizePair& fontSizePair);
             void Unload(const std::string& font, unsigned int fontSize);
-            void Unload(const UI::FontSizePair& fontSizePair);
+            void Unload(const System::FontSizePair& fontSizePair);
             void Clear();
-            void RenderText(const UI::Text& text);
+            void RenderText(const System::Text& text);
         };
     }
 }

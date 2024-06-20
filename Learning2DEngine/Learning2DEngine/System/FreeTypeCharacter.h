@@ -4,7 +4,7 @@
 
 namespace Learning2DEngine
 {
-    namespace UI
+    namespace System
     {
         // Please check the documentation of FreeType for bearing and advance.
         struct FreeTypeCharacter {

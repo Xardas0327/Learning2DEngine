@@ -104,13 +104,13 @@
     <ClInclude Include="Learning2DEngine\System\ResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h">
+    <ClInclude Include="Learning2DEngine\System\FreeTypeCharacter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\Text2DRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\UI\Text.h">
+    <ClInclude Include="Learning2DEngine\System\Text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\System\Game.h">

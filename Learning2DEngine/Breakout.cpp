@@ -18,7 +18,6 @@
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
-using namespace Learning2DEngine::UI;
 using namespace irrklang;
 
 // Game-related State data
