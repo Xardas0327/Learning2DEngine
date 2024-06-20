@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Learning2DEngine/System/Game.h"
-#include "Learning2DEngine/UI/Text.h"
+#include "Learning2DEngine/System/Text.h"
 
 #include "game_level.h"
 #include "power_up.h"
@@ -38,11 +38,11 @@ private:
     unsigned int                Level;
     std::vector<PowerUp>        PowerUps;
     unsigned int                Lives;
-    Learning2DEngine::UI::Text  liveText;
-    Learning2DEngine::UI::Text  startText;
-    Learning2DEngine::UI::Text  levelSelectorText;
-    Learning2DEngine::UI::Text  winText;
-    Learning2DEngine::UI::Text  retryText;
+    Learning2DEngine::System::Text  liveText;
+    Learning2DEngine::System::Text  startText;
+    Learning2DEngine::System::Text  levelSelectorText;
+    Learning2DEngine::System::Text  winText;
+    Learning2DEngine::System::Text  retryText;
 protected:
     void Update(float deltaTime) override;
     void Render() override;

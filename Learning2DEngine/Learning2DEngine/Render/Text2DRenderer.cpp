@@ -9,7 +9,6 @@
 #include "RenderManager.h"
 
 using namespace Learning2DEngine::System;
-using namespace Learning2DEngine::UI;
 
 namespace Learning2DEngine
 {
