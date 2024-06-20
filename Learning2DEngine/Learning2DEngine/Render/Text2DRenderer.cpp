@@ -23,8 +23,9 @@ namespace Learning2DEngine
         void Text2DRenderer::Init()
         {
             auto& renderManager = RenderManager::GetInstance();
+            auto& resourceManager = ResourceManager::GetInstance();
 
-            textShader = ResourceManager::LoadShader("Learning2DEngine/Shaders/Text2D.vs", "Learning2DEngine/Shaders/Text2D.fs");
+            textShader = resourceManager.LoadShader("Learning2DEngine/Shaders/Text2D.vs", "Learning2DEngine/Shaders/Text2D.fs");
             textShader.Use();
             textShader.SetMatrix4(
                 "projection",
