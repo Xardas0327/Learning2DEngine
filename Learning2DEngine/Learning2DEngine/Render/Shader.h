@@ -22,7 +22,11 @@ namespace Learning2DEngine
             void Create(const char* vertexSource, const char* fragmentSource, const char* geometrySource = nullptr);
             void Destroy();
             void Use() const;
-            inline unsigned int GetId() { return id; }
+
+            inline unsigned int GetId() 
+            {
+                return id;
+            }
             void SetFloat(const char* name, float value);
             void SetInteger(const char* name, int value);
             void SetVector2f(const char* name, float x, float y);
