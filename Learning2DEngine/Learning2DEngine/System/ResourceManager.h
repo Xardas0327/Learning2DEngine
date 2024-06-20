@@ -47,8 +47,8 @@ namespace Learning2DEngine
             /// <param name="file"></param>
             /// <param name="alpha"></param>
             /// <returns></returns>
-            static Render::Texture2D LoadTexture(const char* file, bool alpha);
-            Render::Texture2D LoadTexture(const char* file, bool alpha, const std::string& name);
+            static Render::Texture2D LoadTexture(const char* file, const Texture2DSettings& settings);
+            Render::Texture2D LoadTexture(const char* file, const Texture2DSettings& settings, const std::string& name);
             Render::Texture2D GetTexture(const std::string& name);
             bool IsTextureExist(const std::string& name);
             void DestroyTexture2D(const std::string& name);

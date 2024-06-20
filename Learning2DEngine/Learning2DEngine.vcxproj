@@ -184,6 +184,7 @@
     <ClInclude Include="Learning2DEngine\System\Singleton.h" />
     <ClInclude Include="game_level.h" />
     <ClInclude Include="game_object.h" />
+    <ClInclude Include="Learning2DEngine\System\Texture2DSettings.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
     <ClInclude Include="Learning2DEngine\System\FreeTypeCharacter.h" />
     <ClInclude Include="Learning2DEngine\System\Text.h" />

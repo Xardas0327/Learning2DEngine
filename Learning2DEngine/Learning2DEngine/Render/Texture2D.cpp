@@ -5,10 +5,14 @@ namespace Learning2DEngine
     namespace Render
     {
         Texture2D::Texture2D()
-            : width(0), height(0), internalFormat(GL_RGB), imageFormat(GL_RGB), 
-            wrapS(GL_REPEAT), wrapT(GL_REPEAT), filterMin(GL_LINEAR), filterMax(GL_LINEAR)
+            : id(0), width(0), height(0), settings()
         {
-            glGenTextures(1, &id);
+        }
+
+        Texture2D::Texture2D(const System::Texture2DSettings& texture2DSettings)
+            : id(0), width(0), height(0), settings(texture2DSettings)
+        {
+
         }
 
         void Texture2D::Create(unsigned int width, unsigned int height, const unsigned char* data)
@@ -16,13 +20,14 @@ namespace Learning2DEngine
             this->width = width;
             this->height = height;
 
+            glGenTextures(1, &id);
             glBindTexture(GL_TEXTURE_2D, id);
-            glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, imageFormat, GL_UNSIGNED_BYTE, data);
+            glTexImage2D(GL_TEXTURE_2D, 0, settings.internalFormat, width, height, 0, settings.imageFormat, GL_UNSIGNED_BYTE, data);
 
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filterMin);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filterMax);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, settings.wrapS);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, settings.wrapT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, settings.filterMin);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, settings.filterMax);
 
             glBindTexture(GL_TEXTURE_2D, 0);
         }

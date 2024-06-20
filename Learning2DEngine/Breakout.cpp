@@ -77,19 +77,25 @@ void Breakout::Init()
     particle.Use();
     particle.SetInteger("sprite", 0);
     particle.SetMatrix4("projection", projection);
+
+    Texture2DSettings alphaSettings;
+    alphaSettings.internalFormat = GL_RGBA;
+    alphaSettings.imageFormat = GL_RGBA;
+    Texture2DSettings nonAlphaSettings;
+
     // load textures
-    resourceManager.LoadTexture("Assets/Images/background.jpg", false, "background");
-    resourceManager.LoadTexture("Assets/Images/awesomeface.png", true, "face");
-    resourceManager.LoadTexture("Assets/Images/block.png", false, "block");
-    resourceManager.LoadTexture("Assets/Images/block_solid.png", false, "block_solid");
-    resourceManager.LoadTexture("Assets/Images/paddle.png", true, "paddle");
-    resourceManager.LoadTexture("Assets/Images/particle.png", true, "particle");
-    resourceManager.LoadTexture("Assets/Images/powerup_speed.png", true, "powerup_speed");
-    resourceManager.LoadTexture("Assets/Images/powerup_sticky.png", true, "powerup_sticky");
-    resourceManager.LoadTexture("Assets/Images/powerup_increase.png", true, "powerup_increase");
-    resourceManager.LoadTexture("Assets/Images/powerup_confuse.png", true, "powerup_confuse");
-    resourceManager.LoadTexture("Assets/Images/powerup_chaos.png", true, "powerup_chaos");
-    resourceManager.LoadTexture("Assets/Images/powerup_passthrough.png", true, "powerup_passthrough");
+    resourceManager.LoadTexture("Assets/Images/background.jpg", nonAlphaSettings, "background");
+    resourceManager.LoadTexture("Assets/Images/awesomeface.png", alphaSettings, "face");
+    resourceManager.LoadTexture("Assets/Images/block.png", nonAlphaSettings, "block");
+    resourceManager.LoadTexture("Assets/Images/block_solid.png", nonAlphaSettings, "block_solid");
+    resourceManager.LoadTexture("Assets/Images/paddle.png", alphaSettings, "paddle");
+    resourceManager.LoadTexture("Assets/Images/particle.png", alphaSettings, "particle");
+    resourceManager.LoadTexture("Assets/Images/powerup_speed.png", alphaSettings, "powerup_speed");
+    resourceManager.LoadTexture("Assets/Images/powerup_sticky.png", alphaSettings, "powerup_sticky");
+    resourceManager.LoadTexture("Assets/Images/powerup_increase.png", alphaSettings, "powerup_increase");
+    resourceManager.LoadTexture("Assets/Images/powerup_confuse.png", alphaSettings, "powerup_confuse");
+    resourceManager.LoadTexture("Assets/Images/powerup_chaos.png", alphaSettings, "powerup_chaos");
+    resourceManager.LoadTexture("Assets/Images/powerup_passthrough.png", alphaSettings, "powerup_passthrough");
     // set render-specific controls
     Renderer = new SpriteRenderer(sprite);
     Particles = new ParticleGenerator(

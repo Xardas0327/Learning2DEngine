@@ -90,14 +90,9 @@ namespace Learning2DEngine
             shaders.erase(name);
         }
 
-        Render::Texture2D ResourceManager::LoadTexture(const char* file, bool alpha)
+        Render::Texture2D ResourceManager::LoadTexture(const char* file, const Texture2DSettings& settings)
         {
-            Render::Texture2D texture;
-            if (alpha)
-            {
-                texture.internalFormat = GL_RGBA;
-                texture.imageFormat = GL_RGBA;
-            }
+            Render::Texture2D texture(settings);
 
             int width, height, nrChannels;
             unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
@@ -106,9 +101,9 @@ namespace Learning2DEngine
             return texture;
         }
 
-        Render::Texture2D ResourceManager::LoadTexture(const char* file, bool alpha, const std::string& name)
+        Render::Texture2D ResourceManager::LoadTexture(const char* file, const Texture2DSettings& settings, const std::string& name)
         {
-            textures[name] = LoadTexture(file, alpha);
+            textures[name] = LoadTexture(file, settings);
             return textures[name];
         }
 
