@@ -34,7 +34,7 @@ namespace Learning2DEngine
                     static_cast<float>(renderManager.GetResolution().GetWidth()),
                     static_cast<float>(renderManager.GetResolution().GetHeight()),
                     0.0f));
-            textShader.SetInteger("text", 0);
+            textShader.SetInteger("characterTexture", 0);
 
             unsigned int indices[] = {
                 0, 1, 3,
@@ -211,7 +211,7 @@ namespace Learning2DEngine
             CharacterMap& characterMap = characters[text.fontSizePair];
 
             textShader.Use();
-            textShader.SetVector3f("textColor", text.color);
+            textShader.SetVector3f("characterColor", text.color);
             glActiveTexture(GL_TEXTURE0);
             glBindVertexArray(vao);
 
