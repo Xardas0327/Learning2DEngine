@@ -26,6 +26,6 @@ public:
     float       Duration;
     bool        Activated;
     // constructor
-    PowerUp(std::string type, glm::vec3 color, float duration, glm::vec2 position, Learning2DEngine::Render::Texture2D texture)
-        : GameObject(position, POWERUP_SIZE, texture, color, VELOCITY), Type(type), Duration(duration), Activated() { }
+    PowerUp(std::string type, float duration, glm::vec2 position, const Learning2DEngine::Render::SpriteRenderer& spriteRenderer)
+        : GameObject(position, POWERUP_SIZE, spriteRenderer, VELOCITY), Type(type), Duration(duration), Activated() { }
 };

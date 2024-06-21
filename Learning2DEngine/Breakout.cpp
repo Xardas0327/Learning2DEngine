@@ -1,6 +1,7 @@
 #include "Breakout.h"
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <irrklang/irrKlang.h>
 
 #include <sstream> 
@@ -9,7 +10,6 @@
 #include "Learning2DEngine/Render/Text2DRenderer.h"
 #include "Learning2DEngine/System/ResourceManager.h"
 #include "Learning2DEngine/System/Random.h"
-#include "sprite_renderer.h"
 #include "game_object.h"
 #include "ball_object.h"
 #include "particle_generator.h"
@@ -21,7 +21,7 @@ using namespace Learning2DEngine::System;
 using namespace irrklang;
 
 // Game-related State data
-SpriteRenderer* Renderer;
+SpriteRenderer* BackgroundRenderer;
 GameObject* Player;
 BallObject* Ball;
 ParticleGenerator* Particles;
@@ -29,6 +29,7 @@ PostProcessor* Effects;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
 
 float ShakeTime = 0.0f;
+glm::mat4 projection;
 
 const FontSizePair fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24);
 
@@ -40,7 +41,8 @@ Breakout::Breakout() :
 
 Breakout::~Breakout()
 {
-    delete Renderer;
+    BackgroundRenderer->Terminate();
+    delete BackgroundRenderer;
     delete Player;
     delete Ball;
     delete Particles;
@@ -57,11 +59,10 @@ void Breakout::Init()
 
     auto& resourceManager = ResourceManager::GetInstance();
     // load shaders
-    resourceManager.LoadShader("Shaders/sprite.vs", "Shaders/sprite.frag", nullptr, "sprite");
     resourceManager.LoadShader("Shaders/particle.vs", "Shaders/particle.frag", nullptr, "particle");
     resourceManager.LoadShader("Shaders/post_processing.vs", "Shaders/post_processing.frag", nullptr, "postprocessing");
     // configure shaders
-    glm::mat4 projection = glm::ortho(
+    projection = glm::ortho(
         0.0f,
         static_cast<float>(resolution.GetWidth()),
         static_cast<float>(resolution.GetHeight()),
@@ -97,7 +98,11 @@ void Breakout::Init()
     resourceManager.LoadTexture("Assets/Images/powerup_chaos.png", alphaSettings, "powerup_chaos");
     resourceManager.LoadTexture("Assets/Images/powerup_passthrough.png", alphaSettings, "powerup_passthrough");
     // set render-specific controls
-    Renderer = new SpriteRenderer(sprite);
+    BackgroundRenderer = new SpriteRenderer();
+    BackgroundRenderer->Init();
+    BackgroundRenderer->SetProjection(projection);
+    BackgroundRenderer->SetTexture(resourceManager.GetTexture("background"));
+
     Particles = new ParticleGenerator(
         resourceManager.GetShader("particle"),
         resourceManager.GetTexture("particle"),
@@ -105,23 +110,28 @@ void Breakout::Init()
     );
     Effects = new PostProcessor(resourceManager.GetShader("postprocessing"), resolution.GetWidth(), resolution.GetHeight());
     // load levels
-    GameLevel one; one.Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
-    GameLevel two; two.Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
-    GameLevel three; three.Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
-    GameLevel four; four.Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
+    GameLevel one; one.Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight, projection);
+    GameLevel two; two.Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight, projection);
+    GameLevel three; three.Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight, projection);
+    GameLevel four; four.Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight, projection);
     this->Levels.push_back(one);
     this->Levels.push_back(two);
     this->Levels.push_back(three);
     this->Levels.push_back(four);
     this->Level = 0;
 
+    SpriteRenderer spriteRenderer;
+    spriteRenderer.SetProjection(projection);
+
     //Player
     glm::vec2 playerPos = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
-    Player = new GameObject(playerPos, PLAYER_SIZE, resourceManager.GetTexture("paddle"));
+    spriteRenderer.SetTexture(resourceManager.GetTexture("paddle"));
+    Player = new GameObject(playerPos, PLAYER_SIZE, spriteRenderer);
 
     //Ball
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
-    Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, resourceManager.GetTexture("face"));
+    spriteRenderer.SetTexture(resourceManager.GetTexture("face"));
+    Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, spriteRenderer);
 
     //Sounds
     SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
@@ -295,24 +305,23 @@ void Breakout::Render()
         Effects->BeginRender();
 
         // Draw background
-        auto backgroundTexture = ResourceManager::GetInstance().GetTexture("background");
-        Renderer->DrawSprite(
-            backgroundTexture, 
+        Transform backgroundTransform(
             glm::vec2(0.0f, 0.0f),
             RenderManager::GetInstance().GetResolution().ToVec2(),
             0.0f);
+        BackgroundRenderer->Draw(backgroundTransform);
         // Draw level
-        this->Levels[this->Level].Draw(*Renderer);
+        this->Levels[this->Level].Draw();
         // Draw player
-        Player->Draw(*Renderer);
+        Player->Draw();
         // Draw PowerUps
         for (PowerUp& powerUp : this->PowerUps)
             if (!powerUp.Destroyed)
-                powerUp.Draw(*Renderer);
+                powerUp.Draw();
         // Draw Particles
         Particles->Draw();
         // Draw Player
-        Ball->Draw(*Renderer);
+        Ball->Draw();
         // End rendering to postprocessing framebuffer
         Effects->EndRender();
         // Render postprocessing quad
@@ -347,12 +356,12 @@ void ActivatePowerUp(PowerUp& powerUp)
     else if (powerUp.Type == "sticky")
     {
         Ball->Sticky = true;
-        Player->Color = glm::vec3(1.0f, 0.5f, 1.0f);
+        Player->renderer.SetColor(glm::vec3(1.0f, 0.5f, 1.0f));
     }
     else if (powerUp.Type == "pass-through")
     {
         Ball->PassThrough = true;
-        Ball->Color = glm::vec3(1.0f, 0.5f, 0.5f);
+        Ball->renderer.SetColor(glm::vec3(1.0f, 0.5f, 0.5f));
     }
     else if (powerUp.Type == "pad-size-increase")
     {
@@ -528,13 +537,13 @@ void Breakout::ResetLevel()
     const int middleHeight = resolution.GetHeight() / 2;
 
     if (Level == 0)
-        Levels[0].Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
+        Levels[0].Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight, projection);
     else if (Level == 1)
-        Levels[1].Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
+        Levels[1].Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight, projection);
     else if (Level == 2)
-        Levels[2].Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
+        Levels[2].Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight, projection);
     else if (Level == 3)
-        Levels[3].Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
+        Levels[3].Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight, projection);
 
     Lives = 3;
 }
@@ -551,8 +560,8 @@ void Breakout::ResetPlayer()
     // also disable all active powerups
     Effects->Chaos = Effects->Confuse = false;
     Ball->PassThrough = Ball->Sticky = false;
-    Player->Color = glm::vec3(1.0f);
-    Ball->Color = glm::vec3(1.0f);
+    Player->renderer.SetColor(glm::vec3(1.0f));
+    Ball->renderer.SetColor(glm::vec3(1.0f));
 }
 
 bool ShouldSpawn(int chance)
@@ -564,31 +573,58 @@ bool ShouldSpawn(int chance)
 void Breakout::SpawnPowerUps(GameObject& block)
 {
     auto& resourceManager = ResourceManager::GetInstance();
+    SpriteRenderer powerUpRender;
+    powerUpRender.SetProjection(projection);
 
     if (ShouldSpawn(75)) // 1 in 75 chance
+    {
+        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_speed"));
+        powerUpRender.SetColor(glm::vec3(0.5f, 0.5f, 1.0f));
         PowerUps.push_back(
-            PowerUp("speed", glm::vec3(0.5f, 0.5f, 1.0f), 0.0f, block.transform.position, resourceManager.GetTexture("powerup_speed")
-            ));
+            PowerUp("speed", 0.0f, block.transform.position, powerUpRender)
+        );
+    }
+        
     if (ShouldSpawn(75))
+    {
+        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_sticky"));
+        powerUpRender.SetColor(glm::vec3(1.0f, 0.5f, 1.0f));
         PowerUps.push_back(
-            PowerUp("sticky", glm::vec3(1.0f, 0.5f, 1.0f), 20.0f, block.transform.position, resourceManager.GetTexture("powerup_sticky")
-            ));
+            PowerUp("sticky", 20.0f, block.transform.position, powerUpRender)
+        );
+    }
     if (ShouldSpawn(75))
+    {
+        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_passthrough"));
+        powerUpRender.SetColor(glm::vec3(0.5f, 1.0f, 0.5f));
         PowerUps.push_back(
-            PowerUp("pass-through", glm::vec3(0.5f, 1.0f, 0.5f), 10.0f, block.transform.position, resourceManager.GetTexture("powerup_passthrough")
-            ));
+            PowerUp("pass-through", 10.0f, block.transform.position, powerUpRender)
+        );
+    }
     if (ShouldSpawn(75))
+    {
+        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_increase"));
+        powerUpRender.SetColor(glm::vec3(1.0f, 0.6f, 0.4));
         PowerUps.push_back(
-            PowerUp("pad-size-increase", glm::vec3(1.0f, 0.6f, 0.4), 0.0f, block.transform.position, resourceManager.GetTexture("powerup_increase")
-            ));
+            PowerUp("pad-size-increase", 0.0f, block.transform.position, powerUpRender)
+        );
+    }
     if (ShouldSpawn(15)) // negative powerups should spawn more often
+    {
+        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_confuse"));
+        powerUpRender.SetColor(glm::vec3(1.0f, 0.3f, 0.3f));
         PowerUps.push_back(
-            PowerUp("confuse", glm::vec3(1.0f, 0.3f, 0.3f), 15.0f, block.transform.position, resourceManager.GetTexture("powerup_confuse")
-            ));
+            PowerUp("confuse", 15.0f, block.transform.position, powerUpRender)
+        );
+    }
     if (ShouldSpawn(15))
+    {
+        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_chaos"));
+        powerUpRender.SetColor(glm::vec3(0.9f, 0.25f, 0.25f));
         PowerUps.push_back(
-            PowerUp("chaos", glm::vec3(0.9f, 0.25f, 0.25f), 15.0f, block.transform.position, resourceManager.GetTexture("powerup_chaos")
-            ));
+            PowerUp("chaos", 15.0f, block.transform.position, powerUpRender)
+        );
+    }
 }
 
 bool IsOtherPowerUpActive(std::vector<PowerUp>& powerUps, std::string type)
@@ -621,7 +657,7 @@ void Breakout::UpdatePowerUps(float deltaTime)
                     if (!IsOtherPowerUpActive(this->PowerUps, "sticky"))
                     {	// only reset if no other PowerUp of type sticky is active
                         Ball->Sticky = false;
-                        Player->Color = glm::vec3(1.0f);
+                        Player->renderer.SetColor(glm::vec3(1.0f));
                     }
                 }
                 else if (powerUp.Type == "pass-through")
@@ -629,7 +665,7 @@ void Breakout::UpdatePowerUps(float deltaTime)
                     if (!IsOtherPowerUpActive(this->PowerUps, "pass-through"))
                     {	// only reset if no other PowerUp of type pass-through is active
                         Ball->PassThrough = false;
-                        Ball->Color = glm::vec3(1.0f);
+                        Ball->renderer.SetColor(glm::vec3(1.0f));
                     }
                 }
                 else if (powerUp.Type == "confuse")

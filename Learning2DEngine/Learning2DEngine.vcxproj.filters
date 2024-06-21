@@ -33,9 +33,6 @@
     <ClCompile Include="post_processor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sprite_renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -84,9 +81,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="power_up.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sprite_renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\RenderManager.h">
@@ -195,8 +189,6 @@
     <None Include="Shaders\particle.vs" />
     <None Include="Shaders\post_processing.frag" />
     <None Include="Shaders\post_processing.vs" />
-    <None Include="Shaders\sprite.frag" />
-    <None Include="Shaders\sprite.vs" />
     <None Include="Learning2DEngine\Shaders\Text2D.fs" />
     <None Include="Learning2DEngine\Shaders\Text2D.vs" />
     <None Include="Learning2DEngine\Shaders\DefaultSprite.fs" />

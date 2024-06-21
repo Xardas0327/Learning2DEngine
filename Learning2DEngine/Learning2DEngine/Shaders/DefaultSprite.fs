@@ -12,6 +12,6 @@ void main()
     color = vec4(spriteColor, 1.0);
     if(isUseTexture)
     {
-        color*= texture(spriteTexture, TexCoords);
+        color*= texture(spriteTexture, TextureCoords);
     }
 }

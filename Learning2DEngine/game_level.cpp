@@ -3,10 +3,13 @@
 #include <fstream>
 #include <sstream>
 
+#include "Learning2DEngine/Render/SpriteRenderer.h"
+
 using namespace Learning2DEngine::System;
+using namespace Learning2DEngine::Render;
 
 
-void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int levelHeight)
+void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int levelHeight, const glm::mat4& projection)
 {
     // clear old data
     this->Bricks.clear();
@@ -27,15 +30,15 @@ void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int lev
             tileData.push_back(row);
         }
         if (tileData.size() > 0)
-            this->init(tileData, levelWidth, levelHeight);
+            this->init(tileData, levelWidth, levelHeight, projection);
     }
 }
 
-void GameLevel::Draw(SpriteRenderer& renderer)
+void GameLevel::Draw()
 {
     for (GameObject& tile : this->Bricks)
         if (!tile.Destroyed)
-            tile.Draw(renderer);
+            tile.Draw();
 }
 
 bool GameLevel::IsCompleted()
@@ -46,7 +49,7 @@ bool GameLevel::IsCompleted()
     return true;
 }
 
-void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned int levelWidth, unsigned int levelHeight)
+void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned int levelWidth, unsigned int levelHeight, const glm::mat4& projection)
 {
     // calculate dimensions
     unsigned int height = tileData.size();
@@ -54,6 +57,9 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
     float unit_width = levelWidth / static_cast<float>(width), unit_height = levelHeight / height;
 
     auto& resourceManager = ResourceManager::GetInstance();
+
+    SpriteRenderer brickRenderer;
+    brickRenderer.SetProjection(projection);
 
     // initialize level tiles based on tileData		
     for (unsigned int y = 0; y < height; ++y)
@@ -65,7 +71,9 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
             {
                 glm::vec2 pos(unit_width * x, unit_height * y);
                 glm::vec2 size(unit_width, unit_height);
-                GameObject obj(pos, size, resourceManager.GetTexture("block_solid"), glm::vec3(0.8f, 0.8f, 0.7f));
+                brickRenderer.SetTexture(resourceManager.GetTexture("block_solid"));
+                brickRenderer.SetColor(glm::vec3(0.8f, 0.8f, 0.7f));
+                GameObject obj(pos, size, brickRenderer);
                 obj.IsSolid = true;
                 this->Bricks.push_back(obj);
             }
@@ -83,7 +91,10 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
 
                 glm::vec2 pos(unit_width * x, unit_height * y);
                 glm::vec2 size(unit_width, unit_height);
-                this->Bricks.push_back(GameObject(pos, size, resourceManager.GetTexture("block"), color));
+
+                brickRenderer.SetTexture(resourceManager.GetTexture("block"));
+                brickRenderer.SetColor(color);
+                this->Bricks.push_back(GameObject(pos, size, brickRenderer));
             }
         }
     }

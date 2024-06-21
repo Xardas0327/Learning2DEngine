@@ -18,7 +18,8 @@ namespace Learning2DEngine
             glm::vec3 color;
             glm::mat4 projection;
             bool isUseTexture;
-            const bool isUseDefaultShader;
+            bool isUseDefaultShader;
+            bool isInit;
 
             /// <summary>
             /// It is counted, that how many SpriteRenderer use the default shader.
@@ -41,15 +42,21 @@ namespace Learning2DEngine
             void InitDefaultShader();
             void InitVao();
         public:
-            SpriteRenderer(const glm::mat4& projection, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
-            SpriteRenderer(const Shader& shader, const glm::mat4& projection, glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f));
+            SpriteRenderer(glm::vec3 color = glm::vec3(1.0f));
+            SpriteRenderer(const Shader& shader, const glm::mat4& projection, glm::vec3 color = glm::vec3(1.0f));
+            SpriteRenderer(const SpriteRenderer& other);
+            SpriteRenderer& operator=(const SpriteRenderer& other);
             ~SpriteRenderer();
 
             void Init();
             void Terminate();
 
             void Draw(const System::Transform& transform);
-            void SetProjection(const glm::mat4& projection);
+
+            inline void SetProjection(const glm::mat4& projection)
+            {
+                this->projection = projection;
+            }
 
             inline Texture2D GetTexture()
             {

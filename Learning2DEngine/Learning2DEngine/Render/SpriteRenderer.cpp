@@ -9,20 +9,50 @@ namespace Learning2DEngine
 	namespace Render
 	{
         int SpriteRenderer::useDefaultShader = 0;
-        int SpriteRenderer::useVao = 0;
+        Shader SpriteRenderer::defaultShader;
 
-        SpriteRenderer::SpriteRenderer(const glm::mat4& p, glm::vec3 c)
-            : uniqueShader(), texture(), color(c), projection(p),
-            isUseTexture(false), isUseDefaultShader(true)
+        int SpriteRenderer::useVao = 0;
+        unsigned int SpriteRenderer::vao = 0;
+        unsigned int SpriteRenderer::vbo = 0;
+        unsigned int SpriteRenderer::ebo = 0;
+
+        SpriteRenderer::SpriteRenderer(glm::vec3 c)
+            : uniqueShader(), texture(), color(c), projection(),
+            isUseTexture(false), isUseDefaultShader(true), isInit(false)
         {
 
         }
 
         SpriteRenderer::SpriteRenderer(const Shader& s, const glm::mat4& p, glm::vec3 c)
             : uniqueShader(s), texture(), color(c), projection(p),
-            isUseTexture(false), isUseDefaultShader(false)
+            isUseTexture(false), isUseDefaultShader(false), isInit(false)
         {
 
+        }
+
+        SpriteRenderer::SpriteRenderer(const SpriteRenderer& other)
+            : uniqueShader(other.uniqueShader), texture(other.texture), color(other.color), 
+            projection(other.projection), isUseTexture(other.isUseTexture), isUseDefaultShader(other.isUseDefaultShader), 
+            isInit(false)
+        {
+            if (other.isInit)
+                Init();
+        }
+
+        SpriteRenderer& SpriteRenderer::operator=(const SpriteRenderer& other)
+        {
+            Terminate();
+            uniqueShader = other.uniqueShader;
+            texture = other.texture;
+            color = other.color;
+            projection = other.projection;
+            isUseTexture = other.isUseTexture;
+            isUseDefaultShader = other.isUseDefaultShader;
+
+            if (other.isInit)
+                Init();
+
+            return *this;
         }
 
         SpriteRenderer::~SpriteRenderer()
@@ -32,6 +62,11 @@ namespace Learning2DEngine
 
         void SpriteRenderer::Init()
         {
+            if (isInit)
+                return;
+
+            isInit = true;
+
             if (isUseDefaultShader)
             {
                 // If nothing use it
@@ -52,6 +87,11 @@ namespace Learning2DEngine
 
         void SpriteRenderer::Terminate()
         {
+            if (!isInit)
+                return;
+
+            isInit = false;
+
             if (isUseDefaultShader)
             {
                 --useDefaultShader;
@@ -111,11 +151,6 @@ namespace Learning2DEngine
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
-        }
-
-        void SpriteRenderer::SetProjection(const glm::mat4& p)
-        {
-            projection = p;
         }
 
         void SpriteRenderer::Draw(const System::Transform& transform)
