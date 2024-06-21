@@ -23,8 +23,9 @@ namespace Learning2DEngine
         void Text2DRenderer::Init()
         {
             auto& renderManager = RenderManager::GetInstance();
+            auto& resourceManager = ResourceManager::GetInstance();
 
-            textShader = ResourceManager::LoadShader("Learning2DEngine/Shaders/Text2D.vs", "Learning2DEngine/Shaders/Text2D.fs");
+            textShader = resourceManager.LoadShader("Learning2DEngine/Shaders/Text2D.vs", "Learning2DEngine/Shaders/Text2D.fs");
             textShader.Use();
             textShader.SetMatrix4(
                 "projection",
@@ -33,7 +34,7 @@ namespace Learning2DEngine
                     static_cast<float>(renderManager.GetResolution().GetWidth()),
                     static_cast<float>(renderManager.GetResolution().GetHeight()),
                     0.0f));
-            textShader.SetInteger("text", 0);
+            textShader.SetInteger("characterTexture", 0);
 
             unsigned int indices[] = {
                 0, 1, 3,
@@ -64,7 +65,7 @@ namespace Learning2DEngine
         void Text2DRenderer::Terminate()
         {
             Clear();
-
+            textShader.Destroy();
             glDeleteVertexArrays(1, &vao);
             glDeleteBuffers(1, &vbo);
             glDeleteBuffers(1, &ebo);
@@ -210,7 +211,7 @@ namespace Learning2DEngine
             CharacterMap& characterMap = characters[text.fontSizePair];
 
             textShader.Use();
-            textShader.SetVector3f("textColor", text.color);
+            textShader.SetVector3f("characterColor", text.color);
             glActiveTexture(GL_TEXTURE0);
             glBindVertexArray(vao);
 

@@ -36,9 +36,16 @@ namespace Learning2DEngine
 			void SetVSync(bool value);
 			void UpdateScreen();
 			void ClearScreen();
-			inline Resolution GetResolution() { return resolution; }
+			inline Resolution GetResolution() 
+			{
+				return resolution;
+			}
+
 			void SetClearColort(float r, float g, float b, float a);
-			inline glm::vec4 GetClearColort() { return clearColor; }
+			inline glm::vec4 GetClearColort()
+			{
+				return clearColor;
+			}
 
 			void AddKeyboardEvent(const System::EventHandler<int, int, int, int>::EventFunction func);
 			void RemoveKeyboardEvent(const System::EventHandler<int, int, int, int>::EventFunction func);

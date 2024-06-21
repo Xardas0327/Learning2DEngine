@@ -7,7 +7,6 @@
 
 #include "Learning2DEngine/System/ResourceManager.h"
 #include "game_object.h"
-#include "sprite_renderer.h"
 
 
 /// GameLevel holds all Tiles as part of a Breakout level and 
@@ -20,12 +19,12 @@ public:
     // constructor
     GameLevel() { }
     // loads level from file
-    void Load(const char* file, unsigned int levelWidth, unsigned int levelHeight);
+    void Load(const char* file, unsigned int levelWidth, unsigned int levelHeight, const glm::mat4& projection);
     // render level
-    void Draw(SpriteRenderer& renderer);
+    void Draw();
     // check if the level is completed (all non-solid tiles are destroyed)
     bool IsCompleted();
 private:
     // initialize level from tile data
-    void init(std::vector<std::vector<unsigned int>> tileData, unsigned int levelWidth, unsigned int levelHeight);
+    void init(std::vector<std::vector<unsigned int>> tileData, unsigned int levelWidth, unsigned int levelHeight, const glm::mat4& projection);
 };

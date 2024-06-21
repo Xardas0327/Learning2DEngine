@@ -155,6 +155,7 @@
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="Learning2DEngine\Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp" />
+    <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\System\Game.cpp" />
     <ClCompile Include="game_level.cpp" />
     <ClCompile Include="game_object.cpp" />
@@ -166,12 +167,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="particle_generator.cpp" />
     <ClCompile Include="post_processor.cpp" />
-    <ClCompile Include="sprite_renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ball_object.h" />
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
+    <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />
     <ClInclude Include="Learning2DEngine\System\InputStatus.h" />
     <ClInclude Include="Learning2DEngine\System\Log.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="Learning2DEngine\System\Singleton.h" />
     <ClInclude Include="game_level.h" />
     <ClInclude Include="game_object.h" />
+    <ClInclude Include="Learning2DEngine\System\Texture2DSettings.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
     <ClInclude Include="Learning2DEngine\System\FreeTypeCharacter.h" />
     <ClInclude Include="Learning2DEngine\System\Text.h" />
@@ -191,7 +193,6 @@
     <ClInclude Include="particle_generator.h" />
     <ClInclude Include="post_processor.h" />
     <ClInclude Include="power_up.h" />
-    <ClInclude Include="sprite_renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\arial.ttf" />
@@ -216,12 +217,12 @@
     <None Include="Assets\Levels\one.lvl" />
     <None Include="Assets\Levels\three.lvl" />
     <None Include="Assets\Levels\two.lvl" />
+    <None Include="Learning2DEngine\Shaders\DefaultSprite.fs" />
+    <None Include="Learning2DEngine\Shaders\DefaultSprite.vs" />
     <None Include="Shaders\particle.frag" />
     <None Include="Shaders\particle.vs" />
     <None Include="Shaders\post_processing.frag" />
     <None Include="Shaders\post_processing.vs" />
-    <None Include="Shaders\sprite.frag" />
-    <None Include="Shaders\sprite.vs" />
     <None Include="Learning2DEngine\Shaders\Text2D.fs" />
     <None Include="Learning2DEngine\Shaders\Text2D.vs" />
   </ItemGroup>

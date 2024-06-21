@@ -28,27 +28,27 @@ namespace Learning2DEngine
             /// <param name="file"></param>
             /// <param name="outSource"></param>
             /// <returns></returns>
-            static bool LoadShaderFile(const char* file, std::string& outSource);
+            bool LoadShaderFile(const char* file, std::string& outSource);
         public:
             /// <summary>
-            /// It won't be saved, that's why you can't get it with GetShader
+            /// It won't be saved, that's why you can't get it with GetShader and you have to destroy it manually
             /// </summary>
             /// <param name="file"></param>
             /// <param name="alpha"></param>
             /// <returns></returns>
-            static Render::Shader LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile = nullptr);
+            Render::Shader LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile = nullptr);
             Render::Shader LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, const std::string& name);
             Render::Shader GetShader(const std::string& name);
             bool IsShaderExist(const std::string& name);
             void DestroyShader(const std::string& name);
             /// <summary>
-            /// It won't be saved, that's why you can't get it with GetTexture
+            /// It won't be saved, that's why you can't get it with GetTexture and you have to destroy it manually
             /// </summary>
             /// <param name="file"></param>
             /// <param name="alpha"></param>
             /// <returns></returns>
-            static Render::Texture2D LoadTexture(const char* file, bool alpha);
-            Render::Texture2D LoadTexture(const char* file, bool alpha, const std::string& name);
+            Render::Texture2D LoadTexture(const char* file, const Texture2DSettings& settings);
+            Render::Texture2D LoadTexture(const char* file, const Texture2DSettings& settings, const std::string& name);
             Render::Texture2D GetTexture(const std::string& name);
             bool IsTextureExist(const std::string& name);
             void DestroyTexture2D(const std::string& name);

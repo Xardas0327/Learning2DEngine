@@ -18,9 +18,7 @@ public:
     float   Radius;
     bool    Stuck;
     bool    Sticky, PassThrough;
-    // constructor(s)
-    BallObject();
-    BallObject(glm::vec2 pos, float radius, glm::vec2 velocity, Learning2DEngine::Render::Texture2D sprite);
+    BallObject(glm::vec2 pos, float radius, glm::vec2 velocity, const Learning2DEngine::Render::SpriteRenderer& spriteRenderer);
     // moves the ball, keeping it constrained within the window bounds (except bottom edge); returns new position
     glm::vec2 Move(float dt, unsigned int window_width);
     // resets the ball to original state with given position and velocity

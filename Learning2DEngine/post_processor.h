@@ -5,7 +5,6 @@
 
 #include "Learning2DEngine/Render/Shader.h"
 #include "Learning2DEngine/Render/Texture2D.h"
-#include "sprite_renderer.h"
 
 
 // PostProcessor hosts all PostProcessing effects for the Breakout
