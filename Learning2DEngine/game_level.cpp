@@ -9,7 +9,7 @@ using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 
 
-void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int levelHeight, const glm::mat4& projection)
+void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int levelHeight)
 {
     // clear old data
     this->Bricks.clear();
@@ -30,7 +30,7 @@ void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int lev
             tileData.push_back(row);
         }
         if (tileData.size() > 0)
-            this->init(tileData, levelWidth, levelHeight, projection);
+            this->init(tileData, levelWidth, levelHeight);
     }
 }
 
@@ -49,7 +49,7 @@ bool GameLevel::IsCompleted()
     return true;
 }
 
-void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned int levelWidth, unsigned int levelHeight, const glm::mat4& projection)
+void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned int levelWidth, unsigned int levelHeight)
 {
     // calculate dimensions
     unsigned int height = tileData.size();
@@ -59,7 +59,6 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
     auto& resourceManager = ResourceManager::GetInstance();
 
     SpriteRenderer brickRenderer;
-    brickRenderer.SetProjection(projection);
 
     // initialize level tiles based on tileData		
     for (unsigned int y = 0; y < height; ++y)

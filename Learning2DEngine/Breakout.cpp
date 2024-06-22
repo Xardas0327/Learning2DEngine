@@ -29,7 +29,6 @@ PostProcessor* Effects;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
 
 float ShakeTime = 0.0f;
-glm::mat4 projection;
 
 const FontSizePair fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24);
 
@@ -62,7 +61,7 @@ void Breakout::Init()
     resourceManager.LoadShader("Shaders/particle.vs", "Shaders/particle.frag", nullptr, "particle");
     resourceManager.LoadShader("Shaders/post_processing.vs", "Shaders/post_processing.frag", nullptr, "postprocessing");
     // configure shaders
-    projection = glm::ortho(
+    Game::cameraProjection = glm::ortho(
         0.0f,
         static_cast<float>(resolution.GetWidth()),
         static_cast<float>(resolution.GetHeight()),
@@ -73,11 +72,11 @@ void Breakout::Init()
     auto sprite = resourceManager.GetShader("sprite");
     sprite.Use();
     sprite.SetInteger("image", 0);
-    sprite.SetMatrix4("projection", projection);
+    sprite.SetMatrix4("projection", cameraProjection);
     auto particle = resourceManager.GetShader("particle");
     particle.Use();
     particle.SetInteger("sprite", 0);
-    particle.SetMatrix4("projection", projection);
+    particle.SetMatrix4("projection", cameraProjection);
 
     Texture2DSettings alphaSettings;
     alphaSettings.internalFormat = GL_RGBA;
@@ -100,7 +99,6 @@ void Breakout::Init()
     // set render-specific controls
     BackgroundRenderer = new SpriteRenderer();
     BackgroundRenderer->Init();
-    BackgroundRenderer->SetProjection(projection);
     BackgroundRenderer->SetTexture(resourceManager.GetTexture("background"));
 
     Particles = new ParticleGenerator(
@@ -110,10 +108,10 @@ void Breakout::Init()
     );
     Effects = new PostProcessor(resourceManager.GetShader("postprocessing"), resolution.GetWidth(), resolution.GetHeight());
     // load levels
-    GameLevel one; one.Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight, projection);
-    GameLevel two; two.Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight, projection);
-    GameLevel three; three.Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight, projection);
-    GameLevel four; four.Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight, projection);
+    GameLevel one; one.Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
+    GameLevel two; two.Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
+    GameLevel three; three.Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
+    GameLevel four; four.Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
     this->Levels.push_back(one);
     this->Levels.push_back(two);
     this->Levels.push_back(three);
@@ -121,7 +119,6 @@ void Breakout::Init()
     this->Level = 0;
 
     SpriteRenderer spriteRenderer;
-    spriteRenderer.SetProjection(projection);
 
     //Player
     glm::vec2 playerPos = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
@@ -537,13 +534,13 @@ void Breakout::ResetLevel()
     const int middleHeight = resolution.GetHeight() / 2;
 
     if (Level == 0)
-        Levels[0].Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight, projection);
+        Levels[0].Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
     else if (Level == 1)
-        Levels[1].Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight, projection);
+        Levels[1].Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
     else if (Level == 2)
-        Levels[2].Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight, projection);
+        Levels[2].Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
     else if (Level == 3)
-        Levels[3].Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight, projection);
+        Levels[3].Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
 
     Lives = 3;
 }
@@ -574,7 +571,6 @@ void Breakout::SpawnPowerUps(GameObject& block)
 {
     auto& resourceManager = ResourceManager::GetInstance();
     SpriteRenderer powerUpRender;
-    powerUpRender.SetProjection(projection);
 
     if (ShouldSpawn(75)) // 1 in 75 chance
     {

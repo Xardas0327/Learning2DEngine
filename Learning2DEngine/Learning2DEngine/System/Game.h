@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include "InputStatus.h"
 #include "../Render/RenderManager.h"
 
@@ -49,6 +51,12 @@ namespace Learning2DEngine
             /// </summary>
             static float deltaTime;
 
+            /// <summary>
+            /// It has to be initialized.
+            /// It is glm::mat4(0.0f) by default.
+            /// </summary>
+            static glm::mat4 cameraProjection;
+
             virtual void Update() {};
             virtual void Render() {};
         public:
@@ -85,6 +93,11 @@ namespace Learning2DEngine
             inline float GetTimeScale()
             {
                 return timeScale;
+            }
+
+            inline static glm::mat4 GetCameraProjection()
+            {
+                return cameraProjection;
             }
         };
     }

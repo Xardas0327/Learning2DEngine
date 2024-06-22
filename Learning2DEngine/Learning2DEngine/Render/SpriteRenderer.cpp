@@ -3,6 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../System/ResourceManager.h"
+#include "../System/Game.h"
 
 namespace Learning2DEngine
 {
@@ -17,14 +18,14 @@ namespace Learning2DEngine
         unsigned int SpriteRenderer::ebo = 0;
 
         SpriteRenderer::SpriteRenderer(glm::vec3 c)
-            : uniqueShader(), texture(), color(c), projection(),
+            : uniqueShader(), texture(), color(c),
             isUseTexture(false), isUseDefaultShader(true), isInit(false)
         {
 
         }
 
-        SpriteRenderer::SpriteRenderer(const Shader& s, const glm::mat4& p, glm::vec3 c)
-            : uniqueShader(s), texture(), color(c), projection(p),
+        SpriteRenderer::SpriteRenderer(const Shader& s, glm::vec3 c)
+            : uniqueShader(s), texture(), color(c),
             isUseTexture(false), isUseDefaultShader(false), isInit(false)
         {
 
@@ -32,7 +33,7 @@ namespace Learning2DEngine
 
         SpriteRenderer::SpriteRenderer(const SpriteRenderer& other)
             : uniqueShader(other.uniqueShader), texture(other.texture), color(other.color), 
-            projection(other.projection), isUseTexture(other.isUseTexture), isUseDefaultShader(other.isUseDefaultShader), 
+            isUseTexture(other.isUseTexture), isUseDefaultShader(other.isUseDefaultShader), 
             isInit(false)
         {
             if (other.isInit)
@@ -45,7 +46,6 @@ namespace Learning2DEngine
             uniqueShader = other.uniqueShader;
             texture = other.texture;
             color = other.color;
-            projection = other.projection;
             isUseTexture = other.isUseTexture;
             isUseDefaultShader = other.isUseDefaultShader;
 
@@ -171,7 +171,7 @@ namespace Learning2DEngine
             model = glm::scale(model, glm::vec3(transform.scale, 1.0f)); // last scale
 
             selectedShader.SetMatrix4("model", model);
-            selectedShader.SetMatrix4("projection", projection);
+            selectedShader.SetMatrix4("projection", System::Game::GetCameraProjection());
             selectedShader.SetVector3f("spriteColor", color);
             selectedShader.SetInteger("isUseTexture", isUseTexture);
 

@@ -11,6 +11,7 @@ namespace Learning2DEngine
     {
         InputStatus Game::inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
         float Game::deltaTime = 0.0f;
+        glm::mat4 Game::cameraProjection = glm::mat4(0.0f);
 
         Game::Game()
             : lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT)

@@ -16,7 +16,6 @@ namespace Learning2DEngine
             Shader uniqueShader;
             Texture2D texture;
             glm::vec3 color;
-            glm::mat4 projection;
             bool isUseTexture;
             bool isUseDefaultShader;
             bool isInit;
@@ -43,7 +42,7 @@ namespace Learning2DEngine
             void InitVao();
         public:
             SpriteRenderer(glm::vec3 color = glm::vec3(1.0f));
-            SpriteRenderer(const Shader& shader, const glm::mat4& projection, glm::vec3 color = glm::vec3(1.0f));
+            SpriteRenderer(const Shader& shader, glm::vec3 color = glm::vec3(1.0f));
             SpriteRenderer(const SpriteRenderer& other);
             SpriteRenderer& operator=(const SpriteRenderer& other);
             ~SpriteRenderer();
@@ -52,11 +51,6 @@ namespace Learning2DEngine
             void Terminate();
 
             void Draw(const System::Transform& transform);
-
-            inline void SetProjection(const glm::mat4& projection)
-            {
-                this->projection = projection;
-            }
 
             inline Texture2D GetTexture()
             {
