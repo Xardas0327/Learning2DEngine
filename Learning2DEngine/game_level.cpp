@@ -70,8 +70,8 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
             {
                 glm::vec2 pos(unit_width * x, unit_height * y);
                 glm::vec2 size(unit_width, unit_height);
-                brickRenderer.SetTexture(resourceManager.GetTexture("block_solid"));
-                brickRenderer.SetColor(glm::vec3(0.8f, 0.8f, 0.7f));
+                brickRenderer.texture = new Texture2D(resourceManager.GetTexture("block_solid"));
+                brickRenderer.color = glm::vec3(0.8f, 0.8f, 0.7f);
                 GameObject obj(pos, size, brickRenderer);
                 obj.IsSolid = true;
                 this->Bricks.push_back(obj);
@@ -91,8 +91,8 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
                 glm::vec2 pos(unit_width * x, unit_height * y);
                 glm::vec2 size(unit_width, unit_height);
 
-                brickRenderer.SetTexture(resourceManager.GetTexture("block"));
-                brickRenderer.SetColor(color);
+                brickRenderer.texture = new Texture2D(resourceManager.GetTexture("block"));
+                brickRenderer.color = color;
                 this->Bricks.push_back(GameObject(pos, size, brickRenderer));
             }
         }

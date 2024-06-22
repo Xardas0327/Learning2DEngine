@@ -18,36 +18,57 @@ namespace Learning2DEngine
         unsigned int SpriteRenderer::ebo = 0;
 
         SpriteRenderer::SpriteRenderer(glm::vec3 c)
-            : uniqueShader(), texture(), color(c),
-            isUseTexture(false), isUseDefaultShader(true), isInit(false)
+            : uniqueShader(nullptr), texture(nullptr), color(c), isInit(false)
         {
 
         }
 
         SpriteRenderer::SpriteRenderer(const Shader& s, glm::vec3 c)
-            : uniqueShader(s), texture(), color(c),
-            isUseTexture(false), isUseDefaultShader(false), isInit(false)
+            : texture(nullptr), color(c), isInit(false)
         {
-
+            uniqueShader = new Shader(s);
         }
 
         SpriteRenderer::SpriteRenderer(const SpriteRenderer& other)
-            : uniqueShader(other.uniqueShader), texture(other.texture), color(other.color), 
-            isUseTexture(other.isUseTexture), isUseDefaultShader(other.isUseDefaultShader), 
-            isInit(false)
+            : uniqueShader(nullptr), texture(nullptr), color(other.color), isInit(false)
         {
+            if (other.uniqueShader != nullptr)
+            {
+                uniqueShader = new Shader(*other.uniqueShader);
+            }
+            if (other.texture != nullptr)
+            {
+                texture = new Texture2D(*other.texture);
+            }
+
             if (other.isInit)
                 Init();
         }
 
         SpriteRenderer& SpriteRenderer::operator=(const SpriteRenderer& other)
         {
-            Terminate();
-            uniqueShader = other.uniqueShader;
-            texture = other.texture;
+            if(this == &other)
+                return *this;
+
+            Destroy();
+            if (IsUseUniqueShader())
+            {
+                delete uniqueShader;
+            }
+            if (other.uniqueShader != nullptr)
+            {
+                uniqueShader = new Shader(*other.uniqueShader);
+            }
+
+            if (IsUseTexture())
+            {
+                delete texture;
+            }
+            if (other.texture != nullptr)
+            {
+                texture = new Texture2D(*other.texture);
+            }
             color = other.color;
-            isUseTexture = other.isUseTexture;
-            isUseDefaultShader = other.isUseDefaultShader;
 
             if (other.isInit)
                 Init();
@@ -57,7 +78,15 @@ namespace Learning2DEngine
 
         SpriteRenderer::~SpriteRenderer()
         {
+            if (IsUseUniqueShader())
+            {
+                delete uniqueShader;
+            }
 
+            if (IsUseTexture())
+            {
+                delete texture;
+            }
         }
 
         void SpriteRenderer::Init()
@@ -67,7 +96,7 @@ namespace Learning2DEngine
 
             isInit = true;
 
-            if (isUseDefaultShader)
+            if (!IsUseUniqueShader())
             {
                 // If nothing use it
                 if (!SpriteRenderer::useDefaultShader)
@@ -85,14 +114,16 @@ namespace Learning2DEngine
             ++SpriteRenderer::useVao;
         }
 
-        void SpriteRenderer::Terminate()
+        void SpriteRenderer::Destroy()
         {
             if (!isInit)
                 return;
 
             isInit = false;
 
-            if (isUseDefaultShader)
+            // It doesn't destroy the uniqueShader,
+            // because other things could use it
+            if (!IsUseUniqueShader())
             {
                 --SpriteRenderer::useDefaultShader;
 
@@ -155,7 +186,7 @@ namespace Learning2DEngine
 
         void SpriteRenderer::Draw(const System::Transform& transform)
         {
-            Shader& selectedShader = isUseDefaultShader ? SpriteRenderer::defaultShader : uniqueShader;
+            Shader& selectedShader = IsUseUniqueShader() ?  *uniqueShader :SpriteRenderer::defaultShader;
 
             selectedShader.Use();
             glm::mat4 model = glm::mat4(1.0f);
@@ -173,12 +204,12 @@ namespace Learning2DEngine
             selectedShader.SetMatrix4("model", model);
             selectedShader.SetMatrix4("projection", System::Game::GetCameraProjection());
             selectedShader.SetVector3f("spriteColor", color);
-            selectedShader.SetInteger("isUseTexture", isUseTexture);
+            selectedShader.SetInteger("isUseTexture", IsUseTexture());
 
-            if (isUseTexture)
+            if (IsUseTexture())
             {
                 glActiveTexture(GL_TEXTURE0);
-                texture.Bind();
+                texture->Bind();
             }
 
             glBindVertexArray(SpriteRenderer::vao);

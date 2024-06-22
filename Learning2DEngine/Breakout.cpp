@@ -40,7 +40,7 @@ Breakout::Breakout() :
 
 Breakout::~Breakout()
 {
-    BackgroundRenderer->Terminate();
+    BackgroundRenderer->Destroy();
     delete BackgroundRenderer;
     delete Player;
     delete Ball;
@@ -99,7 +99,7 @@ void Breakout::Init()
     // set render-specific controls
     BackgroundRenderer = new SpriteRenderer();
     BackgroundRenderer->Init();
-    BackgroundRenderer->SetTexture(resourceManager.GetTexture("background"));
+    BackgroundRenderer->texture = new Texture2D(resourceManager.GetTexture("background"));
 
     Particles = new ParticleGenerator(
         resourceManager.GetShader("particle"),
@@ -122,12 +122,12 @@ void Breakout::Init()
 
     //Player
     glm::vec2 playerPos = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
-    spriteRenderer.SetTexture(resourceManager.GetTexture("paddle"));
+    spriteRenderer.texture = new Texture2D(resourceManager.GetTexture("paddle"));
     Player = new GameObject(playerPos, PLAYER_SIZE, spriteRenderer);
 
     //Ball
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
-    spriteRenderer.SetTexture(resourceManager.GetTexture("face"));
+    spriteRenderer.texture = new Texture2D(resourceManager.GetTexture("face"));
     Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, spriteRenderer);
 
     //Sounds
@@ -353,12 +353,12 @@ void ActivatePowerUp(PowerUp& powerUp)
     else if (powerUp.Type == "sticky")
     {
         Ball->Sticky = true;
-        Player->renderer.SetColor(glm::vec3(1.0f, 0.5f, 1.0f));
+        Player->renderer.color = glm::vec3(1.0f, 0.5f, 1.0f);
     }
     else if (powerUp.Type == "pass-through")
     {
         Ball->PassThrough = true;
-        Ball->renderer.SetColor(glm::vec3(1.0f, 0.5f, 0.5f));
+        Ball->renderer.color = glm::vec3(1.0f, 0.5f, 0.5f);
     }
     else if (powerUp.Type == "pad-size-increase")
     {
@@ -557,8 +557,8 @@ void Breakout::ResetPlayer()
     // also disable all active powerups
     Effects->Chaos = Effects->Confuse = false;
     Ball->PassThrough = Ball->Sticky = false;
-    Player->renderer.SetColor(glm::vec3(1.0f));
-    Ball->renderer.SetColor(glm::vec3(1.0f));
+    Player->renderer.color = glm::vec3(1.0f);
+    Ball->renderer.color = glm::vec3(1.0f);
 }
 
 bool ShouldSpawn(int chance)
@@ -574,8 +574,8 @@ void Breakout::SpawnPowerUps(GameObject& block)
 
     if (ShouldSpawn(75)) // 1 in 75 chance
     {
-        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_speed"));
-        powerUpRender.SetColor(glm::vec3(0.5f, 0.5f, 1.0f));
+        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_speed"));
+        powerUpRender.color = glm::vec3(0.5f, 0.5f, 1.0f);
         PowerUps.push_back(
             PowerUp("speed", 0.0f, block.transform.position, powerUpRender)
         );
@@ -583,40 +583,40 @@ void Breakout::SpawnPowerUps(GameObject& block)
         
     if (ShouldSpawn(75))
     {
-        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_sticky"));
-        powerUpRender.SetColor(glm::vec3(1.0f, 0.5f, 1.0f));
+        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_sticky"));
+        powerUpRender.color = glm::vec3(1.0f, 0.5f, 1.0f);
         PowerUps.push_back(
             PowerUp("sticky", 20.0f, block.transform.position, powerUpRender)
         );
     }
     if (ShouldSpawn(75))
     {
-        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_passthrough"));
-        powerUpRender.SetColor(glm::vec3(0.5f, 1.0f, 0.5f));
+        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_passthrough"));
+        powerUpRender.color = glm::vec3(0.5f, 1.0f, 0.5f);
         PowerUps.push_back(
             PowerUp("pass-through", 10.0f, block.transform.position, powerUpRender)
         );
     }
     if (ShouldSpawn(75))
     {
-        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_increase"));
-        powerUpRender.SetColor(glm::vec3(1.0f, 0.6f, 0.4));
+        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_increase"));
+        powerUpRender.color = glm::vec3(1.0f, 0.6f, 0.4);
         PowerUps.push_back(
             PowerUp("pad-size-increase", 0.0f, block.transform.position, powerUpRender)
         );
     }
     if (ShouldSpawn(15)) // negative powerups should spawn more often
     {
-        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_confuse"));
-        powerUpRender.SetColor(glm::vec3(1.0f, 0.3f, 0.3f));
+        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_confuse"));
+        powerUpRender.color = glm::vec3(1.0f, 0.3f, 0.3f);
         PowerUps.push_back(
             PowerUp("confuse", 15.0f, block.transform.position, powerUpRender)
         );
     }
     if (ShouldSpawn(15))
     {
-        powerUpRender.SetTexture(resourceManager.GetTexture("powerup_chaos"));
-        powerUpRender.SetColor(glm::vec3(0.9f, 0.25f, 0.25f));
+        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_chaos"));
+        powerUpRender.color = glm::vec3(0.9f, 0.25f, 0.25f);
         PowerUps.push_back(
             PowerUp("chaos", 15.0f, block.transform.position, powerUpRender)
         );
@@ -653,7 +653,7 @@ void Breakout::UpdatePowerUps()
                     if (!IsOtherPowerUpActive(this->PowerUps, "sticky"))
                     {	// only reset if no other PowerUp of type sticky is active
                         Ball->Sticky = false;
-                        Player->renderer.SetColor(glm::vec3(1.0f));
+                        Player->renderer.color = glm::vec3(1.0f);
                     }
                 }
                 else if (powerUp.Type == "pass-through")
@@ -661,7 +661,7 @@ void Breakout::UpdatePowerUps()
                     if (!IsOtherPowerUpActive(this->PowerUps, "pass-through"))
                     {	// only reset if no other PowerUp of type pass-through is active
                         Ball->PassThrough = false;
-                        Ball->renderer.SetColor(glm::vec3(1.0f));
+                        Ball->renderer.color = glm::vec3(1.0f);
                     }
                 }
                 else if (powerUp.Type == "confuse")
