@@ -70,19 +70,19 @@ namespace Learning2DEngine
             if (isUseDefaultShader)
             {
                 // If nothing use it
-                if (!useDefaultShader)
+                if (!SpriteRenderer::useDefaultShader)
                 {
                     InitDefaultShader();
                 }
-                ++useDefaultShader;
+                ++SpriteRenderer::useDefaultShader;
             }
 
             // If nothing use it
-            if (!useVao)
+            if (!SpriteRenderer::useVao)
             {
                 InitVao();
             }
-            ++useVao;
+            ++SpriteRenderer::useVao;
         }
 
         void SpriteRenderer::Terminate()
@@ -94,29 +94,29 @@ namespace Learning2DEngine
 
             if (isUseDefaultShader)
             {
-                --useDefaultShader;
+                --SpriteRenderer::useDefaultShader;
 
                 // If nothing use it
-                if (!useDefaultShader)
+                if (!SpriteRenderer::useDefaultShader)
                 {
-                    defaultShader.Destroy();
+                    SpriteRenderer::defaultShader.Destroy();
                 }
             }
 
-            --useVao;
-            if (!useVao)
+            --SpriteRenderer::useVao;
+            if (!SpriteRenderer::useVao)
             {
-                glDeleteVertexArrays(1, &vao);
-                glDeleteBuffers(1, &vbo);
-                glDeleteBuffers(1, &ebo);
+                glDeleteVertexArrays(1, &SpriteRenderer::vao);
+                glDeleteBuffers(1, &SpriteRenderer::vbo);
+                glDeleteBuffers(1, &SpriteRenderer::ebo);
             }
         }
 
         void SpriteRenderer::InitDefaultShader()
         {
             auto& resourceManager = System::ResourceManager::GetInstance();
-            defaultShader = resourceManager.LoadShader("Learning2DEngine/Shaders/DefaultSprite.vs", "Learning2DEngine/Shaders/DefaultSprite.fs");
-            defaultShader.SetInteger("spriteTexture", 0);
+            SpriteRenderer::defaultShader = resourceManager.LoadShader("Learning2DEngine/Shaders/DefaultSprite.vs", "Learning2DEngine/Shaders/DefaultSprite.fs");
+            SpriteRenderer::defaultShader.SetInteger("spriteTexture", 0);
         }
 
         void SpriteRenderer::InitVao()
@@ -134,14 +134,14 @@ namespace Learning2DEngine
                1, 2, 3
             };
 
-            glGenVertexArrays(1, &vao);
-            glGenBuffers(1, &vbo);
-            glGenBuffers(1, &ebo);
-            glBindVertexArray(vao);
-            glBindBuffer(GL_ARRAY_BUFFER, vbo);
+            glGenVertexArrays(1, &SpriteRenderer::vao);
+            glGenBuffers(1, &SpriteRenderer::vbo);
+            glGenBuffers(1, &SpriteRenderer::ebo);
+            glBindVertexArray(SpriteRenderer::vao);
+            glBindBuffer(GL_ARRAY_BUFFER, SpriteRenderer::vbo);
             glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, SpriteRenderer::ebo);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
             glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
@@ -155,7 +155,7 @@ namespace Learning2DEngine
 
         void SpriteRenderer::Draw(const System::Transform& transform)
         {
-            Shader& selectedShader = useDefaultShader ? defaultShader : uniqueShader;
+            Shader& selectedShader = isUseDefaultShader ? SpriteRenderer::defaultShader : uniqueShader;
 
             selectedShader.Use();
             glm::mat4 model = glm::mat4(1.0f);
@@ -181,7 +181,7 @@ namespace Learning2DEngine
                 texture.Bind();
             }
 
-            glBindVertexArray(vao);
+            glBindVertexArray(SpriteRenderer::vao);
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
             glBindTexture(GL_TEXTURE_2D, 0);
