@@ -162,13 +162,13 @@ namespace Learning2DEngine
             // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
             model = glm::translate(model, glm::vec3(transform.position, 0.0f));  
             // move origin of rotation to center of quad
-            model = glm::translate(model, glm::vec3(0.5f * transform.size.x, 0.5f * transform.size.y, 0.0f));
+            model = glm::translate(model, glm::vec3(0.5f * transform.scale.x, 0.5f * transform.scale.y, 0.0f));
             // then rotate
             model = glm::rotate(model, glm::radians(transform.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
             // move origin back
-            model = glm::translate(model, glm::vec3(-0.5f * transform.size.x, -0.5f * transform.size.y, 0.0f));
+            model = glm::translate(model, glm::vec3(-0.5f * transform.scale.x, -0.5f * transform.scale.y, 0.0f));
             // then rotate
-            model = glm::scale(model, glm::vec3(transform.size, 1.0f)); // last scale
+            model = glm::scale(model, glm::vec3(transform.scale, 1.0f)); // last scale
 
             selectedShader.SetMatrix4("model", model);
             selectedShader.SetMatrix4("projection", projection);

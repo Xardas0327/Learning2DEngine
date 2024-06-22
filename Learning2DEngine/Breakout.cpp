@@ -234,7 +234,7 @@ void Breakout::ProcessInput(float deltaTime)
         }
         if (inputKeys[GLFW_KEY_D])
         {
-            if (Player->transform.position.x <= RenderManager::GetInstance().GetResolution().GetWidth() - Player->transform.size.x)
+            if (Player->transform.position.x <= RenderManager::GetInstance().GetResolution().GetWidth() - Player->transform.scale.x)
             {
                 Player->transform.position.x += velocity;
                 if (Ball->Stuck)
@@ -365,7 +365,7 @@ void ActivatePowerUp(PowerUp& powerUp)
     }
     else if (powerUp.Type == "pad-size-increase")
     {
-        Player->transform.size.x += 50;
+        Player->transform.scale.x += 50;
     }
     else if (powerUp.Type == "confuse")
     {
@@ -382,11 +382,11 @@ void ActivatePowerUp(PowerUp& powerUp)
 bool CheckCollision(GameObject& one, GameObject& two) // AABB - AABB collision
 {
     // collision x-axis?
-    bool collisionX = one.transform.position.x + one.transform.size.x >= two.transform.position.x &&
-        two.transform.position.x + two.transform.size.x >= one.transform.position.x;
+    bool collisionX = one.transform.position.x + one.transform.scale.x >= two.transform.position.x &&
+        two.transform.position.x + two.transform.scale.x >= one.transform.position.x;
     // collision y-axis?
-    bool collisionY = one.transform.position.y + one.transform.size.y >= two.transform.position.y &&
-        two.transform.position.y + two.transform.size.y >= one.transform.position.y;
+    bool collisionY = one.transform.position.y + one.transform.scale.y >= two.transform.position.y &&
+        two.transform.position.y + two.transform.scale.y >= one.transform.position.y;
     // collision only if on both axes
     return collisionX && collisionY;
 }
@@ -419,7 +419,7 @@ Collision CheckCollision(BallObject& one, GameObject& two) // AABB - Circle coll
     // get center point circle first 
     glm::vec2 center(one.transform.position + one.Radius);
     // calculate AABB info (center, half-extents)
-    glm::vec2 aabb_half_extents(two.transform.size.x / 2.0f, two.transform.size.y / 2.0f);
+    glm::vec2 aabb_half_extents(two.transform.scale.x / 2.0f, two.transform.scale.y / 2.0f);
     glm::vec2 aabb_center(
         two.transform.position.x + aabb_half_extents.x,
         two.transform.position.y + aabb_half_extents.y
@@ -513,9 +513,9 @@ void Breakout::DoCollisions()
     if (!Ball->Stuck && std::get<0>(result))
     {
         // check where it hit the board, and change velocity based on where it hit the board
-        float centerBoard = Player->transform.position.x + Player->transform.size.x / 2.0f;
+        float centerBoard = Player->transform.position.x + Player->transform.scale.x / 2.0f;
         float distance = (Ball->transform.position.x + Ball->Radius) - centerBoard;
-        float percentage = distance / (Player->transform.size.x / 2.0f);
+        float percentage = distance / (Player->transform.scale.x / 2.0f);
         // then move accordingly
         float strength = 2.0f;
         glm::vec2 oldVelocity = Ball->Velocity;
@@ -553,7 +553,7 @@ void Breakout::ResetPlayer()
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
 
     // reset player/ball stats
-    Player->transform.size = PLAYER_SIZE;
+    Player->transform.scale = PLAYER_SIZE;
     Player->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
     Ball->Reset(Player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
 
