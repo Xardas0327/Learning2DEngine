@@ -36,8 +36,8 @@ namespace Learning2DEngine
                 return;
             }
             glfwMakeContextCurrent(window);
-            glfwSetKeyCallback(window, CallbackUpdateKeyboardMouse);
-            glfwSetFramebufferSizeCallback(window, CallbackUpdateFramebufferSize);
+            glfwSetKeyCallback(window, RenderManager::CallbackUpdateKeyboardMouse);
+            glfwSetFramebufferSizeCallback(window, RenderManager::CallbackUpdateFramebufferSize);
 
             if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             {

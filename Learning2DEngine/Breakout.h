@@ -44,16 +44,16 @@ private:
     Learning2DEngine::System::Text  winText;
     Learning2DEngine::System::Text  retryText;
 protected:
-    void Update(float deltaTime) override;
+    void Update() override;
     void Render() override;
-    void ProcessInput(float deltaTime);
+    void ProcessInput();
     void DoCollisions();
 
     void ResetLevel();
     void ResetPlayer();
 
     void SpawnPowerUps(GameObject& block);
-    void UpdatePowerUps(float deltaTime);
+    void UpdatePowerUps();
 public:
     Breakout();
     ~Breakout();

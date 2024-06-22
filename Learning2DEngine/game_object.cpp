@@ -10,7 +10,7 @@ GameObject::GameObject(glm::vec2 pos, glm::vec2 size, const Learning2DEngine::Re
 
 GameObject::~GameObject()
 {
-    renderer.Terminate();
+    renderer.Destroy();
 }
 
 void GameObject::Draw()

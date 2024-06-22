@@ -13,12 +13,7 @@ namespace Learning2DEngine
         class SpriteRenderer
         {
         private:
-            Shader uniqueShader;
-            Texture2D texture;
-            glm::vec3 color;
-            glm::mat4 projection;
-            bool isUseTexture;
-            bool isUseDefaultShader;
+            Shader* uniqueShader;
             bool isInit;
 
             /// <summary>
@@ -41,48 +36,28 @@ namespace Learning2DEngine
 
             void InitDefaultShader();
             void InitVao();
+            inline bool IsUseUniqueShader()
+            {
+                return uniqueShader != nullptr;
+            }
+            inline bool IsUseTexture()
+            {
+                return texture != nullptr;
+            }
         public:
+            Texture2D* texture;
+            glm::vec3 color;
+
             SpriteRenderer(glm::vec3 color = glm::vec3(1.0f));
-            SpriteRenderer(const Shader& shader, const glm::mat4& projection, glm::vec3 color = glm::vec3(1.0f));
+            SpriteRenderer(const Shader& shader, glm::vec3 color = glm::vec3(1.0f));
             SpriteRenderer(const SpriteRenderer& other);
             SpriteRenderer& operator=(const SpriteRenderer& other);
             ~SpriteRenderer();
 
             void Init();
-            void Terminate();
+            void Destroy();
 
             void Draw(const System::Transform& transform);
-
-            inline void SetProjection(const glm::mat4& projection)
-            {
-                this->projection = projection;
-            }
-
-            inline Texture2D GetTexture()
-            {
-                return texture;
-            }
-
-            inline void ClearTexture()
-            {
-                isUseTexture = false;
-            }
-
-            inline void SetTexture(const Texture2D& texture)
-            {
-                isUseTexture = true;
-                this->texture = texture;
-            }
-
-            inline glm::vec3 GetColor()
-            {
-                return color;
-            }
-
-            inline void SetColor(const glm::vec3& color)
-            {
-                this->color = color;
-            }
         };
     }
 }

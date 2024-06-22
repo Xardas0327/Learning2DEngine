@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include "InputStatus.h"
 #include "../Render/RenderManager.h"
 
@@ -7,7 +9,7 @@
 * The Function order in the Run() (in a frame):
 *    Calculate deltaTime
 *    Refresh Keyboard and Mouse events
-* 1. Update(float deltaTime)
+* 1. Update()
 *    Clear Screen to default color
 * 2. Render()
 *    Update Screen
@@ -30,7 +32,6 @@ namespace Learning2DEngine
         class Game
         {
         private:
-            float deltaTime;
             float lastFrame;
             float timeScale;
 
@@ -44,7 +45,19 @@ namespace Learning2DEngine
         protected:
             static InputStatus inputKeys[INPUT_KEY_SIZE];
 
-            virtual void Update(float deltaTime) {};
+            /// <summary>
+            /// It is multiplied by timeScale.
+            /// Before the Game::Run(), it is 0.0f.
+            /// </summary>
+            static float deltaTime;
+
+            /// <summary>
+            /// It has to be initialized.
+            /// It is glm::mat4(0.0f) by default.
+            /// </summary>
+            static glm::mat4 cameraProjection;
+
+            virtual void Update() {};
             virtual void Render() {};
         public:
             Game();
@@ -80,6 +93,11 @@ namespace Learning2DEngine
             inline float GetTimeScale()
             {
                 return timeScale;
+            }
+
+            inline static glm::mat4 GetCameraProjection()
+            {
+                return cameraProjection;
             }
         };
     }

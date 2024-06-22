@@ -59,7 +59,7 @@ namespace Learning2DEngine
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
 
-            renderManager.AddFramebufferSizeEvent(CallbackRefreshScreenResolution);
+            renderManager.AddFramebufferSizeEvent(Text2DRenderer::CallbackRefreshScreenResolution);
         }
 
         void Text2DRenderer::Terminate()

@@ -20,10 +20,10 @@ glm::vec2 BallObject::Move(float dt, unsigned int window_width)
             this->Velocity.x = -this->Velocity.x;
             this->transform.position.x = 0.0f;
         }
-        else if (this->transform.position.x + this->transform.size.x >= window_width)
+        else if (this->transform.position.x + this->transform.scale.x >= window_width)
         {
             this->Velocity.x = -this->Velocity.x;
-            this->transform.position.x = window_width - this->transform.size.x;
+            this->transform.position.x = window_width - this->transform.scale.x;
         }
         if (this->transform.position.y <= 0.0f)
         {
