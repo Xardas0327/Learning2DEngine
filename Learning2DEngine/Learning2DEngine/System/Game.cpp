@@ -10,9 +10,10 @@ namespace Learning2DEngine
     namespace System
     {
         InputStatus Game::inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
+        float Game::deltaTime = 0.0f;
 
-        Game::Game() :
-            deltaTime(0.0f), lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT)
+        Game::Game()
+            : lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT)
         {
         }
 
@@ -29,7 +30,7 @@ namespace Learning2DEngine
 
         void Game::Init()
         {
-            RenderManager::GetInstance().AddKeyboardEvent(CallbackRefreshKeyboardMouse);
+            RenderManager::GetInstance().AddKeyboardEvent(Game::CallbackRefreshKeyboardMouse);
         }
 
         void Game::Terminate()
@@ -46,12 +47,12 @@ namespace Learning2DEngine
                 {
                     // Calc deltaTime
                     float currentFrame = glfwGetTime();
-                    deltaTime = currentFrame - lastFrame;
+                    Game::deltaTime = (currentFrame - lastFrame) * timeScale;
                     lastFrame = currentFrame;
 
                     UpdateKeyboardMouseEvents();
 
-                    Update(deltaTime * timeScale);
+                    Update();
 
                     renderManager.ClearScreen();
                     Render();
@@ -82,13 +83,13 @@ namespace Learning2DEngine
                 switch (action)
                 {
                 case GLFW_RELEASE:
-                    inputKeys[key] = InputStatus::KEY_UP;
+                    Game::inputKeys[key] = InputStatus::KEY_UP;
                     break;
                 case GLFW_PRESS:
-                    inputKeys[key] = InputStatus::KEY_DOWN;
+                    Game::inputKeys[key] = InputStatus::KEY_DOWN;
                     break;
                 case GLFW_REPEAT:
-                    inputKeys[key] = InputStatus::KEY_HOLD;
+                    Game::inputKeys[key] = InputStatus::KEY_HOLD;
                     break;
                 default:
                     LOG_WARNING("GAME: Unknow input action: " + action);
@@ -100,8 +101,8 @@ namespace Learning2DEngine
         {
             for (int i = 0; i < INPUT_KEY_SIZE; ++i)
             {
-                if(inputKeys[i] == InputStatus::KEY_DOWN)
-                    inputKeys[i] = InputStatus::KEY_HOLD;
+                if(Game::inputKeys[i] == InputStatus::KEY_DOWN)
+                    Game::inputKeys[i] = InputStatus::KEY_HOLD;
             }
         }
     }

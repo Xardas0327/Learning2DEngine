@@ -192,9 +192,9 @@ void Breakout::Terminate()
     Game::Terminate();
 }
 
-void Breakout::ProcessInput(float deltaTime)
+void Breakout::ProcessInput()
 {
-    if (inputKeys[GLFW_KEY_ESCAPE] == InputStatus::KEY_DOWN)
+    if (Game::inputKeys[GLFW_KEY_ESCAPE] == InputStatus::KEY_DOWN)
     {
         RenderManager::GetInstance().CloseWindow();
         return;
@@ -202,16 +202,16 @@ void Breakout::ProcessInput(float deltaTime)
 
     if (this->State == GAME_MENU)
     {
-        if (inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
+        if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
             this->State = GAME_ACTIVE;
         }
 
-        if (inputKeys[GLFW_KEY_W] == InputStatus::KEY_DOWN)
+        if (Game::inputKeys[GLFW_KEY_W] == InputStatus::KEY_DOWN)
         {
             this->Level = (this->Level + 1) % 4;
         }
-        if (inputKeys[GLFW_KEY_S] == InputStatus::KEY_DOWN)
+        if (Game::inputKeys[GLFW_KEY_S] == InputStatus::KEY_DOWN)
         {
             if (this->Level > 0)
                 --this->Level;
@@ -221,9 +221,9 @@ void Breakout::ProcessInput(float deltaTime)
     }
     if (this->State == GAME_ACTIVE)
     {
-        float velocity = PLAYER_VELOCITY * deltaTime;
+        float velocity = PLAYER_VELOCITY * Game::deltaTime;
         // move playerboard
-        if (inputKeys[GLFW_KEY_A])
+        if (Game::inputKeys[GLFW_KEY_A])
         {
             if (Player->transform.position.x >= 0.0f)
             {
@@ -232,7 +232,7 @@ void Breakout::ProcessInput(float deltaTime)
                     Ball->transform.position.x -= velocity;
             }
         }
-        if (inputKeys[GLFW_KEY_D])
+        if (Game::inputKeys[GLFW_KEY_D])
         {
             if (Player->transform.position.x <= RenderManager::GetInstance().GetResolution().GetWidth() - Player->transform.scale.x)
             {
@@ -241,13 +241,13 @@ void Breakout::ProcessInput(float deltaTime)
                     Ball->transform.position.x += velocity;
             }
         }
-        if (inputKeys[GLFW_KEY_SPACE])
+        if (Game::inputKeys[GLFW_KEY_SPACE])
             Ball->Stuck = false;
     }
 
     if (this->State == GAME_WIN)
     {
-        if (inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
+        if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
             Effects->Chaos = false;
             this->State = GAME_MENU;
@@ -255,20 +255,20 @@ void Breakout::ProcessInput(float deltaTime)
     }
 }
 
-void Breakout::Update(float deltaTime)
+void Breakout::Update()
 {
-    ProcessInput(deltaTime);
+    ProcessInput();
 
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
 
-    Ball->Move(deltaTime, resolution.GetWidth());
+    Ball->Move(Game::deltaTime, resolution.GetWidth());
     DoCollisions();
-    Particles->Update(deltaTime, *Ball, 1, glm::vec2(Ball->Radius / 2.0f));
-    UpdatePowerUps(deltaTime);
+    Particles->Update(Game::deltaTime, *Ball, 1, glm::vec2(Ball->Radius / 2.0f));
+    UpdatePowerUps();
 
     if (ShakeTime > 0.0f)
     {
-        ShakeTime -= deltaTime;
+        ShakeTime -= Game::deltaTime;
         if (ShakeTime <= 0.0f)
             Effects->Shake = false;
     }
@@ -638,14 +638,14 @@ bool IsOtherPowerUpActive(std::vector<PowerUp>& powerUps, std::string type)
     return false;
 }
 
-void Breakout::UpdatePowerUps(float deltaTime)
+void Breakout::UpdatePowerUps()
 {
     for (PowerUp& powerUp : this->PowerUps)
     {
-        powerUp.transform.position += powerUp.Velocity * deltaTime;
+        powerUp.transform.position += powerUp.Velocity * Game::deltaTime;
         if (powerUp.Activated)
         {
-            powerUp.Duration -= deltaTime;
+            powerUp.Duration -= Game::deltaTime;
 
             if (powerUp.Duration <= 0.0f)
             {

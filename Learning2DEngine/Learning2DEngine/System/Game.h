@@ -7,7 +7,7 @@
 * The Function order in the Run() (in a frame):
 *    Calculate deltaTime
 *    Refresh Keyboard and Mouse events
-* 1. Update(float deltaTime)
+* 1. Update()
 *    Clear Screen to default color
 * 2. Render()
 *    Update Screen
@@ -30,7 +30,6 @@ namespace Learning2DEngine
         class Game
         {
         private:
-            float deltaTime;
             float lastFrame;
             float timeScale;
 
@@ -44,7 +43,13 @@ namespace Learning2DEngine
         protected:
             static InputStatus inputKeys[INPUT_KEY_SIZE];
 
-            virtual void Update(float deltaTime) {};
+            /// <summary>
+            /// It is multiplied by timeScale.
+            /// Before the Game::Run(), it is 0.0f.
+            /// </summary>
+            static float deltaTime;
+
+            virtual void Update() {};
             virtual void Render() {};
         public:
             Game();
