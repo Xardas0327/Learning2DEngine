@@ -3,6 +3,8 @@
 #include <list>
 
 #include "Transform.h"
+#include "Log.h"
+#include "../Render/Renderer.h"
 
 namespace Learning2DEngine
 {
@@ -10,30 +12,38 @@ namespace Learning2DEngine
 	{
 		class Component;
 
-		class GameObject
+		class GameObject final
 		{
 		private:
 			std::list<Component*> components;
+			Render::Renderer* renderer;
 		public:
 			bool isActive;
 			Transform transform;
 
 			GameObject()
-				: isActive(true), transform(), components()
+				: isActive(true), transform(), components(), renderer(nullptr)
 			{
 			}
 
 			GameObject(Transform transform)
-				: isActive(true), transform(transform), components()
+				: isActive(true), transform(transform), components(), renderer(nullptr)
 			{
-
 			}
 
 			~GameObject()
 			{
 				for (const Component* component : components)
 				{
-					delete component;
+					if (component != nullptr)
+					{
+						delete component;
+					}
+				}
+
+				if (renderer != nullptr)
+				{
+					delete renderer;
 				}
 			}
 
@@ -50,7 +60,7 @@ namespace Learning2DEngine
 			TComponent* GetComponent()
 			{
 				TComponent* selectedComponent = nullptr;
-				for (const Component* component : components)
+				for (Component* component : components)
 				{
 					selectedComponent = dynamic_cast<TComponent*>(component);
 
@@ -60,29 +70,53 @@ namespace Learning2DEngine
 
 				return selectedComponent;
 			}
+
+			template <class TRenderer, class ...Params>
+			TRenderer* AddRenderer(Params... params)
+			{
+				if (renderer != nullptr)
+				{
+					delete renderer;
+					LOG_WARNING("GAMEOBJECT: The renderer was not null, that is why the previous renderer was deleted, before the new one was added.")
+				}
+
+				TComponent* component = new TComponent(this, params);
+				components.push_back(component);
+
+				return component;
+			}
+
+			template <class TRenderer>
+			TRenderer* GetRenderer()
+			{
+				if (renderer == nullptr)
+					return nullptr;
+
+				TRenderer* selectedRenderer = dynamic_cast<TRenderer*>(renderer);
+
+				return selectedRenderer;
+			}
 		};
 
 		/// <summary>
 		/// The classes, which are inherited from Component,
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
+		/// Moreover, It is recommand, that the constructor of the inherited class is private or protected and
+		/// only the GameObject can use this constructor.
 		/// </summary>
 		class Component
 		{
 			friend class GameObject;
-		private:
+		protected:
+			bool isActive;
+
 			Component(GameObject* gameObject)
 				: gameObject(gameObject), isActive(true)
 			{
 
 			}
-		protected:
-			bool isActive;
-			GameObject* gameObject;
 		public:
-			inline GameObject* GetGameObject()
-			{
-				return gameObject;
-			}
+			GameObject* const gameObject;
 
 			inline void SetActive(bool value)
 			{
@@ -95,13 +129,13 @@ namespace Learning2DEngine
 			}
 
 			/// <summary>
-			/// It check its GameObject too.
+			/// The Component and its GameObject are active or not.
 			/// </summary>
 			/// <returns></returns>
 			inline bool GetRealActive()
 			{
-				return gameObject != nullptr
-					&& gameObject->isActive && isActive;
+				return (gameObject != nullptr
+					&& gameObject->isActive && isActive);
 			}
 		};
 	}

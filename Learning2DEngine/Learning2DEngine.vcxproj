@@ -171,6 +171,8 @@
   <ItemGroup>
     <ClInclude Include="ball_object.h" />
     <ClInclude Include="Breakout.h" />
+    <ClInclude Include="BrickController.h" />
+    <ClInclude Include="Learning2DEngine\Render\Renderer.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />

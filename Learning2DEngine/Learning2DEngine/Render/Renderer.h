@@ -1,0 +1,28 @@
+#pragma once
+
+#include "../System/GameObject.h"
+
+namespace Learning2DEngine
+{
+    namespace Render
+    {
+        /// <summary>
+        /// The classes, which are inherited from Renderer,
+        /// have to have a constructor, which first parameter is GameObject* for gameObject member.
+        /// Moreover, It is recommand, that the constructor of the inherited class is private or protected and
+        /// only the GameObject can use this constructor.
+        /// </summary>
+        class Renderer : public virtual System::Component
+        {
+            friend class GameObject;
+        protected:
+            Renderer(System::GameObject* gameObject)
+                : Component(gameObject)
+            {
+
+            }
+        public:
+            virtual void Draw() = 0;
+        };
+    }
+}
