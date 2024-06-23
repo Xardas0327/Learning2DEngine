@@ -40,7 +40,7 @@ namespace Learning2DEngine
 			template <class TComponent, class ...Params>
 			TComponent* AddComponent(Params... params)
 			{
-				TComponent* component = new TComponent(params);
+				TComponent* component = new TComponent(this, params);
 				components.push_back(component);
 
 				return component;
@@ -62,18 +62,22 @@ namespace Learning2DEngine
 			}
 		};
 
+		/// <summary>
+		/// The classes, which are inherited from Component,
+		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
+		/// </summary>
 		class Component
 		{
 			friend class GameObject;
 		private:
-			bool isActive;
-			GameObject* gameObject;
-
 			Component(GameObject* gameObject)
 				: gameObject(gameObject), isActive(true)
 			{
 
 			}
+		protected:
+			bool isActive;
+			GameObject* gameObject;
 		public:
 			inline GameObject* GetGameObject()
 			{
