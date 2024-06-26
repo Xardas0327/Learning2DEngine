@@ -4,19 +4,18 @@
 
 #include "Transform.h"
 #include "Log.h"
+#include "Behaviour.h"
+#include "../Render/Renderer.h"
 
 namespace Learning2DEngine
 {
 	namespace System
 	{
-		class Renderer;
-		class Behaviour;
-
 		class GameObject final
 		{
 		private:
 			std::list<Behaviour*> behaviours;
-			Renderer* renderer;
+			Render::Renderer* renderer;
 		public:
 			bool isActive;
 			Transform transform;
@@ -43,7 +42,7 @@ namespace Learning2DEngine
 
 				if (renderer != nullptr)
 				{
-					//renderer->Destroy();
+					renderer->Destroy();
 					delete renderer;
 				}
 			}
@@ -82,7 +81,7 @@ namespace Learning2DEngine
 				}
 
 				renderer = new TRenderer(this, params);
-				//renderer->Init();
+				renderer->Init();
 
 				return static_cast<TRenderer*>(renderer);
 			}
@@ -96,85 +95,6 @@ namespace Learning2DEngine
 				TRenderer* selectedRenderer = dynamic_cast<TRenderer*>(renderer);
 
 				return selectedRenderer;
-			}
-		};
-
-		/// <summary>
-		/// The classes, which are inherited from Component,
-		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
-		/// Moreover, It is recommand, that the constructor of the inherited class is protected and
-		/// only the GameObject can use this constructor.
-		/// </summary>
-		class Component
-		{
-		protected:
-			friend class GameObject;
-
-			bool isActive;
-
-			Component(GameObject* gameObject)
-				: gameObject(gameObject), isActive(true)
-			{
-
-			}
-		public:
-			GameObject* const gameObject;
-
-			inline void SetActive(bool value)
-			{
-				isActive = value;
-			}
-
-			inline bool GetActive()
-			{
-				return isActive;
-			}
-
-			/// <summary>
-			/// The Component and its GameObject are active or not.
-			/// </summary>
-			/// <returns></returns>
-			inline bool GetRealActive()
-			{
-				return (gameObject != nullptr
-					&& gameObject->isActive && isActive);
-			}
-		};
-
-		/// <summary>
-		/// The classes, which are inherited from Renderer,
-		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
-		/// Moreover, It is recommand, that the constructor of the inherited class is protected and
-		/// only the GameObject can use this constructor.
-		/// </summary>
-		class Renderer : public virtual Component
-		{
-		protected:
-			Renderer(System::GameObject* gameObject)
-				: Component(gameObject)
-			{
-
-			}
-		public:
-			virtual void Init() = 0;
-			virtual void Destroy() = 0;
-
-			virtual void Draw() = 0;
-		};
-
-		/// <summary>
-		/// The classes, which are inherited from Renderer,
-		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
-		/// Moreover, It is recommand, that the constructor of the inherited class is protected and
-		/// only the GameObject can use this constructor.
-		/// </summary>
-		class Behaviour : public virtual Component
-		{
-		protected:
-			Behaviour(System::GameObject* gameObject)
-				: Component(gameObject)
-			{
-
 			}
 		};
 	}
