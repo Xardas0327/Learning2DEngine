@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
-#include "Learning2DEngine/Render/SpriteRenderer.h"
+#include "Learning2DEngine/Render/OldSpriteRenderer.h"
 #include "Learning2DEngine/System/Transform.h"
 
 
@@ -18,8 +18,8 @@ public:
     glm::vec2   Velocity;
     bool        IsSolid;
     bool        Destroyed;
-    Learning2DEngine::Render::SpriteRenderer renderer;
-    GameObject(glm::vec2 pos, glm::vec2 size, const Learning2DEngine::Render::SpriteRenderer& spriteRenderer, glm::vec2 velocity = glm::vec2(0.0f, 0.0f));
+    Learning2DEngine::Render::OldSpriteRenderer renderer;
+    GameObject(glm::vec2 pos, glm::vec2 size, const Learning2DEngine::Render::OldSpriteRenderer& spriteRenderer, glm::vec2 velocity = glm::vec2(0.0f, 0.0f));
     ~GameObject();
     // draw sprite
     virtual void Draw();

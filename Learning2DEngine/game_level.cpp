@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "Learning2DEngine/Render/SpriteRenderer.h"
+#include "Learning2DEngine/Render/OldSpriteRenderer.h"
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
@@ -57,7 +57,7 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
 
     auto& resourceManager = ResourceManager::GetInstance();
 
-    SpriteRenderer brickRenderer;
+    OldSpriteRenderer brickRenderer;
 
     // initialize level tiles based on tileData		
     for (unsigned int y = 0; y < height; ++y)

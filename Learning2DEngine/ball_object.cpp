@@ -2,7 +2,7 @@
 
 using namespace Learning2DEngine::Render;
 
-BallObject::BallObject(glm::vec2 pos, float radius, glm::vec2 velocity, const Learning2DEngine::Render::SpriteRenderer& spriteRenderer)
+BallObject::BallObject(glm::vec2 pos, float radius, glm::vec2 velocity, const Learning2DEngine::Render::OldSpriteRenderer& spriteRenderer)
     : GameObject(pos, glm::vec2(radius * 2.0f, radius * 2.0f), spriteRenderer, velocity), Radius(radius), Stuck(true), Sticky(false), PassThrough(false) 
 { 
 }

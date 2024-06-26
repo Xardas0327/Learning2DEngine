@@ -7,8 +7,10 @@
 
 namespace Learning2DEngine
 {
-	namespace Render
-	{
+    using namespace System;
+
+    namespace Render
+    {
         int SpriteRenderer::referenceNumber = 0;
         Shader SpriteRenderer::shader;
 
@@ -16,45 +18,10 @@ namespace Learning2DEngine
         unsigned int SpriteRenderer::vbo = 0;
         unsigned int SpriteRenderer::ebo = 0;
 
-        SpriteRenderer::SpriteRenderer(glm::vec3 c)
-            : texture(nullptr), color(c), isInit(false)
+        SpriteRenderer::SpriteRenderer(GameObject* gameObject, glm::vec3 c)
+            : Component(gameObject), Renderer(gameObject), texture(nullptr), color(c), isInit(false)
         {
 
-        }
-
-        SpriteRenderer::SpriteRenderer(const SpriteRenderer& other)
-            : texture(nullptr), color(other.color), isInit(false)
-        {
-            if (other.texture != nullptr)
-            {
-                texture = new Texture2D(*other.texture);
-            }
-
-            if (other.isInit)
-                Init();
-        }
-
-        SpriteRenderer& SpriteRenderer::operator=(const SpriteRenderer& other)
-        {
-            if(this == &other)
-                return *this;
-
-            Destroy();
-
-            if (IsUseTexture())
-            {
-                delete texture;
-            }
-            if (other.texture != nullptr)
-            {
-                texture = new Texture2D(*other.texture);
-            }
-            color = other.color;
-
-            if (other.isInit)
-                Init();
-
-            return *this;
         }
 
         SpriteRenderer::~SpriteRenderer()
@@ -141,20 +108,20 @@ namespace Learning2DEngine
             glBindVertexArray(0);
         }
 
-        void SpriteRenderer::Draw(const System::Transform& transform)
+        void SpriteRenderer::Draw()
         {
             SpriteRenderer::shader.Use();
             glm::mat4 model = glm::mat4(1.0f);
             // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
-            model = glm::translate(model, glm::vec3(transform.position, 0.0f));  
+            model = glm::translate(model, glm::vec3(gameObject->transform.position, 0.0f));
             // move origin of rotation to center of quad
-            model = glm::translate(model, glm::vec3(0.5f * transform.scale.x, 0.5f * transform.scale.y, 0.0f));
+            model = glm::translate(model, glm::vec3(0.5f * gameObject->transform.scale.x, 0.5f * gameObject->transform.scale.y, 0.0f));
             // then rotate
-            model = glm::rotate(model, glm::radians(transform.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::rotate(model, glm::radians(gameObject->transform.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
             // move origin back
-            model = glm::translate(model, glm::vec3(-0.5f * transform.scale.x, -0.5f * transform.scale.y, 0.0f));
+            model = glm::translate(model, glm::vec3(-0.5f * gameObject->transform.scale.x, -0.5f * gameObject->transform.scale.y, 0.0f));
             // then rotate
-            model = glm::scale(model, glm::vec3(transform.scale, 1.0f)); // last scale
+            model = glm::scale(model, glm::vec3(gameObject->transform.scale, 1.0f)); // last scale
 
             SpriteRenderer::shader.SetMatrix4("model", model);
             SpriteRenderer::shader.SetMatrix4("projection", System::Game::GetCameraProjection());
@@ -172,5 +139,5 @@ namespace Learning2DEngine
             glBindVertexArray(0);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
-	}
+    }
 }

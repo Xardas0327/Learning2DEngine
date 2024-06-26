@@ -43,7 +43,7 @@ namespace Learning2DEngine
 
 				if (renderer != nullptr)
 				{
-					renderer->Destroy();
+					//renderer->Destroy();
 					delete renderer;
 				}
 			}
@@ -82,7 +82,7 @@ namespace Learning2DEngine
 				}
 
 				renderer = new TRenderer(this, params);
-				renderer->Init();
+				//renderer->Init();
 
 				return static_cast<TRenderer*>(renderer);
 			}

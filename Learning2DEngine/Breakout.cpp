@@ -21,7 +21,7 @@ using namespace Learning2DEngine::System;
 using namespace irrklang;
 
 // Game-related State data
-SpriteRenderer* BackgroundRenderer;
+OldSpriteRenderer* BackgroundRenderer;
 GameObject* Player;
 BallObject* Ball;
 ParticleGenerator* Particles;
@@ -97,7 +97,7 @@ void Breakout::Init()
     resourceManager.LoadTexture("Assets/Images/powerup_chaos.png", alphaSettings, "powerup_chaos");
     resourceManager.LoadTexture("Assets/Images/powerup_passthrough.png", alphaSettings, "powerup_passthrough");
     // set render-specific controls
-    BackgroundRenderer = new SpriteRenderer();
+    BackgroundRenderer = new OldSpriteRenderer();
     BackgroundRenderer->Init();
     BackgroundRenderer->texture = new Texture2D(resourceManager.GetTexture("background"));
 
@@ -118,7 +118,7 @@ void Breakout::Init()
     this->Levels.push_back(four);
     this->Level = 0;
 
-    SpriteRenderer spriteRenderer;
+    OldSpriteRenderer spriteRenderer;
 
     //Player
     glm::vec2 playerPos = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
@@ -570,7 +570,7 @@ bool ShouldSpawn(int chance)
 void Breakout::SpawnPowerUps(GameObject& block)
 {
     auto& resourceManager = ResourceManager::GetInstance();
-    SpriteRenderer powerUpRender;
+    OldSpriteRenderer powerUpRender;
 
     if (ShouldSpawn(75)) // 1 in 75 chance
     {

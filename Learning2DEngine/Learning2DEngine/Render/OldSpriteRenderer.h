@@ -4,13 +4,13 @@
 
 #include "Shader.h"
 #include "Texture2D.h"
-#include "../System/GameObject.h"
+#include "../System/Transform.h"
 
 namespace Learning2DEngine
 {
     namespace Render
     {
-        class SpriteRenderer : public virtual System::Renderer
+        class OldSpriteRenderer
         {
         private:
             bool isInit;
@@ -33,19 +33,19 @@ namespace Learning2DEngine
             {
                 return texture != nullptr;
             }
-        protected:
-            SpriteRenderer(System::GameObject* gameObject, glm::vec3 color = glm::vec3(1.0f));
-
         public:
             Texture2D* texture;
             glm::vec3 color;
 
-            ~SpriteRenderer();
+            OldSpriteRenderer(glm::vec3 color = glm::vec3(1.0f));
+            OldSpriteRenderer(const OldSpriteRenderer& other);
+            OldSpriteRenderer& operator=(const OldSpriteRenderer& other);
+            ~OldSpriteRenderer();
 
-            void Init() override;
-            void Destroy() override;
+            void Init();
+            void Destroy();
 
-            void Draw() override;
+            void Draw(const System::Transform& transform);
         };
     }
 }
