@@ -4,71 +4,72 @@
 
 #include "Transform.h"
 #include "Log.h"
-#include "../Render/Renderer.h"
 
 namespace Learning2DEngine
 {
 	namespace System
 	{
-		class Component;
+		class Renderer;
+		class Behaviour;
 
 		class GameObject final
 		{
 		private:
-			std::list<Component*> components;
-			Render::Renderer* renderer;
+			std::list<Behaviour*> behaviours;
+			Renderer* renderer;
 		public:
 			bool isActive;
 			Transform transform;
 
 			GameObject()
-				: isActive(true), transform(), components(), renderer(nullptr)
+				: isActive(true), transform(), behaviours(), renderer(nullptr)
 			{
 			}
 
 			GameObject(Transform transform)
-				: isActive(true), transform(transform), components(), renderer(nullptr)
+				: isActive(true), transform(transform), behaviours(), renderer(nullptr)
 			{
 			}
 
 			~GameObject()
 			{
-				for (const Component* component : components)
+				for (const Behaviour* behaviour : behaviours)
 				{
-					if (component != nullptr)
+					if (behaviour != nullptr)
 					{
-						delete component;
+						delete behaviour;
 					}
 				}
 
 				if (renderer != nullptr)
 				{
+					renderer->Destroy();
 					delete renderer;
 				}
 			}
 
-			template <class TComponent, class ...Params>
-			TComponent* AddComponent(Params... params)
+			template <class TBehaviour, class ...Params>
+			TBehaviour* AddBehaviour(Params... params)
 			{
-				TComponent* component = new TComponent(this, params);
-				components.push_back(component);
+				TBehaviour* behaviour = new TBehaviour(this, params);
+				behaviours.push_back(behaviour);
 
-				return component;
+				return behaviour;
 			}
 
-			template <class TComponent>
-			TComponent* GetComponent()
+			template <class TBehaviour>
+			TBehaviour* GetBehaviour()
 			{
-				TComponent* selectedComponent = nullptr;
-				for (Component* component : components)
+				TBehaviour* selectedBehaviour = nullptr;
+				for (Behaviour* behaviour : behaviours)
 				{
-					selectedComponent = dynamic_cast<TComponent*>(component);
+					selectedBehaviour = dynamic_cast<TBehaviour*>(behaviour);
 
-					if (selectedComponent != nullptr)
+					if (selectedBehaviour != nullptr)
 						break;
 				}
 
-				return selectedComponent;
+				return selectedBehaviour;
 			}
 
 			template <class TRenderer, class ...Params>
@@ -77,13 +78,13 @@ namespace Learning2DEngine
 				if (renderer != nullptr)
 				{
 					delete renderer;
-					LOG_WARNING("GAMEOBJECT: The renderer was not null, that is why the previous renderer was deleted, before the new one was added.")
+					LOG_WARNING("GAMEOBJECT: The renderer was not null, that is why the previous renderer was deleted, before the new one was added.");
 				}
 
-				TComponent* component = new TComponent(this, params);
-				components.push_back(component);
+				renderer = new TRenderer(this, params);
+				renderer->Init();
 
-				return component;
+				return static_cast<TRenderer*>(renderer);
 			}
 
 			template <class TRenderer>
@@ -101,13 +102,14 @@ namespace Learning2DEngine
 		/// <summary>
 		/// The classes, which are inherited from Component,
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
-		/// Moreover, It is recommand, that the constructor of the inherited class is private or protected and
+		/// Moreover, It is recommand, that the constructor of the inherited class is protected and
 		/// only the GameObject can use this constructor.
 		/// </summary>
 		class Component
 		{
-			friend class GameObject;
 		protected:
+			friend class GameObject;
+
 			bool isActive;
 
 			Component(GameObject* gameObject)
@@ -136,6 +138,43 @@ namespace Learning2DEngine
 			{
 				return (gameObject != nullptr
 					&& gameObject->isActive && isActive);
+			}
+		};
+
+		/// <summary>
+		/// The classes, which are inherited from Renderer,
+		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
+		/// Moreover, It is recommand, that the constructor of the inherited class is protected and
+		/// only the GameObject can use this constructor.
+		/// </summary>
+		class Renderer : public virtual Component
+		{
+		protected:
+			Renderer(System::GameObject* gameObject)
+				: Component(gameObject)
+			{
+
+			}
+		public:
+			virtual void Init() = 0;
+			virtual void Destroy() = 0;
+
+			virtual void Draw() = 0;
+		};
+
+		/// <summary>
+		/// The classes, which are inherited from Renderer,
+		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
+		/// Moreover, It is recommand, that the constructor of the inherited class is protected and
+		/// only the GameObject can use this constructor.
+		/// </summary>
+		class Behaviour : public virtual Component
+		{
+		protected:
+			Behaviour(System::GameObject* gameObject)
+				: Component(gameObject)
+			{
+
 			}
 		};
 	}

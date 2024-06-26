@@ -4,9 +4,8 @@
 
 #include "Learning2DEngine/System/GameObject.h"
 
-class BrickController : public virtual Learning2DEngine::System::Component
+class BrickController : public virtual Learning2DEngine::System::Behaviour
 {
 public:
-    glm::vec2   velocity;
-    bool        isSolid;
+    bool isSolid;
 };
