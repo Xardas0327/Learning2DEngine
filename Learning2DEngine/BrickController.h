@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include "Learning2DEngine/System/GameObject.h"
+#include "Learning2DEngine/System/Behaviour.h"
 
 class BrickController : public virtual Learning2DEngine::System::Behaviour
 {

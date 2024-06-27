@@ -14,9 +14,8 @@ namespace Learning2DEngine
 		/// </summary>
 		class Component
 		{
-		protected:
 			friend class GameObject;
-
+		protected:
 			bool isActive;
 
 			Component(GameObject* gameObject)
@@ -26,6 +25,11 @@ namespace Learning2DEngine
 			}
 		public:
 			GameObject* const gameObject;
+
+			virtual ~Component()
+			{
+
+			}
 
 			inline void SetActive(bool value)
 			{

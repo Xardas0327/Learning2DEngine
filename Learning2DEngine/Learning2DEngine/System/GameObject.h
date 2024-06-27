@@ -80,10 +80,12 @@ namespace Learning2DEngine
 					LOG_WARNING("GAMEOBJECT: The renderer was not null, that is why the previous renderer was deleted, before the new one was added.");
 				}
 
-				renderer = new TRenderer(this, params);
+
+				TRenderer* newRenderer = new TRenderer(this, params...);
+				renderer = newRenderer;
 				renderer->Init();
 
-				return static_cast<TRenderer*>(renderer);
+				return newRenderer;
 			}
 
 			template <class TRenderer>

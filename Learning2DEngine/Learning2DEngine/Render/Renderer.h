@@ -14,6 +14,7 @@ namespace Learning2DEngine
 		/// </summary>
 		class Renderer : public virtual System::Component
 		{
+			friend class System::GameObject;
 		protected:
 			Renderer(System::GameObject* gameObject)
 				: Component(gameObject)

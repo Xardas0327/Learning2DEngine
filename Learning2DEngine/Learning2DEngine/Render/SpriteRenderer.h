@@ -13,6 +13,7 @@ namespace Learning2DEngine
     {
         class SpriteRenderer : public virtual Renderer
         {
+            friend class System::GameObject;
         private:
             bool isInit;
 
