@@ -151,7 +151,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ball_object.cpp" />
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="Learning2DEngine\Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\OldSpriteRenderer.cpp" />
@@ -171,7 +170,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BallController.h" />
-    <ClInclude Include="ball_object.h" />
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="BrickController.h" />
     <ClInclude Include="Learning2DEngine\Render\OldSpriteRenderer.h" />

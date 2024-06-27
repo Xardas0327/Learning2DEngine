@@ -7,11 +7,15 @@
 #include <sstream> 
 
 #include "Learning2DEngine/Render/RenderManager.h"
+#include "Learning2DEngine/Render/SpriteRenderer.h"
 #include "Learning2DEngine/Render/Text2DRenderer.h"
 #include "Learning2DEngine/System/ResourceManager.h"
 #include "Learning2DEngine/System/Random.h"
+#include "Learning2DEngine/System/GameObject.h"
+
+#include "BallController.h"
+
 #include "game_object.h"
-#include "ball_object.h"
 #include "particle_generator.h"
 #include "post_processor.h"
 
@@ -21,9 +25,9 @@ using namespace Learning2DEngine::System;
 using namespace irrklang;
 
 // Game-related State data
-OldSpriteRenderer* BackgroundRenderer;
-OldGameObject* Player;
-BallObject* Ball;
+GameObject* Background;
+GameObject* Player;
+GameObject* Ball;
 ParticleGenerator* Particles;
 PostProcessor* Effects;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
@@ -40,8 +44,7 @@ Breakout::Breakout() :
 
 Breakout::~Breakout()
 {
-    BackgroundRenderer->Destroy();
-    delete BackgroundRenderer;
+    delete Background;
     delete Player;
     delete Ball;
     delete Particles;
@@ -53,10 +56,10 @@ void Breakout::Init()
 {
     Game::Init();
 
+    auto& resourceManager = ResourceManager::GetInstance();
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
     const int middleHeight = resolution.GetHeight() / 2;
 
-    auto& resourceManager = ResourceManager::GetInstance();
     // load shaders
     resourceManager.LoadShader("Shaders/particle.vs", "Shaders/particle.frag", nullptr, "particle");
     resourceManager.LoadShader("Shaders/post_processing.vs", "Shaders/post_processing.frag", nullptr, "postprocessing");
@@ -69,10 +72,7 @@ void Breakout::Init()
         -1.0f,
         1.0f
     );
-    auto sprite = resourceManager.GetShader("sprite");
-    sprite.Use();
-    sprite.SetInteger("image", 0);
-    sprite.SetMatrix4("projection", cameraProjection);
+
     auto particle = resourceManager.GetShader("particle");
     particle.Use();
     particle.SetInteger("sprite", 0);
@@ -97,9 +97,15 @@ void Breakout::Init()
     resourceManager.LoadTexture("Assets/Images/powerup_chaos.png", alphaSettings, "powerup_chaos");
     resourceManager.LoadTexture("Assets/Images/powerup_passthrough.png", alphaSettings, "powerup_passthrough");
     // set render-specific controls
-    BackgroundRenderer = new OldSpriteRenderer();
-    BackgroundRenderer->Init();
-    BackgroundRenderer->texture = new Texture2D(resourceManager.GetTexture("background"));
+    Background = new GameObject(
+        Transform(
+            glm::vec2(0.0f, 0.0f),
+            resolution.ToVec2(),
+            0.0f
+        )
+    );
+    auto backgroundRenderer = Background->AddRenderer<SpriteRenderer>();
+    backgroundRenderer->texture = new Texture2D(resourceManager.GetTexture("background"));
 
     Particles = new ParticleGenerator(
         resourceManager.GetShader("particle"),
@@ -118,17 +124,28 @@ void Breakout::Init()
     this->Levels.push_back(four);
     this->Level = 0;
 
-    OldSpriteRenderer spriteRenderer;
-
     //Player
     glm::vec2 playerPos = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
-    spriteRenderer.texture = new Texture2D(resourceManager.GetTexture("paddle"));
-    Player = new OldGameObject(playerPos, PLAYER_SIZE, spriteRenderer);
+    Player = new GameObject(
+        Transform(
+            playerPos,
+            PLAYER_SIZE
+        )
+    );
+    auto playerRenderer = Player->AddRenderer<SpriteRenderer>();
+    playerRenderer->texture = new Texture2D(resourceManager.GetTexture("paddle"));
 
     //Ball
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
-    spriteRenderer.texture = new Texture2D(resourceManager.GetTexture("face"));
-    Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, spriteRenderer);
+    Ball = new GameObject(
+        Transform(
+            ballPos,
+            glm::vec2(BALL_RADIUS * 2.0f, BALL_RADIUS * 2.0f)
+        )
+    );
+    auto ballRenderer = Ball->AddRenderer<SpriteRenderer>();
+    ballRenderer->texture = new Texture2D(resourceManager.GetTexture("face"));
+    auto ballController = Ball->AddBehaviour<BallController, float, glm::vec2>(BALL_RADIUS, INITIAL_BALL_VELOCITY);
 
     //Sounds
     SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
@@ -218,6 +235,7 @@ void Breakout::ProcessInput()
     }
     if (this->State == GAME_ACTIVE)
     {
+        auto ballController = Ball->GetBehaviour<BallController>();
         float velocity = PLAYER_VELOCITY * Game::deltaTime;
         // move playerboard
         if (Game::inputKeys[GLFW_KEY_A])
@@ -225,7 +243,7 @@ void Breakout::ProcessInput()
             if (Player->transform.position.x >= 0.0f)
             {
                 Player->transform.position.x -= velocity;
-                if (Ball->Stuck)
+                if (ballController->stuck)
                     Ball->transform.position.x -= velocity;
             }
         }
@@ -234,12 +252,12 @@ void Breakout::ProcessInput()
             if (Player->transform.position.x <= RenderManager::GetInstance().GetResolution().GetWidth() - Player->transform.scale.x)
             {
                 Player->transform.position.x += velocity;
-                if (Ball->Stuck)
+                if (ballController->stuck)
                     Ball->transform.position.x += velocity;
             }
         }
         if (Game::inputKeys[GLFW_KEY_SPACE])
-            Ball->Stuck = false;
+            ballController->stuck = false;
     }
 
     if (this->State == GAME_WIN)
@@ -257,10 +275,11 @@ void Breakout::Update()
     ProcessInput();
 
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
+    auto ballController = Ball->GetBehaviour<BallController>();
 
-    Ball->Move(Game::deltaTime, resolution.GetWidth());
+    ballController->Move(Game::deltaTime, resolution.GetWidth());
     DoCollisions();
-    Particles->Update(Game::deltaTime, *Ball, 1, glm::vec2(Ball->Radius / 2.0f));
+    Particles->Update(Game::deltaTime, *ballController, 1, glm::vec2(ballController->radius / 2.0f));
     UpdatePowerUps();
 
     if (ShakeTime > 0.0f)
@@ -302,15 +321,13 @@ void Breakout::Render()
         Effects->BeginRender();
 
         // Draw background
-        Transform backgroundTransform(
-            glm::vec2(0.0f, 0.0f),
-            RenderManager::GetInstance().GetResolution().ToVec2(),
-            0.0f);
-        BackgroundRenderer->Draw(backgroundTransform);
+        auto backgroundRenderer = Background->GetRenderer<SpriteRenderer>();
+        backgroundRenderer->Draw();
         // Draw level
         this->Levels[this->Level].Draw();
         // Draw player
-        Player->Draw();
+        auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
+        playerRenderer->Draw();
         // Draw PowerUps
         for (PowerUp& powerUp : this->PowerUps)
             if (!powerUp.Destroyed)
@@ -318,7 +335,8 @@ void Breakout::Render()
         // Draw Particles
         Particles->Draw();
         // Draw Player
-        Ball->Draw();
+        auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
+        ballRenderer->Draw();
         // End rendering to postprocessing framebuffer
         Effects->EndRender();
         // Render postprocessing quad
@@ -346,19 +364,23 @@ void Breakout::Render()
 
 void ActivatePowerUp(PowerUp& powerUp)
 {
+    auto ballController = Ball->GetBehaviour<BallController>();
     if (powerUp.Type == "speed")
     {
-        Ball->Velocity *= 1.2;
+        ballController->velocity *= 1.2;
     }
     else if (powerUp.Type == "sticky")
     {
-        Ball->Sticky = true;
-        Player->renderer.color = glm::vec3(1.0f, 0.5f, 1.0f);
+        ballController->sticky = true;
+        auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
+        playerRenderer->color = glm::vec3(1.0f, 0.5f, 1.0f);
+        
     }
     else if (powerUp.Type == "pass-through")
     {
-        Ball->PassThrough = true;
-        Ball->renderer.color = glm::vec3(1.0f, 0.5f, 0.5f);
+        ballController->passThrough = true;
+        auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
+        ballRenderer->color = glm::vec3(1.0f, 0.5f, 0.5f);
     }
     else if (powerUp.Type == "pad-size-increase")
     {
@@ -374,6 +396,18 @@ void ActivatePowerUp(PowerUp& powerUp)
         if (!Effects->Confuse)
             Effects->Chaos = true;
     }
+}
+
+bool CheckCollision(GameObject& one, OldGameObject& two) // AABB - AABB collision
+{
+    // collision x-axis?
+    bool collisionX = one.transform.position.x + one.transform.scale.x >= two.transform.position.x &&
+        two.transform.position.x + two.transform.scale.x >= one.transform.position.x;
+    // collision y-axis?
+    bool collisionY = one.transform.position.y + one.transform.scale.y >= two.transform.position.y &&
+        two.transform.position.y + two.transform.scale.y >= one.transform.position.y;
+    // collision only if on both axes
+    return collisionX && collisionY;
 }
 
 bool CheckCollision(OldGameObject& one, OldGameObject& two) // AABB - AABB collision
@@ -411,10 +445,10 @@ Direction VectorDirection(glm::vec2 target)
     return (Direction)best_match;
 }
 
-Collision CheckCollision(BallObject& one, OldGameObject& two) // AABB - Circle collision
+Collision CheckCollision(BallController& one, GameObject& two) // AABB - Circle collision
 {
     // get center point circle first 
-    glm::vec2 center(one.transform.position + one.Radius);
+    glm::vec2 center(one.gameObject->transform.position + one.radius);
     // calculate AABB info (center, half-extents)
     glm::vec2 aabb_half_extents(two.transform.scale.x / 2.0f, two.transform.scale.y / 2.0f);
     glm::vec2 aabb_center(
@@ -429,7 +463,31 @@ Collision CheckCollision(BallObject& one, OldGameObject& two) // AABB - Circle c
     // retrieve vector between center circle and closest point AABB and check if length <= radius
     difference = closest - center;
 
-    if (glm::length(difference) < one.Radius) // not <= since in that case a collision also occurs when object one exactly touches object two, which they are at the end of each collision resolution stage.
+    if (glm::length(difference) < one.radius) // not <= since in that case a collision also occurs when object one exactly touches object two, which they are at the end of each collision resolution stage.
+        return std::make_tuple(true, VectorDirection(difference), difference);
+    else
+        return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
+}
+
+Collision CheckCollision(BallController& one, OldGameObject& two) // AABB - Circle collision
+{
+    // get center point circle first 
+    glm::vec2 center(one.gameObject->transform.position + one.radius);
+    // calculate AABB info (center, half-extents)
+    glm::vec2 aabb_half_extents(two.transform.scale.x / 2.0f, two.transform.scale.y / 2.0f);
+    glm::vec2 aabb_center(
+        two.transform.position.x + aabb_half_extents.x,
+        two.transform.position.y + aabb_half_extents.y
+    );
+    // get difference vector between both centers
+    glm::vec2 difference = center - aabb_center;
+    glm::vec2 clamped = glm::clamp(difference, -aabb_half_extents, aabb_half_extents);
+    // add clamped value to AABB_center and we get the value of box closest to circle
+    glm::vec2 closest = aabb_center + clamped;
+    // retrieve vector between center circle and closest point AABB and check if length <= radius
+    difference = closest - center;
+
+    if (glm::length(difference) < one.radius) // not <= since in that case a collision also occurs when object one exactly touches object two, which they are at the end of each collision resolution stage.
         return std::make_tuple(true, VectorDirection(difference), difference);
     else
         return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
@@ -437,11 +495,13 @@ Collision CheckCollision(BallObject& one, OldGameObject& two) // AABB - Circle c
 
 void Breakout::DoCollisions()
 {
+    auto ballController = Ball->GetBehaviour<BallController>();
+
     for (OldGameObject& box : this->Levels[this->Level].Bricks)
     {
         if (!box.Destroyed)
         {
-            Collision collision = CheckCollision(*Ball, box);
+            Collision collision = CheckCollision(*ballController, box);
             if (std::get<0>(collision)) // if collision is true
             {
                 // destroy block if not solid
@@ -460,13 +520,13 @@ void Breakout::DoCollisions()
                 // collision resolution
                 Direction dir = std::get<1>(collision);
                 glm::vec2 diff_vector = std::get<2>(collision);
-                if (!(Ball->PassThrough && !box.IsSolid)) // don't do collision resolution on non-solid bricks if pass-through is activated
+                if (!(ballController->passThrough && !box.IsSolid)) // don't do collision resolution on non-solid bricks if pass-through is activated
                 {
                     if (dir == LEFT || dir == RIGHT) // horizontal collision
                     {
-                        Ball->Velocity.x = -Ball->Velocity.x; // reverse horizontal velocity
+                        ballController->velocity.x = -ballController->velocity.x; // reverse horizontal velocity
                         // relocate
-                        float penetration = Ball->Radius - std::abs(diff_vector.x);
+                        float penetration = ballController->radius - std::abs(diff_vector.x);
                         if (dir == LEFT)
                             Ball->transform.position.x += penetration; // move ball to right
                         else
@@ -474,9 +534,9 @@ void Breakout::DoCollisions()
                     }
                     else // vertical collision
                     {
-                        Ball->Velocity.y = -Ball->Velocity.y; // reverse vertical velocity
+                        ballController->velocity.y = -ballController->velocity.y; // reverse vertical velocity
                         // relocate
-                        float penetration = Ball->Radius - std::abs(diff_vector.y);
+                        float penetration = ballController->radius - std::abs(diff_vector.y);
                         if (dir == UP)
                             Ball->transform.position.y -= penetration; // move ball bback up
                         else
@@ -506,23 +566,23 @@ void Breakout::DoCollisions()
         }
     }
     // check collisions for player pad (unless stuck)
-    Collision result = CheckCollision(*Ball, *Player);
-    if (!Ball->Stuck && std::get<0>(result))
+    Collision result = CheckCollision(*ballController, *Player);
+    if (!ballController->stuck && std::get<0>(result))
     {
         // check where it hit the board, and change velocity based on where it hit the board
         float centerBoard = Player->transform.position.x + Player->transform.scale.x / 2.0f;
-        float distance = (Ball->transform.position.x + Ball->Radius) - centerBoard;
+        float distance = (Ball->transform.position.x + ballController->radius) - centerBoard;
         float percentage = distance / (Player->transform.scale.x / 2.0f);
         // then move accordingly
         float strength = 2.0f;
-        glm::vec2 oldVelocity = Ball->Velocity;
-        Ball->Velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
+        glm::vec2 oldVelocity = ballController->velocity;
+        ballController->velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
         //Ball->Velocity.y = -Ball->Velocity.y;
         // keep speed consistent over both axes (multiply by length of old velocity, so total strength is not changed)
-        Ball->Velocity = glm::normalize(Ball->Velocity) * glm::length(oldVelocity);
+        ballController->velocity = glm::normalize(ballController->velocity) * glm::length(oldVelocity);
         // fix sticky paddle
-        Ball->Velocity.y = -1.0f * abs(Ball->Velocity.y);
-        Ball->Stuck = Ball->Sticky;
+        ballController->velocity.y = -1.0f * abs(ballController->velocity.y);
+        ballController->stuck = ballController->sticky;
 
         SoundEngine->play2D("Assets/Sounds/bleep.wav", false);
     }
@@ -552,13 +612,17 @@ void Breakout::ResetPlayer()
     // reset player/ball stats
     Player->transform.scale = PLAYER_SIZE;
     Player->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
-    Ball->Reset(Player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
+    auto ballController = Ball->GetBehaviour<BallController>();
+    ballController->Reset(Player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
 
     // also disable all active powerups
     Effects->Chaos = Effects->Confuse = false;
-    Ball->PassThrough = Ball->Sticky = false;
-    Player->renderer.color = glm::vec3(1.0f);
-    Ball->renderer.color = glm::vec3(1.0f);
+    ballController->passThrough = ballController->sticky = false;
+
+    auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
+    playerRenderer->color = glm::vec3(1.0f);
+    auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
+    ballRenderer->color = glm::vec3(1.0f);
 }
 
 bool ShouldSpawn(int chance)
@@ -636,6 +700,9 @@ bool IsOtherPowerUpActive(std::vector<PowerUp>& powerUps, std::string type)
 
 void Breakout::UpdatePowerUps()
 {
+    auto ballController = Ball->GetBehaviour<BallController>();
+    auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
+
     for (PowerUp& powerUp : this->PowerUps)
     {
         powerUp.transform.position += powerUp.Velocity * Game::deltaTime;
@@ -652,16 +719,18 @@ void Breakout::UpdatePowerUps()
                 {
                     if (!IsOtherPowerUpActive(this->PowerUps, "sticky"))
                     {	// only reset if no other PowerUp of type sticky is active
-                        Ball->Sticky = false;
-                        Player->renderer.color = glm::vec3(1.0f);
+                        ballController->sticky = false;
+
+                        auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
+                        playerRenderer->color = glm::vec3(1.0f);
                     }
                 }
                 else if (powerUp.Type == "pass-through")
                 {
                     if (!IsOtherPowerUpActive(this->PowerUps, "pass-through"))
                     {	// only reset if no other PowerUp of type pass-through is active
-                        Ball->PassThrough = false;
-                        Ball->renderer.color = glm::vec3(1.0f);
+                        ballController->passThrough = false;
+                        ballRenderer->color = glm::vec3(1.0f);
                     }
                 }
                 else if (powerUp.Type == "confuse")

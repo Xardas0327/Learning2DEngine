@@ -50,7 +50,7 @@ namespace Learning2DEngine
 			template <class TBehaviour, class ...Params>
 			TBehaviour* AddBehaviour(Params... params)
 			{
-				TBehaviour* behaviour = new TBehaviour(this, params);
+				TBehaviour* behaviour = new TBehaviour(this, params...);
 				behaviours.push_back(behaviour);
 
 				return behaviour;
