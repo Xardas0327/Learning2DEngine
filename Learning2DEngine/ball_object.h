@@ -11,7 +11,7 @@
 // relevant state data from GameObject. Contains some extra
 // functionality specific to Breakout's ball object that
 // were too specific for within GameObject alone.
-class BallObject : public GameObject
+class BallObject : public OldGameObject
 {
 public:
     // ball state	

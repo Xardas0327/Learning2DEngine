@@ -10,7 +10,7 @@
 // Container object for holding all state relevant for a single
 // game object entity. Each object in the game likely needs the
 // minimal of state as described within GameObject.
-class GameObject
+class OldGameObject
 {
 public:
     // object state
@@ -19,8 +19,8 @@ public:
     bool        IsSolid;
     bool        Destroyed;
     Learning2DEngine::Render::OldSpriteRenderer renderer;
-    GameObject(glm::vec2 pos, glm::vec2 size, const Learning2DEngine::Render::OldSpriteRenderer& spriteRenderer, glm::vec2 velocity = glm::vec2(0.0f, 0.0f));
-    ~GameObject();
+    OldGameObject(glm::vec2 pos, glm::vec2 size, const Learning2DEngine::Render::OldSpriteRenderer& spriteRenderer, glm::vec2 velocity = glm::vec2(0.0f, 0.0f));
+    ~OldGameObject();
     // draw sprite
     virtual void Draw();
 };

@@ -18,7 +18,7 @@ const glm::vec2 VELOCITY(0.0f, 150.0f);
 // GameObject but also holds extra information to state its
 // active duration and whether it is activated or not. 
 // The type of PowerUp is stored as a string.
-class PowerUp : public GameObject
+class PowerUp : public OldGameObject
 {
 public:
     // powerup state
@@ -27,5 +27,5 @@ public:
     bool        Activated;
     // constructor
     PowerUp(std::string type, float duration, glm::vec2 position, const Learning2DEngine::Render::OldSpriteRenderer& spriteRenderer)
-        : GameObject(position, POWERUP_SIZE, spriteRenderer, VELOCITY), Type(type), Duration(duration), Activated() { }
+        : OldGameObject(position, POWERUP_SIZE, spriteRenderer, VELOCITY), Type(type), Duration(duration), Activated() { }
 };

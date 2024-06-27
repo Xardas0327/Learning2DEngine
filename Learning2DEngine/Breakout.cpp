@@ -22,7 +22,7 @@ using namespace irrklang;
 
 // Game-related State data
 OldSpriteRenderer* BackgroundRenderer;
-GameObject* Player;
+OldGameObject* Player;
 BallObject* Ball;
 ParticleGenerator* Particles;
 PostProcessor* Effects;
@@ -123,7 +123,7 @@ void Breakout::Init()
     //Player
     glm::vec2 playerPos = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
     spriteRenderer.texture = new Texture2D(resourceManager.GetTexture("paddle"));
-    Player = new GameObject(playerPos, PLAYER_SIZE, spriteRenderer);
+    Player = new OldGameObject(playerPos, PLAYER_SIZE, spriteRenderer);
 
     //Ball
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
@@ -376,7 +376,7 @@ void ActivatePowerUp(PowerUp& powerUp)
     }
 }
 
-bool CheckCollision(GameObject& one, GameObject& two) // AABB - AABB collision
+bool CheckCollision(OldGameObject& one, OldGameObject& two) // AABB - AABB collision
 {
     // collision x-axis?
     bool collisionX = one.transform.position.x + one.transform.scale.x >= two.transform.position.x &&
@@ -411,7 +411,7 @@ Direction VectorDirection(glm::vec2 target)
     return (Direction)best_match;
 }
 
-Collision CheckCollision(BallObject& one, GameObject& two) // AABB - Circle collision
+Collision CheckCollision(BallObject& one, OldGameObject& two) // AABB - Circle collision
 {
     // get center point circle first 
     glm::vec2 center(one.transform.position + one.Radius);
@@ -437,7 +437,7 @@ Collision CheckCollision(BallObject& one, GameObject& two) // AABB - Circle coll
 
 void Breakout::DoCollisions()
 {
-    for (GameObject& box : this->Levels[this->Level].Bricks)
+    for (OldGameObject& box : this->Levels[this->Level].Bricks)
     {
         if (!box.Destroyed)
         {
@@ -567,7 +567,7 @@ bool ShouldSpawn(int chance)
     return random == 0;
 }
 
-void Breakout::SpawnPowerUps(GameObject& block)
+void Breakout::SpawnPowerUps(OldGameObject& block)
 {
     auto& resourceManager = ResourceManager::GetInstance();
     OldSpriteRenderer powerUpRender;

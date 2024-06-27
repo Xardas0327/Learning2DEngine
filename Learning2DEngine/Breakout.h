@@ -52,7 +52,7 @@ protected:
     void ResetLevel();
     void ResetPlayer();
 
-    void SpawnPowerUps(GameObject& block);
+    void SpawnPowerUps(OldGameObject& block);
     void UpdatePowerUps();
 public:
     Breakout();
