@@ -327,9 +327,11 @@ void Breakout::Render()
         // Draw player
         Player->GetRenderer()->Draw();
         // Draw PowerUps
-        for (PowerUp& powerUp : this->PowerUps)
-            if (!powerUp.Destroyed)
-                powerUp.Draw();
+        for (PowerUpController* powerUp : this->PowerUps)
+        {
+            if (powerUp->gameObject->isActive)
+                powerUp->gameObject->GetRenderer()->Draw();
+        }
         // Draw Particles
         Particles->Draw();
         // Draw Player
@@ -359,40 +361,52 @@ void Breakout::Render()
     }
 }
 
-void ActivatePowerUp(PowerUp& powerUp)
+void ActivatePowerUp(PowerUpController& powerUp)
 {
     auto ballController = Ball->GetBehaviour<BallController>();
-    if (powerUp.Type == "speed")
+    if (powerUp.type == "speed")
     {
         ballController->velocity *= 1.2;
     }
-    else if (powerUp.Type == "sticky")
+    else if (powerUp.type == "sticky")
     {
         ballController->sticky = true;
         auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
         playerRenderer->color = glm::vec3(1.0f, 0.5f, 1.0f);
         
     }
-    else if (powerUp.Type == "pass-through")
+    else if (powerUp.type == "pass-through")
     {
         ballController->passThrough = true;
         auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
         ballRenderer->color = glm::vec3(1.0f, 0.5f, 0.5f);
     }
-    else if (powerUp.Type == "pad-size-increase")
+    else if (powerUp.type == "pad-size-increase")
     {
         Player->transform.scale.x += 50;
     }
-    else if (powerUp.Type == "confuse")
+    else if (powerUp.type == "confuse")
     {
         if (!Effects->Chaos)
             Effects->Confuse = true; // only activate if chaos wasn't already active
     }
-    else if (powerUp.Type == "chaos")
+    else if (powerUp.type == "chaos")
     {
         if (!Effects->Confuse)
             Effects->Chaos = true;
     }
+}
+
+bool CheckCollision(GameObject& one, GameObject& two) // AABB - AABB collision
+{
+    // collision x-axis?
+    bool collisionX = one.transform.position.x + one.transform.scale.x >= two.transform.position.x &&
+        two.transform.position.x + two.transform.scale.x >= one.transform.position.x;
+    // collision y-axis?
+    bool collisionY = one.transform.position.y + one.transform.scale.y >= two.transform.position.y &&
+        two.transform.position.y + two.transform.scale.y >= one.transform.position.y;
+    // collision only if on both axes
+    return collisionX && collisionY;
 }
 
 bool CheckCollision(GameObject& one, OldGameObject& two) // AABB - AABB collision
@@ -545,19 +559,19 @@ void Breakout::DoCollisions()
     }
 
     // also check collisions on PowerUps and if so, activate them
-    for (PowerUp& powerUp : this->PowerUps)
+    for (PowerUpController* powerUp : this->PowerUps)
     {
-        if (!powerUp.Destroyed)
+        if (powerUp->gameObject->isActive)
         {
             // first check if powerup passed bottom edge, if so: keep as inactive and destroy
-            if (powerUp.transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
-                powerUp.Destroyed = true;
+            if (powerUp->gameObject->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
+                powerUp->gameObject->isActive = false;
 
-            if (CheckCollision(*Player, powerUp))
+            if (CheckCollision(*Player, *(powerUp->gameObject)))
             {	// collided with player, now activate powerup
-                ActivatePowerUp(powerUp);
-                powerUp.Destroyed = true;
-                powerUp.Activated = true;
+                ActivatePowerUp(*powerUp);
+                powerUp->gameObject->isActive = false;
+                powerUp->activated = true;
                 SoundEngine->play2D("Assets/Sounds/powerup.wav", false);
             }
         }
@@ -630,66 +644,51 @@ bool ShouldSpawn(int chance)
 
 void Breakout::SpawnPowerUps(OldGameObject& block)
 {
-    auto& resourceManager = ResourceManager::GetInstance();
-    OldSpriteRenderer powerUpRender;
-
     if (ShouldSpawn(75)) // 1 in 75 chance
     {
-        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_speed"));
-        powerUpRender.color = glm::vec3(0.5f, 0.5f, 1.0f);
         PowerUps.push_back(
-            PowerUp("speed", 0.0f, block.transform.position, powerUpRender)
+            PowerUpController::CreatePowerUp("speed", 0.0f, block.transform.position, "powerup_speed", glm::vec3(0.5f, 0.5f, 1.0f))
         );
     }
         
     if (ShouldSpawn(75))
     {
-        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_sticky"));
-        powerUpRender.color = glm::vec3(1.0f, 0.5f, 1.0f);
         PowerUps.push_back(
-            PowerUp("sticky", 20.0f, block.transform.position, powerUpRender)
+            PowerUpController::CreatePowerUp("sticky", 20.0f, block.transform.position, "powerup_sticky", glm::vec3(1.0f, 0.5f, 1.0f))
         );
     }
     if (ShouldSpawn(75))
     {
-        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_passthrough"));
-        powerUpRender.color = glm::vec3(0.5f, 1.0f, 0.5f);
         PowerUps.push_back(
-            PowerUp("pass-through", 10.0f, block.transform.position, powerUpRender)
+            PowerUpController::CreatePowerUp("pass-through", 10.0f, block.transform.position, "powerup_passthrough", glm::vec3(0.5f, 1.0f, 0.5f))
         );
     }
     if (ShouldSpawn(75))
     {
-        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_increase"));
-        powerUpRender.color = glm::vec3(1.0f, 0.6f, 0.4);
         PowerUps.push_back(
-            PowerUp("pad-size-increase", 0.0f, block.transform.position, powerUpRender)
+            PowerUpController::CreatePowerUp("pad-size-increase", 0.0f, block.transform.position, "powerup_increase", glm::vec3(1.0f, 0.6f, 0.4f))
         );
     }
     if (ShouldSpawn(15)) // negative powerups should spawn more often
     {
-        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_confuse"));
-        powerUpRender.color = glm::vec3(1.0f, 0.3f, 0.3f);
         PowerUps.push_back(
-            PowerUp("confuse", 15.0f, block.transform.position, powerUpRender)
+            PowerUpController::CreatePowerUp("confuse", 15.0f, block.transform.position, "powerup_confuse", glm::vec3(1.0f, 0.3f, 0.3f))
         );
     }
     if (ShouldSpawn(15))
     {
-        powerUpRender.texture = new Texture2D(resourceManager.GetTexture("powerup_chaos"));
-        powerUpRender.color = glm::vec3(0.9f, 0.25f, 0.25f);
         PowerUps.push_back(
-            PowerUp("chaos", 15.0f, block.transform.position, powerUpRender)
+            PowerUpController::CreatePowerUp("chaos", 15.0f, block.transform.position, "powerup_chaos", glm::vec3(0.9f, 0.25f, 0.25f))
         );
     }
 }
 
-bool IsOtherPowerUpActive(std::vector<PowerUp>& powerUps, std::string type)
+bool IsOtherPowerUpActive(std::vector<PowerUpController*>& powerUps, std::string type)
 {
-    for (const PowerUp& powerUp : powerUps)
+    for (const PowerUpController* powerUp : powerUps)
     {
-        if (powerUp.Activated)
-            if (powerUp.Type == type)
+        if (powerUp->activated)
+            if (powerUp->type == type)
                 return true;
     }
     return false;
@@ -700,19 +699,19 @@ void Breakout::UpdatePowerUps()
     auto ballController = Ball->GetBehaviour<BallController>();
     auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
 
-    for (PowerUp& powerUp : this->PowerUps)
+    for (PowerUpController* powerUp : this->PowerUps)
     {
-        powerUp.transform.position += powerUp.Velocity * Game::deltaTime;
-        if (powerUp.Activated)
+        powerUp->gameObject->transform.position += powerUp->velocity * Game::deltaTime;
+        if (powerUp->activated)
         {
-            powerUp.Duration -= Game::deltaTime;
+            powerUp->duration -= Game::deltaTime;
 
-            if (powerUp.Duration <= 0.0f)
+            if (powerUp->duration <= 0.0f)
             {
                 // remove powerup from list (will later be removed)
-                powerUp.Activated = false;
+                powerUp->activated = false;
                 // deactivate effects
-                if (powerUp.Type == "sticky")
+                if (powerUp->type == "sticky")
                 {
                     if (!IsOtherPowerUpActive(this->PowerUps, "sticky"))
                     {	// only reset if no other PowerUp of type sticky is active
@@ -722,7 +721,7 @@ void Breakout::UpdatePowerUps()
                         playerRenderer->color = glm::vec3(1.0f);
                     }
                 }
-                else if (powerUp.Type == "pass-through")
+                else if (powerUp->type == "pass-through")
                 {
                     if (!IsOtherPowerUpActive(this->PowerUps, "pass-through"))
                     {	// only reset if no other PowerUp of type pass-through is active
@@ -730,14 +729,14 @@ void Breakout::UpdatePowerUps()
                         ballRenderer->color = glm::vec3(1.0f);
                     }
                 }
-                else if (powerUp.Type == "confuse")
+                else if (powerUp->type == "confuse")
                 {
                     if (!IsOtherPowerUpActive(this->PowerUps, "confuse"))
                     {	// only reset if no other PowerUp of type confuse is active
                         Effects->Confuse = false;
                     }
                 }
-                else if (powerUp.Type == "chaos")
+                else if (powerUp->type == "chaos")
                 {
                     if (!IsOtherPowerUpActive(this->PowerUps, "chaos"))
                     {	// only reset if no other PowerUp of type chaos is active
@@ -748,6 +747,15 @@ void Breakout::UpdatePowerUps()
         }
     }
     this->PowerUps.erase(std::remove_if(this->PowerUps.begin(), this->PowerUps.end(),
-        [](const PowerUp& powerUp) { return powerUp.Destroyed && !powerUp.Activated; }
+        [](const PowerUpController* powerUp)
+        {
+            bool isDeletable = !powerUp->gameObject->isActive && !powerUp->activated;
+            if (isDeletable)
+            {
+                delete powerUp->gameObject;
+            }
+
+            return isDeletable;
+        }
     ), this->PowerUps.end());
 }

@@ -20,13 +20,13 @@ namespace Learning2DEngine
 			bool isActive;
 			Transform transform;
 
-			GameObject()
-				: isActive(true), transform(), behaviours(), renderer(nullptr)
+			GameObject(bool isActive = true)
+				: isActive(isActive), transform(), behaviours(), renderer(nullptr)
 			{
 			}
 
-			GameObject(Transform transform)
-				: isActive(true), transform(transform), behaviours(), renderer(nullptr)
+			GameObject(Transform transform, bool isActive = true)
+				: isActive(isActive), transform(transform), behaviours(), renderer(nullptr)
 			{
 			}
 

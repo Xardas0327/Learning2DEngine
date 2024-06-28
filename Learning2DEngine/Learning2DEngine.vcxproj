@@ -198,7 +198,7 @@
     <ClInclude Include="Learning2DEngine\Render\Text2DRenderer.h" />
     <ClInclude Include="particle_generator.h" />
     <ClInclude Include="post_processor.h" />
-    <ClInclude Include="power_up.h" />
+    <ClInclude Include="PowerUpController.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\arial.ttf" />
