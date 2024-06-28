@@ -1,15 +1,14 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include "Learning2DEngine/System/Behaviour.h"
+#include "Learning2DEngine/System/GameObject.h"
 
 class BrickController : public virtual Learning2DEngine::System::Behaviour
 {
 	friend class Learning2DEngine::System::GameObject;
 protected:
-    BrickController(Learning2DEngine::System::GameObject* gameObject)
-        : Component(gameObject), Behaviour(gameObject), isSolid(false)
+    BrickController(Learning2DEngine::System::GameObject* gameObject, bool isSolid = false)
+        : Component(gameObject), Behaviour(gameObject), isSolid(isSolid)
     {
 
     }

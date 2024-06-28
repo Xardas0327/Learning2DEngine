@@ -18,9 +18,6 @@
     <ClCompile Include="game_level.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="game_object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,15 +57,9 @@
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Render\OldSpriteRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game_level.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="game_object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="particle_generator.h">
@@ -138,9 +129,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BallController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\OldSpriteRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\System\Component.h">

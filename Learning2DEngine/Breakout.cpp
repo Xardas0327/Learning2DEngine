@@ -15,7 +15,6 @@
 
 #include "BallController.h"
 
-#include "game_object.h"
 #include "particle_generator.h"
 #include "post_processor.h"
 
@@ -409,30 +408,6 @@ bool CheckCollision(GameObject& one, GameObject& two) // AABB - AABB collision
     return collisionX && collisionY;
 }
 
-bool CheckCollision(GameObject& one, OldGameObject& two) // AABB - AABB collision
-{
-    // collision x-axis?
-    bool collisionX = one.transform.position.x + one.transform.scale.x >= two.transform.position.x &&
-        two.transform.position.x + two.transform.scale.x >= one.transform.position.x;
-    // collision y-axis?
-    bool collisionY = one.transform.position.y + one.transform.scale.y >= two.transform.position.y &&
-        two.transform.position.y + two.transform.scale.y >= one.transform.position.y;
-    // collision only if on both axes
-    return collisionX && collisionY;
-}
-
-bool CheckCollision(OldGameObject& one, OldGameObject& two) // AABB - AABB collision
-{
-    // collision x-axis?
-    bool collisionX = one.transform.position.x + one.transform.scale.x >= two.transform.position.x &&
-        two.transform.position.x + two.transform.scale.x >= one.transform.position.x;
-    // collision y-axis?
-    bool collisionY = one.transform.position.y + one.transform.scale.y >= two.transform.position.y &&
-        two.transform.position.y + two.transform.scale.y >= one.transform.position.y;
-    // collision only if on both axes
-    return collisionX && collisionY;
-}
-
 // calculates which direction a vector is facing (N,E,S or W)
 Direction VectorDirection(glm::vec2 target)
 {
@@ -480,46 +455,22 @@ Collision CheckCollision(BallController& one, GameObject& two) // AABB - Circle 
         return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
 }
 
-Collision CheckCollision(BallController& one, OldGameObject& two) // AABB - Circle collision
-{
-    // get center point circle first 
-    glm::vec2 center(one.gameObject->transform.position + one.radius);
-    // calculate AABB info (center, half-extents)
-    glm::vec2 aabb_half_extents(two.transform.scale.x / 2.0f, two.transform.scale.y / 2.0f);
-    glm::vec2 aabb_center(
-        two.transform.position.x + aabb_half_extents.x,
-        two.transform.position.y + aabb_half_extents.y
-    );
-    // get difference vector between both centers
-    glm::vec2 difference = center - aabb_center;
-    glm::vec2 clamped = glm::clamp(difference, -aabb_half_extents, aabb_half_extents);
-    // add clamped value to AABB_center and we get the value of box closest to circle
-    glm::vec2 closest = aabb_center + clamped;
-    // retrieve vector between center circle and closest point AABB and check if length <= radius
-    difference = closest - center;
-
-    if (glm::length(difference) < one.radius) // not <= since in that case a collision also occurs when object one exactly touches object two, which they are at the end of each collision resolution stage.
-        return std::make_tuple(true, VectorDirection(difference), difference);
-    else
-        return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
-}
-
 void Breakout::DoCollisions()
 {
     auto ballController = Ball->GetBehaviour<BallController>();
 
-    for (OldGameObject& box : this->Levels[this->Level].Bricks)
+    for (BrickController* box : this->Levels[this->Level].Bricks)
     {
-        if (!box.Destroyed)
+        if (box->gameObject->isActive)
         {
-            Collision collision = CheckCollision(*ballController, box);
+            Collision collision = CheckCollision(*ballController, *box->gameObject);
             if (std::get<0>(collision)) // if collision is true
             {
                 // destroy block if not solid
-                if (!box.IsSolid)
+                if (!box->isSolid)
                 {
-                    box.Destroyed = true;
-                    this->SpawnPowerUps(box);
+                    box->gameObject->isActive = false;
+                    this->SpawnPowerUps(*box->gameObject);
                     SoundEngine->play2D("Assets/Sounds/bleep.mp3", false);
                 }
                 else
@@ -531,7 +482,7 @@ void Breakout::DoCollisions()
                 // collision resolution
                 Direction dir = std::get<1>(collision);
                 glm::vec2 diff_vector = std::get<2>(collision);
-                if (!(ballController->passThrough && !box.IsSolid)) // don't do collision resolution on non-solid bricks if pass-through is activated
+                if (!(ballController->passThrough && !box->isSolid)) // don't do collision resolution on non-solid bricks if pass-through is activated
                 {
                     if (dir == LEFT || dir == RIGHT) // horizontal collision
                     {
@@ -642,7 +593,7 @@ bool ShouldSpawn(int chance)
     return random == 0;
 }
 
-void Breakout::SpawnPowerUps(OldGameObject& block)
+void Breakout::SpawnPowerUps(GameObject& block)
 {
     if (ShouldSpawn(75)) // 1 in 75 chance
     {

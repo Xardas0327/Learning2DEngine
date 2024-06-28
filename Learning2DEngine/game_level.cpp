@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "Learning2DEngine/Render/OldSpriteRenderer.h"
+#include "Learning2DEngine/Render/SpriteRenderer.h"
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
@@ -12,6 +12,10 @@ using namespace Learning2DEngine::Render;
 void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int levelHeight)
 {
     // clear old data
+    for (BrickController* tile : this->Bricks)
+    {
+        delete tile->gameObject;
+    }
     this->Bricks.clear();
     // load from file
     unsigned int tileCode;
@@ -35,15 +39,15 @@ void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int lev
 
 void GameLevel::Draw()
 {
-    for (OldGameObject& tile : this->Bricks)
-        if (!tile.Destroyed)
-            tile.Draw();
+    for (BrickController* tile : this->Bricks)
+        if (tile->gameObject->isActive)
+            tile->gameObject->GetRenderer()->Draw();
 }
 
 bool GameLevel::IsCompleted()
 {
-    for (OldGameObject& tile : this->Bricks)
-        if (!tile.IsSolid && !tile.Destroyed)
+    for (BrickController* tile : this->Bricks)
+        if (!tile->isSolid && tile->gameObject->isActive)
             return false;
     return true;
 }
@@ -57,43 +61,45 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
 
     auto& resourceManager = ResourceManager::GetInstance();
 
-    OldSpriteRenderer brickRenderer;
-
     // initialize level tiles based on tileData		
     for (unsigned int y = 0; y < height; ++y)
     {
         for (unsigned int x = 0; x < width; ++x)
         {
-            // check block type from level data (2D level array)
-            if (tileData[y][x] == 1) // solid
-            {
-                glm::vec2 pos(unit_width * x, unit_height * y);
-                glm::vec2 size(unit_width, unit_height);
-                brickRenderer.texture = new Texture2D(resourceManager.GetTexture("block_solid"));
-                brickRenderer.color = glm::vec3(0.8f, 0.8f, 0.7f);
-                OldGameObject obj(pos, size, brickRenderer);
-                obj.IsSolid = true;
-                this->Bricks.push_back(obj);
-            }
-            else if (tileData[y][x] > 1)	// non-solid; now determine its color based on level data
-            {
-                glm::vec3 color = glm::vec3(1.0f); // original: white
-                if (tileData[y][x] == 2)
-                    color = glm::vec3(0.2f, 0.6f, 1.0f);
-                else if (tileData[y][x] == 3)
-                    color = glm::vec3(0.0f, 0.7f, 0.0f);
-                else if (tileData[y][x] == 4)
-                    color = glm::vec3(0.8f, 0.8f, 0.4f);
-                else if (tileData[y][x] == 5)
-                    color = glm::vec3(1.0f, 0.5f, 0.0f);
+            if (tileData[y][x] == 0)
+                continue;
 
-                glm::vec2 pos(unit_width * x, unit_height * y);
-                glm::vec2 size(unit_width, unit_height);
+            glm::vec2 pos(unit_width * x, unit_height * y);
+            glm::vec2 size(unit_width, unit_height);
 
-                brickRenderer.texture = new Texture2D(resourceManager.GetTexture("block"));
-                brickRenderer.color = color;
-                this->Bricks.push_back(OldGameObject(pos, size, brickRenderer));
-            }
+            glm::vec3 color = glm::vec3(1.0f); // original: white
+            if (tileData[y][x] == 1)
+                color = glm::vec3(0.8f, 0.8f, 0.7f);
+            else if (tileData[y][x] == 2)
+                color = glm::vec3(0.2f, 0.6f, 1.0f);
+            else if (tileData[y][x] == 3)
+                color = glm::vec3(0.0f, 0.7f, 0.0f);
+            else if (tileData[y][x] == 4)
+                color = glm::vec3(0.8f, 0.8f, 0.4f);
+            else if (tileData[y][x] == 5)
+                color = glm::vec3(1.0f, 0.5f, 0.0f);
+
+            GameObject* brick = new GameObject(
+                Transform(
+                    pos,
+                    size
+                )
+            );
+
+            auto brickRenderer = brick->AddRenderer<SpriteRenderer, glm::vec3>(color);
+            brickRenderer->texture = 
+                tileData[y][x] == 1 // solid
+                ? new Texture2D(resourceManager.GetTexture("block_solid"))
+                : new Texture2D(resourceManager.GetTexture("block"));
+
+
+            auto brickController = brick->AddBehaviour<BrickController, bool>(tileData[y][x] == 1);
+            this->Bricks.push_back(brickController);
         }
     }
 }

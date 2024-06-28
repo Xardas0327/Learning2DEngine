@@ -5,6 +5,7 @@
 
 #include "Learning2DEngine/System/Game.h"
 #include "Learning2DEngine/System/Text.h"
+#include "Learning2DEngine/System/GameObject.h"
 
 #include "game_level.h"
 #include "PowerUpController.h"
@@ -53,7 +54,7 @@ protected:
     void ResetLevel();
     void ResetPlayer();
 
-    void SpawnPowerUps(OldGameObject& block);
+    void SpawnPowerUps(Learning2DEngine::System::GameObject& block);
     void UpdatePowerUps();
 public:
     Breakout();
