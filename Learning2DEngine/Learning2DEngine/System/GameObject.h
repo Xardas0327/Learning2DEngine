@@ -98,6 +98,11 @@ namespace Learning2DEngine
 
 				return selectedRenderer;
 			}
+
+			inline Render::Renderer* GetRenderer()
+			{
+				return renderer;
+			}
 		};
 	}
 }

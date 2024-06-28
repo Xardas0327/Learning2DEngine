@@ -321,13 +321,11 @@ void Breakout::Render()
         Effects->BeginRender();
 
         // Draw background
-        auto backgroundRenderer = Background->GetRenderer<SpriteRenderer>();
-        backgroundRenderer->Draw();
+        Background->GetRenderer()->Draw();
         // Draw level
         this->Levels[this->Level].Draw();
         // Draw player
-        auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
-        playerRenderer->Draw();
+        Player->GetRenderer()->Draw();
         // Draw PowerUps
         for (PowerUp& powerUp : this->PowerUps)
             if (!powerUp.Destroyed)
@@ -335,8 +333,7 @@ void Breakout::Render()
         // Draw Particles
         Particles->Draw();
         // Draw Player
-        auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
-        ballRenderer->Draw();
+        Ball->GetRenderer()->Draw();
         // End rendering to postprocessing framebuffer
         Effects->EndRender();
         // Render postprocessing quad
