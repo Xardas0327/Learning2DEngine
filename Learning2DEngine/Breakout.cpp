@@ -14,6 +14,7 @@
 #include "Learning2DEngine/System/GameObject.h"
 
 #include "BallController.h"
+#include "BrickController.h"
 
 #include "particle_generator.h"
 #include "post_processor.h"
