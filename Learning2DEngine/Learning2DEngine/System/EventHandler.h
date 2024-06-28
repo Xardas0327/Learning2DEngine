@@ -6,7 +6,7 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-		template<typename... Params>
+		template<class ...Params>
 		class EventHandler
 		{
 		public:

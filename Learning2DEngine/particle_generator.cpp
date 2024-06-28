@@ -11,7 +11,7 @@ ParticleGenerator::ParticleGenerator(Shader shader, Texture2D texture, unsigned 
     this->init();
 }
 
-void ParticleGenerator::Update(float dt, GameObject& object, unsigned int newParticles, glm::vec2 offset)
+void ParticleGenerator::Update(float dt, BallController& object, unsigned int newParticles, glm::vec2 offset)
 {
     // add new particles 
     for (unsigned int i = 0; i < newParticles; ++i)
@@ -106,12 +106,12 @@ unsigned int ParticleGenerator::firstUnusedParticle()
     return 0;
 }
 
-void ParticleGenerator::respawnParticle(Particle& particle, GameObject& object, glm::vec2 offset)
+void ParticleGenerator::respawnParticle(Particle& particle, BallController& object, glm::vec2 offset)
 {
     float random = (Random::GetNumber(-50, 50)) / 10.0f;
     float rColor = 0.5f + (Random::GetNumber(0, 100) / 100.0f);
-    particle.Position = object.transform.position + random + offset;
+    particle.Position = object.gameObject->transform.position + random + offset;
     particle.Color = glm::vec4(rColor, rColor, rColor, 1.0f);
     particle.Life = 1.0f;
-    particle.Velocity = object.Velocity * 0.1f;
+    particle.Velocity = object.velocity * 0.1f;
 }

@@ -151,14 +151,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ball_object.cpp" />
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="Learning2DEngine\Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp" />
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\System\Game.cpp" />
     <ClCompile Include="game_level.cpp" />
-    <ClCompile Include="game_object.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Shader.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp" />
     <ClCompile Include="Learning2DEngine\System\Random.cpp" />
@@ -169,11 +167,16 @@
     <ClCompile Include="post_processor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ball_object.h" />
+    <ClInclude Include="BallController.h" />
     <ClInclude Include="Breakout.h" />
+    <ClInclude Include="BrickController.h" />
+    <ClInclude Include="Learning2DEngine\Render\Renderer.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
+    <ClInclude Include="Learning2DEngine\System\Behaviour.h" />
+    <ClInclude Include="Learning2DEngine\System\Component.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />
+    <ClInclude Include="Learning2DEngine\System\GameObject.h" />
     <ClInclude Include="Learning2DEngine\System\InputStatus.h" />
     <ClInclude Include="Learning2DEngine\System\Log.h" />
     <ClInclude Include="Learning2DEngine\System\Random.h" />
@@ -184,7 +187,6 @@
     <ClInclude Include="Learning2DEngine\Render\RenderManager.h" />
     <ClInclude Include="Learning2DEngine\System\Singleton.h" />
     <ClInclude Include="game_level.h" />
-    <ClInclude Include="game_object.h" />
     <ClInclude Include="Learning2DEngine\System\Texture2DSettings.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
     <ClInclude Include="Learning2DEngine\System\FreeTypeCharacter.h" />
@@ -192,7 +194,7 @@
     <ClInclude Include="Learning2DEngine\Render\Text2DRenderer.h" />
     <ClInclude Include="particle_generator.h" />
     <ClInclude Include="post_processor.h" />
-    <ClInclude Include="power_up.h" />
+    <ClInclude Include="PowerUpController.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\arial.ttf" />

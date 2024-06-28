@@ -7,82 +7,25 @@
 
 namespace Learning2DEngine
 {
-	namespace Render
-	{
-        int SpriteRenderer::useDefaultShader = 0;
-        Shader SpriteRenderer::defaultShader;
+    using namespace System;
 
-        int SpriteRenderer::useVao = 0;
+    namespace Render
+    {
+        int SpriteRenderer::referenceNumber = 0;
+        Shader SpriteRenderer::shader;
+
         unsigned int SpriteRenderer::vao = 0;
         unsigned int SpriteRenderer::vbo = 0;
         unsigned int SpriteRenderer::ebo = 0;
 
-        SpriteRenderer::SpriteRenderer(glm::vec3 c)
-            : uniqueShader(nullptr), texture(nullptr), color(c), isInit(false)
+        SpriteRenderer::SpriteRenderer(GameObject* gameObject, glm::vec3 c)
+            : Component(gameObject), Renderer(gameObject), texture(nullptr), color(c), isInit(false)
         {
 
-        }
-
-        SpriteRenderer::SpriteRenderer(const Shader& s, glm::vec3 c)
-            : texture(nullptr), color(c), isInit(false)
-        {
-            uniqueShader = new Shader(s);
-        }
-
-        SpriteRenderer::SpriteRenderer(const SpriteRenderer& other)
-            : uniqueShader(nullptr), texture(nullptr), color(other.color), isInit(false)
-        {
-            if (other.uniqueShader != nullptr)
-            {
-                uniqueShader = new Shader(*other.uniqueShader);
-            }
-            if (other.texture != nullptr)
-            {
-                texture = new Texture2D(*other.texture);
-            }
-
-            if (other.isInit)
-                Init();
-        }
-
-        SpriteRenderer& SpriteRenderer::operator=(const SpriteRenderer& other)
-        {
-            if(this == &other)
-                return *this;
-
-            Destroy();
-            if (IsUseUniqueShader())
-            {
-                delete uniqueShader;
-            }
-            if (other.uniqueShader != nullptr)
-            {
-                uniqueShader = new Shader(*other.uniqueShader);
-            }
-
-            if (IsUseTexture())
-            {
-                delete texture;
-            }
-            if (other.texture != nullptr)
-            {
-                texture = new Texture2D(*other.texture);
-            }
-            color = other.color;
-
-            if (other.isInit)
-                Init();
-
-            return *this;
         }
 
         SpriteRenderer::~SpriteRenderer()
         {
-            if (IsUseUniqueShader())
-            {
-                delete uniqueShader;
-            }
-
             if (IsUseTexture())
             {
                 delete texture;
@@ -96,22 +39,13 @@ namespace Learning2DEngine
 
             isInit = true;
 
-            if (!IsUseUniqueShader())
-            {
-                // If nothing use it
-                if (!SpriteRenderer::useDefaultShader)
-                {
-                    InitDefaultShader();
-                }
-                ++SpriteRenderer::useDefaultShader;
-            }
-
             // If nothing use it
-            if (!SpriteRenderer::useVao)
+            if (!SpriteRenderer::referenceNumber)
             {
+                InitShader();
                 InitVao();
             }
-            ++SpriteRenderer::useVao;
+            ++SpriteRenderer::referenceNumber;
         }
 
         void SpriteRenderer::Destroy()
@@ -121,33 +55,23 @@ namespace Learning2DEngine
 
             isInit = false;
 
-            // It doesn't destroy the uniqueShader,
-            // because other things could use it
-            if (!IsUseUniqueShader())
+            --SpriteRenderer::referenceNumber;
+            // If nothing use it
+            if (!SpriteRenderer::referenceNumber)
             {
-                --SpriteRenderer::useDefaultShader;
+                SpriteRenderer::shader.Destroy();
 
-                // If nothing use it
-                if (!SpriteRenderer::useDefaultShader)
-                {
-                    SpriteRenderer::defaultShader.Destroy();
-                }
-            }
-
-            --SpriteRenderer::useVao;
-            if (!SpriteRenderer::useVao)
-            {
                 glDeleteVertexArrays(1, &SpriteRenderer::vao);
                 glDeleteBuffers(1, &SpriteRenderer::vbo);
                 glDeleteBuffers(1, &SpriteRenderer::ebo);
             }
         }
 
-        void SpriteRenderer::InitDefaultShader()
+        void SpriteRenderer::InitShader()
         {
             auto& resourceManager = System::ResourceManager::GetInstance();
-            SpriteRenderer::defaultShader = resourceManager.LoadShader("Learning2DEngine/Shaders/DefaultSprite.vs", "Learning2DEngine/Shaders/DefaultSprite.fs");
-            SpriteRenderer::defaultShader.SetInteger("spriteTexture", 0);
+            SpriteRenderer::shader = resourceManager.LoadShader("Learning2DEngine/Shaders/DefaultSprite.vs", "Learning2DEngine/Shaders/DefaultSprite.fs");
+            SpriteRenderer::shader.SetInteger("spriteTexture", 0);
         }
 
         void SpriteRenderer::InitVao()
@@ -184,27 +108,25 @@ namespace Learning2DEngine
             glBindVertexArray(0);
         }
 
-        void SpriteRenderer::Draw(const System::Transform& transform)
+        void SpriteRenderer::Draw()
         {
-            Shader& selectedShader = IsUseUniqueShader() ?  *uniqueShader :SpriteRenderer::defaultShader;
-
-            selectedShader.Use();
+            SpriteRenderer::shader.Use();
             glm::mat4 model = glm::mat4(1.0f);
             // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
-            model = glm::translate(model, glm::vec3(transform.position, 0.0f));  
+            model = glm::translate(model, glm::vec3(gameObject->transform.position, 0.0f));
             // move origin of rotation to center of quad
-            model = glm::translate(model, glm::vec3(0.5f * transform.scale.x, 0.5f * transform.scale.y, 0.0f));
+            model = glm::translate(model, glm::vec3(0.5f * gameObject->transform.scale.x, 0.5f * gameObject->transform.scale.y, 0.0f));
             // then rotate
-            model = glm::rotate(model, glm::radians(transform.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+            model = glm::rotate(model, glm::radians(gameObject->transform.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
             // move origin back
-            model = glm::translate(model, glm::vec3(-0.5f * transform.scale.x, -0.5f * transform.scale.y, 0.0f));
+            model = glm::translate(model, glm::vec3(-0.5f * gameObject->transform.scale.x, -0.5f * gameObject->transform.scale.y, 0.0f));
             // then rotate
-            model = glm::scale(model, glm::vec3(transform.scale, 1.0f)); // last scale
+            model = glm::scale(model, glm::vec3(gameObject->transform.scale, 1.0f)); // last scale
 
-            selectedShader.SetMatrix4("model", model);
-            selectedShader.SetMatrix4("projection", System::Game::GetCameraProjection());
-            selectedShader.SetVector3f("spriteColor", color);
-            selectedShader.SetInteger("isUseTexture", IsUseTexture());
+            SpriteRenderer::shader.SetMatrix4("model", model);
+            SpriteRenderer::shader.SetMatrix4("projection", System::Game::GetCameraProjection());
+            SpriteRenderer::shader.SetVector3f("spriteColor", color);
+            SpriteRenderer::shader.SetInteger("isUseTexture", IsUseTexture());
 
             if (IsUseTexture())
             {
@@ -217,5 +139,5 @@ namespace Learning2DEngine
             glBindVertexArray(0);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
-	}
+    }
 }

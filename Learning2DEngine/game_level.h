@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 
 #include "Learning2DEngine/System/ResourceManager.h"
-#include "game_object.h"
+#include "BrickController.h"
 
 
 /// GameLevel holds all Tiles as part of a Breakout level and 
@@ -15,7 +15,7 @@ class GameLevel
 {
 public:
     // level state
-    std::vector<GameObject> Bricks;
+    std::vector<BrickController*> Bricks;
     // constructor
     GameLevel() { }
     // loads level from file

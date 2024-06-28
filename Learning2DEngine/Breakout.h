@@ -5,9 +5,10 @@
 
 #include "Learning2DEngine/System/Game.h"
 #include "Learning2DEngine/System/Text.h"
+#include "Learning2DEngine/System/GameObject.h"
 
 #include "game_level.h"
-#include "power_up.h"
+#include "PowerUpController.h"
 
 enum GameState {
     GAME_ACTIVE,
@@ -33,11 +34,12 @@ const float BALL_RADIUS = 12.5f;
 class Breakout : public virtual Learning2DEngine::System::Game
 {
 private:
-    GameState                   State;
-    std::vector<GameLevel>      Levels;
-    unsigned int                Level;
-    std::vector<PowerUp>        PowerUps;
-    unsigned int                Lives;
+    GameState State;
+    std::vector<PowerUpController*> PowerUps;
+    std::vector<GameLevel> Levels;
+    unsigned int Level;
+    unsigned int Lives;
+
     Learning2DEngine::System::Text  liveText;
     Learning2DEngine::System::Text  startText;
     Learning2DEngine::System::Text  levelSelectorText;
@@ -52,7 +54,7 @@ protected:
     void ResetLevel();
     void ResetPlayer();
 
-    void SpawnPowerUps(GameObject& block);
+    void SpawnPowerUps(Learning2DEngine::System::GameObject& block);
     void UpdatePowerUps();
 public:
     Breakout();
