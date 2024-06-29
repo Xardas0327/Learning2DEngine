@@ -160,7 +160,7 @@ void Breakout::Init()
 
     liveText = { 
         fontSizePair,
-        "Lives: 0",
+        "Lives: " + std::to_string(this->Lives),
         5.0f,
         5.0f
     };
@@ -302,6 +302,10 @@ void Breakout::Update()
             ResetLevel();
             State = GAME_MENU;
         }
+        else
+        {
+            liveText.text = "Lives: " + std::to_string(Lives);
+        }
         ResetPlayer();
     }
 
@@ -344,10 +348,6 @@ void Breakout::Render()
         // Render postprocessing quad
         Effects->Render(glfwGetTime());
 
-        //Update live
-        std::stringstream ss;
-        ss << this->Lives;
-        liveText.text = "Lives: " + ss.str();
         textRenderer.RenderText(liveText);
     }
 
@@ -569,6 +569,7 @@ void Breakout::ResetLevel()
         Levels[3].Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
 
     Lives = 3;
+    liveText.text = "Lives: " + std::to_string(Lives);
 }
 
 void Breakout::ResetPlayer()
