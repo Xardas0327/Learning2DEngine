@@ -1,6 +1,6 @@
 #pragma once
 
-#include <list>
+#include <vector>
 
 #include "Transform.h"
 #include "Log.h"
@@ -15,7 +15,7 @@ namespace Learning2DEngine
 		class GameObject final
 		{
 		private:
-			std::list<Behaviour*> behaviours;
+			std::vector<Behaviour*> behaviours;
 			Render::Renderer* renderer;
 		public:
 			bool isActive;
