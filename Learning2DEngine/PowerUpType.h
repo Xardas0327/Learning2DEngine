@@ -1,0 +1,12 @@
+#pragma once
+
+enum PowerUpType
+{
+	NONE,
+	SPEED,
+	STICKY,
+	PASS_THROUGH,
+	PAD_SIZE_INCREASE,
+	CONFUSE,
+	CHAOS
+};

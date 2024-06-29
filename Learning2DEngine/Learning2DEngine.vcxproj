@@ -195,6 +195,8 @@
     <ClInclude Include="particle_generator.h" />
     <ClInclude Include="post_processor.h" />
     <ClInclude Include="PowerUpController.h" />
+    <ClInclude Include="PowerUpObject.h" />
+    <ClInclude Include="PowerUpType.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\arial.ttf" />
@@ -219,8 +221,8 @@
     <None Include="Assets\Levels\one.lvl" />
     <None Include="Assets\Levels\three.lvl" />
     <None Include="Assets\Levels\two.lvl" />
-    <None Include="Learning2DEngine\Shaders\DefaultSprite.fs" />
-    <None Include="Learning2DEngine\Shaders\DefaultSprite.vs" />
+    <None Include="Learning2DEngine\Shaders\Sprite.fs" />
+    <None Include="Learning2DEngine\Shaders\Sprite.vs" />
     <None Include="Shaders\particle.frag" />
     <None Include="Shaders\particle.vs" />
     <None Include="Shaders\post_processing.frag" />

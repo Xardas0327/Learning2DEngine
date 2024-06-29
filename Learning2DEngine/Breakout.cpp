@@ -4,8 +4,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <irrklang/irrKlang.h>
 
-#include <sstream> 
-
 #include "Learning2DEngine/Render/RenderManager.h"
 #include "Learning2DEngine/Render/SpriteRenderer.h"
 #include "Learning2DEngine/Render/Text2DRenderer.h"
@@ -15,6 +13,8 @@
 
 #include "BallController.h"
 #include "BrickController.h"
+#include "PowerUpType.h"
+#include "PowerUpObject.h"
 
 #include "particle_generator.h"
 #include "post_processor.h"
@@ -160,7 +160,7 @@ void Breakout::Init()
 
     liveText = { 
         fontSizePair,
-        "Lives: 0",
+        "Lives: " + std::to_string(this->Lives),
         5.0f,
         5.0f
     };
@@ -302,7 +302,12 @@ void Breakout::Update()
             ResetLevel();
             State = GAME_MENU;
         }
+        else
+        {
+            liveText.text = "Lives: " + std::to_string(Lives);
+        }
         ResetPlayer();
+        ClearPowerUps();
     }
 
     // check win condition
@@ -310,6 +315,7 @@ void Breakout::Update()
     {
         ResetLevel();
         ResetPlayer();
+        ClearPowerUps();
         Effects->Chaos = true;
         State = GAME_WIN;
     }
@@ -318,38 +324,31 @@ void Breakout::Update()
 void Breakout::Render()
 {
     auto& textRenderer = Text2DRenderer::GetInstance();
-    if (this->State == GAME_ACTIVE || this->State == GAME_MENU || this->State == GAME_WIN)
+    // Begin rendering to postprocessing framebuffer
+    Effects->BeginRender();
+
+    // Draw background
+    Background->GetRenderer()->Draw();
+    // Draw level
+    this->Levels[this->Level].Draw();
+    // Draw player
+    Player->GetRenderer()->Draw();
+    // Draw PowerUps
+    for (PowerUpController* powerUp : this->PowerUps)
     {
-        // Begin rendering to postprocessing framebuffer
-        Effects->BeginRender();
-
-        // Draw background
-        Background->GetRenderer()->Draw();
-        // Draw level
-        this->Levels[this->Level].Draw();
-        // Draw player
-        Player->GetRenderer()->Draw();
-        // Draw PowerUps
-        for (PowerUpController* powerUp : this->PowerUps)
-        {
-            if (powerUp->gameObject->isActive)
-                powerUp->gameObject->GetRenderer()->Draw();
-        }
-        // Draw Particles
-        Particles->Draw();
-        // Draw Player
-        Ball->GetRenderer()->Draw();
-        // End rendering to postprocessing framebuffer
-        Effects->EndRender();
-        // Render postprocessing quad
-        Effects->Render(glfwGetTime());
-
-        //Update live
-        std::stringstream ss;
-        ss << this->Lives;
-        liveText.text = "Lives: " + ss.str();
-        textRenderer.RenderText(liveText);
+        if (powerUp->gameObject->isActive)
+            powerUp->gameObject->GetRenderer()->Draw();
     }
+    // Draw Particles
+    Particles->Draw();
+    // Draw Player
+    Ball->GetRenderer()->Draw();
+    // End rendering to postprocessing framebuffer
+    Effects->EndRender();
+    // Render postprocessing quad
+    Effects->Render(glfwGetTime());
+
+    textRenderer.RenderText(liveText);
 
     if (this->State == GAME_MENU)
     {
@@ -367,36 +366,36 @@ void Breakout::Render()
 void ActivatePowerUp(PowerUpController& powerUp)
 {
     auto ballController = Ball->GetBehaviour<BallController>();
-    if (powerUp.type == "speed")
+    auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
+    auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
+
+    switch (powerUp.type)
     {
+    case PowerUpType::SPEED:
         ballController->velocity *= 1.2;
-    }
-    else if (powerUp.type == "sticky")
-    {
+        break;
+    case PowerUpType::STICKY:
         ballController->sticky = true;
-        auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
         playerRenderer->color = glm::vec3(1.0f, 0.5f, 1.0f);
-        
-    }
-    else if (powerUp.type == "pass-through")
-    {
+        break;
+    case PowerUpType::PASS_THROUGH:
         ballController->passThrough = true;
-        auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
         ballRenderer->color = glm::vec3(1.0f, 0.5f, 0.5f);
-    }
-    else if (powerUp.type == "pad-size-increase")
-    {
+        break;
+    case PowerUpType::PAD_SIZE_INCREASE:
         Player->transform.scale.x += 50;
-    }
-    else if (powerUp.type == "confuse")
-    {
+        break;
+    case PowerUpType::CONFUSE:
+        // only activate if chaos wasn't already active
         if (!Effects->Chaos)
-            Effects->Confuse = true; // only activate if chaos wasn't already active
-    }
-    else if (powerUp.type == "chaos")
-    {
+            Effects->Confuse = true;
+        break;
+    case PowerUpType::CHAOS:
         if (!Effects->Confuse)
             Effects->Chaos = true;
+        break;
+    default:
+        break;
     }
 }
 
@@ -569,6 +568,7 @@ void Breakout::ResetLevel()
         Levels[3].Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
 
     Lives = 3;
+    liveText.text = "Lives: " + std::to_string(Lives);
 }
 
 void Breakout::ResetPlayer()
@@ -582,8 +582,10 @@ void Breakout::ResetPlayer()
     ballController->Reset(Player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
 
     // also disable all active powerups
-    Effects->Chaos = Effects->Confuse = false;
-    ballController->passThrough = ballController->sticky = false;
+    Effects->Chaos = false;
+    Effects->Confuse = false;
+    ballController->passThrough = false;
+    ballController->sticky = false;
 
     auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
     playerRenderer->color = glm::vec3(1.0f);
@@ -591,60 +593,54 @@ void Breakout::ResetPlayer()
     ballRenderer->color = glm::vec3(1.0f);
 }
 
-bool ShouldSpawn(int chance)
-{
-    int random = Random::GetNumber(0, chance);
-    return random == 0;
-}
-
 void Breakout::SpawnPowerUps(GameObject& block)
 {
-    if (ShouldSpawn(75)) // 1 in 75 chance
+    int number = Random::GetNumber(0, 50);
+    if (number == 0)
     {
         PowerUps.push_back(
-            PowerUpController::CreatePowerUp("speed", 0.0f, block.transform.position, "powerup_speed", glm::vec3(0.5f, 0.5f, 1.0f))
+            PowerUpController::CreatePowerUp(PowerUpSpeed, block.transform.position)
         );
     }
-        
-    if (ShouldSpawn(75))
+    else if (number == 1)
     {
         PowerUps.push_back(
-            PowerUpController::CreatePowerUp("sticky", 20.0f, block.transform.position, "powerup_sticky", glm::vec3(1.0f, 0.5f, 1.0f))
+            PowerUpController::CreatePowerUp(PowerUpSticky, block.transform.position)
         );
     }
-    if (ShouldSpawn(75))
+    else if (number == 2)
     {
         PowerUps.push_back(
-            PowerUpController::CreatePowerUp("pass-through", 10.0f, block.transform.position, "powerup_passthrough", glm::vec3(0.5f, 1.0f, 0.5f))
+            PowerUpController::CreatePowerUp(PowerUpPassThrough, block.transform.position)
         );
     }
-    if (ShouldSpawn(75))
+    else if (number == 3)
     {
         PowerUps.push_back(
-            PowerUpController::CreatePowerUp("pad-size-increase", 0.0f, block.transform.position, "powerup_increase", glm::vec3(1.0f, 0.6f, 0.4f))
+            PowerUpController::CreatePowerUp(PowerUpPadSizeIncrease, block.transform.position)
         );
     }
-    if (ShouldSpawn(15)) // negative powerups should spawn more often
+    // negative powerups should spawn more often
+    else if (number > 3 && number < 8)
     {
         PowerUps.push_back(
-            PowerUpController::CreatePowerUp("confuse", 15.0f, block.transform.position, "powerup_confuse", glm::vec3(1.0f, 0.3f, 0.3f))
+            PowerUpController::CreatePowerUp(PowerUpConfuse, block.transform.position)
         );
     }
-    if (ShouldSpawn(15))
+    else if (number > 7 && number < 12)
     {
         PowerUps.push_back(
-            PowerUpController::CreatePowerUp("chaos", 15.0f, block.transform.position, "powerup_chaos", glm::vec3(0.9f, 0.25f, 0.25f))
+            PowerUpController::CreatePowerUp(PowerUpChaos, block.transform.position)
         );
     }
 }
 
-bool IsOtherPowerUpActive(std::vector<PowerUpController*>& powerUps, std::string type)
+bool IsOtherPowerUpActive(std::vector<PowerUpController*>& powerUps, PowerUpType type)
 {
     for (const PowerUpController* powerUp : powerUps)
     {
-        if (powerUp->activated)
-            if (powerUp->type == type)
-                return true;
+        if (powerUp->activated && powerUp->type == type)
+            return true;
     }
     return false;
 }
@@ -666,41 +662,44 @@ void Breakout::UpdatePowerUps()
                 // remove powerup from list (will later be removed)
                 powerUp->activated = false;
                 // deactivate effects
-                if (powerUp->type == "sticky")
+                // only reset if no other PowerUp of same type is active
+                switch (powerUp->type)
                 {
-                    if (!IsOtherPowerUpActive(this->PowerUps, "sticky"))
-                    {	// only reset if no other PowerUp of type sticky is active
+                case PowerUpType::STICKY:
+                    if (!IsOtherPowerUpActive(this->PowerUps, PowerUpType::STICKY))
+                    {	
                         ballController->sticky = false;
 
                         auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
                         playerRenderer->color = glm::vec3(1.0f);
                     }
-                }
-                else if (powerUp->type == "pass-through")
-                {
-                    if (!IsOtherPowerUpActive(this->PowerUps, "pass-through"))
-                    {	// only reset if no other PowerUp of type pass-through is active
+                    break;
+                case PowerUpType::PASS_THROUGH:
+                    if (!IsOtherPowerUpActive(this->PowerUps, PowerUpType::PASS_THROUGH))
+                    {
                         ballController->passThrough = false;
                         ballRenderer->color = glm::vec3(1.0f);
                     }
-                }
-                else if (powerUp->type == "confuse")
-                {
-                    if (!IsOtherPowerUpActive(this->PowerUps, "confuse"))
-                    {	// only reset if no other PowerUp of type confuse is active
+                    break;
+                case PowerUpType::CONFUSE:
+                    if (!IsOtherPowerUpActive(this->PowerUps, PowerUpType::CONFUSE))
+                    {
                         Effects->Confuse = false;
                     }
-                }
-                else if (powerUp->type == "chaos")
-                {
-                    if (!IsOtherPowerUpActive(this->PowerUps, "chaos"))
-                    {	// only reset if no other PowerUp of type chaos is active
+                    break;
+                case PowerUpType::CHAOS:
+                    if (!IsOtherPowerUpActive(this->PowerUps, PowerUpType::CHAOS))
+                    {
                         Effects->Chaos = false;
                     }
+                    break;
+                default:
+                    break;
                 }
             }
         }
     }
+
     this->PowerUps.erase(std::remove_if(this->PowerUps.begin(), this->PowerUps.end(),
         [](PowerUpController* powerUp)
         {
@@ -713,4 +712,13 @@ void Breakout::UpdatePowerUps()
             return isDeletable;
         }
     ), this->PowerUps.end());
+}
+
+void Breakout::ClearPowerUps()
+{
+    for (PowerUpController* powerUp : PowerUps)
+    {
+        GameObject::Destroy(powerUp);
+    }
+    PowerUps.clear();
 }

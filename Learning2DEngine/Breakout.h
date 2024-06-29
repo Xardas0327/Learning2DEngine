@@ -56,6 +56,7 @@ protected:
 
     void SpawnPowerUps(Learning2DEngine::System::GameObject& block);
     void UpdatePowerUps();
+    void ClearPowerUps();
 public:
     Breakout();
     ~Breakout();

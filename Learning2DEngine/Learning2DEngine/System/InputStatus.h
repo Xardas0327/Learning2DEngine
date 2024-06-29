@@ -3,7 +3,8 @@ namespace Learning2DEngine
 {
     namespace System
     {
-        enum InputStatus {
+        enum InputStatus
+        {
             // The key or mouse button was released.
             KEY_UP,
             // The key or mouse button was pressed.
