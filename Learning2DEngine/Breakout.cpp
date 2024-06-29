@@ -1,7 +1,5 @@
 #include "Breakout.h"
 
-#include <sstream> 
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <irrklang/irrKlang.h>
