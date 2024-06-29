@@ -15,8 +15,8 @@ namespace Learning2DEngine
         struct Text {
             FontSizePair fontSizePair;
             std::string text;
-            float x;
-            float y;
+            float x = 0;
+            float y = 0;
             float scale = 1.0f;
             glm::vec3 color = glm::vec3(1.0f);
         };

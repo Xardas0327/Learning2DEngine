@@ -14,7 +14,7 @@ void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int lev
     // clear old data
     for (BrickController* tile : this->Bricks)
     {
-        delete tile->gameObject;
+        GameObject::Destroy(tile);
     }
     this->Bricks.clear();
     // load from file

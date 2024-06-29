@@ -699,12 +699,12 @@ void Breakout::UpdatePowerUps()
         }
     }
     this->PowerUps.erase(std::remove_if(this->PowerUps.begin(), this->PowerUps.end(),
-        [](const PowerUpController* powerUp)
+        [](PowerUpController* powerUp)
         {
             bool isDeletable = !powerUp->gameObject->isActive && !powerUp->activated;
             if (isDeletable)
             {
-                delete powerUp->gameObject;
+                GameObject::Destroy(powerUp);
             }
 
             return isDeletable;

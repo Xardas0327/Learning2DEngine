@@ -4,6 +4,7 @@
 
 #include "Transform.h"
 #include "Log.h"
+#include "Component.h"
 #include "Behaviour.h"
 #include "../Render/Renderer.h"
 
@@ -45,6 +46,24 @@ namespace Learning2DEngine
 					renderer->Destroy();
 					delete renderer;
 				}
+			}
+
+			/// <summary>
+			/// The gameObject and its behaviours and its renderer will be destroyed.
+			/// </summary>
+			/// <param name="gameObject"></param>
+			static void Destroy(GameObject* gameObject)
+			{
+				delete gameObject;
+			}
+
+			/// <summary>
+			/// The gameObject of component and its behaviours and its renderer will be destroyed.
+			/// </summary>
+			/// <param name="gameObject"></param>
+			static void Destroy(Component* component)
+			{
+				delete component->gameObject;
 			}
 
 			template <class TBehaviour, class ...Params>
