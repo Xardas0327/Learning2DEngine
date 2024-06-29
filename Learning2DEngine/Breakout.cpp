@@ -309,6 +309,7 @@ void Breakout::Update()
             liveText.text = "Lives: " + std::to_string(Lives);
         }
         ResetPlayer();
+        ClearPowerUps();
     }
 
     // check win condition
@@ -316,6 +317,7 @@ void Breakout::Update()
     {
         ResetLevel();
         ResetPlayer();
+        ClearPowerUps();
         Effects->Chaos = true;
         State = GAME_WIN;
     }
@@ -582,8 +584,10 @@ void Breakout::ResetPlayer()
     ballController->Reset(Player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
 
     // also disable all active powerups
-    Effects->Chaos = Effects->Confuse = false;
-    ballController->passThrough = ballController->sticky = false;
+    Effects->Chaos = false;
+    Effects->Confuse = false;
+    ballController->passThrough = false;
+    ballController->sticky = false;
 
     auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
     playerRenderer->color = glm::vec3(1.0f);
@@ -710,4 +714,13 @@ void Breakout::UpdatePowerUps()
             return isDeletable;
         }
     ), this->PowerUps.end());
+}
+
+void Breakout::ClearPowerUps()
+{
+    for (PowerUpController* powerUp : PowerUps)
+    {
+        GameObject::Destroy(powerUp);
+    }
+    PowerUps.clear();
 }
