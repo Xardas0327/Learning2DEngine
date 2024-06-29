@@ -195,6 +195,8 @@
     <ClInclude Include="particle_generator.h" />
     <ClInclude Include="post_processor.h" />
     <ClInclude Include="PowerUpController.h" />
+    <ClInclude Include="PowerUpObject.h" />
+    <ClInclude Include="PowerUpType.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\arial.ttf" />
