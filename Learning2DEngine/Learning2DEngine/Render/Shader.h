@@ -12,7 +12,7 @@ namespace Learning2DEngine
         class Shader
         {
         private:
-            enum ShaderType {Vertex, Fragment, Geometry};
+            enum ShaderType {VERTEX, FRAGMENT, GEOMETRY};
             static std::string ToString(ShaderType type);
 
             unsigned int id;

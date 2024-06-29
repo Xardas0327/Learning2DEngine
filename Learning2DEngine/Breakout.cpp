@@ -322,34 +322,31 @@ void Breakout::Update()
 void Breakout::Render()
 {
     auto& textRenderer = Text2DRenderer::GetInstance();
-    if (this->State == GAME_ACTIVE || this->State == GAME_MENU || this->State == GAME_WIN)
+    // Begin rendering to postprocessing framebuffer
+    Effects->BeginRender();
+
+    // Draw background
+    Background->GetRenderer()->Draw();
+    // Draw level
+    this->Levels[this->Level].Draw();
+    // Draw player
+    Player->GetRenderer()->Draw();
+    // Draw PowerUps
+    for (PowerUpController* powerUp : this->PowerUps)
     {
-        // Begin rendering to postprocessing framebuffer
-        Effects->BeginRender();
-
-        // Draw background
-        Background->GetRenderer()->Draw();
-        // Draw level
-        this->Levels[this->Level].Draw();
-        // Draw player
-        Player->GetRenderer()->Draw();
-        // Draw PowerUps
-        for (PowerUpController* powerUp : this->PowerUps)
-        {
-            if (powerUp->gameObject->isActive)
-                powerUp->gameObject->GetRenderer()->Draw();
-        }
-        // Draw Particles
-        Particles->Draw();
-        // Draw Player
-        Ball->GetRenderer()->Draw();
-        // End rendering to postprocessing framebuffer
-        Effects->EndRender();
-        // Render postprocessing quad
-        Effects->Render(glfwGetTime());
-
-        textRenderer.RenderText(liveText);
+        if (powerUp->gameObject->isActive)
+            powerUp->gameObject->GetRenderer()->Draw();
     }
+    // Draw Particles
+    Particles->Draw();
+    // Draw Player
+    Ball->GetRenderer()->Draw();
+    // End rendering to postprocessing framebuffer
+    Effects->EndRender();
+    // Render postprocessing quad
+    Effects->Render(glfwGetTime());
+
+    textRenderer.RenderText(liveText);
 
     if (this->State == GAME_MENU)
     {

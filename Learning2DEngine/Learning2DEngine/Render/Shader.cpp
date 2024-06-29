@@ -16,13 +16,13 @@ namespace Learning2DEngine
             vertexId = glCreateShader(GL_VERTEX_SHADER);
             glShaderSource(vertexId, 1, &vertexSource, NULL);
             glCompileShader(vertexId);
-            CheckShaderErrors(vertexId, ShaderType::Vertex);
+            CheckShaderErrors(vertexId, ShaderType::VERTEX);
 
             // Fragment Shader
             fragmentId = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderSource(fragmentId, 1, &fragmentSource, NULL);
             glCompileShader(fragmentId);
-            CheckShaderErrors(fragmentId, ShaderType::Fragment);
+            CheckShaderErrors(fragmentId, ShaderType::FRAGMENT);
 
             // Geometry Shader
             if (geometrySource != nullptr)
@@ -30,7 +30,7 @@ namespace Learning2DEngine
                 geometryId = glCreateShader(GL_GEOMETRY_SHADER);
                 glShaderSource(geometryId, 1, &geometrySource, NULL);
                 glCompileShader(geometryId);
-                CheckShaderErrors(geometryId, ShaderType::Geometry);
+                CheckShaderErrors(geometryId, ShaderType::GEOMETRY);
             }
 
             // Shader Program
@@ -58,11 +58,11 @@ namespace Learning2DEngine
         {
             switch (type)
             {
-            case ShaderType::Vertex:
+            case ShaderType::VERTEX:
                 return "Vertex";
-            case ShaderType::Fragment:
+            case ShaderType::FRAGMENT:
                 return "Fragment";
-            case ShaderType::Geometry:
+            case ShaderType::GEOMETRY:
                 return "Geometry";
             }
 

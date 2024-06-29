@@ -76,7 +76,7 @@ namespace Learning2DEngine
         void SpriteRenderer::InitShader()
         {
             auto& resourceManager = System::ResourceManager::GetInstance();
-            SpriteRenderer::shader = resourceManager.LoadShader("Learning2DEngine/Shaders/DefaultSprite.vs", "Learning2DEngine/Shaders/DefaultSprite.fs");
+            SpriteRenderer::shader = resourceManager.LoadShader("Learning2DEngine/Shaders/Sprite.vs", "Learning2DEngine/Shaders/Sprite.fs");
             SpriteRenderer::shader.SetInteger("spriteTexture", 0);
         }
 
