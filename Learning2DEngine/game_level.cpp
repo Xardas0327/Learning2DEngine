@@ -91,11 +91,11 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
                 )
             );
 
-            auto brickRenderer = brick->AddRenderer<SpriteRenderer, glm::vec3>(color);
-            brickRenderer->texture = 
-                tileData[y][x] == 1 // solid
+            auto texture = tileData[y][x] == 1 // solid
                 ? new Texture2D(resourceManager.GetTexture("block_solid"))
                 : new Texture2D(resourceManager.GetTexture("block"));
+
+            auto brickRenderer = brick->AddRenderer<SpriteRenderer, Texture2D*, glm::vec3>(texture, color);
 
 
             auto brickController = brick->AddBehaviour<BrickController, bool>(tileData[y][x] == 1);
