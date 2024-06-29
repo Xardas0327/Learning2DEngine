@@ -591,46 +591,41 @@ void Breakout::ResetPlayer()
     ballRenderer->color = glm::vec3(1.0f);
 }
 
-bool ShouldSpawn(int chance)
-{
-    int random = Random::GetNumber(0, chance);
-    return random == 0;
-}
-
 void Breakout::SpawnPowerUps(GameObject& block)
 {
-    if (ShouldSpawn(75)) // 1 in 75 chance
+    int number = Random::GetNumber(0, 50);
+    if (number == 0)
     {
         PowerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpSpeed, block.transform.position)
         );
     }
-        
-    if (ShouldSpawn(75))
+    else if (number == 1)
     {
         PowerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpSticky, block.transform.position)
         );
     }
-    if (ShouldSpawn(75))
+    else if (number == 2)
     {
         PowerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpPassThrough, block.transform.position)
         );
     }
-    if (ShouldSpawn(75))
+    else if (number == 3)
     {
         PowerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpPadSizeIncrease, block.transform.position)
         );
     }
-    if (ShouldSpawn(15)) // negative powerups should spawn more often
+    // negative powerups should spawn more often
+    else if (number > 3 && number < 8)
     {
         PowerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpConfuse, block.transform.position)
         );
     }
-    if (ShouldSpawn(15))
+    else if (number > 7 && number < 12)
     {
         PowerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpChaos, block.transform.position)
@@ -642,9 +637,8 @@ bool IsOtherPowerUpActive(std::vector<PowerUpController*>& powerUps, PowerUpType
 {
     for (const PowerUpController* powerUp : powerUps)
     {
-        if (powerUp->activated)
-            if (powerUp->type == type)
-                return true;
+        if (powerUp->activated && powerUp->type == type)
+            return true;
     }
     return false;
 }
