@@ -14,7 +14,7 @@ void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int lev
     // clear old data
     for (BrickController* tile : this->Bricks)
     {
-        delete tile->gameObject;
+        GameObject::Destroy(tile);
     }
     this->Bricks.clear();
     // load from file
@@ -91,12 +91,11 @@ void GameLevel::init(std::vector<std::vector<unsigned int>> tileData, unsigned i
                 )
             );
 
-            auto brickRenderer = brick->AddRenderer<SpriteRenderer, glm::vec3>(color);
-            brickRenderer->texture = 
-                tileData[y][x] == 1 // solid
+            auto texture = tileData[y][x] == 1 // solid
                 ? new Texture2D(resourceManager.GetTexture("block_solid"))
                 : new Texture2D(resourceManager.GetTexture("block"));
 
+            brick->AddRenderer<SpriteRenderer, Texture2D*, glm::vec3>(texture, color);
 
             auto brickController = brick->AddBehaviour<BrickController, bool>(tileData[y][x] == 1);
             this->Bricks.push_back(brickController);

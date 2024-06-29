@@ -31,14 +31,17 @@ public:
 
     static PowerUpController* CreatePowerUp(const std::string& type, float duration, glm::vec2 position, const std::string& textureId, glm::vec3 color)
     {
-        Learning2DEngine::System::GameObject* powerUp = new Learning2DEngine::System::GameObject(
-            Learning2DEngine::System::Transform(position)
-        );
-        auto spriteRenderer = powerUp->AddRenderer<Learning2DEngine::Render::SpriteRenderer, glm::vec3>(color);
-        spriteRenderer->texture = new Learning2DEngine::Render::Texture2D(
-            Learning2DEngine::System::ResourceManager::GetInstance().GetTexture(textureId)
-        );
+        using namespace Learning2DEngine::System;
+        using namespace Learning2DEngine::Render;
 
+        GameObject* powerUp = new GameObject(
+            Transform(position)
+        );
+        auto texture = new Texture2D(
+            ResourceManager::GetInstance().GetTexture(textureId)
+        );
+        powerUp->AddRenderer<SpriteRenderer, Texture2D*, glm::vec3>(texture, color);
         return powerUp->AddBehaviour<PowerUpController, std::string, float>(type, duration);
     }
+
 };

@@ -18,8 +18,14 @@ namespace Learning2DEngine
         unsigned int SpriteRenderer::vbo = 0;
         unsigned int SpriteRenderer::ebo = 0;
 
-        SpriteRenderer::SpriteRenderer(GameObject* gameObject, glm::vec3 c)
-            : Component(gameObject), Renderer(gameObject), texture(nullptr), color(c), isInit(false)
+        SpriteRenderer::SpriteRenderer(GameObject* gameObject, glm::vec3 color)
+            : Component(gameObject), Renderer(gameObject), texture(nullptr), color(color), isInit(false)
+        {
+
+        }
+
+        SpriteRenderer::SpriteRenderer(GameObject* gameObject, Texture2D* texture, glm::vec3 color)
+            : Component(gameObject), Renderer(gameObject), texture(texture), color(color), isInit(false)
         {
 
         }

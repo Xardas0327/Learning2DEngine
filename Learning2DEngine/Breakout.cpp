@@ -104,8 +104,9 @@ void Breakout::Init()
             0.0f
         )
     );
-    auto backgroundRenderer = Background->AddRenderer<SpriteRenderer>();
-    backgroundRenderer->texture = new Texture2D(resourceManager.GetTexture("background"));
+    Background->AddRenderer<SpriteRenderer, Texture2D*>(
+        new Texture2D(resourceManager.GetTexture("background"))
+    );
 
     Particles = new ParticleGenerator(
         resourceManager.GetShader("particle"),
@@ -132,8 +133,9 @@ void Breakout::Init()
             PLAYER_SIZE
         )
     );
-    auto playerRenderer = Player->AddRenderer<SpriteRenderer>();
-    playerRenderer->texture = new Texture2D(resourceManager.GetTexture("paddle"));
+    Player->AddRenderer<SpriteRenderer, Texture2D*>(
+        new Texture2D(resourceManager.GetTexture("paddle"))
+    );
 
     //Ball
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
@@ -143,8 +145,9 @@ void Breakout::Init()
             glm::vec2(BALL_RADIUS * 2.0f, BALL_RADIUS * 2.0f)
         )
     );
-    auto ballRenderer = Ball->AddRenderer<SpriteRenderer>();
-    ballRenderer->texture = new Texture2D(resourceManager.GetTexture("face"));
+    Ball->AddRenderer<SpriteRenderer, Texture2D*>(
+        new Texture2D(resourceManager.GetTexture("face"))
+    );
     auto ballController = Ball->AddBehaviour<BallController, float, glm::vec2>(BALL_RADIUS, INITIAL_BALL_VELOCITY);
 
     //Sounds
@@ -699,12 +702,12 @@ void Breakout::UpdatePowerUps()
         }
     }
     this->PowerUps.erase(std::remove_if(this->PowerUps.begin(), this->PowerUps.end(),
-        [](const PowerUpController* powerUp)
+        [](PowerUpController* powerUp)
         {
             bool isDeletable = !powerUp->gameObject->isActive && !powerUp->activated;
             if (isDeletable)
             {
-                delete powerUp->gameObject;
+                GameObject::Destroy(powerUp);
             }
 
             return isDeletable;
