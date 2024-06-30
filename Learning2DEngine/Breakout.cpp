@@ -60,10 +60,11 @@ void Breakout::Init()
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
     const int middleHeight = resolution.GetHeight() / 2;
 
-    // load shaders
+    // Load shaders
     resourceManager.LoadShader("Shaders/particle.vs", "Shaders/particle.frag", nullptr, "particle");
     resourceManager.LoadShader("Shaders/post_processing.vs", "Shaders/post_processing.frag", nullptr, "postprocessing");
-    // configure shaders
+
+    // Configure shaders
     Game::cameraProjection = glm::ortho(
         0.0f,
         static_cast<float>(resolution.GetWidth()),
@@ -78,12 +79,12 @@ void Breakout::Init()
     particle.SetInteger("sprite", 0);
     particle.SetMatrix4("projection", cameraProjection);
 
+    // Load textures
     Texture2DSettings alphaSettings;
     alphaSettings.internalFormat = GL_RGBA;
     alphaSettings.imageFormat = GL_RGBA;
     Texture2DSettings nonAlphaSettings;
 
-    // load textures
     resourceManager.LoadTexture("Assets/Images/background.jpg", nonAlphaSettings, "background");
     resourceManager.LoadTexture("Assets/Images/awesomeface.png", alphaSettings, "face");
     resourceManager.LoadTexture("Assets/Images/block.png", nonAlphaSettings, "block");
@@ -96,7 +97,8 @@ void Breakout::Init()
     resourceManager.LoadTexture("Assets/Images/powerup_confuse.png", alphaSettings, "powerup_confuse");
     resourceManager.LoadTexture("Assets/Images/powerup_chaos.png", alphaSettings, "powerup_chaos");
     resourceManager.LoadTexture("Assets/Images/powerup_passthrough.png", alphaSettings, "powerup_passthrough");
-    // set render-specific controls
+
+    // Background
     Background = new GameObject(
         Transform(
             glm::vec2(0.0f, 0.0f),
@@ -108,24 +110,33 @@ void Breakout::Init()
         new Texture2D(resourceManager.GetTexture("background"))
     );
 
+    // Particles
     Particles = new ParticleGenerator(
         resourceManager.GetShader("particle"),
         resourceManager.GetTexture("particle"),
         2000
     );
+
+    // PostProcessor
     Effects = new PostProcessor(resourceManager.GetShader("postprocessing"), resolution.GetWidth(), resolution.GetHeight());
-    // load levels
-    GameLevel one; one.Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
-    GameLevel two; two.Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
-    GameLevel three; three.Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
-    GameLevel four; four.Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
+
+    // Load levels
+    GameLevel one; 
+    one.Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
+    GameLevel two; 
+    two.Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
+    GameLevel three; 
+    three.Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
+    GameLevel four; 
+    four.Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
+
     this->Levels.push_back(one);
     this->Levels.push_back(two);
     this->Levels.push_back(three);
     this->Levels.push_back(four);
     this->Level = 0;
 
-    //Player
+    // Player
     glm::vec2 playerPos = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
     Player = new GameObject(
         Transform(
@@ -137,7 +148,7 @@ void Breakout::Init()
         new Texture2D(resourceManager.GetTexture("paddle"))
     );
 
-    //Ball
+    // Ball
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
     Ball = new GameObject(
         Transform(
@@ -150,10 +161,10 @@ void Breakout::Init()
     );
     auto ballController = Ball->AddBehaviour<BallController, float, glm::vec2>(BALL_RADIUS, INITIAL_BALL_VELOCITY);
 
-    //Sounds
+    // Sounds
     SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
 
-    //Text
+    // Text
     auto& textRenderer = Text2DRenderer::GetInstance();
     textRenderer.Init();
     textRenderer.Load(fontSizePair);
@@ -194,10 +205,10 @@ void Breakout::Init()
         glm::vec3(1.0f, 1.0f, 0.0f)
     };
 
-    //State
+    // State
     State = GAME_MENU;
 
-    //Blending
+    // Blending
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
@@ -462,7 +473,7 @@ void Breakout::DoCollisions()
 {
     auto ballController = Ball->GetBehaviour<BallController>();
 
-    for (BrickController* box : this->Levels[this->Level].Bricks)
+    for (BrickController* box : this->Levels[this->Level].bricks)
     {
         if (box->gameObject->isActive)
         {

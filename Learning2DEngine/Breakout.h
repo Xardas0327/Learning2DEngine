@@ -7,7 +7,7 @@
 #include "Learning2DEngine/System/Text.h"
 #include "Learning2DEngine/System/GameObject.h"
 
-#include "game_level.h"
+#include "GameLevel.h"
 #include "PowerUpController.h"
 
 enum GameState {
