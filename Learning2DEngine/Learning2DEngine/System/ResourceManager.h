@@ -8,6 +8,7 @@
 #include "Singleton.h"
 #include "../Render/Shader.h"
 #include "../Render/Texture2D.h"
+#include "../Render/Texture2DSettings.h"
 
 namespace Learning2DEngine
 {
@@ -47,8 +48,8 @@ namespace Learning2DEngine
             /// <param name="file"></param>
             /// <param name="alpha"></param>
             /// <returns></returns>
-            Render::Texture2D LoadTexture(const char* file, const Texture2DSettings& settings);
-            Render::Texture2D LoadTexture(const char* file, const Texture2DSettings& settings, const std::string& name);
+            Render::Texture2D LoadTexture(const char* file, const Render::Texture2DSettings& settings);
+            Render::Texture2D LoadTexture(const char* file, const Render::Texture2DSettings& settings, const std::string& name);
             Render::Texture2D GetTexture(const std::string& name);
             bool IsTextureExist(const std::string& name);
             void DestroyTexture2D(const std::string& name);

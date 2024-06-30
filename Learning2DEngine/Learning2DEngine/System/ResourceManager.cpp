@@ -9,6 +9,8 @@
 
 #include "Log.h"
 
+using namespace Learning2DEngine::Render;
+
 namespace Learning2DEngine
 {
 	namespace System
@@ -18,9 +20,9 @@ namespace Learning2DEngine
         {
         }
 
-        Render::Shader ResourceManager::LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile)
+        Shader ResourceManager::LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile)
         {
-            Render::Shader shader;
+            Shader shader;
 
             std::string vertexSource;
             std::string fragmentSource;
@@ -68,13 +70,13 @@ namespace Learning2DEngine
             return true;
         }
 
-        Render::Shader ResourceManager::LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, const std::string& name)
+        Shader ResourceManager::LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, const std::string& name)
         {
             shaders[name] = LoadShader(vertexFile, fragmentFile, geometryFile);
             return shaders[name];
         }
 
-        Render::Shader ResourceManager::GetShader(const std::string& name)
+        Shader ResourceManager::GetShader(const std::string& name)
         {
             return shaders[name];
         }
@@ -90,9 +92,9 @@ namespace Learning2DEngine
             shaders.erase(name);
         }
 
-        Render::Texture2D ResourceManager::LoadTexture(const char* file, const Texture2DSettings& settings)
+        Texture2D ResourceManager::LoadTexture(const char* file, const Texture2DSettings& settings)
         {
-            Render::Texture2D texture(settings);
+            Texture2D texture(settings);
 
             int width, height, nrChannels;
             unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
@@ -101,13 +103,13 @@ namespace Learning2DEngine
             return texture;
         }
 
-        Render::Texture2D ResourceManager::LoadTexture(const char* file, const Texture2DSettings& settings, const std::string& name)
+        Texture2D ResourceManager::LoadTexture(const char* file, const Texture2DSettings& settings, const std::string& name)
         {
             textures[name] = LoadTexture(file, settings);
             return textures[name];
         }
 
-        Render::Texture2D ResourceManager::GetTexture(const std::string& name)
+        Texture2D ResourceManager::GetTexture(const std::string& name)
         {
             return textures[name];
         }

@@ -9,7 +9,7 @@ namespace Learning2DEngine
         {
         }
 
-        Texture2D::Texture2D(const System::Texture2DSettings& texture2DSettings)
+        Texture2D::Texture2D(const Texture2DSettings& texture2DSettings)
             : id(0), width(0), height(0), settings(texture2DSettings)
         {
 
