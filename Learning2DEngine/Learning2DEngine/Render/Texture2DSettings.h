@@ -1,8 +1,10 @@
 #pragma once
 
+#include <glad/glad.h>
+
 namespace Learning2DEngine
 {
-    namespace System
+    namespace Render
     {
         struct Texture2DSettings {
             // Format of the texture object

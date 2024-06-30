@@ -107,11 +107,11 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, un
                 Transform(position, scale)
             );
 
-            auto texture = brickData[y][x] == 1 // solid
-                ? new Texture2D(solidBlockTexture)
-                : new Texture2D(blockTexture);
-
-            brick->AddRenderer<SpriteRenderer, Texture2D*, glm::vec3>(texture, color);
+            brick->AddRenderer<SpriteRenderer, const Texture2D&, glm::vec3>(
+                brickData[y][x] == 1 // solid
+                ? solidBlockTexture
+                : blockTexture,
+                color);
 
             auto brickController = brick->AddBehaviour<BrickController, bool>(brickData[y][x] == 1);
             this->bricks.push_back(brickController);

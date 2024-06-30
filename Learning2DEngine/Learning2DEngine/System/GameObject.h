@@ -48,24 +48,6 @@ namespace Learning2DEngine
 				}
 			}
 
-			/// <summary>
-			/// The gameObject and its behaviours and its renderer will be destroyed.
-			/// </summary>
-			/// <param name="gameObject"></param>
-			static void Destroy(GameObject* gameObject)
-			{
-				delete gameObject;
-			}
-
-			/// <summary>
-			/// The gameObject of component and its behaviours and its renderer will be destroyed.
-			/// </summary>
-			/// <param name="gameObject"></param>
-			static void Destroy(Component* component)
-			{
-				delete component->gameObject;
-			}
-
 			template <class TBehaviour, class ...Params>
 			TBehaviour* AddBehaviour(Params... params)
 			{
@@ -121,6 +103,24 @@ namespace Learning2DEngine
 			inline Render::Renderer* GetRenderer()
 			{
 				return renderer;
+			}
+
+			/// <summary>
+			/// The gameObject and its behaviours and its renderer will be destroyed.
+			/// </summary>
+			/// <param name="gameObject"></param>
+			static void Destroy(GameObject* gameObject)
+			{
+				delete gameObject;
+			}
+
+			/// <summary>
+			/// The gameObject of component and its behaviours and its renderer will be destroyed.
+			/// </summary>
+			/// <param name="gameObject"></param>
+			static void Destroy(Component* component)
+			{
+				delete component->gameObject;
 			}
 		};
 	}

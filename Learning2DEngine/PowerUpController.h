@@ -38,10 +38,10 @@ public:
         GameObject* powerUp = new GameObject(
             Transform(position)
         );
-        auto texture = new Texture2D(
-            ResourceManager::GetInstance().GetTexture(powerUpObject.textureId)
-        );
-        powerUp->AddRenderer<SpriteRenderer, Texture2D*, glm::vec3>(texture, powerUpObject.color);
+
+        powerUp->AddRenderer<SpriteRenderer, const Texture2D&, glm::vec3>(
+            ResourceManager::GetInstance().GetTexture(powerUpObject.textureId),
+            powerUpObject.color);
         return powerUp->AddBehaviour<PowerUpController, PowerUpType, float>(powerUpObject.type, powerUpObject.duration);
     }
 
