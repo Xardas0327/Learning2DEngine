@@ -13,12 +13,6 @@ namespace Learning2DEngine
             int width;
             int height;
         public:
-            Resolution()
-                : width(0), height(0)
-            {
-
-            }
-
             Resolution(int w, int h)
                 : width(w), height(h)
             {

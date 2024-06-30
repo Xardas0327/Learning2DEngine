@@ -106,8 +106,8 @@ void Breakout::Init()
             0.0f
         )
     );
-    Background->AddRenderer<SpriteRenderer, Texture2D*>(
-        new Texture2D(resourceManager.GetTexture("background"))
+    Background->AddRenderer<SpriteRenderer, const Texture2D&>(
+        resourceManager.GetTexture("background")
     );
 
     // Particles
@@ -144,8 +144,8 @@ void Breakout::Init()
             PLAYER_SIZE
         )
     );
-    Player->AddRenderer<SpriteRenderer, Texture2D*>(
-        new Texture2D(resourceManager.GetTexture("paddle"))
+    Player->AddRenderer<SpriteRenderer, const Texture2D&>(
+        resourceManager.GetTexture("paddle")
     );
 
     // Ball
@@ -156,8 +156,8 @@ void Breakout::Init()
             glm::vec2(BALL_RADIUS * 2.0f, BALL_RADIUS * 2.0f)
         )
     );
-    Ball->AddRenderer<SpriteRenderer, Texture2D*>(
-        new Texture2D(resourceManager.GetTexture("face"))
+    Ball->AddRenderer<SpriteRenderer, const Texture2D&>(
+        resourceManager.GetTexture("face")
     );
     auto ballController = Ball->AddBehaviour<BallController, float, glm::vec2>(BALL_RADIUS, INITIAL_BALL_VELOCITY);
 
