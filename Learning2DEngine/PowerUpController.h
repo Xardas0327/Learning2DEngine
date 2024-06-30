@@ -4,6 +4,7 @@
 
 #include "Learning2DEngine/System/Behaviour.h"
 #include "Learning2DEngine/System/GameObject.h"
+#include "Learning2DEngine/System/ResourceManager.h"
 #include "Learning2DEngine/Render/SpriteRenderer.h"
 #include "Learning2DEngine/Render/Texture2D.h"
 

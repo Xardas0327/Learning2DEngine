@@ -156,7 +156,6 @@
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp" />
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\System\Game.cpp" />
-    <ClCompile Include="game_level.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Shader.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp" />
     <ClCompile Include="Learning2DEngine\System\Random.cpp" />
@@ -165,11 +164,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="particle_generator.cpp" />
     <ClCompile Include="post_processor.cpp" />
+    <ClCompile Include="GameLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BallController.h" />
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="BrickController.h" />
+    <ClInclude Include="GameLevel.h" />
     <ClInclude Include="Learning2DEngine\Render\Renderer.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
@@ -186,7 +187,6 @@
     <ClInclude Include="Learning2DEngine\System\EventHandler.h" />
     <ClInclude Include="Learning2DEngine\Render\RenderManager.h" />
     <ClInclude Include="Learning2DEngine\System\Singleton.h" />
-    <ClInclude Include="game_level.h" />
     <ClInclude Include="Learning2DEngine\System\Texture2DSettings.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
     <ClInclude Include="Learning2DEngine\System\FreeTypeCharacter.h" />
