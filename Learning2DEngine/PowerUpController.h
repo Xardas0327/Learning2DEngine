@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include "Learning2DEngine/System/Behaviour.h"
+#include "Learning2DEngine/System/Component.h"
 #include "Learning2DEngine/System/GameObject.h"
 #include "Learning2DEngine/System/ResourceManager.h"
 #include "Learning2DEngine/Render/SpriteRenderer.h"
@@ -14,12 +14,12 @@
 const glm::vec2 POWERUP_SIZE(60.0f, 20.0f);
 const glm::vec2 VELOCITY(0.0f, 150.0f);
 
-class PowerUpController : public virtual Learning2DEngine::System::Behaviour
+class PowerUpController : public virtual Learning2DEngine::System::Component
 {
     friend class Learning2DEngine::System::GameObject;
 protected:
     PowerUpController(Learning2DEngine::System::GameObject* gameObject, PowerUpType type, float duration)
-        : Learning2DEngine::System::Component(gameObject), Learning2DEngine::System::Behaviour(gameObject), velocity(VELOCITY),
+        : Learning2DEngine::System::Component(gameObject), velocity(VELOCITY),
         type(type), duration(duration), activated(false)
     {
         gameObject->transform.scale = POWERUP_SIZE;
@@ -39,10 +39,10 @@ public:
             Transform(position)
         );
 
-        powerUp->AddRenderer<SpriteRenderer, const Texture2D&, glm::vec3>(
+        powerUp->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
             ResourceManager::GetInstance().GetTexture(powerUpObject.textureId),
             powerUpObject.color);
-        return powerUp->AddBehaviour<PowerUpController, PowerUpType, float>(powerUpObject.type, powerUpObject.duration);
+        return powerUp->AddComponent<PowerUpController, PowerUpType, float>(powerUpObject.type, powerUpObject.duration);
     }
 
 };

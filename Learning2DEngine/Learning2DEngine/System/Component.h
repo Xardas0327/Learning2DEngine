@@ -26,10 +26,11 @@ namespace Learning2DEngine
 		public:
 			GameObject* const gameObject;
 
-			virtual ~Component()
-			{
+			virtual ~Component() {}
 
-			}
+			virtual void Init() {}
+
+			virtual void Destroy() {}
 
 			inline void SetActive(bool value)
 			{

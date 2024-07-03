@@ -5,7 +5,6 @@
 #include "Transform.h"
 #include "Log.h"
 #include "Component.h"
-#include "Behaviour.h"
 #include "../Render/Renderer.h"
 
 namespace Learning2DEngine
@@ -15,94 +14,73 @@ namespace Learning2DEngine
 		class GameObject final
 		{
 		private:
-			std::vector<Behaviour*> behaviours;
-			Render::Renderer* renderer;
+			std::vector<Component*> components;
 		public:
 			bool isActive;
 			Transform transform;
 
 			GameObject(bool isActive = true)
-				: isActive(isActive), transform(), behaviours(), renderer(nullptr)
+				: isActive(isActive), transform(), components()
 			{
 			}
 
 			GameObject(Transform transform, bool isActive = true)
-				: isActive(isActive), transform(transform), behaviours(), renderer(nullptr)
+				: isActive(isActive), transform(transform), components()
 			{
 			}
 
 			~GameObject()
 			{
-				for (const Behaviour* behaviour : behaviours)
+				for (Component* component : components)
 				{
-					if (behaviour != nullptr)
+					if (component != nullptr)
 					{
-						delete behaviour;
+						component->Destroy();
+						delete component;
 					}
 				}
-
-				if (renderer != nullptr)
-				{
-					renderer->Destroy();
-					delete renderer;
-				}
 			}
 
-			template <class TBehaviour, class ...Params>
-			TBehaviour* AddBehaviour(Params... params)
+			template <class TComponent, class ...Params>
+			TComponent* AddComponent(Params... params)
 			{
-				TBehaviour* behaviour = new TBehaviour(this, params...);
-				behaviours.push_back(behaviour);
+				TComponent* component = new TComponent(this, params...);
+				components.push_back(component);
+				component->Init();
 
-				return behaviour;
+				return component;
 			}
 
-			template <class TBehaviour>
-			TBehaviour* GetBehaviour()
+			template <class TComponent>
+			TComponent* GetComponent()
 			{
-				TBehaviour* selectedBehaviour = nullptr;
-				for (Behaviour* behaviour : behaviours)
+				TComponent* selectedComponent = nullptr;
+				for (Component* component : components)
 				{
-					selectedBehaviour = dynamic_cast<TBehaviour*>(behaviour);
+					selectedComponent = dynamic_cast<TComponent*>(component);
 
-					if (selectedBehaviour != nullptr)
+					if (selectedComponent != nullptr)
 						break;
 				}
 
-				return selectedBehaviour;
+				return selectedComponent;
 			}
 
-			template <class TRenderer, class ...Params>
-			TRenderer* AddRenderer(Params... params)
+			template <class TComponent>
+			std::vector<TComponent*> GetComponents()
 			{
-				if (renderer != nullptr)
+				std::vector<TComponent*> selectedComponents;
+				for (Component* component : components)
 				{
-					delete renderer;
-					LOG_WARNING("GAMEOBJECT: The renderer was not null, that is why the previous renderer was deleted, before the new one was added.");
+					TComponent* selectedComponent = dynamic_cast<TComponent*>(component);
+
+					if (selectedComponent != nullptr)
+					{
+						selectedComponents.push_back(selectedComponent);
+					}
 				}
 
-
-				TRenderer* newRenderer = new TRenderer(this, params...);
-				renderer = newRenderer;
-				renderer->Init();
-
-				return newRenderer;
-			}
-
-			template <class TRenderer>
-			TRenderer* GetRenderer()
-			{
-				if (renderer == nullptr)
-					return nullptr;
-
-				TRenderer* selectedRenderer = dynamic_cast<TRenderer*>(renderer);
-
-				return selectedRenderer;
-			}
-
-			inline Render::Renderer* GetRenderer()
-			{
-				return renderer;
+				return selectedComponents;
 			}
 
 			/// <summary>
