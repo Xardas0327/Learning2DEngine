@@ -106,7 +106,7 @@ void Breakout::Init()
             0.0f
         )
     );
-    Background->AddRenderer<SpriteRenderer, const Texture2D&>(
+    Background->AddComponent<SpriteRenderer, const Texture2D&>(
         resourceManager.GetTexture("background")
     );
 
@@ -144,7 +144,7 @@ void Breakout::Init()
             PLAYER_SIZE
         )
     );
-    Player->AddRenderer<SpriteRenderer, const Texture2D&>(
+    Player->AddComponent<SpriteRenderer, const Texture2D&>(
         resourceManager.GetTexture("paddle")
     );
 
@@ -156,17 +156,16 @@ void Breakout::Init()
             glm::vec2(BALL_RADIUS * 2.0f, BALL_RADIUS * 2.0f)
         )
     );
-    Ball->AddRenderer<SpriteRenderer, const Texture2D&>(
+    Ball->AddComponent<SpriteRenderer, const Texture2D&>(
         resourceManager.GetTexture("face")
     );
-    auto ballController = Ball->AddBehaviour<BallController, float, glm::vec2>(BALL_RADIUS, INITIAL_BALL_VELOCITY);
+    auto ballController = Ball->AddComponent<BallController, float, glm::vec2>(BALL_RADIUS, INITIAL_BALL_VELOCITY);
 
     // Sounds
     SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
 
     // Text
     auto& textRenderer = Text2DRenderer::GetInstance();
-    textRenderer.Init();
     textRenderer.Load(fontSizePair);
 
     liveText = { 
@@ -209,13 +208,6 @@ void Breakout::Init()
     State = GAME_MENU;
 }
 
-void Breakout::Terminate()
-{
-    ResourceManager::GetInstance().Clear();
-    Text2DRenderer::GetInstance().Terminate();
-    Game::Terminate();
-}
-
 void Breakout::ProcessInput()
 {
     if (Game::inputKeys[GLFW_KEY_ESCAPE] == InputStatus::KEY_DOWN)
@@ -245,7 +237,7 @@ void Breakout::ProcessInput()
     }
     if (this->State == GAME_ACTIVE)
     {
-        auto ballController = Ball->GetBehaviour<BallController>();
+        auto ballController = Ball->GetComponent<BallController>();
         float velocity = PLAYER_VELOCITY * Game::deltaTime;
         // move playerboard
         if (Game::inputKeys[GLFW_KEY_A])
@@ -285,7 +277,7 @@ void Breakout::Update()
     ProcessInput();
 
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
-    auto ballController = Ball->GetBehaviour<BallController>();
+    auto ballController = Ball->GetComponent<BallController>();
 
     ballController->Move(Game::deltaTime, resolution.GetWidth());
     DoCollisions();
@@ -335,21 +327,21 @@ void Breakout::Render()
     Effects->BeginRender();
 
     // Draw background
-    Background->GetRenderer()->Draw();
+    Background->GetComponent<SpriteRenderer>()->Draw();
     // Draw level
     this->Levels[this->Level].Draw();
     // Draw player
-    Player->GetRenderer()->Draw();
+    Player->GetComponent<SpriteRenderer>()->Draw();
     // Draw PowerUps
     for (PowerUpController* powerUp : this->PowerUps)
     {
         if (powerUp->gameObject->isActive)
-            powerUp->gameObject->GetRenderer()->Draw();
+            powerUp->gameObject->GetComponent<SpriteRenderer>()->Draw();
     }
     // Draw Particles
     Particles->Draw();
     // Draw Player
-    Ball->GetRenderer()->Draw();
+    Ball->GetComponent<SpriteRenderer>()->Draw();
     // End rendering to postprocessing framebuffer
     Effects->EndRender();
     // Render postprocessing quad
@@ -372,9 +364,9 @@ void Breakout::Render()
 
 void ActivatePowerUp(PowerUpController& powerUp)
 {
-    auto ballController = Ball->GetBehaviour<BallController>();
-    auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
-    auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
+    auto ballController = Ball->GetComponent<BallController>();
+    auto ballRenderer = Ball->GetComponent<SpriteRenderer>();
+    auto playerRenderer = Player->GetComponent<SpriteRenderer>();
 
     switch (powerUp.type)
     {
@@ -467,7 +459,7 @@ Collision CheckCollision(BallController& one, GameObject& two) // AABB - Circle 
 
 void Breakout::DoCollisions()
 {
-    auto ballController = Ball->GetBehaviour<BallController>();
+    auto ballController = Ball->GetComponent<BallController>();
 
     for (BrickController* box : this->Levels[this->Level].bricks)
     {
@@ -585,7 +577,7 @@ void Breakout::ResetPlayer()
     // reset player/ball stats
     Player->transform.scale = PLAYER_SIZE;
     Player->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
-    auto ballController = Ball->GetBehaviour<BallController>();
+    auto ballController = Ball->GetComponent<BallController>();
     ballController->Reset(Player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
 
     // also disable all active powerups
@@ -594,9 +586,9 @@ void Breakout::ResetPlayer()
     ballController->passThrough = false;
     ballController->sticky = false;
 
-    auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
+    auto playerRenderer = Player->GetComponent<SpriteRenderer>();
     playerRenderer->color = glm::vec3(1.0f);
-    auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
+    auto ballRenderer = Ball->GetComponent<SpriteRenderer>();
     ballRenderer->color = glm::vec3(1.0f);
 }
 
@@ -654,8 +646,8 @@ bool IsOtherPowerUpActive(std::vector<PowerUpController*>& powerUps, PowerUpType
 
 void Breakout::UpdatePowerUps()
 {
-    auto ballController = Ball->GetBehaviour<BallController>();
-    auto ballRenderer = Ball->GetRenderer<SpriteRenderer>();
+    auto ballController = Ball->GetComponent<BallController>();
+    auto ballRenderer = Ball->GetComponent<SpriteRenderer>();
 
     for (PowerUpController* powerUp : this->PowerUps)
     {
@@ -677,7 +669,7 @@ void Breakout::UpdatePowerUps()
                     {	
                         ballController->sticky = false;
 
-                        auto playerRenderer = Player->GetRenderer<SpriteRenderer>();
+                        auto playerRenderer = Player->GetComponent<SpriteRenderer>();
                         playerRenderer->color = glm::vec3(1.0f);
                     }
                     break;

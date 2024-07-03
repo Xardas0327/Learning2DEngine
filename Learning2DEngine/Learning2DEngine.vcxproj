@@ -174,7 +174,6 @@
     <ClInclude Include="Learning2DEngine\Render\Renderer.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
-    <ClInclude Include="Learning2DEngine\System\Behaviour.h" />
     <ClInclude Include="Learning2DEngine\System\Component.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />
     <ClInclude Include="Learning2DEngine\System\GameObject.h" />

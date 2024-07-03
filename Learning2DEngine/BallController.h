@@ -2,15 +2,15 @@
 
 #include <glm/glm.hpp>
 
-#include "Learning2DEngine/System/Behaviour.h"
+#include "Learning2DEngine/System/Component.h"
 #include "Learning2DEngine/System/GameObject.h"
 
-class BallController : public virtual Learning2DEngine::System::Behaviour
+class BallController : public virtual Learning2DEngine::System::Component
 {
     friend class Learning2DEngine::System::GameObject;
 protected:
     BallController(Learning2DEngine::System::GameObject* gameObject, float radius, glm::vec2 velocity = glm::vec2(0.0f, 0.0f))
-        : Component(gameObject), Behaviour(gameObject), velocity(velocity),
+        : Component(gameObject), velocity(velocity),
         radius(radius), stuck(true), sticky(false), passThrough(false)
     {
 

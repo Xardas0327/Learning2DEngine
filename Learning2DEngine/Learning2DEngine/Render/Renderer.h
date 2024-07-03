@@ -22,9 +22,6 @@ namespace Learning2DEngine
 
 			}
 		public:
-			virtual void Init() = 0;
-			virtual void Destroy() = 0;
-
 			virtual void Draw() = 0;
 		};
 	}

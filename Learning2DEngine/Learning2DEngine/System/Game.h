@@ -5,17 +5,7 @@
 #include "InputStatus.h"
 #include "../Render/RenderManager.h"
 
-/*
-* The Function order in the Run() (in a frame):
-*    Calculate deltaTime
-*    Refresh Keyboard and Mouse events
-* 1. Update()
-*    Clear Screen to default color
-* 2. Render()
-*    Update Screen
-* 
-* Note: those functions, which start with number, are virtual function
-*/
+
 
 namespace Learning2DEngine
 {
@@ -24,11 +14,15 @@ namespace Learning2DEngine
 #define INPUT_KEY_SIZE 1024
 #define TIME_SCALE_DEFAULT 1.0f
 
-        /// <summary>
-        /// Function order in the Run()
-        /// 1. Update
-        /// 2. Render
-        /// </summary>
+        /*
+            The Function order in the Run() (in a frame):
+            Calculate deltaTime
+            Refresh Keyboard and Mouse events
+            virtual Update()
+            Clear Screen to default color
+            virtual Render()
+            Update Screen
+        */
         class Game
         {
         private:
@@ -71,6 +65,8 @@ namespace Learning2DEngine
             /// <summary>
             /// The RenderManager have to be initialized before this.
             /// If this function is override, it must call the Game::Init() in the first line.
+            /// The Blend is enable by default with Source: SRC_ALPHA, Destination: ONE_MINUS_SRC_ALPHA,
+            /// because it is used for some features.
             /// </summary>
             virtual void Init();
             /// <summary>

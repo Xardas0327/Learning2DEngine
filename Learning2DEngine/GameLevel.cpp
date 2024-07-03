@@ -51,7 +51,7 @@ void GameLevel::Draw()
     for (BrickController* brick : this->bricks)
     {
         if (brick->gameObject->isActive)
-            brick->gameObject->GetRenderer()->Draw();
+            brick->gameObject->GetComponent<SpriteRenderer>()->Draw();
     }
 }
 
@@ -107,13 +107,13 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, un
                 Transform(position, scale)
             );
 
-            brick->AddRenderer<SpriteRenderer, const Texture2D&, glm::vec3>(
+            brick->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
                 brickData[y][x] == 1 // solid
                 ? solidBlockTexture
                 : blockTexture,
                 color);
 
-            auto brickController = brick->AddBehaviour<BrickController, bool>(brickData[y][x] == 1);
+            auto brickController = brick->AddComponent<BrickController, bool>(brickData[y][x] == 1);
             this->bricks.push_back(brickController);
         }
     }

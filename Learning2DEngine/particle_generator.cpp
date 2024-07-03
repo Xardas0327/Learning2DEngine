@@ -37,10 +37,11 @@ void ParticleGenerator::Update(float dt, BallController& object, unsigned int ne
 void ParticleGenerator::Draw()
 {
     auto& renderManager = RenderManager::GetInstance();
+    BlendFuncFactor previousBlendFuncFactor = renderManager.GetBlendFunc();
     // use additive blending to give it a 'glow' effect
     renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE);
     this->shader.Use();
-    for (Particle particle : this->particles)
+    for (Particle& particle : this->particles)
     {
         if (particle.Life > 0.0f)
         {
@@ -52,8 +53,8 @@ void ParticleGenerator::Draw()
             glBindVertexArray(0);
         }
     }
-    // don't forget to reset to default blending mode
-    renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    renderManager.SetBlendFunc(previousBlendFuncFactor);
 }
 
 void ParticleGenerator::init()

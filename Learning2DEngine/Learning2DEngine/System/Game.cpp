@@ -1,6 +1,8 @@
 #include "Game.h"
 
 #include "../Render/RenderManager.h"
+#include "../Render/Text2DRenderer.h"
+#include "ResourceManager.h"
 #include "Log.h"
 
 namespace Learning2DEngine
@@ -31,11 +33,19 @@ namespace Learning2DEngine
 
         void Game::Init()
         {
-            RenderManager::GetInstance().AddKeyboardEvent(Game::CallbackRefreshKeyboardMouse);
+            auto& renderManager = RenderManager::GetInstance();
+            renderManager.AddKeyboardEvent(Game::CallbackRefreshKeyboardMouse);
+            renderManager.EnableBlend();
+            renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            auto& textRenderer = Text2DRenderer::GetInstance();
+            textRenderer.Init();
         }
 
         void Game::Terminate()
         {
+            ResourceManager::GetInstance().Clear();
+            Text2DRenderer::GetInstance().Terminate();
             RenderManager::GetInstance().Terminate();
         }
 
