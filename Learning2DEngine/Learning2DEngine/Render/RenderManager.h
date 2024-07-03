@@ -12,6 +12,10 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
+		// First is the source factor.
+		// Second is the destination factor.
+		typedef std::pair<unsigned int, unsigned int> BlendFuncFactor;
+
 		class RenderManager : public virtual System::Singleton<RenderManager>
 		{
 			friend class System::Singleton<RenderManager>;
@@ -21,6 +25,9 @@ namespace Learning2DEngine
 			glm::vec4 clearColor;
 			System::EventHandler<int, int, int, int> keyboardEventHandler;
 			System::EventHandler<Resolution> framebufferSizeEventHandler;
+			bool isBlendActive;
+			BlendFuncFactor blendFuncFactor;
+
 
 			RenderManager();
 
@@ -49,17 +56,49 @@ namespace Learning2DEngine
 
 			inline void EnableBlend()
 			{
-				glEnable(GL_BLEND);
+				if (!isBlendActive)
+				{
+					isBlendActive = true;
+					glEnable(GL_BLEND);
+				}
 			}
 
 			inline void DisableBlend()
 			{
-				glDisable(GL_BLEND);
+				if (isBlendActive)
+				{
+					isBlendActive = false;
+					glDisable(GL_BLEND);
+				}
+			}
+
+			inline bool IsBlendActive()
+			{
+				return isBlendActive;
 			}
 
 			inline void SetBlendFunc(unsigned int sourceFactor, unsigned int destinationFactor)
 			{
-				glBlendFunc(sourceFactor, destinationFactor);
+				BlendFuncFactor newBlendFuncFactor(sourceFactor, destinationFactor);
+				if (this->blendFuncFactor != newBlendFuncFactor)
+				{
+					this->blendFuncFactor = newBlendFuncFactor;
+					glBlendFunc(this->blendFuncFactor.first, this->blendFuncFactor.second);
+				}
+			}
+
+			inline void SetBlendFunc(BlendFuncFactor blendFuncFactor)
+			{
+				if (this->blendFuncFactor != blendFuncFactor)
+				{
+					this->blendFuncFactor = blendFuncFactor;
+					glBlendFunc(this->blendFuncFactor.first, this->blendFuncFactor.second);
+				}
+			}
+
+			inline BlendFuncFactor GetBlendFunc()
+			{
+				return this->blendFuncFactor;
 			}
 
 			void AddKeyboardEvent(const System::EventHandler<int, int, int, int>::EventFunction func);

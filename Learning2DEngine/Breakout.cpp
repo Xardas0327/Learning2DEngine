@@ -166,7 +166,6 @@ void Breakout::Init()
 
     // Text
     auto& textRenderer = Text2DRenderer::GetInstance();
-    textRenderer.Init();
     textRenderer.Load(fontSizePair);
 
     liveText = { 
@@ -207,13 +206,6 @@ void Breakout::Init()
 
     // State
     State = GAME_MENU;
-}
-
-void Breakout::Terminate()
-{
-    ResourceManager::GetInstance().Clear();
-    Text2DRenderer::GetInstance().Terminate();
-    Game::Terminate();
 }
 
 void Breakout::ProcessInput()

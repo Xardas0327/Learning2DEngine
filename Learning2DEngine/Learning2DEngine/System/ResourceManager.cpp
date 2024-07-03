@@ -133,17 +133,20 @@ namespace Learning2DEngine
             }
             shaders.clear();
 
-            unsigned int* textureIds = new unsigned int[textures.size()];
-            unsigned int index = 0;
-            for (auto i = textures.begin(); i != textures.end(); ++i)
+            if (textures.size() > 0)
             {
-                textureIds[index] = i->second.GetId();
-                ++index;
-            }
+                unsigned int* textureIds = new unsigned int[textures.size()];
+                unsigned int index = 0;
+                for (auto i = textures.begin(); i != textures.end(); ++i)
+                {
+                    textureIds[index] = i->second.GetId();
+                    ++index;
+                }
 
-            glDeleteTextures(index, textureIds);
-            delete[] textureIds;
-            textures.clear();
+                glDeleteTextures(index, textureIds);
+                delete[] textureIds;
+                textures.clear();
+            }
         }
 	}
 }

@@ -59,8 +59,6 @@ namespace Learning2DEngine
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
 
-            renderManager.EnableBlend();
-            renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             renderManager.AddFramebufferSizeEvent(Text2DRenderer::CallbackRefreshScreenResolution);
         }
 

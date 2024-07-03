@@ -10,7 +10,8 @@ namespace Learning2DEngine
     {
         RenderManager::RenderManager() :
             window(nullptr), resolution(0, 0), clearColor(0.0f, 0.0f, 0.0f, 1.0f),
-            keyboardEventHandler(), framebufferSizeEventHandler()
+            keyboardEventHandler(), framebufferSizeEventHandler(), 
+            isBlendActive(false), blendFuncFactor(GL_ONE, GL_ZERO)
         {
 
         }
