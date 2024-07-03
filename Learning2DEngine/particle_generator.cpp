@@ -1,6 +1,7 @@
 #include "particle_generator.h"
 
 #include "Learning2DEngine/System/Random.h"
+#include "Learning2DEngine/Render/RenderManager.h"
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
@@ -35,8 +36,9 @@ void ParticleGenerator::Update(float dt, BallController& object, unsigned int ne
 // render all particles
 void ParticleGenerator::Draw()
 {
+    auto& renderManager = RenderManager::GetInstance();
     // use additive blending to give it a 'glow' effect
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE);
     this->shader.Use();
     for (Particle particle : this->particles)
     {
@@ -51,7 +53,7 @@ void ParticleGenerator::Draw()
         }
     }
     // don't forget to reset to default blending mode
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void ParticleGenerator::init()

@@ -47,6 +47,21 @@ namespace Learning2DEngine
 				return clearColor;
 			}
 
+			inline void EnableBlend()
+			{
+				glEnable(GL_BLEND);
+			}
+
+			inline void DisableBlend()
+			{
+				glDisable(GL_BLEND);
+			}
+
+			inline void SetBlendFunc(unsigned int sourceFactor, unsigned int destinationFactor)
+			{
+				glBlendFunc(sourceFactor, destinationFactor);
+			}
+
 			void AddKeyboardEvent(const System::EventHandler<int, int, int, int>::EventFunction func);
 			void RemoveKeyboardEvent(const System::EventHandler<int, int, int, int>::EventFunction func);
 			void AddFramebufferSizeEvent(const System::EventHandler<Resolution>::EventFunction func);

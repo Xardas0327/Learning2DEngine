@@ -37,7 +37,9 @@ namespace Learning2DEngine
             void RefreshScreenResolution(Resolution resolution);
         public:
             /// <summary>
-            /// It should be inited after RenderManager
+            /// It should be inited after RenderManager.
+            /// It will enable the blend, where the source factor is GL_SRC_ALPHA 
+            /// and destination factor is GL_ONE_MINUS_SRC_ALPHA
             /// </summary>
             void Init();
             /// <summary>
