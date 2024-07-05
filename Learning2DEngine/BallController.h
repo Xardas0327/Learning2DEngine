@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 
+#include "Learning2DEngine/System/Game.h"
 #include "Learning2DEngine/System/Component.h"
 #include "Learning2DEngine/System/GameObject.h"
 
@@ -22,13 +23,13 @@ public:
     bool sticky;
     bool passThrough;
 
-    glm::vec2 Move(float dt, unsigned int window_width)
+    glm::vec2 Move(unsigned int window_width)
     {
         // if not stuck to player board
         if (!stuck)
         {
             // move the ball
-            gameObject->transform.position += velocity * dt;
+            gameObject->transform.position += velocity * Learning2DEngine::System::Game::GetDeltaTime();
             // then check if outside window bounds and if so, reverse velocity and restore at correct position
             if (gameObject->transform.position.x <= 0.0f)
             {
