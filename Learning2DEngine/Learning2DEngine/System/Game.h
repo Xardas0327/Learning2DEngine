@@ -29,6 +29,12 @@ namespace Learning2DEngine
             float lastFrame;
             float timeScale;
 
+            /// <summary>
+            /// It is multiplied by timeScale.
+            /// Before the Game::Run(), it is 0.0f.
+            /// </summary>
+            static float deltaTime;
+
             void UpdateKeyboardMouseEvents();
             static void CallbackRefreshKeyboardMouse(int key, int scancode, int action, int mode);
             /// <summary>
@@ -38,12 +44,6 @@ namespace Learning2DEngine
             void FixKeyboardMouse();
         protected:
             static InputStatus inputKeys[INPUT_KEY_SIZE];
-
-            /// <summary>
-            /// It is multiplied by timeScale.
-            /// Before the Game::Run(), it is 0.0f.
-            /// </summary>
-            static float deltaTime;
 
             /// <summary>
             /// It has to be initialized.
@@ -89,6 +89,11 @@ namespace Learning2DEngine
             inline float GetTimeScale()
             {
                 return timeScale;
+            }
+
+            static float GetDeltaTime()
+            {
+                return deltaTime;
             }
 
             inline static glm::mat4 GetCameraProjection()

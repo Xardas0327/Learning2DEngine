@@ -238,7 +238,7 @@ void Breakout::ProcessInput()
     if (this->State == GAME_ACTIVE)
     {
         auto ballController = Ball->GetComponent<BallController>();
-        float velocity = PLAYER_VELOCITY * Game::deltaTime;
+        float velocity = PLAYER_VELOCITY * Game::GetDeltaTime();
         // move playerboard
         if (Game::inputKeys[GLFW_KEY_A])
         {
@@ -279,14 +279,14 @@ void Breakout::Update()
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
     auto ballController = Ball->GetComponent<BallController>();
 
-    ballController->Move(Game::deltaTime, resolution.GetWidth());
+    ballController->Move(resolution.GetWidth());
     DoCollisions();
-    Particles->Update(Game::deltaTime, *ballController, 1, glm::vec2(ballController->radius / 2.0f));
+    Particles->Update(Game::GetDeltaTime(), *ballController, 1, glm::vec2(ballController->radius / 2.0f));
     UpdatePowerUps();
 
     if (ShakeTime > 0.0f)
     {
-        ShakeTime -= Game::deltaTime;
+        ShakeTime -= Game::GetDeltaTime();
         if (ShakeTime <= 0.0f)
             Effects->Shake = false;
     }
@@ -651,10 +651,10 @@ void Breakout::UpdatePowerUps()
 
     for (PowerUpController* powerUp : this->PowerUps)
     {
-        powerUp->gameObject->transform.position += powerUp->velocity * Game::deltaTime;
+        powerUp->gameObject->transform.position += powerUp->velocity * Game::GetDeltaTime();
         if (powerUp->activated)
         {
-            powerUp->duration -= Game::deltaTime;
+            powerUp->duration -= Game::GetDeltaTime();
 
             if (powerUp->duration <= 0.0f)
             {
