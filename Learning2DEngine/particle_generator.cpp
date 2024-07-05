@@ -1,6 +1,7 @@
 #include "particle_generator.h"
 
 #include "Learning2DEngine/System/Random.h"
+#include "Learning2DEngine/Render/Blend.h"
 #include "Learning2DEngine/Render/RenderManager.h"
 
 using namespace Learning2DEngine::Render;

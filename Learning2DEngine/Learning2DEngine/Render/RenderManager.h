@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 #include "Resolution.h"
+#include "Blend.h"
 #include "../System/Singleton.h"
 #include "../System/EventHandler.h"
 
@@ -12,10 +13,6 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
-		// First is the source factor.
-		// Second is the destination factor.
-		typedef std::pair<unsigned int, unsigned int> BlendFuncFactor;
-
 		class RenderManager : public virtual System::Singleton<RenderManager>
 		{
 			friend class System::Singleton<RenderManager>;

@@ -171,6 +171,10 @@
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="BrickController.h" />
     <ClInclude Include="GameLevel.h" />
+    <ClInclude Include="Learning2DEngine\Render\Blend.h" />
+    <ClInclude Include="Learning2DEngine\Render\Particle.h" />
+    <ClInclude Include="Learning2DEngine\Render\ParticleSystem.h" />
+    <ClInclude Include="Learning2DEngine\Render\ParticleSystemSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\Renderer.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
