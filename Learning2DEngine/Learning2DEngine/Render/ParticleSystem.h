@@ -5,18 +5,19 @@
 #include "Shader.h"
 #include "Texture2D.h"
 #include "ParticleSystemSettings.h"
+#include "IParticleSettings.h"
 
 namespace Learning2DEngine
 {
 	namespace Render
 	{
 		/// <summary>
-		/// ParticleSystem::Update() the particles with Game::deltaTime.
+		/// ParticleSystem::Update() the particles.
 		/// This should be called in the Game::Update() only ones.
 		/// It works only, when the ParticleSystem::Start() was called until the ParticleSystem::Stop() is called.
-		/// When the ParticleSystem::Start() was called, the ParticleSystem save the settings.
-		/// So if the settings is changed after the ParticleSystem::Start(), the changes won't be apply until ParticleSystem::Restart()
-		/// or ParticleSystem::Stop() and ParticleSystem::Start().
+		/// When the ParticleSystem::Start() was called, the ParticleSystem will save/copy the IParticleSettings.
+		/// So if the IParticleSettings is changed after the ParticleSystem::Start(), the changes won't be apply until ParticleSystem::Restart()
+		/// or ParticleSystem::Stop() and ParticleSystem::Start() again.
 		/// </summary>
 		class ParticleSystem : public virtual Renderer
 		{
@@ -29,7 +30,7 @@ namespace Learning2DEngine
 			Texture2D texture;
 
 			/// <summary>
-			/// It is counted, that how many SpriteRenderer use shader and voa.
+			/// It is counted, that how many ParticleSystem use shader and voa.
 			/// It is important, that the shader will be created, if it is used and
 			/// it will be destroyed, if nothing use it.
 			/// </summary>
@@ -39,8 +40,7 @@ namespace Learning2DEngine
 			static unsigned int vbo;
 			static unsigned int ebo;
 
-			ParticleSystemSettings actualSettings;
-			ParticleSystemSettings savedSettings;
+			IParticleSettings* particleSettings;
 
 			void InitShader();
 			void InitVao();
@@ -48,7 +48,25 @@ namespace Learning2DEngine
 			unsigned int GetUnusedParticleIndex();
 			void SpawnNewParticles();
 		public:
+			ParticleSystemSettings systemSettings;
+
 			ParticleSystem(System::GameObject* gameObject, const Texture2D& texture, unsigned int particleAmount);
+			ParticleSystem(
+				System::GameObject* gameObject,
+				const Texture2D& texture,
+				unsigned int particleAmount,
+				const ParticleSystemSettings& systemSettings);
+			ParticleSystem(
+				System::GameObject* gameObject,
+				const Texture2D& texture,
+				unsigned int particleAmount,
+				const IParticleSettings* const particleSettings);
+			ParticleSystem(
+				System::GameObject* gameObject,
+				const Texture2D& texture,
+				unsigned int particleAmount,
+				const ParticleSystemSettings& systemSettings,
+				const IParticleSettings* const particleSettings);
 			~ParticleSystem();
 
 			void Init() override;
@@ -64,6 +82,9 @@ namespace Learning2DEngine
 				Stop();
 				Start();
 			}
+
+			IParticleSettings* const GetParticleSettings();
+			void SetParticleSettings(const IParticleSettings* const particleSettings);
 		};
 	}
 }

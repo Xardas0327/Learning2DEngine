@@ -57,6 +57,9 @@
     <ClCompile Include="GameLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BallParticleSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="particle_generator.h">
@@ -155,7 +158,16 @@
     <ClInclude Include="Learning2DEngine\Render\Blend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\IParticleSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\ParticleSystemSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\BasicParticleSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BallParticleSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

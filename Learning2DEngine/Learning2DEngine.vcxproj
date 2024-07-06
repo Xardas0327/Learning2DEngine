@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BallParticleSettings.cpp" />
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="Learning2DEngine\Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp" />
@@ -168,10 +169,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BallController.h" />
+    <ClInclude Include="BallParticleSettings.h" />
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="BrickController.h" />
     <ClInclude Include="GameLevel.h" />
+    <ClInclude Include="Learning2DEngine\Render\BasicParticleSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\Blend.h" />
+    <ClInclude Include="Learning2DEngine\Render\IParticleSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\Particle.h" />
     <ClInclude Include="Learning2DEngine\Render\ParticleSystem.h" />
     <ClInclude Include="Learning2DEngine\Render\ParticleSystemSettings.h" />

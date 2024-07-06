@@ -12,11 +12,12 @@ namespace Learning2DEngine
             Learning2DEngine::System::Transform transform;
             glm::vec2 velocity;
             glm::vec4 color;
-            float life;
+            //In seconds. The negative number is same as 0.
+            float lifeTime;
             float speed;
 
             Particle() 
-                : transform(), velocity(0.0f), color(1.0f), life(0.0f), speed(0.0f)
+                : transform(), velocity(0.0f), color(1.0f), lifeTime(0.0f), speed(1.0f)
             {
             }
         };
