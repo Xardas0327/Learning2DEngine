@@ -30,11 +30,6 @@ namespace Learning2DEngine
 
             void InitShader();
             void InitVao();
-
-            inline bool IsUseTexture()
-            {
-                return texture != nullptr;
-            }
         protected:
             SpriteRenderer(System::GameObject* gameObject, glm::vec3 color = glm::vec3(1.0f));
             SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, glm::vec3 color = glm::vec3(1.0f));
@@ -49,6 +44,20 @@ namespace Learning2DEngine
             void Destroy() override;
 
             void Draw() override;
+
+            inline bool IsUseTexture()
+            {
+                return texture != nullptr;
+            }
+
+            inline void ClearTexture()
+            {
+                if (IsUseTexture())
+                {
+                    delete texture;
+                    texture = nullptr;
+                }
+            }
         };
     }
 }

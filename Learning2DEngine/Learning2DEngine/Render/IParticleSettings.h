@@ -9,16 +9,15 @@ namespace Learning2DEngine
     {
         struct IParticleSettings
         {
-            //It willl run in the ParticleSystem::Start()
+            //It will run in the ParticleSystem::Start()
             virtual void Init(const System::GameObject& gameObject) {};
-            //It willl run in the ParticleSystem::Stop()
+            //It will run in the ParticleSystem::Stop()
             virtual void Destroy() {};
-            //It willl run in the ParticleSystem::Update()
-            
-            //It willl run in the ParticleSystem::Update()
+
+            //It will run in the ParticleSystem::Update()
             virtual void SpawnParticle(Particle& particle, const System::GameObject& gameObject) = 0;
             /// <summary>
-            /// It willl run in the ParticleSystem::Update(),
+            /// It will run in the ParticleSystem::Update(),
             /// if the ParticleSystem::lifeTime is bigger than 0, after it was decreased.
             /// </summary>
             virtual void UpdateParticle(Particle& particle, const System::GameObject& gameObject) = 0;

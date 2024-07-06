@@ -6,28 +6,28 @@
 #include "Texture2D.h"
 #include "ParticleSystemSettings.h"
 #include "IParticleSettings.h"
+#include "../System/GameObject.h"
 
 namespace Learning2DEngine
 {
 	namespace Render
 	{
 		/// <summary>
-		/// ParticleSystem::Update() the particles.
+		/// ParticleSystem::Update() update the particles.
 		/// This should be called in the Game::Update() only ones.
-		/// It works only, when the ParticleSystem::Start() was called until the ParticleSystem::Stop() is called.
-		/// When the ParticleSystem::Start() was called, the ParticleSystem will save/copy the IParticleSettings.
-		/// So if the IParticleSettings is changed after the ParticleSystem::Start(), the changes won't be apply until ParticleSystem::Restart()
-		/// or ParticleSystem::Stop() and ParticleSystem::Start() again.
+		/// It and ParticleSystem::Draw() work only, when the ParticleSystem::IsRunning() is true.
 		/// </summary>
 		class ParticleSystem : public virtual Renderer
 		{
 			friend class System::GameObject;
 		protected:
 			bool isInit;
-			bool isRun;
+			bool isRunning;
 			unsigned int particleAmount;
 			Particle* particles;
-			Texture2D texture;
+			float delayTime;
+			float nextSpawnTime;
+			unsigned int lastUsedParticleIndex;
 
 			/// <summary>
 			/// It is counted, that how many ParticleSystem use shader and voa.
@@ -42,31 +42,26 @@ namespace Learning2DEngine
 
 			IParticleSettings* particleSettings;
 
-			void InitShader();
-			void InitVao();
-			void UpdateActiveParticles();
-			unsigned int GetUnusedParticleIndex();
-			void SpawnNewParticles();
-		public:
-			ParticleSystemSettings systemSettings;
-
-			ParticleSystem(System::GameObject* gameObject, const Texture2D& texture, unsigned int particleAmount);
 			ParticleSystem(
 				System::GameObject* gameObject,
 				const Texture2D& texture,
 				unsigned int particleAmount,
-				const ParticleSystemSettings& systemSettings);
-			ParticleSystem(
-				System::GameObject* gameObject,
-				const Texture2D& texture,
-				unsigned int particleAmount,
-				const IParticleSettings* const particleSettings);
+				IParticleSettings* particleSettings = nullptr);
 			ParticleSystem(
 				System::GameObject* gameObject,
 				const Texture2D& texture,
 				unsigned int particleAmount,
 				const ParticleSystemSettings& systemSettings,
-				const IParticleSettings* const particleSettings);
+				IParticleSettings* particleSettings = nullptr);
+			void InitShader();
+			void InitVao();
+			void UpdateActiveParticles();
+			void SpawnNewParticles();
+			unsigned int GetUnusedParticleIndex();
+		public:
+			ParticleSystemSettings systemSettings;
+			Texture2D* texture;
+
 			~ParticleSystem();
 
 			void Init() override;
@@ -83,8 +78,29 @@ namespace Learning2DEngine
 				Start();
 			}
 
-			IParticleSettings* const GetParticleSettings();
-			void SetParticleSettings(const IParticleSettings* const particleSettings);
+			inline bool IsRunning()
+			{
+				return isRunning;
+			}
+
+			inline IParticleSettings* const GetParticleSettings()
+			{
+				return particleSettings;
+			}
+
+			inline bool IsUseTexture()
+			{
+				return texture != nullptr;
+			}
+
+			inline void ClearTexture()
+			{
+				if (IsUseTexture())
+				{
+					delete texture;
+					texture = nullptr;
+				}
+			}
 		};
 	}
 }

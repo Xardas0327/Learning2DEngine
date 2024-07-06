@@ -28,11 +28,12 @@ void BallParticleSettings::SpawnParticle(Learning2DEngine::Render::Particle& par
 	particle.transform.position = gameObject.transform.position + random + positionOffset;
 	particle.color = glm::vec4(rColor, rColor, rColor, 1.0f);
 	particle.lifeTime = 1.0f;
-	particle.velocity = ballController->velocity * 0.1f;
+	particle.velocity = ballController->velocity;
+	particle.speed = 0.1f;
 }
 
 void BallParticleSettings::UpdateParticle(Learning2DEngine::Render::Particle& particle, const Learning2DEngine::System::GameObject& gameObject)
 {
-	particle.transform.position -= particle.velocity * Game::GetDeltaTime();
+	particle.transform.position -= particle.velocity * particle.speed * Game::GetDeltaTime();
 	particle.color.a -= Game::GetDeltaTime() * 2.5f;
 }
