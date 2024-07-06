@@ -258,16 +258,19 @@ namespace Learning2DEngine
 
 		void ParticleSystem::SpawnNewParticles()
 		{
+			nextSpawnTime -= Game::GetDeltaTime();
 			if (nextSpawnTime > 0.0f)
 			{
-				nextSpawnTime -= Game::GetDeltaTime();
 				return;
 			}
 
-			nextSpawnTime = 1.0f / systemSettings.newParticles;
+			while (nextSpawnTime <= 0.0f)
+			{
+				nextSpawnTime += 1.0f / systemSettings.newParticles;
 
-			unsigned int index = GetUnusedParticleIndex();
-			particleSettings->SpawnParticle(this->particles[index], *gameObject);
+				unsigned int index = GetUnusedParticleIndex();
+				particleSettings->SpawnParticle(this->particles[index], *gameObject);
+			}
 		}
 
 		unsigned int ParticleSystem::GetUnusedParticleIndex()
