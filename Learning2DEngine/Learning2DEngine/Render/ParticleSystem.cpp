@@ -22,29 +22,27 @@ namespace Learning2DEngine
 
 		ParticleSystem::ParticleSystem(
 			GameObject* gameObject,
-			const Texture2D& texture,
 			unsigned int particleAmount,
-			IParticleSettings* particleSettings = nullptr)
+			IParticleSettings* particleSettings)
 			: Component(gameObject), Renderer(gameObject), isInit(false),
 			isRunning(false), particleAmount(particleAmount), systemSettings(),
 			particles(nullptr), particleSettings(particleSettings), texture(nullptr),
 			delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0)
 		{
-			this->texture = new Texture2D(texture);
 			this->particles = new Particle[particleAmount];
 
 			if (particleSettings == nullptr)
 			{
-				particleSettings = new BasicParticleSettings();
+				this->particleSettings = new BasicParticleSettings();
 			}
 		}
 
 		ParticleSystem::ParticleSystem(
 			GameObject* gameObject,
-			const Texture2D& texture,
 			unsigned int particleAmount,
+			const Texture2D& texture,
 			const ParticleSystemSettings& systemSettings,
-			IParticleSettings* particleSettings = nullptr)
+			IParticleSettings* particleSettings)
 			: Component(gameObject), Renderer(gameObject), isInit(false),
 			isRunning(false), particleAmount(particleAmount), systemSettings(systemSettings),
 			particles(nullptr), particleSettings(particleSettings), texture(nullptr),
@@ -55,7 +53,7 @@ namespace Learning2DEngine
 
 			if (particleSettings == nullptr)
 			{
-				particleSettings = new BasicParticleSettings();
+				this->particleSettings = new BasicParticleSettings();
 			}
 		}
 
@@ -160,7 +158,7 @@ namespace Learning2DEngine
 
 		void ParticleSystem::Draw()
 		{
-			if (!isRunning && delayTime > 0.0f)
+			if (!isRunning || delayTime > 0.0f)
 				return;
 
 			auto& renderManager = RenderManager::GetInstance();
@@ -216,7 +214,7 @@ namespace Learning2DEngine
 
 		void ParticleSystem::Start()
 		{
-			particleSettings->Init(gameObject);
+			particleSettings->Init(*gameObject);
 			if (systemSettings.delayBeforeStart > 0.0f)
 			{
 				delayTime = systemSettings.delayBeforeStart;
@@ -253,7 +251,7 @@ namespace Learning2DEngine
 				this->particles[i].lifeTime -= Game::GetDeltaTime();
 				if (this->particles[i].lifeTime > 0.0f)
 				{
-					particleSettings->UpdateParticle(this->particles[i], gameObject);
+					particleSettings->UpdateParticle(this->particles[i], *gameObject);
 				}
 			}
 		}
@@ -269,7 +267,7 @@ namespace Learning2DEngine
 			nextSpawnTime = 1.0f / systemSettings.newParticles;
 
 			unsigned int index = GetUnusedParticleIndex();
-			particleSettings->SpawnParticle(this->particles[index], gameObject);
+			particleSettings->SpawnParticle(this->particles[index], *gameObject);
 		}
 
 		unsigned int ParticleSystem::GetUnusedParticleIndex()

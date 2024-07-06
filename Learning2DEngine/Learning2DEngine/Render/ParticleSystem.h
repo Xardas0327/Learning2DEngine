@@ -44,13 +44,12 @@ namespace Learning2DEngine
 
 			ParticleSystem(
 				System::GameObject* gameObject,
-				const Texture2D& texture,
 				unsigned int particleAmount,
 				IParticleSettings* particleSettings = nullptr);
 			ParticleSystem(
 				System::GameObject* gameObject,
-				const Texture2D& texture,
 				unsigned int particleAmount,
+				const Texture2D& texture,
 				const ParticleSystemSettings& systemSettings,
 				IParticleSettings* particleSettings = nullptr);
 			void InitShader();

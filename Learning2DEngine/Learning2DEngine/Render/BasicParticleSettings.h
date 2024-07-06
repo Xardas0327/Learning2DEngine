@@ -19,6 +19,8 @@ namespace Learning2DEngine
 			/// Second is the max.
 			/// </summary>
 			std::pair<glm::vec2, glm::vec2> randomPositionOffset;
+			glm::vec2 scale;
+			float rotation;
 			glm::vec2 velocity;
 			glm::vec4 color;
 			//In seconds.
@@ -27,7 +29,7 @@ namespace Learning2DEngine
 
 			BasicParticleSettings() :
 				fixPositionOffset(0.0f), randomPositionOffset(glm::vec2(0.0f), glm::vec2(0.0f)),
-				velocity(0.0f), color(1.0f), lifeTime(1.0f), speed(1.0f)
+				scale(1.0f, 1.0f), rotation(0.0f), velocity(0.0f), color(1.0f), lifeTime(1.0f), speed(1.0f)
 			{
 
 			}
@@ -42,7 +44,11 @@ namespace Learning2DEngine
 					? System::Random::GetNumber(randomPositionOffset.first.y, randomPositionOffset.second.y)
 					: randomPositionOffset.first.y;
 
-				particle.transform.position = gameObject.transform.position + fixPositionOffset + glm::vec2(positionRandomX, positionRandomY);
+				particle.transform = System::Transform(
+					particle.transform.position = gameObject.transform.position + fixPositionOffset + glm::vec2(positionRandomX, positionRandomY),
+					scale,
+					rotation
+				);
 				particle.velocity = velocity;
 				particle.color = color;
 				particle.lifeTime = lifeTime;
