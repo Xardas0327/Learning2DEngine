@@ -59,7 +59,7 @@ namespace Learning2DEngine
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
 
-            renderManager.AddFramebufferSizeEvent(Text2DRenderer::CallbackRefreshScreenResolution);
+            renderManager.AddFramebufferSizeEvent(Text2DRenderer::CallbackRefreshWindowResolution);
         }
 
         void Text2DRenderer::Terminate()
@@ -71,12 +71,12 @@ namespace Learning2DEngine
             glDeleteBuffers(1, &ebo);
         }
 
-        void Text2DRenderer::CallbackRefreshScreenResolution(Resolution resolution)
+        void Text2DRenderer::CallbackRefreshWindowResolution(Resolution resolution)
         {
-            Text2DRenderer::GetInstance().RefreshScreenResolution(resolution);
+            Text2DRenderer::GetInstance().RefreshWindowResolution(resolution);
         }
 
-        void Text2DRenderer::RefreshScreenResolution(Resolution resolution)
+        void Text2DRenderer::RefreshWindowResolution(Resolution resolution)
         {
             textShader.SetMatrix4(
                 "projection",

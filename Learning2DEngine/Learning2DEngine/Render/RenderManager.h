@@ -38,8 +38,8 @@ namespace Learning2DEngine
 			void CloseWindow();
 			bool IsWindowClosed();
 			void SetVSync(bool value);
-			void UpdateScreen();
-			void ClearScreen();
+			void UpdateWindow();
+			void ClearWindow();
 			inline Resolution GetResolution() 
 			{
 				return resolution;

@@ -69,12 +69,12 @@ namespace Learning2DEngine
             glfwSwapInterval(value);
         }
 
-        void RenderManager::UpdateScreen()
+        void RenderManager::UpdateWindow()
         {
             glfwSwapBuffers(window);
         }
 
-        void RenderManager::ClearScreen()
+        void RenderManager::ClearWindow()
         {
             glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
             glClear(GL_COLOR_BUFFER_BIT);

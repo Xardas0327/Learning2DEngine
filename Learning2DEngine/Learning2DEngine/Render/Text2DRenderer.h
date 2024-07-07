@@ -33,8 +33,8 @@ namespace Learning2DEngine
 
             // Callbacks
 
-            static void CallbackRefreshScreenResolution(Resolution resolution);
-            void RefreshScreenResolution(Resolution resolution);
+            static void CallbackRefreshWindowResolution(Resolution resolution);
+            void RefreshWindowResolution(Resolution resolution);
         public:
             /// <summary>
             /// It should be inited after RenderManager.
