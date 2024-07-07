@@ -67,6 +67,21 @@ namespace Learning2DEngine
 			}
 
 			template <class TComponent>
+			const TComponent* GetComponent() const
+			{
+				TComponent* selectedComponent = nullptr;
+				for (Component* component : components)
+				{
+					selectedComponent = dynamic_cast<TComponent*>(component);
+
+					if (selectedComponent != nullptr)
+						break;
+				}
+
+				return selectedComponent;
+			}
+
+			template <class TComponent>
 			std::vector<TComponent*> GetComponents()
 			{
 				std::vector<TComponent*> selectedComponents;

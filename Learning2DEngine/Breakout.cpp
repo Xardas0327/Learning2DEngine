@@ -7,6 +7,8 @@
 #include "Learning2DEngine/Render/RenderManager.h"
 #include "Learning2DEngine/Render/SpriteRenderer.h"
 #include "Learning2DEngine/Render/Text2DRenderer.h"
+#include "Learning2DEngine/Render/ParticleSystem.h"
+#include "Learning2DEngine/Render/BasicParticleSettings.h"
 #include "Learning2DEngine/System/ResourceManager.h"
 #include "Learning2DEngine/System/Random.h"
 #include "Learning2DEngine/System/GameObject.h"
@@ -15,8 +17,8 @@
 #include "BrickController.h"
 #include "PowerUpType.h"
 #include "PowerUpObject.h"
+#include "BallParticleSettings.h"
 
-#include "particle_generator.h"
 #include "post_processor.h"
 
 
@@ -28,7 +30,6 @@ using namespace irrklang;
 GameObject* Background;
 GameObject* Player;
 GameObject* Ball;
-ParticleGenerator* Particles;
 PostProcessor* Effects;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
 
@@ -47,7 +48,6 @@ Breakout::~Breakout()
     delete Background;
     delete Player;
     delete Ball;
-    delete Particles;
     delete Effects;
     SoundEngine->drop();
 }
@@ -61,7 +61,6 @@ void Breakout::Init()
     const int middleHeight = resolution.GetHeight() / 2;
 
     // Load shaders
-    resourceManager.LoadShader("Shaders/particle.vs", "Shaders/particle.frag", nullptr, "particle");
     resourceManager.LoadShader("Shaders/post_processing.vs", "Shaders/post_processing.frag", nullptr, "postprocessing");
 
     // Configure shaders
@@ -110,13 +109,6 @@ void Breakout::Init()
         resourceManager.GetTexture("background")
     );
 
-    // Particles
-    Particles = new ParticleGenerator(
-        resourceManager.GetShader("particle"),
-        resourceManager.GetTexture("particle"),
-        2000
-    );
-
     // PostProcessor
     Effects = new PostProcessor(resourceManager.GetShader("postprocessing"), resolution.GetWidth(), resolution.GetHeight());
 
@@ -160,6 +152,20 @@ void Breakout::Init()
         resourceManager.GetTexture("face")
     );
     auto ballController = Ball->AddComponent<BallController, float, glm::vec2>(BALL_RADIUS, INITIAL_BALL_VELOCITY);
+
+    ParticleSystemSettings ballParticleSystemSettings(
+        true,
+        BlendFuncFactor(GL_SRC_ALPHA, GL_ONE),
+        1000,
+        0.0f
+    );
+    auto ballParticleSystem = Ball->AddComponent<ParticleSystem, unsigned int, const Texture2D&, const ParticleSystemSettings&>(
+        1000,
+        resourceManager.GetTexture("particle"),
+        ballParticleSystemSettings,
+        new BallParticleSettings(glm::vec2(BALL_RADIUS / 2.0f), glm::vec2(10.0f, 10.0f), 0.3f, 0.1f)
+    );
+    ballParticleSystem->Start();
 
     // Sounds
     SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
@@ -281,7 +287,7 @@ void Breakout::Update()
 
     ballController->Move(resolution.GetWidth());
     DoCollisions();
-    Particles->Update(Game::GetDeltaTime(), *ballController, 1, glm::vec2(ballController->radius / 2.0f));
+    Ball->GetComponent<ParticleSystem>()->Update();
     UpdatePowerUps();
 
     if (ShakeTime > 0.0f)
@@ -339,7 +345,7 @@ void Breakout::Render()
             powerUp->gameObject->GetComponent<SpriteRenderer>()->Draw();
     }
     // Draw Particles
-    Particles->Draw();
+    Ball->GetComponent<ParticleSystem>()->Draw();
     // Draw Player
     Ball->GetComponent<SpriteRenderer>()->Draw();
     // End rendering to postprocessing framebuffer
