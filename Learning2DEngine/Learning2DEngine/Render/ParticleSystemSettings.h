@@ -17,9 +17,12 @@ namespace Learning2DEngine
 			//In seconds. The negative number is same as 0.
 			float delayBeforeStart;
 
-			ParticleSystemSettings()
-				: isUseBlend(false), blendFuncFactor(GL_ONE, GL_ZERO),
-				newParticles(1), delayBeforeStart(0.0f)
+			ParticleSystemSettings(
+				bool isUseBlend = false,
+				BlendFuncFactor blendFuncFactor = BlendFuncFactor(GL_ONE, GL_ZERO),
+				unsigned int newParticles = 1, float delayBeforeStart = 0.0f)
+				: isUseBlend(isUseBlend), blendFuncFactor(blendFuncFactor),
+				newParticles(newParticles), delayBeforeStart(delayBeforeStart)
 			{
 
 			}

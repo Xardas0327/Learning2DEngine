@@ -9,6 +9,8 @@ namespace Learning2DEngine
     {
         struct IParticleSettings
         {
+            virtual ~IParticleSettings() {};
+
             //It will run in the ParticleSystem::Start()
             virtual void Init(const System::GameObject& gameObject) {};
             //It will run in the ParticleSystem::Stop()

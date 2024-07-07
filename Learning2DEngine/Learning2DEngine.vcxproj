@@ -164,7 +164,6 @@
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Text2DRenderer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="particle_generator.cpp" />
     <ClCompile Include="post_processor.cpp" />
     <ClCompile Include="GameLevel.cpp" />
   </ItemGroup>
@@ -200,7 +199,6 @@
     <ClInclude Include="Learning2DEngine\System\FreeTypeCharacter.h" />
     <ClInclude Include="Learning2DEngine\System\Text.h" />
     <ClInclude Include="Learning2DEngine\Render\Text2DRenderer.h" />
-    <ClInclude Include="particle_generator.h" />
     <ClInclude Include="post_processor.h" />
     <ClInclude Include="PowerUpController.h" />
     <ClInclude Include="PowerUpObject.h" />
@@ -231,8 +229,6 @@
     <None Include="Assets\Levels\two.lvl" />
     <None Include="Learning2DEngine\Shaders\Sprite.fs" />
     <None Include="Learning2DEngine\Shaders\Sprite.vs" />
-    <None Include="Shaders\particle.frag" />
-    <None Include="Shaders\particle.vs" />
     <None Include="Shaders\post_processing.frag" />
     <None Include="Shaders\post_processing.vs" />
     <None Include="Learning2DEngine\Shaders\Text2D.fs" />

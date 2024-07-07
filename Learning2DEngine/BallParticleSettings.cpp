@@ -7,8 +7,8 @@
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
 
-BallParticleSettings::BallParticleSettings(glm::vec2 positionOffset)
-	: ballController(nullptr), positionOffset(positionOffset)
+BallParticleSettings::BallParticleSettings(glm::vec2 positionOffset, glm::vec2 scale, float lifeTime, float speed)
+	: ballController(nullptr), positionOffset(positionOffset), scale(scale), lifeTime(lifeTime), speed(speed)
 {
 
 }
@@ -26,10 +26,11 @@ void BallParticleSettings::SpawnParticle(Learning2DEngine::Render::Particle& par
 	float random = (Random::GetNumber(-50, 50)) / 10.0f;
 	float rColor = 0.5f + (Random::GetNumber(0, 100) / 100.0f);
 	particle.transform.position = gameObject.transform.position + random + positionOffset;
+	particle.transform.scale = scale;
 	particle.color = glm::vec4(rColor, rColor, rColor, 1.0f);
-	particle.lifeTime = 1.0f;
+	particle.lifeTime = lifeTime;
 	particle.velocity = ballController->velocity;
-	particle.speed = 0.1f;
+	particle.speed = speed;
 }
 
 void BallParticleSettings::UpdateParticle(Learning2DEngine::Render::Particle& particle, const Learning2DEngine::System::GameObject& gameObject)
