@@ -156,11 +156,12 @@ void Breakout::Init()
     ParticleSystemSettings ballParticleSystemSettings(
         true,
         BlendFuncFactor(GL_SRC_ALPHA, GL_ONE),
-        1000,
+        0.001f,
+        1,
         0.0f
     );
     auto ballParticleSystem = Ball->AddComponent<ParticleSystem, unsigned int, const Texture2D&, const ParticleSystemSettings&>(
-        1000,
+        500,
         resourceManager.GetTexture("particle"),
         ballParticleSystemSettings,
         new BallParticleSettings(glm::vec2(BALL_RADIUS / 2.0f), glm::vec2(10.0f, 10.0f), 0.3f, 0.1f)

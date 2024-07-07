@@ -55,6 +55,7 @@ namespace Learning2DEngine
 			void InitShader();
 			void InitVao();
 			void UpdateActiveParticles();
+			void TryToSpawnNewParticles();
 			void SpawnNewParticles();
 			unsigned int GetUnusedParticleIndex();
 		public:
