@@ -23,8 +23,8 @@ void BallParticleSettings::Init(const Learning2DEngine::System::GameObject& game
 }
 void BallParticleSettings::SpawnParticle(Learning2DEngine::Render::Particle& particle, const Learning2DEngine::System::GameObject& gameObject)
 {
-	float random = (Random::GetNumber(-50, 50)) / 10.0f;
-	float rColor = 0.5f + (Random::GetNumber(0, 100) / 100.0f);
+	float random = Random::GetNumber(-5, 6);
+	float rColor = Random::GetNumber(0.5f, 0.6f);
 	particle.transform.position = gameObject.transform.position + random + positionOffset;
 	particle.transform.scale = scale;
 	particle.color = glm::vec4(rColor, rColor, rColor, 1.0f);
