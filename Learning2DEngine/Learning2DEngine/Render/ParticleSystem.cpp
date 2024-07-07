@@ -258,10 +258,6 @@ namespace Learning2DEngine
 		void ParticleSystem::SpawnNewParticles()
 		{
 			nextSpawnTime -= Game::GetDeltaTime();
-			if (nextSpawnTime > 0.0f)
-			{
-				return;
-			}
 
 			while (nextSpawnTime <= 0.0f)
 			{
