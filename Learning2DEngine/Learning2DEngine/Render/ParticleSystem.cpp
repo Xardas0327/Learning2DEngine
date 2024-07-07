@@ -234,7 +234,7 @@ namespace Learning2DEngine
 			}
 
 			UpdateActiveParticles();
-			SpawnNewParticles();
+			TryToSpawnNewParticles();
 		}
 
 		void ParticleSystem::Stop()
@@ -255,14 +255,32 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ParticleSystem::SpawnNewParticles()
+		void ParticleSystem::TryToSpawnNewParticles()
 		{
 			nextSpawnTime -= Game::GetDeltaTime();
 
-			while (nextSpawnTime <= 0.0f)
-			{
-				nextSpawnTime += 1.0f / systemSettings.newParticles;
+			float spawnTime = systemSettings.spawnTime < 0.0f ? 0.0f : systemSettings.spawnTime;
 
+			if (spawnTime == 0.0f)
+			{
+				nextSpawnTime = 0.0f;
+				SpawnNewParticles();
+			}
+			else
+			{
+				while (nextSpawnTime <= 0.0f)
+				{
+					nextSpawnTime += spawnTime;
+
+					SpawnNewParticles();
+				}
+			}
+		}
+
+		void ParticleSystem::SpawnNewParticles()
+		{
+			for (int i = 0; i < systemSettings.newParticlesPerSpawn; ++i)
+			{
 				unsigned int index = GetUnusedParticleIndex();
 				particleSettings->SpawnParticle(this->particles[index], *gameObject);
 			}
