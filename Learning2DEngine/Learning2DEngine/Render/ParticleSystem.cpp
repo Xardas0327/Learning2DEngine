@@ -215,11 +215,10 @@ namespace Learning2DEngine
 		void ParticleSystem::Start()
 		{
 			particleSettings->Init(*gameObject);
-			if (systemSettings.delayBeforeStart > 0.0f)
-			{
-				delayTime = systemSettings.delayBeforeStart;
-			}
+
+			delayTime = systemSettings.delayBeforeStart;
 			nextSpawnTime = 0.0f;
+			lastUsedParticleIndex = 0;
 			isRunning = true;
 		}
 
