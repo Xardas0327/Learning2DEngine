@@ -15,9 +15,9 @@ namespace Learning2DEngine
             unsigned int wrapS;
             // Wrapping mode on T axis
             unsigned int wrapT;
-            // Filtering mode if texture pixels < screen pixels
+            // Filtering mode if texture pixels < window pixels
             unsigned int filterMin;
-            // Filtering mode if texture pixels > screen pixels
+            // Filtering mode if texture pixels > window pixels
             unsigned int filterMax;
 
             Texture2DSettings()

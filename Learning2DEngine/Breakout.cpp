@@ -282,10 +282,7 @@ void Breakout::Update()
 {
     ProcessInput();
 
-    const Resolution resolution = RenderManager::GetInstance().GetResolution();
-    auto ballController = Ball->GetComponent<BallController>();
-
-    ballController->Move(resolution.GetWidth());
+    Ball->GetComponent<BallController>()->Move();
     DoCollisions();
     Ball->GetComponent<ParticleSystem>()->Update();
     UpdatePowerUps();
@@ -298,7 +295,7 @@ void Breakout::Update()
     }
 
     // Lose live
-    if (Ball->transform.position.y >= resolution.GetHeight())
+    if (Ball->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
     {
         --Lives;
         // Game over

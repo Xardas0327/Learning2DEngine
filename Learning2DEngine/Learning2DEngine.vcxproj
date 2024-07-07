@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BallController.cpp" />
     <ClCompile Include="BallParticleSettings.cpp" />
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="Learning2DEngine\Plugins\glad.c" />

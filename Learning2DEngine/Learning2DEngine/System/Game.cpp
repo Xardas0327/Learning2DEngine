@@ -62,13 +62,11 @@ namespace Learning2DEngine
                     lastFrame = currentFrame;
 
                     UpdateKeyboardMouseEvents();
-
                     Update();
 
-                    renderManager.ClearScreen();
+                    renderManager.ClearWindow();
                     Render();
-
-                    renderManager.UpdateScreen();
+                    renderManager.UpdateWindow();
                 }
             }
             catch (std::exception e)

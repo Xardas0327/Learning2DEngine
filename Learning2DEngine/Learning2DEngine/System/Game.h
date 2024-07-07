@@ -19,9 +19,9 @@ namespace Learning2DEngine
             Calculate deltaTime
             Refresh Keyboard and Mouse events
             virtual Update()
-            Clear Screen to default color
+            Clear Window to default color
             virtual Render()
-            Update Screen
+            Update Window
         */
         class Game
         {
