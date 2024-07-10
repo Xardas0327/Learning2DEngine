@@ -33,7 +33,7 @@
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Plugins\glad.c">
+    <ClCompile Include="Learning2DEngine\Plugin\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\Text2DRenderer.cpp">
@@ -61,6 +61,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BallController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Learning2DEngine\Render\ShaderConstant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -170,6 +173,9 @@
     <ClInclude Include="BallParticleSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\arial.ttf" />
@@ -220,10 +226,10 @@
     <None Include="Assets\Levels\two.lvl" />
     <None Include="Shaders\post_processing.frag" />
     <None Include="Shaders\post_processing.vs" />
-    <None Include="Learning2DEngine\Shaders\Text2D.fs" />
-    <None Include="Learning2DEngine\Shaders\Text2D.vs" />
-    <None Include="Learning2DEngine\Shaders\Sprite.fs" />
-    <None Include="Learning2DEngine\Shaders\Sprite.vs" />
+    <None Include="Learning2DEngine\Shader\Text2D.fs" />
+    <None Include="Learning2DEngine\Shader\Text2D.vs" />
+    <None Include="Learning2DEngine\Shader\Sprite.fs" />
+    <None Include="Learning2DEngine\Shader\Sprite.vs" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Assets\Sounds\bleep.mp3" />

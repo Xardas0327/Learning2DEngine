@@ -30,26 +30,15 @@ namespace Learning2DEngine
             /// <param name="outSource"></param>
             /// <returns></returns>
             bool LoadShaderFile(const char* file, std::string& outSource);
-        public:
-            /// <summary>
-            /// It won't be saved, that's why you can't get it with GetShader and you have to destroy it manually
-            /// </summary>
-            /// <param name="file"></param>
-            /// <param name="alpha"></param>
-            /// <returns></returns>
             Render::Shader LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile = nullptr);
-            Render::Shader LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, const std::string& name);
+            Render::Texture2D LoadTexture(const char* file, const Render::Texture2DSettings& settings);
+        public:
+            Render::Shader LoadShader(const std::string& name, const char* vertexFile, const char* fragmentFile, const char* geometryFile = nullptr);
             Render::Shader GetShader(const std::string& name);
             bool IsShaderExist(const std::string& name);
             void DestroyShader(const std::string& name);
-            /// <summary>
-            /// It won't be saved, that's why you can't get it with GetTexture and you have to destroy it manually
-            /// </summary>
-            /// <param name="file"></param>
-            /// <param name="alpha"></param>
-            /// <returns></returns>
-            Render::Texture2D LoadTexture(const char* file, const Render::Texture2DSettings& settings);
-            Render::Texture2D LoadTexture(const char* file, const Render::Texture2DSettings& settings, const std::string& name);
+
+            Render::Texture2D LoadTexture(const std::string& name, const char* file, const Render::Texture2DSettings& settings);
             Render::Texture2D GetTexture(const std::string& name);
             bool IsTextureExist(const std::string& name);
             void DestroyTexture2D(const std::string& name);

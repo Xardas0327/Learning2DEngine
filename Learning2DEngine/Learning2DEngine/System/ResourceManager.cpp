@@ -70,7 +70,7 @@ namespace Learning2DEngine
             return true;
         }
 
-        Shader ResourceManager::LoadShader(const char* vertexFile, const char* fragmentFile, const char* geometryFile, const std::string& name)
+        Shader ResourceManager::LoadShader(const std::string& name, const char* vertexFile, const char* fragmentFile, const char* geometryFile)
         {
             shaders[name] = LoadShader(vertexFile, fragmentFile, geometryFile);
             return shaders[name];
@@ -103,7 +103,7 @@ namespace Learning2DEngine
             return texture;
         }
 
-        Texture2D ResourceManager::LoadTexture(const char* file, const Texture2DSettings& settings, const std::string& name)
+        Texture2D ResourceManager::LoadTexture(const std::string& name, const char* file, const Texture2DSettings& settings)
         {
             textures[name] = LoadTexture(file, settings);
             return textures[name];

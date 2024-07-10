@@ -4,6 +4,7 @@
 
 #include "BasicParticleSettings.h"
 #include "RenderManager.h"
+#include "ShaderConstant.h"
 #include "../System/ResourceManager.h"
 #include "../System/Game.h"
 
@@ -67,7 +68,14 @@ namespace Learning2DEngine
 		void ParticleSystem::InitShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
-			ParticleSystem::shader = resourceManager.LoadShader("Learning2DEngine/Shaders/Sprite.vs", "Learning2DEngine/Shaders/Sprite.fs");
+
+
+			ParticleSystem::shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
+				? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
+				: resourceManager.LoadShader(
+					ShaderConstant::SPRITE_SHADER_NAME,
+					ShaderConstant::SPRITE_VERTEX_SHADER_PATH,
+					ShaderConstant::SPRITE_FRAGMENT_SHADER_PATH);
 			ParticleSystem::shader.SetInteger("spriteTexture", 0);
 		}
 

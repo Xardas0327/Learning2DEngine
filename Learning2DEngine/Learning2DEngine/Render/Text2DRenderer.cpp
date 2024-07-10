@@ -7,6 +7,7 @@
 #include "../System/ResourceManager.h"
 #include "../System/Log.h"
 #include "RenderManager.h"
+#include "ShaderConstant.h"
 
 using namespace Learning2DEngine::System;
 
@@ -25,7 +26,12 @@ namespace Learning2DEngine
             auto& renderManager = RenderManager::GetInstance();
             auto& resourceManager = ResourceManager::GetInstance();
 
-            textShader = resourceManager.LoadShader("Learning2DEngine/Shaders/Text2D.vs", "Learning2DEngine/Shaders/Text2D.fs");
+            textShader = resourceManager.IsShaderExist(ShaderConstant::TEXT2D_SHADER_NAME)
+                ? resourceManager.GetShader(ShaderConstant::TEXT2D_SHADER_NAME)
+                : resourceManager.LoadShader(
+                    ShaderConstant::TEXT2D_SHADER_NAME,
+                    ShaderConstant::TEXT2D_VERTEX_SHADER_PATH,
+                    ShaderConstant::TEXT2D_FRAGMENT_SHADER_PATH);
             textShader.Use();
             textShader.SetMatrix4(
                 "projection",

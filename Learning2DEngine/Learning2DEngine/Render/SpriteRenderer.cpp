@@ -4,6 +4,7 @@
 
 #include "../System/ResourceManager.h"
 #include "../System/Game.h"
+#include "ShaderConstant.h"
 
 namespace Learning2DEngine
 {
@@ -75,7 +76,12 @@ namespace Learning2DEngine
         void SpriteRenderer::InitShader()
         {
             auto& resourceManager = System::ResourceManager::GetInstance();
-            SpriteRenderer::shader = resourceManager.LoadShader("Learning2DEngine/Shaders/Sprite.vs", "Learning2DEngine/Shaders/Sprite.fs");
+            SpriteRenderer::shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
+                ? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
+                : resourceManager.LoadShader(
+                    ShaderConstant::SPRITE_SHADER_NAME,
+                    ShaderConstant::SPRITE_VERTEX_SHADER_PATH,
+                    ShaderConstant::SPRITE_FRAGMENT_SHADER_PATH);
             SpriteRenderer::shader.SetInteger("spriteTexture", 0);
         }
 

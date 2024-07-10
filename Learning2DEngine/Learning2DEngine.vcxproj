@@ -154,9 +154,10 @@
     <ClCompile Include="BallController.cpp" />
     <ClCompile Include="BallParticleSettings.cpp" />
     <ClCompile Include="Breakout.cpp" />
-    <ClCompile Include="Learning2DEngine\Plugins\glad.c" />
+    <ClCompile Include="Learning2DEngine\Plugin\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\ParticleSystem.cpp" />
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp" />
+    <ClCompile Include="Learning2DEngine\Render\ShaderConstant.cpp" />
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\System\Game.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Shader.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Learning2DEngine\Render\Renderer.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
+    <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h" />
     <ClInclude Include="Learning2DEngine\System\Component.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />
     <ClInclude Include="Learning2DEngine\System\GameObject.h" />
@@ -228,12 +230,12 @@
     <None Include="Assets\Levels\one.lvl" />
     <None Include="Assets\Levels\three.lvl" />
     <None Include="Assets\Levels\two.lvl" />
-    <None Include="Learning2DEngine\Shaders\Sprite.fs" />
-    <None Include="Learning2DEngine\Shaders\Sprite.vs" />
+    <None Include="Learning2DEngine\Shader\Sprite.fs" />
+    <None Include="Learning2DEngine\Shader\Sprite.vs" />
     <None Include="Shaders\post_processing.frag" />
     <None Include="Shaders\post_processing.vs" />
-    <None Include="Learning2DEngine\Shaders\Text2D.fs" />
-    <None Include="Learning2DEngine\Shaders\Text2D.vs" />
+    <None Include="Learning2DEngine\Shader\Text2D.fs" />
+    <None Include="Learning2DEngine\Shader\Text2D.vs" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Assets\Sounds\bleep.mp3" />
