@@ -25,9 +25,8 @@ namespace Learning2DEngine
         }
 
         SpriteRenderer::SpriteRenderer(GameObject* gameObject, const Texture2D& texture, glm::vec3 color)
-            : Component(gameObject), Renderer(gameObject), color(color), isInit(false)
+            : Component(gameObject), Renderer(gameObject), color(color), isInit(false), texture(new Texture2D(texture))
         {
-            this->texture = new Texture2D(texture);
         }
 
         SpriteRenderer::~SpriteRenderer()
