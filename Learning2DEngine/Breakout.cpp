@@ -45,11 +45,6 @@ Breakout::Breakout() :
 
 Breakout::~Breakout()
 {
-    delete Background;
-    delete Player;
-    delete Ball;
-    delete Effects;
-    SoundEngine->drop();
 }
 
 void Breakout::Init()
@@ -213,6 +208,16 @@ void Breakout::Init()
 
     // State
     State = GAME_MENU;
+}
+
+void Breakout::Terminate()
+{
+    delete Background;
+    delete Player;
+    delete Ball;
+    delete Effects;
+    SoundEngine->drop();
+    Game::Terminate();
 }
 
 void Breakout::ProcessInput()

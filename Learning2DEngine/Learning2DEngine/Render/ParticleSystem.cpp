@@ -26,15 +26,10 @@ namespace Learning2DEngine
 			IParticleSettings* particleSettings)
 			: Component(gameObject), Renderer(gameObject), isInit(false),
 			isRunning(false), particleAmount(particleAmount), systemSettings(),
-			particles(nullptr), particleSettings(particleSettings), texture(nullptr),
-			delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0)
+			texture(nullptr), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
+			particles(nullptr),
+			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
 		{
-			this->particles = new Particle[particleAmount];
-
-			if (particleSettings == nullptr)
-			{
-				this->particleSettings = new BasicParticleSettings();
-			}
 		}
 
 		ParticleSystem::ParticleSystem(
@@ -45,16 +40,11 @@ namespace Learning2DEngine
 			IParticleSettings* particleSettings)
 			: Component(gameObject), Renderer(gameObject), isInit(false),
 			isRunning(false), particleAmount(particleAmount), systemSettings(systemSettings),
-			particles(nullptr), particleSettings(particleSettings), texture(nullptr),
-			delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0)
+			delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
+			particles(nullptr), texture(new Texture2D(texture)),
+			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
 		{
-			this->texture = new Texture2D(texture);
-			this->particles = new Particle[particleAmount];
 
-			if (particleSettings == nullptr)
-			{
-				this->particleSettings = new BasicParticleSettings();
-			}
 		}
 
 		ParticleSystem::~ParticleSystem()
@@ -72,7 +62,6 @@ namespace Learning2DEngine
 			{
 				delete particleSettings;
 			}
-			delete[] particles;
 		}
 
 		void ParticleSystem::InitShader()
@@ -122,6 +111,7 @@ namespace Learning2DEngine
 				return;
 
 			isInit = true;
+			particles = new Particle[particleAmount];
 
 			// If nothing use it
 			if (!ParticleSystem::referenceNumber)
@@ -138,6 +128,8 @@ namespace Learning2DEngine
 				return;
 
 			isInit = false;
+			delete[] particles;
+			particles = nullptr;
 
 			if (IsRunning())
 			{
