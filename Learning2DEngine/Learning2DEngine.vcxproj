@@ -155,6 +155,7 @@
     <ClCompile Include="BallParticleSettings.cpp" />
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="Learning2DEngine\Plugin\glad.c" />
+    <ClCompile Include="Learning2DEngine\Render\MSAA.cpp" />
     <ClCompile Include="Learning2DEngine\Render\ParticleSystem.cpp" />
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp" />
     <ClCompile Include="Learning2DEngine\Render\ShaderConstant.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Learning2DEngine\Render\BasicParticleSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\Blend.h" />
     <ClInclude Include="Learning2DEngine\Render\IParticleSettings.h" />
+    <ClInclude Include="Learning2DEngine\Render\MSAA.h" />
     <ClInclude Include="Learning2DEngine\Render\Particle.h" />
     <ClInclude Include="Learning2DEngine\Render\ParticleSystem.h" />
     <ClInclude Include="Learning2DEngine\Render\ParticleSystemSettings.h" />

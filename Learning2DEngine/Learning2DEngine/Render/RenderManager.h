@@ -25,7 +25,6 @@ namespace Learning2DEngine
 			bool isBlendActive;
 			BlendFuncFactor blendFuncFactor;
 
-
 			RenderManager();
 
 			static void CallbackUpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -51,48 +50,15 @@ namespace Learning2DEngine
 				return clearColor;
 			}
 
-			inline void EnableBlend()
-			{
-				if (!isBlendActive)
-				{
-					isBlendActive = true;
-					glEnable(GL_BLEND);
-				}
-			}
-
-			inline void DisableBlend()
-			{
-				if (isBlendActive)
-				{
-					isBlendActive = false;
-					glDisable(GL_BLEND);
-				}
-			}
-
+			void EnableBlend();
+			void DisableBlend();
 			inline bool IsBlendActive()
 			{
 				return isBlendActive;
 			}
 
-			inline void SetBlendFunc(unsigned int sourceFactor, unsigned int destinationFactor)
-			{
-				BlendFuncFactor newBlendFuncFactor(sourceFactor, destinationFactor);
-				if (this->blendFuncFactor != newBlendFuncFactor)
-				{
-					this->blendFuncFactor = newBlendFuncFactor;
-					glBlendFunc(this->blendFuncFactor.first, this->blendFuncFactor.second);
-				}
-			}
-
-			inline void SetBlendFunc(BlendFuncFactor blendFuncFactor)
-			{
-				if (this->blendFuncFactor != blendFuncFactor)
-				{
-					this->blendFuncFactor = blendFuncFactor;
-					glBlendFunc(this->blendFuncFactor.first, this->blendFuncFactor.second);
-				}
-			}
-
+			void SetBlendFunc(unsigned int sourceFactor, unsigned int destinationFactor);
+			void SetBlendFunc(BlendFuncFactor blendFuncFactor);
 			inline BlendFuncFactor GetBlendFunc()
 			{
 				return this->blendFuncFactor;

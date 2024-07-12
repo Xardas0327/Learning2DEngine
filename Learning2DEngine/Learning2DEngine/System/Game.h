@@ -4,8 +4,7 @@
 
 #include "InputStatus.h"
 #include "../Render/RenderManager.h"
-
-
+#include "../Render/MSAA.h"
 
 namespace Learning2DEngine
 {
@@ -28,6 +27,7 @@ namespace Learning2DEngine
         private:
             float lastFrame;
             float timeScale;
+            bool isMsaaActive;
 
             /// <summary>
             /// It is multiplied by timeScale.
@@ -44,6 +44,8 @@ namespace Learning2DEngine
             void FixKeyboardMouse();
         protected:
             static InputStatus inputKeys[INPUT_KEY_SIZE];
+            //This is temporary, it will be private
+            Render::MSAA msaaRender;
 
             /// <summary>
             /// It has to be initialized.
@@ -75,6 +77,13 @@ namespace Learning2DEngine
             /// </summary>
             virtual void Terminate();
             void Run();
+
+            void UseMSAA(unsigned int sampleNumber);
+            void StopMSAA();
+            inline bool IsMsaaActive()
+            {
+                return isMsaaActive;
+            }
 
             inline void ResetTimeScale() 
             {

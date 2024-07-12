@@ -8,16 +8,7 @@ PostProcessor::PostProcessor(Shader shader, unsigned int width, unsigned int hei
     : PostProcessingShader(shader), Texture(), Width(width), Height(height), Confuse(false), Chaos(false), Shake(false)
 {
     // initialize renderbuffer/framebuffer object
-    glGenFramebuffers(1, &this->MSFBO);
     glGenFramebuffers(1, &this->FBO);
-    glGenRenderbuffers(1, &this->RBO);
-    // initialize renderbuffer storage with a multisampled color buffer (don't need a depth/stencil buffer)
-    glBindFramebuffer(GL_FRAMEBUFFER, this->MSFBO);
-    glBindRenderbuffer(GL_RENDERBUFFER, this->RBO);
-    glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGB, width, height); // allocate storage for render buffer object
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, this->RBO); // attach MS render buffer object to framebuffer
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-        std::cout << "ERROR::POSTPROCESSOR: Failed to initialize MSFBO" << std::endl;
     // also initialize the FBO/texture to blit multisampled color-buffer to; used for shader operations (for postprocessing effects)
     glBindFramebuffer(GL_FRAMEBUFFER, this->FBO);
     this->Texture.Create(width, height, NULL);
@@ -57,23 +48,9 @@ PostProcessor::PostProcessor(Shader shader, unsigned int width, unsigned int hei
     glUniform1fv(glGetUniformLocation(postProcessingShaderId, "blur_kernel"), 9, blur_kernel);
 }
 
-void PostProcessor::BeginRender()
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, this->MSFBO);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-}
-void PostProcessor::EndRender()
-{
-    // now resolve multisampled color-buffer into intermediate FBO to store to texture
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, this->MSFBO);
-    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, this->FBO);
-    glBlitFramebuffer(0, 0, this->Width, this->Height, 0, 0, this->Width, this->Height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0); // binds both READ and WRITE framebuffer to default framebuffer
-}
-
 void PostProcessor::Render(float time)
 {
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     // set uniforms/options
     this->PostProcessingShader.Use();
     this->PostProcessingShader.SetFloat("time", time);
