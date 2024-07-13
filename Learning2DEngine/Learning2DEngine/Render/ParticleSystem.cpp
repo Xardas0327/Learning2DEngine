@@ -148,8 +148,6 @@ namespace Learning2DEngine
 			// If nothing use it
 			if (!ParticleSystem::referenceNumber)
 			{
-				ParticleSystem::shader.Destroy();
-
 				glDeleteVertexArrays(1, &ParticleSystem::vao);
 				glDeleteBuffers(1, &ParticleSystem::vbo);
 				glDeleteBuffers(1, &ParticleSystem::ebo);

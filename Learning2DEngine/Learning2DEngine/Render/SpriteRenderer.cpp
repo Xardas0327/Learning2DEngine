@@ -65,8 +65,6 @@ namespace Learning2DEngine
             // If nothing use it
             if (!SpriteRenderer::referenceNumber)
             {
-                SpriteRenderer::shader.Destroy();
-
                 glDeleteVertexArrays(1, &SpriteRenderer::vao);
                 glDeleteBuffers(1, &SpriteRenderer::vbo);
                 glDeleteBuffers(1, &SpriteRenderer::ebo);
