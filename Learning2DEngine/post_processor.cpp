@@ -50,7 +50,6 @@ PostProcessor::PostProcessor(Shader shader, unsigned int width, unsigned int hei
 
 void PostProcessor::Render(float time)
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     // set uniforms/options
     this->PostProcessingShader.Use();
     this->PostProcessingShader.SetFloat("time", time);

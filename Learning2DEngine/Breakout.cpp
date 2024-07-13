@@ -210,7 +210,9 @@ void Breakout::Init()
     // State
     State = GAME_MENU;
 
-    UseMSAA(4);
+    //ActivateMSAA(4);
+    //ActivatePostProcessEffect();
+    //UsePostProcessEffect();
 }
 
 void Breakout::Terminate()
@@ -335,8 +337,7 @@ void Breakout::Update()
 void Breakout::Render()
 {
     auto& textRenderer = Text2DRenderer::GetInstance();
-    msaaRender.StartRender();
-
+    glBindFramebuffer(GL_FRAMEBUFFER, Effects->GetFbo());
     // Draw background
     Background->GetComponent<SpriteRenderer>()->Draw();
     // Draw level
@@ -353,8 +354,8 @@ void Breakout::Render()
     Ball->GetComponent<ParticleSystem>()->Draw();
     // Draw Player
     Ball->GetComponent<SpriteRenderer>()->Draw();
-    msaaRender.EndRender(Effects->GetFbo(), RenderManager::GetInstance().GetResolution());
     // Render postprocessing quad
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     Effects->Render(glfwGetTime());
 
     textRenderer.RenderText(liveText);

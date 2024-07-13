@@ -4,7 +4,9 @@
 
 #include "InputStatus.h"
 #include "../Render/RenderManager.h"
+#include "../Render/Shader.h"
 #include "../Render/MSAA.h"
+#include "../Render/PostProcessEffect.h"
 
 namespace Learning2DEngine
 {
@@ -28,6 +30,10 @@ namespace Learning2DEngine
             float lastFrame;
             float timeScale;
             bool isMsaaActive;
+            bool isPostProcessEffectActive;
+            bool isPostProcessEffectUsed;
+            Render::MSAA msaaRender;
+            Render::PostProcessEffect ppeRender;
 
             /// <summary>
             /// It is multiplied by timeScale.
@@ -44,8 +50,6 @@ namespace Learning2DEngine
             void FixKeyboardMouse();
         protected:
             static InputStatus inputKeys[INPUT_KEY_SIZE];
-            //This is temporary, it will be private
-            Render::MSAA msaaRender;
 
             /// <summary>
             /// It has to be initialized.
@@ -78,11 +82,31 @@ namespace Learning2DEngine
             virtual void Terminate();
             void Run();
 
-            void UseMSAA(unsigned int sampleNumber);
+            void ActivateMSAA(unsigned int sampleNumber);
             void StopMSAA();
             inline bool IsMsaaActive()
             {
                 return isMsaaActive;
+            }
+
+            void ActivatePostProcessEffect();
+            void StopPostProcessEffect();
+            inline bool IsPostProcessEffectActive()
+            {
+                return isPostProcessEffectActive;
+            }
+
+            inline void UsePostProcessEffect()
+            {
+                isPostProcessEffectUsed = true;
+            }
+            void UsePostProcessEffect(const Render::Shader& shader);
+            void ClearPostProcessEffect();
+
+
+            inline bool IsPostProcessEffectUsed()
+            {
+                return isPostProcessEffectUsed;
             }
 
             inline void ResetTimeScale() 

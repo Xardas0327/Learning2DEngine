@@ -47,6 +47,7 @@ namespace Learning2DEngine
         void Game::Terminate()
         {
             StopMSAA();
+            StopPostProcessEffect();
 
             ResourceManager::GetInstance().Clear();
             Text2DRenderer::GetInstance().Terminate();
@@ -69,9 +70,30 @@ namespace Learning2DEngine
                     Update();
 
                     renderManager.ClearWindow();
-                    //MSAA Start will be here
+                    bool usePPE = isPostProcessEffectActive && isPostProcessEffectUsed;
+                    if (isMsaaActive)
+                    {
+                        msaaRender.StartRender();
+                    }
+                    else if (usePPE)
+                    {
+                        ppeRender.StartRender();
+                    }
                     Render();
-                    //MSAA End will be here
+                    if (isMsaaActive)
+                    {
+                        msaaRender.EndRender(
+                            usePPE ? ppeRender.GetFrameBufferId() : 0,
+                            renderManager.GetResolution());
+                    }
+                    else if (usePPE)
+                    {
+                        ppeRender.EndRender();
+                    }
+
+                    if (usePPE)
+                        ppeRender.Render();
+
                     renderManager.UpdateWindow();
                 }
             }
@@ -85,7 +107,7 @@ namespace Learning2DEngine
             }
         }
 
-        void Game::UseMSAA(unsigned int sampleNumber)
+        void Game::ActivateMSAA(unsigned int sampleNumber)
         {
             if (isMsaaActive)
             {
@@ -105,6 +127,36 @@ namespace Learning2DEngine
 
             isMsaaActive = false;
             msaaRender.Destroy();
+        }
+
+        void Game::ActivatePostProcessEffect()
+        {
+            if (isPostProcessEffectActive)
+                return;
+
+            isPostProcessEffectActive = true;
+            ppeRender.Init(RenderManager::GetInstance().GetResolution());
+        }
+
+        void Game::StopPostProcessEffect()
+        {
+            if (!isPostProcessEffectActive)
+                return;
+
+            isPostProcessEffectActive = false;
+            ppeRender.Destroy();
+        }
+
+        void Game::UsePostProcessEffect(const Render::Shader& shader)
+        {
+            UsePostProcessEffect();
+            ppeRender.SetShader(shader);
+        }
+
+        void Game::ClearPostProcessEffect()
+        {
+            isPostProcessEffectUsed = false;
+            ppeRender.ClearShader();
         }
 
         void Game::UpdateKeyboardMouseEvents()

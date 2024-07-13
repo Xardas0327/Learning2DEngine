@@ -20,6 +20,11 @@ namespace Learning2DEngine
 			static const char* const TEXT2D_VERTEX_SHADER_PATH;
 			static const char* const TEXT2D_FRAGMENT_SHADER_PATH;
 			static const std::string TEXT2D_SHADER_NAME;
+
+			//PostProcessEffect
+			static const char* const DEFAULT_POSTPROCESS_EFFECT_VERTEX_SHADER_PATH;
+			static const char* const DEFAULT_POSTPROCESS_EFFECT_FRAGMENT_SHADER_PATH;
+			static const std::string DEFAULT_POSTPROCESS_EFFECT_NAME;
 		};
 	}
 }

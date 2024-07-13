@@ -69,6 +69,9 @@
     <ClCompile Include="Learning2DEngine\Render\MSAA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Learning2DEngine\Render\PostProcessEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="post_processor.h">
@@ -182,6 +185,9 @@
     <ClInclude Include="Learning2DEngine\Render\MSAA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\arial.ttf" />
@@ -236,6 +242,8 @@
     <None Include="Learning2DEngine\Shader\Text2D.vs" />
     <None Include="Learning2DEngine\Shader\Sprite.fs" />
     <None Include="Learning2DEngine\Shader\Sprite.vs" />
+    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.fs" />
+    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.vs" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Assets\Sounds\bleep.mp3" />

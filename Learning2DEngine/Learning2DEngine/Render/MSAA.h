@@ -18,7 +18,7 @@ namespace Learning2DEngine
 			~MSAA();
 			void Init(unsigned int sampleNumber, Resolution resolution);
 			void Destroy();
-			void StartRender();
+			void StartRender(bool useClear = true);
 			/// <summary>
 			/// The MSAA color-buffer will be moved into resultFbo framebuffer.
 			/// </summary>

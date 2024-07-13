@@ -45,10 +45,11 @@ namespace Learning2DEngine
 			sampleNumber = 0;
 		}
 
-		void MSAA::StartRender()
+		void MSAA::StartRender(bool useClear)
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-			RenderManager::GetInstance().ClearWindow();
+			if (useClear)
+				RenderManager::GetInstance().ClearWindow();
 		}
 
 		void MSAA::EndRender(unsigned int resultFbo, Resolution resultResolution)
@@ -57,6 +58,7 @@ namespace Learning2DEngine
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, resultFbo);
 			glBlitFramebuffer(0, 0, resolution.GetWidth(), resolution.GetHeight(), 
 				0, 0, resultResolution.GetWidth(), resultResolution.GetHeight(), GL_COLOR_BUFFER_BIT, GL_NEAREST);
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
 	}
 }

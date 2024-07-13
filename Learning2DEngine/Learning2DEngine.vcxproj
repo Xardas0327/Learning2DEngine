@@ -157,6 +157,7 @@
     <ClCompile Include="Learning2DEngine\Plugin\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\MSAA.cpp" />
     <ClCompile Include="Learning2DEngine\Render\ParticleSystem.cpp" />
+    <ClCompile Include="Learning2DEngine\Render\PostProcessEffect.cpp" />
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp" />
     <ClCompile Include="Learning2DEngine\Render\ShaderConstant.cpp" />
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Learning2DEngine\Render\Particle.h" />
     <ClInclude Include="Learning2DEngine\Render\ParticleSystem.h" />
     <ClInclude Include="Learning2DEngine\Render\ParticleSystemSettings.h" />
+    <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h" />
     <ClInclude Include="Learning2DEngine\Render\Renderer.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
@@ -232,6 +234,8 @@
     <None Include="Assets\Levels\one.lvl" />
     <None Include="Assets\Levels\three.lvl" />
     <None Include="Assets\Levels\two.lvl" />
+    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.fs" />
+    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.vs" />
     <None Include="Learning2DEngine\Shader\Sprite.fs" />
     <None Include="Learning2DEngine\Shader\Sprite.vs" />
     <None Include="Shaders\post_processing.frag" />
