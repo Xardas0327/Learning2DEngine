@@ -18,7 +18,9 @@ namespace Learning2DEngine
         glm::mat4 Game::cameraProjection = glm::mat4(0.0f);
 
         Game::Game()
-            : lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT), isMsaaActive(false), msaaRender()
+            : lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT), isMsaaActive(false),
+            isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
+            ppeRender()
         {
         }
 
