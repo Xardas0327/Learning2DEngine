@@ -32,7 +32,7 @@ namespace Learning2DEngine
 			static void CallbackUpdateFramebufferSize(GLFWwindow* window, int width, int height);
 			void UpdateFramebufferSize(GLFWwindow* window, int width, int height);
 		public:
-			void Init(int majorVersion, int minorVersion, Resolution resolution, const char* title);
+			void Init(int majorVersion, int minorVersion, Resolution resolution, const char* title, bool resizableWindows = true);
 			void Terminate();
 			void CloseWindow();
 			bool IsWindowClosed();

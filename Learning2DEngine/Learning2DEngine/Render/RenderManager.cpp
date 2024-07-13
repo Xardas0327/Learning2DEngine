@@ -16,13 +16,15 @@ namespace Learning2DEngine
 
         }
 
-        void RenderManager::Init(int majorVersion, int minorVersion, Resolution resolution, const char* title)
+        void RenderManager::Init(int majorVersion, int minorVersion, Resolution resolution, const char* title, bool resizableWindows)
         {
             this->resolution = resolution;
 
             glfwInit();
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minorVersion);
+            if(!resizableWindows)
+                glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 #ifdef __APPLE__
