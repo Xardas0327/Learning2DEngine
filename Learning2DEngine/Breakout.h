@@ -48,6 +48,7 @@ private:
 protected:
     void Update() override;
     void Render() override;
+    void LateRender() override;
     void ProcessInput();
     void DoCollisions();
 

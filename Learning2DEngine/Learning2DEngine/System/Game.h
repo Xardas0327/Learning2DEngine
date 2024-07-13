@@ -22,6 +22,10 @@ namespace Learning2DEngine
             virtual Update()
             Clear Window to default color
             virtual Render()
+                Render with MSAA and PostProcessEffect,
+                if they are enabled
+            virtual LateRender
+                Render without any effect
             Update Window
         */
         class Game
@@ -59,6 +63,7 @@ namespace Learning2DEngine
 
             virtual void Update() {};
             virtual void Render() {};
+            virtual void LateRender() {};
         public:
             Game();
             virtual ~Game();

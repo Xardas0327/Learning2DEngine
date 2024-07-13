@@ -336,7 +336,6 @@ void Breakout::Update()
 
 void Breakout::Render()
 {
-    auto& textRenderer = Text2DRenderer::GetInstance();
     // Draw background
     Background->GetComponent<SpriteRenderer>()->Draw();
     // Draw level
@@ -355,7 +354,11 @@ void Breakout::Render()
     Ball->GetComponent<SpriteRenderer>()->Draw();
     // Refresh the PostProcess Shader
     postProcessData->RefreshShader(glfwGetTime());
+}
 
+void Breakout::LateRender()
+{
+    auto& textRenderer = Text2DRenderer::GetInstance();
     textRenderer.RenderText(liveText);
 
     if (this->State == GAME_MENU)

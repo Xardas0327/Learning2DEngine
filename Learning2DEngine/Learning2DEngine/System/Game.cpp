@@ -94,6 +94,8 @@ namespace Learning2DEngine
                     if (usePPE)
                         ppeRender.Render();
 
+                    LateRender();
+
                     renderManager.UpdateWindow();
                 }
             }
