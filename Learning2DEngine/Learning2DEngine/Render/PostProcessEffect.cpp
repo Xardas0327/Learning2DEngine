@@ -119,6 +119,7 @@ namespace Learning2DEngine
 
 			glActiveTexture(GL_TEXTURE0);
 			this->texture.Bind();
+			glBindVertexArray(vao);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 			glBindTexture(GL_TEXTURE_2D, 0);

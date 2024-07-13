@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="post_processor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -74,9 +71,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="post_processor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\RenderManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -188,6 +182,9 @@
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PostProcessData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\arial.ttf" />
@@ -236,14 +233,14 @@
     <None Include="Assets\Levels\one.lvl" />
     <None Include="Assets\Levels\three.lvl" />
     <None Include="Assets\Levels\two.lvl" />
-    <None Include="Shaders\post_processing.frag" />
-    <None Include="Shaders\post_processing.vs" />
     <None Include="Learning2DEngine\Shader\Text2D.fs" />
     <None Include="Learning2DEngine\Shader\Text2D.vs" />
     <None Include="Learning2DEngine\Shader\Sprite.fs" />
     <None Include="Learning2DEngine\Shader\Sprite.vs" />
     <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.fs" />
     <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.vs" />
+    <None Include="Shaders\PostProcessing.fs" />
+    <None Include="Shaders\PostProcessing.vs" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Assets\Sounds\bleep.mp3" />
