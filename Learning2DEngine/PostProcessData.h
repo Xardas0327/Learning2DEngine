@@ -26,21 +26,23 @@ public:
             {  0.0f,   -offset  },  // bottom-center
             {  offset, -offset  }   // bottom-right    
         };
-        shader.Use();
-        unsigned int shaderId = this->shader.GetId();
-        glUniform2fv(glGetUniformLocation(shaderId, "offsets"), 9, (float*)offsets);
+
         int edge_kernel[9] = {
             -1, -1, -1,
             -1,  8, -1,
             -1, -1, -1
         };
-        glUniform1iv(glGetUniformLocation(shaderId, "edge_kernel"), 9, edge_kernel);
+
         float blur_kernel[9] = {
             1.0f / 16.0f, 2.0f / 16.0f, 1.0f / 16.0f,
             2.0f / 16.0f, 4.0f / 16.0f, 2.0f / 16.0f,
             1.0f / 16.0f, 2.0f / 16.0f, 1.0f / 16.0f
         };
-        glUniform1fv(glGetUniformLocation(shaderId, "blur_kernel"), 9, blur_kernel);
+
+        this->shader.Use();
+        this->shader.SetArray2f("offsets", (float*)offsets, 9);
+        this->shader.SetArray1i("edge_kernel", edge_kernel, 9);
+        this->shader.SetArray1f("blur_kernel", blur_kernel, 9);
 	}
 
 	void RefreshShader(float time)

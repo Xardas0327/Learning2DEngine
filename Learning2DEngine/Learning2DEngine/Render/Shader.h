@@ -36,6 +36,10 @@ namespace Learning2DEngine
             void SetVector4f(const char* name, float x, float y, float z, float w);
             void SetVector4f(const char* name, const glm::vec4& value);
             void SetMatrix4(const char* name, const glm::mat4& matrix);
+            void SetArray1f(const char* name, float* value, unsigned int length);
+            void SetArray1i(const char* name, int* value, unsigned int length);
+            void SetArray2f(const char* name, float* value, unsigned int length);
+            void SetArray2i(const char* name, int* value, unsigned int length);
         };
     }
 }
