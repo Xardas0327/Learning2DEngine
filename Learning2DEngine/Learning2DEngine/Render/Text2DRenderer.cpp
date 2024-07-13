@@ -71,7 +71,6 @@ namespace Learning2DEngine
         void Text2DRenderer::Terminate()
         {
             Clear();
-            textShader.Destroy();
             glDeleteVertexArrays(1, &vao);
             glDeleteBuffers(1, &vbo);
             glDeleteBuffers(1, &ebo);

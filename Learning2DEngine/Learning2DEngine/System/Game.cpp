@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include <string>
+
 #include "../Render/RenderManager.h"
 #include "../Render/Text2DRenderer.h"
 #include "ResourceManager.h"
@@ -16,7 +18,9 @@ namespace Learning2DEngine
         glm::mat4 Game::cameraProjection = glm::mat4(0.0f);
 
         Game::Game()
-            : lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT)
+            : lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT), isMsaaActive(false),
+            isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
+            ppeRender()
         {
         }
 
@@ -44,6 +48,9 @@ namespace Learning2DEngine
 
         void Game::Terminate()
         {
+            StopMSAA();
+            StopPostProcessEffect();
+
             ResourceManager::GetInstance().Clear();
             Text2DRenderer::GetInstance().Terminate();
             RenderManager::GetInstance().Terminate();
@@ -65,7 +72,32 @@ namespace Learning2DEngine
                     Update();
 
                     renderManager.ClearWindow();
+                    bool usePPE = isPostProcessEffectActive && isPostProcessEffectUsed;
+                    if (isMsaaActive)
+                    {
+                        msaaRender.StartRender();
+                    }
+                    else if (usePPE)
+                    {
+                        ppeRender.StartRender();
+                    }
                     Render();
+                    if (isMsaaActive)
+                    {
+                        msaaRender.EndRender(
+                            usePPE ? ppeRender.GetFrameBufferId() : 0,
+                            renderManager.GetResolution());
+                    }
+                    else if (usePPE)
+                    {
+                        ppeRender.EndRender();
+                    }
+
+                    if (usePPE)
+                        ppeRender.Render();
+
+                    LateRender();
+
                     renderManager.UpdateWindow();
                 }
             }
@@ -77,6 +109,58 @@ namespace Learning2DEngine
             {
                 LOG_ERROR(std::string("GAME: Unknown Exception."));
             }
+        }
+
+        void Game::ActivateMSAA(unsigned int sampleNumber)
+        {
+            if (isMsaaActive)
+            {
+                LOG_WARNING("Game: The MSAA was activated with " + std::to_string(msaaRender.GetSampleNumber())
+                    + " samples. That is why the Game does not activated the MSAA with " + std::to_string(sampleNumber));
+                return;
+            }
+
+            isMsaaActive = true;
+            msaaRender.Init(sampleNumber, RenderManager::GetInstance().GetResolution());
+        }
+
+        void Game::StopMSAA()
+        {
+            if (!isMsaaActive)
+                return;
+
+            isMsaaActive = false;
+            msaaRender.Destroy();
+        }
+
+        void Game::ActivatePostProcessEffect()
+        {
+            if (isPostProcessEffectActive)
+                return;
+
+            isPostProcessEffectActive = true;
+            ppeRender.Init(RenderManager::GetInstance().GetResolution());
+        }
+
+        void Game::StopPostProcessEffect()
+        {
+            if (!isPostProcessEffectActive)
+                return;
+
+            isPostProcessEffectActive = false;
+            ppeRender.Destroy();
+        }
+
+        void Game::UsePostProcessEffect(const Render::Shader& shader)
+        {
+            UsePostProcessEffect();
+            ppeRender.SetShader(shader);
+        }
+
+        void Game::ClearPostProcessEffect()
+        {
+            isPostProcessEffectUsed = false;
+            ppeRender.ClearShader();
         }
 
         void Game::UpdateKeyboardMouseEvents()

@@ -19,8 +19,7 @@
 #include "PowerUpType.h"
 #include "PowerUpObject.h"
 #include "BallParticleSettings.h"
-
-#include "post_processor.h"
+#include "PostProcessData.h"
 
 
 using namespace Learning2DEngine::Render;
@@ -31,7 +30,7 @@ using namespace irrklang;
 GameObject* Background;
 GameObject* Player;
 GameObject* Ball;
-PostProcessor* Effects;
+PostProcessData* postProcessData;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
 
 float ShakeTime = 0.0f;
@@ -57,7 +56,7 @@ void Breakout::Init()
     const int middleHeight = resolution.GetHeight() / 2;
 
     // Load shaders
-    resourceManager.LoadShader(std::string("postprocessing"), "Shaders/post_processing.vs", "Shaders/post_processing.frag");
+    resourceManager.LoadShader(std::string("PostProcessing"), "Shaders/PostProcessing.vs", "Shaders/PostProcessing.fs");
 
     // Configure shaders
     Game::cameraProjection = glm::ortho(
@@ -104,9 +103,6 @@ void Breakout::Init()
     Background->AddComponent<SpriteRenderer, const Texture2D&>(
         resourceManager.GetTexture("background")
     );
-
-    // PostProcessor
-    Effects = new PostProcessor(resourceManager.GetShader("postprocessing"), resolution.GetWidth(), resolution.GetHeight());
 
     // Load levels
     GameLevel one; 
@@ -209,6 +205,14 @@ void Breakout::Init()
 
     // State
     State = GAME_MENU;
+
+    //MSAA
+    ActivateMSAA(4);
+
+    //PostProcessEffect
+    postProcessData = new PostProcessData(resourceManager.GetShader("PostProcessing"));
+    ActivatePostProcessEffect();
+    UsePostProcessEffect(postProcessData->shader);
 }
 
 void Breakout::Terminate()
@@ -216,7 +220,7 @@ void Breakout::Terminate()
     delete Background;
     delete Player;
     delete Ball;
-    delete Effects;
+    delete postProcessData;
     SoundEngine->drop();
     Game::Terminate();
 }
@@ -279,7 +283,7 @@ void Breakout::ProcessInput()
     {
         if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
-            Effects->Chaos = false;
+            postProcessData->chaos = false;
             this->State = GAME_MENU;
         }
     }
@@ -298,7 +302,7 @@ void Breakout::Update()
     {
         ShakeTime -= Game::GetDeltaTime();
         if (ShakeTime <= 0.0f)
-            Effects->Shake = false;
+            postProcessData->shake = false;
     }
 
     // Lose live
@@ -325,17 +329,13 @@ void Breakout::Update()
         ResetLevel();
         ResetPlayer();
         ClearPowerUps();
-        Effects->Chaos = true;
+        postProcessData->chaos = true;
         State = GAME_WIN;
     }
 }
 
 void Breakout::Render()
 {
-    auto& textRenderer = Text2DRenderer::GetInstance();
-    // Begin rendering to postprocessing framebuffer
-    Effects->BeginRender();
-
     // Draw background
     Background->GetComponent<SpriteRenderer>()->Draw();
     // Draw level
@@ -352,11 +352,13 @@ void Breakout::Render()
     Ball->GetComponent<ParticleSystem>()->Draw();
     // Draw Player
     Ball->GetComponent<SpriteRenderer>()->Draw();
-    // End rendering to postprocessing framebuffer
-    Effects->EndRender();
-    // Render postprocessing quad
-    Effects->Render(glfwGetTime());
+    // Refresh the PostProcess Shader
+    postProcessData->RefreshShader(glfwGetTime());
+}
 
+void Breakout::LateRender()
+{
+    auto& textRenderer = Text2DRenderer::GetInstance();
     textRenderer.RenderText(liveText);
 
     if (this->State == GAME_MENU)
@@ -396,12 +398,12 @@ void ActivatePowerUp(PowerUpController& powerUp)
         break;
     case PowerUpType::CONFUSE:
         // only activate if chaos wasn't already active
-        if (!Effects->Chaos)
-            Effects->Confuse = true;
+        if (!postProcessData->chaos)
+            postProcessData->confuse = true;
         break;
     case PowerUpType::CHAOS:
-        if (!Effects->Confuse)
-            Effects->Chaos = true;
+        if (!postProcessData->confuse)
+            postProcessData->chaos = true;
         break;
     default:
         break;
@@ -488,7 +490,7 @@ void Breakout::DoCollisions()
                 else
                 {   // if block is solid, enable shake effect
                     ShakeTime = 0.05f;
-                    Effects->Shake = true;
+                    postProcessData->shake = true;
                     SoundEngine->play2D("Assets/Sounds/solid.wav", false);
                 }
                 // collision resolution
@@ -591,8 +593,8 @@ void Breakout::ResetPlayer()
     ballController->Reset(Player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
 
     // also disable all active powerups
-    Effects->Chaos = false;
-    Effects->Confuse = false;
+    postProcessData->chaos = false;
+    postProcessData->confuse = false;
     ballController->passThrough = false;
     ballController->sticky = false;
 
@@ -693,13 +695,13 @@ void Breakout::UpdatePowerUps()
                 case PowerUpType::CONFUSE:
                     if (!IsOtherPowerUpActive(this->PowerUps, PowerUpType::CONFUSE))
                     {
-                        Effects->Confuse = false;
+                        postProcessData->confuse = false;
                     }
                     break;
                 case PowerUpType::CHAOS:
                     if (!IsOtherPowerUpActive(this->PowerUps, PowerUpType::CHAOS))
                     {
-                        Effects->Chaos = false;
+                        postProcessData->chaos = false;
                     }
                     break;
                 default:

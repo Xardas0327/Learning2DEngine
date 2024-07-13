@@ -10,7 +10,7 @@ namespace Learning2DEngine
     {
         RenderManager::RenderManager() :
             window(nullptr), resolution(0, 0), clearColor(0.0f, 0.0f, 0.0f, 1.0f),
-            keyboardEventHandler(), framebufferSizeEventHandler(), 
+            keyboardEventHandler(), framebufferSizeEventHandler(),
             isBlendActive(false), blendFuncFactor(GL_ONE, GL_ZERO)
         {
 
@@ -83,6 +83,43 @@ namespace Learning2DEngine
         void RenderManager::SetClearColort(float r, float g, float b, float a)
         {
             clearColor = glm::vec4(r, g, b, a);
+        }
+
+        void RenderManager::EnableBlend()
+        {
+            if (!isBlendActive)
+            {
+                isBlendActive = true;
+                glEnable(GL_BLEND);
+            }
+        }
+
+        void RenderManager::DisableBlend()
+        {
+            if (isBlendActive)
+            {
+                isBlendActive = false;
+                glDisable(GL_BLEND);
+            }
+        }
+
+        void RenderManager::SetBlendFunc(unsigned int sourceFactor, unsigned int destinationFactor)
+        {
+            BlendFuncFactor newBlendFuncFactor(sourceFactor, destinationFactor);
+            if (blendFuncFactor != newBlendFuncFactor)
+            {
+                blendFuncFactor = newBlendFuncFactor;
+                glBlendFunc(blendFuncFactor.first, blendFuncFactor.second);
+            }
+        }
+
+        void RenderManager::SetBlendFunc(BlendFuncFactor blendFuncFactor)
+        {
+            if (this->blendFuncFactor != blendFuncFactor)
+            {
+                this->blendFuncFactor = blendFuncFactor;
+                glBlendFunc(this->blendFuncFactor.first, this->blendFuncFactor.second);
+            }
         }
 
         void RenderManager::CallbackUpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode)

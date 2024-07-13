@@ -155,7 +155,9 @@
     <ClCompile Include="BallParticleSettings.cpp" />
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="Learning2DEngine\Plugin\glad.c" />
+    <ClCompile Include="Learning2DEngine\Render\MSAA.cpp" />
     <ClCompile Include="Learning2DEngine\Render\ParticleSystem.cpp" />
+    <ClCompile Include="Learning2DEngine\Render\PostProcessEffect.cpp" />
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp" />
     <ClCompile Include="Learning2DEngine\Render\ShaderConstant.cpp" />
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp" />
@@ -166,7 +168,6 @@
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Text2DRenderer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="post_processor.cpp" />
     <ClCompile Include="GameLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -178,9 +179,11 @@
     <ClInclude Include="Learning2DEngine\Render\BasicParticleSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\Blend.h" />
     <ClInclude Include="Learning2DEngine\Render\IParticleSettings.h" />
+    <ClInclude Include="Learning2DEngine\Render\MSAA.h" />
     <ClInclude Include="Learning2DEngine\Render\Particle.h" />
     <ClInclude Include="Learning2DEngine\Render\ParticleSystem.h" />
     <ClInclude Include="Learning2DEngine\Render\ParticleSystemSettings.h" />
+    <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h" />
     <ClInclude Include="Learning2DEngine\Render\Renderer.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
@@ -202,7 +205,7 @@
     <ClInclude Include="Learning2DEngine\System\FreeTypeCharacter.h" />
     <ClInclude Include="Learning2DEngine\System\Text.h" />
     <ClInclude Include="Learning2DEngine\Render\Text2DRenderer.h" />
-    <ClInclude Include="post_processor.h" />
+    <ClInclude Include="PostProcessData.h" />
     <ClInclude Include="PowerUpController.h" />
     <ClInclude Include="PowerUpObject.h" />
     <ClInclude Include="PowerUpType.h" />
@@ -230,10 +233,12 @@
     <None Include="Assets\Levels\one.lvl" />
     <None Include="Assets\Levels\three.lvl" />
     <None Include="Assets\Levels\two.lvl" />
+    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.fs" />
+    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.vs" />
     <None Include="Learning2DEngine\Shader\Sprite.fs" />
     <None Include="Learning2DEngine\Shader\Sprite.vs" />
-    <None Include="Shaders\post_processing.frag" />
-    <None Include="Shaders\post_processing.vs" />
+    <None Include="Shaders\PostProcessing.fs" />
+    <None Include="Shaders\PostProcessing.vs" />
     <None Include="Learning2DEngine\Shader\Text2D.fs" />
     <None Include="Learning2DEngine\Shader\Text2D.vs" />
   </ItemGroup>

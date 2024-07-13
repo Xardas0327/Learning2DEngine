@@ -143,5 +143,25 @@ namespace Learning2DEngine
         {
             glUniformMatrix4fv(glGetUniformLocation(id, name), 1, false, glm::value_ptr(matrix));
         }
+
+        void Shader::SetArray1f(const char* name, float* value, unsigned int length)
+        {
+            glUniform1fv(glGetUniformLocation(id, name), length, value);
+        }
+
+        void Shader::SetArray1i(const char* name, int* value, unsigned int length)
+        {
+            glUniform1iv(glGetUniformLocation(id, name), length, value);
+        }
+
+        void Shader::SetArray2f(const char* name, float* value, unsigned int length)
+        {
+            glUniform2fv(glGetUniformLocation(id, name), length, value);
+        }
+
+        void Shader::SetArray2i(const char* name, int* value, unsigned int length)
+        {
+            glUniform2iv(glGetUniformLocation(id, name), length, value);
+        }
     }
 }
