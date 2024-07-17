@@ -3,9 +3,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "Learning2DEngine/System/Game.h"
-#include "Learning2DEngine/System/Text.h"
-#include "Learning2DEngine/System/GameObject.h"
+#include <Learning2DEngine/System/Game.h>
+#include <Learning2DEngine/System/Text.h>
+#include <Learning2DEngine/System/GameObject.h>
 
 #include "GameLevel.h"
 #include "PowerUpController.h"

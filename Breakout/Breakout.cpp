@@ -5,14 +5,13 @@
 #include <irrklang/irrKlang.h>
 #include <string>
 
-#include "Learning2DEngine/Render/RenderManager.h"
-#include "Learning2DEngine/Render/SpriteRenderer.h"
-#include "Learning2DEngine/Render/Text2DRenderer.h"
-#include "Learning2DEngine/Render/ParticleSystem.h"
-#include "Learning2DEngine/Render/BasicParticleSettings.h"
-#include "Learning2DEngine/System/ResourceManager.h"
-#include "Learning2DEngine/System/Random.h"
-#include "Learning2DEngine/System/GameObject.h"
+#include <Learning2DEngine/Render/RenderManager.h>
+#include <Learning2DEngine/Render/SpriteRenderer.h>
+#include <Learning2DEngine/Render/Text2DRenderer.h>
+#include <Learning2DEngine/Render/ParticleSystem.h>
+#include <Learning2DEngine/System/ResourceManager.h>
+#include <Learning2DEngine/System/Random.h>
+#include <Learning2DEngine/System/GameObject.h>
 
 #include "BallController.h"
 #include "BrickController.h"

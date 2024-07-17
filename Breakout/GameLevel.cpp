@@ -5,10 +5,10 @@
 
 #include <glm/glm.hpp>
 
-#include "Learning2DEngine/System/ResourceManager.h"
-#include "Learning2DEngine/System/GameObject.h"
-#include "Learning2DEngine/Render/SpriteRenderer.h"
-#include "Learning2DEngine/Render/Texture2D.h"
+#include <Learning2DEngine/System/ResourceManager.h>
+#include <Learning2DEngine/System/GameObject.h>
+#include <Learning2DEngine/Render/SpriteRenderer.h>
+#include <Learning2DEngine/Render/Texture2D.h>
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;

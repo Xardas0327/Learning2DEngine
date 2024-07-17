@@ -1,8 +1,8 @@
 #include "BallParticleSettings.h"
 
-#include "Learning2DEngine/System/Game.h"
-#include "Learning2DEngine/System/Log.h"
-#include "Learning2DEngine/System/Random.h"
+#include <Learning2DEngine/System/Game.h>
+#include <Learning2DEngine/System/Log.h>
+#include <Learning2DEngine/System/Random.h>
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;

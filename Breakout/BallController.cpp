@@ -1,7 +1,7 @@
 #include "BallController.h"
 
-#include "Learning2DEngine/System/Game.h"
-#include "Learning2DEngine/Render/RenderManager.h"
+#include <Learning2DEngine/System/Game.h>
+#include <Learning2DEngine/Render/RenderManager.h>
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
