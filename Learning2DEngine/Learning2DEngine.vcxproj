@@ -27,26 +27,26 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -99,6 +99,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -117,6 +120,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -131,6 +137,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -149,12 +158,12 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;freetype.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BallController.cpp" />
-    <ClCompile Include="BallParticleSettings.cpp" />
-    <ClCompile Include="Breakout.cpp" />
-    <ClCompile Include="Learning2DEngine\Plugin\glad.c" />
+    <ClCompile Include="Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\MSAA.cpp" />
     <ClCompile Include="Learning2DEngine\Render\ParticleSystem.cpp" />
     <ClCompile Include="Learning2DEngine\Render\PostProcessEffect.cpp" />
@@ -167,15 +176,8 @@
     <ClCompile Include="Learning2DEngine\System\Random.cpp" />
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Text2DRenderer.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="GameLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BallController.h" />
-    <ClInclude Include="BallParticleSettings.h" />
-    <ClInclude Include="Breakout.h" />
-    <ClInclude Include="BrickController.h" />
-    <ClInclude Include="GameLevel.h" />
     <ClInclude Include="Learning2DEngine\Render\BasicParticleSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\Blend.h" />
     <ClInclude Include="Learning2DEngine\Render\IParticleSettings.h" />
@@ -205,49 +207,14 @@
     <ClInclude Include="Learning2DEngine\System\FreeTypeCharacter.h" />
     <ClInclude Include="Learning2DEngine\System\Text.h" />
     <ClInclude Include="Learning2DEngine\Render\Text2DRenderer.h" />
-    <ClInclude Include="PostProcessData.h" />
-    <ClInclude Include="PowerUpController.h" />
-    <ClInclude Include="PowerUpObject.h" />
-    <ClInclude Include="PowerUpType.h" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="Assets\Fonts\arial.ttf" />
-    <Font Include="Assets\Fonts\OCRAEXT.TTF" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\Images\awesomeface.png" />
-    <Image Include="Assets\Images\background.jpg" />
-    <Image Include="Assets\Images\block.png" />
-    <Image Include="Assets\Images\block_solid.png" />
-    <Image Include="Assets\Images\paddle.png" />
-    <Image Include="Assets\Images\particle.png" />
-    <Image Include="Assets\Images\powerup_chaos.png" />
-    <Image Include="Assets\Images\powerup_confuse.png" />
-    <Image Include="Assets\Images\powerup_increase.png" />
-    <Image Include="Assets\Images\powerup_passthrough.png" />
-    <Image Include="Assets\Images\powerup_speed.png" />
-    <Image Include="Assets\Images\powerup_sticky.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Levels\four.lvl" />
-    <None Include="Assets\Levels\one.lvl" />
-    <None Include="Assets\Levels\three.lvl" />
-    <None Include="Assets\Levels\two.lvl" />
     <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.fs" />
     <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.vs" />
     <None Include="Learning2DEngine\Shader\Sprite.fs" />
     <None Include="Learning2DEngine\Shader\Sprite.vs" />
-    <None Include="Shaders\PostProcessing.fs" />
-    <None Include="Shaders\PostProcessing.vs" />
     <None Include="Learning2DEngine\Shader\Text2D.fs" />
     <None Include="Learning2DEngine\Shader\Text2D.vs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Assets\Sounds\bleep.mp3" />
-    <Media Include="Assets\Sounds\bleep.wav" />
-    <Media Include="Assets\Sounds\breakout.mp3" />
-    <Media Include="Assets\Sounds\powerup.wav" />
-    <Media Include="Assets\Sounds\solid.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
