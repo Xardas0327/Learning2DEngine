@@ -80,7 +80,7 @@ namespace Learning2DEngine
 			auto& resourceManager = System::ResourceManager::GetInstance();
 			defaultShader = resourceManager.IsShaderExist(ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME)
 				? resourceManager.GetShader(ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME)
-				: resourceManager.LoadShader(
+				: resourceManager.LoadShaderFromFile(
 					ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME,
 					ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_VERTEX_SHADER_PATH,
 					ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_FRAGMENT_SHADER_PATH);

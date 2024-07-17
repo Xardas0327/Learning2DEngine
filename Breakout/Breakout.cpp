@@ -56,7 +56,7 @@ void Breakout::Init()
     const int middleHeight = resolution.GetHeight() / 2;
 
     // Load shaders
-    resourceManager.LoadShader(std::string("PostProcessing"), "Shaders/PostProcessing.vs", "Shaders/PostProcessing.fs");
+    resourceManager.LoadShaderFromFile(std::string("PostProcessing"), "Shaders/PostProcessing.vs", "Shaders/PostProcessing.fs");
 
     // Configure shaders
     Game::cameraProjection = glm::ortho(
@@ -79,18 +79,18 @@ void Breakout::Init()
     alphaSettings.imageFormat = GL_RGBA;
     Texture2DSettings nonAlphaSettings;
 
-    resourceManager.LoadTexture("background", "Assets/Images/background.jpg", nonAlphaSettings);
-    resourceManager.LoadTexture("face", "Assets/Images/awesomeface.png", alphaSettings);
-    resourceManager.LoadTexture("block", "Assets/Images/block.png", nonAlphaSettings);
-    resourceManager.LoadTexture("block_solid", "Assets/Images/block_solid.png", nonAlphaSettings);
-    resourceManager.LoadTexture("paddle", "Assets/Images/paddle.png", alphaSettings);
-    resourceManager.LoadTexture("particle", "Assets/Images/particle.png", alphaSettings);
-    resourceManager.LoadTexture("powerup_speed", "Assets/Images/powerup_speed.png", alphaSettings);
-    resourceManager.LoadTexture("powerup_sticky", "Assets/Images/powerup_sticky.png", alphaSettings);
-    resourceManager.LoadTexture("powerup_increase", "Assets/Images/powerup_increase.png", alphaSettings);
-    resourceManager.LoadTexture("powerup_confuse", "Assets/Images/powerup_confuse.png", alphaSettings);
-    resourceManager.LoadTexture("powerup_chaos", "Assets/Images/powerup_chaos.png", alphaSettings);
-    resourceManager.LoadTexture("powerup_passthrough", "Assets/Images/powerup_passthrough.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("background", "Assets/Images/background.jpg", nonAlphaSettings);
+    resourceManager.LoadTextureFromFile("face", "Assets/Images/awesomeface.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("block", "Assets/Images/block.png", nonAlphaSettings);
+    resourceManager.LoadTextureFromFile("block_solid", "Assets/Images/block_solid.png", nonAlphaSettings);
+    resourceManager.LoadTextureFromFile("paddle", "Assets/Images/paddle.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("particle", "Assets/Images/particle.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("powerup_speed", "Assets/Images/powerup_speed.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("powerup_sticky", "Assets/Images/powerup_sticky.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("powerup_increase", "Assets/Images/powerup_increase.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("powerup_confuse", "Assets/Images/powerup_confuse.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("powerup_chaos", "Assets/Images/powerup_chaos.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("powerup_passthrough", "Assets/Images/powerup_passthrough.png", alphaSettings);
 
     // Background
     Background = new GameObject(

@@ -28,7 +28,7 @@ namespace Learning2DEngine
 
             textShader = resourceManager.IsShaderExist(ShaderConstant::TEXT2D_SHADER_NAME)
                 ? resourceManager.GetShader(ShaderConstant::TEXT2D_SHADER_NAME)
-                : resourceManager.LoadShader(
+                : resourceManager.LoadShaderFromFile(
                     ShaderConstant::TEXT2D_SHADER_NAME,
                     ShaderConstant::TEXT2D_VERTEX_SHADER_PATH,
                     ShaderConstant::TEXT2D_FRAGMENT_SHADER_PATH);

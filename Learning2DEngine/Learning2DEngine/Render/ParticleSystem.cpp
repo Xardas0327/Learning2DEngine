@@ -72,7 +72,7 @@ namespace Learning2DEngine
 
 			ParticleSystem::shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
 				? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
-				: resourceManager.LoadShader(
+				: resourceManager.LoadShaderFromFile(
 					ShaderConstant::SPRITE_SHADER_NAME,
 					ShaderConstant::SPRITE_VERTEX_SHADER_PATH,
 					ShaderConstant::SPRITE_FRAGMENT_SHADER_PATH);
