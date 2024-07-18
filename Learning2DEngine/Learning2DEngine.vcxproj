@@ -208,14 +208,6 @@
     <ClInclude Include="Learning2DEngine\System\Text.h" />
     <ClInclude Include="Learning2DEngine\Render\Text2DRenderer.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.fs" />
-    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.vs" />
-    <None Include="Learning2DEngine\Shader\Sprite.fs" />
-    <None Include="Learning2DEngine\Shader\Sprite.vs" />
-    <None Include="Learning2DEngine\Shader\Text2D.fs" />
-    <None Include="Learning2DEngine\Shader\Text2D.vs" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

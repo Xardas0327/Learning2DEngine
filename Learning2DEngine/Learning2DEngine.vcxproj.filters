@@ -144,12 +144,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Learning2DEngine\Shader\Text2D.fs" />
-    <None Include="Learning2DEngine\Shader\Text2D.vs" />
-    <None Include="Learning2DEngine\Shader\Sprite.fs" />
-    <None Include="Learning2DEngine\Shader\Sprite.vs" />
-    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.fs" />
-    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.vs" />
-  </ItemGroup>
 </Project>
