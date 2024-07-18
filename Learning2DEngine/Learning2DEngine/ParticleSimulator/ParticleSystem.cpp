@@ -3,16 +3,17 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "BasicParticleSettings.h"
-#include "RenderManager.h"
-#include "ShaderConstant.h"
+#include "../Render/RenderManager.h"
+#include "../Render/ShaderConstant.h"
 #include "../System/ResourceManager.h"
 #include "../System/Game.h"
 
 namespace Learning2DEngine
 {
 	using namespace System;
+	using namespace Render;
 
-	namespace Render
+	namespace ParticleSimulator
 	{
         int ParticleSystem::referenceNumber = 0;
         Shader ParticleSystem::shader;
@@ -24,7 +25,7 @@ namespace Learning2DEngine
 		ParticleSystem::ParticleSystem(
 			GameObject* gameObject,
 			unsigned int particleAmount,
-			IParticleSettings* particleSettings)
+			ParticleSettings* particleSettings)
 			: Component(gameObject), Renderer(gameObject), isInit(false),
 			isRunning(false), particleAmount(particleAmount), systemSettings(),
 			texture(nullptr), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
@@ -38,7 +39,7 @@ namespace Learning2DEngine
 			unsigned int particleAmount,
 			const Texture2D& texture,
 			const ParticleSystemSettings& systemSettings,
-			IParticleSettings* particleSettings)
+			ParticleSettings* particleSettings)
 			: Component(gameObject), Renderer(gameObject), isInit(false),
 			isRunning(false), particleAmount(particleAmount), systemSettings(systemSettings),
 			delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
@@ -303,6 +304,15 @@ namespace Learning2DEngine
 			//It has to have something. So this is the default.
 			lastUsedParticleIndex = 0;
 			return 0;
+		}
+
+		void ParticleSystem::ClearTexture()
+		{
+			if (IsUseTexture())
+			{
+				delete texture;
+				texture = nullptr;
+			}
 		}
 	}
 }

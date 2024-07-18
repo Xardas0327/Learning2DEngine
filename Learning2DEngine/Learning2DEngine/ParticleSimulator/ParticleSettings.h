@@ -5,11 +5,11 @@
 
 namespace Learning2DEngine
 {
-    namespace Render
+    namespace ParticleSimulator
     {
-        struct IParticleSettings
+        struct ParticleSettings
         {
-            virtual ~IParticleSettings() {};
+            virtual ~ParticleSettings() {};
 
             //It will run in the ParticleSystem::Start()
             virtual void Init(const System::GameObject& gameObject) {};

@@ -6,10 +6,10 @@
 
 namespace Learning2DEngine
 {
-	namespace Render
+	namespace ParticleSimulator
 	{
         struct Particle {
-            Learning2DEngine::System::Transform transform;
+            System::Transform transform;
             glm::vec2 velocity;
             glm::vec4 color;
             //In seconds. The negative number is same as 0.

@@ -2,16 +2,16 @@
 
 #include <glm/glm.hpp>
 
-#include "IParticleSettings.h"
+#include "ParticleSettings.h"
 #include "../System/Transform.h"
 #include "../System/Random.h"
 #include "../System/Game.h"
 
 namespace Learning2DEngine
 {
-	namespace Render
+	namespace ParticleSimulator
 	{
-		struct BasicParticleSettings : public virtual IParticleSettings
+		struct BasicParticleSettings : public virtual ParticleSettings
 		{
 			glm::vec2 fixPositionOffset;
 			/// <summary>

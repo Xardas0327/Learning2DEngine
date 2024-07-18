@@ -2,16 +2,16 @@
 
 #include <glad/glad.h>
 
-#include "Blend.h"
+#include "../Render/Blend.h"
 
 namespace Learning2DEngine
 {
-	namespace Render
+	namespace ParticleSimulator
 	{
 		struct ParticleSystemSettings
 		{
 			bool isUseBlend;
-			BlendFuncFactor blendFuncFactor;
+			Render::BlendFuncFactor blendFuncFactor;
 			/// <summary>
 			/// In seconds. The negative number is same as 0.
 			/// If it is 0, it will spawn particles in every frame, which is not recommended.
@@ -23,7 +23,7 @@ namespace Learning2DEngine
 
 			ParticleSystemSettings(
 				bool isUseBlend = false,
-				BlendFuncFactor blendFuncFactor = BlendFuncFactor(GL_ONE, GL_ZERO),
+				Render::BlendFuncFactor blendFuncFactor = Render::BlendFuncFactor(GL_ONE, GL_ZERO),
 				float spawnTime = 1.0f, unsigned int newParticlesPerSpawn = 1, float delayBeforeStart = 0.0f)
 				: isUseBlend(isUseBlend), blendFuncFactor(blendFuncFactor), spawnTime(spawnTime),
 				newParticlesPerSpawn(newParticlesPerSpawn), delayBeforeStart(delayBeforeStart)

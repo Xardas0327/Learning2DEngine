@@ -3,7 +3,6 @@
 
 using namespace Learning2DEngine::Render;
 
-
 const Resolution resolution(800, 600);
 Breakout breakoutGame;
 

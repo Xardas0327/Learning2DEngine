@@ -42,7 +42,7 @@
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Render\ParticleSystem.cpp">
+    <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\ShaderConstant.cpp">
@@ -116,22 +116,22 @@
     <ClInclude Include="Learning2DEngine\Render\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\Particle.h">
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\ParticleSystem.h">
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\Blend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\IParticleSettings.h">
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\ParticleSystemSettings.h">
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\BasicParticleSettings.h">
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\BasicParticleSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h">

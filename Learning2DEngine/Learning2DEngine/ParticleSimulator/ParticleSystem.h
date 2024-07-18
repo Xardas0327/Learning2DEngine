@@ -1,23 +1,23 @@
 #pragma once
 
-#include "Renderer.h"
-#include "Particle.h"
-#include "Shader.h"
-#include "Texture2D.h"
-#include "ParticleSystemSettings.h"
-#include "IParticleSettings.h"
+#include "../Render/Renderer.h"
+#include "../Render/Shader.h"
+#include "../Render/Texture2D.h"
 #include "../System/GameObject.h"
+#include "ParticleSystemSettings.h"
+#include "ParticleSettings.h"
+#include "Particle.h"
 
 namespace Learning2DEngine
 {
-	namespace Render
+	namespace ParticleSimulator
 	{
 		/// <summary>
 		/// ParticleSystem::Update() update the particles.
 		/// This should be called in the Game::Update() only ones.
 		/// It and ParticleSystem::Draw() work only, when the ParticleSystem::IsRunning() is true.
 		/// </summary>
-		class ParticleSystem : public virtual Renderer
+		class ParticleSystem : public virtual Render::Renderer
 		{
 			friend class System::GameObject;
 		protected:
@@ -35,23 +35,23 @@ namespace Learning2DEngine
 			/// it will be destroyed, if nothing use it.
 			/// </summary>
 			static int referenceNumber;
-			static Shader shader;
+			static Render::Shader shader;
 			static unsigned int vao;
 			static unsigned int vbo;
 			static unsigned int ebo;
 
-			IParticleSettings* particleSettings;
+			ParticleSettings* particleSettings;
 
 			ParticleSystem(
 				System::GameObject* gameObject,
 				unsigned int particleAmount,
-				IParticleSettings* particleSettings = nullptr);
+				ParticleSettings* particleSettings = nullptr);
 			ParticleSystem(
 				System::GameObject* gameObject,
 				unsigned int particleAmount,
-				const Texture2D& texture,
+				const Render::Texture2D& texture,
 				const ParticleSystemSettings& systemSettings,
-				IParticleSettings* particleSettings = nullptr);
+				ParticleSettings* particleSettings = nullptr);
 			void InitShader();
 			void InitVao();
 			void UpdateActiveParticles();
@@ -60,7 +60,7 @@ namespace Learning2DEngine
 			unsigned int GetUnusedParticleIndex();
 		public:
 			ParticleSystemSettings systemSettings;
-			Texture2D* texture;
+			Render::Texture2D* texture;
 
 			~ParticleSystem();
 
@@ -83,7 +83,7 @@ namespace Learning2DEngine
 				return isRunning;
 			}
 
-			inline IParticleSettings* const GetParticleSettings()
+			inline ParticleSettings* const GetParticleSettings()
 			{
 				return particleSettings;
 			}
@@ -93,14 +93,7 @@ namespace Learning2DEngine
 				return texture != nullptr;
 			}
 
-			inline void ClearTexture()
-			{
-				if (IsUseTexture())
-				{
-					delete texture;
-					texture = nullptr;
-				}
-			}
+			void ClearTexture();
 		};
 	}
 }
