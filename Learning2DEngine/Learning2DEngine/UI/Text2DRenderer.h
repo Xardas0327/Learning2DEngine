@@ -7,34 +7,34 @@
 #include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
-#include "../System/FreeTypeCharacter.h"
-#include "../System/Text.h"
-#include "Shader.h"
-#include "Resolution.h"
+#include "../Render/Shader.h"
+#include "../Render/Resolution.h"
+#include "FreeTypeCharacter.h"
+#include "Text.h"
 
 namespace Learning2DEngine
 {
-    namespace Render
+    namespace UI
     {
 #define FONT_NUMBER 128
 
         class Text2DRenderer : public virtual System::Singleton<Text2DRenderer>
         {
             friend class System::Singleton<Text2DRenderer>;
-            typedef std::map<char, System::FreeTypeCharacter> CharacterMap;
+            typedef std::map<char, FreeTypeCharacter> CharacterMap;
         private:
             unsigned int vao;
             unsigned int vbo;
             unsigned int ebo;
-            std::map<System::FontSizePair, CharacterMap> characters;
-            Shader textShader;
+            std::map<FontSizePair, CharacterMap> characters;
+            Render::Shader textShader;
 
             Text2DRenderer();
 
             // Callbacks
 
-            static void CallbackRefreshWindowResolution(Resolution resolution);
-            void RefreshWindowResolution(Resolution resolution);
+            static void CallbackRefreshWindowResolution(Render::Resolution resolution);
+            void RefreshWindowResolution(Render::Resolution resolution);
         public:
             /// <summary>
             /// It should be inited after RenderManager.
@@ -53,11 +53,11 @@ namespace Learning2DEngine
             /// <summary>
             /// It loads FONT_NUMBER characters from the file begining
             /// </summary>
-            void Load(const System::FontSizePair& fontSizePair);
+            void Load(const FontSizePair& fontSizePair);
             void Unload(const std::string& font, unsigned int fontSize);
-            void Unload(const System::FontSizePair& fontSizePair);
+            void Unload(const FontSizePair& fontSizePair);
             void Clear();
-            void RenderText(const System::Text& text);
+            void RenderText(const Text& text);
         };
     }
 }

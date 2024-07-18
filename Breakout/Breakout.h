@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 
 #include <Learning2DEngine/System/Game.h>
-#include <Learning2DEngine/System/Text.h>
 #include <Learning2DEngine/System/GameObject.h>
+#include <Learning2DEngine/UI/Text.h>
 
 #include "GameLevel.h"
 #include "PowerUpController.h"
@@ -40,11 +40,11 @@ private:
     unsigned int Level;
     unsigned int Lives;
 
-    Learning2DEngine::System::Text  liveText;
-    Learning2DEngine::System::Text  startText;
-    Learning2DEngine::System::Text  levelSelectorText;
-    Learning2DEngine::System::Text  winText;
-    Learning2DEngine::System::Text  retryText;
+    Learning2DEngine::UI::Text  liveText;
+    Learning2DEngine::UI::Text  startText;
+    Learning2DEngine::UI::Text  levelSelectorText;
+    Learning2DEngine::UI::Text  winText;
+    Learning2DEngine::UI::Text  retryText;
 protected:
     void Update() override;
     void Render() override;
