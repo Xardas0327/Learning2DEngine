@@ -30,7 +30,7 @@
     <ClCompile Include="Plugins\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Render\Text2DRenderer.cpp">
+    <ClCompile Include="Learning2DEngine\UI\Text2DRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\System\Game.cpp">
@@ -42,7 +42,7 @@
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Render\ParticleSystem.cpp">
+    <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\ShaderConstant.cpp">
@@ -74,13 +74,13 @@
     <ClInclude Include="Learning2DEngine\System\ResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\System\FreeTypeCharacter.h">
+    <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\Text2DRenderer.h">
+    <ClInclude Include="Learning2DEngine\UI\Text2DRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\System\Text.h">
+    <ClInclude Include="Learning2DEngine\UI\Text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\System\Game.h">
@@ -92,7 +92,7 @@
     <ClInclude Include="Learning2DEngine\Render\Resolution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\System\Log.h">
+    <ClInclude Include="Learning2DEngine\DebugTool\Log.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\System\Random.h">
@@ -116,22 +116,22 @@
     <ClInclude Include="Learning2DEngine\Render\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\Particle.h">
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\ParticleSystem.h">
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\Blend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\IParticleSettings.h">
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\ParticleSystemSettings.h">
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\BasicParticleSettings.h">
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\BasicParticleSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h">

@@ -1,10 +1,10 @@
 #include "BallParticleSettings.h"
 
 #include <Learning2DEngine/System/Game.h>
-#include <Learning2DEngine/System/Log.h>
+#include <Learning2DEngine/DebugTool/Log.h>
 #include <Learning2DEngine/System/Random.h>
 
-using namespace Learning2DEngine::Render;
+using namespace Learning2DEngine::ParticleSimulator;
 using namespace Learning2DEngine::System;
 
 BallParticleSettings::BallParticleSettings(glm::vec2 positionOffset, glm::vec2 scale, float lifeTime, float speed)
@@ -12,7 +12,7 @@ BallParticleSettings::BallParticleSettings(glm::vec2 positionOffset, glm::vec2 s
 {
 
 }
-void BallParticleSettings::Init(const Learning2DEngine::System::GameObject& gameObject)
+void BallParticleSettings::Init(const GameObject& gameObject)
 {
 	ballController = gameObject.GetComponent<BallController>();
 
@@ -21,7 +21,7 @@ void BallParticleSettings::Init(const Learning2DEngine::System::GameObject& game
 		LOG_ERROR("BallParticleSettings: BallController is missing.");
 	}
 }
-void BallParticleSettings::SpawnParticle(Learning2DEngine::Render::Particle& particle, const Learning2DEngine::System::GameObject& gameObject)
+void BallParticleSettings::SpawnParticle(Particle& particle, const GameObject& gameObject)
 {
 	float random = Random::GetNumber(-5, 6);
 	float rColor = Random::GetNumber(0.5f, 0.6f);
@@ -33,7 +33,7 @@ void BallParticleSettings::SpawnParticle(Learning2DEngine::Render::Particle& par
 	particle.speed = speed;
 }
 
-void BallParticleSettings::UpdateParticle(Learning2DEngine::Render::Particle& particle, const Learning2DEngine::System::GameObject& gameObject)
+void BallParticleSettings::UpdateParticle(Particle& particle, const GameObject& gameObject)
 {
 	particle.transform.position -= particle.velocity * particle.speed * Game::GetDeltaTime();
 	particle.color.a -= Game::GetDeltaTime() * 2.5f;

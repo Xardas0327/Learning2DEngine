@@ -5,15 +5,16 @@
 #include FT_FREETYPE_H
 
 #include "../System/ResourceManager.h"
-#include "../System/Log.h"
-#include "RenderManager.h"
-#include "ShaderConstant.h"
+#include "../DebugTool/Log.h"
+#include "../Render/RenderManager.h"
+#include "../Render/ShaderConstant.h"
 
 using namespace Learning2DEngine::System;
+using namespace Learning2DEngine::Render;
 
 namespace Learning2DEngine
 {
-    namespace Render
+    namespace UI
     {
         Text2DRenderer::Text2DRenderer() :
             vao(0), vbo(0), ebo(0), characters(), textShader()

@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-#include "../System/Log.h"
+#include "../DebugTool/Log.h"
 #include "../System/ResourceManager.h"
 #include "RenderManager.h"
 #include "ShaderConstant.h"

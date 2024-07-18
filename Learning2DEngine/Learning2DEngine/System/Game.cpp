@@ -3,13 +3,14 @@
 #include <string>
 
 #include "../Render/RenderManager.h"
-#include "../Render/Text2DRenderer.h"
+#include "../UI/Text2DRenderer.h"
 #include "ResourceManager.h"
 #include "Log.h"
 
 namespace Learning2DEngine
 {
     using namespace Render;
+    using namespace UI;
 
     namespace System
     {

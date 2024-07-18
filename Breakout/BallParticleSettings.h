@@ -2,11 +2,11 @@
 
 #include <glm/glm.hpp>
 
-#include <Learning2DEngine/Render/IParticleSettings.h>
+#include <Learning2DEngine/ParticleSimulator/ParticleSettings.h>
 
 #include "BallController.h"
 
-class BallParticleSettings : public virtual Learning2DEngine::Render::IParticleSettings
+class BallParticleSettings : public virtual Learning2DEngine::ParticleSimulator::ParticleSettings
 {
 private:
 	const BallController* ballController;
@@ -18,6 +18,6 @@ public:
 
 	BallParticleSettings(glm::vec2 positionOffset = glm::vec2(0.0f), glm::vec2 scale = glm::vec2(1.0f), float lifeTime = 1.0f, float speed = 1.0f);
 	void Init(const  Learning2DEngine::System::GameObject& gameObject) override;
-	void SpawnParticle(Learning2DEngine::Render::Particle& particle, const Learning2DEngine::System::GameObject& gameObject) override;
-	void UpdateParticle(Learning2DEngine::Render::Particle& particle, const Learning2DEngine::System::GameObject& gameObject) override;
+	void SpawnParticle(Learning2DEngine::ParticleSimulator::Particle& particle, const Learning2DEngine::System::GameObject& gameObject) override;
+	void UpdateParticle(Learning2DEngine::ParticleSimulator::Particle& particle, const Learning2DEngine::System::GameObject& gameObject) override;
 };

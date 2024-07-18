@@ -7,11 +7,11 @@
 
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Render/SpriteRenderer.h>
-#include <Learning2DEngine/Render/Text2DRenderer.h>
-#include <Learning2DEngine/Render/ParticleSystem.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/System/GameObject.h>
+#include <Learning2DEngine/UI/Text2DRenderer.h>
+#include <Learning2DEngine/ParticleSimulator/ParticleSystem.h>
 
 #include "BallController.h"
 #include "BrickController.h"
@@ -23,6 +23,8 @@
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
+using namespace Learning2DEngine::UI;
+using namespace Learning2DEngine::ParticleSimulator;
 using namespace irrklang;
 
 // Game-related State data

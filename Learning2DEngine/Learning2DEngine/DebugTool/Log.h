@@ -5,16 +5,16 @@
 
 namespace Learning2DEngine
 {
-	namespace System
+	namespace DebugTool
 	{
 #define LOG_WARNING_COLOR "\033[33m"
 #define LOG_ERROR_COLOR "\033[31m"
 #define LOG_CLEAR_COLOR "\033[0m"
 
 #if _DEBUG || LEARNING2DENGINE_DEBUG
-#define LOG_INFO(message) Learning2DEngine::System::Log::Info(message,__FILE__, __LINE__)
-#define LOG_WARNING(message) Learning2DEngine::System::Log::Warning(message,__FILE__, __LINE__)
-#define LOG_ERROR(message) Learning2DEngine::System::Log::Error(message,__FILE__, __LINE__)
+#define LOG_INFO(message) Learning2DEngine::DebugTool::Log::Info(message,__FILE__, __LINE__)
+#define LOG_WARNING(message) Learning2DEngine::DebugTool::Log::Warning(message,__FILE__, __LINE__)
+#define LOG_ERROR(message) Learning2DEngine::DebugTool::Log::Error(message,__FILE__, __LINE__)
 #else
 #define LOG_INFO(message)
 #define LOG_WARNING(message)
