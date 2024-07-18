@@ -1,6 +1,6 @@
 #include "RenderManager.h"
 
-#include "../System/Log.h"
+#include "../Debug/Log.h"
 
 namespace Learning2DEngine
 {

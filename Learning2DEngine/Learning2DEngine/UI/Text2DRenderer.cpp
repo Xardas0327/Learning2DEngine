@@ -5,7 +5,7 @@
 #include FT_FREETYPE_H
 
 #include "../System/ResourceManager.h"
-#include "../System/Log.h"
+#include "../Debug/Log.h"
 #include "../Render/RenderManager.h"
 #include "../Render/ShaderConstant.h"
 

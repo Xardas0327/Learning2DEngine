@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "Transform.h"
-#include "Log.h"
 #include "Component.h"
 #include "../Render/Renderer.h"
 
