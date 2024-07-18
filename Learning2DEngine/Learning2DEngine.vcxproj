@@ -194,7 +194,7 @@
     <ClInclude Include="Learning2DEngine\System\Game.h" />
     <ClInclude Include="Learning2DEngine\System\GameObject.h" />
     <ClInclude Include="Learning2DEngine\System\InputStatus.h" />
-    <ClInclude Include="Learning2DEngine\Debug\Log.h" />
+    <ClInclude Include="Learning2DEngine\DebugTool\Log.h" />
     <ClInclude Include="Learning2DEngine\System\Random.h" />
     <ClInclude Include="Learning2DEngine\System\ResourceManager.h" />
     <ClInclude Include="Learning2DEngine\Render\Shader.h" />

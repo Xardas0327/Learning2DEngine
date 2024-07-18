@@ -2,7 +2,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include "../Debug/Log.h"
+#include "../DebugTool/Log.h"
 
 namespace Learning2DEngine
 {

@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 #include "RenderManager.h"
-#include "../Debug/Log.h"
+#include "../DebugTool/Log.h"
 
 namespace Learning2DEngine
 {
