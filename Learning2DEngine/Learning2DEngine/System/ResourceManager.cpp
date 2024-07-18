@@ -20,7 +20,7 @@ namespace Learning2DEngine
         {
         }
 
-        Shader ResourceManager::LoadShaderFromFile(const char* vertexFile, const char* fragmentFile, const char* geometryFile)
+        Shader ResourceManager::LoadShaderFromFile(const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath)
         {
             Shader shader;
 
@@ -30,22 +30,22 @@ namespace Learning2DEngine
 
             //It can show all file errors.
             bool isFine = true;
-            isFine = LoadShaderFile(vertexFile, vertexSource) && isFine;
-            isFine = LoadShaderFile(fragmentFile, fragmentSource) && isFine;
-            if (geometryFile != nullptr)
+            isFine = LoadShaderFile(vertexFilePath, vertexSource) && isFine;
+            isFine = LoadShaderFile(fragmentFilePath, fragmentSource) && isFine;
+            if (geometryFilePath != nullptr)
             {
-                isFine = LoadShaderFile(geometryFile, geometrySource) && isFine;
+                isFine = LoadShaderFile(geometryFilePath, geometrySource) && isFine;
             }
 
             if (isFine)
             {
-                shader.Create(vertexSource.c_str(), fragmentSource.c_str(), geometryFile != nullptr ? geometrySource.c_str() : nullptr);
+                shader.Create(vertexSource.c_str(), fragmentSource.c_str(), geometryFilePath != nullptr ? geometrySource.c_str() : nullptr);
             }
 
             return shader;
         }
 
-        bool ResourceManager::LoadShaderFile(const char* file, std::string& outSource)
+        bool ResourceManager::LoadShaderFile(const char* filePath, std::string& outSource)
         {
             std::ifstream shaderFile;
             shaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -53,7 +53,7 @@ namespace Learning2DEngine
             stream.exceptions(std::ifstream::failbit | std::ifstream::badbit);
             try
             {
-                shaderFile.open(file);
+                shaderFile.open(filePath);
                 stream << shaderFile.rdbuf();
                 shaderFile.close();
             }
@@ -62,7 +62,7 @@ namespace Learning2DEngine
                 if (shaderFile.is_open())
                     shaderFile.close();
 
-                LOG_ERROR(std::string("SHADER: Failed to read shader file.\n File: ") + file + "\n Message: " + e.what());
+                LOG_ERROR(std::string("SHADER: Failed to read shader file.\n File: ") + filePath + "\n Message: " + e.what());
                 return false;
             }
 
@@ -70,9 +70,25 @@ namespace Learning2DEngine
             return true;
         }
 
-        Shader ResourceManager::LoadShaderFromFile(const std::string& name, const char* vertexFile, const char* fragmentFile, const char* geometryFile)
+        Shader ResourceManager::LoadShaderFromFile(
+            const std::string& name, const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath)
         {
-            shaders[name] = LoadShaderFromFile(vertexFile, fragmentFile, geometryFile);
+            shaders[name] = LoadShaderFromFile(vertexFilePath, fragmentFilePath, geometryFilePath);
+            return shaders[name];
+        }
+
+        Shader ResourceManager::LoadShader(const char* vertexText, const char* fragmentText, const char* geometryText)
+        {
+            Shader shader;
+            shader.Create(vertexText, fragmentText, geometryText != nullptr ? geometryText : nullptr);
+
+            return shader;
+        }
+
+        Shader ResourceManager::LoadShader(
+            const std::string& name, const char* vertexText, const char* fragmentText, const char* geometryText)
+        {
+            shaders[name] = LoadShader(vertexText, fragmentText, geometryText);
             return shaders[name];
         }
 
@@ -92,20 +108,20 @@ namespace Learning2DEngine
             shaders.erase(name);
         }
 
-        Texture2D ResourceManager::LoadTextureFromFile(const char* file, const Texture2DSettings& settings)
+        Texture2D ResourceManager::LoadTextureFromFile(const char* filePath, const Texture2DSettings& settings)
         {
             Texture2D texture(settings);
 
             int width, height, nrChannels;
-            unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
+            unsigned char* data = stbi_load(filePath, &width, &height, &nrChannels, 0);
             texture.Create(width, height, data);
             stbi_image_free(data);
             return texture;
         }
 
-        Texture2D ResourceManager::LoadTextureFromFile(const std::string& name, const char* file, const Texture2DSettings& settings)
+        Texture2D ResourceManager::LoadTextureFromFile(const std::string& name, const char* filePath, const Texture2DSettings& settings)
         {
-            textures[name] = LoadTextureFromFile(file, settings);
+            textures[name] = LoadTextureFromFile(filePath, settings);
             return textures[name];
         }
 
@@ -127,7 +143,7 @@ namespace Learning2DEngine
 
         void ResourceManager::Clear()
         {	
-            for (auto shader : shaders)
+            for (auto& shader : shaders)
             {
                 shader.second.Destroy();
             }
