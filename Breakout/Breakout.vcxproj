@@ -153,11 +153,10 @@
     <None Include="Assets\Levels\one.lvl" />
     <None Include="Assets\Levels\three.lvl" />
     <None Include="Assets\Levels\two.lvl" />
-    <None Include="Shaders\PostProcessing.fs" />
-    <None Include="Shaders\PostProcessing.vs" />
+    <None Include="Assets\Shaders\PostProcessing.fs" />
+    <None Include="Assets\Shaders\PostProcessing.vs" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="Assets\Fonts\arial.ttf" />
     <Font Include="Assets\Fonts\OCRAEXT.TTF" />
   </ItemGroup>
   <ItemGroup>

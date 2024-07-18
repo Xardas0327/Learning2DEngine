@@ -55,7 +55,7 @@ void Breakout::Init()
     const int middleHeight = resolution.GetHeight() / 2;
 
     // Load shaders
-    resourceManager.LoadShaderFromFile(std::string("PostProcessing"), "Shaders/PostProcessing.vs", "Shaders/PostProcessing.fs");
+    resourceManager.LoadShaderFromFile(std::string("PostProcessing"), "Assets/Shaders/PostProcessing.vs", "Assets/Shaders/PostProcessing.fs");
 
     // Configure shaders
     Game::cameraProjection = glm::ortho(
