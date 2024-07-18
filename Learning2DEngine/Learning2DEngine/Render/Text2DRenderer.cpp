@@ -30,8 +30,8 @@ namespace Learning2DEngine
                 ? resourceManager.GetShader(ShaderConstant::TEXT2D_SHADER_NAME)
                 : resourceManager.LoadShader(
                     ShaderConstant::TEXT2D_SHADER_NAME,
-                    ShaderConstant::TEXT2D_VERTEX_SHADER_PATH,
-                    ShaderConstant::TEXT2D_FRAGMENT_SHADER_PATH);
+                    ShaderConstant::TEXT2D_VERTEX_SHADER,
+                    ShaderConstant::TEXT2D_FRAGMENT_SHADER);
             textShader.Use();
             textShader.SetMatrix4(
                 "projection",

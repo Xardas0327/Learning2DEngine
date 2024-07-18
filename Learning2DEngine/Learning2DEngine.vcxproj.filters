@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -30,7 +27,7 @@
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Plugin\glad.c">
+    <ClCompile Include="Plugins\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\Text2DRenderer.cpp">
@@ -39,25 +36,13 @@
     <ClCompile Include="Learning2DEngine\System\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Breakout.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Learning2DEngine\System\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameLevel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BallParticleSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\ParticleSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BallController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\ShaderConstant.cpp">
@@ -104,9 +89,6 @@
     <ClInclude Include="Learning2DEngine\System\InputStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Breakout.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\Resolution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -128,28 +110,10 @@
     <ClInclude Include="Learning2DEngine\System\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BrickController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BallController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Learning2DEngine\System\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PowerUpController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PowerUpType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PowerUpObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\Particle.h">
@@ -170,9 +134,6 @@
     <ClInclude Include="Learning2DEngine\Render\BasicParticleSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BallParticleSettings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -182,77 +143,5 @@
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PostProcessData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="Assets\Fonts\arial.ttf" />
-    <Font Include="Assets\Fonts\OCRAEXT.TTF" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\Images\awesomeface.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\background.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\block.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\block_solid.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\paddle.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\particle.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\powerup_chaos.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\powerup_confuse.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\powerup_increase.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\powerup_passthrough.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\powerup_speed.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\powerup_sticky.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\Levels\four.lvl" />
-    <None Include="Assets\Levels\one.lvl" />
-    <None Include="Assets\Levels\three.lvl" />
-    <None Include="Assets\Levels\two.lvl" />
-    <None Include="Learning2DEngine\Shader\Text2D.fs" />
-    <None Include="Learning2DEngine\Shader\Text2D.vs" />
-    <None Include="Learning2DEngine\Shader\Sprite.fs" />
-    <None Include="Learning2DEngine\Shader\Sprite.vs" />
-    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.fs" />
-    <None Include="Learning2DEngine\Shader\DefaultPostProcessEffect.vs" />
-    <None Include="Shaders\PostProcessing.fs" />
-    <None Include="Shaders\PostProcessing.vs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Assets\Sounds\bleep.mp3" />
-    <Media Include="Assets\Sounds\bleep.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="Assets\Sounds\breakout.mp3" />
-    <Media Include="Assets\Sounds\powerup.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="Assets\Sounds\solid.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
   </ItemGroup>
 </Project>

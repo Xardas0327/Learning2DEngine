@@ -2,8 +2,8 @@
 
 #include <glm/glm.hpp>
 
-#include "Learning2DEngine/System/Component.h"
-#include "Learning2DEngine/System/GameObject.h"
+#include <Learning2DEngine/System/Component.h>
+#include <Learning2DEngine/System/GameObject.h>
 
 class BallController : public virtual Learning2DEngine::System::Component
 {

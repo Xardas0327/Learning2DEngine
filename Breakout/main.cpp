@@ -1,4 +1,4 @@
-#include "Learning2DEngine/Render/Resolution.h"
+#include <Learning2DEngine/Render/Renderer.h>
 #include "Breakout.h"
 
 using namespace Learning2DEngine::Render;

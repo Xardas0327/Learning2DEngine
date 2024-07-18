@@ -82,8 +82,8 @@ namespace Learning2DEngine
 				? resourceManager.GetShader(ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME)
 				: resourceManager.LoadShader(
 					ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME,
-					ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_VERTEX_SHADER_PATH,
-					ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_FRAGMENT_SHADER_PATH);
+					ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_VERTEX_SHADER,
+					ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_FRAGMENT_SHADER);
 
 			defaultShader.Use();
 			defaultShader.SetInteger("scene", 0);

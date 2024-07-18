@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include "Learning2DEngine/Render/IParticleSettings.h"
+#include <Learning2DEngine/Render/IParticleSettings.h>
 
 #include "BallController.h"
 

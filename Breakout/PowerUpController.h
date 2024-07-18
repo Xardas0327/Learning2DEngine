@@ -2,11 +2,11 @@
 
 #include <glm/glm.hpp>
 
-#include "Learning2DEngine/System/Component.h"
-#include "Learning2DEngine/System/GameObject.h"
-#include "Learning2DEngine/System/ResourceManager.h"
-#include "Learning2DEngine/Render/SpriteRenderer.h"
-#include "Learning2DEngine/Render/Texture2D.h"
+#include <Learning2DEngine/System/Component.h>
+#include <Learning2DEngine/System/GameObject.h>
+#include <Learning2DEngine/System/ResourceManager.h>
+#include <Learning2DEngine/Render/SpriteRenderer.h>
+#include <Learning2DEngine/Render/Texture2D.h>
 
 #include "PowerUpType.h"
 #include "PowerUpObject.h"

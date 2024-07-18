@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Learning2DEngine/System/Component.h"
-#include "Learning2DEngine/System/GameObject.h"
+#include <Learning2DEngine/System/Component.h>
+#include <Learning2DEngine/System/GameObject.h>
 
 class BrickController : public virtual Learning2DEngine::System::Component
 {
