@@ -27,28 +27,28 @@ namespace Learning2DEngine
 		/// The LOG_INFO, LOG_WARNING, LOG_ERROR macros are defined.
 		/// These macros run only, if _DEBUG or LEARNING2DENGINE_DEBUG macros are defined as 1.
 		/// </summary>
-		class Log
+		class Log final
 		{
 		private:
 			Log() {};
 
-			inline static std::string GetMessage(const std::string& message, const std::string& filePath, int fileLine)
+			static std::string GetMessage(const std::string& message, const std::string& filePath, int fileLine)
 			{
 				return message + "\n " + filePath + " Line: " + std::to_string(fileLine);
 			}
 		public:
 
-			inline static void Info(const std::string& message, const std::string& filePath, int fileLine)
+			static void Info(const std::string& message, const std::string& filePath, int fileLine)
 			{
 				std::cout << "INFO::" << GetMessage(message, filePath, fileLine) << std::endl;
 			}
 
-			inline static void Warning(const std::string& message, const std::string& filePath, int fileLine)
+			static void Warning(const std::string& message, const std::string& filePath, int fileLine)
 			{
 				std::cout << LOG_WARNING_COLOR << "WARNING::" << GetMessage(message, filePath, fileLine) << LOG_CLEAR_COLOR << std::endl;
 			}
 
-			inline static void Error(const std::string& message, const std::string& filePath, int fileLine)
+			static void Error(const std::string& message, const std::string& filePath, int fileLine)
 			{
 				std::cout << LOG_ERROR_COLOR << "ERROR::" << GetMessage(message, filePath, fileLine) << LOG_CLEAR_COLOR << std::endl;
 			}

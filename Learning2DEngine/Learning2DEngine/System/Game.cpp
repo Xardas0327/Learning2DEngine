@@ -4,8 +4,8 @@
 
 #include "../Render/RenderManager.h"
 #include "../UI/Text2DRenderer.h"
+#include "../DebugTool/Log.h"
 #include "ResourceManager.h"
-#include "Log.h"
 
 namespace Learning2DEngine
 {
