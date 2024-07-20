@@ -9,6 +9,21 @@ namespace Learning2DEngine
         const glm::vec2 VECTOR_LEFT = glm::vec2(-1.0f, 0.0f);
         const glm::vec2 VECTOR_RIGHT = glm::vec2(1.0f, 0.0f);
 
+        glm::vec2 Collision::GetEdge(const BoxCollider& boxCollider, glm::vec2 distanceBetweenCenters)
+        {
+            glm::vec2 boxHalfExtents(boxCollider.size.x / 2, boxCollider.size.y / 2);
+            glm::vec2 clamped = glm::clamp(distanceBetweenCenters, -boxHalfExtents, boxHalfExtents);
+
+            return boxCollider.GetCenter() + clamped;
+        }
+
+        glm::vec2 Collision::GetEdge(const CircleCollider& circleCollider, glm::vec2 distanceBetweenCenters)
+        {
+            glm::vec2 edge = glm::normalize(distanceBetweenCenters) * circleCollider.radius;
+
+            return circleCollider.GetCenter() + edge;
+        }
+
         CollisionData Collision::IsCollisoned(const BoxCollider& collider1, const BoxCollider& collider2)
         {
             CollisionData data;
@@ -22,16 +37,8 @@ namespace Learning2DEngine
 
             if (data.isCollisoned)
             {
-                glm::vec2 distanceBetweenCenters = collider1.GetCenter() - collider2.GetCenter();
-
-                glm::vec2 boxHalfExtents1(collider1.size.x / 2, collider1.size.y / 2);
-                glm::vec2 boxHalfExtents2(collider2.size.x / 2, collider2.size.y / 2);
-
-                glm::vec2 clamped1 = glm::clamp(distanceBetweenCenters, -boxHalfExtents1, boxHalfExtents1);
-                glm::vec2 clamped2 = glm::clamp(distanceBetweenCenters, -boxHalfExtents2, boxHalfExtents2);
-
-                data.closestPointOfObject1 = collider1.GetCenter() + clamped1;
-                data.closestPointOfObject2 = collider2.GetCenter() + clamped2;
+                data.edge1 = Collision::GetEdge(collider1, collider2.GetCenter() - collider1.GetCenter());
+                data.edge2 = Collision::GetEdge(collider2, collider1.GetCenter() - collider2.GetCenter());
             }
 
             return data;
@@ -39,25 +46,19 @@ namespace Learning2DEngine
 
         CollisionData Collision::IsCollisoned(const CircleCollider& collider1, const CircleCollider& collider2)
         {
-            glm::vec2 distanceBetweenCenters = collider1.GetCenter() - collider2.GetCenter();
+            glm::vec2 distance1 = collider2.GetCenter() - collider1.GetCenter();
             CollisionData data;
             data.isCollisoned =
                 // distance between 2 centers
-                glm::length(distanceBetweenCenters)
+                glm::length(distance1)
                 <=
                 // their radius
                 collider1.radius + collider2.radius;
 
             if (data.isCollisoned)
             {
-                glm::vec2 distance1 = collider2.GetCenter() - collider1.GetCenter();
-                glm::vec2 distance2 = collider1.GetCenter() - collider2.GetCenter();
-
-                glm::vec2 edge1 = glm::normalize(distance1) * collider1.radius;
-                glm::vec2 edge2 = glm::normalize(distance2) * collider1.radius;
-
-                data.closestPointOfObject1 = collider1.GetCenter() + edge1;
-                data.closestPointOfObject2 = collider2.GetCenter() + edge2;
+                data.edge1 = GetEdge(collider1, distance1);
+                data.edge2 = GetEdge(collider2, collider1.GetCenter() - collider2.GetCenter());
             }
 
             return data;
@@ -65,21 +66,77 @@ namespace Learning2DEngine
 
         CollisionData Collision::IsCollisoned(const CircleCollider& circleCollider, const BoxCollider& boxCollider)
         {
-            glm::vec2 boxHalfExtents(boxCollider.size.x / 2, boxCollider.size.y / 2);
-            glm::vec2 distanceFromBoxToCircle = circleCollider.GetCenter() - boxCollider.GetCenter();
-            glm::vec2 distanceFromCircleToBox = boxCollider.GetCenter() - circleCollider.GetCenter();
+            glm::vec2 boxEdge = GetEdge(boxCollider, circleCollider.GetCenter() - boxCollider.GetCenter());
 
-            glm::vec2 clamped = glm::clamp(distanceFromBoxToCircle, -boxHalfExtents, boxHalfExtents);
-            glm::vec2 closestPointOfBoxToCircle = boxCollider.GetCenter() + clamped;
+            glm::vec2 distance = boxEdge - circleCollider.GetCenter();
 
-            glm::vec2 edge = glm::normalize(distanceFromCircleToBox) * circleCollider.radius;
+            CollisionData data;
+            data.isCollisoned = glm::length(distance) <= circleCollider.radius;
 
-            glm::vec2 distance = closestPointOfBoxToCircle - circleCollider.GetCenter();
-            glm::vec2 closestPointOfCircleToBox= circleCollider.GetCenter() + edge;
+            if (data.isCollisoned)
+            {
+                data.edge1 = GetEdge(circleCollider, boxCollider.GetCenter() - circleCollider.GetCenter());
+                data.edge2 = boxEdge;
+            }
 
-            bool isCollisoned = glm::length(distance) <= circleCollider.radius;
+            return data;
+        }
+        void Collision::FixObjectAfterBoxCollision(const Collider* collider, glm::vec2 differenceVector)
+        {
+            float dotProductLeft = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_LEFT);
+            float dotProductRight = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_RIGHT);
+            Direction dX = dotProductLeft > dotProductRight ? LEFT : RIGHT;
+            float dotProductX = dotProductLeft > dotProductRight ? dotProductLeft : dotProductRight;
 
-            return CollisionData(isCollisoned, closestPointOfBoxToCircle, closestPointOfCircleToBox);
+            float dotProductUp = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_UP);
+            float dotProductDown = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_DOWN);
+            Direction dY = dotProductUp > dotProductDown ? UP : DOWN;
+            float dotProductY = dotProductUp > dotProductDown ? dotProductUp : dotProductDown;
+
+            if (dotProductX == dotProductY)
+            {
+                collider->rigidbody->velocity = -collider->rigidbody->velocity;
+            }
+            if (dotProductX > dotProductY)
+            {
+                collider->rigidbody->velocity.x = -collider->rigidbody->velocity.x;
+            }
+            else // (dotProductX < dotProductY)
+            {
+                collider->rigidbody->velocity.y = -collider->rigidbody->velocity.y;
+            }
+
+            if (dotProductX >= dotProductY)
+            {
+                float penetrationX = collider->GetCenter().x - std::abs(differenceVector.x);
+                if (dX == LEFT)
+                    collider->gameObject->transform.position.x += penetrationX;
+                else
+                    collider->gameObject->transform.position.x -= penetrationX;
+            }
+
+            if (dotProductX <= dotProductY)
+            {
+                float penetrationY = collider->GetCenter().y - std::abs(differenceVector.y);
+                if (dY == UP)
+                    collider->gameObject->transform.position.y += penetrationY;
+                else
+                    collider->gameObject->transform.position.y -= penetrationY;
+            }
+        }
+
+        void Collision::FixObjectAfterCircleCollision(const Collider* collider, glm::vec2 hitPoint, glm::vec2 differenceVector)
+        {
+            collider->gameObject->transform.position += differenceVector;
+
+            auto wallNormal = glm::normalize(hitPoint);
+            auto velocityNormal = glm::normalize(collider->rigidbody->velocity);
+
+            auto dotProduct = glm::dot(velocityNormal, wallNormal);
+            auto incidenceAngle = glm::acos(dotProduct);
+            auto reboundAngle = 3.14f - incidenceAngle;
+
+            collider->rigidbody->velocity = wallNormal * glm::cos(reboundAngle) * glm::length(collider->rigidbody->velocity);
         }
 
         bool Collision::DoCollision(const BoxCollider& collider1, const BoxCollider& collider2)
@@ -91,108 +148,20 @@ namespace Learning2DEngine
 
             if (!collider1.IsFrozen())
             {
-                auto differenceVector = data.closestPointOfObject2 - collider1.GetCenter();
+                auto differenceVector =  collider1.GetCenter() - data.edge2;
                 if (!collider2.IsFrozen())
                     differenceVector /= 2;
 
-                float dotProductLeft = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_LEFT);
-                float dotProductRight = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_RIGHT);
-                Direction dX = dotProductLeft > dotProductRight ? LEFT : RIGHT;
-                float dotProductX = dotProductLeft > dotProductRight ? dotProductLeft : dotProductRight;
-
-                float dotProductUp = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_UP);
-                float dotProductDown = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_DOWN);
-                Direction dY = dotProductUp > dotProductDown ? UP : DOWN;
-                float dotProductY = dotProductUp > dotProductDown ? dotProductUp : dotProductDown;
-
-                if (dotProductX == dotProductY)
-                {
-                    collider1.rigidbody->velocity = -collider1.rigidbody->velocity;
-
-                    float penetrationX = collider1.GetCenter().x - std::abs(differenceVector.x);
-                    if (dX == LEFT)
-                        collider1.gameObject->transform.position.x += penetrationX;
-                    else
-                        collider1.gameObject->transform.position.x -= penetrationX;
-
-                    float penetrationY = collider1.GetCenter().y - std::abs(differenceVector.y);
-                    if (dY == UP)
-                        collider1.gameObject->transform.position.y += penetrationY;
-                    else
-                        collider1.gameObject->transform.position.y -= penetrationY;
-                }
-                if (dotProductX > dotProductY)
-                {
-                    collider1.rigidbody->velocity.x = -collider1.rigidbody->velocity.x;
-
-                    float penetrationX = collider1.GetCenter().x - std::abs(differenceVector.x);
-                    if (dX == LEFT)
-                        collider1.gameObject->transform.position.x += penetrationX;
-                    else
-                        collider1.gameObject->transform.position.x -= penetrationX;
-                }
-                else // (dotProductX < dotProductY)
-                {
-                    collider1.rigidbody->velocity.y = -collider1.rigidbody->velocity.y;
-                    float penetrationY = collider1.GetCenter().y - std::abs(differenceVector.y);
-                    if (dY == UP)
-                        collider1.gameObject->transform.position.y += penetrationY;
-                    else
-                        collider1.gameObject->transform.position.y -= penetrationY;
-                }
+                Collision::FixObjectAfterBoxCollision(&collider1, differenceVector);
             }
 
             if (!collider2.IsFrozen())
             {
-                auto differenceVector = data.closestPointOfObject1 - collider2.GetCenter();
+                auto differenceVector = collider2.GetCenter() - data.edge1;
                 if (!collider1.IsFrozen())
                     differenceVector /= 2;
 
-                float dotProductLeft = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_LEFT);
-                float dotProductRight = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_RIGHT);
-                Direction dX = dotProductLeft > dotProductRight ? LEFT : RIGHT;
-                float dotProductX = dotProductLeft > dotProductRight ? dotProductLeft : dotProductRight;
-
-                float dotProductUp = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_UP);
-                float dotProductDown = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_DOWN);
-                Direction dY = dotProductUp > dotProductDown ? UP : DOWN;
-                float dotProductY = dotProductUp > dotProductDown ? dotProductUp : dotProductDown;
-
-                if (dotProductX == dotProductY)
-                {
-                    collider2.rigidbody->velocity = -collider2.rigidbody->velocity;
-
-                    float penetrationX = collider2.GetCenter().x - std::abs(differenceVector.x);
-                    if (dX == LEFT)
-                        collider2.gameObject->transform.position.x += penetrationX;
-                    else
-                        collider2.gameObject->transform.position.x -= penetrationX;
-
-                    float penetrationY = collider2.GetCenter().y - std::abs(differenceVector.y);
-                    if (dY == UP)
-                        collider2.gameObject->transform.position.y += penetrationY;
-                    else
-                        collider2.gameObject->transform.position.y -= penetrationY;
-                }
-                if (dotProductX > dotProductY)
-                {
-                    collider2.rigidbody->velocity.x = -collider2.rigidbody->velocity.x;
-
-                    float penetrationX = collider2.GetCenter().x - std::abs(differenceVector.x);
-                    if (dX == LEFT)
-                        collider2.gameObject->transform.position.x += penetrationX;
-                    else
-                        collider2.gameObject->transform.position.x -= penetrationX;
-                }
-                else // (dotProductX < dotProductY)
-                {
-                    collider2.rigidbody->velocity.y = -collider2.rigidbody->velocity.y;
-                    float penetrationY = collider2.GetCenter().y - std::abs(differenceVector.y);
-                    if (dY == UP)
-                        collider2.gameObject->transform.position.y += penetrationY;
-                    else
-                        collider2.gameObject->transform.position.y -= penetrationY;
-                }
+                Collision::FixObjectAfterBoxCollision(&collider2, differenceVector);
             }
 
             return data.isCollisoned;
@@ -207,39 +176,20 @@ namespace Learning2DEngine
 
             if (!collider1.IsFrozen())
             {
-                auto differenceVector = data.closestPointOfObject1 - collider2.GetCenter();
+                auto differenceVector = data.edge1 - collider2.GetCenter();
                 if (!collider2.IsFrozen())
                     differenceVector /= 2;
 
-                collider1.gameObject->transform.position += differenceVector;
-
-
-                auto wallNormal = glm::normalize(data.closestPointOfObject2);
-                auto velocityNormal = glm::normalize(collider1.rigidbody->velocity);
-
-                auto dotProduct = glm::dot(velocityNormal, wallNormal);
-                auto incidenceAngle = glm::acos(dotProduct);
-                auto reboundAngle = 3.14f - incidenceAngle;
-
-                collider1.rigidbody->velocity = wallNormal * glm::cos(reboundAngle) * glm::length(collider1.rigidbody->velocity);
+                FixObjectAfterCircleCollision(&collider1, data.edge2, differenceVector);
             }
 
             if (!collider2.IsFrozen())
             {
-                auto differenceVector = data.closestPointOfObject2 - collider1.GetCenter();
+                auto differenceVector = data.edge2 - collider1.GetCenter();
                 if (!collider1.IsFrozen())
                     differenceVector /= 2;
 
-                collider2.gameObject->transform.position += differenceVector;
-
-                auto wallNormal = glm::normalize(data.closestPointOfObject1);
-                auto velocityNormal = glm::normalize(collider2.rigidbody->velocity);
-
-                auto dotProduct = glm::dot(velocityNormal, wallNormal);
-                auto incidenceAngle = glm::acos(dotProduct);
-                auto reboundAngle = 3.14f - incidenceAngle;
-
-                collider2.rigidbody->velocity = wallNormal * glm::cos(reboundAngle) * glm::length(collider2.rigidbody->velocity);
+                FixObjectAfterCircleCollision(&collider2, data.edge1, differenceVector);
             }
 
             return data.isCollisoned;
@@ -254,76 +204,21 @@ namespace Learning2DEngine
 
             if (!circleCollider.IsFrozen())
             {
-                auto differenceVector = data.closestPointOfObject2 - circleCollider.GetCenter();
+                auto differenceVector = circleCollider.GetCenter() -data.edge2;
                 if (!boxCollider.IsFrozen())
                     differenceVector /= 2;
 
-                float dotProductLeft = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_LEFT);
-                float dotProductRight = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_RIGHT);
-                Direction dX = dotProductLeft > dotProductRight ? LEFT : RIGHT;
-                float dotProductX = dotProductLeft > dotProductRight ? dotProductLeft : dotProductRight;
-
-                float dotProductUp = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_UP);
-                float dotProductDown = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_DOWN);
-                Direction dY = dotProductUp > dotProductDown ? UP : DOWN;
-                float dotProductY = dotProductUp > dotProductDown ? dotProductUp : dotProductDown;
-
-                if (dotProductX == dotProductY)
-                {
-                    circleCollider.rigidbody->velocity = -circleCollider.rigidbody->velocity;
-
-                    float penetrationX = circleCollider.GetCenter().x - std::abs(differenceVector.x);
-                    if (dX == LEFT)
-                        circleCollider.gameObject->transform.position.x += penetrationX;
-                    else
-                        circleCollider.gameObject->transform.position.x -= penetrationX;
-
-                    float penetrationY = circleCollider.GetCenter().y - std::abs(differenceVector.y);
-                    if (dY == UP)
-                        circleCollider.gameObject->transform.position.y += penetrationY;
-                    else
-                        circleCollider.gameObject->transform.position.y -= penetrationY;
-                }
-                if (dotProductX > dotProductY)
-                {
-                    circleCollider.rigidbody->velocity.x = -circleCollider.rigidbody->velocity.x;
-
-                    float penetrationX = circleCollider.GetCenter().x - std::abs(differenceVector.x);
-                    if (dX == LEFT)
-                        circleCollider.gameObject->transform.position.x += penetrationX;
-                    else
-                        circleCollider.gameObject->transform.position.x -= penetrationX;
-                }
-                else // (dotProductX < dotProductY)
-                {
-                    circleCollider.rigidbody->velocity.y = -circleCollider.rigidbody->velocity.y;
-                    float penetrationY = circleCollider.GetCenter().y - std::abs(differenceVector.y);
-                    if (dY == UP)
-                        circleCollider.gameObject->transform.position.y += penetrationY;
-                    else
-                        circleCollider.gameObject->transform.position.y -= penetrationY;
-                }
+                Collision::FixObjectAfterBoxCollision(&circleCollider, differenceVector);
             }
 
             if (!boxCollider.IsFrozen())
             {
-                auto differenceVector = data.closestPointOfObject2 - circleCollider.GetCenter();
+                auto differenceVector = data.edge2 - circleCollider.GetCenter();
                 if (!circleCollider.IsFrozen())
                     differenceVector /= 2;
 
-                circleCollider.gameObject->transform.position += differenceVector;
-
-                auto wallNormal = glm::normalize(data.closestPointOfObject1);
-                auto velocityNormal = glm::normalize(boxCollider.rigidbody->velocity);
-
-                auto dotProduct = glm::dot(velocityNormal, wallNormal);
-                auto incidenceAngle = glm::acos(dotProduct);
-                auto reboundAngle = 3.14f - incidenceAngle;
-
-                boxCollider.rigidbody->velocity = wallNormal * glm::cos(reboundAngle) * glm::length(boxCollider.rigidbody->velocity);
+                FixObjectAfterCircleCollision(&boxCollider, data.edge2, differenceVector);
             }
-
-
 
             return data.isCollisoned;
         }

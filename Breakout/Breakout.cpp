@@ -449,7 +449,7 @@ Direction VectorDirection(glm::vec2 target)
 Collision CheckCollision(BallController& one, GameObject& two) // AABB - Circle collision
 {
     // get center point circle first 
-    glm::vec2 center(one.gameObject->transform.position + one.radius);
+    glm::vec2 ballCenter(one.gameObject->transform.position + one.radius);
     // calculate AABB info (center, half-extents)
     glm::vec2 aabb_half_extents(two.transform.scale.x / 2.0f, two.transform.scale.y / 2.0f);
     glm::vec2 aabb_center(
@@ -457,12 +457,12 @@ Collision CheckCollision(BallController& one, GameObject& two) // AABB - Circle 
         two.transform.position.y + aabb_half_extents.y
     );
     // get difference vector between both centers
-    glm::vec2 difference = center - aabb_center;
+    glm::vec2 difference = ballCenter - aabb_center;
     glm::vec2 clamped = glm::clamp(difference, -aabb_half_extents, aabb_half_extents);
     // add clamped value to AABB_center and we get the value of box closest to circle
     glm::vec2 closest = aabb_center + clamped;
     // retrieve vector between center circle and closest point AABB and check if length <= radius
-    difference = closest - center;
+    difference = ballCenter - closest;
 
     if (glm::length(difference) < one.radius) // not <= since in that case a collision also occurs when object one exactly touches object two, which they are at the end of each collision resolution stage.
         return std::make_tuple(true, VectorDirection(difference), difference);
