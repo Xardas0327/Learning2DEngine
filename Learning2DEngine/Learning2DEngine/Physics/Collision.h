@@ -1,7 +1,10 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include "BoxCollider.h";
 #include "CircleCollider.h"
+#include "CollisionData.h"
 
 
 namespace Learning2DEngine
@@ -11,19 +14,28 @@ namespace Learning2DEngine
         class Collision final
         {
         private:
+            static const glm::vec2 VECTOR_UP;
+            static const glm::vec2 VECTOR_DOWN;
+            static const glm::vec2 VECTOR_LEFT;
+            static const glm::vec2 VECTOR_RIGHT;
+
+            enum Direction {
+                UP,
+                RIGHT,
+                DOWN,
+                LEFT
+            };
+
             Collision() {}
 
-            static bool IsCollisoned(const BoxCollider& collider1, const BoxCollider& collider2);
-            static bool IsCollisoned(const CircleCollider& collider1, const CircleCollider& collider2);
-            static bool IsCollisoned(const CircleCollider& circleCollider, const BoxCollider& boxCollider);
+            static CollisionData IsCollisoned(const BoxCollider& collider1, const BoxCollider& collider2);
+            static CollisionData IsCollisoned(const CircleCollider& collider1, const CircleCollider& collider2);
+            static CollisionData IsCollisoned(const CircleCollider& circleCollider, const BoxCollider& boxCollider);
         public:
-            static void CheckCollision(const BoxCollider& collider1, const BoxCollider& collider2);
-            static void CheckCollision(const CircleCollider& collider1, const CircleCollider& collider2);
-            static void CheckCollision(const CircleCollider& circleCollider, const BoxCollider& boxCollider);
-            static void CheckCollision(const BoxCollider& boxCollider, const CircleCollider& circleCollider)
-            {
-                Collision::CheckCollision(circleCollider, boxCollider);
-            }
+            static bool DoCollision(const BoxCollider& collider1, const BoxCollider& collider2);
+            static bool DoCollision(const CircleCollider& collider1, const CircleCollider& collider2);
+            static bool DoCollision(const CircleCollider& circleCollider, const BoxCollider& boxCollider);
+            static bool DoCollision(const BoxCollider& boxCollider, const CircleCollider& circleCollider);
         };
     }
 }

@@ -161,5 +161,8 @@
     <ClInclude Include="Learning2DEngine\Physics\Collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\CollisionData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

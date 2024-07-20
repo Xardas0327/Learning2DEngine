@@ -14,9 +14,16 @@ namespace Learning2DEngine
             friend class Learning2DEngine::System::GameObject;
         public:
             glm::vec2 velocity;
+            bool isFrozen;
 
             Rigidbody(Learning2DEngine::System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f))
-                : Component(gameObject), velocity(velocity)
+                : Component(gameObject), velocity(velocity), isFrozen(false)
+            {
+
+            }
+
+            Rigidbody(Learning2DEngine::System::GameObject* gameObject, bool isFrozen)
+                : Component(gameObject), velocity(glm::vec2(0.0f, 0.0f)), isFrozen(isFrozen)
             {
 
             }
