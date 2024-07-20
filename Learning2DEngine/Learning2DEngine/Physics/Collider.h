@@ -21,14 +21,6 @@ namespace Learning2DEngine
         public:
             glm::vec2 center;
 
-            // The center will be the gameObject->transform.position.
-            Collider(Learning2DEngine::System::GameObject* gameObject, bool isTriggerOnly = false)
-                : Learning2DEngine::System::Component(gameObject), rigidbody(nullptr),
-                center(gameObject->transform.position), isTriggerOnly(isTriggerOnly)
-            {
-
-            }
-
             Collider(Learning2DEngine::System::GameObject* gameObject, glm::vec2 center, bool isTriggerOnly = false)
                 : Learning2DEngine::System::Component(gameObject), rigidbody(nullptr),
                 center(center), isTriggerOnly(isTriggerOnly)

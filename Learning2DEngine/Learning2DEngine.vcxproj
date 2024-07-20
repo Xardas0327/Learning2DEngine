@@ -179,7 +179,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\ParticleSimulator\BasicParticleSettings.h" />
+    <ClInclude Include="Learning2DEngine\Physics\BoxCollider.h" />
+    <ClInclude Include="Learning2DEngine\Physics\CircleCollider.h" />
     <ClInclude Include="Learning2DEngine\Physics\Collider.h" />
+    <ClInclude Include="Learning2DEngine\Physics\Collision.h" />
     <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h" />
     <ClInclude Include="Learning2DEngine\Render\Blend.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSettings.h" />

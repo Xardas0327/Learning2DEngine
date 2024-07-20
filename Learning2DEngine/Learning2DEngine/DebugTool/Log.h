@@ -30,7 +30,7 @@ namespace Learning2DEngine
 		class Log final
 		{
 		private:
-			Log() {};
+			Log() {}
 
 			static std::string GetMessage(const std::string& message, const std::string& filePath, int fileLine)
 			{
