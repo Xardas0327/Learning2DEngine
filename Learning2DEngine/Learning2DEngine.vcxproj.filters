@@ -143,5 +143,11 @@
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\Collider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
