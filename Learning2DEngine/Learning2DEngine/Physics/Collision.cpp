@@ -37,7 +37,7 @@ namespace Learning2DEngine
 
             glm::vec2 distance = closestPointOfBoxToCircle - circleCollider.center;
 
-            return glm::length(distance) < circleCollider.radius;
+            return glm::length(distance) <= circleCollider.radius;
         }
     }
 }
