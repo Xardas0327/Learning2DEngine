@@ -40,8 +40,8 @@ namespace Learning2DEngine
 
             if (data.isCollisoned)
             {
-                data.edge1 = Collision::GetEdge(collider1, collider2.GetCenter() - collider1.GetCenter());
-                data.edge2 = Collision::GetEdge(collider2, collider1.GetCenter() - collider2.GetCenter());
+                data.edge1 = Collision::GetEdge(collider1, box2Center - box1Center);
+                data.edge2 = Collision::GetEdge(collider2, box1Center - box2Center);
             }
 
             return data;
@@ -49,19 +49,19 @@ namespace Learning2DEngine
 
         CollisionData Collision::IsCollisoned(const CircleCollider& collider1, const CircleCollider& collider2)
         {
-            glm::vec2 distance1 = collider2.GetCenter() - collider1.GetCenter();
+            glm::vec2 distance = collider2.GetCenter() - collider1.GetCenter();
             CollisionData data;
             data.isCollisoned =
                 // distance between 2 centers
-                glm::length(distance1)
+                glm::length(distance)
                 <=
                 // their radius
                 collider1.radius + collider2.radius;
 
             if (data.isCollisoned)
             {
-                data.edge1 = GetEdge(collider1, distance1);
-                data.edge2 = GetEdge(collider2, collider1.GetCenter() - collider2.GetCenter());
+                data.edge1 = GetEdge(collider1, distance);
+                data.edge2 = GetEdge(collider2, -distance);
             }
 
             return data;

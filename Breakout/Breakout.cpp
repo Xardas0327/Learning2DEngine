@@ -452,7 +452,7 @@ Direction VectorDirection(glm::vec2 target)
     return (Direction)best_match;
 }
 
-Collision CheckCollision(const CircleCollider& ball, const BoxCollider& box) // AABB - Circle collision
+OldCollision CheckCollision(const CircleCollider& ball, const BoxCollider& box) // AABB - Circle collision
 {
     // get center point circle first 
     glm::vec2 ballCenter(ball.GetCenter());
@@ -482,7 +482,7 @@ void Breakout::DoCollisions()
     {
         if (box->gameObject->isActive)
         {
-            Collision collision = CheckCollision(*ballController->collider, *box->collider);
+            OldCollision collision = CheckCollision(*ballController->collider, *box->collider);
             if (std::get<0>(collision)) // if collision is true
             {
                 // destroy block if not solid
@@ -547,7 +547,7 @@ void Breakout::DoCollisions()
         }
     }
     // check collisions for player pad (unless stuck)
-    Collision result = CheckCollision(*ballController->collider, *Player->GetComponent<BoxCollider>());
+    OldCollision result = CheckCollision(*ballController->collider, *Player->GetComponent<BoxCollider>());
     if (!ballController->stuck && std::get<0>(result))
     {
         // check where it hit the board, and change velocity based on where it hit the board
