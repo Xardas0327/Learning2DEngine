@@ -11,7 +11,7 @@ namespace Learning2DEngine
 
         glm::vec2 Collision::GetEdge(const BoxCollider& boxCollider, glm::vec2 distanceBetweenCenters)
         {
-            glm::vec2 boxHalfExtents(boxCollider.size.x / 2, boxCollider.size.y / 2);
+            glm::vec2 boxHalfExtents(boxCollider.size.x / 2.0f, boxCollider.size.y / 2.0f);
             glm::vec2 clamped = glm::clamp(distanceBetweenCenters, -boxHalfExtents, boxHalfExtents);
 
             return boxCollider.GetCenter() + clamped;
@@ -26,14 +26,17 @@ namespace Learning2DEngine
 
         CollisionData Collision::IsCollisoned(const BoxCollider& collider1, const BoxCollider& collider2)
         {
+            glm::vec2 box1Center = collider1.GetCenter();
+            glm::vec2 box2Center = collider2.GetCenter();
+
             CollisionData data;
             data.isCollisoned =
                 // x-axis
-                collider1.GetCenter().x + collider1.size.x / 2 >= collider1.GetCenter().x
-                && collider1.GetCenter().x + collider2.size.x / 2 >= collider1.GetCenter().x
+                box1Center.x + collider1.size.x / 2.0f >= box2Center.x
+                && box2Center.x + collider2.size.x / 2.0f >= box1Center.x
                 // Y-axis
-                && collider1.GetCenter().y + collider1.size.y / 2 >= collider1.GetCenter().y
-                && collider1.GetCenter().y + collider2.size.y / 2 >= collider1.GetCenter().y;
+                && box1Center.y + collider1.size.y / 2.0f >= box2Center.y
+                && box2Center.y + collider2.size.y / 2.0f >= box1Center.y;
 
             if (data.isCollisoned)
             {
@@ -150,7 +153,7 @@ namespace Learning2DEngine
             {
                 auto differenceVector = data.edge2 - collider1.GetCenter();
                 if (!collider2.IsFrozen())
-                    differenceVector /= 2;
+                    differenceVector /= 2.0f;
 
                 Collision::FixObjectAfterBoxCollision(&collider1, differenceVector);
             }
@@ -159,7 +162,7 @@ namespace Learning2DEngine
             {
                 auto differenceVector = data.edge1 - collider2.GetCenter();
                 if (!collider1.IsFrozen())
-                    differenceVector /= 2;
+                    differenceVector /= 2.0f;
 
                 Collision::FixObjectAfterBoxCollision(&collider2, differenceVector);
             }
@@ -178,7 +181,7 @@ namespace Learning2DEngine
             {
                 auto differenceVector = data.edge1 - collider2.GetCenter();
                 if (!collider2.IsFrozen())
-                    differenceVector /= 2;
+                    differenceVector /= 2.0f;
 
                 FixObjectAfterCircleCollision(&collider1, data.edge2, differenceVector);
             }
@@ -187,7 +190,7 @@ namespace Learning2DEngine
             {
                 auto differenceVector = data.edge2 - collider1.GetCenter();
                 if (!collider1.IsFrozen())
-                    differenceVector /= 2;
+                    differenceVector /= 2.0f;
 
                 FixObjectAfterCircleCollision(&collider2, data.edge1, differenceVector);
             }
@@ -206,7 +209,7 @@ namespace Learning2DEngine
             {
                 auto differenceVector = data.edge2 - circleCollider.GetCenter();
                 if (!boxCollider.IsFrozen())
-                    differenceVector /= 2;
+                    differenceVector /= 2.0f;
 
                 Collision::FixObjectAfterBoxCollision(&circleCollider, differenceVector);
             }
@@ -215,7 +218,7 @@ namespace Learning2DEngine
             {
                 auto differenceVector = data.edge2 - circleCollider.GetCenter();
                 if (!circleCollider.IsFrozen())
-                    differenceVector /= 2;
+                    differenceVector /= 2.0f;
 
                 FixObjectAfterCircleCollision(&boxCollider, data.edge2, differenceVector);
             }

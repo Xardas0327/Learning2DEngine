@@ -8,6 +8,7 @@
 #include <Learning2DEngine/Render/SpriteRenderer.h>
 #include <Learning2DEngine/Render/Texture2D.h>
 #include <Learning2DEngine/Physics/Rigidbody.h>
+#include <Learning2DEngine/Physics/BoxCollider.h>
 
 #include "PowerUpType.h"
 #include "PowerUpObject.h"
@@ -27,6 +28,7 @@ protected:
     }
 public:
     Learning2DEngine::Physics::Rigidbody* rigidbody;
+    Learning2DEngine::Physics::BoxCollider* collider;
     PowerUpType type;
     float duration;
     bool activated;
@@ -34,6 +36,9 @@ public:
     void Init() override
     {
         rigidbody = gameObject->AddComponent<Learning2DEngine::Physics::Rigidbody, glm::vec2>(VELOCITY);
+        collider = gameObject->AddComponent<
+            Learning2DEngine::Physics::BoxCollider, glm::vec2, glm::vec2, bool
+        >(glm::vec2(0.0f, 0.0f), gameObject->transform.scale, true);
     }
 
     static PowerUpController* CreatePowerUp(const PowerUpObject& powerUpObject, glm::vec2 position)

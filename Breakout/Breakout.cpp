@@ -12,6 +12,7 @@
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/UI/Text2DRenderer.h>
 #include <Learning2DEngine/ParticleSimulator/ParticleSystem.h>
+#include <Learning2DEngine/Physics/BoxCollider.h>
 
 #include "BallController.h"
 #include "BrickController.h"
@@ -25,6 +26,7 @@ using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::UI;
 using namespace Learning2DEngine::ParticleSimulator;
+using namespace Learning2DEngine::Physics;
 using namespace irrklang;
 
 // Game-related State data
@@ -132,6 +134,7 @@ void Breakout::Init()
     Player->AddComponent<SpriteRenderer, const Texture2D&>(
         resourceManager.GetTexture("paddle")
     );
+    Player->AddComponent<BoxCollider, glm::vec2, glm::vec2, bool>(glm::vec2(0.0f, 0.0f), Player->transform.scale, true);
 
     // Ball
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
@@ -411,14 +414,17 @@ void ActivatePowerUp(PowerUpController& powerUp)
     }
 }
 
-bool CheckCollision(GameObject& one, GameObject& two) // AABB - AABB collision
+bool CheckCollision(const BoxCollider& box1, const BoxCollider& box2) // AABB - AABB collision
 {
+    glm::vec2 box1Center = box1.GetCenter();
+    glm::vec2 box2Center = box2.GetCenter();
+
     // collision x-axis?
-    bool collisionX = one.transform.position.x + one.transform.scale.x >= two.transform.position.x &&
-        two.transform.position.x + two.transform.scale.x >= one.transform.position.x;
+    bool collisionX = box1Center.x + box1.size.x / 2.0f >= box2Center.x
+        && box2Center.x + box2.size.x / 2 >= box1Center.x;
     // collision y-axis?
-    bool collisionY = one.transform.position.y + one.transform.scale.y >= two.transform.position.y &&
-        two.transform.position.y + two.transform.scale.y >= one.transform.position.y;
+    bool collisionY = box1Center.y + box1.size.y / 2.0f >= box2Center.y
+        && box2Center.y + box2.size.y / 2.0f >= box1Center.y;
     // collision only if on both axes
     return collisionX && collisionY;
 }
@@ -446,25 +452,23 @@ Direction VectorDirection(glm::vec2 target)
     return (Direction)best_match;
 }
 
-Collision CheckCollision(BallController& one, GameObject& two) // AABB - Circle collision
+Collision CheckCollision(const CircleCollider& ball, const BoxCollider& box) // AABB - Circle collision
 {
     // get center point circle first 
-    glm::vec2 ballCenter(one.collider->GetCenter());
+    glm::vec2 ballCenter(ball.GetCenter());
     // calculate AABB info (center, half-extents)
-    glm::vec2 aabb_half_extents(two.transform.scale.x / 2.0f, two.transform.scale.y / 2.0f);
-    glm::vec2 aabb_center(
-        two.transform.position.x + aabb_half_extents.x,
-        two.transform.position.y + aabb_half_extents.y
-    );
+    glm::vec2 aabb_half_extents(box.size.x / 2.0f, box.size.y / 2.0f);
+    glm::vec2 aabb_center(box.GetCenter());
+
     // get difference vector between both centers
-    glm::vec2 difference = ballCenter - aabb_center;
-    glm::vec2 clamped = glm::clamp(difference, -aabb_half_extents, aabb_half_extents);
+    glm::vec2 differenceBetweenCenter = ballCenter - aabb_center;
+    glm::vec2 clamped = glm::clamp(differenceBetweenCenter, -aabb_half_extents, aabb_half_extents);
     // add clamped value to AABB_center and we get the value of box closest to circle
     glm::vec2 closest = aabb_center + clamped;
     // retrieve vector between center circle and closest point AABB and check if length <= radius
-    difference = closest - ballCenter;
+    glm::vec2 difference = closest - ballCenter;
 
-    if (glm::length(difference) < one.radius) // not <= since in that case a collision also occurs when object one exactly touches object two, which they are at the end of each collision resolution stage.
+    if (glm::length(difference) < ball.radius) // not <= since in that case a collision also occurs when object one exactly touches object two, which they are at the end of each collision resolution stage.
         return std::make_tuple(true, VectorDirection(difference), difference);
     else
         return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
@@ -478,7 +482,7 @@ void Breakout::DoCollisions()
     {
         if (box->gameObject->isActive)
         {
-            Collision collision = CheckCollision(*ballController, *box->gameObject);
+            Collision collision = CheckCollision(*ballController->collider, *box->collider);
             if (std::get<0>(collision)) // if collision is true
             {
                 // destroy block if not solid
@@ -533,7 +537,7 @@ void Breakout::DoCollisions()
             if (powerUp->gameObject->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
                 powerUp->gameObject->isActive = false;
 
-            if (CheckCollision(*Player, *(powerUp->gameObject)))
+            if (CheckCollision(*Player->GetComponent<BoxCollider>(), *powerUp->collider))
             {	// collided with player, now activate powerup
                 ActivatePowerUp(*powerUp);
                 powerUp->gameObject->isActive = false;
@@ -543,7 +547,7 @@ void Breakout::DoCollisions()
         }
     }
     // check collisions for player pad (unless stuck)
-    Collision result = CheckCollision(*ballController, *Player);
+    Collision result = CheckCollision(*ballController->collider, *Player->GetComponent<BoxCollider>());
     if (!ballController->stuck && std::get<0>(result))
     {
         // check where it hit the board, and change velocity based on where it hit the board
@@ -554,7 +558,6 @@ void Breakout::DoCollisions()
         float strength = 2.0f;
         glm::vec2 oldVelocity = ballController->rigidbody->velocity;
         ballController->rigidbody->velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
-        //Ball->Velocity.y = -Ball->Velocity.y;
         // keep speed consistent over both axes (multiply by length of old velocity, so total strength is not changed)
         ballController->rigidbody->velocity = glm::normalize(ballController->rigidbody->velocity) * glm::length(oldVelocity);
         // fix sticky paddle
