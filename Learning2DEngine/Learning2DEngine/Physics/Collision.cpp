@@ -148,7 +148,7 @@ namespace Learning2DEngine
 
             if (!collider1.IsFrozen())
             {
-                auto differenceVector =  collider1.GetCenter() - data.edge2;
+                auto differenceVector = data.edge2 - collider1.GetCenter();
                 if (!collider2.IsFrozen())
                     differenceVector /= 2;
 
@@ -157,7 +157,7 @@ namespace Learning2DEngine
 
             if (!collider2.IsFrozen())
             {
-                auto differenceVector = collider2.GetCenter() - data.edge1;
+                auto differenceVector = data.edge1 - collider2.GetCenter();
                 if (!collider1.IsFrozen())
                     differenceVector /= 2;
 
@@ -204,7 +204,7 @@ namespace Learning2DEngine
 
             if (!circleCollider.IsFrozen())
             {
-                auto differenceVector = circleCollider.GetCenter() -data.edge2;
+                auto differenceVector = data.edge2 - circleCollider.GetCenter();
                 if (!boxCollider.IsFrozen())
                     differenceVector /= 2;
 
