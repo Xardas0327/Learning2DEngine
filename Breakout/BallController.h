@@ -5,6 +5,7 @@
 #include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/Physics/Rigidbody.h>
+#include <Learning2DEngine/Physics/CircleCollider.h>
 
 const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.0f);
 
@@ -16,6 +17,7 @@ protected:
 
 public:
     Learning2DEngine::Physics::Rigidbody* rigidbody;
+    Learning2DEngine::Physics::CircleCollider* collider;
     float radius;
     bool stuck;
     bool sticky;

@@ -8,7 +8,7 @@ using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::Physics;
 
 BallController::BallController(GameObject* gameObject, float radius)
-    : Component(gameObject), rigidbody(nullptr), radius(radius),
+    : Component(gameObject), rigidbody(nullptr), collider(nullptr), radius(radius),
         stuck(true), sticky(false), passThrough(false)
 {
 
@@ -17,6 +17,7 @@ BallController::BallController(GameObject* gameObject, float radius)
 void BallController::Init()
 {
     rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2>(INITIAL_BALL_VELOCITY);
+    collider = gameObject->AddComponent<CircleCollider, glm::vec2, float>(glm::vec2(0.0f, 0.0f), radius);
 }
 
 void BallController::Move()

@@ -15,9 +15,9 @@ namespace Learning2DEngine
         public:
             glm::vec2 size;
 
-            BoxCollider(Learning2DEngine::System::GameObject* gameObject, glm::vec2 center, glm::vec2 size, bool isTriggerOnly = false)
+            BoxCollider(Learning2DEngine::System::GameObject* gameObject, glm::vec2 offset, glm::vec2 size, bool isTriggerOnly = false)
                 : Learning2DEngine::System::Component(gameObject), 
-                Collider(gameObject, center, isTriggerOnly), size(size)
+                Collider(gameObject, offset, isTriggerOnly), size(size)
             {
 
             }

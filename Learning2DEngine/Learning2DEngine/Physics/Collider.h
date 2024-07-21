@@ -38,7 +38,11 @@ namespace Learning2DEngine
 
             inline glm::vec2 GetCenter() const
             {
-                return gameObject->transform.position + offset;
+                glm::vec2 position = gameObject->transform.position;
+                position.x+= gameObject->transform.scale.x / 2 + offset.x;
+                position.y+= gameObject->transform.scale.y / 2 + offset.y;
+
+                return position;
             }
 
             inline bool IsTriggerOnly() const
