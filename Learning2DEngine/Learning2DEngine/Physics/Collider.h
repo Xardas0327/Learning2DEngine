@@ -30,12 +30,9 @@ namespace Learning2DEngine
 
             void Init() override
             {
-                if (!isTriggerOnly)
+                if (!isTriggerOnly && rigidbody == nullptr)
                 {
-                    if (rigidbody == nullptr)
-                    {
-                        LOG_ERROR("Collider: The Collider is not trigger, but the GameObject doesn't have Rigidbody.");
-                    }
+                    LOG_WARNING("Collider: The Collider is not trigger, but the GameObject doesn't have Rigidbody.");
                 }
             }
 

@@ -28,7 +28,6 @@ typedef std::tuple<bool, Direction, glm::vec2> Collision;
 
 const glm::vec2 PLAYER_SIZE(100.0f, 20.0f);
 const float PLAYER_VELOCITY(500.0f);
-const glm::vec2 INITIAL_BALL_VELOCITY(100.0f, -350.0f);
 const float BALL_RADIUS = 12.5f;
 
 class Breakout : public virtual Learning2DEngine::System::Game

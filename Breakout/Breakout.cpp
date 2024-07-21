@@ -144,7 +144,7 @@ void Breakout::Init()
     Ball->AddComponent<SpriteRenderer, const Texture2D&>(
         resourceManager.GetTexture("face")
     );
-    auto ballController = Ball->AddComponent<BallController, float, glm::vec2>(BALL_RADIUS, INITIAL_BALL_VELOCITY);
+    auto ballController = Ball->AddComponent<BallController, float>(BALL_RADIUS);
 
     ParticleSystemSettings ballParticleSystemSettings(
         true,
@@ -384,7 +384,7 @@ void ActivatePowerUp(PowerUpController& powerUp)
     switch (powerUp.type)
     {
     case PowerUpType::SPEED:
-        ballController->velocity *= 1.2;
+        ballController->rigidbody->velocity *= 1.2;
         break;
     case PowerUpType::STICKY:
         ballController->sticky = true;
@@ -501,7 +501,7 @@ void Breakout::DoCollisions()
                 {
                     if (dir == LEFT || dir == RIGHT) // horizontal collision
                     {
-                        ballController->velocity.x = -ballController->velocity.x; // reverse horizontal velocity
+                        ballController->rigidbody->velocity.x = -ballController->rigidbody->velocity.x; // reverse horizontal velocity
                         // relocate
                         float penetration = ballController->radius - std::abs(diff_vector.x);
                         if (dir == LEFT)
@@ -511,7 +511,7 @@ void Breakout::DoCollisions()
                     }
                     else // vertical collision
                     {
-                        ballController->velocity.y = -ballController->velocity.y; // reverse vertical velocity
+                        ballController->rigidbody->velocity.y = -ballController->rigidbody->velocity.y; // reverse vertical velocity
                         // relocate
                         float penetration = ballController->radius - std::abs(diff_vector.y);
                         if (dir == UP)
@@ -552,13 +552,13 @@ void Breakout::DoCollisions()
         float percentage = distance / (Player->transform.scale.x / 2.0f);
         // then move accordingly
         float strength = 2.0f;
-        glm::vec2 oldVelocity = ballController->velocity;
-        ballController->velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
+        glm::vec2 oldVelocity = ballController->rigidbody->velocity;
+        ballController->rigidbody->velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
         //Ball->Velocity.y = -Ball->Velocity.y;
         // keep speed consistent over both axes (multiply by length of old velocity, so total strength is not changed)
-        ballController->velocity = glm::normalize(ballController->velocity) * glm::length(oldVelocity);
+        ballController->rigidbody->velocity = glm::normalize(ballController->rigidbody->velocity) * glm::length(oldVelocity);
         // fix sticky paddle
-        ballController->velocity.y = -1.0f * abs(ballController->velocity.y);
+        ballController->rigidbody->velocity.y = -1.0f * abs(ballController->rigidbody->velocity.y);
         ballController->stuck = ballController->sticky;
 
         SoundEngine->play2D("Assets/Sounds/bleep.wav", false);
@@ -664,7 +664,7 @@ void Breakout::UpdatePowerUps()
 
     for (PowerUpController* powerUp : this->PowerUps)
     {
-        powerUp->gameObject->transform.position += powerUp->velocity * Game::GetDeltaTime();
+        powerUp->gameObject->transform.position += powerUp->rigidbody->velocity * Game::GetDeltaTime();
         if (powerUp->activated)
         {
             powerUp->duration -= Game::GetDeltaTime();

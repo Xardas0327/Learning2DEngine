@@ -29,7 +29,7 @@ void BallParticleSettings::SpawnParticle(Particle& particle, const GameObject& g
 	particle.transform.scale = scale;
 	particle.color = glm::vec4(rColor, rColor, rColor, 1.0f);
 	particle.lifeTime = lifeTime;
-	particle.velocity = ballController->velocity;
+	particle.velocity = ballController->rigidbody->velocity;
 	particle.speed = speed;
 }
 
