@@ -15,6 +15,7 @@ namespace Learning2DEngine
         class Collision final
         {
         private:
+            static const float PI;
             static const glm::vec2 VECTOR_UP;
             static const glm::vec2 VECTOR_DOWN;
             static const glm::vec2 VECTOR_LEFT;

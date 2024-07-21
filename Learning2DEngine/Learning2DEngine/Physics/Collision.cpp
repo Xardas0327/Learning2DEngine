@@ -4,6 +4,7 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
+        const float Collision::PI = 3.14159f;
         const glm::vec2 Collision::VECTOR_UP(0.0f, 1.0f);
         const glm::vec2 Collision::VECTOR_DOWN(0.0f, -1.0f);
         const glm::vec2 Collision::VECTOR_LEFT(-1.0f, 0.0f);
@@ -143,7 +144,7 @@ namespace Learning2DEngine
 
             auto dotProduct = glm::dot(velocityNormal, wallNormal);
             auto incidenceAngle = glm::acos(dotProduct);
-            auto reboundAngle = 3.14f - incidenceAngle;
+            auto reboundAngle = Collision::PI - incidenceAngle;
 
             collider->rigidbody->velocity = wallNormal * glm::cos(reboundAngle) * glm::length(collider->rigidbody->velocity);
         }
