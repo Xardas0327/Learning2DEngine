@@ -36,7 +36,7 @@ namespace Learning2DEngine
                 }
             }
 
-            inline glm::vec2 GetCenter() const
+            glm::vec2 GetCenter() const
             {
                 glm::vec2 position = gameObject->transform.position;
                 position.x+= gameObject->transform.scale.x / 2 + offset.x;

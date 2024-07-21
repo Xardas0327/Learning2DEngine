@@ -4,10 +4,10 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
-        const glm::vec2 VECTOR_UP = glm::vec2(0.0f, 1.0f);
-        const glm::vec2 VECTOR_DOWN = glm::vec2(0.0f, -1.0f);
-        const glm::vec2 VECTOR_LEFT = glm::vec2(-1.0f, 0.0f);
-        const glm::vec2 VECTOR_RIGHT = glm::vec2(1.0f, 0.0f);
+        const glm::vec2 Collision::VECTOR_UP(0.0f, 1.0f);
+        const glm::vec2 Collision::VECTOR_DOWN(0.0f, -1.0f);
+        const glm::vec2 Collision::VECTOR_LEFT(-1.0f, 0.0f);
+        const glm::vec2 Collision::VECTOR_RIGHT(1.0f, 0.0f);
 
         glm::vec2 Collision::GetEdge(const BoxCollider& boxCollider, glm::vec2 distanceBetweenCenters)
         {
@@ -69,21 +69,25 @@ namespace Learning2DEngine
 
         CollisionData Collision::IsCollisoned(const CircleCollider& circleCollider, const BoxCollider& boxCollider)
         {
-            glm::vec2 boxEdge = GetEdge(boxCollider, circleCollider.GetCenter() - boxCollider.GetCenter());
+            glm::vec2 circleCenter = circleCollider.GetCenter();
+            glm::vec2 boxCenter = boxCollider.GetCenter();
 
-            glm::vec2 distance = boxEdge - circleCollider.GetCenter();
+            glm::vec2 boxEdge = GetEdge(boxCollider, circleCenter - boxCenter);
+
+            glm::vec2 distance = boxEdge - circleCenter;
 
             CollisionData data;
             data.isCollisoned = glm::length(distance) <= circleCollider.radius;
 
             if (data.isCollisoned)
             {
-                data.edge1 = GetEdge(circleCollider, boxCollider.GetCenter() - circleCollider.GetCenter());
+                data.edge1 = GetEdge(circleCollider, boxCenter - circleCenter);
                 data.edge2 = boxEdge;
             }
 
             return data;
         }
+
         void Collision::FixObjectAfterBoxCollision(const Collider* collider, glm::vec2 differenceVector)
         {
             float dotProductLeft = glm::dot(glm::normalize(differenceVector), Collision::VECTOR_LEFT);

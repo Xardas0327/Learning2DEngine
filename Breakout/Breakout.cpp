@@ -13,6 +13,7 @@
 #include <Learning2DEngine/UI/Text2DRenderer.h>
 #include <Learning2DEngine/ParticleSimulator/ParticleSystem.h>
 #include <Learning2DEngine/Physics/BoxCollider.h>
+#include <Learning2DEngine/Physics/Collision.h>
 
 #include "BallController.h"
 #include "BrickController.h"
@@ -32,6 +33,7 @@ using namespace irrklang;
 // Game-related State data
 GameObject* Background;
 GameObject* Player;
+GameObject* testCircle;
 GameObject* Ball;
 PostProcessData* postProcessData;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
@@ -164,6 +166,20 @@ void Breakout::Init()
     );
     ballParticleSystem->Start();
 
+    // Test Circle
+    testCircle = new GameObject(
+        Transform(
+            ballPos - glm::vec2(0.0f, 200.0f),
+            glm::vec2(BALL_RADIUS * 5.0f, BALL_RADIUS * 5.0f)
+        )
+    );
+    testCircle->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
+        resourceManager.GetTexture("face"),
+        glm::vec3(0.0f, 1.0f, 0.0f)
+    );
+
+    testCircle->AddComponent<CircleCollider, glm::vec2, float, bool>(glm::vec2(0.0f, 0.0f), BALL_RADIUS * 2.5f, true);
+
     // Sounds
     SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
 
@@ -223,6 +239,7 @@ void Breakout::Terminate()
 {
     delete Background;
     delete Player;
+    delete testCircle;
     delete Ball;
     delete postProcessData;
     SoundEngine->drop();
@@ -344,6 +361,7 @@ void Breakout::Render()
     Background->GetComponent<SpriteRenderer>()->Draw();
     // Draw level
     this->Levels[this->Level].Draw();
+    testCircle->GetComponent<SpriteRenderer>()->Draw();
     // Draw player
     Player->GetComponent<SpriteRenderer>()->Draw();
     // Draw PowerUps
@@ -399,6 +417,7 @@ void ActivatePowerUp(PowerUpController& powerUp)
         break;
     case PowerUpType::PAD_SIZE_INCREASE:
         Player->transform.scale.x += 50;
+        Player->GetComponent<BoxCollider>()->size = Player->transform.scale;
         break;
     case PowerUpType::CONFUSE:
         // only activate if chaos wasn't already active
@@ -414,19 +433,10 @@ void ActivatePowerUp(PowerUpController& powerUp)
     }
 }
 
-bool CheckCollision(const BoxCollider& box1, const BoxCollider& box2) // AABB - AABB collision
+// AABB - AABB collision
+bool CheckCollision(const BoxCollider& box1, const BoxCollider& box2)
 {
-    glm::vec2 box1Center = box1.GetCenter();
-    glm::vec2 box2Center = box2.GetCenter();
-
-    // collision x-axis?
-    bool collisionX = box1Center.x + box1.size.x / 2.0f >= box2Center.x
-        && box2Center.x + box2.size.x / 2 >= box1Center.x;
-    // collision y-axis?
-    bool collisionY = box1Center.y + box1.size.y / 2.0f >= box2Center.y
-        && box2Center.y + box2.size.y / 2.0f >= box1Center.y;
-    // collision only if on both axes
-    return collisionX && collisionY;
+    return Collision::IsCollisoned(box1, box2).isCollisoned;
 }
 
 // calculates which direction a vector is facing (N,E,S or W)
@@ -454,22 +464,12 @@ Direction VectorDirection(glm::vec2 target)
 
 OldCollision CheckCollision(const CircleCollider& ball, const BoxCollider& box) // AABB - Circle collision
 {
-    // get center point circle first 
-    glm::vec2 ballCenter(ball.GetCenter());
-    // calculate AABB info (center, half-extents)
-    glm::vec2 aabb_half_extents(box.size.x / 2.0f, box.size.y / 2.0f);
-    glm::vec2 aabb_center(box.GetCenter());
-
-    // get difference vector between both centers
-    glm::vec2 differenceBetweenCenter = ballCenter - aabb_center;
-    glm::vec2 clamped = glm::clamp(differenceBetweenCenter, -aabb_half_extents, aabb_half_extents);
-    // add clamped value to AABB_center and we get the value of box closest to circle
-    glm::vec2 closest = aabb_center + clamped;
-    // retrieve vector between center circle and closest point AABB and check if length <= radius
-    glm::vec2 difference = closest - ballCenter;
-
-    if (glm::length(difference) < ball.radius) // not <= since in that case a collision also occurs when object one exactly touches object two, which they are at the end of each collision resolution stage.
+    auto data = Collision::IsCollisoned(ball, box);
+    if (data.isCollisoned)
+    {
+        glm::vec2 difference = data.edge2 - ball.GetCenter();
         return std::make_tuple(true, VectorDirection(difference), difference);
+    }
     else
         return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
 }
@@ -592,6 +592,7 @@ void Breakout::ResetPlayer()
 
     // reset player/ball stats
     Player->transform.scale = PLAYER_SIZE;
+    Player->GetComponent<BoxCollider>()->size = Player->transform.scale;
     Player->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
     auto ballController = Ball->GetComponent<BallController>();
     ballController->Reset(Player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
