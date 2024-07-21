@@ -27,16 +27,18 @@ namespace Learning2DEngine
         CollisionData Collision::IsCollisoned(const BoxCollider& collider1, const BoxCollider& collider2)
         {
             glm::vec2 box1Center = collider1.GetCenter();
+            glm::vec2 halfSize1 = collider1.size / 2.0f;
             glm::vec2 box2Center = collider2.GetCenter();
+            glm::vec2 halfSize2 = collider2.size / 2.0f;
 
             CollisionData data;
             data.isCollisoned =
                 // x-axis
-                box1Center.x + collider1.size.x / 2.0f >= box2Center.x
-                && box2Center.x + collider2.size.x / 2.0f >= box1Center.x
+                box1Center.x + halfSize1.x >= box2Center.x - halfSize2.x
+                && box2Center.x + halfSize2.x >= box1Center.x - halfSize1.x
                 // Y-axis
-                && box1Center.y + collider1.size.y / 2.0f >= box2Center.y
-                && box2Center.y + collider2.size.y / 2.0f >= box1Center.y;
+                && box1Center.y + halfSize1.y >= box2Center.y - halfSize2.y
+                && box2Center.y + halfSize2.y >= box1Center.y - halfSize1.y;
 
             if (data.isCollisoned)
             {
