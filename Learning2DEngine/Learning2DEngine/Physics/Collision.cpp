@@ -84,5 +84,10 @@ namespace Learning2DEngine
 
             return data;
         }
+
+        CollisionData Collision::IsCollisoned(const BoxCollider& boxCollider, const CircleCollider& circleCollider)
+        {
+            return Collision::IsCollisoned(circleCollider, boxCollider);
+        }
     }
 }

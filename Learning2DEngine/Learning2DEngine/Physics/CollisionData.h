@@ -9,9 +9,9 @@ namespace Learning2DEngine
         struct CollisionData
         {
             bool isCollisoned;
-            // The closest point of object 1 to object 2
+            // The closest point of object1 to object2
             glm::vec2 edge1;
-            // The closest point of object 2 to object 1
+            // The closest point of object2 to object1
             glm::vec2 edge2;
 
             CollisionData(bool isCollisoned = false,

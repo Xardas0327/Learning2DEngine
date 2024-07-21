@@ -9,6 +9,10 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
+        /// <summary>
+        /// The CircleCollider is really basic.
+        /// It doesn't rotate with the gameobject and the radius doesn't scale with the gameobject too.
+        /// </summary>
         class CircleCollider : public virtual Collider
         {
             friend class Learning2DEngine::System::GameObject;
