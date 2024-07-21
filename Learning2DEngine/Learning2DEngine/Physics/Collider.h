@@ -15,25 +15,13 @@ namespace Learning2DEngine
         class Collider : public virtual Learning2DEngine::System::Component
         {
             friend class Learning2DEngine::System::GameObject;
-        protected:
-            bool isTriggerOnly;
         public:
             glm::vec2 offset;
-            Rigidbody* const rigidbody;
 
-            Collider(Learning2DEngine::System::GameObject* gameObject, glm::vec2 offset = glm::vec2(0.0f, 0.0f), bool isTriggerOnly = false)
-                : Learning2DEngine::System::Component(gameObject), rigidbody(gameObject->GetComponent<Rigidbody>()),
-                offset(offset), isTriggerOnly(isTriggerOnly)
+            Collider(Learning2DEngine::System::GameObject* gameObject, glm::vec2 offset = glm::vec2(0.0f, 0.0f))
+                : Learning2DEngine::System::Component(gameObject), offset(offset)
             {
 
-            }
-
-            void Init() override
-            {
-                if (!isTriggerOnly && rigidbody == nullptr)
-                {
-                    LOG_WARNING("Collider: The Collider is not trigger, but the GameObject doesn't have Rigidbody.");
-                }
             }
 
             glm::vec2 GetCenter() const
@@ -43,17 +31,6 @@ namespace Learning2DEngine
                 position.y+= gameObject->transform.scale.y / 2 + offset.y;
 
                 return position;
-            }
-
-            inline bool IsTriggerOnly() const
-            {
-                return isTriggerOnly;
-            }
-
-            inline bool IsFrozen() const
-            {
-                return rigidbody == nullptr 
-                    || (rigidbody != nullptr && rigidbody->isFrozen);
             }
         };
     }

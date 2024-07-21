@@ -21,7 +21,7 @@ class PowerUpController : public virtual Learning2DEngine::System::Component
     friend class Learning2DEngine::System::GameObject;
 protected:
     PowerUpController(Learning2DEngine::System::GameObject* gameObject, PowerUpType type, float duration)
-        : Learning2DEngine::System::Component(gameObject), rigidbody(nullptr),
+        : Learning2DEngine::System::Component(gameObject), rigidbody(nullptr), collider(nullptr),
         type(type), duration(duration), activated(false)
     {
         gameObject->transform.scale = POWERUP_SIZE;
@@ -37,8 +37,8 @@ public:
     {
         rigidbody = gameObject->AddComponent<Learning2DEngine::Physics::Rigidbody, glm::vec2>(VELOCITY);
         collider = gameObject->AddComponent<
-            Learning2DEngine::Physics::BoxCollider, glm::vec2, glm::vec2, bool
-        >(glm::vec2(0.0f, 0.0f), gameObject->transform.scale, true);
+            Learning2DEngine::Physics::BoxCollider, glm::vec2, glm::vec2
+        >(glm::vec2(0.0f, 0.0f), gameObject->transform.scale);
     }
 
     static PowerUpController* CreatePowerUp(const PowerUpObject& powerUpObject, glm::vec2 position)

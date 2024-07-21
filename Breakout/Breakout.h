@@ -24,7 +24,7 @@ enum Direction {
 };
 
 // <collision?, what direction?, difference vector center - closest point>
-typedef std::tuple<bool, Direction, glm::vec2> OldCollision; 
+typedef std::tuple<bool, Direction, glm::vec2> CollisionResult;
 
 const glm::vec2 PLAYER_SIZE(100.0f, 20.0f);
 const float PLAYER_VELOCITY(500.0f);

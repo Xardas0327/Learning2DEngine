@@ -33,7 +33,6 @@ using namespace irrklang;
 // Game-related State data
 GameObject* Background;
 GameObject* Player;
-GameObject* testCircle;
 GameObject* Ball;
 PostProcessData* postProcessData;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
@@ -136,7 +135,7 @@ void Breakout::Init()
     Player->AddComponent<SpriteRenderer, const Texture2D&>(
         resourceManager.GetTexture("paddle")
     );
-    Player->AddComponent<BoxCollider, glm::vec2, glm::vec2, bool>(glm::vec2(0.0f, 0.0f), Player->transform.scale, true);
+    Player->AddComponent<BoxCollider, glm::vec2, glm::vec2>(glm::vec2(0.0f, 0.0f), Player->transform.scale);
 
     // Ball
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
@@ -165,20 +164,6 @@ void Breakout::Init()
         new BallParticleSettings(glm::vec2(BALL_RADIUS / 2.0f), glm::vec2(10.0f, 10.0f), 0.3f, 0.1f)
     );
     ballParticleSystem->Start();
-
-    // Test Circle
-    testCircle = new GameObject(
-        Transform(
-            ballPos - glm::vec2(0.0f, 200.0f),
-            glm::vec2(BALL_RADIUS * 5.0f, BALL_RADIUS * 5.0f)
-        )
-    );
-    testCircle->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
-        resourceManager.GetTexture("face"),
-        glm::vec3(0.0f, 1.0f, 0.0f)
-    );
-
-    testCircle->AddComponent<CircleCollider, glm::vec2, float, bool>(glm::vec2(0.0f, 0.0f), BALL_RADIUS * 2.5f, true);
 
     // Sounds
     SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
@@ -239,7 +224,6 @@ void Breakout::Terminate()
 {
     delete Background;
     delete Player;
-    delete testCircle;
     delete Ball;
     delete postProcessData;
     SoundEngine->drop();
@@ -361,7 +345,6 @@ void Breakout::Render()
     Background->GetComponent<SpriteRenderer>()->Draw();
     // Draw level
     this->Levels[this->Level].Draw();
-    testCircle->GetComponent<SpriteRenderer>()->Draw();
     // Draw player
     Player->GetComponent<SpriteRenderer>()->Draw();
     // Draw PowerUps
@@ -462,7 +445,7 @@ Direction VectorDirection(glm::vec2 target)
     return (Direction)best_match;
 }
 
-OldCollision CheckCollision(const CircleCollider& ball, const BoxCollider& box) // AABB - Circle collision
+CollisionResult CheckCollision(const CircleCollider& ball, const BoxCollider& box) // AABB - Circle collision
 {
     auto data = Collision::IsCollisoned(ball, box);
     if (data.isCollisoned)
@@ -477,15 +460,11 @@ OldCollision CheckCollision(const CircleCollider& ball, const BoxCollider& box) 
 void Breakout::DoCollisions()
 {
     auto ballController = Ball->GetComponent<BallController>();
-    auto testCircleResult = Collision::IsCollisoned(*ballController->collider, *testCircle->GetComponent<CircleCollider>());
-    /*if (testCircleResult.isCollisoned)
-        LOG_INFO("Benne");*/
-
     for (BrickController* box : this->Levels[this->Level].bricks)
     {
         if (box->gameObject->isActive)
         {
-            OldCollision collision = CheckCollision(*ballController->collider, *box->collider);
+            CollisionResult collision = CheckCollision(*ballController->collider, *box->collider);
             if (std::get<0>(collision)) // if collision is true
             {
                 // destroy block if not solid
@@ -539,7 +518,7 @@ void Breakout::DoCollisions()
             // first check if powerup passed bottom edge, if so: keep as inactive and destroy
             if (powerUp->gameObject->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
                 powerUp->gameObject->isActive = false;
-
+            
             if (CheckCollision(*Player->GetComponent<BoxCollider>(), *powerUp->collider))
             {	// collided with player, now activate powerup
                 ActivatePowerUp(*powerUp);
@@ -550,7 +529,7 @@ void Breakout::DoCollisions()
         }
     }
     // check collisions for player pad (unless stuck)
-    OldCollision result = CheckCollision(*ballController->collider, *Player->GetComponent<BoxCollider>());
+    CollisionResult result = CheckCollision(*ballController->collider, *Player->GetComponent<BoxCollider>());
     if (!ballController->stuck && std::get<0>(result))
     {
         // check where it hit the board, and change velocity based on where it hit the board

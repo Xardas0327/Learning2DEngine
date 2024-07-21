@@ -19,8 +19,8 @@ public:
 
     void Init() override
     {
-        collider = gameObject->AddComponent<
-            Learning2DEngine::Physics::BoxCollider, glm::vec2, glm::vec2, bool
-        >(glm::vec2(0.0f, 0.0f), gameObject->transform.scale, true);
+        collider = gameObject->AddComponent<Learning2DEngine::Physics::BoxCollider, glm::vec2, glm::vec2>(
+            glm::vec2(0.0f, 0.0f),
+            gameObject->transform.scale);
     }
 };
