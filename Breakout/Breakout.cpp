@@ -12,6 +12,8 @@
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/UI/Text2DRenderer.h>
 #include <Learning2DEngine/ParticleSimulator/ParticleSystem.h>
+#include <Learning2DEngine/Physics/BoxCollider.h>
+#include <Learning2DEngine/Physics/Collision.h>
 
 #include "BallController.h"
 #include "BrickController.h"
@@ -25,6 +27,7 @@ using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::UI;
 using namespace Learning2DEngine::ParticleSimulator;
+using namespace Learning2DEngine::Physics;
 using namespace irrklang;
 
 // Game-related State data
@@ -132,6 +135,7 @@ void Breakout::Init()
     Player->AddComponent<SpriteRenderer, const Texture2D&>(
         resourceManager.GetTexture("paddle")
     );
+    Player->AddComponent<BoxCollider, glm::vec2>(Player->transform.scale);
 
     // Ball
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
@@ -144,7 +148,7 @@ void Breakout::Init()
     Ball->AddComponent<SpriteRenderer, const Texture2D&>(
         resourceManager.GetTexture("face")
     );
-    auto ballController = Ball->AddComponent<BallController, float, glm::vec2>(BALL_RADIUS, INITIAL_BALL_VELOCITY);
+    auto ballController = Ball->AddComponent<BallController, float>(BALL_RADIUS);
 
     ParticleSystemSettings ballParticleSystemSettings(
         true,
@@ -384,7 +388,7 @@ void ActivatePowerUp(PowerUpController& powerUp)
     switch (powerUp.type)
     {
     case PowerUpType::SPEED:
-        ballController->velocity *= 1.2;
+        ballController->rigidbody->velocity *= 1.2;
         break;
     case PowerUpType::STICKY:
         ballController->sticky = true;
@@ -396,6 +400,7 @@ void ActivatePowerUp(PowerUpController& powerUp)
         break;
     case PowerUpType::PAD_SIZE_INCREASE:
         Player->transform.scale.x += 50;
+        Player->GetComponent<BoxCollider>()->size = Player->transform.scale;
         break;
     case PowerUpType::CONFUSE:
         // only activate if chaos wasn't already active
@@ -411,16 +416,10 @@ void ActivatePowerUp(PowerUpController& powerUp)
     }
 }
 
-bool CheckCollision(GameObject& one, GameObject& two) // AABB - AABB collision
+// AABB - AABB collision
+bool CheckCollision(const BoxCollider& box1, const BoxCollider& box2)
 {
-    // collision x-axis?
-    bool collisionX = one.transform.position.x + one.transform.scale.x >= two.transform.position.x &&
-        two.transform.position.x + two.transform.scale.x >= one.transform.position.x;
-    // collision y-axis?
-    bool collisionY = one.transform.position.y + one.transform.scale.y >= two.transform.position.y &&
-        two.transform.position.y + two.transform.scale.y >= one.transform.position.y;
-    // collision only if on both axes
-    return collisionX && collisionY;
+    return Collision::IsCollisoned(box1, box2).isCollisoned;
 }
 
 // calculates which direction a vector is facing (N,E,S or W)
@@ -446,26 +445,14 @@ Direction VectorDirection(glm::vec2 target)
     return (Direction)best_match;
 }
 
-Collision CheckCollision(BallController& one, GameObject& two) // AABB - Circle collision
+CollisionResult CheckCollision(const CircleCollider& ball, const BoxCollider& box) // AABB - Circle collision
 {
-    // get center point circle first 
-    glm::vec2 center(one.gameObject->transform.position + one.radius);
-    // calculate AABB info (center, half-extents)
-    glm::vec2 aabb_half_extents(two.transform.scale.x / 2.0f, two.transform.scale.y / 2.0f);
-    glm::vec2 aabb_center(
-        two.transform.position.x + aabb_half_extents.x,
-        two.transform.position.y + aabb_half_extents.y
-    );
-    // get difference vector between both centers
-    glm::vec2 difference = center - aabb_center;
-    glm::vec2 clamped = glm::clamp(difference, -aabb_half_extents, aabb_half_extents);
-    // add clamped value to AABB_center and we get the value of box closest to circle
-    glm::vec2 closest = aabb_center + clamped;
-    // retrieve vector between center circle and closest point AABB and check if length <= radius
-    difference = closest - center;
-
-    if (glm::length(difference) < one.radius) // not <= since in that case a collision also occurs when object one exactly touches object two, which they are at the end of each collision resolution stage.
+    auto data = Collision::IsCollisoned(ball, box);
+    if (data.isCollisoned)
+    {
+        glm::vec2 difference = data.edge2 - ball.GetCenter();
         return std::make_tuple(true, VectorDirection(difference), difference);
+    }
     else
         return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
 }
@@ -473,12 +460,11 @@ Collision CheckCollision(BallController& one, GameObject& two) // AABB - Circle 
 void Breakout::DoCollisions()
 {
     auto ballController = Ball->GetComponent<BallController>();
-
     for (BrickController* box : this->Levels[this->Level].bricks)
     {
         if (box->gameObject->isActive)
         {
-            Collision collision = CheckCollision(*ballController, *box->gameObject);
+            CollisionResult collision = CheckCollision(*ballController->collider, *box->collider);
             if (std::get<0>(collision)) // if collision is true
             {
                 // destroy block if not solid
@@ -501,7 +487,7 @@ void Breakout::DoCollisions()
                 {
                     if (dir == LEFT || dir == RIGHT) // horizontal collision
                     {
-                        ballController->velocity.x = -ballController->velocity.x; // reverse horizontal velocity
+                        ballController->rigidbody->velocity.x = -ballController->rigidbody->velocity.x; // reverse horizontal velocity
                         // relocate
                         float penetration = ballController->radius - std::abs(diff_vector.x);
                         if (dir == LEFT)
@@ -511,7 +497,7 @@ void Breakout::DoCollisions()
                     }
                     else // vertical collision
                     {
-                        ballController->velocity.y = -ballController->velocity.y; // reverse vertical velocity
+                        ballController->rigidbody->velocity.y = -ballController->rigidbody->velocity.y; // reverse vertical velocity
                         // relocate
                         float penetration = ballController->radius - std::abs(diff_vector.y);
                         if (dir == UP)
@@ -532,8 +518,8 @@ void Breakout::DoCollisions()
             // first check if powerup passed bottom edge, if so: keep as inactive and destroy
             if (powerUp->gameObject->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
                 powerUp->gameObject->isActive = false;
-
-            if (CheckCollision(*Player, *(powerUp->gameObject)))
+            
+            if (CheckCollision(*Player->GetComponent<BoxCollider>(), *powerUp->collider))
             {	// collided with player, now activate powerup
                 ActivatePowerUp(*powerUp);
                 powerUp->gameObject->isActive = false;
@@ -543,7 +529,7 @@ void Breakout::DoCollisions()
         }
     }
     // check collisions for player pad (unless stuck)
-    Collision result = CheckCollision(*ballController, *Player);
+    CollisionResult result = CheckCollision(*ballController->collider, *Player->GetComponent<BoxCollider>());
     if (!ballController->stuck && std::get<0>(result))
     {
         // check where it hit the board, and change velocity based on where it hit the board
@@ -552,13 +538,12 @@ void Breakout::DoCollisions()
         float percentage = distance / (Player->transform.scale.x / 2.0f);
         // then move accordingly
         float strength = 2.0f;
-        glm::vec2 oldVelocity = ballController->velocity;
-        ballController->velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
-        //Ball->Velocity.y = -Ball->Velocity.y;
+        glm::vec2 oldVelocity = ballController->rigidbody->velocity;
+        ballController->rigidbody->velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
         // keep speed consistent over both axes (multiply by length of old velocity, so total strength is not changed)
-        ballController->velocity = glm::normalize(ballController->velocity) * glm::length(oldVelocity);
+        ballController->rigidbody->velocity = glm::normalize(ballController->rigidbody->velocity) * glm::length(oldVelocity);
         // fix sticky paddle
-        ballController->velocity.y = -1.0f * abs(ballController->velocity.y);
+        ballController->rigidbody->velocity.y = -1.0f * abs(ballController->rigidbody->velocity.y);
         ballController->stuck = ballController->sticky;
 
         SoundEngine->play2D("Assets/Sounds/bleep.wav", false);
@@ -589,6 +574,7 @@ void Breakout::ResetPlayer()
 
     // reset player/ball stats
     Player->transform.scale = PLAYER_SIZE;
+    Player->GetComponent<BoxCollider>()->size = Player->transform.scale;
     Player->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
     auto ballController = Ball->GetComponent<BallController>();
     ballController->Reset(Player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
@@ -664,7 +650,7 @@ void Breakout::UpdatePowerUps()
 
     for (PowerUpController* powerUp : this->PowerUps)
     {
-        powerUp->gameObject->transform.position += powerUp->velocity * Game::GetDeltaTime();
+        powerUp->rigidbody->Update();
         if (powerUp->activated)
         {
             powerUp->duration -= Game::GetDeltaTime();

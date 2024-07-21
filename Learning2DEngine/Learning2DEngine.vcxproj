@@ -163,6 +163,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Learning2DEngine\Physics\Collision.cpp" />
     <ClCompile Include="Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\MSAA.cpp" />
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystem.cpp" />
@@ -179,6 +180,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\ParticleSimulator\BasicParticleSettings.h" />
+    <ClInclude Include="Learning2DEngine\Physics\BoxCollider.h" />
+    <ClInclude Include="Learning2DEngine\Physics\CircleCollider.h" />
+    <ClInclude Include="Learning2DEngine\Physics\Collider.h" />
+    <ClInclude Include="Learning2DEngine\Physics\Collision.h" />
+    <ClInclude Include="Learning2DEngine\Physics\CollisionData.h" />
+    <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h" />
     <ClInclude Include="Learning2DEngine\Render\Blend.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\MSAA.h" />
