@@ -15,7 +15,7 @@ namespace Learning2DEngine
         public:
             float radius;
 
-            CircleCollider(Learning2DEngine::System::GameObject* gameObject, glm::vec2 offset, float radius)
+            CircleCollider(Learning2DEngine::System::GameObject* gameObject, float radius, glm::vec2 offset = glm::vec2(0.0f, 0.0f))
                 : Learning2DEngine::System::Component(gameObject),
                 Collider(gameObject, offset), radius(radius)
             {

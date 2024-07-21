@@ -135,7 +135,7 @@ void Breakout::Init()
     Player->AddComponent<SpriteRenderer, const Texture2D&>(
         resourceManager.GetTexture("paddle")
     );
-    Player->AddComponent<BoxCollider, glm::vec2, glm::vec2>(glm::vec2(0.0f, 0.0f), Player->transform.scale);
+    Player->AddComponent<BoxCollider, glm::vec2>(Player->transform.scale);
 
     // Ball
     glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
@@ -650,7 +650,7 @@ void Breakout::UpdatePowerUps()
 
     for (PowerUpController* powerUp : this->PowerUps)
     {
-        powerUp->gameObject->transform.position += powerUp->rigidbody->velocity * Game::GetDeltaTime();
+        powerUp->rigidbody->Update();
         if (powerUp->activated)
         {
             powerUp->duration -= Game::GetDeltaTime();

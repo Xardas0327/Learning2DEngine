@@ -6,8 +6,6 @@
 #include "../System/GameObject.h"
 #include "../DebugTool/Log.h"
 
-#include "Rigidbody.h"
-
 namespace Learning2DEngine
 {
     namespace Physics

@@ -17,7 +17,7 @@ BallController::BallController(GameObject* gameObject, float radius)
 void BallController::Init()
 {
     rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2>(INITIAL_BALL_VELOCITY);
-    collider = gameObject->AddComponent<CircleCollider, glm::vec2, float>(glm::vec2(0.0f, 0.0f), radius);
+    collider = gameObject->AddComponent<CircleCollider, float>(radius);
 }
 
 void BallController::Move()
@@ -25,7 +25,7 @@ void BallController::Move()
     if (!stuck)
     {
         int windowWidth = RenderManager::GetInstance().GetResolution().GetWidth();
-        gameObject->transform.position += rigidbody->velocity * Game::GetDeltaTime();
+        rigidbody->Update();
 
         if (gameObject->transform.position.x <= 0.0f)
         {

@@ -9,7 +9,7 @@ class BrickController : public virtual Learning2DEngine::System::Component
 	friend class Learning2DEngine::System::GameObject;
 protected:
     BrickController(Learning2DEngine::System::GameObject* gameObject, bool isSolid = false)
-        : Component(gameObject), isSolid(isSolid)
+        : Component(gameObject), isSolid(isSolid), collider(nullptr)
     {
 
     }
@@ -19,8 +19,6 @@ public:
 
     void Init() override
     {
-        collider = gameObject->AddComponent<Learning2DEngine::Physics::BoxCollider, glm::vec2, glm::vec2>(
-            glm::vec2(0.0f, 0.0f),
-            gameObject->transform.scale);
+        collider = gameObject->AddComponent<Learning2DEngine::Physics::BoxCollider, glm::vec2>(gameObject->transform.scale);
     }
 };

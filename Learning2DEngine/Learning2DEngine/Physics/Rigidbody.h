@@ -4,6 +4,7 @@
 
 #include "../System/Component.h"
 #include "../System/GameObject.h"
+#include "../System/Game.h"
 
 namespace Learning2DEngine
 {
@@ -26,6 +27,17 @@ namespace Learning2DEngine
                 : Component(gameObject), velocity(glm::vec2(0.0f, 0.0f)), isFrozen(isFrozen)
             {
 
+            }
+
+            /// <summary>
+            /// If it is not frozen, the position of gameobject will be updated.
+            /// </summary>
+            void Update()
+            {
+                if (!isFrozen)
+                {
+                    gameObject->transform.position += velocity * Learning2DEngine::System::Game::GetDeltaTime();
+                }
             }
         };
     }
