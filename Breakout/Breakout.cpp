@@ -477,6 +477,9 @@ OldCollision CheckCollision(const CircleCollider& ball, const BoxCollider& box) 
 void Breakout::DoCollisions()
 {
     auto ballController = Ball->GetComponent<BallController>();
+    auto testCircleResult = Collision::IsCollisoned(*ballController->collider, *testCircle->GetComponent<CircleCollider>());
+    /*if (testCircleResult.isCollisoned)
+        LOG_INFO("Benne");*/
 
     for (BrickController* box : this->Levels[this->Level].bricks)
     {
