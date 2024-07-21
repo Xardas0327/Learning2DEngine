@@ -10,13 +10,10 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
-        class Rigidbody : public virtual Learning2DEngine::System::Component
+        class Rigidbody : public virtual System::Component
         {
             friend class Learning2DEngine::System::GameObject;
-        public:
-            glm::vec2 velocity;
-            bool isFrozen;
-
+        protected:
             Rigidbody(Learning2DEngine::System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f))
                 : Component(gameObject), velocity(velocity), isFrozen(false)
             {
@@ -28,6 +25,9 @@ namespace Learning2DEngine
             {
 
             }
+        public:
+            glm::vec2 velocity;
+            bool isFrozen;
 
             /// <summary>
             /// If it is not frozen, the position of gameobject will be updated.

@@ -10,17 +10,16 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
-        class Collider : public virtual Learning2DEngine::System::Component
+        class Collider : public virtual System::Component
         {
-            friend class Learning2DEngine::System::GameObject;
-        public:
-            glm::vec2 offset;
-
+        protected:
             Collider(Learning2DEngine::System::GameObject* gameObject, glm::vec2 offset = glm::vec2(0.0f, 0.0f))
                 : Learning2DEngine::System::Component(gameObject), offset(offset)
             {
 
             }
+        public:
+            glm::vec2 offset;
 
             glm::vec2 GetCenter() const
             {
