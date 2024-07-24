@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 
 #include "InputStatus.h"
+#include "IKeyboardMouseRefresher.h"
+#include "KeyboardMouseEventItem.h"
 #include "../Render/RenderManager.h"
 #include "../Render/Shader.h"
 #include "../Render/MSAA.h"
@@ -28,7 +30,7 @@ namespace Learning2DEngine
                 Render without any effect
             Update Window
         */
-        class Game
+        class Game : public virtual IKeyboardMouseRefresher
         {
         private:
             float lastFrame;
@@ -38,6 +40,7 @@ namespace Learning2DEngine
             bool isPostProcessEffectUsed;
             Render::MSAA msaaRender;
             Render::PostProcessEffect ppeRender;
+            KeyboardMouseEventItem keyboardMouseEventItem;
 
             /// <summary>
             /// It is multiplied by timeScale.
@@ -46,14 +49,13 @@ namespace Learning2DEngine
             static float deltaTime;
 
             void UpdateKeyboardMouseEvents();
-            static void CallbackRefreshKeyboardMouse(int key, int scancode, int action, int mode);
             /// <summary>
             /// The glfwPollEvents doesn't refresh the data on every frame.
             /// That's why this function update the InputStatus::KEY_DOWN to InputStatus::KEY_HOLD.
             /// </summary>
             void FixKeyboardMouse();
         protected:
-            static InputStatus inputKeys[INPUT_KEY_SIZE];
+            InputStatus inputKeys[INPUT_KEY_SIZE];
 
             /// <summary>
             /// It has to be initialized.
@@ -67,6 +69,8 @@ namespace Learning2DEngine
         public:
             Game();
             virtual ~Game();
+
+            void RefreshKeyboardMouse(int key, int scancode, int action, int mode) override;
 
             /// <summary>
             /// It will initialize the RenderManager.

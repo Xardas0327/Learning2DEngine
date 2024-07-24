@@ -14,14 +14,13 @@ namespace Learning2DEngine
 
     namespace System
     {
-        InputStatus Game::inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
         float Game::deltaTime = 0.0f;
         glm::mat4 Game::cameraProjection = glm::mat4(0.0f);
 
         Game::Game()
             : lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT), isMsaaActive(false),
             isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
-            ppeRender()
+            ppeRender(), keyboardMouseEventItem(this)
         {
         }
 
@@ -39,18 +38,22 @@ namespace Learning2DEngine
         void Game::Init()
         {
             auto& renderManager = RenderManager::GetInstance();
-            renderManager.AddKeyboardEvent(Game::CallbackRefreshKeyboardMouse);
+            renderManager.AddKeyboardEvent(&keyboardMouseEventItem);
             renderManager.EnableBlend();
             renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
             auto& textRenderer = Text2DRenderer::GetInstance();
             textRenderer.Init();
+
+            inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
         }
 
         void Game::Terminate()
         {
             StopMSAA();
             StopPostProcessEffect();
+
+            RenderManager::GetInstance().RemoveKeyboardEvent(&keyboardMouseEventItem);
 
             ResourceManager::GetInstance().Clear();
             Text2DRenderer::GetInstance().Terminate();
@@ -170,20 +173,20 @@ namespace Learning2DEngine
             glfwPollEvents();
         }
 
-        void Game::CallbackRefreshKeyboardMouse(int key, int scancode, int action, int mode)
+        void Game::RefreshKeyboardMouse(int key, int scancode, int action, int mode)
         {
             if (key >= 0 && key < 1024)
             {
                 switch (action)
                 {
                 case GLFW_RELEASE:
-                    Game::inputKeys[key] = InputStatus::KEY_UP;
+                    inputKeys[key] = InputStatus::KEY_UP;
                     break;
                 case GLFW_PRESS:
-                    Game::inputKeys[key] = InputStatus::KEY_DOWN;
+                    inputKeys[key] = InputStatus::KEY_DOWN;
                     break;
                 case GLFW_REPEAT:
-                    Game::inputKeys[key] = InputStatus::KEY_HOLD;
+                    inputKeys[key] = InputStatus::KEY_HOLD;
                     break;
                 default:
                     LOG_WARNING("GAME: Unknow input action: " + action);

@@ -17,7 +17,8 @@ namespace Learning2DEngine
     namespace UI
     {
         Text2DRenderer::Text2DRenderer() :
-            vao(0), vbo(0), ebo(0), characters(), textShader()
+            vao(0), vbo(0), ebo(0), characters(), textShader(),
+            resolutionEventItem(this)
         {
 
         }
@@ -66,31 +67,16 @@ namespace Learning2DEngine
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
 
-            renderManager.AddFramebufferSizeEvent(Text2DRenderer::CallbackRefreshWindowResolution);
+            renderManager.AddFramebufferSizeEvent(&resolutionEventItem);
         }
 
         void Text2DRenderer::Terminate()
         {
+            RenderManager::GetInstance().RemoveFramebufferSizeEvent(&resolutionEventItem);
             Clear();
             glDeleteVertexArrays(1, &vao);
             glDeleteBuffers(1, &vbo);
             glDeleteBuffers(1, &ebo);
-        }
-
-        void Text2DRenderer::CallbackRefreshWindowResolution(Resolution resolution)
-        {
-            Text2DRenderer::GetInstance().RefreshWindowResolution(resolution);
-        }
-
-        void Text2DRenderer::RefreshWindowResolution(Resolution resolution)
-        {
-            textShader.SetMatrix4(
-                "projection",
-                glm::ortho(
-                    0.0f,
-                    static_cast<float>(resolution.GetWidth()),
-                    static_cast<float>(resolution.GetHeight()),
-                    0.0f));
         }
 
         void Text2DRenderer::Load(const std::string& font, unsigned int fontSize)
@@ -253,6 +239,17 @@ namespace Learning2DEngine
             }
             glBindVertexArray(0);
             glBindTexture(GL_TEXTURE_2D, 0);
+        }
+
+        void Text2DRenderer::RefreshResolution(const Resolution& resolution)
+        {
+            textShader.SetMatrix4(
+                "projection",
+                glm::ortho(
+                    0.0f,
+                    static_cast<float>(resolution.GetWidth()),
+                    static_cast<float>(resolution.GetHeight()),
+                    0.0f));
         }
     }
 }

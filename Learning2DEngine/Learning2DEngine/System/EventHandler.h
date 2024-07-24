@@ -2,6 +2,8 @@
 
 #include <list>
 
+#include "EventItem.h"
+
 namespace Learning2DEngine
 {
 	namespace System
@@ -9,19 +11,16 @@ namespace Learning2DEngine
 		template<class ...Params>
 		class EventHandler
 		{
-		public:
-			using EventFunction = void(*)(Params...);
-
 		private:
-			std::list<EventFunction> events;
+			std::list<EventItem<Params...>*> events;
 
 		public:
-			inline void Add(const EventFunction e)
+			inline void Add(EventItem<Params...>* e)
 			{
 				events.push_back(e);
 			}
 
-			inline void Remove(const EventFunction e)
+			inline void Remove(EventItem<Params...>* e)
 			{
 				events.remove(e);
 			}
@@ -31,11 +30,11 @@ namespace Learning2DEngine
 				events.clear();
 			}
 
-			inline void Invoke(Params... params)
+			void Invoke(Params... params)
 			{
-				for (EventFunction func : events)
+				for (auto item : events)
 				{
-					func(params...);
+					item->Call(params...);
 				}
 			}
 		};

@@ -146,24 +146,24 @@ namespace Learning2DEngine
             framebufferSizeEventHandler.Invoke(resolution);
         }
 
-        void RenderManager::AddKeyboardEvent(const EventHandler<int, int, int, int>::EventFunction func)
+        void RenderManager::AddKeyboardEvent(EventItem<int, int, int, int>* evenItem)
         {
-            keyboardEventHandler.Add(func);
+            keyboardEventHandler.Add(evenItem);
         }
 
-        void RenderManager::RemoveKeyboardEvent(const EventHandler<int, int, int, int>::EventFunction func)
+        void RenderManager::RemoveKeyboardEvent(EventItem<int, int, int, int>* evenItem)
         {
-            keyboardEventHandler.Remove(func);
+            keyboardEventHandler.Remove(evenItem);
         }
 
-        void RenderManager::AddFramebufferSizeEvent(const System::EventHandler<Resolution>::EventFunction func)
+        void RenderManager::AddFramebufferSizeEvent(EventItem<Resolution>* evenItem)
         {
-            framebufferSizeEventHandler.Add(func);
+            framebufferSizeEventHandler.Add(evenItem);
         }
 
-        void RenderManager::RemoveFramebufferSizeEvent(const System::EventHandler<Resolution>::EventFunction func)
+        void RenderManager::RemoveFramebufferSizeEvent(EventItem<Resolution>* evenItem)
         {
-            framebufferSizeEventHandler.Remove(func);
+            framebufferSizeEventHandler.Remove(evenItem);
         }
     }
 }

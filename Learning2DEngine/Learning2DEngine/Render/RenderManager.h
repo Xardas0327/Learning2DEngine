@@ -8,6 +8,7 @@
 #include "Blend.h"
 #include "../System/Singleton.h"
 #include "../System/EventHandler.h"
+#include "../System/EventItem.h"
 
 namespace Learning2DEngine
 {
@@ -64,10 +65,10 @@ namespace Learning2DEngine
 				return this->blendFuncFactor;
 			}
 
-			void AddKeyboardEvent(const System::EventHandler<int, int, int, int>::EventFunction func);
-			void RemoveKeyboardEvent(const System::EventHandler<int, int, int, int>::EventFunction func);
-			void AddFramebufferSizeEvent(const System::EventHandler<Resolution>::EventFunction func);
-			void RemoveFramebufferSizeEvent(const System::EventHandler<Resolution>::EventFunction func);
+			void AddKeyboardEvent(System::EventItem<int, int, int, int>* evenItem);
+			void RemoveKeyboardEvent(System::EventItem<int, int, int, int>* evenItem);
+			void AddFramebufferSizeEvent(System::EventItem<Resolution>* evenItem);
+			void RemoveFramebufferSizeEvent(System::EventItem<Resolution>* evenItem);
 		};
 	}
 }

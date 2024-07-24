@@ -7,6 +7,8 @@
 #include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
+#include "../System/ResolutionEventItem.h"
+#include "../Render/IResolutionRefresher.h"
 #include "../Render/Shader.h"
 #include "../Render/Resolution.h"
 #include "FreeTypeCharacter.h"
@@ -18,7 +20,7 @@ namespace Learning2DEngine
     {
 #define FONT_NUMBER 128
 
-        class Text2DRenderer : public virtual System::Singleton<Text2DRenderer>
+        class Text2DRenderer : public virtual System::Singleton<Text2DRenderer>, public virtual Render::IResolutionRefresher
         {
             friend class System::Singleton<Text2DRenderer>;
             typedef std::map<char, FreeTypeCharacter> CharacterMap;
@@ -28,13 +30,9 @@ namespace Learning2DEngine
             unsigned int ebo;
             std::map<FontSizePair, CharacterMap> characters;
             Render::Shader textShader;
+            System::ResolutionEventItem resolutionEventItem;
 
             Text2DRenderer();
-
-            // Callbacks
-
-            static void CallbackRefreshWindowResolution(Render::Resolution resolution);
-            void RefreshWindowResolution(Render::Resolution resolution);
         public:
             /// <summary>
             /// It should be inited after RenderManager.
@@ -58,6 +56,7 @@ namespace Learning2DEngine
             void Unload(const FontSizePair& fontSizePair);
             void Clear();
             void RenderText(const Text& text);
+            void RefreshResolution(const Render::Resolution& resolution) override;
         };
     }
 }
