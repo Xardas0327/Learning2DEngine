@@ -4,7 +4,7 @@
 
 namespace Learning2DEngine
 {
-    using namespace System;
+    using namespace EventSystem;
 
     namespace Render
     {

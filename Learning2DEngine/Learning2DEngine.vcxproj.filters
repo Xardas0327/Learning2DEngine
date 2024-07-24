@@ -161,13 +161,13 @@
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\System\EventHandler.h">
+    <ClInclude Include="Learning2DEngine\EventSystem\EventHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\System\EventItem.h">
+    <ClInclude Include="Learning2DEngine\EventSystem\EventItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\System\KeyboardMouseEventItem.h">
+    <ClInclude Include="Learning2DEngine\EventSystem\KeyboardMouseEventItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\System\IKeyboardMouseRefresher.h">
@@ -176,7 +176,7 @@
     <ClInclude Include="Learning2DEngine\Render\IResolutionRefresher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\System\ResolutionEventItem.h">
+    <ClInclude Include="Learning2DEngine\EventSystem\ResolutionEventItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

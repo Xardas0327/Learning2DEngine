@@ -45,7 +45,10 @@ namespace Learning2DEngine
             auto& textRenderer = Text2DRenderer::GetInstance();
             textRenderer.Init();
 
-            inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
+            for (int i = 0; i < INPUT_KEY_SIZE; ++i)
+            {
+                inputKeys[i] = InputStatus::KEY_UP;
+            }
         }
 
         void Game::Terminate()

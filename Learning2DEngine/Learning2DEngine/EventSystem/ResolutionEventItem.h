@@ -2,11 +2,11 @@
 
 #include "../Render/Resolution.h"
 #include "../Render/IResolutionRefresher.h"
-#include "../System/EventItem.h"
+#include "EventItem.h"
 
 namespace Learning2DEngine
 {
-	namespace System
+	namespace EventSystem
 	{
 		class ResolutionEventItem final : public virtual EventItem<Render::Resolution>
 		{

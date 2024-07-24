@@ -4,7 +4,7 @@
 
 #include "InputStatus.h"
 #include "IKeyboardMouseRefresher.h"
-#include "KeyboardMouseEventItem.h"
+#include "../EventSystem/KeyboardMouseEventItem.h"
 #include "../Render/RenderManager.h"
 #include "../Render/Shader.h"
 #include "../Render/MSAA.h"
@@ -40,7 +40,7 @@ namespace Learning2DEngine
             bool isPostProcessEffectUsed;
             Render::MSAA msaaRender;
             Render::PostProcessEffect ppeRender;
-            KeyboardMouseEventItem keyboardMouseEventItem;
+            EventSystem::KeyboardMouseEventItem keyboardMouseEventItem;
 
             /// <summary>
             /// It is multiplied by timeScale.

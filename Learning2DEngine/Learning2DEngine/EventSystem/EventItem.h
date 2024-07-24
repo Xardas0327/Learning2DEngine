@@ -2,7 +2,7 @@
 
 namespace Learning2DEngine
 {
-	namespace System
+	namespace EventSystem
 	{
 		template<class ...Params>
 		class EventItem

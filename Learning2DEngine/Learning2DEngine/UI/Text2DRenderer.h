@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
-#include "../System/ResolutionEventItem.h"
+#include "../EventSystem/ResolutionEventItem.h"
 #include "../Render/IResolutionRefresher.h"
 #include "../Render/Shader.h"
 #include "../Render/Resolution.h"
@@ -30,7 +30,7 @@ namespace Learning2DEngine
             unsigned int ebo;
             std::map<FontSizePair, CharacterMap> characters;
             Render::Shader textShader;
-            System::ResolutionEventItem resolutionEventItem;
+            EventSystem::ResolutionEventItem resolutionEventItem;
 
             Text2DRenderer();
         public:

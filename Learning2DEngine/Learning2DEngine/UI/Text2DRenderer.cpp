@@ -11,6 +11,7 @@
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
+using namespace Learning2DEngine::EventSystem;
 
 namespace Learning2DEngine
 {

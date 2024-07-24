@@ -7,8 +7,8 @@
 #include "Resolution.h"
 #include "Blend.h"
 #include "../System/Singleton.h"
-#include "../System/EventHandler.h"
-#include "../System/EventItem.h"
+#include "../EventSystem/EventHandler.h"
+#include "../EventSystem/EventItem.h"
 
 namespace Learning2DEngine
 {
@@ -21,8 +21,8 @@ namespace Learning2DEngine
 			GLFWwindow* window;
 			Resolution resolution;
 			glm::vec4 clearColor;
-			System::EventHandler<int, int, int, int> keyboardEventHandler;
-			System::EventHandler<Resolution> framebufferSizeEventHandler;
+			EventSystem::EventHandler<int, int, int, int> keyboardEventHandler;
+			EventSystem::EventHandler<Resolution> framebufferSizeEventHandler;
 			bool isBlendActive;
 			BlendFuncFactor blendFuncFactor;
 
@@ -65,10 +65,10 @@ namespace Learning2DEngine
 				return this->blendFuncFactor;
 			}
 
-			void AddKeyboardEvent(System::EventItem<int, int, int, int>* evenItem);
-			void RemoveKeyboardEvent(System::EventItem<int, int, int, int>* evenItem);
-			void AddFramebufferSizeEvent(System::EventItem<Resolution>* evenItem);
-			void RemoveFramebufferSizeEvent(System::EventItem<Resolution>* evenItem);
+			void AddKeyboardEvent(EventSystem::EventItem<int, int, int, int>* evenItem);
+			void RemoveKeyboardEvent(EventSystem::EventItem<int, int, int, int>* evenItem);
+			void AddFramebufferSizeEvent(EventSystem::EventItem<Resolution>* evenItem);
+			void RemoveFramebufferSizeEvent(EventSystem::EventItem<Resolution>* evenItem);
 		};
 	}
 }

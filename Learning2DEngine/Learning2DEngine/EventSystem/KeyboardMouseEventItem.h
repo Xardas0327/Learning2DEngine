@@ -1,18 +1,18 @@
 #pragma once
 
 #include "EventItem.h"
-#include "IKeyboardMouseRefresher.h"
+#include "../System/IKeyboardMouseRefresher.h"
 
 namespace Learning2DEngine
 {
-	namespace System
+	namespace EventSystem
 	{
 		class KeyboardMouseEventItem final : public virtual EventItem<int, int, int, int>
 		{
 		private:
-			IKeyboardMouseRefresher* refresher;
+			System::IKeyboardMouseRefresher* refresher;
 		public:
-			KeyboardMouseEventItem(IKeyboardMouseRefresher* refresher)
+			KeyboardMouseEventItem(System::IKeyboardMouseRefresher* refresher)
 				: refresher(refresher)
 			{
 
