@@ -5,7 +5,7 @@
 #include <exception>
 #include <string>
 
-#include "Log.h"
+#include "../DebugTool/Log.h"
 
 namespace Learning2DEngine
 {

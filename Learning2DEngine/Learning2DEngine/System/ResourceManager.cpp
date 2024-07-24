@@ -7,7 +7,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
-#include "Log.h"
+#include "../DebugTool/Log.h"
 
 using namespace Learning2DEngine::Render;
 
