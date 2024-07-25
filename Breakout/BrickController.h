@@ -13,12 +13,12 @@ protected:
     {
 
     }
-public:
-    bool isSolid;
-    Learning2DEngine::Physics::BoxCollider* collider;
 
     void Init() override
     {
         collider = gameObject->AddComponent<Learning2DEngine::Physics::BoxCollider, glm::vec2>(gameObject->transform.scale);
     }
+public:
+    bool isSolid;
+    Learning2DEngine::Physics::BoxCollider* collider;
 };
