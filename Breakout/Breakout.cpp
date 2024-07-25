@@ -40,7 +40,8 @@ float ShakeTime = 0.0f;
 const FontSizePair fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24);
 
 Breakout::Breakout() :
-    state(GAME_ACTIVE), selectedLevel(0), lives(3), backgroundController(nullptr)
+    state(GAME_ACTIVE), powerUps(), levels(), selectedLevel(0), lives(3), backgroundController(nullptr),
+    liveText(), startText(), levelSelectorText(), winText(), retryText()
 {
 
 }
@@ -57,10 +58,10 @@ void Breakout::Init()
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
     const int middleHeight = resolution.GetHeight() / 2;
 
-    // Load shaders
+    // Shaders
     resourceManager.LoadShaderFromFile(std::string("PostProcessing"), "Assets/Shaders/PostProcessing.vs", "Assets/Shaders/PostProcessing.fs");
 
-    // Load textures
+    // Textures
     Texture2DSettings alphaSettings;
     alphaSettings.internalFormat = GL_RGBA;
     alphaSettings.imageFormat = GL_RGBA;
@@ -79,7 +80,7 @@ void Breakout::Init()
     resourceManager.LoadTextureFromFile("powerup_chaos", "Assets/Images/powerup_chaos.png", alphaSettings);
     resourceManager.LoadTextureFromFile("powerup_passthrough", "Assets/Images/powerup_passthrough.png", alphaSettings);
 
-    // Configure Camera
+    // Camera
     Game::cameraProjection = glm::ortho(
         0.0f,
         static_cast<float>(resolution.GetWidth()),
@@ -93,16 +94,7 @@ void Breakout::Init()
     auto background = new GameObject();
     backgroundController = background->AddComponent<BackgroundController, const std::string&, const Resolution&>("background", resolution);
 
-
-
-
-
-    auto particle = resourceManager.GetShader("particle");
-    particle.Use();
-    particle.SetInteger("sprite", 0);
-    particle.SetMatrix4("projection", cameraProjection);
-
-    // Load levels
+    // Levels
     GameLevel one; 
     one.Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
     GameLevel two; 
@@ -117,6 +109,10 @@ void Breakout::Init()
     this->levels.push_back(three);
     this->levels.push_back(four);
     this->selectedLevel = 0;
+
+
+
+
 
     // Player
     glm::vec2 playerPos = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);

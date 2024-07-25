@@ -41,8 +41,6 @@ private:
     unsigned int lives;
     BackgroundController* backgroundController;
 
-    Learning2DEngine::Render::SpriteRenderer* backgroundRenderer;
-
     Learning2DEngine::UI::Text  liveText;
     Learning2DEngine::UI::Text  startText;
     Learning2DEngine::UI::Text  levelSelectorText;
