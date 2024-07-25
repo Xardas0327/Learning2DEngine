@@ -15,6 +15,7 @@ class BallController : public virtual Learning2DEngine::System::Component
 protected:
     BallController(Learning2DEngine::System::GameObject* gameObject, float radius);
 
+    void Init() override;
 public:
     Learning2DEngine::Physics::Rigidbody* rigidbody;
     Learning2DEngine::Physics::CircleCollider* collider;
@@ -23,7 +24,6 @@ public:
     bool sticky;
     bool passThrough;
 
-    void Init() override;
     void Move();
     void Reset(glm::vec2 position, glm::vec2 velocity);
 };

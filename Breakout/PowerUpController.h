@@ -26,18 +26,18 @@ protected:
     {
         gameObject->transform.scale = POWERUP_SIZE;
     }
-public:
-    Learning2DEngine::Physics::Rigidbody* rigidbody;
-    Learning2DEngine::Physics::BoxCollider* collider;
-    PowerUpType type;
-    float duration;
-    bool activated;
 
     void Init() override
     {
         rigidbody = gameObject->AddComponent<Learning2DEngine::Physics::Rigidbody, glm::vec2>(VELOCITY);
         collider = gameObject->AddComponent<Learning2DEngine::Physics::BoxCollider, glm::vec2>(gameObject->transform.scale);
     }
+public:
+    Learning2DEngine::Physics::Rigidbody* rigidbody;
+    Learning2DEngine::Physics::BoxCollider* collider;
+    PowerUpType type;
+    float duration;
+    bool activated;
 
     static PowerUpController* CreatePowerUp(const PowerUpObject& powerUpObject, glm::vec2 position)
     {
