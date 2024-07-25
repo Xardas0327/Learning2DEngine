@@ -6,7 +6,6 @@
 #include <string>
 
 #include <Learning2DEngine/Render/RenderManager.h>
-#include <Learning2DEngine/Render/SpriteRenderer.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/System/GameObject.h>
@@ -31,7 +30,6 @@ using namespace Learning2DEngine::Physics;
 using namespace irrklang;
 
 // Game-related State data
-GameObject* Background;
 GameObject* Player;
 GameObject* Ball;
 PostProcessData* postProcessData;
@@ -42,7 +40,7 @@ float ShakeTime = 0.0f;
 const FontSizePair fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24);
 
 Breakout::Breakout() :
-    State(GAME_ACTIVE), Level(0), Lives(3)
+    state(GAME_ACTIVE), selectedLevel(0), lives(3), backgroundController(nullptr)
 {
 
 }
@@ -61,21 +59,6 @@ void Breakout::Init()
 
     // Load shaders
     resourceManager.LoadShaderFromFile(std::string("PostProcessing"), "Assets/Shaders/PostProcessing.vs", "Assets/Shaders/PostProcessing.fs");
-
-    // Configure shaders
-    Game::cameraProjection = glm::ortho(
-        0.0f,
-        static_cast<float>(resolution.GetWidth()),
-        static_cast<float>(resolution.GetHeight()),
-        0.0f,
-        -1.0f,
-        1.0f
-    );
-
-    auto particle = resourceManager.GetShader("particle");
-    particle.Use();
-    particle.SetInteger("sprite", 0);
-    particle.SetMatrix4("projection", cameraProjection);
 
     // Load textures
     Texture2DSettings alphaSettings;
@@ -96,17 +79,28 @@ void Breakout::Init()
     resourceManager.LoadTextureFromFile("powerup_chaos", "Assets/Images/powerup_chaos.png", alphaSettings);
     resourceManager.LoadTextureFromFile("powerup_passthrough", "Assets/Images/powerup_passthrough.png", alphaSettings);
 
+    // Configure Camera
+    Game::cameraProjection = glm::ortho(
+        0.0f,
+        static_cast<float>(resolution.GetWidth()),
+        static_cast<float>(resolution.GetHeight()),
+        0.0f,
+        -1.0f,
+        1.0f
+    );
+
     // Background
-    Background = new GameObject(
-        Transform(
-            glm::vec2(0.0f, 0.0f),
-            resolution.ToVec2(),
-            0.0f
-        )
-    );
-    Background->AddComponent<SpriteRenderer, const Texture2D&>(
-        resourceManager.GetTexture("background")
-    );
+    auto background = new GameObject();
+    backgroundController = background->AddComponent<BackgroundController, const std::string&, const Resolution&>("background", resolution);
+
+
+
+
+
+    auto particle = resourceManager.GetShader("particle");
+    particle.Use();
+    particle.SetInteger("sprite", 0);
+    particle.SetMatrix4("projection", cameraProjection);
 
     // Load levels
     GameLevel one; 
@@ -118,11 +112,11 @@ void Breakout::Init()
     GameLevel four; 
     four.Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
 
-    this->Levels.push_back(one);
-    this->Levels.push_back(two);
-    this->Levels.push_back(three);
-    this->Levels.push_back(four);
-    this->Level = 0;
+    this->levels.push_back(one);
+    this->levels.push_back(two);
+    this->levels.push_back(three);
+    this->levels.push_back(four);
+    this->selectedLevel = 0;
 
     // Player
     glm::vec2 playerPos = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
@@ -174,7 +168,7 @@ void Breakout::Init()
 
     liveText = { 
         fontSizePair,
-        "Lives: " + std::to_string(this->Lives),
+        "Lives: " + std::to_string(this->lives),
         5.0f,
         5.0f
     };
@@ -209,7 +203,7 @@ void Breakout::Init()
     };
 
     // State
-    State = GAME_MENU;
+    state = GAME_MENU;
 
     //MSAA
     ActivateMSAA(4);
@@ -222,7 +216,7 @@ void Breakout::Init()
 
 void Breakout::Terminate()
 {
-    delete Background;
+    GameObject::Destroy(backgroundController);
     delete Player;
     delete Ball;
     delete postProcessData;
@@ -238,26 +232,26 @@ void Breakout::ProcessInput()
         return;
     }
 
-    if (this->State == GAME_MENU)
+    if (this->state == GAME_MENU)
     {
         if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
-            this->State = GAME_ACTIVE;
+            this->state = GAME_ACTIVE;
         }
 
         if (Game::inputKeys[GLFW_KEY_W] == InputStatus::KEY_DOWN)
         {
-            this->Level = (this->Level + 1) % 4;
+            this->selectedLevel = (this->selectedLevel + 1) % 4;
         }
         if (Game::inputKeys[GLFW_KEY_S] == InputStatus::KEY_DOWN)
         {
-            if (this->Level > 0)
-                --this->Level;
+            if (this->selectedLevel > 0)
+                --this->selectedLevel;
             else
-                this->Level = 3;
+                this->selectedLevel = 3;
         }
     }
-    if (this->State == GAME_ACTIVE)
+    if (this->state == GAME_ACTIVE)
     {
         auto ballController = Ball->GetComponent<BallController>();
         float velocity = PLAYER_VELOCITY * Game::GetDeltaTime();
@@ -284,12 +278,12 @@ void Breakout::ProcessInput()
             ballController->stuck = false;
     }
 
-    if (this->State == GAME_WIN)
+    if (this->state == GAME_WIN)
     {
         if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
             postProcessData->chaos = false;
-            this->State = GAME_MENU;
+            this->state = GAME_MENU;
         }
     }
 }
@@ -313,42 +307,42 @@ void Breakout::Update()
     // Lose live
     if (Ball->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
     {
-        --Lives;
+        --lives;
         // Game over
-        if (Lives == 0)
+        if (lives == 0)
         {
             ResetLevel();
-            State = GAME_MENU;
+            state = GAME_MENU;
         }
         else
         {
-            liveText.text = "Lives: " + std::to_string(Lives);
+            liveText.text = "Lives: " + std::to_string(lives);
         }
         ResetPlayer();
         ClearPowerUps();
     }
 
     // check win condition
-    if (State == GAME_ACTIVE && Levels[Level].IsCompleted())
+    if (state == GAME_ACTIVE && levels[selectedLevel].IsCompleted())
     {
         ResetLevel();
         ResetPlayer();
         ClearPowerUps();
         postProcessData->chaos = true;
-        State = GAME_WIN;
+        state = GAME_WIN;
     }
 }
 
 void Breakout::Render()
 {
-    // Draw background
-    Background->GetComponent<SpriteRenderer>()->Draw();
+    backgroundController->Draw();
+
     // Draw level
-    this->Levels[this->Level].Draw();
+    this->levels[this->selectedLevel].Draw();
     // Draw player
     Player->GetComponent<SpriteRenderer>()->Draw();
     // Draw PowerUps
-    for (PowerUpController* powerUp : this->PowerUps)
+    for (PowerUpController* powerUp : this->powerUps)
     {
         if (powerUp->gameObject->isActive)
             powerUp->gameObject->GetComponent<SpriteRenderer>()->Draw();
@@ -366,13 +360,13 @@ void Breakout::LateRender()
     auto& textRenderer = Text2DRenderer::GetInstance();
     textRenderer.RenderText(liveText);
 
-    if (this->State == GAME_MENU)
+    if (this->state == GAME_MENU)
     {
         textRenderer.RenderText(startText);
         textRenderer.RenderText(levelSelectorText);
     }
 
-    if (this->State == GAME_WIN)
+    if (this->state == GAME_WIN)
     {
         textRenderer.RenderText(winText);
         textRenderer.RenderText(retryText);
@@ -460,7 +454,7 @@ CollisionResult CheckCollision(const CircleCollider& ball, const BoxCollider& bo
 void Breakout::DoCollisions()
 {
     auto ballController = Ball->GetComponent<BallController>();
-    for (BrickController* box : this->Levels[this->Level].bricks)
+    for (BrickController* box : this->levels[this->selectedLevel].bricks)
     {
         if (box->gameObject->isActive)
         {
@@ -511,7 +505,7 @@ void Breakout::DoCollisions()
     }
 
     // also check collisions on PowerUps and if so, activate them
-    for (PowerUpController* powerUp : this->PowerUps)
+    for (PowerUpController* powerUp : this->powerUps)
     {
         if (powerUp->gameObject->isActive)
         {
@@ -555,17 +549,17 @@ void Breakout::ResetLevel()
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
     const int middleHeight = resolution.GetHeight() / 2;
 
-    if (Level == 0)
-        Levels[0].Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
-    else if (Level == 1)
-        Levels[1].Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
-    else if (Level == 2)
-        Levels[2].Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
-    else if (Level == 3)
-        Levels[3].Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
+    if (selectedLevel == 0)
+        levels[0].Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
+    else if (selectedLevel == 1)
+        levels[1].Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
+    else if (selectedLevel == 2)
+        levels[2].Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
+    else if (selectedLevel == 3)
+        levels[3].Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
 
-    Lives = 3;
-    liveText.text = "Lives: " + std::to_string(Lives);
+    lives = 3;
+    liveText.text = "Lives: " + std::to_string(lives);
 }
 
 void Breakout::ResetPlayer()
@@ -596,38 +590,38 @@ void Breakout::SpawnPowerUps(GameObject& block)
     int number = Random::GetNumber(0, 50);
     if (number == 0)
     {
-        PowerUps.push_back(
+        powerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpSpeed, block.transform.position)
         );
     }
     else if (number == 1)
     {
-        PowerUps.push_back(
+        powerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpSticky, block.transform.position)
         );
     }
     else if (number == 2)
     {
-        PowerUps.push_back(
+        powerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpPassThrough, block.transform.position)
         );
     }
     else if (number == 3)
     {
-        PowerUps.push_back(
+        powerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpPadSizeIncrease, block.transform.position)
         );
     }
     // negative powerups should spawn more often
     else if (number > 3 && number < 8)
     {
-        PowerUps.push_back(
+        powerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpConfuse, block.transform.position)
         );
     }
     else if (number > 7 && number < 12)
     {
-        PowerUps.push_back(
+        powerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpChaos, block.transform.position)
         );
     }
@@ -648,7 +642,7 @@ void Breakout::UpdatePowerUps()
     auto ballController = Ball->GetComponent<BallController>();
     auto ballRenderer = Ball->GetComponent<SpriteRenderer>();
 
-    for (PowerUpController* powerUp : this->PowerUps)
+    for (PowerUpController* powerUp : this->powerUps)
     {
         powerUp->rigidbody->Update();
         if (powerUp->activated)
@@ -664,7 +658,7 @@ void Breakout::UpdatePowerUps()
                 switch (powerUp->type)
                 {
                 case PowerUpType::STICKY:
-                    if (!IsOtherPowerUpActive(this->PowerUps, PowerUpType::STICKY))
+                    if (!IsOtherPowerUpActive(this->powerUps, PowerUpType::STICKY))
                     {	
                         ballController->sticky = false;
 
@@ -673,20 +667,20 @@ void Breakout::UpdatePowerUps()
                     }
                     break;
                 case PowerUpType::PASS_THROUGH:
-                    if (!IsOtherPowerUpActive(this->PowerUps, PowerUpType::PASS_THROUGH))
+                    if (!IsOtherPowerUpActive(this->powerUps, PowerUpType::PASS_THROUGH))
                     {
                         ballController->passThrough = false;
                         ballRenderer->color = glm::vec3(1.0f);
                     }
                     break;
                 case PowerUpType::CONFUSE:
-                    if (!IsOtherPowerUpActive(this->PowerUps, PowerUpType::CONFUSE))
+                    if (!IsOtherPowerUpActive(this->powerUps, PowerUpType::CONFUSE))
                     {
                         postProcessData->confuse = false;
                     }
                     break;
                 case PowerUpType::CHAOS:
-                    if (!IsOtherPowerUpActive(this->PowerUps, PowerUpType::CHAOS))
+                    if (!IsOtherPowerUpActive(this->powerUps, PowerUpType::CHAOS))
                     {
                         postProcessData->chaos = false;
                     }
@@ -698,7 +692,7 @@ void Breakout::UpdatePowerUps()
         }
     }
 
-    this->PowerUps.erase(std::remove_if(this->PowerUps.begin(), this->PowerUps.end(),
+    this->powerUps.erase(std::remove_if(this->powerUps.begin(), this->powerUps.end(),
         [](PowerUpController* powerUp)
         {
             bool isDeletable = !powerUp->gameObject->isActive && !powerUp->activated;
@@ -709,14 +703,14 @@ void Breakout::UpdatePowerUps()
 
             return isDeletable;
         }
-    ), this->PowerUps.end());
+    ), this->powerUps.end());
 }
 
 void Breakout::ClearPowerUps()
 {
-    for (PowerUpController* powerUp : PowerUps)
+    for (PowerUpController* powerUp : powerUps)
     {
         GameObject::Destroy(powerUp);
     }
-    PowerUps.clear();
+    powerUps.clear();
 }

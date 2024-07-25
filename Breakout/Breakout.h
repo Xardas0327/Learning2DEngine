@@ -9,6 +9,7 @@
 
 #include "GameLevel.h"
 #include "PowerUpController.h"
+#include "Script/BackgroundController.h"
 
 enum GameState {
     GAME_ACTIVE,
@@ -33,11 +34,14 @@ const float BALL_RADIUS = 12.5f;
 class Breakout : public virtual Learning2DEngine::System::Game
 {
 private:
-    GameState State;
-    std::vector<PowerUpController*> PowerUps;
-    std::vector<GameLevel> Levels;
-    unsigned int Level;
-    unsigned int Lives;
+    GameState state;
+    std::vector<PowerUpController*> powerUps;
+    std::vector<GameLevel> levels;
+    unsigned int selectedLevel;
+    unsigned int lives;
+    BackgroundController* backgroundController;
+
+    Learning2DEngine::Render::SpriteRenderer* backgroundRenderer;
 
     Learning2DEngine::UI::Text  liveText;
     Learning2DEngine::UI::Text  startText;

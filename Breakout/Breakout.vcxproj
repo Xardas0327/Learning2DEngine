@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Script\BackgroundController.h" />
     <ClInclude Include="BallController.h" />
     <ClInclude Include="BallParticleSettings.h" />
     <ClInclude Include="Breakout.h" />
@@ -147,6 +148,7 @@
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="GameLevel.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Script\BackgroundController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Levels\four.lvl" />
