@@ -27,10 +27,10 @@
     <ClInclude Include="Breakout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BrickController.h">
+    <ClInclude Include="Script\BrickController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameLevel.h">
+    <ClInclude Include="Script\GameLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PostProcessData.h">
@@ -59,7 +59,7 @@
     <ClCompile Include="Breakout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameLevel.cpp">
+    <ClCompile Include="Script\GameLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -69,6 +69,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Script\PlayerController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\BrickController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

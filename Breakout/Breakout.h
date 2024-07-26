@@ -7,7 +7,7 @@
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/UI/Text.h>
 
-#include "GameLevel.h"
+#include "Script/GameLevel.h"
 #include "PowerUpController.h"
 #include "Script/BackgroundController.h"
 #include "Script/PlayerController.h"

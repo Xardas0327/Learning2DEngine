@@ -15,7 +15,6 @@
 #include <Learning2DEngine/Physics/Collision.h>
 
 #include "BallController.h"
-#include "BrickController.h"
 #include "PowerUpType.h"
 #include "PowerUpObject.h"
 #include "BallParticleSettings.h"
@@ -103,14 +102,14 @@ void Breakout::Init()
 
 
     // Levels
-    GameLevel one; 
-    one.Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
-    GameLevel two; 
-    two.Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
-    GameLevel three; 
-    three.Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
-    GameLevel four; 
-    four.Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
+    GameLevel one("Assets/Levels/one.lvl");
+    one.Load();
+    GameLevel two("Assets/Levels/two.lvl");
+    two.Load();
+    GameLevel three("Assets/Levels/three.lvl");
+    three.Load();
+    GameLevel four("Assets/Levels/four.lvl");
+    four.Load();
 
     levels.push_back(one);
     levels.push_back(two);
@@ -533,18 +532,7 @@ void Breakout::DoCollisions()
 
 void Breakout::ResetLevel()
 {
-    const Resolution resolution = RenderManager::GetInstance().GetResolution();
-    const int middleHeight = resolution.GetHeight() / 2;
-
-    if (selectedLevel == 0)
-        levels[0].Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
-    else if (selectedLevel == 1)
-        levels[1].Load("Assets/Levels/two.lvl", resolution.GetWidth(), middleHeight);
-    else if (selectedLevel == 2)
-        levels[2].Load("Assets/Levels/three.lvl", resolution.GetWidth(), middleHeight);
-    else if (selectedLevel == 3)
-        levels[3].Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
-
+    levels[selectedLevel].Load();
     lives = 3;
     liveText.text = "Lives: " + std::to_string(lives);
 }

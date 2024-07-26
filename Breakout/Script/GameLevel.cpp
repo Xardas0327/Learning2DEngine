@@ -9,21 +9,22 @@
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/Render/SpriteRenderer.h>
 #include <Learning2DEngine/Render/Texture2D.h>
+#include <Learning2DEngine/Render/RenderManager.h>
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 
-GameLevel::GameLevel()
-	: bricks()
+GameLevel::GameLevel(const std::string& fileName)
+	: fileName(fileName), levelHeight(0), levelWidth(0), bricks()
 {
 
 }
 
-void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int levelHeight)
+void GameLevel::Load()
 {
     ClearBricks();
 
-    std::ifstream fstream(file);
+    std::ifstream fstream(fileName);
     if (fstream)
     {
         std::string line;
@@ -42,22 +43,22 @@ void GameLevel::Load(const char* file, unsigned int levelWidth, unsigned int lev
             brickData.push_back(row);
         }
         if (brickData.size() > 0)
-            this->Init(brickData, levelWidth, levelHeight);
+            Init(brickData);
     }
 }
 
 void GameLevel::Draw()
 {
-    for (BrickController* brick : this->bricks)
+    for (BrickController* brick : bricks)
     {
         if (brick->gameObject->isActive)
-            brick->gameObject->GetComponent<SpriteRenderer>()->Draw();
+            brick->renderer->Draw();
     }
 }
 
 bool GameLevel::IsCompleted()
 {
-    for (BrickController* brick : this->bricks)
+    for (BrickController* brick : bricks)
     {
         if (!brick->isSolid && brick->gameObject->isActive)
             return false;
@@ -66,29 +67,21 @@ bool GameLevel::IsCompleted()
     return true;
 }
 
-void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, unsigned int levelWidth, unsigned int levelHeight)
+void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData)
 {
-    unsigned int height = brickData.size();
-    unsigned int width = brickData[0].size();
-
-    float unit_width = static_cast<float>(levelWidth) / static_cast<float>(width);
-    float unit_height = static_cast<float>(levelHeight) / static_cast<float>(height);
-
+    levelHeight = brickData.size();
+    levelWidth = brickData[0].size();
     auto& resourceManager = ResourceManager::GetInstance();
 
     Texture2D solidBlockTexture = resourceManager.GetTexture("block_solid");
     Texture2D blockTexture = resourceManager.GetTexture("block");
 
-	
-    for (unsigned int y = 0; y < height; ++y)
+    for (unsigned int y = 0; y < levelHeight; ++y)
     {
-        for (unsigned int x = 0; x < width; ++x)
+        for (unsigned int x = 0; x < levelWidth; ++x)
         {
             if (brickData[y][x] == 0)
                 continue;
-
-            glm::vec2 position(unit_width * x, unit_height * y);
-            glm::vec2 scale(unit_width, unit_height);
 
             //white
             glm::vec3 color = glm::vec3(1.0f);
@@ -103,27 +96,40 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, un
             else if (brickData[y][x] == 5)
                 color = glm::vec3(1.0f, 0.5f, 0.0f);
 
-            GameObject* brick = new GameObject(
-                Transform(position, scale)
-            );
+            GameObject* brick = new GameObject();
+            auto brickController = brick->AddComponent<BrickController, int, int, bool>(x, y, brickData[y][x] == 1);
+            brickController->renderer->texture =
+                brickData[y][x] == 1
+                ? new Texture2D(solidBlockTexture)
+                : new Texture2D(blockTexture);
+            brickController->renderer->color = color;
 
-            brick->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
-                brickData[y][x] == 1 // solid
-                ? solidBlockTexture
-                : blockTexture,
-                color);
-
-            auto brickController = brick->AddComponent<BrickController, bool>(brickData[y][x] == 1);
-            this->bricks.push_back(brickController);
+            bricks.push_back(brickController);
         }
+    }
+
+    CalcBrickSize(RenderManager::GetInstance().GetResolution());
+}
+
+void GameLevel::CalcBrickSize(const Resolution& resolution)
+{
+    float unit_width = static_cast<float>(resolution.GetWidth()) / static_cast<float>(levelWidth);
+    float unit_height = static_cast<float>(resolution.GetHeight() / 2) / static_cast<float>(levelHeight);
+    glm::vec2 scale(unit_width, unit_height);
+
+    for (BrickController* brick : bricks)
+    {
+        brick->gameObject->transform.position = glm::vec2(unit_width * brick->x, unit_height * brick->y);
+        brick->gameObject->transform.scale = scale;
+        brick->collider->size = scale;
     }
 }
 
 void GameLevel::ClearBricks()
 {
-    for (BrickController* brick : this->bricks)
+    for (BrickController* brick : bricks)
     {
         GameObject::Destroy(brick);
     }
-    this->bricks.clear();
+    bricks.clear();
 }

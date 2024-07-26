@@ -135,8 +135,8 @@
     <ClInclude Include="BallController.h" />
     <ClInclude Include="BallParticleSettings.h" />
     <ClInclude Include="Breakout.h" />
-    <ClInclude Include="BrickController.h" />
-    <ClInclude Include="GameLevel.h" />
+    <ClInclude Include="Script\BrickController.h" />
+    <ClInclude Include="Script\GameLevel.h" />
     <ClInclude Include="PostProcessData.h" />
     <ClInclude Include="PowerUpController.h" />
     <ClInclude Include="PowerUpObject.h" />
@@ -147,9 +147,10 @@
     <ClCompile Include="BallController.cpp" />
     <ClCompile Include="BallParticleSettings.cpp" />
     <ClCompile Include="Breakout.cpp" />
-    <ClCompile Include="GameLevel.cpp" />
+    <ClCompile Include="Script\GameLevel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Script\BackgroundController.cpp" />
+    <ClCompile Include="Script\BrickController.cpp" />
     <ClCompile Include="Script\PlayerController.cpp" />
   </ItemGroup>
   <ItemGroup>
