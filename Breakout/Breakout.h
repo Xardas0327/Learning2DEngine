@@ -10,6 +10,7 @@
 #include "GameLevel.h"
 #include "PowerUpController.h"
 #include "Script/BackgroundController.h"
+#include "Script/PlayerController.h"
 
 enum GameState {
     GAME_ACTIVE,
@@ -27,8 +28,6 @@ enum Direction {
 // <collision?, what direction?, difference vector center - closest point>
 typedef std::tuple<bool, Direction, glm::vec2> CollisionResult;
 
-const glm::vec2 PLAYER_SIZE(100.0f, 20.0f);
-const float PLAYER_VELOCITY(500.0f);
 const float BALL_RADIUS = 12.5f;
 
 class Breakout : public virtual Learning2DEngine::System::Game
@@ -40,6 +39,7 @@ private:
     unsigned int selectedLevel;
     unsigned int lives;
     BackgroundController* backgroundController;
+    PlayerController* playerController;
 
     Learning2DEngine::UI::Text  liveText;
     Learning2DEngine::UI::Text  startText;
@@ -57,6 +57,7 @@ protected:
     void ResetPlayer();
 
     void SpawnPowerUps(Learning2DEngine::System::GameObject& block);
+    void ActivatePowerUp(PowerUpController& powerUp);
     void UpdatePowerUps();
     void ClearPowerUps();
 public:

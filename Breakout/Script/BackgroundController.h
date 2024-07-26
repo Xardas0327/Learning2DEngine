@@ -13,7 +13,6 @@ class BackgroundController : public virtual Learning2DEngine::System::Component,
 {
     friend class Learning2DEngine::System::GameObject;
 protected:
-    Learning2DEngine::Render::SpriteRenderer* renderer;
     Learning2DEngine::EventSystem::ResolutionEventItem resolutionEventItem;
     const std::string textureId;
 
@@ -23,6 +22,7 @@ protected:
     void Init() override;
     void Destroy() override;
 public:
+    Learning2DEngine::Render::SpriteRenderer* renderer;
+
     void RefreshResolution(const Learning2DEngine::Render::Resolution& resolution) override;
-    void Draw();
 };

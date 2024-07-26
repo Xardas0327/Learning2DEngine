@@ -30,8 +30,3 @@ void BackgroundController::RefreshResolution(const Resolution& resolution)
 {
     gameObject->transform.scale = resolution.ToVec2();
 }
-
-void BackgroundController::Draw()
-{
-    renderer->Draw();
-}

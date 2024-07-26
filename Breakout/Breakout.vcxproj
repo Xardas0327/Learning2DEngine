@@ -141,6 +141,7 @@
     <ClInclude Include="PowerUpController.h" />
     <ClInclude Include="PowerUpObject.h" />
     <ClInclude Include="PowerUpType.h" />
+    <ClInclude Include="Script\PlayerController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BallController.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="GameLevel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Script\BackgroundController.cpp" />
+    <ClCompile Include="Script\PlayerController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Levels\four.lvl" />
