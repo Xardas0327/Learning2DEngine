@@ -30,7 +30,6 @@ using namespace Learning2DEngine::Physics;
 using namespace irrklang;
 
 // Game-related State data
-GameObject* Player;
 GameObject* Ball;
 PostProcessData* postProcessData;
 ISoundEngine* SoundEngine = createIrrKlangDevice();
@@ -40,7 +39,8 @@ float ShakeTime = 0.0f;
 const FontSizePair fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24);
 
 Breakout::Breakout() :
-    state(GAME_ACTIVE), powerUps(), levels(), selectedLevel(0), lives(3), backgroundController(nullptr),
+    state(GAME_ACTIVE), powerUps(), levels(), selectedLevel(0), lives(3),
+    backgroundController(nullptr), playerController(nullptr),
     liveText(), startText(), levelSelectorText(), winText(), retryText()
 {
 
@@ -94,6 +94,14 @@ void Breakout::Init()
     auto background = new GameObject();
     backgroundController = background->AddComponent<BackgroundController, const std::string&, const Resolution&>("background", resolution);
 
+    // Player
+    auto player = new GameObject();
+    playerController = player->AddComponent<PlayerController, const std::string&>("paddle");
+
+
+
+
+
     // Levels
     GameLevel one; 
     one.Load("Assets/Levels/one.lvl", resolution.GetWidth(), middleHeight);
@@ -104,31 +112,14 @@ void Breakout::Init()
     GameLevel four; 
     four.Load("Assets/Levels/four.lvl", resolution.GetWidth(), middleHeight);
 
-    this->levels.push_back(one);
-    this->levels.push_back(two);
-    this->levels.push_back(three);
-    this->levels.push_back(four);
-    this->selectedLevel = 0;
-
-
-
-
-
-    // Player
-    glm::vec2 playerPos = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
-    Player = new GameObject(
-        Transform(
-            playerPos,
-            PLAYER_SIZE
-        )
-    );
-    Player->AddComponent<SpriteRenderer, const Texture2D&>(
-        resourceManager.GetTexture("paddle")
-    );
-    Player->AddComponent<BoxCollider, glm::vec2>(Player->transform.scale);
+    levels.push_back(one);
+    levels.push_back(two);
+    levels.push_back(three);
+    levels.push_back(four);
+    selectedLevel = 0;
 
     // Ball
-    glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
+    glm::vec2 ballPos = player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
     Ball = new GameObject(
         Transform(
             ballPos,
@@ -213,7 +204,7 @@ void Breakout::Init()
 void Breakout::Terminate()
 {
     GameObject::Destroy(backgroundController);
-    delete Player;
+    GameObject::Destroy(playerController);
     delete Ball;
     delete postProcessData;
     SoundEngine->drop();
@@ -254,18 +245,19 @@ void Breakout::ProcessInput()
         // move playerboard
         if (Game::inputKeys[GLFW_KEY_A])
         {
-            if (Player->transform.position.x >= 0.0f)
+            if (playerController->gameObject->transform.position.x >= 0.0f)
             {
-                Player->transform.position.x -= velocity;
+                playerController->gameObject->transform.position.x -= velocity;
                 if (ballController->stuck)
                     Ball->transform.position.x -= velocity;
             }
         }
         if (Game::inputKeys[GLFW_KEY_D])
         {
-            if (Player->transform.position.x <= RenderManager::GetInstance().GetResolution().GetWidth() - Player->transform.scale.x)
+            if (playerController->gameObject->transform.position.x <= 
+                RenderManager::GetInstance().GetResolution().GetWidth() - playerController->gameObject->transform.scale.x)
             {
-                Player->transform.position.x += velocity;
+                playerController->gameObject->transform.position.x += velocity;
                 if (ballController->stuck)
                     Ball->transform.position.x += velocity;
             }
@@ -331,12 +323,12 @@ void Breakout::Update()
 
 void Breakout::Render()
 {
-    backgroundController->Draw();
+    backgroundController->renderer->Draw();
 
-    // Draw level
     this->levels[this->selectedLevel].Draw();
-    // Draw player
-    Player->GetComponent<SpriteRenderer>()->Draw();
+
+    playerController->renderer->Draw();
+
     // Draw PowerUps
     for (PowerUpController* powerUp : this->powerUps)
     {
@@ -369,11 +361,10 @@ void Breakout::LateRender()
     }
 }
 
-void ActivatePowerUp(PowerUpController& powerUp)
+void Breakout::ActivatePowerUp(PowerUpController& powerUp)
 {
     auto ballController = Ball->GetComponent<BallController>();
     auto ballRenderer = Ball->GetComponent<SpriteRenderer>();
-    auto playerRenderer = Player->GetComponent<SpriteRenderer>();
 
     switch (powerUp.type)
     {
@@ -382,15 +373,15 @@ void ActivatePowerUp(PowerUpController& powerUp)
         break;
     case PowerUpType::STICKY:
         ballController->sticky = true;
-        playerRenderer->color = glm::vec3(1.0f, 0.5f, 1.0f);
+        playerController->renderer->color = glm::vec3(1.0f, 0.5f, 1.0f);
         break;
     case PowerUpType::PASS_THROUGH:
         ballController->passThrough = true;
         ballRenderer->color = glm::vec3(1.0f, 0.5f, 0.5f);
         break;
     case PowerUpType::PAD_SIZE_INCREASE:
-        Player->transform.scale.x += 50;
-        Player->GetComponent<BoxCollider>()->size = Player->transform.scale;
+        playerController->gameObject->transform.scale.x += 50;
+        playerController->collider->size = playerController->gameObject->transform.scale;
         break;
     case PowerUpType::CONFUSE:
         // only activate if chaos wasn't already active
@@ -509,7 +500,7 @@ void Breakout::DoCollisions()
             if (powerUp->gameObject->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
                 powerUp->gameObject->isActive = false;
             
-            if (CheckCollision(*Player->GetComponent<BoxCollider>(), *powerUp->collider))
+            if (CheckCollision(*playerController->collider, *powerUp->collider))
             {	// collided with player, now activate powerup
                 ActivatePowerUp(*powerUp);
                 powerUp->gameObject->isActive = false;
@@ -519,13 +510,13 @@ void Breakout::DoCollisions()
         }
     }
     // check collisions for player pad (unless stuck)
-    CollisionResult result = CheckCollision(*ballController->collider, *Player->GetComponent<BoxCollider>());
+    CollisionResult result = CheckCollision(*ballController->collider, *playerController->collider);
     if (!ballController->stuck && std::get<0>(result))
     {
         // check where it hit the board, and change velocity based on where it hit the board
-        float centerBoard = Player->transform.position.x + Player->transform.scale.x / 2.0f;
+        float centerBoard = playerController->gameObject->transform.position.x + playerController->gameObject->transform.scale.x / 2.0f;
         float distance = (Ball->transform.position.x + ballController->radius) - centerBoard;
-        float percentage = distance / (Player->transform.scale.x / 2.0f);
+        float percentage = distance / (playerController->gameObject->transform.scale.x / 2.0f);
         // then move accordingly
         float strength = 2.0f;
         glm::vec2 oldVelocity = ballController->rigidbody->velocity;
@@ -560,14 +551,10 @@ void Breakout::ResetLevel()
 
 void Breakout::ResetPlayer()
 {
-    const Resolution resolution = RenderManager::GetInstance().GetResolution();
-
     // reset player/ball stats
-    Player->transform.scale = PLAYER_SIZE;
-    Player->GetComponent<BoxCollider>()->size = Player->transform.scale;
-    Player->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
+    playerController->Reset();
     auto ballController = Ball->GetComponent<BallController>();
-    ballController->Reset(Player->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
+    ballController->Reset(playerController->gameObject->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -(BALL_RADIUS * 2.0f)), INITIAL_BALL_VELOCITY);
 
     // also disable all active powerups
     postProcessData->chaos = false;
@@ -575,8 +562,6 @@ void Breakout::ResetPlayer()
     ballController->passThrough = false;
     ballController->sticky = false;
 
-    auto playerRenderer = Player->GetComponent<SpriteRenderer>();
-    playerRenderer->color = glm::vec3(1.0f);
     auto ballRenderer = Ball->GetComponent<SpriteRenderer>();
     ballRenderer->color = glm::vec3(1.0f);
 }
@@ -657,9 +642,7 @@ void Breakout::UpdatePowerUps()
                     if (!IsOtherPowerUpActive(this->powerUps, PowerUpType::STICKY))
                     {	
                         ballController->sticky = false;
-
-                        auto playerRenderer = Player->GetComponent<SpriteRenderer>();
-                        playerRenderer->color = glm::vec3(1.0f);
+                        playerController->renderer->color = glm::vec3(1.0f);
                     }
                     break;
                 case PowerUpType::PASS_THROUGH:
