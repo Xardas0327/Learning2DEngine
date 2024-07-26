@@ -52,6 +52,8 @@ namespace Learning2DEngine
 				const Render::Texture2D& texture,
 				const ParticleSystemSettings& systemSettings,
 				ParticleSettings* particleSettings = nullptr);
+			void Init() override;
+			void Destroy() override;
 			void InitShader();
 			void InitVao();
 			void UpdateActiveParticles();
@@ -64,8 +66,6 @@ namespace Learning2DEngine
 
 			~ParticleSystem();
 
-			void Init() override;
-			void Destroy() override;
 			void Draw() override;
 
 			void Start();
