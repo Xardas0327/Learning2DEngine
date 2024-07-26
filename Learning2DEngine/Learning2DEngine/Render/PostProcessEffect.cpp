@@ -91,7 +91,7 @@ namespace Learning2DEngine
 
 		void PostProcessEffect::Destroy()
 		{
-			this->texture.Destroy();
+			texture.Destroy();
 			glDeleteFramebuffers(1, &fbo);
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &vbo);
@@ -118,7 +118,7 @@ namespace Learning2DEngine
 				defaultShader.Use();
 
 			glActiveTexture(GL_TEXTURE0);
-			this->texture.Bind();
+			texture.Bind();
 			glBindVertexArray(vao);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
