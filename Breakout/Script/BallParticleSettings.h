@@ -3,13 +3,12 @@
 #include <glm/glm.hpp>
 
 #include <Learning2DEngine/ParticleSimulator/ParticleSettings.h>
-
-#include "BallController.h"
+#include <Learning2DEngine/Physics/Rigidbody.h>
 
 class BallParticleSettings : public virtual Learning2DEngine::ParticleSimulator::ParticleSettings
 {
 private:
-	const BallController* ballController;
+	const Learning2DEngine::Physics::Rigidbody* rigidbody;
 public:
 	glm::vec2 positionOffset;
 	glm::vec2 scale;

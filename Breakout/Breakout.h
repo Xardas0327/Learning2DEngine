@@ -8,9 +8,10 @@
 #include <Learning2DEngine/UI/Text.h>
 
 #include "Script/GameLevel.h"
-#include "PowerUpController.h"
 #include "Script/BackgroundController.h"
 #include "Script/PlayerController.h"
+#include "Script/BallController.h"
+#include "PowerUpController.h"
 
 enum GameState {
     GAME_ACTIVE,
@@ -28,8 +29,6 @@ enum Direction {
 // <collision?, what direction?, difference vector center - closest point>
 typedef std::tuple<bool, Direction, glm::vec2> CollisionResult;
 
-const float BALL_RADIUS = 12.5f;
-
 class Breakout : public virtual Learning2DEngine::System::Game
 {
 private:
@@ -40,6 +39,7 @@ private:
     unsigned int lives;
     BackgroundController* backgroundController;
     PlayerController* playerController;
+    BallController* ballController;
 
     Learning2DEngine::UI::Text  liveText;
     Learning2DEngine::UI::Text  startText;

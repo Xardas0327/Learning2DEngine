@@ -18,10 +18,10 @@
     <ClInclude Include="PowerUpType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BallController.h">
+    <ClInclude Include="Script\BallController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BallParticleSettings.h">
+    <ClInclude Include="Script\BallParticleSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Breakout.h">
@@ -50,10 +50,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BallController.cpp">
+    <ClCompile Include="Script\BallController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BallParticleSettings.cpp">
+    <ClCompile Include="Script\BallParticleSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Breakout.cpp">

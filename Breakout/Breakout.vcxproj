@@ -132,8 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Script\BackgroundController.h" />
-    <ClInclude Include="BallController.h" />
-    <ClInclude Include="BallParticleSettings.h" />
+    <ClInclude Include="Script\BallController.h" />
+    <ClInclude Include="Script\BallParticleSettings.h" />
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="Script\BrickController.h" />
     <ClInclude Include="Script\GameLevel.h" />
@@ -144,8 +144,8 @@
     <ClInclude Include="Script\PlayerController.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BallController.cpp" />
-    <ClCompile Include="BallParticleSettings.cpp" />
+    <ClCompile Include="Script\BallController.cpp" />
+    <ClCompile Include="Script\BallParticleSettings.cpp" />
     <ClCompile Include="Breakout.cpp" />
     <ClCompile Include="Script\GameLevel.cpp" />
     <ClCompile Include="main.cpp" />
