@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <irrklang/irrKlang.h>
 
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/GameObject.h>
@@ -11,6 +12,7 @@
 #include "Script/BackgroundController.h"
 #include "Script/PlayerController.h"
 #include "Script/BallController.h"
+#include "Script/PostProcessData.h"
 #include "PowerUpController.h"
 
 enum GameState {
@@ -40,6 +42,9 @@ private:
     BackgroundController* backgroundController;
     PlayerController* playerController;
     BallController* ballController;
+    irrklang::ISoundEngine* soundEngine;
+    const Learning2DEngine::UI::FontSizePair fontSizePair;
+    PostProcessData* postProcessData;
 
     Learning2DEngine::UI::Text  liveText;
     Learning2DEngine::UI::Text  startText;

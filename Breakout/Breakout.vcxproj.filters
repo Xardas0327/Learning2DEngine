@@ -33,7 +33,7 @@
     <ClInclude Include="Script\GameLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PostProcessData.h">
+    <ClInclude Include="Script\PostProcessData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PowerUpController.h">

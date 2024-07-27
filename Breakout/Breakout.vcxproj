@@ -137,7 +137,7 @@
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="Script\BrickController.h" />
     <ClInclude Include="Script\GameLevel.h" />
-    <ClInclude Include="PostProcessData.h" />
+    <ClInclude Include="Script\PostProcessData.h" />
     <ClInclude Include="PowerUpController.h" />
     <ClInclude Include="PowerUpObject.h" />
     <ClInclude Include="PowerUpType.h" />

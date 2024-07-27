@@ -2,7 +2,6 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <irrklang/irrKlang.h>
 #include <string>
 
 #include <Learning2DEngine/Render/RenderManager.h>
@@ -15,7 +14,6 @@
 
 #include "PowerUpType.h"
 #include "PowerUpObject.h"
-#include "PostProcessData.h"
 
 
 using namespace Learning2DEngine::Render;
@@ -24,16 +22,12 @@ using namespace Learning2DEngine::UI;
 using namespace Learning2DEngine::Physics;
 using namespace irrklang;
 
-PostProcessData* postProcessData;
-ISoundEngine* SoundEngine = createIrrKlangDevice();
-
 float ShakeTime = 0.0f;
-
-const FontSizePair fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24);
 
 Breakout::Breakout() :
     state(GAME_ACTIVE), powerUps(), levels(), selectedLevel(0), lives(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
+    soundEngine(nullptr), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24),
     liveText(), startText(), levelSelectorText(), winText(), retryText()
 {
 
@@ -111,12 +105,9 @@ void Breakout::Init()
     auto ball = new GameObject();
     ballController = ball->AddComponent<BallController, PlayerController*, const std::string&, const std::string&>(playerController, "face", "particle");
 
-
-
-
-
     // Sounds
-    SoundEngine->play2D("Assets/Sounds/breakout.mp3", true);
+    soundEngine = createIrrKlangDevice();
+    soundEngine->play2D("Assets/Sounds/breakout.mp3", true);
 
     // Text
     Text2DRenderer::GetInstance().Load(fontSizePair);
@@ -176,7 +167,7 @@ void Breakout::Terminate()
     GameObject::Destroy(ballController);
 
     delete postProcessData;
-    SoundEngine->drop();
+    soundEngine->drop();
 
     Game::Terminate();
 }
@@ -418,13 +409,13 @@ void Breakout::DoCollisions()
                 {
                     box->gameObject->isActive = false;
                     SpawnPowerUps(*box->gameObject);
-                    SoundEngine->play2D("Assets/Sounds/bleep.mp3", false);
+                    soundEngine->play2D("Assets/Sounds/bleep.mp3", false);
                 }
                 else
                 {   // if block is solid, enable shake effect
                     ShakeTime = 0.05f;
                     postProcessData->shake = true;
-                    SoundEngine->play2D("Assets/Sounds/solid.wav", false);
+                    soundEngine->play2D("Assets/Sounds/solid.wav", false);
                 }
                 // collision resolution
                 Direction dir = std::get<1>(collision);
@@ -470,7 +461,7 @@ void Breakout::DoCollisions()
                 ActivatePowerUp(*powerUp);
                 powerUp->gameObject->isActive = false;
                 powerUp->activated = true;
-                SoundEngine->play2D("Assets/Sounds/powerup.wav", false);
+                soundEngine->play2D("Assets/Sounds/powerup.wav", false);
             }
         }
     }
@@ -492,7 +483,7 @@ void Breakout::DoCollisions()
         ballController->rigidbody->velocity.y = -1.0f * abs(ballController->rigidbody->velocity.y);
         ballController->stuck = ballController->sticky;
 
-        SoundEngine->play2D("Assets/Sounds/bleep.wav", false);
+        soundEngine->play2D("Assets/Sounds/bleep.wav", false);
     }
 }
 
