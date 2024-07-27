@@ -12,10 +12,6 @@
 #include <Learning2DEngine/Physics/BoxCollider.h>
 #include <Learning2DEngine/Physics/Collision.h>
 
-#include "Script/PowerUpType.h"
-#include "Script/PowerUpObject.h"
-
-
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::UI;
@@ -191,7 +187,7 @@ void Breakout::ProcessInput()
 
     switch (state)
     {
-    case GAME_MENU:
+    case GameState::GAME_MENU:
         if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
             state = GameState::GAME_ACTIVE;
@@ -209,14 +205,14 @@ void Breakout::ProcessInput()
                 selectedLevel = levels.size() -1;
         }
         break;
-    case GAME_WIN:
+    case GameState::GAME_WIN:
         if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
             postProcessData->chaos = false;
             state = GameState::GAME_MENU;
         }
         break;
-    case GAME_ACTIVE:
+    case GameState::GAME_ACTIVE:
         float velocity = PLAYER_VELOCITY * Game::GetDeltaTime();
         if (Game::inputKeys[GLFW_KEY_A])
         {
@@ -302,7 +298,9 @@ void Breakout::Update()
 void Breakout::Render()
 {
     backgroundController->renderer->Draw();
+
     levels[selectedLevel].Draw();
+
     ballController->particleSystem->Draw();
 
     playerController->renderer->Draw();
@@ -333,6 +331,22 @@ void Breakout::LateRender()
         textRenderer.RenderText(winText);
         textRenderer.RenderText(retryText);
     }
+}
+
+void Breakout::ResetLevel()
+{
+    levels[selectedLevel].Load();
+    lives = 3;
+    liveText.text = "Lives: " + std::to_string(lives);
+}
+
+void Breakout::ResetPlayer()
+{
+    playerController->Reset();
+    ballController->Reset();
+
+    postProcessData->chaos = false;
+    postProcessData->confuse = false;
 }
 
 void Breakout::ActivatePowerUp(PowerUpController& powerUp)
@@ -367,6 +381,127 @@ void Breakout::ActivatePowerUp(PowerUpController& powerUp)
     default:
         break;
     }
+}
+
+void Breakout::SpawnPowerUps(glm::vec2 position)
+{
+    int number = Random::GetNumber(0, 50);
+    if (number == 0)
+    {
+        powerUps.push_back(
+            PowerUpController::CreatePowerUp(PowerUpSpeed, position)
+        );
+    }
+    else if (number == 1)
+    {
+        powerUps.push_back(
+            PowerUpController::CreatePowerUp(PowerUpSticky, position)
+        );
+    }
+    else if (number == 2)
+    {
+        powerUps.push_back(
+            PowerUpController::CreatePowerUp(PowerUpPassThrough, position)
+        );
+    }
+    else if (number == 3)
+    {
+        powerUps.push_back(
+            PowerUpController::CreatePowerUp(PowerUpPadSizeIncrease, position)
+        );
+    }
+    else if (number > 3 && number < 8)
+    {
+        powerUps.push_back(
+            PowerUpController::CreatePowerUp(PowerUpConfuse, position)
+        );
+    }
+    else if (number > 7 && number < 12)
+    {
+        powerUps.push_back(
+            PowerUpController::CreatePowerUp(PowerUpChaos, position)
+        );
+    }
+}
+
+bool Breakout::IsPowerUpActive(const PowerUpType& type)
+{
+    for (const PowerUpController* powerUp : powerUps)
+    {
+        if (powerUp->activated && powerUp->powerUpObject.type == type)
+            return true;
+    }
+    return false;
+}
+
+void Breakout::UpdatePowerUps()
+{
+    for (PowerUpController* powerUp : powerUps)
+    {
+        powerUp->rigidbody->Update();
+        if (powerUp->activated)
+        {
+            powerUp->actualDuration -= Game::GetDeltaTime();
+
+            if (powerUp->actualDuration <= 0.0f)
+            {
+                powerUp->activated = false;
+                switch (powerUp->powerUpObject.type)
+                {
+                case PowerUpType::STICKY:
+                    if (!IsPowerUpActive(PowerUpType::STICKY))
+                    {
+                        ballController->sticky = false;
+                        playerController->renderer->color = glm::vec3(1.0f);
+                    }
+                    break;
+                case PowerUpType::PASS_THROUGH:
+                    if (!IsPowerUpActive(PowerUpType::PASS_THROUGH))
+                    {
+                        ballController->passThrough = false;
+                        ballController->renderer->color = glm::vec3(1.0f);
+                    }
+                    break;
+                case PowerUpType::CONFUSE:
+                    if (!IsPowerUpActive(PowerUpType::CONFUSE))
+                    {
+                        postProcessData->confuse = false;
+                    }
+                    break;
+                case PowerUpType::CHAOS:
+                    if (!IsPowerUpActive(PowerUpType::CHAOS))
+                    {
+                        postProcessData->chaos = false;
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
+
+    powerUps.erase(std::remove_if(powerUps.begin(), powerUps.end(),
+        [](PowerUpController* powerUp)
+        {
+            bool isDeletable = !powerUp->gameObject->isActive && !powerUp->activated;
+            if (isDeletable)
+            {
+                GameObject::Destroy(powerUp);
+            }
+
+            return isDeletable;
+        }
+    ), powerUps.end());
+}
+
+void Breakout::ClearPowerUps()
+{
+    for (PowerUpController* powerUp : powerUps)
+    {
+        GameObject::Destroy(powerUp);
+    }
+    powerUps.clear();
 }
 
 bool CheckCollision(const BoxCollider& box1, const BoxCollider& box2)
@@ -420,7 +555,7 @@ void Breakout::DoCollisions()
                 if (!box->isSolid)
                 {
                     box->gameObject->isActive = false;
-                    SpawnPowerUps(*box->gameObject);
+                    SpawnPowerUps(box->gameObject->transform.position);
                     soundEngine->play2D("Assets/Sounds/bleep.mp3", false);
                 }
                 else
@@ -497,147 +632,4 @@ void Breakout::DoCollisions()
 
         soundEngine->play2D("Assets/Sounds/bleep.wav", false);
     }
-}
-
-void Breakout::ResetLevel()
-{
-    levels[selectedLevel].Load();
-    lives = 3;
-    liveText.text = "Lives: " + std::to_string(lives);
-}
-
-void Breakout::ResetPlayer()
-{
-    // reset player/ball stats
-    playerController->Reset();
-    ballController->Reset();
-
-    // also disable all active powerups
-    postProcessData->chaos = false;
-    postProcessData->confuse = false;
-}
-
-void Breakout::SpawnPowerUps(GameObject& block)
-{
-    int number = Random::GetNumber(0, 50);
-    if (number == 0)
-    {
-        powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpSpeed, block.transform.position)
-        );
-    }
-    else if (number == 1)
-    {
-        powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpSticky, block.transform.position)
-        );
-    }
-    else if (number == 2)
-    {
-        powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpPassThrough, block.transform.position)
-        );
-    }
-    else if (number == 3)
-    {
-        powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpPadSizeIncrease, block.transform.position)
-        );
-    }
-    // negative powerups should spawn more often
-    else if (number > 3 && number < 8)
-    {
-        powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpConfuse, block.transform.position)
-        );
-    }
-    else if (number > 7 && number < 12)
-    {
-        powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpChaos, block.transform.position)
-        );
-    }
-}
-
-bool IsOtherPowerUpActive(std::vector<PowerUpController*>& powerUps, PowerUpType type)
-{
-    for (const PowerUpController* powerUp : powerUps)
-    {
-        if (powerUp->activated && powerUp->powerUpObject.type == type)
-            return true;
-    }
-    return false;
-}
-
-void Breakout::UpdatePowerUps()
-{
-    for (PowerUpController* powerUp : powerUps)
-    {
-        powerUp->rigidbody->Update();
-        if (powerUp->activated)
-        {
-            powerUp->actualDuration -= Game::GetDeltaTime();
-
-            if (powerUp->actualDuration <= 0.0f)
-            {
-                // remove powerup from list (will later be removed)
-                powerUp->activated = false;
-                // deactivate effects
-                // only reset if no other PowerUp of same type is active
-                switch (powerUp->powerUpObject.type)
-                {
-                case PowerUpType::STICKY:
-                    if (!IsOtherPowerUpActive(powerUps, PowerUpType::STICKY))
-                    {	
-                        ballController->sticky = false;
-                        playerController->renderer->color = glm::vec3(1.0f);
-                    }
-                    break;
-                case PowerUpType::PASS_THROUGH:
-                    if (!IsOtherPowerUpActive(powerUps, PowerUpType::PASS_THROUGH))
-                    {
-                        ballController->passThrough = false;
-                        ballController->renderer->color = glm::vec3(1.0f);
-                    }
-                    break;
-                case PowerUpType::CONFUSE:
-                    if (!IsOtherPowerUpActive(powerUps, PowerUpType::CONFUSE))
-                    {
-                        postProcessData->confuse = false;
-                    }
-                    break;
-                case PowerUpType::CHAOS:
-                    if (!IsOtherPowerUpActive(powerUps, PowerUpType::CHAOS))
-                    {
-                        postProcessData->chaos = false;
-                    }
-                    break;
-                default:
-                    break;
-                }
-            }
-        }
-    }
-
-    powerUps.erase(std::remove_if(powerUps.begin(),powerUps.end(),
-        [](PowerUpController* powerUp)
-        {
-            bool isDeletable = !powerUp->gameObject->isActive && !powerUp->activated;
-            if (isDeletable)
-            {
-                GameObject::Destroy(powerUp);
-            }
-
-            return isDeletable;
-        }
-    ), powerUps.end());
-}
-
-void Breakout::ClearPowerUps()
-{
-    for (PowerUpController* powerUp : powerUps)
-    {
-        GameObject::Destroy(powerUp);
-    }
-    powerUps.clear();
 }

@@ -14,6 +14,7 @@
 #include "Script/BallController.h"
 #include "Script/PostProcessData.h"
 #include "Script/PowerUpController.h"
+#include "Script/PowerUpType.h"
 
 enum GameState {
     GAME_ACTIVE,
@@ -60,7 +61,6 @@ protected:
     void LateRender() override;
 
     void ProcessInput();
-    void DoCollisions();
     void ShakeScreen();
     void IsLiveLost();
     void IsLevelCompleted();
@@ -68,10 +68,13 @@ protected:
     void ResetLevel();
     void ResetPlayer();
 
-    void SpawnPowerUps(Learning2DEngine::System::GameObject& block);
+    void SpawnPowerUps(glm::vec2 position);
     void ActivatePowerUp(PowerUpController& powerUp);
+    bool IsPowerUpActive(const PowerUpType& type);
     void UpdatePowerUps();
     void ClearPowerUps();
+
+    void DoCollisions();
 public:
     Breakout();
     ~Breakout();
