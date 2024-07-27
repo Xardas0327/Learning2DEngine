@@ -189,27 +189,34 @@ void Breakout::ProcessInput()
         return;
     }
 
-    if (state == GAME_MENU)
+    switch (state)
     {
+    case GAME_MENU:
         if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
-            state = GAME_ACTIVE;
+            state = GameState::GAME_ACTIVE;
         }
 
         if (Game::inputKeys[GLFW_KEY_W] == InputStatus::KEY_DOWN)
         {
-            selectedLevel = (selectedLevel + 1) % 4;
+            selectedLevel = (selectedLevel + 1) % levels.size();
         }
         if (Game::inputKeys[GLFW_KEY_S] == InputStatus::KEY_DOWN)
         {
             if (selectedLevel > 0)
                 --selectedLevel;
             else
-                selectedLevel = 3;
+                selectedLevel = levels.size() -1;
         }
-    }
-    if (state == GAME_ACTIVE)
-    {
+        break;
+    case GAME_WIN:
+        if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
+        {
+            postProcessData->chaos = false;
+            state = GameState::GAME_MENU;
+        }
+        break;
+    case GAME_ACTIVE:
         float velocity = PLAYER_VELOCITY * Game::GetDeltaTime();
         if (Game::inputKeys[GLFW_KEY_A])
         {
@@ -222,7 +229,7 @@ void Breakout::ProcessInput()
         }
         if (Game::inputKeys[GLFW_KEY_D])
         {
-            if (playerController->gameObject->transform.position.x <= 
+            if (playerController->gameObject->transform.position.x <=
                 RenderManager::GetInstance().GetResolution().GetWidth() - playerController->gameObject->transform.scale.x)
             {
                 playerController->gameObject->transform.position.x += velocity;
@@ -232,42 +239,29 @@ void Breakout::ProcessInput()
         }
         if (Game::inputKeys[GLFW_KEY_SPACE])
             ballController->stuck = false;
-    }
-
-    if (state == GAME_WIN)
-    {
-        if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
-        {
-            postProcessData->chaos = false;
-            state = GAME_MENU;
-        }
+        break;
     }
 }
 
-void Breakout::Update()
+void Breakout::ShakeScreen()
 {
-    ProcessInput();
-
-    ballController->Move();
-    DoCollisions();
-    ballController->particleSystem->Update();
-    UpdatePowerUps();
-
     if (shakeTime > 0.0f)
     {
         shakeTime -= Game::GetDeltaTime();
         if (shakeTime <= 0.0f)
             postProcessData->shake = false;
     }
+}
 
-    // Lose live
+void Breakout::IsLiveLost()
+{
     if (ballController->gameObject->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
     {
         --lives;
         if (lives == 0)
         {
             ResetLevel();
-            state = GAME_MENU;
+            state = GameState::GAME_MENU;
         }
         else
         {
@@ -276,22 +270,40 @@ void Breakout::Update()
         ResetPlayer();
         ClearPowerUps();
     }
+}
 
-    if (state == GAME_ACTIVE && levels[selectedLevel].IsCompleted())
+void Breakout::IsLevelCompleted()
+{
+    if (state == GameState::GAME_ACTIVE && levels[selectedLevel].IsCompleted())
     {
         ResetLevel();
         ResetPlayer();
         ClearPowerUps();
         postProcessData->chaos = true;
-        state = GAME_WIN;
+        state = GameState::GAME_WIN;
     }
+}
+
+void Breakout::Update()
+{
+    ProcessInput();
+
+    ballController->Move();
+    ballController->particleSystem->Update();
+
+    DoCollisions();
+    UpdatePowerUps();
+    ShakeScreen();
+    
+    IsLiveLost();
+    IsLevelCompleted();
 }
 
 void Breakout::Render()
 {
     backgroundController->renderer->Draw();
-
     levels[selectedLevel].Draw();
+    ballController->particleSystem->Draw();
 
     playerController->renderer->Draw();
 
@@ -301,7 +313,6 @@ void Breakout::Render()
             powerUp->renderer->Draw();
     }
 
-    ballController->particleSystem->Draw();
     ballController->renderer->Draw();
 
     postProcessData->RefreshShader(glfwGetTime());
@@ -312,12 +323,12 @@ void Breakout::LateRender()
     auto& textRenderer = Text2DRenderer::GetInstance();
     textRenderer.RenderText(liveText);
 
-    if (state == GAME_MENU)
+    if (state == GameState::GAME_MENU)
     {
         textRenderer.RenderText(startText);
         textRenderer.RenderText(levelSelectorText);
     }
-    else if (state == GAME_WIN)
+    else if (state == GameState::GAME_WIN)
     {
         textRenderer.RenderText(winText);
         textRenderer.RenderText(retryText);

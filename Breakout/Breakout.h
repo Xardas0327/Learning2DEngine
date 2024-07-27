@@ -58,8 +58,12 @@ protected:
     void Update() override;
     void Render() override;
     void LateRender() override;
+
     void ProcessInput();
     void DoCollisions();
+    void ShakeScreen();
+    void IsLiveLost();
+    void IsLevelCompleted();
 
     void ResetLevel();
     void ResetPlayer();
