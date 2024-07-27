@@ -53,6 +53,8 @@ private:
     Learning2DEngine::UI::Text  winText;
     Learning2DEngine::UI::Text  retryText;
 protected:
+    void InitSystem();
+    void InitObjects();
     void Update() override;
     void Render() override;
     void LateRender() override;

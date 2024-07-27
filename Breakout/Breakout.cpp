@@ -23,7 +23,7 @@ using namespace Learning2DEngine::Physics;
 using namespace irrklang;
 
 Breakout::Breakout() :
-    state(GAME_ACTIVE), powerUps(), levels(), selectedLevel(0), lives(3),
+    state(GameState::GAME_ACTIVE), powerUps(), levels(), selectedLevel(0), lives(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
     soundEngine(nullptr), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), postProcessData(nullptr),
     shakeTime(0.0f), liveText(), startText(), levelSelectorText(), winText(), retryText()
@@ -39,9 +39,16 @@ void Breakout::Init()
 {
     Game::Init();
 
+    InitSystem();
+    InitObjects();
+
+    soundEngine->play2D("Assets/Sounds/breakout.mp3", true);
+    state = GameState::GAME_MENU;
+}
+
+void Breakout::InitSystem()
+{
     auto& resourceManager = ResourceManager::GetInstance();
-    const Resolution resolution = RenderManager::GetInstance().GetResolution();
-    const int middleHeight = resolution.GetHeight() / 2;
 
     // Shaders
     resourceManager.LoadShaderFromFile(std::string("PostProcessing"), "Assets/Shaders/PostProcessing.vs", "Assets/Shaders/PostProcessing.fs");
@@ -64,6 +71,26 @@ void Breakout::Init()
     resourceManager.LoadTextureFromFile("powerup_confuse", "Assets/Images/powerup_confuse.png", alphaSettings);
     resourceManager.LoadTextureFromFile("powerup_chaos", "Assets/Images/powerup_chaos.png", alphaSettings);
     resourceManager.LoadTextureFromFile("powerup_passthrough", "Assets/Images/powerup_passthrough.png", alphaSettings);
+
+    // Text
+    Text2DRenderer::GetInstance().Load(fontSizePair);
+
+    // MSAA
+    ActivateMSAA(4);
+
+    // PostProcessEffect
+    postProcessData = new PostProcessData(resourceManager.GetShader("PostProcessing"));
+    ActivatePostProcessEffect();
+    UsePostProcessEffect(postProcessData->shader);
+
+    // Sounds
+    soundEngine = createIrrKlangDevice();
+}
+
+void Breakout::InitObjects()
+{
+    const Resolution resolution = RenderManager::GetInstance().GetResolution();
+    const int middleHeight = resolution.GetHeight() / 2;
 
     // Camera
     Game::cameraProjection = glm::ortho(
@@ -103,26 +130,20 @@ void Breakout::Init()
     auto ball = new GameObject();
     ballController = ball->AddComponent<BallController, PlayerController*, const std::string&, const std::string&>(playerController, "face", "particle");
 
-    // Sounds
-    soundEngine = createIrrKlangDevice();
-    soundEngine->play2D("Assets/Sounds/breakout.mp3", true);
-
     // Text
-    Text2DRenderer::GetInstance().Load(fontSizePair);
-
-    liveText = { 
+    liveText = {
         fontSizePair,
         "Lives: " + std::to_string(lives),
         5.0f,
         5.0f
     };
-    startText = { 
+    startText = {
         fontSizePair,
         "Press ENTER to start",
         250.0f,
         static_cast<float>(middleHeight)
     };
-    levelSelectorText = { 
+    levelSelectorText = {
         fontSizePair,
         "Press W or S to select level",
         245.0f,
@@ -146,16 +167,6 @@ void Breakout::Init()
         glm::vec3(1.0f, 1.0f, 0.0f)
     };
 
-    // State
-    state = GAME_MENU;
-
-    // MSAA
-    ActivateMSAA(4);
-
-    // PostProcessEffect
-    postProcessData = new PostProcessData(resourceManager.GetShader("PostProcessing"));
-    ActivatePostProcessEffect();
-    UsePostProcessEffect(postProcessData->shader);
 }
 
 void Breakout::Terminate()
@@ -383,7 +394,7 @@ CollisionResult CheckCollision(const CircleCollider& ball, const BoxCollider& bo
         return std::make_tuple(true, VectorDirection(difference), difference);
     }
     else
-        return std::make_tuple(false, UP, glm::vec2(0.0f, 0.0f));
+        return std::make_tuple(false, Direction::UP, glm::vec2(0.0f, 0.0f));
 }
 
 void Breakout::DoCollisions()
@@ -412,12 +423,12 @@ void Breakout::DoCollisions()
                 glm::vec2 diff_vector = std::get<2>(collision);
                 if (!(ballController->passThrough && !box->isSolid)) // don't do collision resolution on non-solid bricks if pass-through is activated
                 {
-                    if (dir == LEFT || dir == RIGHT) // horizontal collision
+                    if (dir == Direction::LEFT || dir == Direction::RIGHT) // horizontal collision
                     {
                         ballController->rigidbody->velocity.x = -ballController->rigidbody->velocity.x; // reverse horizontal velocity
                         // relocate
                         float penetration = ballController->radius - std::abs(diff_vector.x);
-                        if (dir == LEFT)
+                        if (dir == Direction::LEFT)
                             ballController->gameObject->transform.position.x += penetration; // move ball to right
                         else
                             ballController->gameObject->transform.position.x -= penetration; // move ball to left;
@@ -427,7 +438,7 @@ void Breakout::DoCollisions()
                         ballController->rigidbody->velocity.y = -ballController->rigidbody->velocity.y; // reverse vertical velocity
                         // relocate
                         float penetration = ballController->radius - std::abs(diff_vector.y);
-                        if (dir == UP)
+                        if (dir == Direction::UP)
                             ballController->gameObject->transform.position.y -= penetration; // move ball bback up
                         else
                             ballController->gameObject->transform.position.y += penetration; // move ball back down
