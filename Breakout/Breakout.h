@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 #include <irrklang/irrKlang.h>
 
 #include <Learning2DEngine/System/Game.h>
@@ -17,22 +18,13 @@
 #include "Script/PostProcessData.h"
 #include "Script/PowerUpController.h"
 #include "Script/PowerUpType.h"
+#include "Script/CollisionResult.h"
 
 enum GameState {
     GAME_ACTIVE,
     GAME_MENU,
     GAME_WIN
 };
-
-enum Direction {
-    UP,
-    RIGHT,
-    DOWN,
-    LEFT
-};
-
-// <collision?, what direction?, difference vector center - closest point>
-typedef std::tuple<bool, Direction, glm::vec2> CollisionResult;
 
 class Breakout : public virtual Learning2DEngine::System::Game
 {

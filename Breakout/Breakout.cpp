@@ -1,6 +1,5 @@
 #include "Breakout.h"
 
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <string>
 
@@ -536,10 +535,10 @@ CollisionResult Breakout::CheckCollision(const CircleCollider& ball, const BoxCo
     if (data.isCollisoned)
     {
         glm::vec2 difference = data.edge2 - ball.GetCenter();
-        return std::make_tuple(true, VectorDirection(difference), difference);
+        return { true, VectorDirection(difference), difference };
     }
     else
-        return std::make_tuple(false, Direction::UP, glm::vec2(0.0f, 0.0f));
+        return { false, Direction::UP, glm::vec2(0.0f, 0.0f) };
 }
 
 void Breakout::CheckBricksCollision()
@@ -549,7 +548,7 @@ void Breakout::CheckBricksCollision()
         if (box->gameObject->isActive)
         {
             CollisionResult collision = CheckCollision(*ballController->collider, *box->collider);
-            if (std::get<0>(collision))
+            if (collision.isCollisoned)
             {
                 if (!box->isSolid)
                 {
@@ -564,16 +563,14 @@ void Breakout::CheckBricksCollision()
                     soundEngine->play2D("Assets/Sounds/solid.wav", false);
                 }
 
-                Direction dir = std::get<1>(collision);
-                glm::vec2 diff_vector = std::get<2>(collision);
                 if (!(ballController->passThrough && !box->isSolid))
                 {
-                    if (dir == Direction::LEFT || dir == Direction::RIGHT)
+                    if (collision.direction == Direction::LEFT || collision.direction == Direction::RIGHT)
                     {
                         ballController->rigidbody->velocity.x = -ballController->rigidbody->velocity.x;
 
-                        float penetration = ballController->radius - std::abs(diff_vector.x);
-                        if (dir == Direction::LEFT)
+                        float penetration = ballController->radius - std::abs(collision.differenceVector.x);
+                        if (collision.direction == Direction::LEFT)
                             ballController->gameObject->transform.position.x += penetration;
                         else
                             ballController->gameObject->transform.position.x -= penetration;
@@ -582,8 +579,8 @@ void Breakout::CheckBricksCollision()
                     {
                         ballController->rigidbody->velocity.y = -ballController->rigidbody->velocity.y;
 
-                        float penetration = ballController->radius - std::abs(diff_vector.y);
-                        if (dir == Direction::UP)
+                        float penetration = ballController->radius - std::abs(collision.differenceVector.y);
+                        if (collision.direction == Direction::UP)
                             ballController->gameObject->transform.position.y -= penetration;
                         else
                             ballController->gameObject->transform.position.y += penetration;
@@ -617,7 +614,7 @@ void Breakout::CheckPowerUpCollision()
 void Breakout::CheckBallPlayerCollision()
 {
     CollisionResult result = CheckCollision(*ballController->collider, *playerController->collider);
-    if (!ballController->stuck && std::get<0>(result))
+    if (!ballController->stuck && result.isCollisoned)
     {
         // check where it hit the board, and change velocity based on where it hit the board
         float centerBoard = playerController->gameObject->transform.position.x + playerController->gameObject->transform.scale.x / 2.0f;

@@ -136,6 +136,7 @@
     <ClInclude Include="Script\BallParticleSettings.h" />
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="Script\BrickController.h" />
+    <ClInclude Include="Script\CollisionResult.h" />
     <ClInclude Include="Script\GameLevel.h" />
     <ClInclude Include="Script\PostProcessData.h" />
     <ClInclude Include="Script\PowerUpController.h" />
