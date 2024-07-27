@@ -9,7 +9,6 @@
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/UI/Text2DRenderer.h>
-#include <Learning2DEngine/Physics/BoxCollider.h>
 #include <Learning2DEngine/Physics/Collision.h>
 
 using namespace Learning2DEngine::Render;
@@ -504,12 +503,12 @@ void Breakout::ClearPowerUps()
     powerUps.clear();
 }
 
-bool CheckCollision(const BoxCollider& box1, const BoxCollider& box2)
+bool Breakout::CheckCollision(const BoxCollider& box1, const BoxCollider& box2)
 {
     return Collision::IsCollisoned(box1, box2).isCollisoned;
 }
 
-Direction VectorDirection(glm::vec2 target)
+Direction Breakout::VectorDirection(glm::vec2 target)
 {
     glm::vec2 compass[] = {
         glm::vec2(0.0f, 1.0f),	// up
@@ -531,7 +530,7 @@ Direction VectorDirection(glm::vec2 target)
     return (Direction)best_match;
 }
 
-CollisionResult CheckCollision(const CircleCollider& ball, const BoxCollider& box) // AABB - Circle collision
+CollisionResult Breakout::CheckCollision(const CircleCollider& ball, const BoxCollider& box)
 {
     auto data = Collision::IsCollisoned(ball, box);
     if (data.isCollisoned)
@@ -543,7 +542,7 @@ CollisionResult CheckCollision(const CircleCollider& ball, const BoxCollider& bo
         return std::make_tuple(false, Direction::UP, glm::vec2(0.0f, 0.0f));
 }
 
-void Breakout::DoCollisions()
+void Breakout::CheckBricksCollision()
 {
     for (BrickController* box : levels[selectedLevel].bricks)
     {
@@ -559,52 +558,53 @@ void Breakout::DoCollisions()
                     soundEngine->play2D("Assets/Sounds/bleep.mp3", false);
                 }
                 else
-                {   // Enable shake effect
+                {
                     shakeTime = 0.05f;
                     postProcessData->shake = true;
                     soundEngine->play2D("Assets/Sounds/solid.wav", false);
                 }
-                // collision resolution
+
                 Direction dir = std::get<1>(collision);
                 glm::vec2 diff_vector = std::get<2>(collision);
-                if (!(ballController->passThrough && !box->isSolid)) // don't do collision resolution on non-solid bricks if pass-through is activated
+                if (!(ballController->passThrough && !box->isSolid))
                 {
-                    if (dir == Direction::LEFT || dir == Direction::RIGHT) // horizontal collision
+                    if (dir == Direction::LEFT || dir == Direction::RIGHT)
                     {
-                        ballController->rigidbody->velocity.x = -ballController->rigidbody->velocity.x; // reverse horizontal velocity
-                        // relocate
+                        ballController->rigidbody->velocity.x = -ballController->rigidbody->velocity.x;
+
                         float penetration = ballController->radius - std::abs(diff_vector.x);
                         if (dir == Direction::LEFT)
-                            ballController->gameObject->transform.position.x += penetration; // move ball to right
+                            ballController->gameObject->transform.position.x += penetration;
                         else
-                            ballController->gameObject->transform.position.x -= penetration; // move ball to left;
+                            ballController->gameObject->transform.position.x -= penetration;
                     }
-                    else // vertical collision
+                    else
                     {
-                        ballController->rigidbody->velocity.y = -ballController->rigidbody->velocity.y; // reverse vertical velocity
-                        // relocate
+                        ballController->rigidbody->velocity.y = -ballController->rigidbody->velocity.y;
+
                         float penetration = ballController->radius - std::abs(diff_vector.y);
                         if (dir == Direction::UP)
-                            ballController->gameObject->transform.position.y -= penetration; // move ball bback up
+                            ballController->gameObject->transform.position.y -= penetration;
                         else
-                            ballController->gameObject->transform.position.y += penetration; // move ball back down
+                            ballController->gameObject->transform.position.y += penetration;
                     }
                 }
             }
         }
     }
+}
 
-    // also check collisions on PowerUps and if so, activate them
-    for (PowerUpController* powerUp :powerUps)
+void Breakout::CheckPowerUpCollision()
+{
+    for (PowerUpController* powerUp : powerUps)
     {
         if (powerUp->gameObject->isActive)
         {
-            // first check if powerup passed bottom edge, if so: keep as inactive and destroy
             if (powerUp->gameObject->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
                 powerUp->gameObject->isActive = false;
-            
+
             if (CheckCollision(*playerController->collider, *powerUp->collider))
-            {	// collided with player, now activate powerup
+            {
                 ActivatePowerUp(*powerUp);
                 powerUp->gameObject->isActive = false;
                 powerUp->activated = true;
@@ -612,7 +612,10 @@ void Breakout::DoCollisions()
             }
         }
     }
-    // check collisions for player pad (unless stuck)
+}
+
+void Breakout::CheckBallPlayerCollision()
+{
     CollisionResult result = CheckCollision(*ballController->collider, *playerController->collider);
     if (!ballController->stuck && std::get<0>(result))
     {
@@ -620,16 +623,26 @@ void Breakout::DoCollisions()
         float centerBoard = playerController->gameObject->transform.position.x + playerController->gameObject->transform.scale.x / 2.0f;
         float distance = (ballController->gameObject->transform.position.x + ballController->radius) - centerBoard;
         float percentage = distance / (playerController->gameObject->transform.scale.x / 2.0f);
+
         // then move accordingly
         float strength = 2.0f;
         glm::vec2 oldVelocity = ballController->rigidbody->velocity;
         ballController->rigidbody->velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
-        // keep speed consistent over both axes (multiply by length of old velocity, so total strength is not changed)
+
+        // keep speed consistent
         ballController->rigidbody->velocity = glm::normalize(ballController->rigidbody->velocity) * glm::length(oldVelocity);
+
         // fix sticky paddle
         ballController->rigidbody->velocity.y = -1.0f * abs(ballController->rigidbody->velocity.y);
         ballController->stuck = ballController->sticky;
 
         soundEngine->play2D("Assets/Sounds/bleep.wav", false);
     }
+}
+
+void Breakout::DoCollisions()
+{
+    CheckBricksCollision();
+    CheckPowerUpCollision();
+    CheckBallPlayerCollision();
 }

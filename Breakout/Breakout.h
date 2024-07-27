@@ -7,6 +7,8 @@
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/UI/Text.h>
+#include <Learning2DEngine/Physics/BoxCollider.h>
+#include <Learning2DEngine/Physics/CircleCollider.h>
 
 #include "Script/GameLevel.h"
 #include "Script/BackgroundController.h"
@@ -75,6 +77,12 @@ protected:
     void ClearPowerUps();
 
     void DoCollisions();
+    bool CheckCollision(const Learning2DEngine::Physics::BoxCollider& box1, const Learning2DEngine::Physics::BoxCollider& box2);
+    CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleCollider& ball, const Learning2DEngine::Physics::BoxCollider& box);
+    Direction VectorDirection(glm::vec2 target);
+    void CheckBricksCollision();
+    void CheckPowerUpCollision();
+    void CheckBallPlayerCollision();
 public:
     Breakout();
     ~Breakout();
