@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PowerUpType.h">
+    <ClInclude Include="Script\PowerUpType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Script\BallController.h">
@@ -36,10 +36,10 @@
     <ClInclude Include="Script\PostProcessData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PowerUpController.h">
+    <ClInclude Include="Script\PowerUpController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PowerUpObject.h">
+    <ClInclude Include="Script\PowerUpObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Script\BackgroundController.h">

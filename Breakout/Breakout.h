@@ -13,7 +13,7 @@
 #include "Script/PlayerController.h"
 #include "Script/BallController.h"
 #include "Script/PostProcessData.h"
-#include "PowerUpController.h"
+#include "Script/PowerUpController.h"
 
 enum GameState {
     GAME_ACTIVE,
@@ -45,6 +45,7 @@ private:
     irrklang::ISoundEngine* soundEngine;
     const Learning2DEngine::UI::FontSizePair fontSizePair;
     PostProcessData* postProcessData;
+    float shakeTime;
 
     Learning2DEngine::UI::Text  liveText;
     Learning2DEngine::UI::Text  startText;

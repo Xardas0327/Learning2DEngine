@@ -138,9 +138,9 @@
     <ClInclude Include="Script\BrickController.h" />
     <ClInclude Include="Script\GameLevel.h" />
     <ClInclude Include="Script\PostProcessData.h" />
-    <ClInclude Include="PowerUpController.h" />
-    <ClInclude Include="PowerUpObject.h" />
-    <ClInclude Include="PowerUpType.h" />
+    <ClInclude Include="Script\PowerUpController.h" />
+    <ClInclude Include="Script\PowerUpObject.h" />
+    <ClInclude Include="Script\PowerUpType.h" />
     <ClInclude Include="Script\PlayerController.h" />
   </ItemGroup>
   <ItemGroup>

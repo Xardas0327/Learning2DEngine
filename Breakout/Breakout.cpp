@@ -12,8 +12,8 @@
 #include <Learning2DEngine/Physics/BoxCollider.h>
 #include <Learning2DEngine/Physics/Collision.h>
 
-#include "PowerUpType.h"
-#include "PowerUpObject.h"
+#include "Script/PowerUpType.h"
+#include "Script/PowerUpObject.h"
 
 
 using namespace Learning2DEngine::Render;
@@ -22,13 +22,11 @@ using namespace Learning2DEngine::UI;
 using namespace Learning2DEngine::Physics;
 using namespace irrklang;
 
-float ShakeTime = 0.0f;
-
 Breakout::Breakout() :
     state(GAME_ACTIVE), powerUps(), levels(), selectedLevel(0), lives(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
-    soundEngine(nullptr), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24),
-    liveText(), startText(), levelSelectorText(), winText(), retryText()
+    soundEngine(nullptr), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), postProcessData(nullptr),
+    shakeTime(0.0f), liveText(), startText(), levelSelectorText(), winText(), retryText()
 {
 
 }
@@ -151,10 +149,10 @@ void Breakout::Init()
     // State
     state = GAME_MENU;
 
-    //MSAA
+    // MSAA
     ActivateMSAA(4);
 
-    //PostProcessEffect
+    // PostProcessEffect
     postProcessData = new PostProcessData(resourceManager.GetShader("PostProcessing"));
     ActivatePostProcessEffect();
     UsePostProcessEffect(postProcessData->shader);
@@ -202,7 +200,6 @@ void Breakout::ProcessInput()
     if (state == GAME_ACTIVE)
     {
         float velocity = PLAYER_VELOCITY * Game::GetDeltaTime();
-        // move playerboard
         if (Game::inputKeys[GLFW_KEY_A])
         {
             if (playerController->gameObject->transform.position.x >= 0.0f)
@@ -245,10 +242,10 @@ void Breakout::Update()
     ballController->particleSystem->Update();
     UpdatePowerUps();
 
-    if (ShakeTime > 0.0f)
+    if (shakeTime > 0.0f)
     {
-        ShakeTime -= Game::GetDeltaTime();
-        if (ShakeTime <= 0.0f)
+        shakeTime -= Game::GetDeltaTime();
+        if (shakeTime <= 0.0f)
             postProcessData->shake = false;
     }
 
@@ -256,7 +253,6 @@ void Breakout::Update()
     if (ballController->gameObject->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
     {
         --lives;
-        // Game over
         if (lives == 0)
         {
             ResetLevel();
@@ -270,7 +266,6 @@ void Breakout::Update()
         ClearPowerUps();
     }
 
-    // check win condition
     if (state == GAME_ACTIVE && levels[selectedLevel].IsCompleted())
     {
         ResetLevel();
@@ -289,17 +284,15 @@ void Breakout::Render()
 
     playerController->renderer->Draw();
 
-    // Draw PowerUps
     for (PowerUpController* powerUp : powerUps)
     {
         if (powerUp->gameObject->isActive)
-            powerUp->gameObject->GetComponent<SpriteRenderer>()->Draw();
+            powerUp->renderer->Draw();
     }
-    // Draw Particles
+
     ballController->particleSystem->Draw();
-    // Draw Player
     ballController->renderer->Draw();
-    // Refresh the PostProcess Shader
+
     postProcessData->RefreshShader(glfwGetTime());
 }
 
@@ -313,8 +306,7 @@ void Breakout::LateRender()
         textRenderer.RenderText(startText);
         textRenderer.RenderText(levelSelectorText);
     }
-
-    if (state == GAME_WIN)
+    else if (state == GAME_WIN)
     {
         textRenderer.RenderText(winText);
         textRenderer.RenderText(retryText);
@@ -323,7 +315,7 @@ void Breakout::LateRender()
 
 void Breakout::ActivatePowerUp(PowerUpController& powerUp)
 {
-    switch (powerUp.type)
+    switch (powerUp.powerUpObject.type)
     {
     case PowerUpType::SPEED:
         ballController->rigidbody->velocity *= 1.2;
@@ -341,11 +333,12 @@ void Breakout::ActivatePowerUp(PowerUpController& powerUp)
         playerController->collider->size = playerController->gameObject->transform.scale;
         break;
     case PowerUpType::CONFUSE:
-        // only activate if chaos wasn't already active
+        // It will be activate only if chaos wasn't already active
         if (!postProcessData->chaos)
             postProcessData->confuse = true;
         break;
     case PowerUpType::CHAOS:
+        // It will be activate only if confuse wasn't already active
         if (!postProcessData->confuse)
             postProcessData->chaos = true;
         break;
@@ -354,13 +347,11 @@ void Breakout::ActivatePowerUp(PowerUpController& powerUp)
     }
 }
 
-// AABB - AABB collision
 bool CheckCollision(const BoxCollider& box1, const BoxCollider& box2)
 {
     return Collision::IsCollisoned(box1, box2).isCollisoned;
 }
 
-// calculates which direction a vector is facing (N,E,S or W)
 Direction VectorDirection(glm::vec2 target)
 {
     glm::vec2 compass[] = {
@@ -402,9 +393,8 @@ void Breakout::DoCollisions()
         if (box->gameObject->isActive)
         {
             CollisionResult collision = CheckCollision(*ballController->collider, *box->collider);
-            if (std::get<0>(collision)) // if collision is true
+            if (std::get<0>(collision))
             {
-                // destroy block if not solid
                 if (!box->isSolid)
                 {
                     box->gameObject->isActive = false;
@@ -412,8 +402,8 @@ void Breakout::DoCollisions()
                     soundEngine->play2D("Assets/Sounds/bleep.mp3", false);
                 }
                 else
-                {   // if block is solid, enable shake effect
-                    ShakeTime = 0.05f;
+                {   // Enable shake effect
+                    shakeTime = 0.05f;
                     postProcessData->shake = true;
                     soundEngine->play2D("Assets/Sounds/solid.wav", false);
                 }
@@ -551,7 +541,7 @@ bool IsOtherPowerUpActive(std::vector<PowerUpController*>& powerUps, PowerUpType
 {
     for (const PowerUpController* powerUp : powerUps)
     {
-        if (powerUp->activated && powerUp->type == type)
+        if (powerUp->activated && powerUp->powerUpObject.type == type)
             return true;
     }
     return false;
@@ -564,15 +554,15 @@ void Breakout::UpdatePowerUps()
         powerUp->rigidbody->Update();
         if (powerUp->activated)
         {
-            powerUp->duration -= Game::GetDeltaTime();
+            powerUp->actualDuration -= Game::GetDeltaTime();
 
-            if (powerUp->duration <= 0.0f)
+            if (powerUp->actualDuration <= 0.0f)
             {
                 // remove powerup from list (will later be removed)
                 powerUp->activated = false;
                 // deactivate effects
                 // only reset if no other PowerUp of same type is active
-                switch (powerUp->type)
+                switch (powerUp->powerUpObject.type)
                 {
                 case PowerUpType::STICKY:
                     if (!IsOtherPowerUpActive(powerUps, PowerUpType::STICKY))
