@@ -34,14 +34,13 @@ namespace Learning2DEngine
             SpriteRenderer(System::GameObject* gameObject, glm::vec3 color = glm::vec3(1.0f));
             SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, glm::vec3 color = glm::vec3(1.0f));
 
+            void Init() override;
+            void Destroy() override;
         public:
             Texture2D* texture;
             glm::vec3 color;
 
             ~SpriteRenderer();
-
-            void Init() override;
-            void Destroy() override;
 
             void Draw() override;
 

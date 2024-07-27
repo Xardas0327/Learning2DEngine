@@ -15,48 +15,66 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PowerUpType.h">
+    <ClInclude Include="Script\PowerUpType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BallController.h">
+    <ClInclude Include="Script\BallController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BallParticleSettings.h">
+    <ClInclude Include="Script\BallParticleSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Breakout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BrickController.h">
+    <ClInclude Include="Script\BrickController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameLevel.h">
+    <ClInclude Include="Script\GameLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PostProcessData.h">
+    <ClInclude Include="Script\PostProcessData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PowerUpController.h">
+    <ClInclude Include="Script\PowerUpController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PowerUpObject.h">
+    <ClInclude Include="Script\PowerUpObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\BackgroundController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\PlayerController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\CollisionResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BallController.cpp">
+    <ClCompile Include="Script\BallController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BallParticleSettings.cpp">
+    <ClCompile Include="Script\BallParticleSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Breakout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameLevel.cpp">
+    <ClCompile Include="Script\GameLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\BackgroundController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\PlayerController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\BrickController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

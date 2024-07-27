@@ -246,10 +246,10 @@ namespace Learning2DEngine
 		{
 			for (int i = 0; i < particleAmount; ++i)
 			{
-				this->particles[i].lifeTime -= Game::GetDeltaTime();
-				if (this->particles[i].lifeTime > 0.0f)
+				particles[i].lifeTime -= Game::GetDeltaTime();
+				if (particles[i].lifeTime > 0.0f)
 				{
-					particleSettings->UpdateParticle(this->particles[i], *gameObject);
+					particleSettings->UpdateParticle(particles[i], *gameObject);
 				}
 			}
 		}
@@ -281,7 +281,7 @@ namespace Learning2DEngine
 			for (int i = 0; i < systemSettings.newParticlesPerSpawn; ++i)
 			{
 				unsigned int index = GetUnusedParticleIndex();
-				particleSettings->SpawnParticle(this->particles[index], *gameObject);
+				particleSettings->SpawnParticle(particles[index], *gameObject);
 			}
 		}
 

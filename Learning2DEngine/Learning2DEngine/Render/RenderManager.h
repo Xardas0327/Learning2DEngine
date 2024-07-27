@@ -62,7 +62,7 @@ namespace Learning2DEngine
 			void SetBlendFunc(BlendFuncFactor blendFuncFactor);
 			inline BlendFuncFactor GetBlendFunc()
 			{
-				return this->blendFuncFactor;
+				return blendFuncFactor;
 			}
 
 			void AddKeyboardEvent(EventSystem::EventItem<int, int, int, int>* evenItem);

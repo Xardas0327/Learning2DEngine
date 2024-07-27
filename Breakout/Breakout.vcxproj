@@ -131,22 +131,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BallController.h" />
-    <ClInclude Include="BallParticleSettings.h" />
+    <ClInclude Include="Script\BackgroundController.h" />
+    <ClInclude Include="Script\BallController.h" />
+    <ClInclude Include="Script\BallParticleSettings.h" />
     <ClInclude Include="Breakout.h" />
-    <ClInclude Include="BrickController.h" />
-    <ClInclude Include="GameLevel.h" />
-    <ClInclude Include="PostProcessData.h" />
-    <ClInclude Include="PowerUpController.h" />
-    <ClInclude Include="PowerUpObject.h" />
-    <ClInclude Include="PowerUpType.h" />
+    <ClInclude Include="Script\BrickController.h" />
+    <ClInclude Include="Script\CollisionResult.h" />
+    <ClInclude Include="Script\GameLevel.h" />
+    <ClInclude Include="Script\PostProcessData.h" />
+    <ClInclude Include="Script\PowerUpController.h" />
+    <ClInclude Include="Script\PowerUpObject.h" />
+    <ClInclude Include="Script\PowerUpType.h" />
+    <ClInclude Include="Script\PlayerController.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BallController.cpp" />
-    <ClCompile Include="BallParticleSettings.cpp" />
+    <ClCompile Include="Script\BallController.cpp" />
+    <ClCompile Include="Script\BallParticleSettings.cpp" />
     <ClCompile Include="Breakout.cpp" />
-    <ClCompile Include="GameLevel.cpp" />
+    <ClCompile Include="Script\GameLevel.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Script\BackgroundController.cpp" />
+    <ClCompile Include="Script\BrickController.cpp" />
+    <ClCompile Include="Script\PlayerController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Levels\four.lvl" />

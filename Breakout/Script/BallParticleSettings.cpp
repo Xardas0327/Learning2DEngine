@@ -6,19 +6,20 @@
 
 using namespace Learning2DEngine::ParticleSimulator;
 using namespace Learning2DEngine::System;
+using namespace Learning2DEngine::Physics;
 
 BallParticleSettings::BallParticleSettings(glm::vec2 positionOffset, glm::vec2 scale, float lifeTime, float speed)
-	: ballController(nullptr), positionOffset(positionOffset), scale(scale), lifeTime(lifeTime), speed(speed)
+	: rigidbody(nullptr), positionOffset(positionOffset), scale(scale), lifeTime(lifeTime), speed(speed)
 {
 
 }
 void BallParticleSettings::Init(const GameObject& gameObject)
 {
-	ballController = gameObject.GetComponent<BallController>();
+	rigidbody = gameObject.GetComponent<Rigidbody>();
 
-	if (ballController == nullptr)
+	if (rigidbody == nullptr)
 	{
-		LOG_ERROR("BallParticleSettings: BallController is missing.");
+		LOG_ERROR("BallParticleSettings: Rigidbody is missing.");
 	}
 }
 void BallParticleSettings::SpawnParticle(Particle& particle, const GameObject& gameObject)
@@ -29,7 +30,7 @@ void BallParticleSettings::SpawnParticle(Particle& particle, const GameObject& g
 	particle.transform.scale = scale;
 	particle.color = glm::vec4(rColor, rColor, rColor, 1.0f);
 	particle.lifeTime = lifeTime;
-	particle.velocity = ballController->rigidbody->velocity;
+	particle.velocity = rigidbody->velocity;
 	particle.speed = speed;
 }
 
