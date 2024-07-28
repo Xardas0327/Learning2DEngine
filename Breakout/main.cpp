@@ -8,7 +8,7 @@ Breakout breakoutGame;
 
 int main()
 {
-    breakoutGame.InitWithRender(3, 3, resolution, "Breakout", false);
+    breakoutGame.InitWithRender(3, 3, resolution, "Breakout");
     breakoutGame.Run();
     breakoutGame.Terminate();
     return 0;

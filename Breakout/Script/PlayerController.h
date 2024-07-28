@@ -7,7 +7,6 @@
 #include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/Render/SpriteRenderer.h>
-#include <Learning2DEngine/Render/Resolution.h>
 #include <Learning2DEngine/Physics/BoxCollider.h>
 
 const glm::vec2 PLAYER_SIZE(100.0f, 20.0f);

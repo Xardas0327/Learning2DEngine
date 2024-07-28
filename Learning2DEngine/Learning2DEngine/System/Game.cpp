@@ -1,26 +1,26 @@
 #include "Game.h"
 
 #include <string>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "../Render/RenderManager.h"
-#include "../UI/Text2DRenderer.h"
 #include "../DebugTool/Log.h"
 #include "ResourceManager.h"
 
 namespace Learning2DEngine
 {
     using namespace Render;
-    using namespace UI;
 
     namespace System
     {
         float Game::deltaTime = 0.0f;
         glm::mat4 Game::cameraProjection = glm::mat4(0.0f);
+        Resolution Game::cameraResolution(0,0);
 
         Game::Game()
             : lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT), isMsaaActive(false),
             isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
-            ppeRender(), keyboardMouseEventItem(this)
+            ppeRender(), keyboardMouseEventItem(this), resolutionEventItem(this), inputKeys()
         {
         }
 
@@ -39,11 +39,9 @@ namespace Learning2DEngine
         {
             auto& renderManager = RenderManager::GetInstance();
             renderManager.AddKeyboardEvent(&keyboardMouseEventItem);
+            renderManager.AddFramebufferSizeEvent(&resolutionEventItem);
             renderManager.EnableBlend();
             renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-            auto& textRenderer = Text2DRenderer::GetInstance();
-            textRenderer.Init();
 
             for (int i = 0; i < INPUT_KEY_SIZE; ++i)
             {
@@ -56,10 +54,11 @@ namespace Learning2DEngine
             StopMSAA();
             StopPostProcessEffect();
 
-            RenderManager::GetInstance().RemoveKeyboardEvent(&keyboardMouseEventItem);
+            auto& renderManager = RenderManager::GetInstance();
+            renderManager.RemoveKeyboardEvent(&keyboardMouseEventItem);
+            renderManager.RemoveFramebufferSizeEvent(&resolutionEventItem);
 
             ResourceManager::GetInstance().Clear();
-            Text2DRenderer::GetInstance().Terminate();
             RenderManager::GetInstance().Terminate();
         }
 
@@ -197,6 +196,22 @@ namespace Learning2DEngine
             }
         }
 
+        void Game::RefreshResolution(const Resolution& resolution)
+        {
+            if(isMsaaActive)
+            {
+                unsigned int sampleNumber = msaaRender.GetSampleNumber();
+                msaaRender.Destroy();
+                msaaRender.Init(sampleNumber, resolution);
+            }
+
+            if (isPostProcessEffectActive)
+            {
+                ppeRender.Destroy();
+                ppeRender.Init(resolution);
+            }
+        }
+
         void Game::FixKeyboardMouse()
         {
             for (int i = 0; i < INPUT_KEY_SIZE; ++i)
@@ -204,6 +219,19 @@ namespace Learning2DEngine
                 if(Game::inputKeys[i] == InputStatus::KEY_DOWN)
                     Game::inputKeys[i] = InputStatus::KEY_HOLD;
             }
+        }
+
+        void Game::SetCameraResolution(const Learning2DEngine::Render::Resolution& resolution)
+        {
+            Game::cameraResolution = resolution;
+            Game::cameraProjection = glm::ortho(
+                0.0f,
+                static_cast<float>(resolution.GetWidth()),
+                static_cast<float>(resolution.GetHeight()),
+                0.0f,
+                -1.0f,
+                1.0f
+            );
         }
     }
 }

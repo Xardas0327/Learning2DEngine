@@ -1,6 +1,5 @@
 #include "Breakout.h"
 
-#include <glm/gtc/matrix_transform.hpp>
 #include <string>
 
 #include <Learning2DEngine/Render/RenderManager.h>
@@ -67,7 +66,9 @@ void Breakout::InitSystem()
     resourceManager.LoadTextureFromFile("powerup_passthrough", "Assets/Images/powerup_passthrough.png", alphaSettings);
 
     // Text
-    Text2DRenderer::GetInstance().Load(fontSizePair);
+    auto& textRenderer = Text2DRenderer::GetInstance();
+    textRenderer.Init(RenderManager::GetInstance().GetResolution());
+    textRenderer.Load(fontSizePair);
 
     // MSAA
     ActivateMSAA(4);
@@ -87,14 +88,7 @@ void Breakout::InitObjects()
     const int middleHeight = resolution.GetHeight() / 2;
 
     // Camera
-    Game::cameraProjection = glm::ortho(
-        0.0f,
-        static_cast<float>(resolution.GetWidth()),
-        static_cast<float>(resolution.GetHeight()),
-        0.0f,
-        -1.0f,
-        1.0f
-    );
+    SetCameraResolution(resolution);
 
     // Background
     auto background = new GameObject();
@@ -172,6 +166,7 @@ void Breakout::Terminate()
     delete postProcessData;
     soundEngine->drop();
 
+    Text2DRenderer::GetInstance().Terminate();
     Game::Terminate();
 }
 
@@ -224,7 +219,7 @@ void Breakout::ProcessInput()
         if (Game::inputKeys[GLFW_KEY_D])
         {
             if (playerController->gameObject->transform.position.x <=
-                RenderManager::GetInstance().GetResolution().GetWidth() - playerController->gameObject->transform.scale.x)
+                Game::GetCameraResolution().GetWidth() - playerController->gameObject->transform.scale.x)
             {
                 playerController->gameObject->transform.position.x += velocity;
                 if (ballController->stuck)
@@ -249,7 +244,7 @@ void Breakout::ShakeScreen()
 
 void Breakout::IsLiveLost()
 {
-    if (ballController->gameObject->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
+    if (ballController->gameObject->transform.position.y >= Game::GetCameraResolution().GetHeight())
     {
         --lives;
         if (lives == 0)
@@ -597,7 +592,7 @@ void Breakout::CheckPowerUpCollision()
     {
         if (powerUp->gameObject->isActive)
         {
-            if (powerUp->gameObject->transform.position.y >= RenderManager::GetInstance().GetResolution().GetHeight())
+            if (powerUp->gameObject->transform.position.y >= Game::GetCameraResolution().GetHeight())
                 powerUp->gameObject->isActive = false;
 
             if (CheckCollision(*playerController->collider, *powerUp->collider))

@@ -6,27 +6,23 @@
 
 #include "../System/ResourceManager.h"
 #include "../DebugTool/Log.h"
-#include "../Render/RenderManager.h"
 #include "../Render/ShaderConstant.h"
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
-using namespace Learning2DEngine::EventSystem;
 
 namespace Learning2DEngine
 {
     namespace UI
     {
         Text2DRenderer::Text2DRenderer() :
-            vao(0), vbo(0), ebo(0), characters(), textShader(),
-            resolutionEventItem(this)
+            vao(0), vbo(0), ebo(0), characters(), textShader()
         {
 
         }
 
-        void Text2DRenderer::Init()
+        void Text2DRenderer::Init(const Render::Resolution& resolution)
         {
-            auto& renderManager = RenderManager::GetInstance();
             auto& resourceManager = ResourceManager::GetInstance();
 
             textShader = resourceManager.IsShaderExist(ShaderConstant::TEXT2D_SHADER_NAME)
@@ -40,8 +36,8 @@ namespace Learning2DEngine
                 "projection",
                 glm::ortho(
                     0.0f,
-                    static_cast<float>(renderManager.GetResolution().GetWidth()),
-                    static_cast<float>(renderManager.GetResolution().GetHeight()),
+                    static_cast<float>(resolution.GetWidth()),
+                    static_cast<float>(resolution.GetHeight()),
                     0.0f));
             textShader.SetInteger("characterTexture", 0);
 
@@ -67,13 +63,10 @@ namespace Learning2DEngine
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
-
-            renderManager.AddFramebufferSizeEvent(&resolutionEventItem);
         }
 
         void Text2DRenderer::Terminate()
         {
-            RenderManager::GetInstance().RemoveFramebufferSizeEvent(&resolutionEventItem);
             Clear();
             glDeleteVertexArrays(1, &vao);
             glDeleteBuffers(1, &vbo);
@@ -240,17 +233,6 @@ namespace Learning2DEngine
             }
             glBindVertexArray(0);
             glBindTexture(GL_TEXTURE_2D, 0);
-        }
-
-        void Text2DRenderer::RefreshResolution(const Resolution& resolution)
-        {
-            textShader.SetMatrix4(
-                "projection",
-                glm::ortho(
-                    0.0f,
-                    static_cast<float>(resolution.GetWidth()),
-                    static_cast<float>(resolution.GetHeight()),
-                    0.0f));
         }
     }
 }

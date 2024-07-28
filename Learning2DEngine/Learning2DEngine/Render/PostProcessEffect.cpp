@@ -15,7 +15,7 @@ namespace Learning2DEngine
 	{
 		PostProcessEffect::PostProcessEffect()
 			: defaultShader(), effectShader(), texture(),
-			vao(0), vbo(0), fbo(0), isEffectUsed(false)
+			vao(0), vbo(0), ebo(0), fbo(0), isEffectUsed(false)
 		{
 
 		}

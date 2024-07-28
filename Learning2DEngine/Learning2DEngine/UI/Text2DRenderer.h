@@ -7,8 +7,6 @@
 #include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
-#include "../EventSystem/ResolutionEventItem.h"
-#include "../Render/IResolutionRefresher.h"
 #include "../Render/Shader.h"
 #include "../Render/Resolution.h"
 #include "FreeTypeCharacter.h"
@@ -20,7 +18,7 @@ namespace Learning2DEngine
     {
 #define FONT_NUMBER 128
 
-        class Text2DRenderer : public virtual System::Singleton<Text2DRenderer>, public virtual Render::IResolutionRefresher
+        class Text2DRenderer : public virtual System::Singleton<Text2DRenderer>
         {
             friend class System::Singleton<Text2DRenderer>;
             typedef std::map<char, FreeTypeCharacter> CharacterMap;
@@ -30,7 +28,6 @@ namespace Learning2DEngine
             unsigned int ebo;
             std::map<FontSizePair, CharacterMap> characters;
             Render::Shader textShader;
-            EventSystem::ResolutionEventItem resolutionEventItem;
 
             Text2DRenderer();
         public:
@@ -39,7 +36,7 @@ namespace Learning2DEngine
             /// It will enable the blend, where the source factor is GL_SRC_ALPHA 
             /// and destination factor is GL_ONE_MINUS_SRC_ALPHA
             /// </summary>
-            void Init();
+            void Init(const Render::Resolution& resolution);
             /// <summary>
             /// It should be terminated before RenderManager
             /// </summary>
@@ -56,7 +53,6 @@ namespace Learning2DEngine
             void Unload(const FontSizePair& fontSizePair);
             void Clear();
             void RenderText(const Text& text);
-            void RefreshResolution(const Render::Resolution& resolution) override;
         };
     }
 }
