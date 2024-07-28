@@ -7,9 +7,9 @@
 
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/System/GameObject.h>
+#include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/Render/SpriteRenderer.h>
 #include <Learning2DEngine/Render/Texture2D.h>
-#include <Learning2DEngine/Render/RenderManager.h>
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
@@ -108,7 +108,7 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData)
         }
     }
 
-    CalcBrickSize(RenderManager::GetInstance().GetResolution());
+    CalcBrickSize(Game::GetCameraResolution());
 }
 
 void GameLevel::CalcBrickSize(const Resolution& resolution)

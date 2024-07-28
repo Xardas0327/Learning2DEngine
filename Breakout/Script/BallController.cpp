@@ -1,7 +1,6 @@
 #include "BallController.h"
 
 #include <Learning2DEngine/System/Game.h>
-#include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/ParticleSimulator/ParticleSystemSettings.h>
 
@@ -58,7 +57,7 @@ void BallController::Move()
 {
     if (!stuck)
     {
-        int windowWidth = RenderManager::GetInstance().GetResolution().GetWidth();
+        int width = Game::GetCameraResolution().GetWidth();
         rigidbody->Update();
 
         if (gameObject->transform.position.x <= 0.0f)
@@ -66,10 +65,10 @@ void BallController::Move()
             rigidbody->velocity.x = -rigidbody->velocity.x;
             gameObject->transform.position.x = 0.0f;
         }
-        else if (gameObject->transform.position.x + gameObject->transform.scale.x >= windowWidth)
+        else if (gameObject->transform.position.x + gameObject->transform.scale.x >= width)
         {
             rigidbody->velocity.x = -rigidbody->velocity.x;
-            gameObject->transform.position.x = windowWidth - gameObject->transform.scale.x;
+            gameObject->transform.position.x = width - gameObject->transform.scale.x;
         }
         if (gameObject->transform.position.y <= 0.0f)
         {

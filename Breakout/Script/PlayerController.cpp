@@ -1,7 +1,7 @@
 #include "PlayerController.h"
 
 #include <Learning2DEngine/System/ResourceManager.h>
-#include <Learning2DEngine/Render/RenderManager.h>
+#include <Learning2DEngine/System/Game.h>
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
@@ -25,7 +25,7 @@ void PlayerController::Init()
 
 void PlayerController::Reset()
 {
-	const Resolution resolution = RenderManager::GetInstance().GetResolution();
+	const Resolution resolution = Game::GetCameraResolution();
 
 	gameObject->transform.scale = PLAYER_SIZE;
 	gameObject->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
