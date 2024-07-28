@@ -62,13 +62,13 @@ namespace Learning2DEngine
             InputStatus inputKeys[INPUT_KEY_SIZE];
 
             /// <summary>
-            /// It has to be initialized, because the camera image don't have to be use resolution.
+            /// It has to be initialized, because the camera image don't have to be same resolution.
             /// It is glm::mat4(0.0f) by default.
             /// </summary>
             static glm::mat4 cameraProjection;
 
             /// <summary>
-            /// It has to be initialized, because the camera image don't have to be use resolution.
+            /// It has to be initialized, because the camera image don't have to be same resolution.
             /// It is (0,0) by default.
             /// </summary>
             static Render::Resolution cameraResolution;
