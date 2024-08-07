@@ -72,19 +72,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PublicIncludeDirectories>$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <LibraryPath>$(SolutionDir)Plugins\GLFW\lib\lib-vc2022;$(SolutionDir)Plugins\freetype\freetype release static\vs2015-2022\win64;$(SolutionDir)Plugins\irrKlang\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Plugins\lib\GLFW\lib-vc2022;$(SolutionDir)Plugins\lib\freetype\vs2015-2022\win64;$(SolutionDir)Plugins\lib\irrKlang;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PublicIncludeDirectories>$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <LibraryPath>$(SolutionDir)Plugins\GLFW\lib\lib-vc2022;$(SolutionDir)Plugins\freetype\freetype release static\vs2015-2022\win64;$(SolutionDir)Plugins\irrKlang\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Plugins\lib\GLFW\lib-vc2022;$(SolutionDir)Plugins\lib\freetype\vs2015-2022\win64;$(SolutionDir)Plugins\lib\irrKlang;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PublicIncludeDirectories>$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <LibraryPath>$(SolutionDir)Plugins\GLFW\lib\lib-vc2022;$(SolutionDir)Plugins\freetype\freetype release static\vs2015-2022\win64;$(SolutionDir)Plugins\irrKlang\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Plugins\lib\GLFW\lib-vc2022;$(SolutionDir)Plugins\lib\freetype\vs2015-2022\win64;$(SolutionDir)Plugins\lib\irrKlang;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PublicIncludeDirectories>$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <LibraryPath>$(SolutionDir)Plugins\GLFW\lib\lib-vc2022;$(SolutionDir)Plugins\freetype\freetype release static\vs2015-2022\win64;$(SolutionDir)Plugins\irrKlang\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Plugins\lib\GLFW\lib-vc2022;$(SolutionDir)Plugins\lib\freetype\vs2015-2022\win64;$(SolutionDir)Plugins\lib\irrKlang;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -92,7 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -111,7 +111,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,7 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,7 +149,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Plugins;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Plugins\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
