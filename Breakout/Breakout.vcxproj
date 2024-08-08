@@ -95,6 +95,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>irrKlang.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" &amp;&amp; mkdir "$(OutDir)Assets" &amp;&amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -113,6 +120,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>irrKlang.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" &amp;&amp; mkdir "$(OutDir)Assets" &amp;&amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -127,6 +141,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>irrKlang.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" &amp;&amp; mkdir "$(OutDir)Assets" &amp;&amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -145,6 +166,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>irrKlang.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" &amp;&amp; mkdir "$(OutDir)Assets" &amp;&amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Script\BackgroundController.h" />
