@@ -8,7 +8,7 @@ Snake snakeGame;
 
 int main()
 {
-    snakeGame.InitWithRender(3, 3, resolution, "Snake");
+    snakeGame.InitWithRender(3, 3, resolution, "Snake", false);
     snakeGame.Run();
     snakeGame.Terminate();
     return 0;

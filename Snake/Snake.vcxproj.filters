@@ -30,4 +30,9 @@
   <ItemGroup>
     <Font Include="Assets\Fonts\OCRAEXT.TTF" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Images\Unit.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

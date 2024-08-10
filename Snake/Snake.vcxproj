@@ -157,6 +157,9 @@
       <Project>{adab7eda-73c6-4e6d-8900-5b0b4ce68529}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Images\Unit.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
