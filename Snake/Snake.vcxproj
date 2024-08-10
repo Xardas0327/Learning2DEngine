@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{4db73889-493a-411d-a4d8-6859ae1f5c39}</ProjectGuid>
-    <RootNamespace>Breakout</RootNamespace>
+    <ProjectGuid>{b0d106b9-8339-4747-aae3-209d092df18a}</ProjectGuid>
+    <RootNamespace>Snake</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -70,38 +70,18 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>$(SolutionDir)Plugins\Game\lib\irrKlang;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>$(SolutionDir)Plugins\Game\lib\irrKlang;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>$(SolutionDir)Plugins\Game\lib\irrKlang;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>$(SolutionDir)Plugins\Game\lib\irrKlang;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Learning2DEngine;$(SolutionDir)Plugins\Engine\include;$(SolutionDir)Plugins\Game\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Learning2DEngine;$(SolutionDir)Plugins\Engine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>irrKlang.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" &amp;&amp; mkdir "$(OutDir)Assets" &amp;&amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -111,22 +91,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Learning2DEngine;$(SolutionDir)Plugins\Engine\include;$(SolutionDir)Plugins\Game\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Learning2DEngine;$(SolutionDir)Plugins\Engine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>irrKlang.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" &amp;&amp; mkdir "$(OutDir)Assets" &amp;&amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -134,20 +106,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Learning2DEngine;$(SolutionDir)Plugins\Engine\include;$(SolutionDir)Plugins\Game\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Learning2DEngine;$(SolutionDir)Plugins\Engine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>irrKlang.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" &amp;&amp; mkdir "$(OutDir)Assets" &amp;&amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -157,83 +121,24 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Learning2DEngine;$(SolutionDir)Plugins\Engine\include;$(SolutionDir)Plugins\Game\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Learning2DEngine;$(SolutionDir)Plugins\Engine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>irrKlang.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-    <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" &amp;&amp; mkdir "$(OutDir)Assets" &amp;&amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Script\BackgroundController.h" />
-    <ClInclude Include="Script\BallController.h" />
-    <ClInclude Include="Script\BallParticleSettings.h" />
-    <ClInclude Include="Breakout.h" />
-    <ClInclude Include="Script\BrickController.h" />
-    <ClInclude Include="Script\CollisionResult.h" />
-    <ClInclude Include="Script\GameLevel.h" />
-    <ClInclude Include="Script\PostProcessData.h" />
-    <ClInclude Include="Script\PowerUpController.h" />
-    <ClInclude Include="Script\PowerUpObject.h" />
-    <ClInclude Include="Script\PowerUpType.h" />
-    <ClInclude Include="Script\PlayerController.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Script\BallController.cpp" />
-    <ClCompile Include="Script\BallParticleSettings.cpp" />
-    <ClCompile Include="Breakout.cpp" />
-    <ClCompile Include="Script\GameLevel.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Script\BackgroundController.cpp" />
-    <ClCompile Include="Script\BrickController.cpp" />
-    <ClCompile Include="Script\PlayerController.cpp" />
+    <ClCompile Include="Snake.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Levels\four.lvl" />
-    <None Include="Assets\Levels\one.lvl" />
-    <None Include="Assets\Levels\three.lvl" />
-    <None Include="Assets\Levels\two.lvl" />
-    <None Include="Assets\Shaders\PostProcessing.fs" />
-    <None Include="Assets\Shaders\PostProcessing.vs" />
+    <ClInclude Include="Snake.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\OCRAEXT.TTF" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\Images\awesomeface.png" />
-    <Image Include="Assets\Images\background.jpg" />
-    <Image Include="Assets\Images\block.png" />
-    <Image Include="Assets\Images\block_solid.png" />
-    <Image Include="Assets\Images\paddle.png" />
-    <Image Include="Assets\Images\particle.png" />
-    <Image Include="Assets\Images\powerup_chaos.png" />
-    <Image Include="Assets\Images\powerup_confuse.png" />
-    <Image Include="Assets\Images\powerup_increase.png" />
-    <Image Include="Assets\Images\powerup_passthrough.png" />
-    <Image Include="Assets\Images\powerup_speed.png" />
-    <Image Include="Assets\Images\powerup_sticky.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Assets\Sounds\bleep.mp3" />
-    <Media Include="Assets\Sounds\bleep.wav" />
-    <Media Include="Assets\Sounds\breakout.mp3" />
-    <Media Include="Assets\Sounds\powerup.wav" />
-    <Media Include="Assets\Sounds\solid.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Learning2DEngine\Learning2DEngine.vcxproj">
-      <Project>{adab7eda-73c6-4e6d-8900-5b0b4ce68529}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
