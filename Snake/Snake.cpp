@@ -3,6 +3,7 @@
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Render/SpriteRenderer.h>
 #include <Learning2DEngine/System/ResourceManager.h>
+#include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/UI/Text2DRenderer.h>
 
 using namespace Learning2DEngine::Render;
@@ -10,7 +11,7 @@ using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::UI;
 
 Snake::Snake()
-	: state(GameState::GAME_MENU), score(0), levelResolution(10), unitSize(0),
+	: state(GameState::GAME_MENU), score(0), levelResolution(10,10), unitSize(0),
     fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), player(nullptr), 
     waitingTime(0.0f), startWaitingTime(0.75f), moveDirection(), scoreText(), startText()
 {
@@ -52,12 +53,14 @@ void Snake::InitSystem()
 
 void Snake::InitObjects()
 {
+    auto& resourceManager = ResourceManager::GetInstance();
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
+
     // Camera
     SetCameraResolution(resolution);
 
     // Unit
-    unitSize = glm::vec2(resolution.GetWidth() / levelResolution, resolution.GetHeight() / levelResolution);
+    unitSize = glm::vec2(resolution.GetWidth() / levelResolution.x, resolution.GetHeight() / levelResolution.y);
 
     //Player
     player = new GameObject(
@@ -67,8 +70,20 @@ void Snake::InitObjects()
         )
     );
     player->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
-        ResourceManager::GetInstance().GetTexture("Unit"),
+        resourceManager.GetTexture("Unit"),
         glm::vec3(0.0f, 0.75f, 0.0f)
+    );
+
+    //Food
+    food = new GameObject(
+        Transform(
+            glm::vec2(0.0f, 0.0f),
+            unitSize
+        )
+    );
+    food->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
+        resourceManager.GetTexture("Unit"),
+        glm::vec3(0.75f, 0.0f, 0.0f)
     );
 
     // Text
@@ -90,6 +105,7 @@ void Snake::InitObjects()
 void Snake::Terminate()
 {
     GameObject::Destroy(player);
+    GameObject::Destroy(food);
 
 	Text2DRenderer::GetInstance().Terminate();
 	Game::Terminate();
@@ -104,6 +120,7 @@ void Snake::Update()
 
 void Snake::Render()
 {
+    food->GetComponent<SpriteRenderer>()->Draw();
     player->GetComponent<SpriteRenderer>()->Draw();
 }
 
@@ -169,9 +186,10 @@ void Snake::ResetLevel()
 {
     player->transform.position = glm::vec2(0.0f, 0.0f);
     score = 0;
-    scoreText.text = "Score: " + std::to_string(score);
+    RefreshScore();
     waitingTime = startWaitingTime;
     moveDirection = Direction::RIGHT;
+    GenerateNextFood();
 }
 
 void Snake::MoveSnake()
@@ -200,7 +218,7 @@ void Snake::MoveSnake()
             break;
         }
 
-        glm::vec2 newPostion = player->transform.position + moveVector * unitSize;
+        glm::vec2 newPostion = player->transform.position + glm::vec2(moveVector.x * unitSize.x, moveVector.y * unitSize.y);
 
         if (IsOut(newPostion))
         {
@@ -209,8 +227,8 @@ void Snake::MoveSnake()
         else
         {
             player->transform.position = newPostion;
+            IsFoodEated();
         }
-
     }
 }
 
@@ -220,4 +238,31 @@ bool Snake::IsOut(const glm::vec2 position)
 
     return position.x < 0 || position.x >= cameraResolution.GetWidth()
         || position.y < 0 || position.y >= cameraResolution.GetHeight();
+}
+
+void Snake::GenerateNextFood()
+{
+    while (true)
+    {
+        int x = Random::GetNumber(0, levelResolution.x);
+        int y = Random::GetNumber(0, levelResolution.y);
+        food->transform.position = glm::vec2(x * unitSize.x, y * unitSize.y);
+        if (player->transform.position != food->transform.position)
+            break;
+    }
+}
+
+void Snake::IsFoodEated()
+{
+    if (player->transform.position == food->transform.position)
+    {
+        ++score;
+        RefreshScore();
+        GenerateNextFood();
+    }
+}
+
+void Snake::RefreshScore()
+{
+    scoreText.text = "Score: " + std::to_string(score);
 }

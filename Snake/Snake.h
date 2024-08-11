@@ -28,10 +28,11 @@ class Snake : public virtual Learning2DEngine::System::Game
 private:
     GameState state;
     unsigned int score;
-    const unsigned int levelResolution;
-    glm::vec2 unitSize;
+    const glm::ivec2 levelResolution;
+    glm::ivec2 unitSize;
     const Learning2DEngine::UI::FontSizePair fontSizePair;
     Learning2DEngine::System::GameObject* player;
+    Learning2DEngine::System::GameObject* food;
     //In Seconds
     float waitingTime;
     //In Seconds
@@ -51,6 +52,9 @@ protected:
     void ResetLevel();
     void MoveSnake();
     bool IsOut(const glm::vec2 position);
+    void GenerateNextFood();
+    void IsFoodEated();
+    void RefreshScore();
 public:
     Snake();
     ~Snake();
