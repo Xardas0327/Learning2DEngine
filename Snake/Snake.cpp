@@ -12,7 +12,7 @@ using namespace Learning2DEngine::UI;
 
 Snake::Snake()
 	: state(GameState::GAME_MENU), score(0), levelResolution(10,10), unitSize(0),
-    fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), player(nullptr), 
+    fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), player(nullptr), food(nullptr),
     waitingTime(0.0f), startWaitingTime(0.75f), moveDirection(), scoreText(), startText()
 {
 
