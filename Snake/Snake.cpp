@@ -11,7 +11,7 @@ using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::UI;
 
 Snake::Snake()
-    : levelResolution(10, 10), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), startMoveWaitingTime(0.75f), dencreaseTimeAfterFood(0.01f), 
+    : levelResolution(10, 10), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), startMoveWaitingTime(0.5f), dencreaseTimeAfterFood(0.005f), 
     baseSnakeLength(3),
     state(GameState::GAME_MENU), score(0),  unitSize(0), food(nullptr), player(),
     moveWaitingTime(0.0f), actualWaitingTime(0.0f), moveDirection(), lastMoveDirection(), scoreText(), startText()
