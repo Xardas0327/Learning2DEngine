@@ -11,9 +11,10 @@ using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::UI;
 
 Snake::Snake()
-    : levelResolution(10, 10), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), startWaitingTime(0.75f), baseSnakeLength(3),
+    : levelResolution(10, 10), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), startMoveWaitingTime(0.75f), dencreaseTimeAfterFood(0.01f), 
+    baseSnakeLength(3),
     state(GameState::GAME_MENU), score(0),  unitSize(0), food(nullptr), player(),
-    waitingTime(0.0f), moveDirection(), scoreText(), startText()
+    moveWaitingTime(0.0f), actualWaitingTime(0.0f), moveDirection(), lastMoveDirection(), scoreText(), startText()
 {
 
 }
@@ -192,7 +193,8 @@ void Snake::ResetLevel()
 
     score = 0;
     RefreshScore();
-    waitingTime = startWaitingTime;
+    moveWaitingTime = startMoveWaitingTime;
+    actualWaitingTime = startMoveWaitingTime;
     moveDirection = Direction::RIGHT;
     lastMoveDirection = Direction::RIGHT;
     GenerateNextFood();
@@ -203,13 +205,9 @@ void Snake::MoveSnake()
     if (state != GameState::GAME_ACTIVE)
         return;
 
-    waitingTime -= Game::GetDeltaTime();
-    if (waitingTime < 0)
+    actualWaitingTime -= Game::GetDeltaTime();
+    if (actualWaitingTime < 0)
     {
-        waitingTime += startWaitingTime;
-        if (waitingTime < 0)
-            waitingTime = 0;
-
         glm::vec2 moveVector = glm::vec2(0.0f);
         switch (moveDirection)
         {
@@ -240,6 +238,9 @@ void Snake::MoveSnake()
             {
                 player.push_front(CreateNewPlayerUnit(newPostion));
                 EatFood();
+                moveWaitingTime -= dencreaseTimeAfterFood;
+                if (moveWaitingTime < 0)
+                    moveWaitingTime = 0;
             }
             else
             {
@@ -254,6 +255,11 @@ void Snake::MoveSnake()
                 }
                 player.front()->transform.position = newPostion;
             }
+
+
+            actualWaitingTime += moveWaitingTime;
+            if (actualWaitingTime < 0)
+                actualWaitingTime = 0;
         }
     }
 }

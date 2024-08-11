@@ -31,7 +31,8 @@ private:
     const glm::ivec2 levelResolution;
     const Learning2DEngine::UI::FontSizePair fontSizePair;
     //In Seconds
-    const float startWaitingTime;
+    const float startMoveWaitingTime;
+    const float dencreaseTimeAfterFood;
     const unsigned int baseSnakeLength;
 
     GameState state;
@@ -40,7 +41,8 @@ private:
     std::list<Learning2DEngine::System::GameObject*> player;
     Learning2DEngine::System::GameObject* food;
     //In Seconds
-    float waitingTime;
+    float moveWaitingTime;
+    float actualWaitingTime;
     Direction moveDirection;
     Direction lastMoveDirection;
 
