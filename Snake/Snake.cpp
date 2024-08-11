@@ -56,14 +56,14 @@ void Snake::InitObjects()
     // Camera
     SetCameraResolution(resolution);
 
-    //Unit
-    unitSize = resolution.GetHeight() < resolution.GetWidth() ? resolution.GetHeight() / levelResolution : resolution.GetWidth() / levelResolution;
+    // Unit
+    unitSize = glm::vec2(resolution.GetWidth() / levelResolution, resolution.GetHeight() / levelResolution);
 
     //Player
     player = new GameObject(
         Transform(
             glm::vec2(0.0f, 0.0f),
-            glm::vec2(unitSize, unitSize)
+            unitSize
         )
     );
     player->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
@@ -99,34 +99,7 @@ void Snake::Update()
 {
     ProcessInput();
 
-    if (state != GAME_ACTIVE)
-        return;
-
-    waitingTime -= Game::GetDeltaTime();
-    if (waitingTime < 0)
-    {
-        waitingTime += startWaitingTime;
-        glm::vec2 moveVector;
-        switch (moveDirection)
-        {
-        case Direction::UP:
-            moveVector = VECTOR_UP;
-            break;
-        case Direction::DOWN:
-            moveVector = VECTOR_DOWN;
-            break;
-        case Direction::RIGHT:
-            moveVector = VECTOR_RIGHT;
-            break;
-        case Direction::LEFT:
-            moveVector = VECTOR_LEFT;
-            break;
-        default:
-            break;
-        }
-
-        player->transform.position += glm::vec2(moveVector.x * unitSize, moveVector.y * unitSize);
-    }
+    MoveSnake();
 }
 
 void Snake::Render()
@@ -194,8 +167,57 @@ void Snake::ProcessInput()
 
 void Snake::ResetLevel()
 {
+    player->transform.position = glm::vec2(0.0f, 0.0f);
     score = 0;
     scoreText.text = "Score: " + std::to_string(score);
     waitingTime = startWaitingTime;
     moveDirection = Direction::RIGHT;
+}
+
+void Snake::MoveSnake()
+{
+    if (state != GameState::GAME_ACTIVE)
+        return;
+
+    waitingTime -= Game::GetDeltaTime();
+    if (waitingTime < 0)
+    {
+        waitingTime += startWaitingTime;
+        glm::vec2 moveVector = glm::vec2(0.0f);
+        switch (moveDirection)
+        {
+        case Direction::UP:
+            moveVector = VECTOR_UP;
+            break;
+        case Direction::DOWN:
+            moveVector = VECTOR_DOWN;
+            break;
+        case Direction::RIGHT:
+            moveVector = VECTOR_RIGHT;
+            break;
+        case Direction::LEFT:
+            moveVector = VECTOR_LEFT;
+            break;
+        }
+
+        glm::vec2 newPostion = player->transform.position + moveVector * unitSize;
+
+        if (IsOut(newPostion))
+        {
+            state = GameState::GAME_MENU;
+        }
+        else
+        {
+            player->transform.position = newPostion;
+        }
+
+    }
+}
+
+bool Snake::IsOut(const glm::vec2 position)
+{
+    auto cameraResolution = Game::GetCameraResolution();
+
+    return position.x < 0 || position.x >= cameraResolution.GetWidth()
+        || position.y < 0 || position.y >= cameraResolution.GetHeight();
 }

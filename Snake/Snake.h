@@ -29,7 +29,7 @@ private:
     GameState state;
     unsigned int score;
     const unsigned int levelResolution;
-    unsigned int unitSize;
+    glm::vec2 unitSize;
     const Learning2DEngine::UI::FontSizePair fontSizePair;
     Learning2DEngine::System::GameObject* player;
     //In Seconds
@@ -49,6 +49,8 @@ protected:
 
     void ProcessInput();
     void ResetLevel();
+    void MoveSnake();
+    bool IsOut(const glm::vec2 position);
 public:
     Snake();
     ~Snake();
