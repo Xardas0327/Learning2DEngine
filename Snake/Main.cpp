@@ -3,7 +3,7 @@
 
 using namespace Learning2DEngine::Render;
 
-const Resolution resolution(800, 800);
+const Resolution resolution(600, 600);
 Snake snakeGame;
 
 int main()

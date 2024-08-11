@@ -1,5 +1,7 @@
 #pragma once
 
+#include <list>
+
 #include <glm/glm.hpp>
 
 #include <Learning2DEngine/System/Game.h>
@@ -26,18 +28,21 @@ const glm::vec2 VECTOR_LEFT(-1.0f, 0.0f);
 class Snake : public virtual Learning2DEngine::System::Game
 {
 private:
+    const glm::ivec2 levelResolution;
+    const Learning2DEngine::UI::FontSizePair fontSizePair;
+    //In Seconds
+    const float startWaitingTime;
+    const unsigned int baseSnakeLength;
+
     GameState state;
     unsigned int score;
-    const glm::ivec2 levelResolution;
     glm::ivec2 unitSize;
-    const Learning2DEngine::UI::FontSizePair fontSizePair;
-    Learning2DEngine::System::GameObject* player;
+    std::list<Learning2DEngine::System::GameObject*> player;
     Learning2DEngine::System::GameObject* food;
     //In Seconds
     float waitingTime;
-    //In Seconds
-    const float startWaitingTime;
     Direction moveDirection;
+    Direction lastMoveDirection;
 
     Learning2DEngine::UI::Text  scoreText;
     Learning2DEngine::UI::Text  startText;
@@ -52,9 +57,11 @@ protected:
     void ResetLevel();
     void MoveSnake();
     bool IsOut(const glm::vec2 position);
+    bool IsInSnake(const glm::vec2 position);
     void GenerateNextFood();
-    void IsFoodEated();
+    void EatFood();
     void RefreshScore();
+    Learning2DEngine::System::GameObject* CreateNewPlayerUnit(const glm::vec2 position);
 public:
     Snake();
     ~Snake();
