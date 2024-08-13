@@ -65,7 +65,7 @@
     <ClCompile Include="Script\GameLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Script\BackgroundController.cpp">

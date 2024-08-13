@@ -16,7 +16,7 @@ using namespace Learning2DEngine::Physics;
 using namespace irrklang;
 
 Breakout::Breakout() :
-    state(GameState::GAME_ACTIVE), powerUps(), levels(), selectedLevel(0), lives(3),
+    state(GameState::GAME_MENU), powerUps(), levels(), selectedLevel(0), lives(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
     soundEngine(nullptr), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), postProcessData(nullptr),
     shakeTime(0.0f), liveText(), startText(), levelSelectorText(), winText(), retryText()
@@ -36,7 +36,6 @@ void Breakout::Init()
     InitObjects();
 
     soundEngine->play2D("Assets/Sounds/breakout.mp3", true);
-    state = GameState::GAME_MENU;
 }
 
 void Breakout::InitSystem()

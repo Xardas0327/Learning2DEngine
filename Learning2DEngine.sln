@@ -7,6 +7,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Learning2DEngine", "Learnin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Breakout", "Breakout\Breakout.vcxproj", "{4DB73889-493A-411D-A4D8-6859AE1F5C39}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snake", "Snake\Snake.vcxproj", "{B0D106B9-8339-4747-AAE3-209D092DF18A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ADAB7EDA-73C6-4E6D-8900-5B0B4CE68529} = {ADAB7EDA-73C6-4E6D-8900-5B0B4CE68529}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +26,10 @@ Global
 		{4DB73889-493A-411D-A4D8-6859AE1F5C39}.Debug|x64.Build.0 = Debug|x64
 		{4DB73889-493A-411D-A4D8-6859AE1F5C39}.Release|x64.ActiveCfg = Release|x64
 		{4DB73889-493A-411D-A4D8-6859AE1F5C39}.Release|x64.Build.0 = Release|x64
+		{B0D106B9-8339-4747-AAE3-209D092DF18A}.Debug|x64.ActiveCfg = Debug|x64
+		{B0D106B9-8339-4747-AAE3-209D092DF18A}.Debug|x64.Build.0 = Debug|x64
+		{B0D106B9-8339-4747-AAE3-209D092DF18A}.Release|x64.ActiveCfg = Release|x64
+		{B0D106B9-8339-4747-AAE3-209D092DF18A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
