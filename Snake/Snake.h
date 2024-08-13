@@ -8,6 +8,9 @@
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/UI/Text.h>
 
+#include "FoodController.h"
+#include "PlayerController.h"
+
 enum GameState {
     GAME_MENU,
     GAME_ACTIVE
@@ -25,6 +28,10 @@ const glm::vec2 VECTOR_DOWN(0.0f, 1.0f);
 const glm::vec2 VECTOR_RIGHT(1.0f, 0.0f);
 const glm::vec2 VECTOR_LEFT(-1.0f, 0.0f);
 
+const glm::ivec2 MAP_SIZE(10, 10);
+const float START_MOVE_WAITING_TIME = 0.5f; 
+const float TIME_DECREASE = 0.005f;
+
 class Snake : public virtual Learning2DEngine::System::Game
 {
 private:
@@ -32,14 +39,14 @@ private:
     const Learning2DEngine::UI::FontSizePair fontSizePair;
     //In Seconds
     const float startMoveWaitingTime;
-    const float dencreaseTimeAfterFood;
+    const float dencreaseTimeAfterEat;
     const unsigned int baseSnakeLength;
 
     GameState state;
     unsigned int score;
     glm::ivec2 unitSize;
-    std::list<Learning2DEngine::System::GameObject*> player;
-    Learning2DEngine::System::GameObject* food;
+    FoodController* foodController;
+    PlayerController* playerController;
     //In Seconds
     float moveWaitingTime;
     float actualWaitingTime;
@@ -59,11 +66,9 @@ protected:
     void ResetLevel();
     void MoveSnake();
     bool IsOut(const glm::vec2 position);
-    bool IsInSnake(const glm::vec2 position);
     void GenerateNextFood();
     void EatFood();
     void RefreshScore();
-    Learning2DEngine::System::GameObject* CreateNewPlayerUnit(const glm::vec2 position);
 public:
     Snake();
     ~Snake();

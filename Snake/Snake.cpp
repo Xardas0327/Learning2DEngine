@@ -11,9 +11,9 @@ using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::UI;
 
 Snake::Snake()
-    : levelResolution(10, 10), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), startMoveWaitingTime(0.5f), dencreaseTimeAfterFood(0.005f), 
-    baseSnakeLength(3),
-    state(GameState::GAME_MENU), score(0),  unitSize(0), food(nullptr), player(),
+    : levelResolution(MAP_SIZE), fontSizePair("Assets/Fonts/arial.ttf", 24), startMoveWaitingTime(START_MOVE_WAITING_TIME),
+    dencreaseTimeAfterEat(TIME_DECREASE), baseSnakeLength(3),
+    state(GameState::GAME_MENU), score(0),  unitSize(0), foodController(nullptr), playerController(nullptr),
     moveWaitingTime(0.0f), actualWaitingTime(0.0f), moveDirection(), lastMoveDirection(), scoreText(), startText()
 {
 
@@ -64,17 +64,18 @@ void Snake::InitObjects()
     // Unit
     unitSize = glm::vec2(resolution.GetWidth() / levelResolution.x, resolution.GetHeight() / levelResolution.y);
 
+    //Player
+    auto player = new GameObject();
+    playerController = player->AddComponent<PlayerController, const std::string&>("Unit");
+
     //Food
-    food = new GameObject(
+    auto food = new GameObject(
         Transform(
             glm::vec2(0.0f, 0.0f),
             unitSize
         )
     );
-    food->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
-        ResourceManager::GetInstance().GetTexture("Unit"),
-        glm::vec3(0.75f, 0.0f, 0.0f)
-    );
+    foodController = food->AddComponent<FoodController, const std::string&>("Unit");
 
     // Text
     scoreText = {
@@ -86,7 +87,7 @@ void Snake::InitObjects()
     startText = {
         fontSizePair,
         "Press ENTER to start",
-        250.0f,
+        175.0f,
         static_cast<float>(resolution.GetHeight() / 2)
     };
 
@@ -94,11 +95,8 @@ void Snake::InitObjects()
 
 void Snake::Terminate()
 {
-    for (std::list<GameObject*>::iterator it = player.begin(); it != player.end(); ++it) {
-        GameObject::Destroy(*it);
-    }
-    player.clear();
-    GameObject::Destroy(food);
+    GameObject::Destroy(playerController);
+    GameObject::Destroy(foodController);
 
 	Text2DRenderer::GetInstance().Terminate();
 	Game::Terminate();
@@ -113,11 +111,8 @@ void Snake::Update()
 
 void Snake::Render()
 {
-    food->GetComponent<SpriteRenderer>()->Draw();
-
-    for (std::list<GameObject*>::iterator it = player.begin(); it != player.end(); ++it) {
-        (*it)->GetComponent<SpriteRenderer>()->Draw();
-    }
+    foodController->Draw();
+    playerController->Draw();
 }
 
 void Snake::LateRender()
@@ -180,16 +175,7 @@ void Snake::ProcessInput()
 
 void Snake::ResetLevel()
 {
-
-    auto& resourceManager = ResourceManager::GetInstance();
-    for (std::list<GameObject*>::iterator it = player.begin(); it != player.end(); ++it) {
-        GameObject::Destroy(*it);
-    }
-    player.clear();
-    for (unsigned int i = 0; i < baseSnakeLength; ++i)
-    {
-        player.push_front(CreateNewPlayerUnit(glm::vec2(i * unitSize.x, 0.0f)));
-    }
+    playerController->Regenerate(unitSize);
 
     score = 0;
     RefreshScore();
@@ -226,34 +212,25 @@ void Snake::MoveSnake()
         }
 
         lastMoveDirection = moveDirection;
-        glm::vec2 newPostion = player.front()->transform.position + glm::vec2(moveVector.x * unitSize.x, moveVector.y * unitSize.y);
+        glm::vec2 newPostion = playerController->GetHeadPosition() + glm::vec2(moveVector.x * unitSize.x, moveVector.y * unitSize.y);
 
-        if (IsOut(newPostion) || IsInSnake(newPostion))
+        if (IsOut(newPostion) || playerController->IsInSnake(newPostion))
         {
             state = GameState::GAME_MENU;
         }
         else
         {
-            if (newPostion == food->transform.position)
+            if (newPostion == foodController->gameObject->transform.position)
             {
-                player.push_front(CreateNewPlayerUnit(newPostion));
+                playerController->IncreaseSize(newPostion, unitSize);
                 EatFood();
-                moveWaitingTime -= dencreaseTimeAfterFood;
+                moveWaitingTime -= dencreaseTimeAfterEat;
                 if (moveWaitingTime < 0)
                     moveWaitingTime = 0;
             }
             else
             {
-                auto end = player.rbegin();
-                auto beforeIt = player.rbegin();
-                ++beforeIt;
-                while (beforeIt != player.rend())
-                {
-                    (*end)->transform.position = (*beforeIt)->transform.position;
-                    ++end;
-                    ++beforeIt;
-                }
-                player.front()->transform.position = newPostion;
+                playerController->Move(newPostion);
             }
 
 
@@ -272,20 +249,9 @@ bool Snake::IsOut(const glm::vec2 position)
         || position.y < 0 || position.y >= cameraResolution.GetHeight();
 }
 
-bool Snake::IsInSnake(const glm::vec2 position)
-{
-    for (std::list<GameObject*>::iterator it = player.begin(); it != player.end(); ++it) {
-        if ((*it)->transform.position == position)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 void Snake::GenerateNextFood()
 {
-    if (player.size() >= levelResolution.x * levelResolution.y)
+    if (playerController->GetSize() >= levelResolution.x * levelResolution.y)
     {
         state = GameState::GAME_MENU;
         return;
@@ -295,9 +261,9 @@ void Snake::GenerateNextFood()
     {
         int x = Random::GetNumber(0, levelResolution.x);
         int y = Random::GetNumber(0, levelResolution.y);
-        food->transform.position = glm::vec2(x * unitSize.x, y * unitSize.y);
+        foodController->gameObject->transform.position = glm::vec2(x * unitSize.x, y * unitSize.y);
 
-        if (!IsInSnake(food->transform.position))
+        if (!playerController->IsInSnake(foodController->gameObject->transform.position))
             break;
     }
 }
@@ -312,20 +278,4 @@ void Snake::EatFood()
 void Snake::RefreshScore()
 {
     scoreText.text = "Score: " + std::to_string(score);
-}
-
-GameObject* Snake::CreateNewPlayerUnit(const glm::vec2 position)
-{
-    auto playerUnit = new GameObject(
-        Transform(
-            position,
-            unitSize
-        )
-    );
-    playerUnit->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
-        ResourceManager::GetInstance().GetTexture("Unit"),
-        glm::vec3(0.0f, 0.75f, 0.0f)
-    );
-
-    return playerUnit;
 }
