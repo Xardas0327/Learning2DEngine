@@ -23,7 +23,6 @@ namespace Learning2DEngine
             static CollisionData IsCollisoned(const BoxCollider& collider1, const BoxCollider& collider2);
             static CollisionData IsCollisoned(const CircleCollider& collider1, const CircleCollider& collider2);
             static CollisionData IsCollisoned(const CircleCollider& circleCollider, const BoxCollider& boxCollider);
-            static CollisionData IsCollisoned(const BoxCollider& boxCollider, const CircleCollider& circleCollider);
         };
     }
 }
