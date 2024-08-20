@@ -45,8 +45,8 @@ namespace Learning2DEngine
 				return resolution;
 			}
 
-			void SetClearColort(float r, float g, float b, float a);
-			inline glm::vec4 GetClearColort()
+			void SetClearColor(float r, float g, float b, float a);
+			inline glm::vec4 GetClearColor()
 			{
 				return clearColor;
 			}

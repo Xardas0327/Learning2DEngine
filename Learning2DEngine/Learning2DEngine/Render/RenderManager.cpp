@@ -82,7 +82,7 @@ namespace Learning2DEngine
             glClear(GL_COLOR_BUFFER_BIT);
         }
 
-        void RenderManager::SetClearColort(float r, float g, float b, float a)
+        void RenderManager::SetClearColor(float r, float g, float b, float a)
         {
             clearColor = glm::vec4(r, g, b, a);
         }
