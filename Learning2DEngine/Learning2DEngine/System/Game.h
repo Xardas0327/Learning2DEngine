@@ -62,13 +62,13 @@ namespace Learning2DEngine
             InputStatus inputKeys[INPUT_KEY_SIZE];
 
             /// <summary>
-            /// It has to be initialized, because the camera image don't have to be same resolution.
+            /// It has to be initialized.
             /// It is glm::mat4(0.0f) by default.
             /// </summary>
             static glm::mat4 cameraProjection;
 
             /// <summary>
-            /// It has to be initialized, because the camera image don't have to be same resolution.
+            /// It has to be initialized, because the camera resolution don't have to be same with screen resolution.
             /// It is (0,0) by default.
             /// </summary>
             static Render::Resolution cameraResolution;
@@ -93,7 +93,6 @@ namespace Learning2DEngine
             /// </summary>
             virtual void Init();
             /// <summary>
-            /// It calls the RenderManager::Terminate()
             /// If this function is override, it must call the Game::Terminate() in the last line.
             /// </summary>
             virtual void Terminate();
@@ -123,7 +122,13 @@ namespace Learning2DEngine
             {
                 isPostProcessEffectUsed = true;
             }
+
             void UsePostProcessEffect(const Render::Shader& shader);
+
+            inline void NotUsePostProcessEffect()
+            {
+                isPostProcessEffectUsed = false;
+            }
             void ClearPostProcessEffect();
 
 

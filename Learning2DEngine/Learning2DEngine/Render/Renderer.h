@@ -9,8 +9,7 @@ namespace Learning2DEngine
 		/// <summary>
 		/// The classes, which are inherited from Renderer,
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
-		/// Moreover, It is recommended, that the constructor of the inherited class is protected and
-		/// only the GameObject can use this constructor.
+		/// Please check more info about System::Component
 		/// </summary>
 		class Renderer : public virtual System::Component
 		{

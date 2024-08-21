@@ -9,8 +9,8 @@ namespace Learning2DEngine
 		/// <summary>
 		/// The classes, which are inherited from Component,
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
-		/// Moreover, It is recommended, that the constructor of the inherited class is protected and
-		/// only the GameObject can use this constructor.
+		/// Moreover, It is recommended, that the constructor, the Init() and Destroy() of the inherited class is protected
+		/// and only the GameObject can use them.
 		/// </summary>
 		class Component
 		{

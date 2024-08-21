@@ -165,7 +165,7 @@ namespace Learning2DEngine
 
         void Game::ClearPostProcessEffect()
         {
-            isPostProcessEffectUsed = false;
+            NotUsePostProcessEffect();
             ppeRender.ClearShader();
         }
 
