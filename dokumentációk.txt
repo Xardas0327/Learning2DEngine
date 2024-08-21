@@ -1,0 +1,741 @@
+Snake
+It is just a simple snake game, where the edge of the screen also kill your snake.
+Assets:
+	The arial.ttf file is came from the Windows.  You can also find it in your Windows OS.
+	The Unit.png is a simple image, which I created with Paint.
+Configuration Type:
+	Application (.exe)
+C/C++ => Additional Include Directories:
+	..\Learning2DEngine
+	$(SolutionDir)Plugins\Engine\include
+Post-Build Event:
+	When you build the game, the assets folder will be copied into output directory.
+	Note: if some files exist, they will be overwritten.
+Source code:
+License:
+			
+
+Breakout:
+This is a Breakout game, which Joey de Vries implemented and its tutorial is here. (https://learnopengl.com/In-Practice/2D-Game/Breakout)
+But I recreate it with my own Engine.
+Assets:
+	The assets files are came from tutorial, which was its licence. (https://learnopengl.com/About)
+Configuration Type:
+	Application (.exe)
+VC++ Directories => Library Directories:
+	$(SolutionDir)Plugins\Game\lib\irrKlang
+C/C++ => General => Additional Include Directories:
+	..\Learning2DEngine
+	$(SolutionDir)Plugins\Engine\include
+	$(SolutionDir)Plugins\Game\include
+Linker => Input => Additional Dependencies:
+	irrKlang.lib
+Post-Build Event:
+	When you build the game, the assets folder will be copied into output directory.
+	Plus the irrKlang DLL files are also copied into output directory from Plugin forder for the sounds.
+	Note: if some files exist, they will be overwritten.
+Source code:
+License:
+
+
+Learning2DEngine
+This is a 2D Game Engine/Library, which I created for game developing and learning.
+Maybe today, there is not any code line, but this Engine was created from a Breakout Tutorial. (https://learnopengl.com/In-Practice/2D-Game/Breakout)
+The code owner is Joey de Vries, who has the https://learnopengl.com/ webpage too. Its license. (https://learnopengl.com/About)
+
+The concept was, that the Engine will be generic for making any 2D Games.
+That is why, I try to implement every feature, that this will be/stay true.
+At the moment, it support only Windows 64bit and it use only OpenGL as Graphic API.
+But who knows, maybe they will change later (or maybe in the next version).
+The project has 2 folder:
+	Learning2DEngine: it contains the Engine source code.
+	Plugins: this constains the glad.c. (This folder is not the same as in the main/base folder)
+
+Configuration Type:
+	Static library (.lib)
+VC++ Directories => Library Directories:
+	$(SolutionDir)Plugins\Engine\lib\GLFW\lib-vc2022
+	$(SolutionDir)Plugins\Engine\lib\freetype\vs2015-2022\win64
+C/C++ => General => Additional Include Directories:
+	$(SolutionDir)Plugins\Engine\include
+Librarian => General => Additional Dependencies:
+	opengl32.lib
+	glfw3.lib
+	freetype.lib
+
+Source code:
+	The most constructors and destructors won't really be described, because the most of time, they just initialize some variables.
+	Only those functions and macros will be explained, which can be useful to use that class.
+	I think the variable names and/or their comments can explain simple, what they are. (But there can be some exception)
+	
+	Learning2DEngine (namespace)
+		DebugTool (namespace)
+			Log
+				Source code:
+				Description:
+					The class contains static info, warning, and error log functions.
+					These functions are similar, just they use different colors and the text message is a bit differemt in the console.
+					But it is not recommended to use this function.
+					The LOG_INFO, LOG_WARNING, LOG_ERROR macros are much better options for 2 reasons.
+					1. the developer does not have to care with the filePath and the fileLine parameters.
+					The macros use the __FILE__, __LINE__ by default.
+					2. the _DEBUG (Visual Studio uses it in debug build) or the LEARNING2DENGINE_DEBUG is not defined as true,
+					the macros will become nothing, so the developer does not have to remove them for the release version.
+				Macros:
+					LOG_INFO(message)
+					It writes a Info message to terminal if the debug is activated.
+					
+					LOG_WARNING(message)
+					It writes a Warning message to terminal if the debug is activated.
+					
+					LOG_ERROR(message)
+					It writes a Error message to terminal if the debug is activated.
+					
+				Functions:
+					Public:
+					static void Info(const std::string& message, const std::string& filePath, int fileLine);
+					It writes a Info message to terminal.
+					
+					static void Warning(const std::string& message, const std::string& filePath, int fileLine);
+					It writes a Warning message to terminal.
+					
+					static void Error(const std::string& message, const std::string& filePath, int fileLine);
+					It writes a Error message to terminal.
+					Public:
+					
+		EventSystem (namespace)
+			EventHandler
+				Source code:
+				Description:
+					It is an event handler, which is a bit similar like the C# EventHandler.
+					The developer can subscribe/unsubscribe to event by EventItems.
+					
+				Functions:
+					Public:
+					inline void Add(EventItem<Params...>* e);
+					It adds an EventItem to EventHandler.
+					
+					inline void Remove(EventItem<Params...>* e);
+					It removes an EventItem from EventHandler.
+					
+					inline void Clear();
+					It removes all EventItems from EventHandler.
+					
+					void Invoke(Params... params);
+					It call all EventItems, which the EventHandler has.
+				
+			EventItem
+				Source code:
+				Description:
+					The developer can subscribe/unsubscribe to EventHandlers with their EventItem.
+					
+				Functions:
+					Public:
+					virtual void Call(Params... params) = 0;
+					It is an abstract function, which the developer has to define.
+					If the EventItem was added (subscribed) to EventHandler, the Invoke function of EventHandler will call this function.
+				
+			KeyboardMouseEventItem
+				Source code:
+				Description:
+					It is a event item implementation. It can be used, when the developer want to subscribe to Keyboard and Mouse events.
+				
+			ResolutionEventItem
+				Source code:
+				Description:
+					It is a event item implementation. It can be used, when the developer want to subscribe to (game) screen's resolution changes.
+				
+		ParticleSimulator (namespace)
+			BasicParticleSettings
+				Source code:
+				Description:
+					It just basic implementation of the ParticleSettings.
+					The ParticleSystem use this ParticleSettings if the developer does not give another one.
+					
+			Particle
+				Source code:
+				Description:
+					The particles representation in the Engine.
+					
+			ParticleSettings
+				Source code:
+				Description:
+					The ParticleSettings contains, how a particle should be initialized, when it is spawned or how it should be updated frame by frame.
+					
+				Functions:
+					Public:
+					virtual void Init(const System::GameObject& gameObject);
+					It is initialized the ParticleSettings. It can be useful, if the developer want to generate or cache some data for the particles.
+					It will run in the ParticleSystem::Start().
+					
+					virtual void Destroy();
+					It can destroy everything, which was generated or cached in the other functions.
+					It will run in the ParticleSystem::Stop().
+					
+					virtual void SpawnParticle(Particle& particle, const System::GameObject& gameObject) = 0;
+					It is an abstract function, which the developer has to define.
+					The developer has to set the life time of the particles here and any other parameters, which the developer want to initialize on the particle.
+					It will run in the ParticleSystem::Update().
+					
+					virtual void UpdateParticle(Particle& particle, const System::GameObject& gameObject) = 0;
+					It is an abstract function, which the developer has to define.
+					This function will be called with that particle, whose life time is bigger than 0, after it was decreased.
+					It will run in the ParticleSystem::Update().
+					
+			ParticleSystem
+				Source code:
+				Description:
+					This is the heart of the Engine's particle system. It control the particles by the ParticleSettings and the ParticleSystemSettings.
+					
+				Variables:
+					Public:
+					ParticleSystemSettings systemSettings;
+					The systemSettings is a public variable, that the developer can change its values any time.
+					
+					Texture2D* texture;
+					The texture, which the particle will use.
+					This can be useful if the developer want to change anything in the texture.
+					But if the developer want to remove it, they should use the ClearTexture() function.
+					
+				Functions:
+					Public:
+					~ParticleSystem();
+					If the destructor is called. It will call the Stop() function and it will delete the texture and the particleSettings pointers.
+
+					void Draw();
+					It draws the particles;
+					Please check the Render::Renderer documentation too.
+
+					void Start();
+					It set everything for the running.
+					
+					void Update();
+					It update and create particle, when it has to do.
+					It works only, after the Start() function was called and the Stop() was not called.
+					
+					void Stop();
+					It stop the ParticleSystem's running.
+
+					inline void Restart();
+					It stop and start ParticleSystem immeditaly.
+					(It calls the Stop() and the Start() function)
+
+					inline bool IsRunning();
+					It returns True, when the ParticleSystem is running.
+
+					inline ParticleSettings* const GetParticleSettings();
+					It gets back the ParticleSettings, thet the developer can change its parameters.
+
+					inline bool IsUseTexture();
+					It returns true, if the ParticleSystem has Texture.
+
+					void ClearTexture();
+					It destroys the Texture of the ParticleSystem.
+					
+			ParticleSystemSettings
+				Source code:
+				Description:
+					The ParticleSystemSettings contains how should work a particle system.
+					How common should it spawn particles and how many should they be spawned at the sometime?
+				
+		Physics (namespace)
+			This namespace really simple. It has only some really basic functionality.
+			BoxCollider
+				Source code:
+				Description:
+					The BoxCollider is really basic. It does not rotate with the gameobject and the size doesn't scale with the gameobject too.
+					It is inherited from Collider.
+				Variables:
+					Public:
+					 glm::vec2 size;
+			CircleCollider
+				Source code:
+				Description:
+					The CircleCollider is really basic. It does not rotate with the gameobject and the radius doesn't scale with the gameobject too.
+					It is inherited from Collider.
+				Variables:
+					Public:
+					float radius;
+			Collider
+				Source code:
+				Description:
+					The Collider is really basic. It does not recommended to use.
+					The developer should use the BoxCollider and/or CircleCollider.
+				Variables:
+					Public:
+					float offset;
+				Functions:
+					Public:
+					glm::vec2 GetCenter() const;
+					It returns the center of Collider, which is middle of the object with the offset.
+			Collision
+				Source code:
+				Description:
+				It is a static class, which has functions to detect the collisions.
+				Functions:
+					Public:
+					static CollisionData IsCollisoned(const BoxCollider& collider1, const BoxCollider& collider2);
+					It checks, that 2 BoxCollider have been collide.
+					static CollisionData IsCollisoned(const CircleCollider& collider1, const CircleCollider& collider2);
+					It checks, that 2 CircleCollider have been collide.
+					static CollisionData IsCollisoned(const CircleCollider& circleCollider, const BoxCollider& boxCollider);
+					It checks, that a CircleCollider have been collide with a BoxCollider.
+			CollisionData
+				Source code:
+				Description:
+				It contains, that there was a collision or not. If yes, it has the collider edges, where they are collide.
+				The edges can useful, if the developer want to calculate rebound or similar.
+				Variables:
+					Public:
+					bool isCollisoned;
+					There was a collision or not.
+					glm::vec2 edge1;
+					The closest point of object1 to object2.
+					glm::vec2 edge2;
+					The closest point of object2 to object1.
+			Rigidbody
+				Source code:
+				Description:
+				A really basic Rigidbody.
+				Variables:
+					Public:
+					glm::vec2 velocity;
+					Velocity of the object.
+					bool isFrozen;
+					The object is frozen or not.
+				Functions:
+					Public:
+					void Update();
+					If the object is not frozen, the position of gameobject will be updated by velocity * Game::GetDeltaTime();
+			
+		Render (namespace)
+			BlendFuncFactor
+				Source code:
+				Description:
+				It is a pair, where the developer have to use the the OpenGL Blend's constants.
+				First is the source factor. Second is the destination factor.
+			IResolutionRefresher
+				Source code:
+				Description:
+				It is a little interface, which the developer can use to wrap a class into ResolutionEventItem.
+				Functions:
+					Public:
+					virtual void RefreshResolution(const Resolution& resolution) = 0;
+			MSAA
+				Source code:
+				Description:
+				Multisample anti-aliasing for rendering.
+				Functions:
+					Public:
+					void Init(unsigned int sampleNumber, Resolution resolution);
+					It initializes the MSAA and its frame buffer.
+					
+					void Destroy();
+					It destroys the MSAA.
+					
+					void StartRender(bool useClear = true);
+					It binds the MSAA Frame Buffer. Plus it clears the buffer if the useClear is true.
+					
+					void EndRender(unsigned int resultFbo, Resolution  resultResolution);
+					It copies the MSAA buffer data to result framebuffer and it convert the MSAA resolution to result resolution.
+					
+					inline unsigned int GetId();
+					It returns the frame buffor object id.
+					
+					inline unsigned int GetSampleNumber();
+					It returns the sample number.
+				
+			PostProcessEffect
+				Source code:
+				Description:
+				Post Process Effect for rendering.
+				Functions:
+					Public:
+					void Init(Resolution resolution);
+					It initializes PostProcessEffect and its frame buffer and texture.
+					
+					void Destroy();
+					It destroys the PostProcessEffect.
+					
+					void StartRender(bool useClear = true);
+					It binds the PostProcessEffect Frame Buffer. Plus it clears the buffer if the useClear is true.
+					
+					void EndRender();
+					It binds the default Frame Buffer.
+					
+					void Render();
+					It renders the PostProcessEffect texture.
+					
+					void SetShader(const Shader& shader);
+					It changes the PostProcessEffect's shader to another shader.
+					
+					void ClearShader();
+					It changes back the PostProcessEffect's shader to default.
+				
+			Renderer
+				Source code:
+				Description:
+				This is an abstract component class for the rendering.
+				The classes, which are inherited from this Renderer, have to have a constructor, which first parameter is GameObject* for gameObject member.
+				Please check more info about System::Component.
+				Functions:
+					Public:
+					virtual void Draw() = 0;
+					It should be called in the current game's Render();
+			RenderManager
+				Source code:
+				Description:
+				This is the heart of the rendering in the Engine. The developer can initialize the OpenGL and set or change its variables.
+				Functions:
+					Public:
+					void Init(int majorVersion, int minorVersion, Resolution resolution, const char* title, bool resizableWindows = true);
+					It initializes RenderManager.
+					
+					void Terminate();
+					It terminates the RenderManager.
+					
+					void CloseWindow();
+					It closes the (game) screen window.
+					bool IsWindowClosed();
+					It returns true, the the (game) screen window is closed.
+					void SetVSync(bool value);
+					It turn on/off the VSync.
+					void UpdateWindow();
+					It updates (game) screen window (swap the buffers).
+					void ClearWindow();
+					It clears the color buffer by the clearColor variable.
+					inline Resolution GetResolution();
+					It returns the (game) screen resolution.
+					void SetClearColor(float r, float g, float b, float a);
+					It sets the clearColor for ClearWindow();
+					inline glm::vec4 GetClearColor();
+					It returns the current clearColor.
+					void EnableBlend();
+					It enables the blend.
+					void DisableBlend();
+					It disables the blend.
+					inline bool IsBlendActive();
+					It returns true if the blend is enabled.
+					void SetBlendFunc(unsigned int sourceFactor, unsigned int destinationFactor);
+					void SetBlendFunc(BlendFuncFactor blendFuncFactor);
+					It sets the BlendFunc.
+					inline BlendFuncFactor GetBlendFunc();
+					It returns the current BlendFuncFactor.
+					void AddKeyboardEvent(EventSystem::EventItem<int, int, int, int>* evenItem);
+					It adds event to Keyboard and Mouse events.
+					void RemoveKeyboardEvent(EventSystem::EventItem<int, int, int, int>* evenItem);
+					It removes event to Keyboard and Mouse events.
+					void AddFramebufferSizeEvent(EventSystem::EventItem<Resolution>* evenItem);
+					It adds event to Resolution changing events.
+					void RemoveFramebufferSizeEvent(EventSystem::EventItem<Resolution>* evenItem);
+					It removes event to Resolution changing events.
+			Resolution
+				Source code:
+				Description:
+				Resolution class.
+			Shader
+				Source code:
+				Description:
+				The OpenGL Shader representation in the Engine.
+				Functions:
+					Public:
+					void Create(const char* vertexSource, const char* fragmentSource, const char* geometrySource = nullptr);
+					It creates the shader.
+					void Destroy();
+					It destroys the shader.
+					void Use() const;
+					It binds the shader.
+					inline unsigned int GetId();
+					It returns the id of shader.
+					void SetFloat(const char* name, float value);
+					void SetInteger(const char* name, int value);
+					void SetVector2f(const char* name, float x, float y);
+					void SetVector2f(const char* name, const glm::vec2& value);
+					void SetVector3f(const char* name, float x, float y, float z);
+					void SetVector3f(const char* name, const glm::vec3& value);
+					void SetVector4f(const char* name, float x, float y, float z, float w);
+					void SetVector4f(const char* name, const glm::vec4& value);
+					void SetMatrix4(const char* name, const glm::mat4& matrix);
+					void SetArray1f(const char* name, float* value, unsigned int length);
+					void SetArray1i(const char* name, int* value, unsigned int length);
+					void SetArray2f(const char* name, float* value, unsigned int length);
+					void SetArray2i(const char* name, int* value, unsigned int length);
+					There are a lof of functions to update the shader parameters.
+			ShaderConstant
+				Source code:
+				Description:
+				The basic shaders of the Engine are in variables and not in files.
+				Variables:
+					Public:
+					static const std::string SPRITE_SHADER_NAME;
+					static const char* const SPRITE_VERTEX_SHADER;
+					static const char* const SPRITE_FRAGMENT_SHADER;
+					The sprite shader's name (for ResourceManager), vertex and fragment shaders.
+
+					static const std::string TEXT2D_SHADER_NAME;
+					static const char* const TEXT2D_VERTEX_SHADER;
+					static const char* const TEXT2D_FRAGMENT_SHADER;
+					The Text2D shader's name (for ResourceManager), vertex and fragment shaders.
+
+					static const std::string DEFAULT_POSTPROCESS_EFFECT_NAME;
+					static const char* const DEFAULT_POSTPROCESS_EFFECT_VERTEX_SHADER;
+					static const char* const DEFAULT_POSTPROCESS_EFFECT_FRAGMENT_SHADER;
+					The default PostProcessEffect shader's name (for ResourceManager), vertex and fragment shaders.
+			SpriteRenderer
+				Source code:
+				Description:
+				The SpriteRenderer is for the GameObjects.
+				It uses static variables to count how many GameObject initialized it.
+				So it will destroy its Vertex Array Object only if the reference number is 0, otherway it will decrease the reference number only.
+				Variables:
+					Public:
+					Texture2D* texture;
+					The texture, which the SpriteRenderer will use.
+					This can be useful if the developer want to change anything in the texture.
+					But if the developer want to remove it, they should use the ClearTexture() function.
+					glm::vec3 color;
+					The color, which will be mixed with the texture in the shader.
+				Functions:
+					Private:
+					void Init();
+					It initializes the SpriteRenderer.
+					void Destroy();
+					It destroys the SpriteRenderer.
+					Public:
+					~SpriteRenderer();
+					It will delete the texture pointer.
+					void Draw();
+					It draws the sprite;
+					Please check the Render::Renderer documentation too.
+					inline bool IsUseTexture();
+					It returns true, if SpriteRenderer has texture.
+					inline void ClearTexture();
+					It deletes the texture pointer.
+			Texture2D
+				Source code:
+				Description:
+				The OpenGL Texture2D representation in the Engine.
+				If the developer changes any variables in it, it will be used only after Create function.
+				Functions:
+					Public:
+					void Create(unsigned int width, unsigned int height, const unsigned char* data);
+					it creates the Texture2D.
+					void Destroy();
+					it destroys the Texture2D.
+					void Bind() const;
+					It binds the Texture2D.
+					inline unsigned int GetId();
+					It returns the id of the Texture2D.
+			Texture2DSettings
+				Source code:
+				Description:
+				It is a collection of setting parameters for Texture2D.
+				It uses OpenGL constants like GL_RGB, GL_REPEAT, GL_LINEAR etc.
+			
+		System (namespace)
+			Component
+				Source code: 
+				Description:
+				Fistly, it looks a bad structure, because there is a circle. A Component has reference about its GameObject and the GameObject has 
+				reference about that Component. But if the developer follow this rule, everything will be alright.
+				The classes, which are inherited from Component, have to have a constructor, which first parameter is GameObject* for gameObject member.
+				Moreover, It is recommended, that the constructor, the Init() and Destroy() of the inherited class is protected
+				and only the GameObject can use them.
+				If the developer follow this, only the GameObject can create/init/destroy Components, so a Component can't exist without its GameObject.
+				Furthermore, the Components have reference about their gameobject, so this gave the developer a huge flexibility.
+				They can give or get components from the their GameObject within a Component.
+				Please check the System::GameObject too.
+				Functions:
+					Protected:
+					virtual void Init();
+					It initializes the Component.
+					virtual void Destroy();
+					It destroys the Component.
+					Public:
+					inline void SetActive(bool value);
+					It changes the isActive.
+					inline bool GetActive();
+					It returns true, if the isActive is true.
+			Game
+				Source code:
+				Description:
+				The System::Game class is, which holds everything together in the Engine.
+				If a developer want to create a game by this Engine, that game must be inherited from this System::Game class.
+				The Function order in the Run() (in a frame):
+					1. Calculate deltaTime
+					2. Refresh Keyboard and Mouse events
+					3. virtual Update()
+					4. Clear Window to default color
+					5. virtual Render() (Render with MSAA and PostProcessEffect, if they are enabled)
+					6. virtual LateRender (Render without any effect
+					7. Update Window
+				Macrok:
+					INPUT_KEY_SIZE 1024
+					TIME_SCALE_DEFAULT 1.0f
+				Variables:
+					Private:
+					static float deltaTime;
+					It is multiplied by timeScale. Before the Game::Run(), it is 0.0f.
+					
+					Protected:
+					InputStatus inputKeys[INPUT_KEY_SIZE];
+					This array contains, which button is up, down or hold.
+					The developer should not write this array, just read it.
+					
+					static glm::mat4 cameraProjection;
+					The camera projecttion, which used by the shaders. The developer can modify, what the player can see.
+					It has to be initialized. It is glm::mat4(0.0f) by default.
+					
+					static Render::Resolution cameraResolution;
+					It has to be initialized, because the camera resolution don't have to be same with game resolution.
+					It is (0,0) by default. The developer can use it as a constant grid size, if they do not change it.
+					For example: the default (game) screen and camera resolution is 800x600 and there is a text in the middle of the Game Window.
+					If the player change the resolution of the game, the camera resolution won't change, so the text will stay in the middle of the Game Window.
+				Functions:
+					Protected:
+					virtual void Update();
+					It is recommended, that this function should contain every update in the game, which is not rendering.
+					virtual void Render();
+					It is recommended, that this function should contain every rendering functions, which render the game scene.
+					It uses the MSAA and PostProcessEffect, if they are enabled. But there are some exception, please check the Game::LateRender().
+					virtual void LateRender();
+					It is also a rendering function. But this does not use the the MSAA and PostProcessEffect.
+					This can be useful for UI.
+					Public:
+					void InitWithRender(int majorRenderVersion, int minorRenderVersion, Render::Resolution resolution, const char* title, bool resizableWindows = true);
+					It initializes the RenderManager. After that, the Init() will be called.
+					virtual void Init();
+					It initializes the Game, but the RenderManager have to be initialized before this.
+					If this function is override, it must call the Game::Init() in the first line.
+					The Blend is enable by default with Source: SRC_ALPHA, Destination: ONE_MINUS_SRC_ALPHA, because it is used for some features.
+					virtual void Terminate();
+					It terminates the Game.
+					If this function is override, it must call the Game::Terminate() in the last line.
+					void Run();
+					It runs the Game.
+					It has an infinite loop, that's why it will run until the game window is closed.
+					Please check the Game's Description for the function order.
+					void RefreshKeyboardMouse(int key, int scancode, int action, int mode) override;
+					The developer should not use this function. The Game subscribe for button events and the RenderManager call this function by an event.
+					virtual void RefreshResolution(const Learning2DEngine::Render::Resolution& resolution) override;
+					The developer should not use this function. The Game subscribe for (game) screen resolution events and the RenderManager call this function by an event.
+					
+					void ActivateMSAA(unsigned int sampleNumber);
+					It activates the MSAA.
+					void StopMSAA();
+					It stops the MSAA.
+					inline bool IsMsaaActive();
+					It returns true, if the MSAA is activated.
+					
+					void ActivatePostProcessEffect();
+					It activates the PostProcessEffect. By default, it renders the game screen without any modification.
+					void StopPostProcessEffect();
+					It stops the PostProcessEffect.
+					inline bool IsPostProcessEffectActive();
+					It returns true, if the PostProcessEffect is activated.
+					
+					void UsePostProcessEffect(const Render::Shader& shader);
+					It start to use the new effect shader for post processing.
+					inline void UsePostProcessEffect();
+					It start to use its effect shader for post processing.
+					inline void NotUsePostProcessEffect()
+					It start to use the default shader (it renders the game screen without any modification).
+					But the effect shader still exist.
+					void ClearPostProcessEffect();
+					It start to use the default shader (it renders the game screen without any modification).
+					And delete the effect shader.
+					inline bool IsPostProcessEffectUsed();
+					It returns true, if the effect shader is used.
+					
+					inline void ResetTimeScale();
+					It resets the timeScale by default (TIME_SCALE_DEFAULT).
+					inline void SetTimeScale(float value);
+					It sets the timeScale.
+					inline float GetTimeScale();
+					It returns the timeScale.
+					static float GetDeltaTime();
+					It returns the deltaTime.
+					Please check more info about Game::deltaTime.
+					static glm::mat4 GetCameraProjection();
+					It returns the cameraProjection.
+					static Render::Resolution GetCameraResolution();
+					It returns the cameraResolution.
+					void SetCameraResolution(const Learning2DEngine::Render::Resolution& resolution);
+					It sets the cameraResolution and the cameraProjection too.
+			GameObject
+				Source code: 
+				Description:
+			IKeyboardMouseRefresher
+				Source code: 
+				Description:
+			InputStatus
+				Source code: 
+				Description:
+				It is an enam class, which contains the 3 phase of the buttons.
+				KEY_UP: The key or mouse button was released.
+				KEY_DOWN: The key or mouse button was pressed.
+				KEY_HOLD: The key was held down until it repeated.
+			Random
+				Source code: 
+				Description:
+			ResourceManager
+				Source code: 
+				Description:
+			Singleton
+				Source code: 
+				Description:
+			Transform
+				Source code: 
+				Description:
+			
+		UI (namespace)
+			FontSizePair
+				Source code: It does not have separate source file. It is next Text class.
+				Description:
+					It is a simple std::pair<std::string, unsigned int>.
+					The first variable is the font name (path).
+					The second variable is the size of the font.
+					Text2DRenderer can load the fonts by this pair.
+					
+			FreeTypeCharacter
+				Source code: 
+				Description:
+					This is the FreeType characters' representation in the Engine.
+					It is used by the Text2DRenderer.
+					If you want to understand the bearing and advance parameters more, please check their documentation here.
+					(https://freetype.org/freetype2/docs/glyphs/glyphs-3.html#section-3)
+			Text
+				Source code:
+				Description:
+					This is the texts' representation in the Engine.
+					The Text has position, color and scale too.
+					The scale can be useful if the developer want load lesser fonts.
+					
+			Text2DRenderer
+				Source code:
+				Description:
+					This is a singletion class, which can load/unload the fonts into Engine and it can render the Texts.
+				Functions:
+					Public:
+					void Init(const Render::Resolution& resolution);
+					It initializes the Text2DRenderer.
+					
+					void Terminate();
+					It terminates the Text2DRenderer. It call the Clear() function too.
+					
+					void Load(const std::string& font, unsigned int fontSize);
+					void Load(const FontSizePair& fontSizePair);
+					They load a font with a size.
+					
+					
+					void Unload(const std::string& font, unsigned int fontSize);
+					void Unload(const FontSizePair& fontSizePair);
+					They unload a font with a size.
+					
+					void Clear();
+					It unloads all font with all size.
+					
+					void RenderText(const Text& text);
+					It renders the text.
+			
+License:
