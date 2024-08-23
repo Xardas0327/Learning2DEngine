@@ -19,5 +19,5 @@ Snake © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativ
 	..\Learning2DEngine  
 	$(SolutionDir)Plugins\Engine\include
 - Post-Build Event:  
-	When you build the game, the assets folder will be copied into output directory.
+	When you build the game, the assets folder will be copied into output directory.  
 	Note: if some files exist, they will be overwritten.

@@ -22,7 +22,7 @@ Maybe today, there is not any code line, which came from that project.
 But everything was started from [here](https://learnopengl.com/In-Practice/2D-Game/Breakout).  
 The code owner is Joey de Vries, who has the
 [learnopengl.com](https://learnopengl.com/) webpage too.
-Its [license](https://learnopengl.com/About).
+Its [License](https://learnopengl.com/About).
 
 So, if you want to try Learning2DEngine, you can do it.
 But you should check the licenses first. Their licences are in their own documentation.  
@@ -45,5 +45,5 @@ but I tried to keep them minimum.
 ### Documentations:
 Please use the documentation links in the released branches.
 - Learning2DEngine
-- Breakout
+- [Breakout](https://github.com/Xardas0327/Learning2DEngine/tree/main/Documentations/Breakout.md)
 - [Snake](https://github.com/Xardas0327/Learning2DEngine/tree/main/Documentations/Snake.md)
