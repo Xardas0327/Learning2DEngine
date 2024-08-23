@@ -15,16 +15,16 @@ The assets files came from learnopengl tutorial.
 
 ## Properties:
 - Configuration Type:  
-    Application (.exe)
+  - Application (.exe)
 - VC++ Directories => Library Directories:  
 	$(SolutionDir)Plugins\Game\lib\irrKlang
 - C/C++ => General => Additional Include Directories:  
-	..\Learning2DEngine  
-	$(SolutionDir)Plugins\Engine\include  
-	$(SolutionDir)Plugins\Game\include
+  - ..\Learning2DEngine  
+  - $(SolutionDir)Plugins\Engine\include  
+  - $(SolutionDir)Plugins\Game\include
 - Linker => Input => Additional Dependencies:  
-	irrKlang.lib
-- Post-Build Event:
-	When you build the game, the assets folder will be copied into output directory.
-	Plus the irrKlang DLL files are also copied into output directory from Plugin folder for the sounds.  
-	Note: if some files exist, they will be overwritten.
+  - irrKlang.lib
+- Post-Build Event:  
+  When you build the game, the assets folder will be copied into output directory.
+  Plus the irrKlang DLL files are also copied into output directory from Plugin folder for the sounds.  
+  Note: if some files exist, they will be overwritten.
