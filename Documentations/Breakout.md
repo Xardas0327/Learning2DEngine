@@ -1,20 +1,20 @@
 # Breakout:
 
-### Introduction:
+## Introduction:
 This is a Breakout game, which Joey de Vries implemented and its tutorial is [here](https://learnopengl.com/In-Practice/2D-Game/Breakout).  
 Its [license](https://learnopengl.com/About).  
 But I recreate it with my own Engine.
 
-### License:
+## License:
 Breakout © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
 
-### Source code: [here](../Breakout)
+## Source code: [here](../Breakout)
 
 
-### Assets:
+## Assets:
 The assets files came from learnopengl tutorial.
 
-### Properties:
+## Properties:
 - Configuration Type:  
     Application (.exe)
 - VC++ Directories => Library Directories:  

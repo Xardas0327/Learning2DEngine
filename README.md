@@ -1,6 +1,6 @@
 # Learning2DEngine
 
-### Introduction:
+## Introduction:
 This project was created for my own development and
 I want to use this one for reference too.
 I have relearned the C++ and I have learned the OpenGL form
@@ -28,11 +28,11 @@ So, if you want to try Learning2DEngine, you can do it.
 But you should check the licenses first. Their licences are in their own documentation.  
 Moreover, if I create a new version, maybe it won't be compatible with the older versions.
 
-### Requirements:
+## Requirements:
 - Visual Studio 2022
 - With "Desktop development with C++" Module
 
-### Used Libraries:
+## Used Libraries:
 The most project can't really be started from zero, so I also use some library,
 but I tried to keep them minimum.
 - GLAD for OpenGL [License](https://github.com/Dav1dde/glad?tab=License-1-ov-file)
@@ -42,7 +42,7 @@ but I tried to keep them minimum.
 - Freetype for write texts on the screen [License](https://freetype.org/license.html)
 - irrKlang (not the pro) for sound playing in Breakout game [License](https://www.ambiera.com/irrklang/license.html)
 
-### Documentations:
+## Documentations:
 Please use the documentation links in the released branches.
 - Learning2DEngine
 - [Breakout](Documentations/Breakout.md)
