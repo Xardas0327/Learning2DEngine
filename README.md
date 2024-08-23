@@ -43,6 +43,7 @@ but I tried to keep them minimum.
 - irrKlang (not the pro) for sound playing in Breakout game [License](https://www.ambiera.com/irrklang/license.html)
 
 ### Documentations:
+Please use the documentation links in the released branches.
 - Learning2DEngine
 - Breakout
-- Snake
+- [Snake](https://github.com/Xardas0327/Learning2DEngine/tree/main/Documentations/Snake.md)
