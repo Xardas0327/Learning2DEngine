@@ -8,7 +8,7 @@ But I recreate it with my own Engine.
 ### License:
 Breakout © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
 
-### Source code: [here](https://github.com/Xardas0327/Learning2DEngine/tree/Documentation/Breakout)
+### Source code: [here](../Breakout)
 
 
 ### Assets:

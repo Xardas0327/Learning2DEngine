@@ -45,5 +45,5 @@ but I tried to keep them minimum.
 ### Documentations:
 Please use the documentation links in the released branches.
 - Learning2DEngine
-- [Breakout](https://github.com/Xardas0327/Learning2DEngine/tree/main/Documentations/Breakout.md)
-- [Snake](https://github.com/Xardas0327/Learning2DEngine/tree/main/Documentations/Snake.md)
+- [Breakout](Documentations/Breakout.md)
+- [Snake](Documentations/Snake.md)
