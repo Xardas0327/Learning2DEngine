@@ -14,7 +14,7 @@ Snake © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativ
 
 ## Properties:
 - Configuration Type:  
-    Application (.exe)
+  - Application (.exe)
 - C/C++ => Additional Include Directories:  
 	..\Learning2DEngine  
 	$(SolutionDir)Plugins\Engine\include

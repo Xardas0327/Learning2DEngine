@@ -10,7 +10,6 @@ Breakout © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://crea
 
 ## Source code: [here](../Breakout)
 
-
 ## Assets:
 The assets files came from learnopengl tutorial.
 
