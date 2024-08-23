@@ -12,6 +12,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snake", "Snake\Snake.vcxpro
 		{ADAB7EDA-73C6-4E6D-8900-5B0B4CE68529} = {ADAB7EDA-73C6-4E6D-8900-5B0B4CE68529}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B9BE6FF5-D4AF-4DD3-99F8-783D68A0D15D}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentations", "Documentations", "{7D0103D8-E9BE-40E0-AFE3-E14A6F3B9CAC}"
+	ProjectSection(SolutionItems) = preProject
+		Documentations\Breakout.md = Documentations\Breakout.md
+		Documentations\Learning2DEngine.md = Documentations\Learning2DEngine.md
+		Documentations\Snake.md = Documentations\Snake.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -33,6 +45,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7D0103D8-E9BE-40E0-AFE3-E14A6F3B9CAC} = {B9BE6FF5-D4AF-4DD3-99F8-783D68A0D15D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA12A092-246A-44A1-8AE4-F57F47A1A49B}
