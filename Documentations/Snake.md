@@ -6,8 +6,6 @@ It is just a simple snake game, where the edge of the screen also kill your snak
 ## License:
 Snake © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
 
-## Source code: [here](../Snake)
-
 ## Assets:
 - arial.ttf: It came from the Windows.  You can also find it in your Windows OS.
 - Unit.png: it is a simple image, which I created with Paint.
@@ -21,3 +19,5 @@ Snake © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativ
 - Post-Build Event:  
 	When you build the game, the assets folder will be copied into output directory.  
     Note: if some files exist, they will be overwritten.
+
+### Source code: [here](../Snake)

@@ -8,8 +8,6 @@ But I recreate it with my own Engine.
 ## License:
 Breakout © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
 
-## Source code: [here](../Breakout)
-
 ## Assets:
 The assets files came from learnopengl tutorial.
 
@@ -17,7 +15,7 @@ The assets files came from learnopengl tutorial.
 - Configuration Type:  
   - Application (.exe)
 - VC++ Directories => Library Directories:  
-	$(SolutionDir)Plugins\Game\lib\irrKlang
+  - $(SolutionDir)Plugins\Game\lib\irrKlang
 - C/C++ => General => Additional Include Directories:  
   - ..\Learning2DEngine  
   - $(SolutionDir)Plugins\Engine\include  
@@ -28,3 +26,5 @@ The assets files came from learnopengl tutorial.
   When you build the game, the assets folder will be copied into output directory.
   Plus the irrKlang DLL files are also copied into output directory from Plugin folder for the sounds.  
   Note: if some files exist, they will be overwritten.
+
+### Source code: [here](../Breakout)
