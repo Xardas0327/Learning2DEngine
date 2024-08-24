@@ -20,7 +20,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentations", "Documentations", "{7D0103D8-E9BE-40E0-AFE3-E14A6F3B9CAC}"
 	ProjectSection(SolutionItems) = preProject
 		Documentations\Breakout.md = Documentations\Breakout.md
-		Documentations\Learning2DEngine\DebugTool.md = Documentations\Learning2DEngine\DebugTool.md
 		Documentations\Learning2DEngine.md = Documentations\Learning2DEngine.md
 		Documentations\Snake.md = Documentations\Snake.md
 	EndProjectSection

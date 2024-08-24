@@ -11,6 +11,7 @@ The first variable is the font name (path).
 The second variable is the size of the font.  
 `Text2DRenderer` can load the fonts by this pair.
 
+### Header:
 ```cpp
 typedef std::pair<std::string, unsigned int> FontSizePair;
 ```
@@ -25,6 +26,7 @@ It is used by the `Text2DRenderer`.
 If you want to understand the bearing and advance parameters more,
 please check their documentation [here](https://freetype.org/freetype2/docs/glyphs/glyphs-3.html#section-3).
 
+### Header:
 ```cpp
 struct FreeTypeCharacter
 {
@@ -44,6 +46,7 @@ This is the texts' representation in the Engine.
 The Text has position, color and scale too.
 The scale can be useful if the developer want load lesser fonts.
 
+### Header:
 ```cpp
 struct Text
 {
