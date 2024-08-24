@@ -66,6 +66,7 @@ struct Text
 };
 ```
 
+##
 ## Text2DRenderer
 ### Source Code:
 [Text2DRenderer.h](../../Learning2DEngine/Learning2DEngine/EventSystem/Text2DRenderer.h)  
