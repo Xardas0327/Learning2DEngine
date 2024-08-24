@@ -318,7 +318,7 @@ void SpawnNewParticles();
 unsigned int GetUnusedParticleIndex();
 ```
 
-**Public:** 
+**Public:**  
 **~ParticleSystem**  
 If the destructor is called. It will call the `Stop()` function
 and it will delete the `texture` and the `particleSettings` pointers.

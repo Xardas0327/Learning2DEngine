@@ -1,5 +1,7 @@
 # DebugTool
+- [Log](DebugTool.md#log)
 
+##
 ## Log
 ### Source Code:
 [Log.h](../../Learning2DEngine/Learning2DEngine/DebugTool/Log.h)
