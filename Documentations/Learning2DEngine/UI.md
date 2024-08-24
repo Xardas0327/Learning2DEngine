@@ -1,5 +1,10 @@
 # UI
+- [FontSizePair](UI.md#fontsizepair)
+- [FreeTypeCharacter](UI.md#freetypecharacter)
+- [Text](UI.md#text)
+- [Text2DRenderer](UI.md#text2drenderer)
 
+##
 ## FontSizePair
 ### Source Code:
 It does not have separate source file. It is in
@@ -16,6 +21,7 @@ The second variable is the size of the font.
 typedef std::pair<std::string, unsigned int> FontSizePair;
 ```
 
+##
 ## FreeTypeCharacter
 ### Source Code:
 [FreeTypeCharacter.h](../../Learning2DEngine/Learning2DEngine/EventSystem/FreeTypeCharacter.h)
@@ -37,6 +43,7 @@ struct FreeTypeCharacter
 };
 ```
 
+##
 ## Text
 ### Source Code:
 [Text.h](../../Learning2DEngine/Learning2DEngine/EventSystem/Text.h)
