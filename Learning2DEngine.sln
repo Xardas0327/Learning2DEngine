@@ -35,6 +35,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Learning2DEngine", "Learnin
 		Documentations\Learning2DEngine\UI.md = Documentations\Learning2DEngine\UI.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{33829A3E-458D-4C41-9730-5F8CF17A3A33}"
+	ProjectSection(SolutionItems) = preProject
+		Documentations\Images\breakout.png = Documentations\Images\breakout.png
+		Documentations\Images\snake.png = Documentations\Images\snake.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -60,6 +66,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7D0103D8-E9BE-40E0-AFE3-E14A6F3B9CAC} = {B9BE6FF5-D4AF-4DD3-99F8-783D68A0D15D}
 		{0CC89BBB-1730-4365-AE78-CA6FF717F7EC} = {7D0103D8-E9BE-40E0-AFE3-E14A6F3B9CAC}
+		{33829A3E-458D-4C41-9730-5F8CF17A3A33} = {7D0103D8-E9BE-40E0-AFE3-E14A6F3B9CAC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AA12A092-246A-44A1-8AE4-F57F47A1A49B}

@@ -5,6 +5,8 @@ This is a Breakout game, which Joey de Vries implemented and its tutorial is [he
 Its [license](https://learnopengl.com/About).  
 But I recreate it with my own Engine.
 
+<img src="/Images/breakout.png" alt="Breakout Game" width="400">
+
 ## License:
 Breakout © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
 
