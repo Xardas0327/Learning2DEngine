@@ -18,8 +18,7 @@ namespace Learning2DEngine
             friend class System::GameObject;
         protected:
             CircleCollider(System::GameObject* gameObject, float radius, glm::vec2 offset = glm::vec2(0.0f, 0.0f))
-                : System::Component(gameObject),
-                Collider(gameObject, offset), radius(radius)
+                : System::Component(gameObject), Collider(gameObject, offset), radius(radius)
             {
 
             }

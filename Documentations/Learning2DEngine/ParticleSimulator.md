@@ -174,7 +174,8 @@ This is the heart of the Engine's particle system.
 It control the particles by the `ParticleSettings` and the `ParticleSystemSettings`.  
 `Update()` update the particles.
 This should be called in the `Game::Update()` only ones.
-It and `Draw()` work only, when the `IsRunning()` is true.
+It and `Draw()` work only, when the `IsRunning()` is true.  
+Please check the `Render::Renderer` class documentation too.
 
 ### Header:
 ```cpp
@@ -336,8 +337,7 @@ and it will delete the `texture` and the `particleSettings` pointers.
 ```
 
 **Draw**  
-It draws the particles.  
-Please check the `Render::Renderer` documentation too.
+It draws the particles.
 ```cpp
 void Draw() override;
 ```
