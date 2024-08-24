@@ -34,16 +34,13 @@ Learning2DEngine © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](http
   - freetype.lib
 
 ## Source code:
-The most constructors and destructors won't really be described,
-because the most of time, they just initialize some variables.  
-Only those functions, variables and macros will be explained,
-which can be useful to use that class.  
-I think the names and/or their comments can explain them simple,
+Couple things will not really be described,
+because I think their names and/or their comments can explain simple,
 what they are. (But there can be some exception.)
 
 ### Namespaces:
 - Learning2DEngine
-  - DebugTool
+  - [DebugTool](Learning2DEngine/DebugTool.md)
   - EventSystem
   - ParticleSimulator
   - Physics

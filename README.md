@@ -9,7 +9,7 @@ But I think the Game Engine Architecture book
 and the Unity Engine also influenced me a lot.
 Maybe the project's name is a bit tricky, because I guess it is only a library (yet).
 
-Futhermore, I know, yes I know, lots of features are missing,
+Futhermore, I know lots of features are missing,
 some features could be better and why it is Visual Studio Project and not
 a CMake project.
 I plan to continue its developing. But I think one full life is not enough
