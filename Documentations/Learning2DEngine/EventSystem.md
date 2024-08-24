@@ -26,25 +26,25 @@ std::list<EventItem<Params...>*> events;
 **Public:**  
 
 **Add**  
-It adds an EventItem to EventHandler.
+It adds an `EventItem` to `EventHandler`.
 ```cpp
 inline void Add(EventItem<Params...>* e);
 ```
 
 **Remove**  
-It removes an EventItem from EventHandler.
+It removes an `EventItem` from `EventHandler`.
 ```cpp
 inline void Remove(EventItem<Params...>* e);
 ```
 
 **Clear**  
-It removes all EventItems from EventHandler.
+It removes all `EventItems` from `EventHandler`.
 ```cpp
 inline void Clear();
 ```
 
 **Invoke**  
-It call all EventItems, which the EventHandler has.
+It call all `EventItems`, which the `EventHandler` has.
 ```cpp
 void Invoke(Params... params);
 ```
