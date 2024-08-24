@@ -15,6 +15,12 @@ The `LOG_INFO`, `LOG_WARNING`, `LOG_ERROR` macros are much better options for 2 
    as true, the macros will become nothing, so the developer does not
    have to remove them for the release version.
 
+### Header:
+```cpp
+class Log final
+{...}
+```
+
 ### Macros:
 **LOG_WARNING_COLOR**  
 It change the color of the text to warning color.
