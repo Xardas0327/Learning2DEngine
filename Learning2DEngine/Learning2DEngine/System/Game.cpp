@@ -221,7 +221,7 @@ namespace Learning2DEngine
             }
         }
 
-        void Game::SetCameraResolution(const Learning2DEngine::Render::Resolution& resolution)
+        void Game::SetCameraResolution(const Resolution& resolution)
         {
             Game::cameraResolution = resolution;
             Game::cameraProjection = glm::ortho(

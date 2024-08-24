@@ -102,7 +102,7 @@ namespace Learning2DEngine
             /// <summary>
             /// If this function is override, it must call the Game::RefreshResolution(const Resolution& resolution) in the first line.
             /// </summary>
-            virtual void RefreshResolution(const Learning2DEngine::Render::Resolution& resolution) override;
+            virtual void RefreshResolution(const Render::Resolution& resolution) override;
 
             void ActivateMSAA(unsigned int sampleNumber);
             void StopMSAA();
@@ -167,7 +167,7 @@ namespace Learning2DEngine
                 return Game::cameraResolution;
             }
 
-            void SetCameraResolution(const Learning2DEngine::Render::Resolution& resolution);
+            void SetCameraResolution(const Render::Resolution& resolution);
         };
     }
 }

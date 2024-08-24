@@ -15,10 +15,10 @@ namespace Learning2DEngine
         /// </summary>
         class CircleCollider : public virtual Collider
         {
-            friend class Learning2DEngine::System::GameObject;
+            friend class System::GameObject;
         protected:
-            CircleCollider(Learning2DEngine::System::GameObject* gameObject, float radius, glm::vec2 offset = glm::vec2(0.0f, 0.0f))
-                : Learning2DEngine::System::Component(gameObject),
+            CircleCollider(System::GameObject* gameObject, float radius, glm::vec2 offset = glm::vec2(0.0f, 0.0f))
+                : System::Component(gameObject),
                 Collider(gameObject, offset), radius(radius)
             {
 

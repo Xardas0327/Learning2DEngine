@@ -12,16 +12,16 @@ namespace Learning2DEngine
     {
         class Rigidbody : public virtual System::Component
         {
-            friend class Learning2DEngine::System::GameObject;
+            friend class System::GameObject;
         protected:
-            Rigidbody(Learning2DEngine::System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f))
-                : Component(gameObject), velocity(velocity), isFrozen(false)
+            Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f))
+                : System::Component(gameObject), velocity(velocity), isFrozen(false)
             {
 
             }
 
-            Rigidbody(Learning2DEngine::System::GameObject* gameObject, bool isFrozen)
-                : Component(gameObject), velocity(glm::vec2(0.0f, 0.0f)), isFrozen(isFrozen)
+            Rigidbody(System::GameObject* gameObject, bool isFrozen)
+                : System::Component(gameObject), velocity(glm::vec2(0.0f, 0.0f)), isFrozen(isFrozen)
             {
 
             }
@@ -36,7 +36,7 @@ namespace Learning2DEngine
             {
                 if (!isFrozen)
                 {
-                    gameObject->transform.position += velocity * Learning2DEngine::System::Game::GetDeltaTime();
+                    gameObject->transform.position += velocity * System::Game::GetDeltaTime();
                 }
             }
         };
