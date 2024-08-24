@@ -3,7 +3,8 @@
 ## Introduction:
 It is just a simple snake game, where the edge of the screen also kill your snake.
 
-<img src="/Images/snake.png" alt="Snake Game" width="400">
+
+![Snake Game](Images/snake.png)
 
 ## License:
 Snake © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
