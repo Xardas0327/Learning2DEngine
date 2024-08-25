@@ -331,7 +331,11 @@ unsigned int GetUnusedParticleIndex();
 **Public:**  
 **~ParticleSystem**  
 If the destructor is called. It will call the `Stop()` function
-and it will delete the `texture` and the `particleSettings` pointers.
+and it will delete the `texture` and the `particleSettings` pointers.  
+It won't call the `Destroy()` of the `texture`.
+That's why the texture still will be available in the `ResourceManager`. 
+If the `texture` was created by the developer,
+they have to care with this problem.
 ```cpp
 ~ParticleSystem();
 ```
@@ -388,6 +392,7 @@ inline bool IsUseTexture();
 
 **ClearTexture**  
 It destroys the `texture`.
+But it won't call the `Destroy()` of the `texture`.
 ```cpp
 void ClearTexture();
 ```
