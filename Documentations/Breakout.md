@@ -3,7 +3,9 @@
 ## Introduction:
 This is a Breakout game, which Joey de Vries implemented and its tutorial is [here](https://learnopengl.com/In-Practice/2D-Game/Breakout).  
 Its [license](https://learnopengl.com/About).  
-But I recreate it with my own Engine.
+But I recreated it with my own Engine.
+Moreover I also use the irrKlang for sound playing. I use its non pro licence,
+which is [here](https://www.ambiera.com/irrklang/license.html).
 
 ![Breakout Game](Images/breakout.png)
 
