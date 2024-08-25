@@ -904,7 +904,7 @@ inline unsigned int GetId();
 ```
 
 ##
-## SpriteRenderer
+## Texture2DSettings
 ### Source Code:
 [Texture2DSettings.h](../../Learning2DEngine/Learning2DEngine/Render/Texture2DSettings.h)  
 
