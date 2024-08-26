@@ -8,7 +8,8 @@ namespace Learning2DEngine
 {
 	namespace ParticleSimulator
 	{
-        struct Particle {
+        struct Particle
+        {
             System::Transform transform;
             glm::vec2 velocity;
             glm::vec4 color;

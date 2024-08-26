@@ -32,9 +32,7 @@ namespace Learning2DEngine
             Text2DRenderer();
         public:
             /// <summary>
-            /// It should be inited after RenderManager.
-            /// It will enable the blend, where the source factor is GL_SRC_ALPHA 
-            /// and destination factor is GL_ONE_MINUS_SRC_ALPHA
+            /// It should be called after RenderManager.
             /// </summary>
             void Init(const Render::Resolution& resolution);
             /// <summary>
@@ -52,6 +50,10 @@ namespace Learning2DEngine
             void Unload(const std::string& font, unsigned int fontSize);
             void Unload(const FontSizePair& fontSizePair);
             void Clear();
+            /// <summary>
+            /// The blend should be enabled, where the source factor is GL_SRC_ALPHA
+            /// and destination factor is GL_ONE_MINUS_SRC_ALPHA
+            /// </summary>
             void RenderText(const Text& text);
         };
     }

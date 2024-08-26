@@ -6,7 +6,8 @@ namespace Learning2DEngine
 {
     namespace Render
     {
-        struct Texture2DSettings {
+        struct Texture2DSettings
+        {
             // Format of the texture object
             unsigned int internalFormat;
             // Format of the loaded image

@@ -7,7 +7,8 @@ namespace Learning2DEngine
     namespace UI
     {
         // Please check the documentation of FreeType for bearing and advance.
-        struct FreeTypeCharacter {
+        struct FreeTypeCharacter
+        {
             unsigned int textureId;
             glm::ivec2   size;
             glm::ivec2   bearing;

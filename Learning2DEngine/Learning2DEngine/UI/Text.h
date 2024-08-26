@@ -12,7 +12,8 @@ namespace Learning2DEngine
         // Second is the size.
         typedef std::pair<std::string, unsigned int> FontSizePair;
 
-        struct Text {
+        struct Text
+        {
             FontSizePair fontSizePair;
             std::string text;
             float x = 0;

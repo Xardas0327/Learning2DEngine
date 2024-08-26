@@ -6,7 +6,7 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
-		class ShaderConstant
+		class ShaderConstant final
 		{
 		private:
 			ShaderConstant() {}
