@@ -910,7 +910,7 @@ inline unsigned int GetId();
 
 ### Description:
 It is a collection of setting parameters for `Texture2D`.
-It uses OpenGL constants like `GL_RGB`, `GL_REPEAT`, `GL_LINEAR` etc. 
+It uses OpenGL constants like *GL_RGB*, *GL_REPEAT*, *GL_LINEAR* etc. 
 
 ### Header:
 ```cpp

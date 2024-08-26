@@ -48,7 +48,7 @@ namespace Learning2DEngine
 
             /// <summary>
             /// It is multiplied by timeScale.
-            /// Before the Game::Run(), it is 0.0f.
+            /// Before the first frame, it is 0.0f.
             /// </summary>
             static float deltaTime;
 
@@ -76,33 +76,6 @@ namespace Learning2DEngine
             virtual void Update() {};
             virtual void Render() {};
             virtual void LateRender() {};
-        public:
-            Game();
-            virtual ~Game();
-
-            /// <summary>
-            /// It will initialize the RenderManager.
-            /// After that, the Init() will be called.
-            /// </summary>
-            void InitWithRender(int majorRenderVersion, int minorRenderVersion, Render::Resolution resolution, const char* title, bool resizableWindows = true);
-            /// <summary>
-            /// The RenderManager have to be initialized before this.
-            /// If this function is override, it must call the Game::Init() in the first line.
-            /// The Blend is enable by default with Source: SRC_ALPHA, Destination: ONE_MINUS_SRC_ALPHA,
-            /// because it is used for some features.
-            /// </summary>
-            virtual void Init();
-            /// <summary>
-            /// If this function is override, it must call the Game::Terminate() in the last line.
-            /// </summary>
-            virtual void Terminate();
-            void Run();
-
-            void RefreshKeyboardMouse(int key, int scancode, int action, int mode) override;
-            /// <summary>
-            /// If this function is override, it must call the Game::RefreshResolution(const Resolution& resolution) in the first line.
-            /// </summary>
-            virtual void RefreshResolution(const Render::Resolution& resolution) override;
 
             void ActivateMSAA(unsigned int sampleNumber);
             void StopMSAA();
@@ -137,7 +110,7 @@ namespace Learning2DEngine
                 return isPostProcessEffectUsed;
             }
 
-            inline void ResetTimeScale() 
+            inline void ResetTimeScale()
             {
                 timeScale = TIME_SCALE_DEFAULT;
             }
@@ -151,6 +124,36 @@ namespace Learning2DEngine
             {
                 return timeScale;
             }
+
+            void SetCameraResolution(const Render::Resolution& resolution);
+
+        public:
+            Game();
+            virtual ~Game();
+
+            /// <summary>
+            /// It will initialize the RenderManager.
+            /// After that, the Init() will be called.
+            /// </summary>
+            void InitWithRender(int majorRenderVersion, int minorRenderVersion, Render::Resolution resolution, const char* title, bool resizableWindows = true);
+            /// <summary>
+            /// The RenderManager have to be initialized before this.
+            /// If this function is override, it must call the Game::Init() in the first line.
+            /// The Blend is enable by default with Source: SRC_ALPHA, Destination: ONE_MINUS_SRC_ALPHA,
+            /// because it is used for some features.
+            /// </summary>
+            virtual void Init();
+            /// <summary>
+            /// If this function is override, it must call the Game::Terminate() in the last line.
+            /// </summary>
+            virtual void Terminate();
+            void Run();
+
+            void RefreshKeyboardMouse(int key, int scancode, int action, int mode) override;
+            /// <summary>
+            /// If this function is override, it must call the Game::RefreshResolution(const Resolution& resolution) in the first line.
+            /// </summary>
+            virtual void RefreshResolution(const Render::Resolution& resolution) override;
 
             static float GetDeltaTime()
             {
@@ -166,8 +169,6 @@ namespace Learning2DEngine
             {
                 return Game::cameraResolution;
             }
-
-            void SetCameraResolution(const Render::Resolution& resolution);
         };
     }
 }

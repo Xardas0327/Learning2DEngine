@@ -3,12 +3,12 @@
 			Component
 				Source code: 
 				Description:
-				Fistly, it looks a bad structure, because there is a circle. A Component has reference about its GameObject and the GameObject has 
-				reference about that Component. But if the developer follow this rule, everything will be alright.
+				Fistly, it looks a bad structure, because there is a cross reference. A Component has reference about its GameObject and the GameObject has 
+				reference about that Component. But if the developer follow some rules, everything will be alright.
 				The classes, which are inherited from Component, have to have a constructor, which first parameter is GameObject* for gameObject member.
 				Moreover, It is recommended, that the constructor, the Init() and Destroy() of the inherited class is protected
 				and only the GameObject can use them.
-				If the developer follow this, only the GameObject can create/init/destroy Components, so a Component can't exist without its GameObject.
+				If the developer follow this, only the GameObject can create/initialize/destroy Components, so a Component can't exist without its GameObject.
 				Furthermore, the Components have reference about their gameobject, so this gave the developer a huge flexibility.
 				They can give or get components from the their GameObject within a Component.
 				Please check the System::GameObject too.
@@ -71,6 +71,7 @@
 					virtual void LateRender();
 					It is also a rendering function. But this does not use the the MSAA and PostProcessEffect.
 					This can be useful for UI.
+					
 					Public:
 					void InitWithRender(int majorRenderVersion, int minorRenderVersion, Render::Resolution resolution, const char* title, bool resizableWindows = true);
 					It initializes the RenderManager. After that, the Init() will be called.
