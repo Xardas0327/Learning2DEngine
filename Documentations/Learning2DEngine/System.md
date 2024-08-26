@@ -336,7 +336,7 @@ It sets the `cameraResolution` and the `cameraProjection` too.
 void SetCameraResolution(const Render::Resolution& resolution);
 ``` 
 
-**Public:** 
+**Public:**  
 **Game**  
 ```cpp
  Game();

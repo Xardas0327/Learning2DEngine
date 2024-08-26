@@ -2,7 +2,7 @@
 
 ## Introduction:
 This project was created for my own development and
-I want to use this one for reference too.
+I want to use this one for reference too.  
 I have relearned the C++ and I have learned the OpenGL form
 [learnopengl.com](https://learnopengl.com/).
 But I think the Game Engine Architecture book
@@ -42,7 +42,9 @@ but I tried to keep them minimum.
 - Freetype for write texts on the screen [License](https://freetype.org/license.html)
 
 ## Documentations:
-Please use the documentation links in the released branches.
-- [Learning2DEngine](Documentations/Learning2DEngine.md)
+It is recommended to use the documentation links in the released branches.
+### [Learning2DEngine](Documentations/Learning2DEngine.md)
+
+### Games
 - [Breakout](Documentations/Breakout.md)
 - [Snake](Documentations/Snake.md)

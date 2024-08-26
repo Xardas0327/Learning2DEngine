@@ -9,9 +9,9 @@ The code owner is Joey de Vries, who has the
 Its [License](https://learnopengl.com/About).
 
 The concept was, that the Engine will be generic for making any 2D Games.
-That is why, I try to implement every feature, that this will be/stay true.
+That is why, I try to implement every features, that this will be/stay true.
 At the moment, it support only Windows 64bit and it use only OpenGL as Graphic API.
-But who knows, maybe they will change later (or maybe in the next version).  
+But who knows, maybe they will change later.  
 The project has 2 folders:  
 - Learning2DEngine: it contains the Engine source code.
 - Plugins: this contains the glad.c.
@@ -36,8 +36,7 @@ Learning2DEngine © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](http
 ## Source code:
 Couple things will not really be described,
 because I think their names and/or their comments can explain simple,
-what they are.  
-(But there can be some exception.)
+what they are.
 
 ### Namespaces:
 - Learning2DEngine
