@@ -47,7 +47,7 @@ class IResolutionRefresher
 virtual ~IResolutionRefresher();
 ```
 
-**~RefreshResolution**  
+**RefreshResolution**  
 ```cpp
 virtual void RefreshResolution(const Resolution& resolution) = 0;
 ```

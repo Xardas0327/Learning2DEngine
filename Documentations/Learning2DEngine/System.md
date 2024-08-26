@@ -1,6 +1,13 @@
 # System
-- [Component](Render.md#component)
-- [Game](Render.md#game)
+- [Component](System.md#component)
+- [Game](System.md#game)
+- [GameObject](System.md#gameobject)
+- [IKeyboardMouseRefresher](System.md#ikeyboardmouserefresher)
+- [InputStatus](System.md#inputstatus)
+- [Random](System.md#random)
+- [ResourceManager](System.md#resourcemanager)
+- [Singleton](System.md#singleton)
+- [Transform](System.md#transform)
 
 ##
 ## Component
@@ -170,7 +177,7 @@ Before the first frame, it is 0.0f.
 static float deltaTime;
 ```
 
-**Protected:** 
+**Protected:**  
 **inputKeys**  
 This array contains, which button is up, down or hold.  
 The developer should not write this array, just read it.
@@ -407,3 +414,381 @@ It returns the `cameraResolution`.
 ```cpp
 static Render::Resolution GetCameraResolution();
 ``` 
+
+##
+## GameObject
+### Source Code:
+[GameObject.h](../../Learning2DEngine/Learning2DEngine/System/GameObject.h)
+
+### Description:
+The `GameObject` represent the objects in the game.
+It contains the components, which give a big flexibility to the developer.  
+Please check the `Component` too.
+
+### Header:
+```cpp
+class GameObject final
+{...}
+```
+
+### Variables:
+**Private:**  
+**components**  
+```cpp
+std::vector<Component*> components;
+```
+
+**Public:**  
+**isActive**  
+```cpp
+bool isActive;
+```
+
+**transform**  
+```cpp
+Transform transform;
+```
+
+### Functions:
+**Public:**  
+**GameObject**  
+```cpp
+GameObject(bool isActive = true);
+```
+```cpp
+GameObject(Transform transform, bool isActive = true);
+```
+
+**~GameObject()**  
+It calls `Destroy()` function of the current gameobject's components
+and delete them.
+```cpp
+~GameObject();
+```
+
+**AddComponent**  
+It adds a `Component` to the `GameObject` and
+it calls the `Init()` function of the `Component`.
+This is a really flexible function.
+The developer can add parameters to component's constructor.  
+For example:
+A Component constructor:
+PlayerController(GameObject* gameObject, const std::string& textureId);  
+The textureId can be added by this format:
+```cpp
+GameObject* player = new GameObject();
+playerController = player->AddComponent<PlayerController, const std::string&>("paddle");
+```
+```cpp
+template <class TComponent, class ...Params>
+TComponent* AddComponent(Params... params);
+```
+
+**GetComponent**  
+They return the `Component`, whose class is *TComponent*.
+If the gameobject does not have this `Component`, it will return *NULL*.
+```cpp
+template <class TComponent>
+TComponent* GetComponent();
+```
+```cpp
+template <class TComponent>
+const TComponent* GetComponent() const;
+```
+
+**GetComponents**  
+It returns all components, whose class is *TComponent*.
+If the `GameObject` does not have these components,
+it will return an empty vector.
+```cpp
+template <class TComponent>
+std::vector<TComponent*> GetComponents();
+```
+
+**Destroy**  
+It destroys the `GameObject`.  
+If the developer give a `Component`, it will destroy
+the `GameObject` of the `Component`.  
+That's why all other `Components`,which the `GameObject` has, will be destroyed.
+```cpp
+static void Destroy(GameObject* gameObject);
+```
+```cpp
+static void Destroy(Component* component);
+```
+
+##
+## IKeyboardMouseRefresher
+### Source Code:
+[IKeyboardMouseRefresher.h](../../Learning2DEngine/Learning2DEngine/System/IKeyboardMouseRefresher.h)
+
+### Description:
+It is a little interface, which the developer can use to wrap
+a class into `KeyboardMouseEventItem`.
+
+### Header:
+```cpp
+class IKeyboardMouseRefresher
+{...}
+```
+
+### Functions:
+**Public:**  
+**~IKeyboardMouseRefresher**  
+```cpp
+virtual ~IKeyboardMouseRefresher();
+```
+
+**RefreshKeyboardMouse**  
+```cpp
+virtual void RefreshKeyboardMouse(int key, int scancode, int action, int mode) = 0;
+```
+
+##
+## InputStatus
+### Source Code:
+[InputStatus.h](../../Learning2DEngine/Learning2DEngine/System/InputStatus.h)
+
+### Description:
+It is an enum class, which contains the 3 phase of the buttons.
+
+### Header:
+```cpp
+enum InputStatus
+{
+    // The key or mouse button was released.
+    KEY_UP,
+    // The key or mouse button was pressed.
+    KEY_DOWN,
+    // The key was held down until it repeated.
+    KEY_HOLD
+};
+```
+
+##
+## Random
+### Source Code:
+[Random.h](../../Learning2DEngine/Learning2DEngine/System/Random.h)  
+[Random.cpp](../../Learning2DEngine/Learning2DEngine/System/Random.cpp)
+
+### Description:
+It is a static random number generator.
+It uses the *rand()* function from *cstdlib*.
+So, the randomness is depend on *RAND_MAX*. If the isInited is false,
+the next `GetNumber` function will run the *std::srand(std::time(nullptr))*,
+before generation.
+
+### Header:
+```cpp
+class Random
+{...}
+```
+
+### Variables:
+**Public:**  
+**isInited**  
+```cpp
+static bool isInited;
+```
+
+### Functions:
+**Private:**  
+**Random**  
+```cpp
+Random();
+```
+
+**Init**  
+```cpp
+static void Init();
+```
+
+**Public:**  
+**GetNumber**  
+```cpp
+static int GetNumber(int minInclusive, int maxExclusive);
+```
+```cpp
+static float GetNumber(float minInclusive, float maxInclusive);
+```
+
+##
+## ResourceManager
+### Source Code:
+[ResourceManager.h](../../Learning2DEngine/Learning2DEngine/System/ResourceManager.h)  
+[ResourceManager.cpp](../../Learning2DEngine/Learning2DEngine/System/ResourceManager.cpp)  
+
+### Description:
+It is really recommended, that the developer create shaders
+and textures with the `ResourceManager`, that
+they can avoid the useless allocation and memory leak.
+The exception should be minimum.  
+It use one-one *std::map* for shaders and textures, where the id is their name.
+
+### Header:
+```cpp
+class ResourceManager : public virtual Singleton<ResourceManager>
+{...}
+```
+
+### Variables:
+**Private:**  
+**shaders**  
+```cpp
+std::map<std::string, Render::Shader> shaders;
+```
+
+**textures**  
+```cpp
+std::map<std::string, Render::Texture2D> textures;
+```
+
+### Functions:
+**Private:**  
+**ResourceManager**  
+```cpp
+ResourceManager();
+```
+
+**LoadShaderFile**  
+Return false, if the *std\::ifstream* or the *std\::stringstream* thrown exception
+by *std\::ifstream::failbit* or *std\::ifstream::badbit*.  
+Otherwise, it returns true.
+```cpp
+bool LoadShaderFile(const char* filePath, std::string& outSource);
+```
+
+**LoadShaderFromFile**  
+```cpp
+Render::Shader LoadShaderFromFile(const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath = nullptr);
+```
+
+**LoadShader**  
+```cpp
+Render::Shader LoadShader(const char* vertexText, const char* fragmentText, const char* geometryText = nullptr);
+```
+
+**LoadTextureFromFile**  
+```cpp
+Render::Texture2D LoadTextureFromFile(const char* filePath, const Render::Texture2DSettings& settings);
+```
+
+**Public:**  
+**LoadShaderFromFile**  
+It creates a `Shader` from files.
+```cpp
+ Render::Shader LoadShaderFromFile(const std::string& name, const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath = nullptr);
+```
+
+**LoadShader**  
+It creates a `Shader` from strings.
+```cpp
+Render::Shader LoadShader(const std::string& name, const char* vertexText, const char* fragmentText, const char* geometryText = nullptr);
+```
+
+**GetShader**  
+It returns a `Shader`. If the shader does not exist,
+it will return an uninitialized `Shader`.  
+It is recommended to use the `IsShaderExist()`.
+```cpp
+Render::Shader GetShader(const std::string& name);
+```
+
+**IsShaderExist**  
+It returns true if the `Shader` exist.
+```cpp
+bool IsShaderExist(const std::string& name);
+```
+
+**DestroyShader**  
+It destroys the `Shader`.
+```cpp
+void DestroyShader(const std::string& name);
+```
+
+**LoadTextureFromFile**  
+It creates a `Texture2D` from files.
+```cpp
+Render::Texture2D LoadTextureFromFile(const std::string& name, const char* filePath, const Render::Texture2DSettings& settings);
+```
+
+**GetTexture**  
+It returns a `Texture2D`. If the texture does not exist,
+it will return an uninitialized `Texture2D`.
+It is recommended to use the `IsTextureExist()`.
+```cpp
+Render::Texture2D GetTexture(const std::string& name);
+```
+
+**IsTextureExist**  
+It returns true if the `Texture2D` exist.
+```cpp
+bool IsTextureExist(const std::string& name);
+```
+
+**DestroyTexture2D**  
+It destroys the `Texture2D`.
+```cpp
+void DestroyTexture2D(const std::string& name);
+```
+
+**Clear**  
+It destroys all `Shader` and `Texture2D`.
+```cpp
+void Clear();
+```
+
+##
+## Singleton
+### Source Code:
+[Singleton.h](../../Learning2DEngine/Learning2DEngine/System/Singleton.h)  
+
+### Description:
+A base singleton abstract class. It is recommended, that
+the constructor of inherited class is private or protected and
+the `Singleton` is a friend class.
+
+### Header:
+```cpp
+template<typename T>
+class Singleton
+{...}
+```
+
+### Functions:
+**Protected:**  
+**Singleton**  
+```cpp
+Singleton();
+```
+
+**Public:**  
+**GetInstance**  
+```cpp
+static T& GetInstance();
+```
+
+##
+## Transform
+### Source Code:
+[Transform.h](../../Learning2DEngine/Learning2DEngine/System/Transform.h)  
+
+### Description: 
+It contains the position the scale and the rotation.  
+Every `GameObject` has a `Transform`.
+
+### Header:
+```cpp
+struct Transform
+{
+	glm::vec2 position;
+	glm::vec2 scale;
+	float rotation;
+
+	Transform(glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f)
+		: position(position), scale(scale), rotation(rotation)
+	{
+
+	}
+};
+```

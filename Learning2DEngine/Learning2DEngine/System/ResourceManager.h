@@ -18,7 +18,7 @@ namespace Learning2DEngine
         {
             friend class Singleton<ResourceManager>;
         private:
-            std::map<std::string, Render::Shader>    shaders;
+            std::map<std::string, Render::Shader> shaders;
             std::map<std::string, Render::Texture2D> textures;
 
             ResourceManager();
