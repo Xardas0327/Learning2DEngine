@@ -17,7 +17,7 @@ for a huge project like a Game Engine (mostly, if I can work on it only in my fr
 and we have to accept it, that similar projects will never be completed, just stopped
 or restarted.
 
-Last and not least, the project's starting point was the Breakout, which is reimplemented in my Engine.
+Last, but  not least, the project's starting point was the Breakout, which is reimplemented in my Engine.
 Maybe today, there is not any code line, which came from that project.
 But everything was started from [here](https://learnopengl.com/In-Practice/2D-Game/Breakout).  
 The code owner is Joey de Vries, who has the
