@@ -10,7 +10,7 @@ namespace Learning2DEngine
             : position(position), rotation(rotation),
                 viewMatrix(0.0f), projection(0.0f), resolution(0,0)
         {
-
+            RecalcViewMatrix();
         }
 
         void Camera::SetPosition(glm::vec2 position)
@@ -35,7 +35,7 @@ namespace Learning2DEngine
         void Camera::RecalcViewMatrix()
         {
             //This one will change
-            viewMatrix = glm::lookAt(glm::vec3(position, 0.0f), glm::vec3(position, 0.0f) + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+            viewMatrix = glm::lookAt(glm::vec3(position, 0.0f), glm::vec3(position, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
             /*
             viewMatrix = glm::mat4(1.0f);
             viewMatrix = glm::translate(viewMatrix, glm::vec3(position, 0.0f));

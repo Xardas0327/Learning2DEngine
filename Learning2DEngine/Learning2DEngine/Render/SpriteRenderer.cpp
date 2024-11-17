@@ -133,7 +133,9 @@ namespace Learning2DEngine
             model = glm::scale(model, glm::vec3(gameObject->transform.scale, 1.0f)); // last scale
 
             SpriteRenderer::shader.SetMatrix4("model", model);
-            SpriteRenderer::shader.SetMatrix4("projection", System::Game::GetCameraProjection());
+            SpriteRenderer::shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+            SpriteRenderer::shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
+
             SpriteRenderer::shader.SetVector3f("spriteColor", color);
             SpriteRenderer::shader.SetInteger("isUseTexture", IsUseTexture());
 

@@ -14,8 +14,7 @@ namespace Learning2DEngine
     namespace System
     {
         float Game::deltaTime = 0.0f;
-        glm::mat4 Game::cameraProjection = glm::mat4(0.0f);
-        Resolution Game::cameraResolution(0,0);
+        Camera Game::mainCamera = Camera();
 
         Game::Game()
             : lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT), isMsaaActive(false),
@@ -219,19 +218,6 @@ namespace Learning2DEngine
                 if(Game::inputKeys[i] == InputStatus::KEY_DOWN)
                     Game::inputKeys[i] = InputStatus::KEY_HOLD;
             }
-        }
-
-        void Game::SetCameraResolution(const Resolution& resolution)
-        {
-            Game::cameraResolution = resolution;
-            Game::cameraProjection = glm::ortho(
-                0.0f,
-                static_cast<float>(resolution.GetWidth()),
-                static_cast<float>(resolution.GetHeight()),
-                0.0f,
-                -1.0f,
-                1.0f
-            );
         }
     }
 }

@@ -108,7 +108,7 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData)
         }
     }
 
-    CalcBrickSize(Game::GetCameraResolution());
+    CalcBrickSize(Game::mainCamera.GetResolution());
 }
 
 void GameLevel::CalcBrickSize(const Resolution& resolution)

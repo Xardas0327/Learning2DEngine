@@ -4,6 +4,7 @@
 
 #include "InputStatus.h"
 #include "IKeyboardMouseRefresher.h"
+#include "Camera.h"
 #include "../EventSystem/KeyboardMouseEventItem.h"
 #include "../Render/RenderManager.h"
 #include "../Render/IResolutionRefresher.h"
@@ -61,18 +62,6 @@ namespace Learning2DEngine
         protected:
             InputStatus inputKeys[INPUT_KEY_SIZE];
 
-            /// <summary>
-            /// It has to be initialized.
-            /// It is glm::mat4(0.0f) by default.
-            /// </summary>
-            static glm::mat4 cameraProjection;
-
-            /// <summary>
-            /// It has to be initialized, because the camera resolution don't have to be same with screen resolution.
-            /// It is (0,0) by default.
-            /// </summary>
-            static Render::Resolution cameraResolution;
-
             virtual void Update() {};
             virtual void Render() {};
             virtual void LateRender() {};
@@ -125,11 +114,15 @@ namespace Learning2DEngine
                 return timeScale;
             }
 
-            void SetCameraResolution(const Render::Resolution& resolution);
-
         public:
             Game();
             virtual ~Game();
+
+            /// <summary>
+            /// Its resolution has to be initialized 
+            /// It is (0,0) by default.
+            /// </summary>
+            static Camera mainCamera;
 
             /// <summary>
             /// It will initialize the RenderManager.
@@ -158,16 +151,6 @@ namespace Learning2DEngine
             static float GetDeltaTime()
             {
                 return deltaTime;
-            }
-
-            static glm::mat4 GetCameraProjection()
-            {
-                return Game::cameraProjection;
-            }
-
-            static Render::Resolution GetCameraResolution()
-            {
-                return Game::cameraResolution;
             }
         };
     }

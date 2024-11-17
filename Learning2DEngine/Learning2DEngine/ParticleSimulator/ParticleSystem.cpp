@@ -194,7 +194,8 @@ namespace Learning2DEngine
 					model = glm::scale(model, glm::vec3(particles[i].transform.scale, 1.0f)); // last scale
 
 					ParticleSystem::shader.SetMatrix4("model", model);
-					ParticleSystem::shader.SetMatrix4("projection", System::Game::GetCameraProjection());
+					ParticleSystem::shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+					ParticleSystem::shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 					ParticleSystem::shader.SetVector3f("spriteColor", particles[i].color);
 					ParticleSystem::shader.SetInteger("isUseTexture", IsUseTexture());
 

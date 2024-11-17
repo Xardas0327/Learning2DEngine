@@ -87,7 +87,7 @@ void Breakout::InitObjects()
     const int middleHeight = resolution.GetHeight() / 2;
 
     // Camera
-    SetCameraResolution(resolution);
+    mainCamera.SetResolution(resolution);
 
     // Background
     auto background = new GameObject();
@@ -218,7 +218,7 @@ void Breakout::ProcessInput()
         if (Game::inputKeys[GLFW_KEY_D])
         {
             if (playerController->gameObject->transform.position.x <=
-                Game::GetCameraResolution().GetWidth() - playerController->gameObject->transform.scale.x)
+                Game::mainCamera.GetResolution().GetWidth() - playerController->gameObject->transform.scale.x)
             {
                 playerController->gameObject->transform.position.x += velocity;
                 if (ballController->stuck)
@@ -243,7 +243,7 @@ void Breakout::ShakeScreen()
 
 void Breakout::IsLiveLost()
 {
-    if (ballController->gameObject->transform.position.y >= Game::GetCameraResolution().GetHeight())
+    if (ballController->gameObject->transform.position.y >= Game::mainCamera.GetResolution().GetHeight())
     {
         --lives;
         if (lives == 0)
@@ -591,7 +591,7 @@ void Breakout::CheckPowerUpCollision()
     {
         if (powerUp->gameObject->isActive)
         {
-            if (powerUp->gameObject->transform.position.y >= Game::GetCameraResolution().GetHeight())
+            if (powerUp->gameObject->transform.position.y >= Game::mainCamera.GetResolution().GetHeight())
                 powerUp->gameObject->isActive = false;
 
             if (CheckCollision(*playerController->collider, *powerUp->collider))

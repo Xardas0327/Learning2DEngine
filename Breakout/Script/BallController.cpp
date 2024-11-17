@@ -57,7 +57,7 @@ void BallController::Move()
 {
     if (!stuck)
     {
-        int width = Game::GetCameraResolution().GetWidth();
+        int width = Game::mainCamera.GetResolution().GetWidth();
         rigidbody->Update();
 
         if (gameObject->transform.position.x <= 0.0f)
