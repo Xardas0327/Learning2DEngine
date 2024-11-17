@@ -34,19 +34,16 @@ namespace Learning2DEngine
 
         void Camera::RecalcViewMatrix()
         {
-            //This one will change
-            viewMatrix = glm::lookAt(glm::vec3(position, 0.0f), glm::vec3(position, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-            /*
             viewMatrix = glm::mat4(1.0f);
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(position, 0.0f));
-
+            //The Position is the inverse, because the camera look at the scene.
+            viewMatrix = glm::translate(viewMatrix, -1.0f * glm::vec3(position, 0.0f));
             // move origin of rotation to center
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(0.5f, 0.5f, 0.0f));
+            viewMatrix = glm::translate(viewMatrix, glm::vec3(0.5f * static_cast<float>(resolution.GetWidth()), 0.5f * static_cast<float>(resolution.GetHeight()), 0.0f));
             // then rotate
             viewMatrix = glm::rotate(viewMatrix, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
             // move origin back
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(-0.5f, -0.5f, 0.0f));
-            */
+            viewMatrix = glm::translate(viewMatrix, glm::vec3(-0.5f * static_cast<float>(resolution.GetWidth()), -0.5f * static_cast<float>(resolution.GetHeight()), 0.0f));
+            
         }
 
         void Camera::SetResolution(const Render::Resolution& resolution)
