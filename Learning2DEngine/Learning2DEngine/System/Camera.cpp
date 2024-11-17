@@ -19,9 +19,32 @@ namespace Learning2DEngine
             RecalcViewMatrix();
         }
 
+        void Camera::Move(glm::vec2 direction, bool isWorldMoving)
+        {
+            if (isWorldMoving)
+            {
+                float angle = glm::radians(rotation);
+
+                glm::mat2 rotationMatrix = glm::mat2(
+                    cos(angle), -sin(angle),
+                    sin(angle), cos(angle));
+
+                direction = rotationMatrix * direction;
+            }
+
+            position += direction;
+            RecalcViewMatrix();
+        }
+
         void Camera::SetRotation(float rotation)
         {
             this->rotation = rotation;
+            RecalcViewMatrix();
+        }
+
+        void Camera::Rotate(float angle)
+        {
+            rotation += angle;
             RecalcViewMatrix();
         }
 
@@ -35,7 +58,7 @@ namespace Learning2DEngine
         void Camera::RecalcViewMatrix()
         {
             viewMatrix = glm::mat4(1.0f);
-            //The Position is the inverse, because the camera look at the scene.
+            //It uses the inverse of the position, because the camera look at the scene.
             viewMatrix = glm::translate(viewMatrix, -1.0f * glm::vec3(position, 0.0f));
 
             float halfWidth = 0.5f * static_cast<float>(resolution.GetWidth());
@@ -44,7 +67,8 @@ namespace Learning2DEngine
             // move origin of rotation to center
             viewMatrix = glm::translate(viewMatrix,  glm::vec3( halfWidth, halfHeight, 0.0f));
             // then rotate
-            viewMatrix = glm::rotate(viewMatrix, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+            //It uses the inverse of the rotation, because the camera look at the scene.
+            viewMatrix = glm::rotate(viewMatrix, glm::radians(-rotation), glm::vec3(0.0f, 0.0f, 1.0f));
             // move origin back
             viewMatrix = glm::translate(viewMatrix, glm::vec3(-halfWidth, -halfHeight, 0.0f));
             

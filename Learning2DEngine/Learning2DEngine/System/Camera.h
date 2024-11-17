@@ -29,12 +29,19 @@ namespace Learning2DEngine
             //After the position update, it will recalculate the viewMatrix.
             void SetPosition(glm::vec2 position);
 
+            //If it is a isWorldMoving, the direction will be rotated by the actual rotation.
+            //After the position update, it will recalculate the viewMatrix.
+            void Move(glm::vec2 direction, bool isWorldMoving = false);
+
             inline float GetRotation()
             {
                 return rotation;
             }
             //After the rotation update, it will recalculate the viewMatrix.
             void SetRotation(float rotation);
+
+            //After the rotation update, it will recalculate the viewMatrix.
+            void Rotate(float angle);
 
             //After the position and the rotation update, it will recalculate the viewMatrix.
             void SetPositionRotation(glm::vec2 position, float rotation);
