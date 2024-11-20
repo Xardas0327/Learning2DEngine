@@ -21,9 +21,9 @@ namespace Learning2DEngine
 
         void Camera::Move(glm::vec2 direction, bool isWorldMoving)
         {
-            if (isWorldMoving)
+            if (!isWorldMoving)
             {
-                float angle = glm::radians(rotation);
+                float angle = glm::radians(-rotation);
 
                 glm::mat2 rotationMatrix = glm::mat2(
                     cos(angle), -sin(angle),
@@ -65,12 +65,12 @@ namespace Learning2DEngine
             float halfHeight = 0.5f * static_cast<float>(resolution.GetHeight());
 
             // move origin of rotation to center
-            viewMatrix = glm::translate(viewMatrix,  glm::vec3( halfWidth, halfHeight, 0.0f));
+            viewMatrix = glm::translate(viewMatrix,  glm::vec3( halfWidth + position.x, halfHeight + position.y, 0.0f));
             // then rotate
             //It uses the inverse of the rotation, because the camera look at the scene.
             viewMatrix = glm::rotate(viewMatrix, glm::radians(-rotation), glm::vec3(0.0f, 0.0f, 1.0f));
             // move origin back
-            viewMatrix = glm::translate(viewMatrix, glm::vec3(-halfWidth, -halfHeight, 0.0f));
+            viewMatrix = glm::translate(viewMatrix, glm::vec3(-halfWidth - position.x, -halfHeight - position.y, 0.0f));
             
         }
 
