@@ -8,6 +8,7 @@
 - [Resolution](Render.md#resolution)
 - [Shader](Render.md#shader)
 - [ShaderConstant](Render.md#shaderconstant)
+- [SpriteRenderer](Render.md#spriterenderer)
 - [Texture2D](Render.md#texture2d)
 - [Texture2DSettings](Render.md#texture2dsettings)
 
