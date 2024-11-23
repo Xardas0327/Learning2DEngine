@@ -41,7 +41,7 @@ but I tried to keep them minimum.
 - stb_image for load images into textures [License](https://github.com/nothings/stb?tab=License-1-ov-file)
 - Freetype for write texts on the screen [License](https://freetype.org/license.html)
 
-## Documentations:
+## Documentation:
 It is recommended to use the documentation links in the released branches.
 ### [Learning2DEngine](Documentations/Learning2DEngine.md)
 
