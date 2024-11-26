@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Learning2DEngine\Physics\Collision.cpp" />
+    <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
     <ClCompile Include="Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\MSAA.cpp" />
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystem.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h" />
+    <ClInclude Include="Learning2DEngine\System\Camera.h" />
     <ClInclude Include="Learning2DEngine\System\Component.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventHandler.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventItem.h" />

@@ -25,7 +25,7 @@ void PlayerController::Init()
 
 void PlayerController::Reset()
 {
-	const Resolution resolution = Game::GetCameraResolution();
+	const Resolution resolution = Game::mainCamera.GetResolution();
 
 	gameObject->transform.scale = PLAYER_SIZE;
 	gameObject->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);

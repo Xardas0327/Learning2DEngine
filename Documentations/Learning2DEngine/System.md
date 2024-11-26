@@ -1,4 +1,5 @@
 # System
+- [Camera](System.md#camera)
 - [Component](System.md#component)
 - [Game](System.md#game)
 - [GameObject](System.md#gameobject)
@@ -8,6 +9,134 @@
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
 - [Transform](System.md#transform)
+
+##
+## Camera
+### Source Code:
+[Camera.h](../../Learning2DEngine/Learning2DEngine/System/Camera.h)  
+[Camera.cpp](../../Learning2DEngine/Learning2DEngine/System/Camera.cpp)
+
+### Description:
+The `Camera` contains the camera settings, which the developer can transform the view of the users.
+The shaders can use its projection and its view matrix.
+The developer can change the Camera's resolution, postion and rotation too.  
+The `Game` class uses it as `mainCamera`.
+
+### Header:
+```cpp
+class Camera
+{...}
+```
+
+### Variables:
+**Private:**  
+**position**  
+```cpp
+glm::vec2 position;
+```
+
+**rotation**  
+```cpp
+float rotation;
+```
+
+**viewMatrix**  
+```cpp
+glm::mat4 viewMatrix;
+```
+
+**projection**  
+```cpp
+glm::mat4 projection;
+```
+
+**resolution**  
+```cpp
+Render::Resolution resolution;
+```
+
+### Functions:
+**Private:**  
+**RecalcViewMatrix**  
+It recalculates the `viewMatrix`.
+```cpp
+void RecalcViewMatrix()
+```
+
+**Public:**  
+**Camera**  
+```cpp
+Camera(glm::vec2 position = glm::vec2(0.0f, 0.0f), float rotation = 0.0f)
+```
+
+**GetPosition**  
+It returns the `position`.
+```cpp
+inline glm::vec2 GetPosition()
+```
+
+**SetPosition**  
+It sets the `position`.  
+After the position update, it will call `RecalcViewMatrix`.
+```cpp
+void SetPosition(glm::vec2 position)
+```
+
+**Move**  
+It adds the direction to the `position`.  
+If the isWorldMoving is true, the direction will be rotated by the actual `rotation`.  
+After the position update, it will call `RecalcViewMatrix`.
+```cpp
+void Move(glm::vec2 direction, bool isWorldMoving = false)
+```
+
+**GetRotation**  
+It returns the `rotation`.
+```cpp
+inline float GetRotation()
+```
+
+**SetRotation**  
+It sets the `rotation`.  
+After the rotation update, it will call `RecalcViewMatrix`.
+```cpp
+void SetRotation(float rotation);
+```
+
+**Rotate**  
+It add the angle to the `rotation`.  
+After the rotation update, it will call `RecalcViewMatrix`.
+```cpp
+void Rotate(float angle)
+```
+
+**SetPositionRotation**  
+It sets the `position` and the `rotation`.  
+After the position and the rotation update, it will call `RecalcViewMatrix`.
+```cpp
+void SetPositionRotation(glm::vec2 position, float rotation);
+```
+
+**GetViewMatrix**  
+It returns the `viewMatrix`.
+```cpp
+inline glm::mat4 GetViewMatrix()
+```
+
+**GetProjection**  
+It returns the `projection`.
+```cpp
+inline glm::mat4 GetProjection()
+```
+
+**SetResolution**  
+It sets the `resolution`.  
+After the resolution update, it will recalculate the projection.
+```cpp
+void SetResolution(const Render::Resolution& resolution);
+```
+
+
 
 ##
 ## Component
@@ -74,13 +203,13 @@ virtual ~Component();
 ```
 
 **SetActive**  
-It changes the isActive.
+It changes the `isActive`.
 ```cpp
 inline void SetActive(bool value);
 ```
 
 **GetActive**  
-It returns true, if the isActive is true.
+It returns true, if the `isActive` is true.
 ```cpp
 inline bool GetActive();
 ```
@@ -185,25 +314,15 @@ The developer should not write this array, just read it.
 InputStatus inputKeys[INPUT_KEY_SIZE];
 ```
 
-**cameraProjection**  
-The camera projecttion, which used by the shaders.
-The developer can modify, what the player can see.  
-It has to be initialized. It is glm::mat4(0.0f) by default.
+**Public:**  
+**mainCamera**  
+The `mainCamera` contains the camera settings,
+which the developer can transform the view of the users.  
+The shaders can use its projection and its view matrix.  
+Its resolution has to be initialized. It is (0,0) by default.  
+Please check more info about the `Camera` class.
 ```cpp
-static glm::mat4 cameraProjection;
-```
-
-**cameraResolution**  
-It has to be initialized,
-because the camera resolution don't have to be same with game resolution.
-It is (0,0) by default. The developer can use it as a constant grid size
-if they do not change it.  
-For example: the default (game) screen and camera resolution is 800x600 and
-there is a text in the middle of the Game Window.
-If the player change the resolution of the game, the camera resolution
-won't change, so the text will stay in the middle of the Game Window.
-```cpp
-static Render::Resolution cameraResolution;
+static Camera mainCamera;
 ```
 
 ### Functions:
@@ -330,12 +449,6 @@ It returns the `timeScale`.
 inline float GetTimeScale();
 ``` 
 
-**SetCameraResolution**  
-It sets the `cameraResolution` and the `cameraProjection` too.
-```cpp
-void SetCameraResolution(const Render::Resolution& resolution);
-``` 
-
 **Public:**  
 **Game**  
 ```cpp
@@ -401,18 +514,6 @@ It returns the `deltaTime`.
 Please check more info about `deltaTime`.
 ```cpp
 static float GetDeltaTime();
-``` 
-
-**GetCameraProjection**  
-It returns the `cameraProjection`.
-```cpp
-static glm::mat4 GetCameraProjection();
-``` 
-
-**GetCameraResolution**  
-It returns the `cameraResolution`.
-```cpp
-static Render::Resolution GetCameraResolution();
 ``` 
 
 ##

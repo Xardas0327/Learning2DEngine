@@ -59,7 +59,7 @@ void Snake::InitObjects()
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
 
     // Camera
-    SetCameraResolution(resolution);
+    mainCamera.SetResolution(resolution);
 
     // Unit
     unitSize = glm::vec2(resolution.GetWidth() / levelResolution.x, resolution.GetHeight() / levelResolution.y);
@@ -243,7 +243,7 @@ void Snake::MoveSnake()
 
 bool Snake::IsOut(const glm::vec2 position)
 {
-    auto cameraResolution = Game::GetCameraResolution();
+    auto cameraResolution = Game::mainCamera.GetResolution();
 
     return position.x < 0 || position.x >= cameraResolution.GetWidth()
         || position.y < 0 || position.y >= cameraResolution.GetHeight();
