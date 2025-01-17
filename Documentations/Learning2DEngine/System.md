@@ -341,6 +341,11 @@ void FixKeyboardMouse();
 ```
 
 **Protected:**  
+**Game**  
+```cpp
+ Game();
+```  
+
 **Update**  
 It is recommended, that this function should contain every update in the game,
 which is not rendering.
@@ -450,11 +455,6 @@ inline float GetTimeScale();
 ``` 
 
 **Public:**  
-**Game**  
-```cpp
- Game();
-```  
-
 **~Game**  
 ```cpp
 virtual ~Game();
