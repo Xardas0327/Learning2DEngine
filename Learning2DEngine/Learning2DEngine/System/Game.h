@@ -62,6 +62,7 @@ namespace Learning2DEngine
         protected:
             InputStatus inputKeys[INPUT_KEY_SIZE];
 
+            Game();
             virtual void Update() {};
             virtual void Render() {};
             virtual void LateRender() {};
@@ -115,7 +116,6 @@ namespace Learning2DEngine
             }
 
         public:
-            Game();
             virtual ~Game();
 
             /// <summary>

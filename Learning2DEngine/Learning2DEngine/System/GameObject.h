@@ -98,7 +98,7 @@ namespace Learning2DEngine
 			}
 
 			/// <summary>
-			/// The gameObject and its behaviours and its renderer will be destroyed.
+			/// The gameObject and its components will be destroyed.
 			/// </summary>
 			/// <param name="gameObject"></param>
 			static void Destroy(GameObject* gameObject)
@@ -107,7 +107,7 @@ namespace Learning2DEngine
 			}
 
 			/// <summary>
-			/// The gameObject of component and its behaviours and its renderer will be destroyed.
+			/// The gameObject of component and its components will be destroyed.
 			/// </summary>
 			/// <param name="gameObject"></param>
 			static void Destroy(Component* component)
