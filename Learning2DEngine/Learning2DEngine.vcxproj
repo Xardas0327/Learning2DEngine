@@ -187,6 +187,7 @@
     <ClInclude Include="Learning2DEngine\Physics\Collision.h" />
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h" />
     <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h" />
+    <ClInclude Include="Learning2DEngine\Render\BaseRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\Blend.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\MSAA.h" />
@@ -195,13 +196,16 @@
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h" />
     <ClInclude Include="Learning2DEngine\Render\Renderer.h" />
+    <ClInclude Include="Learning2DEngine\Render\RendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h" />
+    <ClInclude Include="Learning2DEngine\System\BaseUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\Camera.h" />
     <ClInclude Include="Learning2DEngine\System\Component.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventHandler.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventItem.h" />
+    <ClInclude Include="Learning2DEngine\System\ComponentManager.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />
     <ClInclude Include="Learning2DEngine\Render\IResolutionRefresher.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\KeyboardMouseEventItem.h" />
@@ -218,6 +222,7 @@
     <ClInclude Include="Learning2DEngine\System\Singleton.h" />
     <ClInclude Include="Learning2DEngine\Render\Texture2DSettings.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
+    <ClInclude Include="Learning2DEngine\System\UpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h" />
     <ClInclude Include="Learning2DEngine\UI\Text.h" />
     <ClInclude Include="Learning2DEngine\UI\Text2DRenderer.h" />

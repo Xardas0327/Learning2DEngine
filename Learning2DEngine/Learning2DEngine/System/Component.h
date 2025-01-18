@@ -2,20 +2,27 @@
 
 namespace Learning2DEngine
 {
+	namespace Render
+	{
+		class BaseRendererComponent;
+	}
 	namespace System
 	{
 		class GameObject;
+		class BaseUpdaterComponent;
 
 		/// <summary>
 		/// The classes, which are inherited from Component,
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
-		/// Moreover, It is recommended, that the constructor, the Init() and Destroy() of the inherited class is protected
+		/// Moreover, it is recommended, the Init() and Destroy() of the inherited class is protected
 		/// and only the GameObject can use them.
 		/// </summary>
 		class Component
 		{
 			friend class GameObject;
-		protected:
+			friend class BaseUpdaterComponent;
+			friend class Render::BaseRendererComponent;
+		private:
 			bool isActive;
 
 			Component(GameObject* gameObject)
@@ -24,8 +31,10 @@ namespace Learning2DEngine
 
 			}
 
-			virtual void Init() {}
-			virtual void Destroy() {}
+		protected:
+			virtual void Init() = 0;
+			virtual void Destroy() = 0;
+
 		public:
 			GameObject* const gameObject;
 
