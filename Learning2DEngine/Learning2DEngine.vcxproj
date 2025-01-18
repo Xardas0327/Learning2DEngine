@@ -195,7 +195,6 @@
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystem.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h" />
-    <ClInclude Include="Learning2DEngine\Render\Renderer.h" />
     <ClInclude Include="Learning2DEngine\Render\RendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />

@@ -4,7 +4,6 @@
 
 #include "Transform.h"
 #include "Component.h"
-#include "../Render/Renderer.h"
 
 namespace Learning2DEngine
 {

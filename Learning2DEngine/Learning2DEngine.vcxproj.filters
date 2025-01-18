@@ -116,9 +116,6 @@
     <ClInclude Include="Learning2DEngine\System\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Learning2DEngine\ParticleSimulator\Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
