@@ -36,7 +36,7 @@ namespace Learning2DEngine
 				isActive = value;
 			}
 
-			inline bool GetActive()
+			inline bool GetActive() const
 			{
 				return isActive;
 			}

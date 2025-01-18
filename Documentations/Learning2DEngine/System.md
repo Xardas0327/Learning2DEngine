@@ -211,7 +211,7 @@ inline void SetActive(bool value);
 **GetActive**  
 It returns true, if the `isActive` is true.
 ```cpp
-inline bool GetActive();
+inline bool GetActive() const;
 ```
 
 ##
