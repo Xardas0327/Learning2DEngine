@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Render/Renderer.h"
+#include "../Render/RendererComponent.h"
 #include "../Render/Shader.h"
 #include "../Render/Texture2D.h"
 #include "../System/GameObject.h"
@@ -17,7 +17,7 @@ namespace Learning2DEngine
 		/// This should be called in the Game::Update() only ones.
 		/// It and ParticleSystem::Draw() work only, when the ParticleSystem::IsRunning() is true.
 		/// </summary>
-		class ParticleSystem : public virtual Render::Renderer
+		class ParticleSystem : public virtual Render::RendererComponent
 		{
 			friend class System::GameObject;
 		protected:

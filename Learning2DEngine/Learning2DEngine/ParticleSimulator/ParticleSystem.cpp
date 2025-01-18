@@ -26,7 +26,7 @@ namespace Learning2DEngine
 			GameObject* gameObject,
 			unsigned int particleAmount,
 			ParticleSettings* particleSettings)
-			: Component(gameObject), Renderer(gameObject), isInit(false),
+			: Component(gameObject), BaseRendererComponent(gameObject), RendererComponent(gameObject), isInit(false),
 			isRunning(false), particleAmount(particleAmount), systemSettings(),
 			texture(nullptr), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
 			particles(nullptr),
@@ -40,7 +40,7 @@ namespace Learning2DEngine
 			const Texture2D& texture,
 			const ParticleSystemSettings& systemSettings,
 			ParticleSettings* particleSettings)
-			: Component(gameObject), Renderer(gameObject), isInit(false),
+			: Component(gameObject), BaseRendererComponent(gameObject), RendererComponent(gameObject), isInit(false),
 			isRunning(false), particleAmount(particleAmount), systemSettings(systemSettings),
 			delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
 			particles(nullptr), texture(new Texture2D(texture)),
@@ -120,6 +120,8 @@ namespace Learning2DEngine
 				return;
 
 			isInit = true;
+
+			RendererComponent::Init();
 			particles = new Particle[particleAmount];
 
 			// If nothing use it
@@ -137,6 +139,8 @@ namespace Learning2DEngine
 				return;
 
 			isInit = false;
+
+			RendererComponent::Destroy();
 			delete[] particles;
 			particles = nullptr;
 
