@@ -20,13 +20,15 @@ namespace Learning2DEngine
         unsigned int SpriteRenderer::ebo = 0;
 
         SpriteRenderer::SpriteRenderer(GameObject* gameObject, glm::vec3 color)
-            : Component(gameObject), Renderer(gameObject), texture(nullptr), color(color), isInit(false)
+            : Component(gameObject), BaseRendererComponent(gameObject), RendererComponent(gameObject),
+            texture(nullptr), color(color), isInit(false)
         {
 
         }
 
         SpriteRenderer::SpriteRenderer(GameObject* gameObject, const Texture2D& texture, glm::vec3 color)
-            : Component(gameObject), Renderer(gameObject), color(color), isInit(false), texture(new Texture2D(texture))
+            : Component(gameObject), BaseRendererComponent(gameObject), RendererComponent(gameObject),
+            color(color), isInit(false), texture(new Texture2D(texture))
         {
         }
 
@@ -45,6 +47,8 @@ namespace Learning2DEngine
 
             isInit = true;
 
+			RendererComponent::Init();
+
             // If nothing use it
             if (!SpriteRenderer::referenceNumber)
             {
@@ -60,6 +64,8 @@ namespace Learning2DEngine
                 return;
 
             isInit = false;
+
+            RendererComponent::Destroy();
 
             --SpriteRenderer::referenceNumber;
             // If nothing use it

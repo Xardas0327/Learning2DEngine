@@ -4,14 +4,14 @@
 
 #include "Shader.h"
 #include "Texture2D.h"
-#include "Renderer.h"
+#include "RendererComponent.h"
 #include "../System/GameObject.h"
 
 namespace Learning2DEngine
 {
     namespace Render
     {
-        class SpriteRenderer : public virtual Renderer
+        class SpriteRenderer : public virtual RendererComponent
         {
             friend class System::GameObject;
         private:
