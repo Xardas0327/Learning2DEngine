@@ -20,6 +20,8 @@ protected:
 
     FoodController(Learning2DEngine::System::GameObject* gameObject, const std::string& textureId);
     void Init() override;
+    // TODO: This function have to be removed
+    void Destroy() override {};
 public:
     void Draw();
 };

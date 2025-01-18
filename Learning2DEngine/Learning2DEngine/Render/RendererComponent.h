@@ -22,6 +22,12 @@ namespace Learning2DEngine
 
 			}
 
+			RendererComponent(System::GameObject* gameObject, int layer)
+				: BaseRendererComponent(gameObject, layer)
+			{
+
+			}
+
 			/// <summary>
 			/// If this function is override, it must call the RendererComponent::Init() in the first line.
 			/// </summary>

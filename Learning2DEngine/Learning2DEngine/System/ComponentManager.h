@@ -17,17 +17,18 @@ namespace Learning2DEngine
         {
             friend class Singleton<ComponentManager>;
         private:
-            ComponentManager();
+            // TODO: We will define it later
+            ComponentManager() {};
 		public:
-			// We will define it later
+            // TODO: We will define it later
             void Add(const UpdaterComponent* component) {};
-            // We will define it later
+            // TODO: We will define it later
             void Remove(const UpdaterComponent* component) {};
-            // We will define it later
+            // TODO: We will define it later
             void Add(const Render::RendererComponent* component) {};
-            // We will define it later
+            // TODO: We will define it later
             void Remove(const Render::RendererComponent* component) {};
-            // We will define it later
+            // TODO: We will define it later
             void Clear() {};
         };
     }

@@ -40,6 +40,8 @@ protected:
             powerUpObject.color
         );
     }
+    // TODO: This function have to be removed
+    void Destroy() override {};
 public:
     Learning2DEngine::Physics::Rigidbody* rigidbody;
     Learning2DEngine::Physics::BoxCollider* collider;

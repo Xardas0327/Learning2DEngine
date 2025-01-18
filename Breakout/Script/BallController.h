@@ -27,6 +27,8 @@ protected:
     BallController(Learning2DEngine::System::GameObject* gameObject, PlayerController* playerController,
         const std::string& textureId, const std::string& particleTextureId);
     void Init() override;
+    // TODO: This function have to be removed
+    void Destroy() override {};
     void InitParticleSystem();
 public:
     Learning2DEngine::Render::SpriteRenderer* renderer;

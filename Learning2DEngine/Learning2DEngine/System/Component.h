@@ -6,6 +6,7 @@ namespace Learning2DEngine
 	{
 		class BaseRendererComponent;
 	}
+
 	namespace System
 	{
 		class GameObject;
@@ -22,9 +23,10 @@ namespace Learning2DEngine
 			friend class GameObject;
 			friend class BaseUpdaterComponent;
 			friend class Render::BaseRendererComponent;
-		private:
-			bool isActive;
 
+		// TODO: It has to be private
+		protected:
+			bool isActive;
 			Component(GameObject* gameObject)
 				: gameObject(gameObject), isActive(true)
 			{

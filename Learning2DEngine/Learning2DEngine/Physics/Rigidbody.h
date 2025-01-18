@@ -25,6 +25,10 @@ namespace Learning2DEngine
             {
 
             }
+            // TODO: This function have to be removed
+            void Init() override {};
+            // TODO: This function have to be removed
+            void Destroy() override {};
         public:
             glm::vec2 velocity;
             bool isFrozen;

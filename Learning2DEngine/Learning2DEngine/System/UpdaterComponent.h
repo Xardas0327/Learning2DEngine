@@ -14,9 +14,9 @@ namespace Learning2DEngine
 		/// </summary>
 		class UpdaterComponent : public virtual BaseUpdaterComponent
 		{
-			friend class System::GameObject;
+			friend class GameObject;
 		protected:
-			UpdaterComponent(System::GameObject* gameObject)
+			UpdaterComponent(GameObject* gameObject)
 				: BaseUpdaterComponent(gameObject)
 			{
 
