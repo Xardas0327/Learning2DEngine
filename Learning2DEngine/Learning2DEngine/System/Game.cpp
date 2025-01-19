@@ -58,6 +58,7 @@ namespace Learning2DEngine
             renderManager.RemoveKeyboardEvent(&keyboardMouseEventItem);
             renderManager.RemoveFramebufferSizeEvent(&resolutionEventItem);
 
+            ComponentManager::GetInstance().Clear();
             ResourceManager::GetInstance().Clear();
             RenderManager::GetInstance().Terminate();
         }

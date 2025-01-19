@@ -162,6 +162,9 @@ void Breakout::Terminate()
     GameObject::Destroy(playerController);
     GameObject::Destroy(ballController);
 
+	for (auto& level : levels)
+		level.ClearBricks();
+
     delete postProcessData;
     soundEngine->drop();
 
