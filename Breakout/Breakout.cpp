@@ -297,25 +297,6 @@ void Breakout::Update()
     postProcessData->RefreshShader(glfwGetTime());
 }
 
-void Breakout::Render()
-{
-    backgroundController->renderer->Draw();
-
-    levels[selectedLevel].Draw();
-
-    ballController->particleSystem->Draw();
-
-    playerController->renderer->Draw();
-
-    for (PowerUpController* powerUp : powerUps)
-    {
-        if (powerUp->gameObject->isActive)
-            powerUp->renderer->Draw();
-    }
-
-    ballController->renderer->Draw();
-}
-
 void Breakout::LateRender()
 {
     auto& textRenderer = Text2DRenderer::GetInstance();

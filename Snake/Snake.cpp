@@ -108,12 +108,6 @@ void Snake::Update()
     MoveSnake();
 }
 
-void Snake::Render()
-{
-    foodController->Draw();
-    playerController->Draw();
-}
-
 void Snake::LateRender()
 {
     auto& textRenderer = Text2DRenderer::GetInstance();

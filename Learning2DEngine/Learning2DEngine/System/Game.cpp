@@ -89,7 +89,6 @@ namespace Learning2DEngine
                     {
                         ppeRender.StartRender();
                     }
-                    //Render();
                     componentManager.Render();
                     if (isMsaaActive)
                     {

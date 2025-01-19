@@ -59,7 +59,6 @@ protected:
     void InitSystem();
     void InitObjects();
     void Update() override;
-    void Render() override;
     void LateRender() override;
 
     void ProcessInput();

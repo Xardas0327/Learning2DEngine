@@ -19,8 +19,3 @@ void FoodController::Init()
         color
     );
 }
-
-void FoodController::Draw()
-{
-    renderer->Draw();
-}

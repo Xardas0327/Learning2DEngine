@@ -47,15 +47,6 @@ void GameLevel::Load(bool areBricksActive)
     }
 }
 
-void GameLevel::Draw()
-{
-    for (BrickController* brick : bricks)
-    {
-        if (brick->gameObject->isActive)
-            brick->renderer->Draw();
-    }
-}
-
 bool GameLevel::IsCompleted()
 {
     for (BrickController* brick : bricks)

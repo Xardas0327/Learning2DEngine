@@ -27,7 +27,7 @@ namespace Learning2DEngine
             Refresh Keyboard and Mouse events
             virtual Update()
             Clear Window to default color
-            virtual Render()
+            Render
                 Render with MSAA and PostProcessEffect,
                 if they are enabled
             virtual LateRender
@@ -64,7 +64,6 @@ namespace Learning2DEngine
 
             Game();
             virtual void Update() {};
-            virtual void Render() {};
             virtual void LateRender() {};
 
             void ActivateMSAA(unsigned int sampleNumber);

@@ -22,7 +22,6 @@ public:
 
     GameLevel(const std::string& fileName);
     void Load(bool areBricksActive);
-    void Draw();
     bool IsCompleted();
 	void SetBricksActive(bool isActive);
 };

@@ -22,6 +22,4 @@ protected:
     void Init() override;
     // TODO: This function have to be removed
     void Destroy() override {};
-public:
-    void Draw();
 };
