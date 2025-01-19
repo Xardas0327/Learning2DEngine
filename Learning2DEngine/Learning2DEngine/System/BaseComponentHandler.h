@@ -21,16 +21,17 @@ namespace Learning2DEngine
 
 			virtual void RefreshComponents()
 			{
-				for (auto component : newComponents)
-				{
-					components.push_back(component);
-				}
-				newComponents.clear();
 				for (auto component : removeableComponents)
 				{
 					components.erase(std::remove(components.begin(), components.end(), component), components.end());
 				}
 				removeableComponents.clear();
+
+				for (auto component : newComponents)
+				{
+					components.push_back(component);
+				}
+				newComponents.clear();
 			}
 
 		public:

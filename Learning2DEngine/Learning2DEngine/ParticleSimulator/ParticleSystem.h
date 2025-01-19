@@ -45,13 +45,15 @@ namespace Learning2DEngine
 			ParticleSystem(
 				System::GameObject* gameObject,
 				unsigned int particleAmount,
-				ParticleSettings* particleSettings = nullptr);
+				ParticleSettings* particleSettings = nullptr,
+				int renderLayer = 0);
 			ParticleSystem(
 				System::GameObject* gameObject,
 				unsigned int particleAmount,
 				const Render::Texture2D& texture,
 				const ParticleSystemSettings& systemSettings,
-				ParticleSettings* particleSettings = nullptr);
+				ParticleSettings* particleSettings = nullptr,
+				int renderLayer = 0);
 			void Init() override;
 			void Destroy() override;
 			void InitShader();

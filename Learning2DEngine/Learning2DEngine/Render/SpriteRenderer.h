@@ -31,8 +31,8 @@ namespace Learning2DEngine
             void InitShader();
             void InitVao();
         protected:
-            SpriteRenderer(System::GameObject* gameObject, glm::vec3 color = glm::vec3(1.0f));
-            SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, glm::vec3 color = glm::vec3(1.0f));
+            SpriteRenderer(System::GameObject* gameObject, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+            SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
 
             void Init() override;
             void Destroy() override;

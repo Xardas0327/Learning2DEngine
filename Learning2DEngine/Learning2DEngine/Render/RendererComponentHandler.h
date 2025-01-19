@@ -52,9 +52,10 @@ namespace Learning2DEngine
 
 				for (auto component : components)
 				{
+					// Check if the component is added into the removeableComponents in actual frame
 					auto isRemoveable = std::find(removeableComponents.begin(), removeableComponents.end(), component);
 
-					if (isRemoveable != removeableComponents.end()
+					if (isRemoveable == removeableComponents.end()
 						&& component->isActive && component->gameObject->isActive)
 						component->Draw();
 				}

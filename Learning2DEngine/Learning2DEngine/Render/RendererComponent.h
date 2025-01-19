@@ -44,6 +44,7 @@ namespace Learning2DEngine
 				System::ComponentManager::GetInstance().RemoveFromRenderer(this);
 			}
 
+		public:
 			virtual void SetLayer(int value) override
 			{
 				BaseRendererComponent::SetLayer(value);

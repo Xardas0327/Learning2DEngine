@@ -46,8 +46,9 @@ SpriteRenderer* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm::ve
             scale
         )
     );
-    return playerUnit->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
+    return playerUnit->AddComponent<SpriteRenderer, const Texture2D&, int, glm::vec3>(
         ResourceManager::GetInstance().GetTexture(textureId),
+        0,
         color
     );
 }

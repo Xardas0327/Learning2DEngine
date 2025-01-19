@@ -44,11 +44,12 @@ void BallController::InitParticleSystem()
         0.0f
     );
 
-    particleSystem = gameObject->AddComponent<ParticleSystem, unsigned int, const Texture2D&, const ParticleSystemSettings&>(
+    particleSystem = gameObject->AddComponent<ParticleSystem, unsigned int, const Texture2D&, const ParticleSystemSettings&, ParticleSettings*, int>(
         500,
         ResourceManager::GetInstance().GetTexture(particleTextureId),
         ballParticleSystemSettings,
-        new BallParticleSettings(glm::vec2(radius / 2.0f), glm::vec2(10.0f, 10.0f), 0.3f, 0.1f)
+        new BallParticleSettings(glm::vec2(radius / 2.0f), glm::vec2(10.0f, 10.0f), 0.3f, 0.1f),
+        -1
     );
     particleSystem->Start();
 }

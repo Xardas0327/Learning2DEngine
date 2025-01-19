@@ -95,13 +95,13 @@ void Breakout::InitObjects()
 
     // Levels
     GameLevel one("Assets/Levels/one.lvl");
-    one.Load();
+    one.Load(true);
     GameLevel two("Assets/Levels/two.lvl");
-    two.Load();
+    two.Load(false);
     GameLevel three("Assets/Levels/three.lvl");
-    three.Load();
+    three.Load(false);
     GameLevel four("Assets/Levels/four.lvl");
-    four.Load();
+    four.Load(false);
 
     levels.push_back(one);
     levels.push_back(two);
@@ -187,14 +187,22 @@ void Breakout::ProcessInput()
 
         if (Game::inputKeys[GLFW_KEY_W] == InputStatus::KEY_DOWN)
         {
+			int oldLevel = selectedLevel;
             selectedLevel = (selectedLevel + 1) % levels.size();
+
+            levels[oldLevel].SetBricksActive(false);
+			levels[selectedLevel].SetBricksActive(true);
         }
         if (Game::inputKeys[GLFW_KEY_S] == InputStatus::KEY_DOWN)
         {
+            int oldLevel = selectedLevel;
             if (selectedLevel > 0)
                 --selectedLevel;
             else
                 selectedLevel = levels.size() -1;
+
+            levels[oldLevel].SetBricksActive(false);
+            levels[selectedLevel].SetBricksActive(true);
         }
         break;
     case GameState::GAME_WIN:
@@ -285,6 +293,8 @@ void Breakout::Update()
     
     IsLiveLost();
     IsLevelCompleted();
+
+    postProcessData->RefreshShader(glfwGetTime());
 }
 
 void Breakout::Render()
@@ -304,8 +314,6 @@ void Breakout::Render()
     }
 
     ballController->renderer->Draw();
-
-    postProcessData->RefreshShader(glfwGetTime());
 }
 
 void Breakout::LateRender()
@@ -327,7 +335,7 @@ void Breakout::LateRender()
 
 void Breakout::ResetLevel()
 {
-    levels[selectedLevel].Load();
+    levels[selectedLevel].Load(true);
     lives = 3;
     liveText.text = "Lives: " + std::to_string(lives);
 }
