@@ -1,7 +1,6 @@
 #include "Snake.h"
 
 #include <Learning2DEngine/Render/RenderManager.h>
-#include <Learning2DEngine/Render/SpriteRenderer.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/UI/Text2DRenderer.h>

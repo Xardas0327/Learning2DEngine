@@ -30,10 +30,9 @@ namespace Learning2DEngine
 		public:
 			virtual void Draw() = 0;
 
-			void SetLayer(int value)
+			virtual void SetLayer(int value)
 			{
 				layer = value;
-				// TODO: trigger the reorder
 			}
 
 			inline int GetLayer() const

@@ -1,35 +1,57 @@
 #pragma once
 
 #include "Singleton.h"
+#include "../Render/BaseRendererComponent.h"
+#include "../Render/RendererComponentHandler.h"
 
 namespace Learning2DEngine
 {
-    namespace Render
-    {
-        class RendererComponent;
-    }
 
     namespace System
     {
         class UpdaterComponent;
 
-        class ComponentManager : public virtual Singleton<ComponentManager>
+        class ComponentManager final : public virtual Singleton<ComponentManager>
         {
             friend class Singleton<ComponentManager>;
         private:
-            // TODO: We will define it later
-            ComponentManager() {};
+			Render::RendererComponentHandler rendererComponentHandler;
+
+            ComponentManager()
+                : rendererComponentHandler()
+            {
+
+            }
 		public:
             // TODO: We will define it later
             void Add(const UpdaterComponent* component) {};
             // TODO: We will define it later
             void Remove(const UpdaterComponent* component) {};
-            // TODO: We will define it later
-            void Add(const Render::RendererComponent* component) {};
-            // TODO: We will define it later
-            void Remove(const Render::RendererComponent* component) {};
-            // TODO: We will define it later
-            void Clear() {};
+
+            inline void AddToRenderer(Render::BaseRendererComponent* component)
+            {
+                rendererComponentHandler.Add(component);
+            }
+
+			inline void RemoveFromRenderer(Render::BaseRendererComponent* component)
+			{
+				rendererComponentHandler.Remove(component);
+			}
+
+            inline void NeedReorderRenderers()
+            {
+				rendererComponentHandler.NeedReorder();
+            }
+
+            inline void Render()
+            {
+				rendererComponentHandler.DoWithAllComponents();
+            }
+
+            void Clear()
+            {
+				rendererComponentHandler.Clear();
+            }
         };
     }
 }

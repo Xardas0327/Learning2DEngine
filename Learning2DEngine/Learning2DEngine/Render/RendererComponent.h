@@ -33,7 +33,7 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Init() override
 			{
-				System::ComponentManager::GetInstance().Add(this);
+				System::ComponentManager::GetInstance().AddToRenderer(this);
 			}
 
 			/// <summary>
@@ -41,7 +41,13 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Destroy() override
 			{
-				System::ComponentManager::GetInstance().Remove(this);
+				System::ComponentManager::GetInstance().RemoveFromRenderer(this);
+			}
+
+			virtual void SetLayer(int value) override
+			{
+				BaseRendererComponent::SetLayer(value);
+				System::ComponentManager::GetInstance().NeedReorderRenderers();
 			}
 		};
 	}
