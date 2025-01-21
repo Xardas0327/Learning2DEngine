@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="Learning2DEngine\Physics\Collision.cpp" />
     <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
+    <ClCompile Include="Learning2DEngine\UI\TextCharacterSet.cpp" />
     <ClCompile Include="Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\MSAA.cpp" />
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystem.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="Learning2DEngine\Render\Texture2DSettings.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
     <ClInclude Include="Learning2DEngine\System\UpdaterComponent.h" />
+    <ClInclude Include="Learning2DEngine\UI\TextCharacterSet.h" />
     <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h" />
     <ClInclude Include="Learning2DEngine\UI\Text.h" />
     <ClInclude Include="Learning2DEngine\UI\Text2DRenderer.h" />

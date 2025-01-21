@@ -7,6 +7,7 @@
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/UI/Text2DRenderer.h>
+#include <Learning2DEngine/UI/TextCharacterSet.h>
 #include <Learning2DEngine/Physics/Collision.h>
 
 using namespace Learning2DEngine::Render;
@@ -65,9 +66,8 @@ void Breakout::InitSystem()
     resourceManager.LoadTextureFromFile("powerup_passthrough", "Assets/Images/powerup_passthrough.png", alphaSettings);
 
     // Text
-    auto& textRenderer = Text2DRenderer::GetInstance();
-    textRenderer.Init(RenderManager::GetInstance().GetResolution());
-    textRenderer.Load(fontSizePair);
+    TextCharacterSet::GetInstance().Load(fontSizePair);
+    Text2DRenderer::GetInstance().Init(RenderManager::GetInstance().GetResolution());
 
     // MSAA
     ActivateMSAA(4);
@@ -169,6 +169,7 @@ void Breakout::Terminate()
     soundEngine->drop();
 
     Text2DRenderer::GetInstance().Terminate();
+    TextCharacterSet::GetInstance().Clear();
     Game::Terminate();
 }
 

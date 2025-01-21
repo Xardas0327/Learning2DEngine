@@ -4,6 +4,7 @@
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/UI/Text2DRenderer.h>
+#include <Learning2DEngine/UI/TextCharacterSet.h>
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
@@ -45,9 +46,8 @@ void Snake::InitSystem()
     resourceManager.LoadTextureFromFile("Unit", "Assets/Images/Unit.png", alphaSettings);
 
     // Text
-    auto& textRenderer = Text2DRenderer::GetInstance();
-    textRenderer.Init(RenderManager::GetInstance().GetResolution());
-    textRenderer.Load(fontSizePair);
+    TextCharacterSet::GetInstance().Load(fontSizePair);
+    Text2DRenderer::GetInstance().Init(RenderManager::GetInstance().GetResolution());
 
     // MSAA
     ActivateMSAA(4);
@@ -98,6 +98,7 @@ void Snake::Terminate()
     GameObject::Destroy(foodController);
 
 	Text2DRenderer::GetInstance().Terminate();
+    TextCharacterSet::GetInstance().Clear();
 	Game::Terminate();
 }
 
