@@ -6,7 +6,7 @@
 
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/UI/Text.h>
+#include <Learning2DEngine/UI/Text2DLateRenderer.h>
 
 #include "FoodController.h"
 #include "PlayerController.h"
@@ -53,13 +53,12 @@ private:
     Direction moveDirection;
     Direction lastMoveDirection;
 
-    Learning2DEngine::UI::Text  scoreText;
-    Learning2DEngine::UI::Text  startText;
+    Learning2DEngine::UI::Text2DLateRenderer* scoreText;
+    Learning2DEngine::UI::Text2DLateRenderer* startText;
 protected:
     void InitSystem();
     void InitObjects();
     void Update() override;
-    void LateRender() override;
 
     void ProcessInput();
     void ResetLevel();

@@ -4,7 +4,7 @@
 
 #include "../System/Singleton.h"
 #include "FreeTypeCharacter.h"
-#include "Text.h"
+#include "FontSizePair.h"
 
 namespace Learning2DEngine
 {

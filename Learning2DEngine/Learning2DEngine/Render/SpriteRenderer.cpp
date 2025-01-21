@@ -86,6 +86,8 @@ namespace Learning2DEngine
                     ShaderConstant::SPRITE_SHADER_NAME,
                     ShaderConstant::SPRITE_VERTEX_SHADER,
                     ShaderConstant::SPRITE_FRAGMENT_SHADER);
+
+            SpriteRenderer::shader.Use();
             SpriteRenderer::shader.SetInteger("spriteTexture", 0);
         }
 

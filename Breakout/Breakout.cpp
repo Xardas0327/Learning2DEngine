@@ -6,7 +6,6 @@
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/UI/Text2DRenderer.h>
 #include <Learning2DEngine/UI/TextCharacterSet.h>
 #include <Learning2DEngine/Physics/Collision.h>
 
@@ -20,7 +19,7 @@ Breakout::Breakout() :
     state(GameState::GAME_MENU), powerUps(), levels(), selectedLevel(0), lives(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
     soundEngine(nullptr), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), postProcessData(nullptr),
-    shakeTime(0.0f), liveText(), startText(), levelSelectorText(), winText(), retryText()
+    shakeTime(0.0f), liveText(nullptr), startText(nullptr), levelSelectorText(nullptr), winText(nullptr), retryText(nullptr)
 {
 
 }
@@ -67,7 +66,6 @@ void Breakout::InitSystem()
 
     // Text
     TextCharacterSet::GetInstance().Load(fontSizePair);
-    Text2DRenderer::GetInstance().Init(RenderManager::GetInstance().GetResolution());
 
     // MSAA
     ActivateMSAA(4);
@@ -118,41 +116,67 @@ void Breakout::InitObjects()
     ballController = ball->AddComponent<BallController, PlayerController*, const std::string&, const std::string&>(playerController, "face", "particle");
 
     // Text
-    liveText = {
+    auto liveGameObject = new GameObject(
+        Transform(
+            glm::vec2(5.0f, 5.0f)
+        )
+    );
+    liveText = liveGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string>(
+        resolution,
         fontSizePair,
-        "Lives: " + std::to_string(lives),
-        5.0f,
-        5.0f
-    };
-    startText = {
+        "Lives: " + std::to_string(lives)
+    );
+
+    auto startGameObject = new GameObject(
+        Transform(
+            glm::vec2(250.0f, static_cast<float>(middleHeight))
+        )
+    );
+    startText = startGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string>(
+        resolution,
         fontSizePair,
-        "Press ENTER to start",
-        250.0f,
-        static_cast<float>(middleHeight)
-    };
-    levelSelectorText = {
+        "Press ENTER to start"
+    );
+
+    auto levelSelectorGameObject = new GameObject(
+        Transform(
+            glm::vec2(245.0f, static_cast<float>(middleHeight) + 20.0f),
+            glm::vec2(0.75f, 0.75f)
+        )
+    );
+    levelSelectorText = levelSelectorGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string>(
+        resolution,
         fontSizePair,
-        "Press W or S to select level",
-        245.0f,
-        static_cast<float>(middleHeight) + 20.0f,
-        0.75f
-    };
-    winText = {
+        "Press W or S to select level"
+    );
+
+    auto winGameObject = new GameObject(
+        Transform(
+            glm::vec2(320.0f, static_cast<float>(middleHeight) - 20.0f)
+        ),
+        false
+    );
+    winText = winGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string, int, glm::vec3>(
+        resolution,
         fontSizePair,
         "You WON!!!",
-        320.0f,
-        static_cast<float>(middleHeight) - 20.0f,
-        1.0,
-        glm::vec3(0.0f, 1.0f, 0.0f)
-    };
-    retryText = {
+        0,
+		glm::vec3(0.0f, 1.0f, 0.0f)
+    );
+
+    auto retryGameObject = new GameObject(
+        Transform(
+            glm::vec2(130.0f, static_cast<float>(middleHeight))
+        ),
+        false
+    );
+    retryText = retryGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string, int, glm::vec3>(
+        resolution,
         fontSizePair,
         "Press ENTER to retry or ESC to quit",
-        130.0f,
-        static_cast<float>(middleHeight),
-        1.0f,
-        glm::vec3(1.0f, 1.0f, 0.0f)
-    };
+        0,
+		glm::vec3(1.0f, 1.0f, 0.0f)
+    );
 
 }
 
@@ -162,13 +186,18 @@ void Breakout::Terminate()
     GameObject::Destroy(playerController);
     GameObject::Destroy(ballController);
 
+	GameObject::Destroy(liveText);
+	GameObject::Destroy(startText);
+	GameObject::Destroy(levelSelectorText);
+	GameObject::Destroy(winText);
+	GameObject::Destroy(retryText);
+
 	for (auto& level : levels)
 		level.ClearBricks();
 
     delete postProcessData;
     soundEngine->drop();
 
-    Text2DRenderer::GetInstance().Terminate();
     TextCharacterSet::GetInstance().Clear();
     Game::Terminate();
 }
@@ -187,6 +216,10 @@ void Breakout::ProcessInput()
         if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
             state = GameState::GAME_ACTIVE;
+			startText->gameObject->isActive = false;
+			levelSelectorText->gameObject->isActive = false;
+			winText->gameObject->isActive = false;
+			retryText->gameObject->isActive = false;
         }
 
         if (Game::inputKeys[GLFW_KEY_W] == InputStatus::KEY_DOWN)
@@ -214,6 +247,10 @@ void Breakout::ProcessInput()
         {
             postProcessData->chaos = false;
             state = GameState::GAME_MENU;
+            startText->gameObject->isActive = true;
+			levelSelectorText->gameObject->isActive = true;
+			winText->gameObject->isActive = false;
+			retryText->gameObject->isActive = false;
         }
         break;
     case GameState::GAME_ACTIVE:
@@ -262,10 +299,14 @@ void Breakout::IsLiveLost()
         {
             ResetLevel();
             state = GameState::GAME_MENU;
+            startText->gameObject->isActive = true;
+            levelSelectorText->gameObject->isActive = true;
+            winText->gameObject->isActive = false;
+            retryText->gameObject->isActive = false;
         }
         else
         {
-            liveText.text = "Lives: " + std::to_string(lives);
+			liveText->text = "Lives: " + std::to_string(lives);
         }
         ResetPlayer();
         ClearPowerUps();
@@ -281,6 +322,10 @@ void Breakout::IsLevelCompleted()
         ClearPowerUps();
         postProcessData->chaos = true;
         state = GameState::GAME_WIN;
+        startText->gameObject->isActive = false;
+        levelSelectorText->gameObject->isActive = false;
+        winText->gameObject->isActive = true;
+        retryText->gameObject->isActive = true;
     }
 }
 
@@ -301,28 +346,11 @@ void Breakout::Update()
     postProcessData->RefreshShader(glfwGetTime());
 }
 
-void Breakout::LateRender()
-{
-    auto& textRenderer = Text2DRenderer::GetInstance();
-    textRenderer.RenderText(liveText);
-
-    if (state == GameState::GAME_MENU)
-    {
-        textRenderer.RenderText(startText);
-        textRenderer.RenderText(levelSelectorText);
-    }
-    else if (state == GameState::GAME_WIN)
-    {
-        textRenderer.RenderText(winText);
-        textRenderer.RenderText(retryText);
-    }
-}
-
 void Breakout::ResetLevel()
 {
     levels[selectedLevel].Load(true);
     lives = 3;
-    liveText.text = "Lives: " + std::to_string(lives);
+    liveText->text = "Lives: " + std::to_string(lives);
 }
 
 void Breakout::ResetPlayer()

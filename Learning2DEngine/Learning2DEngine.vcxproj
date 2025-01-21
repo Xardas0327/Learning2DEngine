@@ -178,7 +178,7 @@
     <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp" />
     <ClCompile Include="Learning2DEngine\System\Random.cpp" />
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
-    <ClCompile Include="Learning2DEngine\UI\Text2DRenderer.cpp" />
+    <ClCompile Include="Learning2DEngine\UI\Text2DLateRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\ParticleSimulator\BasicParticleSettings.h" />
@@ -226,10 +226,10 @@
     <ClInclude Include="Learning2DEngine\Render\Texture2DSettings.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
     <ClInclude Include="Learning2DEngine\System\UpdaterComponent.h" />
+    <ClInclude Include="Learning2DEngine\UI\FontSizePair.h" />
     <ClInclude Include="Learning2DEngine\UI\TextCharacterSet.h" />
     <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h" />
-    <ClInclude Include="Learning2DEngine\UI\Text.h" />
-    <ClInclude Include="Learning2DEngine\UI\Text2DRenderer.h" />
+    <ClInclude Include="Learning2DEngine\UI\Text2DLateRenderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

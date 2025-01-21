@@ -3,7 +3,6 @@
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/System/Random.h>
-#include <Learning2DEngine/UI/Text2DRenderer.h>
 #include <Learning2DEngine/UI/TextCharacterSet.h>
 
 using namespace Learning2DEngine::Render;
@@ -14,7 +13,7 @@ Snake::Snake()
     : levelResolution(MAP_SIZE), fontSizePair("Assets/Fonts/arial.ttf", 24), startMoveWaitingTime(START_MOVE_WAITING_TIME),
     dencreaseTimeAfterEat(TIME_DECREASE), baseSnakeLength(3),
     state(GameState::GAME_MENU), score(0),  unitSize(0), foodController(nullptr), playerController(nullptr),
-    moveWaitingTime(0.0f), actualWaitingTime(0.0f), moveDirection(), lastMoveDirection(), scoreText(), startText()
+    moveWaitingTime(0.0f), actualWaitingTime(0.0f), moveDirection(), lastMoveDirection(), scoreText(nullptr), startText(nullptr)
 {
 
 }
@@ -47,7 +46,6 @@ void Snake::InitSystem()
 
     // Text
     TextCharacterSet::GetInstance().Load(fontSizePair);
-    Text2DRenderer::GetInstance().Init(RenderManager::GetInstance().GetResolution());
 
     // MSAA
     ActivateMSAA(4);
@@ -76,19 +74,29 @@ void Snake::InitObjects()
     );
     foodController = food->AddComponent<FoodController, const std::string&>("Unit");
 
+
     // Text
-    scoreText = {
+    auto scoreGameObject = new GameObject(
+        Transform(
+            glm::vec2(5.0f, 5.0f)
+        )
+    );
+	scoreText = scoreGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string>(
+        resolution,
+		fontSizePair,
+		"Score: " + std::to_string(score)
+	);
+
+    auto startGameObject = new GameObject(
+        Transform(
+            glm::vec2(175.0f, static_cast<float>(resolution.GetHeight() / 2))
+        )
+    );
+    startText = startGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string>(
+        resolution,
         fontSizePair,
-        "Score: " + std::to_string(score),
-        5.0f,
-        5.0f
-    };
-    startText = {
-        fontSizePair,
-        "Press ENTER to start",
-        175.0f,
-        static_cast<float>(resolution.GetHeight() / 2)
-    };
+        "Press ENTER to start"
+    );
 
 }
 
@@ -96,8 +104,9 @@ void Snake::Terminate()
 {
     GameObject::Destroy(playerController);
     GameObject::Destroy(foodController);
+    GameObject::Destroy(scoreText);
+    GameObject::Destroy(startText);
 
-	Text2DRenderer::GetInstance().Terminate();
     TextCharacterSet::GetInstance().Clear();
 	Game::Terminate();
 }
@@ -107,17 +116,6 @@ void Snake::Update()
     ProcessInput();
 
     MoveSnake();
-}
-
-void Snake::LateRender()
-{
-    auto& textRenderer = Text2DRenderer::GetInstance();
-    textRenderer.RenderText(scoreText);
-
-    if (state == GameState::GAME_MENU)
-    {
-        textRenderer.RenderText(startText);
-    }
 }
 
 void Snake::ProcessInput()
@@ -134,6 +132,7 @@ void Snake::ProcessInput()
         if (Game::inputKeys[GLFW_KEY_ENTER] == InputStatus::KEY_DOWN)
         {
             state = GameState::GAME_ACTIVE;
+			startText->gameObject->isActive = false;
             ResetLevel();
         }
     case GameState::GAME_ACTIVE:
@@ -211,6 +210,7 @@ void Snake::MoveSnake()
         if (IsOut(newPostion) || playerController->IsInSnake(newPostion))
         {
             state = GameState::GAME_MENU;
+            startText->gameObject->isActive = true;
         }
         else
         {
@@ -248,6 +248,7 @@ void Snake::GenerateNextFood()
     if (playerController->GetSize() >= levelResolution.x * levelResolution.y)
     {
         state = GameState::GAME_MENU;
+        startText->gameObject->isActive = true;
         return;
     }
 
@@ -271,5 +272,5 @@ void Snake::EatFood()
 
 void Snake::RefreshScore()
 {
-    scoreText.text = "Score: " + std::to_string(score);
+    scoreText->text = "Score: " + std::to_string(score);
 }
