@@ -190,6 +190,7 @@
     <ClInclude Include="Learning2DEngine\Render\BaseRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\Blend.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSettings.h" />
+    <ClInclude Include="Learning2DEngine\Render\LateRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\MSAA.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\Particle.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystem.h" />

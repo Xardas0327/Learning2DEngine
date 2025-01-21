@@ -203,5 +203,8 @@
     <ClInclude Include="Learning2DEngine\Render\RendererComponentHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\LateRendererComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
