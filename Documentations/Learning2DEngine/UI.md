@@ -48,7 +48,7 @@ struct FreeTypeCharacter
 [Text2DLateRenderer.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DLateRenderer.cpp)
 
 ### Description:
-The `Text2DLateRenderer` is for the text rendering to UI.
+The `Text2DLateRenderer` is for the text rendering to UI.  
 It uses static variables to count how many GameObject initialized it.
 That's why it will destroy its Vertex Array Object only
 if the reference number is 0, otherway it will decrease
