@@ -9,8 +9,6 @@ namespace Learning2DEngine
 
     namespace System
     {
-        class UpdaterComponent;
-
         class ComponentManager final : public virtual Singleton<ComponentManager>
         {
             friend class Singleton<ComponentManager>;
@@ -24,11 +22,6 @@ namespace Learning2DEngine
 
             }
 		public:
-            // TODO: We will define it later
-            void Add(const UpdaterComponent* component) {};
-            // TODO: We will define it later
-            void Remove(const UpdaterComponent* component) {};
-
             //Render
 
             inline void AddToRenderer(Render::BaseRendererComponent* component)

@@ -27,7 +27,7 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Init() override
 			{
-				ComponentManager::GetInstance().Add(this);
+				//ComponentManager::GetInstance().Add(this);
 			}
 
 			/// <summary>
@@ -35,7 +35,7 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Destroy() override
 			{
-				ComponentManager::GetInstance().Remove(this);
+				//ComponentManager::GetInstance().Remove(this);
 			}
 		};
 	}
