@@ -165,13 +165,12 @@ class Component
 ```
 
 ### Variables:
-**Protected:**  
+**Public:**  
 **isActive**  
 ```cpp
 bool isActive;
-```
+```  
 
-**Public:**  
 **gameObject**  
 ```cpp
 GameObject* const gameObject;
@@ -187,32 +186,20 @@ Component(GameObject* gameObject)
 **Init**  
 It initializes the Component.
 ```cpp
-virtual void Init();
+virtual void Init() = 0;
 ```
 
 **Destroy**  
 It destroys the Component.
 ```cpp
-virtual void Destroy();
+virtual void Destroy() = 0;
 ```
 
 **Public:**  
 **~Component**  
 ```cpp
 virtual ~Component();
-```
-
-**SetActive**  
-It changes the `isActive`.
-```cpp
-inline void SetActive(bool value);
-```
-
-**GetActive**  
-It returns true, if the `isActive` is true.
-```cpp
-inline bool GetActive() const;
-```
+```  
 
 ##
 ## Game

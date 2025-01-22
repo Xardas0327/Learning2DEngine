@@ -3,7 +3,6 @@
 - [IResolutionRefresher](Render.md#iresolutionrefresher)
 - [MSAA](Render.md#msaa)
 - [PostProcessEffect](Render.md#postprocesseffect)
-- [Renderer](Render.md#renderer)
 - [RenderManager](Render.md#rendermanager)
 - [Resolution](Render.md#resolution)
 - [Shader](Render.md#shader)
@@ -269,37 +268,6 @@ void ClearShader();
 It returns the frame buffor object id.
 ```cpp
 inline unsigned int GetFrameBufferId();
-```
-
-##
-## Renderer
-### Source Code:
-[Renderer.h](../../Learning2DEngine/Learning2DEngine/Render/Renderer.h)  
-
-### Description:
-This is an abstract `Component` class for the rendering.  
-The classes, which are inherited from this `Renderer`, have to have a constructor,
-which first parameter is `GameObject*` for gameObject member.  
-Please check more info about `System::Component`.
-
-### Header:
-```cpp
-class Renderer : public virtual System::Component
-{...}
-```
-
-### Functions:
-**Protected:**  
-**Renderer**  
-```cpp
-Renderer(System::GameObject* gameObject);
-```
-
-**Public:**  
-**Draw**  
-It should be called in the current game's `Render()`;
-```cpp
-virtual void Draw() = 0;
 ```
 
 ##
@@ -701,10 +669,11 @@ It uses static variables to count how many GameObject initialized it.
 That's why it will destroy its Vertex Array Object only
 if the reference number is 0, otherway it will decrease
 the reference number only.  
+Please more info about `RendererComponent`.
 
 ### Header:
 ```cpp
-class SpriteRenderer : public virtual Renderer
+class SpriteRenderer : public virtual RendererComponent
 {...}
 ```
 
@@ -776,10 +745,10 @@ void InitVao();
 **Protected:**  
 **SpriteRenderer**  
 ```cpp
-SpriteRenderer(System::GameObject* gameObject, glm::vec3 color = glm::vec3(1.0f));
+SpriteRenderer(System::GameObject* gameObject, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
 ```
 ```cpp
-SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, glm::vec3 color = glm::vec3(1.0f));
+SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
 ```
 
 **Init**  

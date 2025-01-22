@@ -19,7 +19,7 @@ namespace Learning2DEngine
         CharacterMap& TextCharacterSet::operator[](const FontSizePair& fontSizePair)
         {
 			Load(fontSizePair);
-			return characters[fontSizePair];
+			return characters.at(fontSizePair);
         }
 
         const CharacterMap& TextCharacterSet::operator[](const FontSizePair& fontSizePair) const
