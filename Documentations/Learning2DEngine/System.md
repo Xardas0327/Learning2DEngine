@@ -230,8 +230,8 @@ The Function order in the Run() (in a frame):
 2. Refresh Keyboard and Mouse events
 3. virtual Update()
 4. Clear Window to default color
-5. virtual Render() (Render with MSAA and PostProcessEffect, if they are enabled)
-6. virtual LateRender (Render without any effect)
+5. Render (with MSAA and PostProcessEffect, if they are enabled)
+6. LateRender (without any effect)
 7. Update Window
 
 ### Header:
@@ -351,22 +351,6 @@ It is recommended, that this function should contain every update in the game,
 which is not rendering.
 ```cpp
 virtual void Update();
-``` 
-
-**Render**  
-It is recommended, that this function should contain every rendering functions,
-which render the game scene. It uses the MSAA and PostProcessEffect,
-if they are enabled.  
-But there are some exception, please check the `LateRender()`.
-```cpp
-virtual void Render();
-``` 
-**LateRender**  
-It is also a rendering function.
-But this does not use the the MSAA and PostProcessEffect.  
-This can be useful for UI.
-```cpp
-virtual void LateRender();
 ``` 
 
 **ActivateMSAA**  

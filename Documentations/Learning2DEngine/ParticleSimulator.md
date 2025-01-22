@@ -175,11 +175,11 @@ It control the particles by the `ParticleSettings` and the `ParticleSystemSettin
 `Update()` update the particles.
 This should be called in the `Game::Update()` only ones.
 It and `Draw()` work only, when the `IsRunning()` is true.  
-Please check the `Render::Renderer` class documentation too.
+Please check the `Render::RendererComponent` class documentation too.
 
 ### Header:
 ```cpp
-class ParticleSystem : public virtual Render::Renderer
+class ParticleSystem : public virtual Render::RendererComponent
 {...}
 ```
 
@@ -277,7 +277,8 @@ Render::Texture2D* texture;
 ParticleSystem(
     System::GameObject* gameObject,
     unsigned int particleAmount,
-    ParticleSettings* particleSettings = nullptr);
+    ParticleSettings* particleSettings = nullptr,
+	int renderLayer = 0);
 ```
 ```cpp
 ParticleSystem(
@@ -285,7 +286,8 @@ ParticleSystem(
     unsigned int particleAmount,
     const Render::Texture2D& texture,
     const ParticleSystemSettings& systemSettings,
-    ParticleSettings* particleSettings = nullptr);
+    ParticleSettings* particleSettings = nullptr,
+	int renderLayer = 0);
 ```
 
 **Init**  

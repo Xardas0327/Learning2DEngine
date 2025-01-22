@@ -14,8 +14,7 @@ This namespace really simple. It has only some really basic functionality.
 [BoxCollider.h](../../Learning2DEngine/Learning2DEngine/Physics/BoxCollider.h)
 
 ### Description:
-The `BoxCollider` is really basic. It does not rotate with the gameobject
-and the size does not scale with the gameobject too.  
+The `BoxCollider` is really basic. It doesn't rotate, scale with the gameobject.  
 Please check the `Collider` class documentation too.
 
 ### Header:
@@ -44,8 +43,7 @@ BoxCollider(System::GameObject* gameObject, glm::vec2 size, glm::vec2 offset = g
 [CircleCollider.h](../../Learning2DEngine/Learning2DEngine/Physics/CircleCollider.h)
 
 ### Description:
-The `CircleCollider` is really basic. It does not rotate with the gameobject
-and the size does not scale with the gameobject too.  
+The `CircleCollider` is really basic. It doesn't rotate, scale with the gameobject.  
 Please check the `Collider` class documentation too.
 
 ### Header:

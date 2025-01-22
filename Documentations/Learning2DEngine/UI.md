@@ -7,14 +7,12 @@
 ##
 ## FontSizePair
 ### Source Code:
-It does not have separate source file. It is in
-[Text.h](../../Learning2DEngine/Learning2DEngine/EventSystem/EventHandler.h).
+[FontSizePair.h](../../Learning2DEngine/Learning2DEngine/UI/FontSizePair.h).
 
 ### Description:
 It is a simple `std::pair<std::string, unsigned int>`.  
-The first variable is the font name (path).  
-The second variable is the size of the font.  
-`Text2DRenderer` can load the fonts by this pair.
+The first variable is the font's name (path).  
+The second variable is the size of the font.
 
 ### Header:
 ```cpp
@@ -24,7 +22,7 @@ typedef std::pair<std::string, unsigned int> FontSizePair;
 ##
 ## FreeTypeCharacter
 ### Source Code:
-[FreeTypeCharacter.h](../../Learning2DEngine/Learning2DEngine/EventSystem/FreeTypeCharacter.h)
+[FreeTypeCharacter.h](../../Learning2DEngine/Learning2DEngine/UI/FreeTypeCharacter.h)
 
 ### Description:
 This is the FreeType characters' representation in the Engine.
@@ -46,7 +44,7 @@ struct FreeTypeCharacter
 ##
 ## Text
 ### Source Code:
-[Text.h](../../Learning2DEngine/Learning2DEngine/EventSystem/Text.h)
+[Text.h](../../Learning2DEngine/Learning2DEngine/UI/Text.h)
 
 ### Description:
 This is the texts' representation in the Engine.
@@ -69,8 +67,8 @@ struct Text
 ##
 ## Text2DRenderer
 ### Source Code:
-[Text2DRenderer.h](../../Learning2DEngine/Learning2DEngine/EventSystem/Text2DRenderer.h)  
-[Text2DRenderer.cpp](../../Learning2DEngine/Learning2DEngine/EventSystem/Text2DRenderer.cpp)
+[Text2DRenderer.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderer.h)  
+[Text2DRenderer.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderer.cpp)
 
 ### Description:
 This is a singleton class, which can load/unload the fonts into Engine

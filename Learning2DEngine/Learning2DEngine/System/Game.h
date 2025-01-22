@@ -27,7 +27,7 @@ namespace Learning2DEngine
             Refresh Keyboard and Mouse events
             virtual Update()
             Clear Window to default color
-            Render with MSAA and PostProcessEffect, if they are enabled
+            Render (with MSAA and PostProcessEffect, if they are enabled)
             LateRender (without any effect)
             Update Window
         */
