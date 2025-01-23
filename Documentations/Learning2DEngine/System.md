@@ -53,7 +53,7 @@ BaseComponentHandler();
 ```
 
 **RefreshComponents**  
-It remove the `removeableComponents` and add the `newComponents` to the `components`.
+It removes the `removeableComponents` and adds the `newComponents` to the `components`.
 After this, it clears the `newComponents` and the `removeableComponents`.
 ```cpp
 virtual void RefreshComponents();

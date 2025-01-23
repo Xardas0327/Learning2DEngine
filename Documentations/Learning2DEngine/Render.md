@@ -448,14 +448,14 @@ RendererComponentHandler();
 ```
 
 **Add**  
-It is not just add the `BaseRendererComponent` object to the vector,
-but it also set the `isReorderNeeded` to true.
+It not just adds the `BaseRendererComponent` object to the vector,
+but it also sets the `isReorderNeeded` to true.
 ```cpp
 void Add(BaseRendererComponent* component) override;
 ```
 
 **NeedReorder**  
-It set the `isReorderNeeded` to true.
+It sets the `isReorderNeeded` to true.
 ```cpp
 inline void NeedReorder();
 ```
