@@ -144,15 +144,18 @@ void SetResolution(const Render::Resolution& resolution);
 [Component.h](../../Learning2DEngine/Learning2DEngine/System/Component.h)
 
 ### Description:
-Fistly, it looks a bad structure, because there is a cross reference.
+It is a base class for every component in the Engine.
+Some base components are inherited from this class like `BaseUpdaterComponent` or `BaseRendererComponent`.   
+Fistly, it looks a bad structure, because there is a cross reference.  
 A `Component` has reference about its `GameObject` and the `GameObject` has 
-reference about that `Component`.  
-But if the developer follow some rules, everything will be alright.
-The classes, which are inherited from `Component`, have to have a constructorand 
+reference about that `Component`. 
+But if the developer follow some rules: 
+1. The classes, which are inherited from `Component`, have to have a constructor and 
 their first parameter is GameObject* for gameObject member.
-Moreover, It is recommended, that the constructor, the Init() and Destroy() of the inherited class is protected
-and only the GameObject can use them.  
-If the developer follow these, only the `GameObject` can create/initialize/destroy `Components`,
+2. It is recommended, that the constructor, the Init() and Destroy() of the inherited class is protected
+and only the GameObject can use them.
+
+If the developer follow these rules, only the `GameObject` can create/initialize/destroy `Components`,
 so a `Component` can not exist without its `GameObject`.  
 Furthermore, the `Components` have reference about their gameobject, so this gave the developer a huge flexibility.
 They can give or get components from the their `GameObject` within a `Component`.  

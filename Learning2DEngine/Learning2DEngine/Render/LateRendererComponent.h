@@ -10,7 +10,7 @@ namespace Learning2DEngine
 		/// <summary>
 		/// The classes, which are inherited from LateRendererComponent,
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
-		/// Please check more info about System::Component
+		/// Please check more info about `System::Component` and `BaseRendererComponent`.
 		/// </summary>
 		class LateRendererComponent : public virtual BaseRendererComponent
 		{
