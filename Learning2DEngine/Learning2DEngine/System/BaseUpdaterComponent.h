@@ -1,27 +1,26 @@
 #pragma once
 
-#include "../System/Component.h"
+#include "Component.h"
 
 namespace Learning2DEngine
 {
-	namespace Render
-	{
+    namespace System
+    {
 		/// <summary>
-		/// The classes, which are inherited from Renderer,
+		/// The classes, which are inherited from BaseUpdateComponent,
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
 		/// Please check more info about System::Component
 		/// </summary>
-		class Renderer : public virtual System::Component
+		class BaseUpdaterComponent : public virtual Component
 		{
-			friend class System::GameObject;
 		protected:
-			Renderer(System::GameObject* gameObject)
+			BaseUpdaterComponent(GameObject* gameObject)
 				: Component(gameObject)
 			{
 
 			}
 		public:
-			virtual void Draw() = 0;
+			virtual void Update() = 0;
 		};
-	}
+    }
 }

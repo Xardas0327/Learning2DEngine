@@ -14,14 +14,14 @@ private:
     unsigned int levelHeight;
     unsigned int levelWidth;
 
-    void Init(const std::vector<std::vector<unsigned int>>& brickData);
-    void ClearBricks();
+    void Init(const std::vector<std::vector<unsigned int>>& brickData, bool areBricksActive);
     void CalcBrickSize(const Learning2DEngine::Render::Resolution& resolution);
 public:
     std::vector<BrickController*> bricks;
 
     GameLevel(const std::string& fileName);
-    void Load();
-    void Draw();
+    void Load(bool areBricksActive);
     bool IsCompleted();
+	void SetBricksActive(bool isActive);
+    void ClearBricks();
 };

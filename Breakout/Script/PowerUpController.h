@@ -35,11 +35,15 @@ protected:
 
         rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2>(VELOCITY);
         collider = gameObject->AddComponent<BoxCollider, glm::vec2>(gameObject->transform.scale);
-        renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
+        renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&, int, glm::vec3>(
             ResourceManager::GetInstance().GetTexture(powerUpObject.textureId),
+            1,
             powerUpObject.color
         );
+
     }
+    // TODO: This function have to be removed
+    void Destroy() override {};
 public:
     Learning2DEngine::Physics::Rigidbody* rigidbody;
     Learning2DEngine::Physics::BoxCollider* collider;

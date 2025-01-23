@@ -20,7 +20,7 @@ GameLevel::GameLevel(const std::string& fileName)
 
 }
 
-void GameLevel::Load()
+void GameLevel::Load(bool areBricksActive)
 {
     ClearBricks();
 
@@ -43,16 +43,7 @@ void GameLevel::Load()
             brickData.push_back(row);
         }
         if (brickData.size() > 0)
-            Init(brickData);
-    }
-}
-
-void GameLevel::Draw()
-{
-    for (BrickController* brick : bricks)
-    {
-        if (brick->gameObject->isActive)
-            brick->renderer->Draw();
+            Init(brickData, areBricksActive);
     }
 }
 
@@ -67,7 +58,7 @@ bool GameLevel::IsCompleted()
     return true;
 }
 
-void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData)
+void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bool areBricksActive)
 {
     levelHeight = brickData.size();
     levelWidth = brickData[0].size();
@@ -96,7 +87,7 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData)
             else if (brickData[y][x] == 5)
                 color = glm::vec3(1.0f, 0.5f, 0.0f);
 
-            GameObject* brick = new GameObject();
+            GameObject* brick = new GameObject(areBricksActive);
             auto brickController = brick->AddComponent<BrickController, int, int, bool>(x, y, brickData[y][x] == 1);
             brickController->renderer->texture =
                 brickData[y][x] == 1
@@ -132,4 +123,12 @@ void GameLevel::ClearBricks()
         GameObject::Destroy(brick);
     }
     bricks.clear();
+}
+
+void GameLevel::SetBricksActive(bool isActive)
+{
+    for (BrickController* brick : bricks)
+    {
+        brick->gameObject->isActive = isActive;
+    }
 }

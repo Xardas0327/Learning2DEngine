@@ -1,20 +1,18 @@
 # UI
 - [FontSizePair](UI.md#fontsizepair)
 - [FreeTypeCharacter](UI.md#freetypecharacter)
-- [Text](UI.md#text)
-- [Text2DRenderer](UI.md#text2drenderer)
+- [Text2DLateRenderer](UI.md#text2dlaterenderer)
+- [TextCharacterSet](UI.md#textcharacterset)
 
 ##
 ## FontSizePair
 ### Source Code:
-It does not have separate source file. It is in
-[Text.h](../../Learning2DEngine/Learning2DEngine/EventSystem/EventHandler.h).
+[FontSizePair.h](../../Learning2DEngine/Learning2DEngine/UI/FontSizePair.h).
 
 ### Description:
 It is a simple `std::pair<std::string, unsigned int>`.  
-The first variable is the font name (path).  
-The second variable is the size of the font.  
-`Text2DRenderer` can load the fonts by this pair.
+The first variable is the font's name (path).  
+The second variable is the size of the font.
 
 ### Header:
 ```cpp
@@ -24,11 +22,11 @@ typedef std::pair<std::string, unsigned int> FontSizePair;
 ##
 ## FreeTypeCharacter
 ### Source Code:
-[FreeTypeCharacter.h](../../Learning2DEngine/Learning2DEngine/EventSystem/FreeTypeCharacter.h)
+[FreeTypeCharacter.h](../../Learning2DEngine/Learning2DEngine/UI/FreeTypeCharacter.h)
 
 ### Description:
 This is the FreeType characters' representation in the Engine.
-It is used by the `Text2DRenderer`.
+It is used by the `TextCharacterSet`.
 If you want to understand the bearing and advance parameters more,
 please check their documentation [here](https://freetype.org/freetype2/docs/glyphs/glyphs-3.html#section-3).
 
@@ -44,96 +42,181 @@ struct FreeTypeCharacter
 ```
 
 ##
-## Text
+## Text2DLateRenderer
 ### Source Code:
-[Text.h](../../Learning2DEngine/Learning2DEngine/EventSystem/Text.h)
+[Text2DLateRenderer.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DLateRenderer.h)  
+[Text2DLateRenderer.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DLateRenderer.cpp)
 
 ### Description:
-This is the texts' representation in the Engine.
-The Text has position, color and scale too.
-The scale can be useful if the developer want load lesser fonts.
+The `Text2DLateRenderer` is for the text rendering to UI.  
+It uses static variables to count how many GameObject initialized it.
+That's why it will destroy its Vertex Array Object only
+if the reference number is 0, otherway it will decrease
+the reference number only.  
+Note: It use the position and scale of the gameObject, but it does not use the rotation.  
+Please more info about `LateRendererComponent`.
 
 ### Header:
 ```cpp
-struct Text
-{
-    FontSizePair fontSizePair;
-    std::string text;
-    float x = 0;
-    float y = 0;
-    float scale = 1.0f;
-    glm::vec3 color = glm::vec3(1.0f);
-};
+class Text2DLateRenderer : public virtual Render::LateRendererComponent
+{...}
 ```
 
+### Variables:
+**Private:**  
+**isInit**  
+```cpp
+bool isInit;
+```  
+
+**cameraResolution**  
+```cpp
+Render::Resolution cameraResolution;
+```
+
+**referenceNumber**  
+All `Text2DLateRenderer` use the same shader and vertex array object.
+That's why it is counted, that how many `Text2DLateRenderer` there are in the game.
+It is important, that the shader will be created if it is used and
+it will be destroyed if nothing uses it.
+```cpp
+static int referenceNumber;
+```
+
+**shader**  
+```cpp
+static Shader shader
+```
+
+**vao**  
+```cpp
+static unsigned int vao;
+```
+
+**vbo**  
+```cpp
+static unsigned int vbo;
+```
+
+**ebo**  
+```cpp
+static unsigned int ebo;
+```
+
+**Public:**  
+**fontSizePair**  
+```cpp
+FontSizePair fontSizePair;
+```  
+**text**  
+```cpp
+std::string text;
+```  
+
+**color**  
+The `color`, which will be mixed with the texture in the shader.
+```cpp
+glm::vec3 color;
+```
+
+### Functions:
+**Private:**  
+**InitShader**  
+```cpp
+void InitShader();
+```
+
+**InitVao**  
+```cpp
+void InitVao();
+```
+
+**Protected:**  
+**Text2DLateRenderer**  
+```cpp
+Text2DLateRenderer(System::GameObject* gameObject, const Render::Resolution& cameraResolution, const FontSizePair& fontSizePair, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+```
+```cpp
+Text2DLateRenderer(System::GameObject* gameObject, const Render::Resolution& cameraResolution, const FontSizePair& fontSizePair, std::string text, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+```
+
+**Init**  
+It initializes the `Text2DLateRenderer`.
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+It destroys the `Text2DLateRenderer`.
+```cpp
+void Destroy() override;
+```
+
+**Public:**  
+**Draw**  
+It draws the text. 
+```cpp
+void Draw() override;
+```  
+
+**GetResolution**  
+```cpp
+inline Render::Resolution GetResolution();
+``` 
+
+**SetResolution**  
+```cpp
+inline void SetResolution(const Render::Resolution& cameraResolution);
+``` 
+
 ##
-## Text2DRenderer
+## TextCharacterSet
 ### Source Code:
-[Text2DRenderer.h](../../Learning2DEngine/Learning2DEngine/EventSystem/Text2DRenderer.h)  
-[Text2DRenderer.cpp](../../Learning2DEngine/Learning2DEngine/EventSystem/Text2DRenderer.cpp)
+[TextCharacterSet.h](../../Learning2DEngine/Learning2DEngine/UI/TextCharacterSet.h)  
+[TextCharacterSet.cpp](../../Learning2DEngine/Learning2DEngine/UI/TextCharacterSet.cpp)
 
 ### Description:
-This is a singleton class, which can load/unload the fonts into Engine
-and it can render the Texts.
+This is a singleton class, which can load/unload the fonts into Engine.
 
 ### Header:
 ```cpp
-class Text2DRenderer : public virtual System::Singleton<Text2DRenderer>
+class TextCharacterSet : public virtual System::Singleton<TextCharacterSet>
 {...}
 ```
 
 ### Macros:
 **FONT_NUMBER**  
-The `Text2DRenderer` load the first `FONT_NUMBER` characters from a ttf file.
+The `TextCharacterSet` load the first `FONT_NUMBER` characters from a ttf file.
 
-### Variables:
-**Private:**  
+### Auxiliary classes:
 **CharacterMap**  
-It is a auxiliary class.
 ```cpp
 typedef std::map<char, FreeTypeCharacter> CharacterMap;
 ```
 
-**vao**  
-```cpp
-unsigned int vao;
-```
-
-**vbo**  
-```cpp
-unsigned int vbo;
-```
-
-**ebo**  
-```cpp
-unsigned int ebo;
-```
-
+### Variables:
+**Private:**  
 **characters**  
 ```cpp
 std::map<FontSizePair, CharacterMap> characters;
 ```
 
-**textShader**  
-```cpp
-Render::Shader textShader;
-```
-
 ### Functions:
-**Public:**  
-**Init**  
-It initializes the `Text2DRenderer`.  
-Note: It should be called after `RenderManager`.
+**Private:**  
+**TextCharacterSet**  
 ```cpp
-void Init(const Render::Resolution& resolution);
+TextCharacterSet();
 ```
 
-**Terminate**  
-It terminates the `Text2DRenderer`. 
-Note: It should be terminated before `RenderManager`.
+**Public:**  
+**operator[]**  
+The non-const version try to load the font with the size, if it is not loaded yet.
 ```cpp
-void Terminate();
-```
+CharacterMap& operator[](const FontSizePair& fontSizePair);
+```  
+```cpp
+const CharacterMap& operator[](const FontSizePair& fontSizePair) const;
+```  
 
 **Load**  
 They load the first `FONT_NUMBER` characters from a ttf file with a size.
@@ -158,13 +241,3 @@ It unloads all font with all size.
 ```cpp
 void Clear();
 ```
-
-**RenderText**  
-It renders the text.  
-Note: The blend should be enabled,
-where the source factor is *GL_SRC_ALPHA*
-and destination factor is *GL_ONE_MINUS_SRC_ALPHA*
-```cpp
-void RenderText(const Text& text);
-```
-

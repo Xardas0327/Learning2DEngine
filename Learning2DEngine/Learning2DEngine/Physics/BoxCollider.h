@@ -11,7 +11,7 @@ namespace Learning2DEngine
     {
         /// <summary>
         /// The BoxCollider is really basic.
-        /// It doesn't rotate with the gameobject and the size doesn't scale with the gameobject too.
+        /// It doesn't rotate, scale with the gameobject.
         /// </summary>
         class BoxCollider : public virtual Collider
         {

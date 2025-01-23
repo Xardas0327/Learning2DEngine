@@ -1,13 +1,12 @@
 # Learning2DEngine
 
 ## Introduction:
-This project was created for my own development and
+This Game Engine was created for my own development and
 I want to use this one for reference too.  
 I have relearned the C++ and I have learned the OpenGL form
 [learnopengl.com](https://learnopengl.com/).
 But I think the Game Engine Architecture book
 and the Unity Engine also influenced me a lot.
-Maybe the project's name is a bit tricky, because I guess it is only a library (yet).
 
 Futhermore, I know lots of features are missing,
 some features could be better and why it is Visual Studio Project and not

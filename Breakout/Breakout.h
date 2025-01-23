@@ -7,7 +7,7 @@
 
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/UI/Text.h>
+#include <Learning2DEngine/UI/Text2DLateRenderer.h>
 #include <Learning2DEngine/Physics/BoxCollider.h>
 #include <Learning2DEngine/Physics/CircleCollider.h>
 
@@ -42,17 +42,16 @@ private:
     PostProcessData* postProcessData;
     float shakeTime;
 
-    Learning2DEngine::UI::Text  liveText;
-    Learning2DEngine::UI::Text  startText;
-    Learning2DEngine::UI::Text  levelSelectorText;
-    Learning2DEngine::UI::Text  winText;
-    Learning2DEngine::UI::Text  retryText;
+    Learning2DEngine::UI::Text2DLateRenderer* liveText;
+    Learning2DEngine::UI::Text2DLateRenderer* startText;
+    Learning2DEngine::UI::Text2DLateRenderer* levelSelectorText;
+    Learning2DEngine::UI::Text2DLateRenderer* winText;
+    Learning2DEngine::UI::Text2DLateRenderer* retryText;
+
 protected:
     void InitSystem();
     void InitObjects();
     void Update() override;
-    void Render() override;
-    void LateRender() override;
 
     void ProcessInput();
     void ShakeScreen();

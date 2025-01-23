@@ -14,10 +14,10 @@ BackgroundController::BackgroundController(GameObject* gameObject, const std::st
 
 void BackgroundController::Init()
 {
-    renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&>(
-        ResourceManager::GetInstance().GetTexture(textureId)
+    renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&, int>(
+        ResourceManager::GetInstance().GetTexture(textureId),
+        -2
     );
-
     RenderManager::GetInstance().AddFramebufferSizeEvent(&resolutionEventItem);
 }
 

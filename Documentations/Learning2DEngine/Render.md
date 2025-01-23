@@ -1,9 +1,12 @@
 # Render
+- [BaseRendererComponent](Render.md#baserenderercomponent)
 - [BlendFuncFactor](Render.md#blendfuncfactor)
 - [IResolutionRefresher](Render.md#iresolutionrefresher)
+- [LateRendererComponent](Render.md#laterenderercomponent)
 - [MSAA](Render.md#msaa)
 - [PostProcessEffect](Render.md#postprocesseffect)
-- [Renderer](Render.md#renderer)
+- [RendererComponent](Render.md#renderercomponent)
+- [RendererComponentHandler](Render.md#renderercomponenthandler)
 - [RenderManager](Render.md#rendermanager)
 - [Resolution](Render.md#resolution)
 - [Shader](Render.md#shader)
@@ -11,6 +14,59 @@
 - [SpriteRenderer](Render.md#spriterenderer)
 - [Texture2D](Render.md#texture2d)
 - [Texture2DSettings](Render.md#texture2dsettings)
+
+##
+## BaseRendererComponent
+### Source Code:
+[BaseRendererComponent.h](../../Learning2DEngine/Learning2DEngine/Render/BaseRendererComponent.h)
+
+### Description:
+It is a base class for the `RendererComponent` and `LateRendererComponent` classes.
+It has some basic funcionality, which is essential for rendering.  
+The classes, which are inherited from this `BaseRendererComponent`, have to have a constructor,
+which first parameter is `GameObject*` for gameObject member.  
+Please check more info about `System::Component`.
+
+
+### Header:
+```cpp
+class BaseRendererComponent : public virtual System::Component
+{...}
+```
+
+### Variables:
+**Private:**  
+**layer**  
+This is the order of the rendering. The lower number means, this renderer will be called ealier.
+```cpp
+int layer;
+```
+
+### Functions:
+**Protected:**  
+**BaseRendererComponent**  
+```cpp
+BaseRendererComponent(System::GameObject* gameObject);
+```
+```cpp
+BaseRendererComponent(System::GameObject* gameObject, int layer);
+```
+
+**Public:**  
+**Draw**  
+```cpp
+virtual void Draw() = 0;
+```
+
+**SetLayer**  
+```cpp
+virtual void SetLayer(int value);
+```
+
+**GetLayer**  
+```cpp
+inline int GetLayer() const;
+```
 
 ##
 ## BlendFuncFactor
@@ -51,6 +107,48 @@ virtual ~IResolutionRefresher();
 **RefreshResolution**  
 ```cpp
 virtual void RefreshResolution(const Resolution& resolution) = 0;
+```
+
+##
+## LateRendererComponent
+### Source Code:
+[LateRendererComponent.h](../../Learning2DEngine/Learning2DEngine/Render/LateRendererComponent.h)
+
+### Description:
+It is a class, which is inherited from `BaseRendererComponent`.  
+The developer have to inherit from this class, if they want to render something in LateRender.  
+The LateRender is after the Render, it doesn't have anti-aliasing or post process effects.
+It is recommended to use it for the UI.  
+Note: The layer of the `LateRendererComponent` is the order in the LateRender only.
+So if a `RendererComponent` has a higher layer number, it will be still rendered before the `LateRendererComponent`.   
+Please check more info about `System::Component` and `BaseRendererComponent`.
+
+### Functions:
+**Protected:**  
+**LateRendererComponent**  
+```cpp
+LateRendererComponent(System::GameObject* gameObject);
+```
+```cpp
+LateRendererComponent(System::GameObject* gameObject, int layer);
+```
+
+**Init**  
+If this function is override, it must call the LateRendererComponent::Init() in the first line.
+```cpp
+virtual void Init() override;
+```
+
+**Destroy**  
+If this function is override, it must call the LateRendererComponent::Destroy() in the first line.
+```cpp
+virtual void Destroy() override;
+```
+
+**Public:**  
+**SetLayer**  
+```cpp
+virtual void SetLayer(int value) override;
 ```
 
 ##
@@ -272,34 +370,104 @@ inline unsigned int GetFrameBufferId();
 ```
 
 ##
-## Renderer
+## RendererComponent
 ### Source Code:
-[Renderer.h](../../Learning2DEngine/Learning2DEngine/Render/Renderer.h)  
+[RendererComponent.h](../../Learning2DEngine/Learning2DEngine/Render/RendererComponent.h)
 
 ### Description:
-This is an abstract `Component` class for the rendering.  
-The classes, which are inherited from this `Renderer`, have to have a constructor,
-which first parameter is `GameObject*` for gameObject member.  
-Please check more info about `System::Component`.
+It is a class, which is inherited from `BaseRendererComponent`.  
+The developer have to inherit from this class, if they want to render something in Render.  
+The Render is before the LateRender, it can have anti-aliasing and/or post process effects.   
+Note: The layer of the `RendererComponent` is the order in the Render only.
+So if a `LateRendererComponent` has a lower layer number, it will be still rendered after the `RendererComponent`.   
+Please check more info about `System::Component` and `BaseRendererComponent`.
+
+### Functions:
+**Protected:**  
+**RendererComponent**  
+```cpp
+RendererComponent(System::GameObject* gameObject);
+```
+```cpp
+RendererComponent(System::GameObject* gameObject, int layer);
+```
+
+**Init**  
+If this function is override, it must call the RendererComponent::Init() in the first line.
+```cpp
+virtual void Init() override;
+```
+
+**Destroy**  
+If this function is override, it must call the RendererComponent::Destroy() in the first line.
+```cpp
+virtual void Destroy() override;
+```
+
+**Public:**  
+**SetLayer**  
+```cpp
+virtual void SetLayer(int value) override;
+```
+
+##
+## RendererComponentHandler
+### Source Code:
+[RendererComponentHandler.h](../../Learning2DEngine/Learning2DEngine/Render/RendererComponentHandler.h)  
+
+### Description:
+It can handle the `BaseRendererComponent` objects.  
+The `ComponentManager` has 2 objects.
+One for `RendererComponentHandler` and one for `LateRendererComponentHandler`.
 
 ### Header:
 ```cpp
-class Renderer : public virtual System::Component
+class RendererComponentHandler : public System::BaseComponentHandler<BaseRendererComponent>
 {...}
+```
+
+### Variables:
+**Protected:**  
+**isReorderNeeded**  
+```cpp
+bool isReorderNeeded;
 ```
 
 ### Functions:
 **Protected:**  
-**Renderer**  
+**ReorderComponents**  
+It reorders the `BaseRendererComponent` objects by their layer number.
 ```cpp
-Renderer(System::GameObject* gameObject);
+void ReorderComponents();
 ```
 
 **Public:**  
-**Draw**  
-It should be called in the current game's `Render()`;
+**RendererComponentHandler**  
 ```cpp
-virtual void Draw() = 0;
+RendererComponentHandler();
+```
+
+**Add**  
+It not just adds the `BaseRendererComponent` object to the vector,
+but it also sets the `isReorderNeeded` to true.
+```cpp
+void Add(BaseRendererComponent* component) override;
+```
+
+**NeedReorder**  
+It sets the `isReorderNeeded` to true.
+```cpp
+inline void NeedReorder();
+```
+
+**DoWithAllComponents**  
+Firstly it refresh and reorder the `BaseRendererComponent` objects.  
+After that it calls the Draw() function of the objects
+if the object is not in the removeableComponents and the component and its gameObject are active.  
+Note: the code have to check the removeableComponents again, because
+maybe another component removed/destroyed the actual component in actual frame.
+```cpp
+void DoWithAllComponents() override;
 ```
 
 ##
@@ -701,10 +869,11 @@ It uses static variables to count how many GameObject initialized it.
 That's why it will destroy its Vertex Array Object only
 if the reference number is 0, otherway it will decrease
 the reference number only.  
+Please more info about `RendererComponent`.
 
 ### Header:
 ```cpp
-class SpriteRenderer : public virtual Renderer
+class SpriteRenderer : public virtual RendererComponent
 {...}
 ```
 
@@ -776,10 +945,10 @@ void InitVao();
 **Protected:**  
 **SpriteRenderer**  
 ```cpp
-SpriteRenderer(System::GameObject* gameObject, glm::vec3 color = glm::vec3(1.0f));
+SpriteRenderer(System::GameObject* gameObject, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
 ```
 ```cpp
-SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, glm::vec3 color = glm::vec3(1.0f));
+SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
 ```
 
 **Init**  

@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClCompile Include="Learning2DEngine\Physics\Collision.cpp" />
     <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
+    <ClCompile Include="Learning2DEngine\UI\TextCharacterSet.cpp" />
     <ClCompile Include="Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\MSAA.cpp" />
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystem.cpp" />
@@ -177,7 +178,7 @@
     <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp" />
     <ClCompile Include="Learning2DEngine\System\Random.cpp" />
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
-    <ClCompile Include="Learning2DEngine\UI\Text2DRenderer.cpp" />
+    <ClCompile Include="Learning2DEngine\UI\Text2DLateRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\ParticleSimulator\BasicParticleSettings.h" />
@@ -187,21 +188,27 @@
     <ClInclude Include="Learning2DEngine\Physics\Collision.h" />
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h" />
     <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h" />
+    <ClInclude Include="Learning2DEngine\Render\BaseRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\Blend.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSettings.h" />
+    <ClInclude Include="Learning2DEngine\Render\LateRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\MSAA.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\Particle.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystem.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h" />
-    <ClInclude Include="Learning2DEngine\Render\Renderer.h" />
+    <ClInclude Include="Learning2DEngine\Render\RendererComponent.h" />
+    <ClInclude Include="Learning2DEngine\Render\RendererComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h" />
+    <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
+    <ClInclude Include="Learning2DEngine\System\BaseUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\Camera.h" />
     <ClInclude Include="Learning2DEngine\System\Component.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventHandler.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventItem.h" />
+    <ClInclude Include="Learning2DEngine\System\ComponentManager.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />
     <ClInclude Include="Learning2DEngine\Render\IResolutionRefresher.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\KeyboardMouseEventItem.h" />
@@ -218,9 +225,11 @@
     <ClInclude Include="Learning2DEngine\System\Singleton.h" />
     <ClInclude Include="Learning2DEngine\Render\Texture2DSettings.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
+    <ClInclude Include="Learning2DEngine\System\UpdaterComponent.h" />
+    <ClInclude Include="Learning2DEngine\UI\FontSizePair.h" />
+    <ClInclude Include="Learning2DEngine\UI\TextCharacterSet.h" />
     <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h" />
-    <ClInclude Include="Learning2DEngine\UI\Text.h" />
-    <ClInclude Include="Learning2DEngine\UI\Text2DRenderer.h" />
+    <ClInclude Include="Learning2DEngine\UI\Text2DLateRenderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

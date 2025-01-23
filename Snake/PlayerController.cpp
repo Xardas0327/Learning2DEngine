@@ -19,13 +19,6 @@ void PlayerController::Destroy()
     snake.clear();
 }
 
-void PlayerController::Draw()
-{
-	for (std::list<SpriteRenderer*>::iterator it = snake.begin(); it != snake.end(); ++it) {
-		(*it)->Draw();
-	}
-}
-
 void PlayerController::Regenerate(glm::ivec2 unitSize)
 {
     for (std::list<SpriteRenderer*>::iterator it = snake.begin(); it != snake.end(); ++it) {
@@ -46,8 +39,9 @@ SpriteRenderer* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm::ve
             scale
         )
     );
-    return playerUnit->AddComponent<SpriteRenderer, const Texture2D&, glm::vec3>(
+    return playerUnit->AddComponent<SpriteRenderer, const Texture2D&, int, glm::vec3>(
         ResourceManager::GetInstance().GetTexture(textureId),
+        0,
         color
     );
 }

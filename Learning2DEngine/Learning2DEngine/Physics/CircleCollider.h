@@ -11,7 +11,7 @@ namespace Learning2DEngine
     {
         /// <summary>
         /// The CircleCollider is really basic.
-        /// It doesn't rotate with the gameobject and the radius doesn't scale with the gameobject too.
+        /// It doesn't rotate, scale with the gameobject.
         /// </summary>
         class CircleCollider : public virtual Collider
         {

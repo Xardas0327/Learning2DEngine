@@ -27,11 +27,8 @@ namespace Learning2DEngine
             Refresh Keyboard and Mouse events
             virtual Update()
             Clear Window to default color
-            virtual Render()
-                Render with MSAA and PostProcessEffect,
-                if they are enabled
-            virtual LateRender
-                Render without any effect
+            Render (with MSAA and PostProcessEffect, if they are enabled)
+            LateRender (without any effect)
             Update Window
         */
         class Game : public virtual IKeyboardMouseRefresher, public virtual Render::IResolutionRefresher
@@ -62,9 +59,8 @@ namespace Learning2DEngine
         protected:
             InputStatus inputKeys[INPUT_KEY_SIZE];
 
+            Game();
             virtual void Update() {};
-            virtual void Render() {};
-            virtual void LateRender() {};
 
             void ActivateMSAA(unsigned int sampleNumber);
             void StopMSAA();
@@ -115,7 +111,6 @@ namespace Learning2DEngine
             }
 
         public:
-            Game();
             virtual ~Game();
 
             /// <summary>

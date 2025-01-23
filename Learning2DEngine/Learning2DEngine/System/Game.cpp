@@ -6,6 +6,7 @@
 #include "../Render/RenderManager.h"
 #include "../DebugTool/Log.h"
 #include "ResourceManager.h"
+#include "ComponentManager.h"
 
 namespace Learning2DEngine
 {
@@ -57,6 +58,7 @@ namespace Learning2DEngine
             renderManager.RemoveKeyboardEvent(&keyboardMouseEventItem);
             renderManager.RemoveFramebufferSizeEvent(&resolutionEventItem);
 
+            ComponentManager::GetInstance().Clear();
             ResourceManager::GetInstance().Clear();
             RenderManager::GetInstance().Terminate();
         }
@@ -66,12 +68,14 @@ namespace Learning2DEngine
             try
             {
                 auto& renderManager = RenderManager::GetInstance();
+				auto& componentManager = ComponentManager::GetInstance();
                 while (!renderManager.IsWindowClosed())
                 {
                     // Calc deltaTime
                     float currentFrame = glfwGetTime();
                     Game::deltaTime = (currentFrame - lastFrame) * timeScale;
                     lastFrame = currentFrame;
+
 
                     UpdateKeyboardMouseEvents();
                     Update();
@@ -86,7 +90,7 @@ namespace Learning2DEngine
                     {
                         ppeRender.StartRender();
                     }
-                    Render();
+                    componentManager.Render();
                     if (isMsaaActive)
                     {
                         msaaRender.EndRender(
@@ -101,7 +105,7 @@ namespace Learning2DEngine
                     if (usePPE)
                         ppeRender.Render();
 
-                    LateRender();
+				    componentManager.LateRender();
 
                     renderManager.UpdateWindow();
                 }

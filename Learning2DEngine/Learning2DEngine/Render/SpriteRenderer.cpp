@@ -19,14 +19,16 @@ namespace Learning2DEngine
         unsigned int SpriteRenderer::vbo = 0;
         unsigned int SpriteRenderer::ebo = 0;
 
-        SpriteRenderer::SpriteRenderer(GameObject* gameObject, glm::vec3 color)
-            : Component(gameObject), Renderer(gameObject), texture(nullptr), color(color), isInit(false)
+        SpriteRenderer::SpriteRenderer(GameObject* gameObject, int layer, glm::vec3 color)
+            : Component(gameObject), BaseRendererComponent(gameObject, layer), RendererComponent(gameObject, layer),
+            texture(nullptr), color(color), isInit(false)
         {
 
         }
 
-        SpriteRenderer::SpriteRenderer(GameObject* gameObject, const Texture2D& texture, glm::vec3 color)
-            : Component(gameObject), Renderer(gameObject), color(color), isInit(false), texture(new Texture2D(texture))
+        SpriteRenderer::SpriteRenderer(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec3 color)
+            : Component(gameObject), BaseRendererComponent(gameObject, layer), RendererComponent(gameObject, layer),
+            color(color), isInit(false), texture(new Texture2D(texture))
         {
         }
 
@@ -45,6 +47,8 @@ namespace Learning2DEngine
 
             isInit = true;
 
+			RendererComponent::Init();
+
             // If nothing use it
             if (!SpriteRenderer::referenceNumber)
             {
@@ -60,6 +64,8 @@ namespace Learning2DEngine
                 return;
 
             isInit = false;
+
+            RendererComponent::Destroy();
 
             --SpriteRenderer::referenceNumber;
             // If nothing use it
@@ -80,6 +86,8 @@ namespace Learning2DEngine
                     ShaderConstant::SPRITE_SHADER_NAME,
                     ShaderConstant::SPRITE_VERTEX_SHADER,
                     ShaderConstant::SPRITE_FRAGMENT_SHADER);
+
+            SpriteRenderer::shader.Use();
             SpriteRenderer::shader.SetInteger("spriteTexture", 0);
         }
 
