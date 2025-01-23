@@ -1,6 +1,8 @@
 # System
+- [BaseComponentHandler](System.md#basecomponenthandler)
 - [Camera](System.md#camera)
 - [Component](System.md#component)
+- [ComponentManager](System.md#componentmanager)
 - [Game](System.md#game)
 - [GameObject](System.md#gameobject)
 - [IKeyboardMouseRefresher](System.md#ikeyboardmouserefresher)
@@ -9,6 +11,69 @@
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
 - [Transform](System.md#transform)
+
+##
+## BaseComponentHandler
+### Source Code:
+[BaseComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/BaseComponentHandler.h)  
+
+### Description:
+It is a base class for component handlers.  
+Please check more info about the `ComponentManager`.
+
+### Header:
+```cpp
+template<class T>
+class BaseComponentHandler
+{...}
+```
+
+### Variables:
+**Protected:**  
+**components**  
+```cpp
+std::vector<T*> components;
+```
+
+**newComponents**  
+```cpp
+std::vector<T*> newComponents;
+```
+
+**removeableComponents**  
+```cpp
+std::vector<T*> removeableComponents;
+```
+
+### Functions:
+**Protected:**  
+**BaseComponentHandler**  
+```cpp
+BaseComponentHandler();
+```
+
+**RefreshComponents**  
+It remove the `removeableComponents` and add the `newComponents` to the `components`.
+After this, it clears the `newComponents` and the `removeableComponents`.
+```cpp
+virtual void RefreshComponents();
+```
+
+**Public:**  
+**Add**  
+```cpp
+virtual void Add(T* component);
+```
+
+**Remove**  
+```cpp
+virtual void Remove(T* component);
+```
+
+**Clear**  
+```cpp
+virtual void Clear();
+```
 
 ##
 ## Camera
@@ -60,7 +125,7 @@ Render::Resolution resolution;
 **RecalcViewMatrix**  
 It recalculates the `viewMatrix`.
 ```cpp
-void RecalcViewMatrix()
+void RecalcViewMatrix();
 ```
 
 **Public:**  
@@ -72,14 +137,14 @@ Camera(glm::vec2 position = glm::vec2(0.0f, 0.0f), float rotation = 0.0f)
 **GetPosition**  
 It returns the `position`.
 ```cpp
-inline glm::vec2 GetPosition()
+inline glm::vec2 GetPosition();
 ```
 
 **SetPosition**  
 It sets the `position`.  
 After the position update, it will call `RecalcViewMatrix`.
 ```cpp
-void SetPosition(glm::vec2 position)
+void SetPosition(glm::vec2 position);
 ```
 
 **Move**  
@@ -87,13 +152,13 @@ It adds the direction to the `position`.
 If the isWorldMoving is true, the direction will be rotated by the actual `rotation`.  
 After the position update, it will call `RecalcViewMatrix`.
 ```cpp
-void Move(glm::vec2 direction, bool isWorldMoving = false)
+void Move(glm::vec2 direction, bool isWorldMoving = false);
 ```
 
 **GetRotation**  
 It returns the `rotation`.
 ```cpp
-inline float GetRotation()
+inline float GetRotation();
 ```
 
 **SetRotation**  
@@ -107,7 +172,7 @@ void SetRotation(float rotation);
 It add the angle to the `rotation`.  
 After the rotation update, it will call `RecalcViewMatrix`.
 ```cpp
-void Rotate(float angle)
+void Rotate(float angle);
 ```
 
 **SetPositionRotation**  
@@ -120,13 +185,13 @@ void SetPositionRotation(glm::vec2 position, float rotation);
 **GetViewMatrix**  
 It returns the `viewMatrix`.
 ```cpp
-inline glm::mat4 GetViewMatrix()
+inline glm::mat4 GetViewMatrix();
 ```
 
 **GetProjection**  
 It returns the `projection`.
 ```cpp
-inline glm::mat4 GetProjection()
+inline glm::mat4 GetProjection();
 ```
 
 **SetResolution**  
@@ -135,8 +200,6 @@ After the resolution update, it will recalculate the projection.
 ```cpp
 void SetResolution(const Render::Resolution& resolution);
 ```
-
-
 
 ##
 ## Component
@@ -183,7 +246,7 @@ GameObject* const gameObject;
 **Protected:**  
 **Component**  
 ```cpp
-Component(GameObject* gameObject)
+Component(GameObject* gameObject);
 ```
 
 **Init**  
@@ -203,6 +266,87 @@ virtual void Destroy() = 0;
 ```cpp
 virtual ~Component();
 ```  
+
+##
+## ComponentManager
+### Source Code:
+[ComponentManager.h](../../Learning2DEngine/Learning2DEngine/System/ComponentManager.h)  
+
+### Description:
+The `ComponentManager` manages the `Components` in the Engine by component handlers.
+The `Game` calls its Render() and LateRender() functions in every frame.
+
+### Header:
+```cpp
+class ComponentManager final : public virtual Singleton<ComponentManager>
+{...}
+```
+
+### Variables:
+**Private:**  
+**rendererComponentHandler**  
+```cpp
+Render::RendererComponentHandler rendererComponentHandler;
+```
+
+**lateRendererComponentHandler**  
+```cpp
+Render::RendererComponentHandler lateRendererComponentHandler;
+```
+
+### Functions:
+**Private:**  
+**ComponentManager**  
+```cpp
+ComponentManager();
+```
+
+**Public:**  
+**AddToRenderer**  
+```cpp
+inline void AddToRenderer(Render::BaseRendererComponent* component);
+```
+
+**RemoveFromRenderer**  
+```cpp
+inline void RemoveFromRenderer(Render::BaseRendererComponent* component);
+```
+
+**NeedReorderRenderers**  
+```cpp
+inline void NeedReorderRenderers();
+```
+
+**Render**  
+```cpp
+inline void Render();
+```
+
+**AddToLateRenderer**  
+```cpp
+inline void AddToLateRenderer(Render::BaseRendererComponent* component)
+```
+
+**RemoveFromLateRenderer**  
+```cpp
+inline void RemoveFromLateRenderer(Render::BaseRendererComponent* component);
+```
+
+**NeedReorderLateRenderers**  
+```cpp
+inline void NeedReorderLateRenderers();
+```
+
+**LateRender**  
+```cpp
+inline void LateRender();
+```
+
+**Clear**  
+Clear all handlers.
+```cpp
+void Clear();
+```
 
 ##
 ## Game

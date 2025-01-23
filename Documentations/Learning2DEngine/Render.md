@@ -6,6 +6,7 @@
 - [MSAA](Render.md#msaa)
 - [PostProcessEffect](Render.md#postprocesseffect)
 - [RendererComponent](Render.md#renderercomponent)
+- [RendererComponentHandler](Render.md#renderercomponenthandler)
 - [RenderManager](Render.md#rendermanager)
 - [Resolution](Render.md#resolution)
 - [Shader](Render.md#shader)
@@ -407,6 +408,66 @@ virtual void Destroy() override;
 **SetLayer**  
 ```cpp
 virtual void SetLayer(int value) override;
+```
+
+##
+## RendererComponentHandler
+### Source Code:
+[RendererComponentHandler.h](../../Learning2DEngine/Learning2DEngine/Render/RendererComponentHandler.h)  
+
+### Description:
+It can handle the `BaseRendererComponent` objects.  
+The `ComponentManager` has 2 objects.
+One for `RendererComponentHandler` and one for `LateRendererComponentHandler`.
+
+### Header:
+```cpp
+class RendererComponentHandler : public System::BaseComponentHandler<BaseRendererComponent>
+{...}
+```
+
+### Variables:
+**Protected:**  
+**isReorderNeeded**  
+```cpp
+bool isReorderNeeded;
+```
+
+### Functions:
+**Protected:**  
+**ReorderComponents**  
+It reorders the `BaseRendererComponent` objects by their layer number.
+```cpp
+void ReorderComponents();
+```
+
+**Public:**  
+**RendererComponentHandler**  
+```cpp
+RendererComponentHandler();
+```
+
+**Add**  
+It is not just add the `BaseRendererComponent` object to the vector,
+but it also set the `isReorderNeeded` to true.
+```cpp
+void Add(BaseRendererComponent* component) override;
+```
+
+**NeedReorder**  
+It set the `isReorderNeeded` to true.
+```cpp
+inline void NeedReorder();
+```
+
+**DoWithAllComponents**  
+Firstly it refresh and reorder the `BaseRendererComponent` objects.  
+After that it calls the Draw() function of the objects
+if the object is not in the removeableComponents and the component and its gameObject are active.  
+Note: the code have to check the removeableComponents again, because
+maybe another component removed/destroyed the actual component in actual frame.
+```cpp
+void DoWithAllComponents() override;
 ```
 
 ##
