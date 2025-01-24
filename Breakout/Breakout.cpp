@@ -7,7 +7,7 @@
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/UI/TextCharacterSet.h>
-#include <Learning2DEngine/Physics/Collision.h>
+#include <Learning2DEngine/Physics/CollisionChecker.h>
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
@@ -519,7 +519,7 @@ void Breakout::ClearPowerUps()
 
 bool Breakout::CheckCollision(const BoxCollider& box1, const BoxCollider& box2)
 {
-    return Collision::IsCollisoned(box1, box2).isCollisoned;
+    return CollisionChecker::CheckCollision(box1, box2).isCollided;
 }
 
 Direction Breakout::VectorDirection(glm::vec2 target)
@@ -546,8 +546,8 @@ Direction Breakout::VectorDirection(glm::vec2 target)
 
 CollisionResult Breakout::CheckCollision(const CircleCollider& ball, const BoxCollider& box)
 {
-    auto data = Collision::IsCollisoned(ball, box);
-    if (data.isCollisoned)
+    auto data = CollisionChecker::CheckCollision(ball, box);
+    if (data.isCollided)
     {
         glm::vec2 difference = data.edge2 - ball.GetCenter();
         return { true, VectorDirection(difference), difference };

@@ -163,7 +163,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Learning2DEngine\Physics\Collision.cpp" />
+    <ClCompile Include="Learning2DEngine\Physics\CollisionChecker.cpp" />
     <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
     <ClCompile Include="Learning2DEngine\UI\TextCharacterSet.cpp" />
     <ClCompile Include="Plugins\glad.c" />
@@ -185,7 +185,7 @@
     <ClInclude Include="Learning2DEngine\Physics\BoxCollider.h" />
     <ClInclude Include="Learning2DEngine\Physics\CircleCollider.h" />
     <ClInclude Include="Learning2DEngine\Physics\Collider.h" />
-    <ClInclude Include="Learning2DEngine\Physics\Collision.h" />
+    <ClInclude Include="Learning2DEngine\Physics\CollisionChecker.h" />
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h" />
     <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h" />
     <ClInclude Include="Learning2DEngine\Render\BaseRendererComponent.h" />

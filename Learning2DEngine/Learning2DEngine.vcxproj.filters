@@ -51,7 +51,7 @@
     <ClCompile Include="Learning2DEngine\Render\PostProcessEffect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Physics\Collision.cpp">
+    <ClCompile Include="Learning2DEngine\Physics\CollisionChecker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\System\Camera.cpp">
@@ -152,7 +152,7 @@
     <ClInclude Include="Learning2DEngine\Physics\CircleCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Physics\Collision.h">
+    <ClInclude Include="Learning2DEngine\Physics\CollisionChecker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h">
