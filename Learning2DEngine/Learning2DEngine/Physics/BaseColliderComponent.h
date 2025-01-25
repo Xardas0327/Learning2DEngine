@@ -30,19 +30,19 @@ namespace Learning2DEngine
                 bool isPassive,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), isPassive(isPassive), offset(offset), maskLayer(maskLayer)
+                : System::Component(gameObject), isPassive(isPassive), colliderOffset(offset), maskLayer(maskLayer)
             {
 
             }
         public:
-            glm::vec2 offset;
+            glm::vec2 colliderOffset;
 			int32_t maskLayer;
 
-            glm::vec2 GetCenter() const
+            glm::vec2 GetColliderCenter() const
             {
                 glm::vec2 position = gameObject->transform.position;
-                position.x += gameObject->transform.scale.x / 2 + offset.x;
-                position.y += gameObject->transform.scale.y / 2 + offset.y;
+                position.x += gameObject->transform.scale.x / 2 + colliderOffset.x;
+                position.y += gameObject->transform.scale.y / 2 + colliderOffset.y;
 
                 return position;
             }
@@ -52,7 +52,10 @@ namespace Learning2DEngine
                 return isPassive;
             }
 
-            virtual void OnCollision(Collision collision) = 0;
+            virtual void OnCollision(Collision collision)
+            {
+
+            }
         };
     }
 }
