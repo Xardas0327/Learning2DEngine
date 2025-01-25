@@ -99,11 +99,8 @@ namespace Learning2DEngine
 			removeableCircleColliders.clear();
 		}
 
-		void ColliderComponentHandler::DoWithAllComponents()
+		void ColliderComponentHandler::CheckCollisionWithActiveBox()
 		{
-			RefreshBoxColliders();
-			RefreshCircleColliders();
-
 			for (int i = 0; i < activeBoxColliders.size(); ++i)
 			{
 				bool isActive = true;
@@ -120,7 +117,7 @@ namespace Learning2DEngine
 						break;
 				}
 
-				if(!isActive)
+				if (!isActive)
 					continue;
 
 				// activeCircleColliders
@@ -172,6 +169,10 @@ namespace Learning2DEngine
 				}
 			}
 
+		}
+
+		void ColliderComponentHandler::CheckCollisionWithActiveCircle()
+		{
 			for (int i = 0; i < activeCircleColliders.size(); ++i)
 			{
 				// All box colliders were checked in the previous loop
@@ -224,6 +225,15 @@ namespace Learning2DEngine
 						break;
 				}
 			}
+		}
+
+		void ColliderComponentHandler::DoWithAllComponents()
+		{
+			RefreshBoxColliders();
+			RefreshCircleColliders();
+
+			CheckCollisionWithActiveBox();
+			CheckCollisionWithActiveCircle();
 		}
 
 	}

@@ -65,6 +65,8 @@ namespace Learning2DEngine
 
 			void RefreshBoxColliders();
 			void RefreshCircleColliders();
+			void CheckCollisionWithActiveBox();
+			void CheckCollisionWithActiveCircle();
 
 		public:
 			ColliderComponentHandler();
