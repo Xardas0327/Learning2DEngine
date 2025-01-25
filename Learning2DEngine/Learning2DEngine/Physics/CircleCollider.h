@@ -9,6 +9,8 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
+
+        // TODO: This class have to be removed
         /// <summary>
         /// The CircleCollider is really basic.
         /// It doesn't rotate, scale with the gameobject.

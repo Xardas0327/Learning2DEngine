@@ -10,6 +10,7 @@
 #include <Learning2DEngine/UI/Text2DLateRenderer.h>
 #include <Learning2DEngine/Physics/BoxCollider.h>
 #include <Learning2DEngine/Physics/CircleCollider.h>
+#include <Learning2DEngine/Physics/BoxColliderComponent.h>
 
 #include "Script/GameLevel.h"
 #include "Script/BackgroundController.h"
@@ -70,6 +71,7 @@ protected:
     void DoCollisions();
     bool CheckCollision(const Learning2DEngine::Physics::BoxCollider& box1, const Learning2DEngine::Physics::BoxCollider& box2);
     CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleCollider& ball, const Learning2DEngine::Physics::BoxCollider& box);
+    CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleCollider& ball, const Learning2DEngine::Physics::BoxColliderComponent& box);
     Direction VectorDirection(glm::vec2 target);
     void CheckBricksCollision();
     void CheckPowerUpCollision();

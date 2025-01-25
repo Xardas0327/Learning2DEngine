@@ -10,6 +10,7 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
+        // TODO: This class have to be removed
         class Collider : public virtual System::Component
         {
         protected:

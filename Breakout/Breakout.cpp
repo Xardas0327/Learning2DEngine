@@ -556,6 +556,18 @@ CollisionResult Breakout::CheckCollision(const CircleCollider& ball, const BoxCo
         return { false, Direction::UP, glm::vec2(0.0f, 0.0f) };
 }
 
+CollisionResult Breakout::CheckCollision(const CircleCollider& ball, const BoxColliderComponent& box)
+{
+    auto data = CollisionChecker::CheckCollision(ball, box);
+    if (data.isCollided)
+    {
+        glm::vec2 difference = data.edge2 - ball.GetCenter();
+        return { true, VectorDirection(difference), difference };
+    }
+    else
+        return { false, Direction::UP, glm::vec2(0.0f, 0.0f) };
+}
+
 void Breakout::CheckBricksCollision()
 {
     for (BrickController* box : levels[selectedLevel].bricks)

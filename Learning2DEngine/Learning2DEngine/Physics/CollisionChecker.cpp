@@ -100,6 +100,27 @@ namespace Learning2DEngine
             return data;
         }
 
+        CollisionData CollisionChecker::CheckCollision(const CircleCollider& circleCollider, const BaseBoxColliderComponent& boxCollider)
+        {
+            glm::vec2 circleCenter = circleCollider.GetCenter();
+            glm::vec2 boxCenter = boxCollider.GetColliderCenter();
+
+            glm::vec2 boxEdge = GetEdge(boxCollider, circleCenter - boxCenter);
+
+            glm::vec2 distance = boxEdge - circleCenter;
+
+            CollisionData data;
+            data.isCollided = glm::length(distance) <= circleCollider.radius;
+
+            if (data.isCollided)
+            {
+                data.edge1 = GetEdge(circleCollider, boxCenter - circleCenter);
+                data.edge2 = boxEdge;
+            }
+
+            return data;
+        }
+
         CollisionData CollisionChecker::CheckCollision(const BaseBoxColliderComponent& collider1, const BaseBoxColliderComponent& collider2)
         {
             glm::vec2 box1Center = collider1.GetColliderCenter();

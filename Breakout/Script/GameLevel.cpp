@@ -110,7 +110,7 @@ void GameLevel::CalcBrickSize(const Resolution& resolution)
 
     for (BrickController* brick : bricks)
     {
-        brick->gameObject->transform.position = glm::vec2(unit_width * brick->x, unit_height * brick->y);
+        brick->gameObject->transform.position = glm::vec2(unit_width * brick->mapCoorX, unit_height * brick->mapCoorY);
         brick->gameObject->transform.scale = scale;
         brick->collider->size = scale;
     }
