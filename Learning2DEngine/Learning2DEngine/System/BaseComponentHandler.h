@@ -22,7 +22,7 @@ namespace Learning2DEngine
 			{
 			}
 
-			virtual void RefreshComponents() override
+			virtual void RefreshComponents()
 			{
 				for (auto component : removeableComponents)
 				{

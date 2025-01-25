@@ -8,9 +8,6 @@ namespace Learning2DEngine
 	{
 		class IComponentHandler
 		{
-		protected:
-			virtual void RefreshComponents() = 0;
-
 		public:
 			virtual void Clear() = 0;
 
