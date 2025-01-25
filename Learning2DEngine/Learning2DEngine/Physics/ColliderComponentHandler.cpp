@@ -1,5 +1,4 @@
 #include "ColliderComponentHandler.h"
-#include "CollisionChecker.h"
 
 namespace Learning2DEngine
 {
@@ -105,7 +104,126 @@ namespace Learning2DEngine
 			RefreshBoxColliders();
 			RefreshCircleColliders();
 
-			//TODO: Implement collision detection
+			for (int i = 0; i < activeBoxColliders.size(); ++i)
+			{
+				bool isActive = true;
+				// activeBoxColliders
+				for (int j = i + 1; j < activeBoxColliders.size(); ++j)
+				{
+					isActive = DoCollision(
+						activeBoxColliders[i],
+						removeableBoxColliders,
+						activeBoxColliders[j],
+						removeableBoxColliders);
+
+					if (!isActive)
+						break;
+				}
+
+				if(!isActive)
+					continue;
+
+				// activeCircleColliders
+				for (int j = 0; j < activeCircleColliders.size(); ++j)
+				{
+
+					isActive = DoCollision(
+						activeBoxColliders[i],
+						removeableBoxColliders,
+						activeCircleColliders[j],
+						removeableCircleColliders);
+
+					if (!isActive)
+						break;
+				}
+
+				if (!isActive)
+					continue;
+
+				// passiveBoxColliders
+				for (int j = 0; j < passiveBoxColliders.size(); ++j)
+				{
+
+					isActive = DoCollision(
+						activeBoxColliders[i],
+						removeableBoxColliders,
+						passiveBoxColliders[j],
+						removeableBoxColliders);
+
+					if (!isActive)
+						break;
+				}
+
+				if (!isActive)
+					continue;
+
+				// passiveCircleColliders
+				for (int j = 0; j < passiveCircleColliders.size(); ++j)
+				{
+
+					isActive = DoCollision(
+						activeBoxColliders[i],
+						removeableBoxColliders,
+						passiveCircleColliders[j],
+						removeableCircleColliders);
+
+					if (!isActive)
+						break;
+				}
+			}
+
+			for (int i = 0; i < activeCircleColliders.size(); ++i)
+			{
+				// All box colliders were checked in the previous loop
+
+				bool isActive = true;
+				// activeCircleColliders
+				for (int j = i + 1; j < activeCircleColliders.size(); ++j)
+				{
+					isActive = DoCollision(
+						activeCircleColliders[i],
+						removeableCircleColliders,
+						activeCircleColliders[j],
+						removeableCircleColliders);
+
+					if (!isActive)
+						break;
+				}
+
+				if (!isActive)
+					continue;
+
+				// passiveBoxColliders
+				for (int j = 0; j < passiveBoxColliders.size(); ++j)
+				{
+
+					isActive = DoCollision(
+						activeCircleColliders[i],
+						removeableCircleColliders,
+						passiveBoxColliders[j],
+						removeableBoxColliders);
+
+					if (!isActive)
+						break;
+				}
+
+				if (!isActive)
+					continue;
+
+				// passiveCircleColliders
+				for (int j = 0; j < passiveCircleColliders.size(); ++j)
+				{
+
+					isActive = DoCollision(
+						activeCircleColliders[i],
+						removeableCircleColliders,
+						passiveCircleColliders[j],
+						removeableCircleColliders);
+
+					if (!isActive)
+						break;
+				}
+			}
 		}
 
 	}
