@@ -11,32 +11,34 @@ namespace Learning2DEngine
 {
 	namespace Physics
 	{
-		class ColliderComponentHandler : public System::IComponentHandler<BaseBoxColliderComponent>
+		class ColliderComponentHandler : public System::IComponentHandler
 		{
-			//It doesn't matter, that this class is only for BaseBoxColliderComponent or BaseCircleColliderComponent.
-			//We should use both of them.
-		/*protected:
-			std::vector<BaseRendererComponent*> components;
-			std::vector<BaseRendererComponent*> newComponents;
-			std::vector<BaseRendererComponent*> removeableComponents;
+		protected:
+			std::vector<BaseBoxColliderComponent*> activeBoxColliders;
+			std::vector<BaseBoxColliderComponent*> passiveBoxColliders;
+			std::vector<BaseBoxColliderComponent*> newBoxColliders;
+			std::vector<BaseBoxColliderComponent*> removeableBoxColliders;
 
-			bool isReorderNeeded;
+			std::vector<BaseCircleColliderComponent*> activeCircleColliders;
+			std::vector<BaseCircleColliderComponent*> passiveCircleColliders;
+			std::vector<BaseCircleColliderComponent*> newCircleColliders;
+			std::vector<BaseCircleColliderComponent*> removeableCircleColliders;
 
-			void ReorderComponents();
-			void RefreshComponents() override;
+
+			void RefreshBoxColliders();
+			void RefreshCircleColliders();
 
 		public:
 			ColliderComponentHandler();
 
-			void Add(BaseRendererComponent* component) override;
-			void Remove(BaseRendererComponent* component) override;
+			void Add(BaseBoxColliderComponent* collider);
+			void Remove(BaseBoxColliderComponent* collider);
+
+			void Add(BaseCircleColliderComponent* collider);
+			void Remove(BaseCircleColliderComponent* collider);
+
 			void Clear() override;
 			void DoWithAllComponents() override;
-
-			inline void NeedReorder()
-			{
-				isReorderNeeded = true;
-			}*/
 		};
 	}
 }

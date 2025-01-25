@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
 
 #include "IComponentHandler.h"
 
@@ -26,14 +27,13 @@ namespace Learning2DEngine
 			{
 				for (auto component : removeableComponents)
 				{
-					components.erase(std::remove(components.begin(), components.end(), component), components.end());
+					auto it = std::find(components.begin(), components.end(), component);
+					if (it != components.end())
+						components.erase(it);
 				}
 				removeableComponents.clear();
 
-				for (auto component : newComponents)
-				{
-					components.push_back(component);
-				}
+				components.insert(components.end(), newComponents.begin(), newComponents.end());
 				newComponents.clear();
 			}
 

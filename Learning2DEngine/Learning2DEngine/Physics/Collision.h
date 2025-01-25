@@ -17,8 +17,8 @@ namespace Learning2DEngine
 			System::GameObject* collidedObject;
 
             Collision(
-                glm::vec2 edge = glm::vec2(0.0f, 0.0f),
-                glm::vec2 edgeOfCollidedObject = glm::vec2(0.0f, 0.0f),
+                glm::vec2 edge,
+                glm::vec2 edgeOfCollidedObject,
                 System::GameObject* collidedObject)
                 : edge(edge), edgeOfCollidedObject(edgeOfCollidedObject),
                 collidedObject(collidedObject)
