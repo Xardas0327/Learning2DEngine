@@ -3,6 +3,9 @@
 #include "Singleton.h"
 #include "../Render/BaseRendererComponent.h"
 #include "../Render/RendererComponentHandler.h"
+#include "../Physics/ColliderComponentHandler.h"
+#include "../Physics/BaseBoxColliderComponent.h"
+#include "../Physics/BaseCircleColliderComponent.h"
 
 namespace Learning2DEngine
 {
@@ -15,9 +18,10 @@ namespace Learning2DEngine
         private:
 			Render::RendererComponentHandler rendererComponentHandler;
             Render::RendererComponentHandler lateRendererComponentHandler;
+            Physics::ColliderComponentHandler colliderComponentHandler;
 
             ComponentManager()
-				: rendererComponentHandler(), lateRendererComponentHandler()
+				: rendererComponentHandler(), lateRendererComponentHandler(), colliderComponentHandler()
             {
 
             }
@@ -66,10 +70,38 @@ namespace Learning2DEngine
                 lateRendererComponentHandler.DoWithAllComponents();
             }
 
+            //Collider
+
+            inline void AddToCollider(Physics::BaseBoxColliderComponent* component)
+            {
+                colliderComponentHandler.Add(component);
+            }
+
+            inline void AddToCollider(Physics::BaseCircleColliderComponent* component)
+            {
+                colliderComponentHandler.Add(component);
+            }
+
+            inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component)
+            {
+                colliderComponentHandler.Remove(component);
+            }
+
+            inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component)
+            {
+                colliderComponentHandler.Remove(component);
+            }
+
+            inline void CheckCollision()
+            {
+				colliderComponentHandler.DoWithAllComponents();
+            }
+
             void Clear()
             {
 				rendererComponentHandler.Clear();
 				lateRendererComponentHandler.Clear();
+				colliderComponentHandler.Clear();
             }
         };
     }
