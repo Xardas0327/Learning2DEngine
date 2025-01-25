@@ -13,6 +13,12 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
+        /// <summary>
+        /// The classes, which are inherited from BaseColliderComponent,
+        /// have to have a constructor, which first parameter is GameObject* for gameObject member.
+        /// Moreover, it is recommended, that the constructor, the Init() and Destroy() of the inherited class is protected
+        /// and only the GameObject can use them.
+        /// </summary>
         class BaseColliderComponent : public virtual System::Component
         {
         private:

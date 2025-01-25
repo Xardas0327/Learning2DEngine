@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "../System/GameObject.h"
-#include "BaseColliderComponent.h"
+#include "BaseCircleColliderComponent.h"
 
 namespace Learning2DEngine
 {
@@ -12,8 +12,9 @@ namespace Learning2DEngine
         /// <summary>
         /// The CircleColliderComponent is really basic.
         /// It doesn't rotate, scale with the gameobject.
+		/// Please check more information in the BaseColliderComponent and BaseCircleColliderComponent.
         /// </summary>
-        class CircleColliderComponent : public virtual BaseColliderComponent
+        class CircleColliderComponent : public virtual BaseCircleColliderComponent
         {
             friend class System::GameObject;
         protected:
@@ -23,7 +24,8 @@ namespace Learning2DEngine
                 float radius,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), BaseColliderComponent(gameObject, isPassive, offset, maskLayer), radius(radius)
+                : System::Component(gameObject), BaseColliderComponent(gameObject, isPassive, offset, maskLayer),
+				BaseCircleColliderComponent(gameObject, isPassive, radius, offset, maskLayer)
             {
 
             }
@@ -43,8 +45,6 @@ namespace Learning2DEngine
             {
                 //System::ComponentManager::GetInstance().Remove(this);
             }
-        public:
-            float radius;
         };
     }
 }

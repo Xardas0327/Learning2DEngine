@@ -182,12 +182,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\ParticleSimulator\BasicParticleSettings.h" />
+    <ClInclude Include="Learning2DEngine\Physics\BaseBoxColliderComponent.h" />
+    <ClInclude Include="Learning2DEngine\Physics\BaseCircleColliderComponent.h" />
     <ClInclude Include="Learning2DEngine\Physics\BoxCollider.h" />
     <ClInclude Include="Learning2DEngine\Physics\BoxColliderComponent.h" />
     <ClInclude Include="Learning2DEngine\Physics\CircleCollider.h" />
     <ClInclude Include="Learning2DEngine\Physics\CircleColliderComponent.h" />
     <ClInclude Include="Learning2DEngine\Physics\Collider.h" />
     <ClInclude Include="Learning2DEngine\Physics\BaseColliderComponent.h" />
+    <ClInclude Include="Learning2DEngine\Physics\ColliderComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\Physics\Collision.h" />
     <ClInclude Include="Learning2DEngine\Physics\CollisionChecker.h" />
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h" />
@@ -206,6 +209,7 @@
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h" />
+    <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\BaseUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\Camera.h" />
     <ClInclude Include="Learning2DEngine\System\Component.h" />

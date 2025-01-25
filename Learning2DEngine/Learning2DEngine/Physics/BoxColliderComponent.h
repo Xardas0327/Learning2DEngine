@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "../System/GameObject.h"
-#include "BaseColliderComponent.h"
+#include "BaseBoxColliderComponent.h"
 
 namespace Learning2DEngine
 {
@@ -12,8 +12,9 @@ namespace Learning2DEngine
         /// <summary>
         /// The BoxColliderComponent is really basic.
         /// It doesn't rotate, scale with the gameobject.
+		/// Please check more information in the BaseColliderComponent and BaseBoxColliderComponent.
         /// </summary>
-        class BoxColliderComponent : public virtual BaseColliderComponent
+        class BoxColliderComponent : public virtual BaseBoxColliderComponent
         {
             friend class System::GameObject;
         protected:
@@ -23,7 +24,8 @@ namespace Learning2DEngine
                 glm::vec2 size,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-				: System::Component(gameObject), BaseColliderComponent(gameObject, isPassive, offset, maskLayer), size(size)
+				: System::Component(gameObject), BaseColliderComponent(gameObject, isPassive, offset, maskLayer),
+				BaseBoxColliderComponent(gameObject, isPassive, size, offset, maskLayer)
             {
 
             }
@@ -43,8 +45,6 @@ namespace Learning2DEngine
             {
                 //System::ComponentManager::GetInstance().Remove(this);
             }
-        public:
-            glm::vec2 size;
         };
     }
 }
