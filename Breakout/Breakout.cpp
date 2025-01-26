@@ -432,7 +432,7 @@ void Breakout::SpawnPowerUps(glm::vec2 position)
             PowerUpController::CreatePowerUp(PowerUpConfuse, position, powerUpActivation)
         );
     }
-    else if (number > 7 && number < 100)
+    else if (number > 7 && number < 12)
     {
         powerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpChaos, position, powerUpActivation)
