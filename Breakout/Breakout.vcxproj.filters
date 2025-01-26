@@ -57,6 +57,18 @@
     <ClInclude Include="Script\PowerUpActivationEventItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Script\BallHitPlayerAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\BallHitPlayerEventItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\BallHitBrickAction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\BallHitBrickEventItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Script\BallController.cpp">

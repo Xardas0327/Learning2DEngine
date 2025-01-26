@@ -2,17 +2,17 @@
 
 #include <glm/glm.hpp>
 
-enum Direction {
-    UP,
-    RIGHT,
-    DOWN,
-    LEFT
+enum OldDirection {
+    OLD_UP,
+    OLD_RIGHT,
+    OLD_DOWN,
+    OLD_LEFT
 };
 
 struct CollisionResult
 {
 	bool isCollisoned;
-	Direction direction;
+    OldDirection direction;
     // difference vector center - closest point
     glm::vec2 differenceVector;
 };

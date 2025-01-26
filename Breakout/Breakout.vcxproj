@@ -177,6 +177,10 @@
   <ItemGroup>
     <ClInclude Include="Script\BackgroundController.h" />
     <ClInclude Include="Script\BallController.h" />
+    <ClInclude Include="Script\BallHitBrickAction.h" />
+    <ClInclude Include="Script\BallHitBrickEventItem.h" />
+    <ClInclude Include="Script\BallHitPlayerAction.h" />
+    <ClInclude Include="Script\BallHitPlayerEventItem.h" />
     <ClInclude Include="Script\BallParticleSettings.h" />
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="Script\BrickController.h" />

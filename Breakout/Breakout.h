@@ -11,6 +11,7 @@
 #include <Learning2DEngine/Physics/BoxCollider.h>
 #include <Learning2DEngine/Physics/CircleCollider.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
+#include <Learning2DEngine/Physics/CircleColliderComponent.h>
 
 #include "Script/GameLevel.h"
 #include "Script/BackgroundController.h"
@@ -22,6 +23,10 @@
 #include "Script/PowerUpActivation.h"
 #include "Script/PowerUpActivationEventItem.h"
 #include "Script/CollisionResult.h"
+#include "Script/BallHitPlayerAction.h"
+#include "Script/BallHitPlayerEventItem.h"
+#include "Script/BallHitBrickAction.h"
+#include "Script/BallHitBrickEventItem.h"
 
 enum GameState {
     GAME_ACTIVE,
@@ -29,7 +34,10 @@ enum GameState {
     GAME_WIN
 };
 
-class Breakout : public virtual Learning2DEngine::System::Game, public virtual PowerUpActivation
+class Breakout : public virtual Learning2DEngine::System::Game,
+                 public virtual PowerUpActivation,
+                 public virtual BallHitPlayerAction,
+                 public virtual BallHitBrickAction
 {
 private:
     GameState state;
@@ -44,7 +52,9 @@ private:
     const Learning2DEngine::UI::FontSizePair fontSizePair;
     PostProcessData* postProcessData;
     float shakeTime;
-    PowerUpActivationEventItem powerUpActivation;
+    PowerUpActivationEventItem powerUpActivationEventItem;
+    BallHitPlayerEventItem ballHitPlayerEventItem;
+    BallHitBrickEventItem ballHitBrickEventItem;
 
     Learning2DEngine::UI::Text2DLateRenderer* liveText;
     Learning2DEngine::UI::Text2DLateRenderer* startText;
@@ -75,9 +85,8 @@ protected:
     bool CheckCollision(const Learning2DEngine::Physics::BoxCollider& box1, const Learning2DEngine::Physics::BoxColliderComponent& box2);
     CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleCollider& ball, const Learning2DEngine::Physics::BoxCollider& box);
     CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleCollider& ball, const Learning2DEngine::Physics::BoxColliderComponent& box);
-    Direction VectorDirection(glm::vec2 target);
-    void CheckBricksCollision();
-    void CheckBallPlayerCollision();
+    CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleColliderComponent& ball, const Learning2DEngine::Physics::BoxColliderComponent& box);
+    OldDirection VectorDirection(glm::vec2 target);
 public:
     Breakout();
     ~Breakout();
@@ -85,4 +94,6 @@ public:
     void Init() override;
     void Terminate() override;
     void ActivatePowerUp(PowerUpType powerUp) override;
+    void BallHitPlayer() override;
+    void BallHitBrick(BrickController* brick) override;
 };
