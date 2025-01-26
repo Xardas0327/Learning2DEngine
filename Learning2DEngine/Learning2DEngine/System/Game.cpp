@@ -79,6 +79,7 @@ namespace Learning2DEngine
 
                     UpdateKeyboardMouseEvents();
                     Update();
+                    componentManager.CheckCollision();
 
                     renderManager.ClearWindow();
                     bool usePPE = isPostProcessEffectActive && isPostProcessEffectUsed;

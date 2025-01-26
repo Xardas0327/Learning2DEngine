@@ -380,7 +380,7 @@ void Breakout::ActivatePowerUp(PowerUpType powerUpType)
         break;
     case PowerUpType::PAD_SIZE_INCREASE:
         playerController->gameObject->transform.scale.x += 50;
-        playerController->collider->size = playerController->gameObject->transform.scale;
+        playerController->collider->colliderSize = playerController->gameObject->transform.scale;
         break;
     case PowerUpType::CONFUSE:
         // It will be activate only if chaos wasn't already active
@@ -454,6 +454,9 @@ void Breakout::UpdatePowerUps()
 {
     for (PowerUpController* powerUp : powerUps)
     {
+        if (powerUp->gameObject->transform.position.y >= Game::mainCamera.GetResolution().GetHeight())
+            powerUp->gameObject->isActive = false;
+
         powerUp->rigidbody->Update();
         if (powerUp->activated)
         {
@@ -626,26 +629,6 @@ void Breakout::CheckBricksCollision()
     }
 }
 
-void Breakout::CheckPowerUpCollision()
-{
-    for (PowerUpController* powerUp : powerUps)
-    {
-        if (powerUp->gameObject->isActive)
-        {
-            if (powerUp->gameObject->transform.position.y >= Game::mainCamera.GetResolution().GetHeight())
-                powerUp->gameObject->isActive = false;
-
-            auto collision = CollisionChecker::CheckCollision(*playerController->collider, *powerUp);
-
-            if (collision.isCollided)
-            {
-                // TODO Remove this line
-                powerUp->OnCollision({ collision.edge2, collision.edge1, playerController->gameObject });
-            }
-        }
-    }
-}
-
 void Breakout::CheckBallPlayerCollision()
 {
     CollisionResult result = CheckCollision(*ballController->collider, *playerController->collider);
@@ -675,6 +658,5 @@ void Breakout::CheckBallPlayerCollision()
 void Breakout::DoCollisions()
 {
     CheckBricksCollision();
-    CheckPowerUpCollision();
     CheckBallPlayerCollision();
 }

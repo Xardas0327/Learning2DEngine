@@ -77,7 +77,6 @@ protected:
     CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleCollider& ball, const Learning2DEngine::Physics::BoxColliderComponent& box);
     Direction VectorDirection(glm::vec2 target);
     void CheckBricksCollision();
-    void CheckPowerUpCollision();
     void CheckBallPlayerCollision();
 public:
     Breakout();
