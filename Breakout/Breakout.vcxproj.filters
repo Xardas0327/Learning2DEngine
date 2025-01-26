@@ -48,9 +48,6 @@
     <ClInclude Include="Script\PlayerController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Script\CollisionResult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Script\PowerUpActivation.h">
       <Filter>Header Files</Filter>
     </ClInclude>

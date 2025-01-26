@@ -349,7 +349,6 @@ void Breakout::Update()
     ballController->Move();
     ballController->particleSystem->Update();
 
-    DoCollisions();
     UpdatePowerUps();
     ShakeScreen();
     
@@ -535,74 +534,6 @@ void Breakout::ClearPowerUps()
     powerUps.clear();
 }
 
-bool Breakout::CheckCollision(const BoxCollider& box1, const BoxCollider& box2)
-{
-    return CollisionChecker::CheckCollision(box1, box2).isCollided;
-}
-
-bool Breakout::CheckCollision(const BoxCollider& box1, const BoxColliderComponent& box2)
-{
-    return CollisionChecker::CheckCollision(box1, box2).isCollided;
-}
-
-OldDirection Breakout::VectorDirection(glm::vec2 target)
-{
-    glm::vec2 compass[] = {
-        glm::vec2(0.0f, 1.0f),	// up
-        glm::vec2(1.0f, 0.0f),	// right
-        glm::vec2(0.0f, -1.0f),	// down
-        glm::vec2(-1.0f, 0.0f)	// left
-    };
-    float max = 0.0f;
-    unsigned int best_match = -1;
-    for (unsigned int i = 0; i < 4; i++)
-    {
-        float dot_product = glm::dot(glm::normalize(target), compass[i]);
-        if (dot_product > max)
-        {
-            max = dot_product;
-            best_match = i;
-        }
-    }
-    return (OldDirection)best_match;
-}
-
-CollisionResult Breakout::CheckCollision(const CircleCollider& ball, const BoxCollider& box)
-{
-    auto data = CollisionChecker::CheckCollision(ball, box);
-    if (data.isCollided)
-    {
-        glm::vec2 difference = data.edge2 - ball.GetCenter();
-        return { true, VectorDirection(difference), difference };
-    }
-    else
-        return { false, OldDirection::OLD_UP, glm::vec2(0.0f, 0.0f) };
-}
-
-CollisionResult Breakout::CheckCollision(const CircleCollider& ball, const BoxColliderComponent& box)
-{
-    auto data = CollisionChecker::CheckCollision(ball, box);
-    if (data.isCollided)
-    {
-        glm::vec2 difference = data.edge2 - ball.GetCenter();
-        return { true, VectorDirection(difference), difference };
-    }
-    else
-        return { false, OldDirection::OLD_UP, glm::vec2(0.0f, 0.0f) };
-}
-
-CollisionResult Breakout::CheckCollision(const CircleColliderComponent& ball, const BoxColliderComponent& box)
-{
-    auto data = CollisionChecker::CheckCollision(ball, box);
-    if (data.isCollided)
-    {
-        glm::vec2 difference = data.edge2 - ball.GetColliderCenter();
-        return { true, VectorDirection(difference), difference };
-    }
-    else
-        return { false, OldDirection::OLD_UP, glm::vec2(0.0f, 0.0f) };
-}
-
 void Breakout::BallHitPlayer()
 {
     soundEngine->play2D("Assets/Sounds/bleep.wav", false);
@@ -622,8 +553,4 @@ void Breakout::BallHitBrick(BrickController* brick)
         postProcessData->shake = true;
         soundEngine->play2D("Assets/Sounds/solid.wav", false);
     }
-}
-
-void Breakout::DoCollisions()
-{
 }

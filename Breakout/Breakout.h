@@ -8,8 +8,6 @@
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/UI/Text2DLateRenderer.h>
-#include <Learning2DEngine/Physics/BoxCollider.h>
-#include <Learning2DEngine/Physics/CircleCollider.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 #include <Learning2DEngine/Physics/CircleColliderComponent.h>
 
@@ -22,7 +20,6 @@
 #include "Script/PowerUpType.h"
 #include "Script/PowerUpActivation.h"
 #include "Script/PowerUpActivationEventItem.h"
-#include "Script/CollisionResult.h"
 #include "Script/BallHitPlayerAction.h"
 #include "Script/BallHitPlayerEventItem.h"
 #include "Script/BallHitBrickAction.h"
@@ -80,13 +77,6 @@ protected:
     void UpdatePowerUps();
     void ClearPowerUps();
 
-    void DoCollisions();
-    bool CheckCollision(const Learning2DEngine::Physics::BoxCollider& box1, const Learning2DEngine::Physics::BoxCollider& box2);
-    bool CheckCollision(const Learning2DEngine::Physics::BoxCollider& box1, const Learning2DEngine::Physics::BoxColliderComponent& box2);
-    CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleCollider& ball, const Learning2DEngine::Physics::BoxCollider& box);
-    CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleCollider& ball, const Learning2DEngine::Physics::BoxColliderComponent& box);
-    CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleColliderComponent& ball, const Learning2DEngine::Physics::BoxColliderComponent& box);
-    OldDirection VectorDirection(glm::vec2 target);
 public:
     Breakout();
     ~Breakout();
