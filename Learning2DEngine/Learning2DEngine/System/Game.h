@@ -26,6 +26,7 @@ namespace Learning2DEngine
             Calculate deltaTime
             Refresh Keyboard and Mouse events
             virtual Update()
+            Check Collisions
             Clear Window to default color
             Render (with MSAA and PostProcessEffect, if they are enabled)
             LateRender (without any effect)
