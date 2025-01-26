@@ -23,12 +23,12 @@ namespace Learning2DEngine
                 glm::vec2 size,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), BaseColliderComponent(gameObject, isPassive, offset, maskLayer), size(size)
+                : System::Component(gameObject), BaseColliderComponent(gameObject, isPassive, offset, maskLayer), colliderSize(size)
             {
 
             }
         public:
-            glm::vec2 size;
+            glm::vec2 colliderSize;
         };
     }
 }

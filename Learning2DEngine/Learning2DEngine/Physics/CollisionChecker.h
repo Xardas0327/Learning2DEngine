@@ -34,6 +34,8 @@ namespace Learning2DEngine
             // TODO: This function have to be removed
             static CollisionData CheckCollision(const CircleCollider& circleCollider, const BoxCollider& boxCollider);
             // TODO: This function have to be removed
+            static CollisionData CheckCollision(const BoxCollider& collider1, const BaseBoxColliderComponent& collider2);
+            // TODO: This function have to be removed
             static CollisionData CheckCollision(const CircleCollider& circleCollider, const BaseBoxColliderComponent& boxCollider);
 
             static CollisionData CheckCollision(const BaseBoxColliderComponent& collider1, const BaseBoxColliderComponent& collider2);

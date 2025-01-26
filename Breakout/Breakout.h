@@ -70,6 +70,7 @@ protected:
 
     void DoCollisions();
     bool CheckCollision(const Learning2DEngine::Physics::BoxCollider& box1, const Learning2DEngine::Physics::BoxCollider& box2);
+    bool CheckCollision(const Learning2DEngine::Physics::BoxCollider& box1, const Learning2DEngine::Physics::BoxColliderComponent& box2);
     CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleCollider& ball, const Learning2DEngine::Physics::BoxCollider& box);
     CollisionResult CheckCollision(const Learning2DEngine::Physics::CircleCollider& ball, const Learning2DEngine::Physics::BoxColliderComponent& box);
     Direction VectorDirection(glm::vec2 target);

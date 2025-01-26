@@ -8,7 +8,7 @@
 #include <Learning2DEngine/Render/SpriteRenderer.h>
 #include <Learning2DEngine/Render/Texture2D.h>
 #include <Learning2DEngine/Physics/Rigidbody.h>
-#include <Learning2DEngine/Physics/BoxCollider.h>
+#include <Learning2DEngine/Physics/BoxColliderComponent.h>
 
 #include "PowerUpType.h"
 #include "PowerUpObject.h"
@@ -34,7 +34,7 @@ protected:
         using namespace Learning2DEngine::Physics;
 
         rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2>(VELOCITY);
-        collider = gameObject->AddComponent<BoxCollider, glm::vec2>(gameObject->transform.scale);
+        collider = gameObject->AddComponent<BoxColliderComponent, bool, glm::vec2>(true, gameObject->transform.scale);
         renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&, int, glm::vec3>(
             ResourceManager::GetInstance().GetTexture(powerUpObject.textureId),
             1,
@@ -46,7 +46,7 @@ protected:
     void Destroy() override {};
 public:
     Learning2DEngine::Physics::Rigidbody* rigidbody;
-    Learning2DEngine::Physics::BoxCollider* collider;
+    Learning2DEngine::Physics::BoxColliderComponent* collider;
     Learning2DEngine::Render::SpriteRenderer* renderer;
     const PowerUpObject powerUpObject;
     float actualDuration;

@@ -522,6 +522,11 @@ bool Breakout::CheckCollision(const BoxCollider& box1, const BoxCollider& box2)
     return CollisionChecker::CheckCollision(box1, box2).isCollided;
 }
 
+bool Breakout::CheckCollision(const BoxCollider& box1, const BoxColliderComponent& box2)
+{
+    return CollisionChecker::CheckCollision(box1, box2).isCollided;
+}
+
 Direction Breakout::VectorDirection(glm::vec2 target)
 {
     glm::vec2 compass[] = {

@@ -23,12 +23,12 @@ namespace Learning2DEngine
                 float radius,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), BaseColliderComponent(gameObject, isPassive, offset, maskLayer), radius(radius)
+                : System::Component(gameObject), BaseColliderComponent(gameObject, isPassive, offset, maskLayer), colliderRadius(radius)
             {
 
             }
         public:
-            float radius;
+            float colliderRadius;
         };
     }
 }
