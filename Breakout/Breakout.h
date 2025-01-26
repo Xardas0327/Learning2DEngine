@@ -19,6 +19,8 @@
 #include "Script/PostProcessData.h"
 #include "Script/PowerUpController.h"
 #include "Script/PowerUpType.h"
+#include "Script/PowerUpActivation.h"
+#include "Script/PowerUpActivationEventItem.h"
 #include "Script/CollisionResult.h"
 
 enum GameState {
@@ -27,7 +29,7 @@ enum GameState {
     GAME_WIN
 };
 
-class Breakout : public virtual Learning2DEngine::System::Game
+class Breakout : public virtual Learning2DEngine::System::Game, public virtual PowerUpActivation
 {
 private:
     GameState state;
@@ -42,6 +44,7 @@ private:
     const Learning2DEngine::UI::FontSizePair fontSizePair;
     PostProcessData* postProcessData;
     float shakeTime;
+    PowerUpActivationEventItem powerUpActivation;
 
     Learning2DEngine::UI::Text2DLateRenderer* liveText;
     Learning2DEngine::UI::Text2DLateRenderer* startText;
@@ -63,7 +66,6 @@ protected:
     void ResetPlayer();
 
     void SpawnPowerUps(glm::vec2 position);
-    void ActivatePowerUp(PowerUpController& powerUp);
     bool IsPowerUpActive(const PowerUpType& type);
     void UpdatePowerUps();
     void ClearPowerUps();
@@ -83,4 +85,5 @@ public:
 
     void Init() override;
     void Terminate() override;
+    void ActivatePowerUp(PowerUpType powerUp) override;
 };

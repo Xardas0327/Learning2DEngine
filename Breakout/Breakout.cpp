@@ -19,7 +19,8 @@ Breakout::Breakout() :
     state(GameState::GAME_MENU), powerUps(), levels(), selectedLevel(0), lives(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
     soundEngine(nullptr), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), postProcessData(nullptr),
-    shakeTime(0.0f), liveText(nullptr), startText(nullptr), levelSelectorText(nullptr), winText(nullptr), retryText(nullptr)
+    shakeTime(0.0f), liveText(nullptr), startText(nullptr), levelSelectorText(nullptr), winText(nullptr), retryText(nullptr),
+    powerUpActivation(this)
 {
 
 }
@@ -362,9 +363,9 @@ void Breakout::ResetPlayer()
     postProcessData->confuse = false;
 }
 
-void Breakout::ActivatePowerUp(PowerUpController& powerUp)
+void Breakout::ActivatePowerUp(PowerUpType powerUpType)
 {
-    switch (powerUp.powerUpObject.type)
+    switch (powerUpType)
     {
     case PowerUpType::SPEED:
         ballController->rigidbody->velocity *= 1.2;
@@ -394,6 +395,8 @@ void Breakout::ActivatePowerUp(PowerUpController& powerUp)
     default:
         break;
     }
+
+    soundEngine->play2D("Assets/Sounds/powerup.wav", false);
 }
 
 void Breakout::SpawnPowerUps(glm::vec2 position)
@@ -402,37 +405,37 @@ void Breakout::SpawnPowerUps(glm::vec2 position)
     if (number == 0)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpSpeed, position)
+            PowerUpController::CreatePowerUp(PowerUpSpeed, position, powerUpActivation)
         );
     }
     else if (number == 1)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpSticky, position)
+            PowerUpController::CreatePowerUp(PowerUpSticky, position, powerUpActivation)
         );
     }
     else if (number == 2)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpPassThrough, position)
+            PowerUpController::CreatePowerUp(PowerUpPassThrough, position, powerUpActivation)
         );
     }
     else if (number == 3)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpPadSizeIncrease, position)
+            PowerUpController::CreatePowerUp(PowerUpPadSizeIncrease, position, powerUpActivation)
         );
     }
     else if (number > 3 && number < 8)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpConfuse, position)
+            PowerUpController::CreatePowerUp(PowerUpConfuse, position, powerUpActivation)
         );
     }
-    else if (number > 7 && number < 12)
+    else if (number > 7 && number < 100)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpChaos, position)
+            PowerUpController::CreatePowerUp(PowerUpChaos, position, powerUpActivation)
         );
     }
 }
@@ -632,12 +635,12 @@ void Breakout::CheckPowerUpCollision()
             if (powerUp->gameObject->transform.position.y >= Game::mainCamera.GetResolution().GetHeight())
                 powerUp->gameObject->isActive = false;
 
-            if (CheckCollision(*playerController->collider, *powerUp->collider))
+            auto collision = CollisionChecker::CheckCollision(*playerController->collider, *powerUp);
+
+            if (collision.isCollided)
             {
-                ActivatePowerUp(*powerUp);
-                powerUp->gameObject->isActive = false;
-                powerUp->activated = true;
-                soundEngine->play2D("Assets/Sounds/powerup.wav", false);
+                // TODO Remove this line
+                powerUp->OnCollision({ collision.edge2, collision.edge1, playerController->gameObject });
             }
         }
     }
