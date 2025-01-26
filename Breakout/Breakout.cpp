@@ -349,6 +349,7 @@ void Breakout::Update()
     ballController->Move();
     ballController->particleSystem->Update();
 
+    //DoCollisions();
     UpdatePowerUps();
     ShakeScreen();
     
