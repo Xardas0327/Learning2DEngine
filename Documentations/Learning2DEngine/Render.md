@@ -422,7 +422,7 @@ One for `RendererComponentHandler` and one for `LateRendererComponentHandler`.
 
 ### Header:
 ```cpp
-class RendererComponentHandler : public System::BaseComponentHandler<BaseRendererComponent>
+class RendererComponentHandler : public virtual System::BaseComponentHandler<BaseRendererComponent>
 {...}
 ```
 

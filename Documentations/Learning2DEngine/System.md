@@ -5,6 +5,7 @@
 - [ComponentManager](System.md#componentmanager)
 - [Game](System.md#game)
 - [GameObject](System.md#gameobject)
+- [IComponentHandler](System.md#icomponenthandler)
 - [IKeyboardMouseRefresher](System.md#ikeyboardmouserefresher)
 - [InputStatus](System.md#inputstatus)
 - [Random](System.md#random)
@@ -18,13 +19,13 @@
 [BaseComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/BaseComponentHandler.h)  
 
 ### Description:
-It is a base class for component handlers.  
+It is a simple class for most component handlers.  
 Please check more info about the `ComponentManager`.
 
 ### Header:
 ```cpp
 template<class T>
-class BaseComponentHandler
+class BaseComponentHandler : public IComponentHandler
 {...}
 ```
 
@@ -72,7 +73,7 @@ virtual void Remove(T* component);
 
 **Clear**  
 ```cpp
-virtual void Clear();
+virtual void Clear() override;
 ```
 
 ##
@@ -208,7 +209,8 @@ void SetResolution(const Render::Resolution& resolution);
 
 ### Description:
 It is a base class for every component in the Engine.
-Some base components are inherited from this class like `BaseUpdaterComponent` or `BaseRendererComponent`.   
+Some base components are inherited from this class like `BaseUpdaterComponent`,
+`BaseRendererComponent` or `BaseColliderComponent`.   
 Fistly, it looks a bad structure, because there is a cross reference.
 A `Component` has reference about its `GameObject` and the `GameObject` has 
 reference about that `Component`. 
@@ -274,7 +276,7 @@ virtual ~Component();
 
 ### Description:
 The `ComponentManager` manages the `Components` in the Engine by component handlers.
-The `Game` calls its Render() and LateRender() functions in every frame.
+The `Game` calls its CheckCollision(), Render() and LateRender() functions in every frame.
 
 ### Header:
 ```cpp
@@ -292,6 +294,11 @@ Render::RendererComponentHandler rendererComponentHandler;
 **lateRendererComponentHandler**  
 ```cpp
 Render::RendererComponentHandler lateRendererComponentHandler;
+```
+
+**colliderComponentHandler**  
+```cpp
+Physics::ColliderComponentHandler colliderComponentHandler;
 ```
 
 ### Functions:
@@ -324,7 +331,7 @@ inline void Render();
 
 **AddToLateRenderer**  
 ```cpp
-inline void AddToLateRenderer(Render::BaseRendererComponent* component)
+inline void AddToLateRenderer(Render::BaseRendererComponent* component);
 ```
 
 **RemoveFromLateRenderer**  
@@ -340,6 +347,27 @@ inline void NeedReorderLateRenderers();
 **LateRender**  
 ```cpp
 inline void LateRender();
+```
+
+**AddToCollider**  
+```cpp
+inline void AddToCollider(Physics::BaseBoxColliderComponent* component);
+```
+```cpp
+inline void AddToCollider(Physics::BaseCircleColliderComponent* component);
+```
+
+**RemoveFromCollider**  
+```cpp
+inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component);
+```
+```cpp
+inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component);
+```
+
+**CheckCollision**  
+```cpp
+inline void CheckCollision();
 ```
 
 **Clear**  
@@ -363,10 +391,11 @@ The Function order in the Run() (in a frame):
 1. Calculate deltaTime
 2. Refresh Keyboard and Mouse events
 3. virtual Update()
-4. Clear Window to default color
-5. Render (with MSAA and PostProcessEffect, if they are enabled)
-6. LateRender (without any effect)
-7. Update Window
+4. Check Collisions
+5. Clear Window to default color
+6. Render (with MSAA and PostProcessEffect, if they are enabled)
+7. LateRender (without any effect)
+8. Update Window
 
 ### Header:
 ```cpp
@@ -735,6 +764,38 @@ static void Destroy(GameObject* gameObject);
 ```cpp
 static void Destroy(Component* component);
 ```
+
+##
+## IComponentHandler
+### Source Code:
+[IComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/IComponentHandler.h)
+
+### Description:
+It is a little interface, which contains the two main functions of the component handlers.
+
+### Header:
+```cpp
+class IComponentHandler
+{...}
+```
+
+### Functions:
+**Public:**  
+**~IComponentHandler**  
+```cpp
+virtual ~IComponentHandler();
+```
+
+**Clear**  
+```cpp
+virtual void Clear() = 0;
+```
+
+**DoWithAllComponents**  
+```cpp
+virtual void DoWithAllComponents() = 0;
+```
+
 
 ##
 ## IKeyboardMouseRefresher

@@ -9,6 +9,8 @@ namespace Learning2DEngine
 		class IComponentHandler
 		{
 		public:
+			virtual ~IComponentHandler() {}
+
 			virtual void Clear() = 0;
 
 			virtual void DoWithAllComponents() = 0;
