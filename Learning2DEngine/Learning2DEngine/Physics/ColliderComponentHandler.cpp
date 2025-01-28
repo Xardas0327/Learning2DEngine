@@ -26,7 +26,6 @@ namespace Learning2DEngine
 						passiveBoxColliders.erase(it);
 				}
 			}
-			removeableBoxColliders.clear();
 
 			for (auto collider : newBoxColliders)
 			{
@@ -35,6 +34,8 @@ namespace Learning2DEngine
 				else
 					activeBoxColliders.push_back(collider);
 			}
+
+			removeableBoxColliders.clear();
 			newBoxColliders.clear();
 		}
 
@@ -73,7 +74,12 @@ namespace Learning2DEngine
 
 		void ColliderComponentHandler::Remove(BaseBoxColliderComponent* component)
 		{
-			removeableBoxColliders.push_back(component);
+			//Check that it is not a new one.
+			auto it = std::find(newBoxColliders.begin(), newBoxColliders.end(), component);
+			if (it != newBoxColliders.end())
+				newBoxColliders.erase(it);
+			else
+				removeableBoxColliders.push_back(component);
 		}
 
 		void ColliderComponentHandler::Add(BaseCircleColliderComponent* component)
@@ -83,7 +89,12 @@ namespace Learning2DEngine
 
 		void ColliderComponentHandler::Remove(BaseCircleColliderComponent* component)
 		{
-			removeableCircleColliders.push_back(component);
+			//Check that it is not a new one.
+			auto it = std::find(newCircleColliders.begin(), newCircleColliders.end(), component);
+			if (it != newCircleColliders.end())
+				newCircleColliders.erase(it);
+			else
+				removeableCircleColliders.push_back(component);
 		}
 
 		void ColliderComponentHandler::Clear()

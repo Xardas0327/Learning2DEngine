@@ -45,7 +45,12 @@ namespace Learning2DEngine
 
 			virtual void Remove(T* component)
 			{
-				removeableComponents.push_back(component);
+				//Check that it is not a new one.
+				auto it = std::find(newComponents.begin(), newComponents.end(), component);
+				if (it != newComponents.end())
+					newComponents.erase(it);
+				else
+					removeableComponents.push_back(component);
 			}
 
 			virtual void Clear() override
