@@ -5,6 +5,7 @@ This namespace really simple. It has only some really basic functionality.
 - [BoxCollider](Physics.md#boxcollider)
 - [CircleCollider](Physics.md#circlecollider)
 - [Collision](Physics.md#collision)
+- [CollisionChecker](Physics.md#collisionchecker)
 - [CollisionData](Physics.md#collisiondata)
 - [Rigidbody](Physics.md#rigidbody)
 
@@ -74,7 +75,8 @@ inline bool IsPassive() const;
 ```
 
 **OnCollision**  
-If 2 colliders trigger each other, Their OnCollision function will be called.
+If 2 colliders trigger each other, their OnCollision function will be called.  
+It does nothing by default.
 ```cpp
 virtual void OnCollision(Collision collision);
 ```
@@ -144,7 +146,40 @@ CircleCollider(System::GameObject* gameObject, float radius, glm::vec2 offset = 
 [Collision.h](../../Learning2DEngine/Learning2DEngine/Physics/Collision.h)
 
 ### Description:
-It is a static class, which has functions to detect the collisions.
+When 2 object is collided, the `ColliderComponentHandler` calls the objects' OnCollision
+ with this type of class.  
+ The edges can useful, if the developer want to calculate rebound or similar.
+
+### Header:
+```cpp
+struct Collision
+{
+    // The closest point of current object to collided object
+    glm::vec2 edge;
+    // The closest point of collided object to current object
+    glm::vec2 edgeOfCollidedObject;
+    System::GameObject* collidedObject;
+
+    Collision(
+        glm::vec2 edge,
+        glm::vec2 edgeOfCollidedObject,
+        System::GameObject* collidedObject)
+        : edge(edge), edgeOfCollidedObject(edgeOfCollidedObject),
+        collidedObject(collidedObject)
+    {
+
+    }
+};
+```
+
+##
+## CollisionChecker
+### Source Code:
+[CollisionChecker.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionChecker.h)
+
+### Description:
+It is a static class, which has functions to detect the collisions.  
+The `ColliderComponentHandler` use it to check every collision.
 
 ### Header:
 ```cpp
@@ -162,26 +197,30 @@ Collision();
 **GetEdge**  
 It returns the closest point of collider object from other object.
 ```cpp
-static glm::vec2 GetEdge(const BoxCollider& boxCollider, glm::vec2 distanceBetweenCenters);
+static glm::vec2 GetEdge(const BaseBoxColliderComponent& boxCollider, glm::vec2 distanceBetweenCenters);
 ```
 
 ```cpp
-static glm::vec2 GetEdge(const CircleCollider& circleCollider, glm::vec2 distanceBetweenCenters);
+static glm::vec2 GetEdge(const BaseCircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters);
 ```
 
 **Public:**  
-**IsCollisoned**  
+**CheckCollision**  
 It checks, that 2 colliders have been collided.
 ```cpp
-static CollisionData IsCollisoned(const BoxCollider& collider1, const BoxCollider& collider2);
+static CollisionData CheckCollision(const BaseBoxColliderComponent& collider1, const BaseBoxColliderComponent& collider2);
 ```
 
 ```cpp
-static CollisionData IsCollisoned(const CircleCollider& collider1, const CircleCollider& collider2);
+static CollisionData CheckCollision(const BaseCircleColliderComponent& collider1, const BaseCircleColliderComponent& collider2);
 ```
 
 ```cpp
-static CollisionData IsCollisoned(const CircleCollider& circleCollider, const BoxCollider& boxCollider);
+static CollisionData CheckCollision(const BaseCircleColliderComponent& circleCollider, const BaseBoxColliderComponent& boxCollider);
+```
+
+```cpp
+static CollisionData CheckCollision(const BaseBoxColliderComponent& boxCollider, const BaseCircleColliderComponent& circleCollider);
 ```
 
 ##
@@ -192,7 +231,8 @@ static CollisionData IsCollisoned(const CircleCollider& circleCollider, const Bo
 ### Description:
 It contains, that there was a collision or not.
 If yes, it has the collider edges, where they are collide.
-The edges can useful, if the developer want to calculate rebound or similar.
+It is used by `CollisionChecker` and the checker will create
+`Collision` for collided objects.
 
 ### Header:
 ```cpp
