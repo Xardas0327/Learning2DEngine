@@ -10,7 +10,7 @@ namespace Learning2DEngine
 		/// <summary>
 		/// The classes, which are inherited from UpdaterComponent,
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
-		/// Please check more info about `System::Component` and `BaseUpdaterComponent`.
+		/// Please check for more info about `System::Component` and `BaseUpdaterComponent`.
 		/// </summary>
 		class UpdaterComponent : public virtual BaseUpdaterComponent
 		{

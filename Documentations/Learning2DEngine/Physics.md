@@ -1,13 +1,79 @@
 # Physics
 This namespace really simple. It has only some really basic functionality.
 
+- [BaseBoxColliderComponent](Physics.md#baseboxcollidercomponent)
+- [BaseCircleColliderComponent](Physics.md#basecirclecollidercomponent)
 - [BaseColliderComponent](Physics.md#basecollidercomponent)
-- [BoxCollider](Physics.md#boxcollider)
-- [CircleCollider](Physics.md#circlecollider)
+- [BoxColliderComponent](Physics.md#boxcollidercomponent)
+- [CircleColliderComponent](Physics.md#irclecollidercomponent)
 - [Collision](Physics.md#collision)
 - [CollisionChecker](Physics.md#collisionchecker)
 - [CollisionData](Physics.md#collisiondata)
 - [Rigidbody](Physics.md#rigidbody)
+
+##
+## BaseColliderComponent
+### Source Code:
+[BaseBoxColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseBoxColliderComponent.h)
+
+### Description:
+The `BaseBoxColliderComponent` is really basic. It doesn't rotate,
+scale with the gameobject.  
+It has more attributum for box collider, but this is a support
+class only, please use `BoxColliderComponent` instead of this.  
+Please check for more info about `BoxColliderComponent` and `BaseColliderComponent`.
+
+### Header:
+```cpp
+class BaseBoxColliderComponent : public virtual BaseColliderComponent
+{...}
+```
+
+### Variables:
+**Public:**  
+**colliderSize**
+```cpp
+glm::vec2 colliderSize;
+```
+
+### Functions:
+**Protected:**  
+**BaseBoxColliderComponent**  
+```cpp
+BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+```
+
+##
+## BaseCircleColliderComponent
+### Source Code:
+[BaseCircleColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseCircleColliderComponent.h)
+
+### Description:
+The `BaseCircleColliderComponent` is really basic. It doesn't rotate,
+scale with the gameobject.  
+It has more attributum for circle collider, but this is a support
+class only, please use `CircleColliderComponent` instead of this.  
+Please check for more info about `CircleColliderComponent` and `BaseColliderComponent`.
+
+### Header:
+```cpp
+class BaseCircleColliderComponent : public virtual BaseColliderComponent
+{...}
+```
+
+### Variables:
+**Public:**  
+**colliderRadius**
+```cpp
+float colliderRadius;
+```
+
+### Functions:
+**Protected:**  
+**BaseCircleColliderComponent**  
+```cpp
+BaseCircleColliderComponent(System::GameObject* gameObject, float radius, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+```
 
 ##
 ## BaseColliderComponent
@@ -81,63 +147,78 @@ It does nothing by default.
 virtual void OnCollision(Collision collision);
 ```
 
-
 ##
-## BoxCollider
+## BoxColliderComponent
 ### Source Code:
-[BoxCollider.h](../../Learning2DEngine/Learning2DEngine/Physics/BoxCollider.h)
+[BoxColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BoxColliderComponent.h)
 
 ### Description:
-The `BoxCollider` is really basic. It doesn't rotate, scale with the gameobject.  
-Please check the `Collider` class documentation too.
+The `BoxColliderComponent` is really basic. It doesn't rotate,
+scale with the gameobject.  
+It knows everything like the `BaseBoxColliderComponent`, just it subscribes/unsubscribes
+for `ComponentManager`.
+Please check for more info about `BaseBoxColliderComponent` and `BaseColliderComponent`.
 
 ### Header:
 ```cpp
-class BoxCollider : public virtual Collider
+class BoxColliderComponent : public virtual BaseBoxColliderComponent
 {...}
-```
-
-### Variables:
-**Public:**  
-**size**
-```cpp
-glm::vec2 size;
 ```
 
 ### Functions:
 **Protected:**  
-**BoxCollider**  
+**BoxColliderComponent**  
 ```cpp
-BoxCollider(System::GameObject* gameObject, glm::vec2 size, glm::vec2 offset = glm::vec2(0.0f, 0.0f));
+BoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+```
+
+**Init**  
+If this function is override, it must call the BoxColliderComponent::Init() in the first line.
+```cpp
+virtual void Init() override;
+```
+
+**Destroy**  
+If this function is override, it must call the BoxColliderComponent::Destroy() in the first line.
+```cpp
+virtual void Destroy() override;
 ```
 
 ##
-## CircleCollider
+## CircleColliderComponent
 ### Source Code:
-[CircleCollider.h](../../Learning2DEngine/Learning2DEngine/Physics/CircleCollider.h)
+[CircleColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/CircleColliderComponent.h)
 
 ### Description:
-The `CircleCollider` is really basic. It doesn't rotate, scale with the gameobject.  
-Please check the `Collider` class documentation too.
+The `CircleColliderComponent` is really basic. It doesn't rotate,
+scale with the gameobject.  
+It knows everything like the `BaseCircleColliderComponent`, just it subscribes/unsubscribes
+for `ComponentManager`.
+Please check for more info about `BaseCircleColliderComponent` and `BaseColliderComponent`.
 
 ### Header:
 ```cpp
-class CircleCollider : public virtual Collider
+lass CircleColliderComponent : public virtual BaseCircleColliderComponent
 {...}
-```
-
-### Variables:
-**Public:**  
-**radius**
-```cpp
-float radius;
 ```
 
 ### Functions:
 **Protected:**  
-**CircleCollider**  
+**CircleColliderComponent**  
 ```cpp
-CircleCollider(System::GameObject* gameObject, float radius, glm::vec2 offset = glm::vec2(0.0f, 0.0f));
+CircleColliderComponent(System::GameObject* gameObject, float radius, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+```
+
+**Init**  
+If this function is override, it must call the CircleColliderComponent::Init() in the first line.
+```cpp
+virtual void Init() override;
+```
+
+**Destroy**  
+If this function is override, it must call the CircleColliderComponent::Destroy() in the first line.
+```cpp
+virtual void Destroy() override;
 ```
 
 ##

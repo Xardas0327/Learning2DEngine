@@ -13,7 +13,7 @@ namespace Learning2DEngine
         /// <summary>
         /// The CircleColliderComponent is really basic.
         /// It doesn't rotate, scale with the gameobject.
-		/// Please check more information in the BaseColliderComponent and BaseCircleColliderComponent.
+		/// Please check for more information in the BaseColliderComponent and BaseCircleColliderComponent.
         /// </summary>
         class CircleColliderComponent : public virtual BaseCircleColliderComponent
         {

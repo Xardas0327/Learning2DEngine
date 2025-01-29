@@ -20,7 +20,7 @@
 
 ### Description:
 It is a simple class for most component handlers.  
-Please check more info about the `ComponentManager`.
+Please check for more info about the `ComponentManager`.
 
 ### Header:
 ```cpp
@@ -485,7 +485,7 @@ The `mainCamera` contains the camera settings,
 which the developer can transform the view of the users.  
 The shaders can use its projection and its view matrix.  
 Its resolution has to be initialized. It is (0,0) by default.  
-Please check more info about the `Camera` class.
+Please check for more info about the `Camera` class.
 ```cpp
 static Camera mainCamera;
 ```
@@ -659,8 +659,8 @@ virtual void RefreshResolution(const Render::Resolution& resolution) override;
 ``` 
 
 **GetDeltaTime**  
-It returns the `deltaTime`.  
-Please check more info about `deltaTime`.
+It returns the deltaTime.  
+Please check for more info about deltaTime.
 ```cpp
 static float GetDeltaTime();
 ``` 
