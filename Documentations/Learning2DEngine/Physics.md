@@ -229,8 +229,8 @@ static CollisionData CheckCollision(const BaseBoxColliderComponent& boxCollider,
 [CollisionData.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionData.h)
 
 ### Description:
-It contains, that there was a collision or not.
-If yes, it has the collider edges, where they are collide.
+It contains, that there was a collision or not if yes,
+it has the collider edges, where they are collide.  
 It is used by `CollisionChecker` and the checker will create
 `Collision` for collided objects.
 
