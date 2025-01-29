@@ -21,12 +21,12 @@ namespace Learning2DEngine
         protected:
             CircleColliderComponent(
                 System::GameObject* gameObject,
-                bool isPassive,
                 float radius,
+                bool isActiveCollider = true,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), BaseColliderComponent(gameObject, isPassive, offset, maskLayer),
-				BaseCircleColliderComponent(gameObject, isPassive, radius, offset, maskLayer)
+                : System::Component(gameObject), BaseColliderComponent(gameObject, isActiveCollider, offset, maskLayer),
+				BaseCircleColliderComponent(gameObject, radius, isActiveCollider, offset, maskLayer)
             {
 
             }

@@ -29,9 +29,9 @@ class BaseColliderComponent : public virtual System::Component
 
 ### Variables:
 **Private:**  
-**isPassive**  
+**isActiveCollider**  
 Note: The isActive is a different variable, which came from `System::Component`.  
-A collider can be passive or active. 2 passive colliders can't collide with each other, 
+A collider can be active or passive. 2 passive colliders can't collide with each other, 
 but an active collider can collide with them.  
 For example: there are 3 circles (A, B and C) with 1.0f range. A is active and another two are passive.
 If they are on the same position, the A will be triggered twice (one with B and one with C),
@@ -58,7 +58,7 @@ int32_t maskLayer;
 **Protected:**  
 **BaseColliderComponent**  
 ```cpp
-BaseColliderComponent(System::GameObject* gameObject, bool isPassive, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseColliderComponent(System::GameObject* gameObject, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Public:**  

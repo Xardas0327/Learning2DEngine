@@ -21,12 +21,12 @@ namespace Learning2DEngine
         protected:
             BoxColliderComponent(
                 System::GameObject* gameObject,
-                bool isPassive,
                 glm::vec2 size,
+                bool isActiveCollider = true,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-				: System::Component(gameObject), BaseColliderComponent(gameObject, isPassive, offset, maskLayer),
-				BaseBoxColliderComponent(gameObject, isPassive, size, offset, maskLayer)
+				: System::Component(gameObject), BaseColliderComponent(gameObject, isActiveCollider, offset, maskLayer),
+				BaseBoxColliderComponent(gameObject, size, isActiveCollider, offset, maskLayer)
             {
 
             }

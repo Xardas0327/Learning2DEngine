@@ -16,9 +16,9 @@ using namespace Learning2DEngine::ParticleSimulator;
 BallController::BallController(GameObject* gameObject, PlayerController* playerController,
     const std::string& textureId, const std::string& particleTextureId,
     BallHitPlayerEventItem& ballHitPlayerEventItem, BallHitBrickEventItem& ballHitBrickEventItem)
-    : CircleColliderComponent(gameObject, false, BALL_RADIUS),
-    BaseCircleColliderComponent(gameObject, false, BALL_RADIUS),
-    BaseColliderComponent(gameObject, false), Component(gameObject),
+    : CircleColliderComponent(gameObject, BALL_RADIUS),
+    BaseCircleColliderComponent(gameObject, BALL_RADIUS),
+    BaseColliderComponent(gameObject), Component(gameObject),
     textureId(textureId), particleTextureId(particleTextureId), playerController(playerController),
     renderer(nullptr), rigidbody(nullptr), particleSystem(nullptr),
     radius(BALL_RADIUS), stuck(true), sticky(false), passThrough(false), 
