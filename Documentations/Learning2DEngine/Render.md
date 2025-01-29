@@ -23,7 +23,7 @@
 ### Description:
 It is a base class for the `RendererComponent` and `LateRendererComponent` classes.
 It has some basic funcionality, which is essential for rendering.  
-The classes, which are inherited from this `BaseRendererComponent`, have to have a constructor,
+The classes, which are inherited from this `BaseRendererComponent` has to have a constructor,
 which first parameter is `GameObject*` for gameObject member.  
 Please check more info about `System::Component`.
 

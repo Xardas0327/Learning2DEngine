@@ -1,12 +1,84 @@
 # Physics
 This namespace really simple. It has only some really basic functionality.
 
+- [BaseColliderComponent](Physics.md#basecollidercomponent)
 - [BoxCollider](Physics.md#boxcollider)
 - [CircleCollider](Physics.md#circlecollider)
-- [Collider](Physics.md#collider)
 - [Collision](Physics.md#collision)
 - [CollisionData](Physics.md#collisiondata)
 - [Rigidbody](Physics.md#rigidbody)
+
+##
+## BaseColliderComponent
+### Source Code:
+[BaseColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseColliderComponent.h)
+
+### Description:
+It is a base class for the `BaseBoxColliderComponent` and
+`BaseCircleColliderComponent` classes.
+It has some basic funcionality, which is essential for the colliders.  
+The classes, which are inherited from this `BaseBoxColliderComponent`
+has to have a constructor, which first parameter is `GameObject*` for gameObject member.  
+Please check more info about `System::Component`.
+
+### Header:
+```cpp
+class BaseColliderComponent : public virtual System::Component
+{...}
+```
+
+### Variables:
+**Private:**  
+**isPassive**  
+Note: The isActive is a different variable, which came from `System::Component`.  
+A collider can be passive or active. 2 passive colliders can't collide with each other, 
+but an active collider can collide with them.  
+For example: there are 3 circles (A, B and C) with 1.0f range. A is active and another two are passive.
+If they are on the same position, the A will be triggered twice (one with B and one with C),
+but the B and the C will be triggered with A only.
+```cpp
+const bool isPassive;
+```
+
+**Public:**  
+**colliderOffset**  
+The center point will be shifted by this one.
+```cpp
+glm::vec2 colliderOffset;
+```
+
+**maskLayer**  
+The maskLayer is int32_t, so it is always 32bit. That's why the developer should use it
+like a bit array. The colliders can trigger each other only if (maskLayer1 & maskLayer2) > 0.
+```cpp
+int32_t maskLayer;
+```
+
+### Functions:
+**Protected:**  
+**BaseColliderComponent**  
+```cpp
+BaseColliderComponent(System::GameObject* gameObject, bool isPassive, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+```
+
+**Public:**  
+**GetColliderCenter**  
+It returns the center of Collider, which is middle of the object by shifted the offset.
+```cpp
+glm::vec2 GetColliderCenter() const;
+```
+
+**IsPassive**  
+```cpp
+inline bool IsPassive() const;
+```
+
+**OnCollision**  
+If 2 colliders trigger each other, Their OnCollision function will be called.
+```cpp
+virtual void OnCollision(Collision collision);
+```
+
 
 ##
 ## BoxCollider
@@ -64,42 +136,6 @@ float radius;
 **CircleCollider**  
 ```cpp
 CircleCollider(System::GameObject* gameObject, float radius, glm::vec2 offset = glm::vec2(0.0f, 0.0f));
-```
-
-##
-## Collider
-### Source Code:
-[Collider.h](../../Learning2DEngine/Learning2DEngine/Physics/Collider.h)
-
-### Description:
-The `Collider` is really basic. It does not recommended to use.
-The developer should use the `BoxCollider` and/or `CircleCollider`.
-
-### Header:
-```cpp
-class Collider : public virtual System::Component
-{...}
-```
-
-### Variables:
-**Public:**  
-**offset**
-```cpp
-glm::vec2 offset;
-```
-
-### Functions:
-**Protected:**  
-**Collider**  
-```cpp
-Collider(System::GameObject* gameObject, glm::vec2 offset = glm::vec2(0.0f, 0.0f));
-```
-
-**Public:**  
-**GetCenter**  
-It returns the center of Collider, which is middle of the object with the offset.
-```cpp
-glm::vec2 GetCenter() const;
 ```
 
 ##

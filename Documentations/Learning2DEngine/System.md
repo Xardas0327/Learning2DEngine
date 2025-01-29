@@ -235,6 +235,8 @@ class Component
 ### Variables:
 **Public:**  
 **isActive**  
+It shows, that the actual component is active or not. If not, the `ComponentManager` will not
+call the component's functions.
 ```cpp
 bool isActive;
 ```  
@@ -688,6 +690,8 @@ std::vector<Component*> components;
 
 **Public:**  
 **isActive**  
+It shows, that the actual game object is active or not.
+If not, the `ComponentManager` will not call the components of the game object.
 ```cpp
 bool isActive;
 ```
