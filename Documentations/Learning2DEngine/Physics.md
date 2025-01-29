@@ -5,14 +5,14 @@ This namespace really simple. It has only some really basic functionality.
 - [BaseCircleColliderComponent](Physics.md#basecirclecollidercomponent)
 - [BaseColliderComponent](Physics.md#basecollidercomponent)
 - [BoxColliderComponent](Physics.md#boxcollidercomponent)
-- [CircleColliderComponent](Physics.md#irclecollidercomponent)
+- [CircleColliderComponent](Physics.md#circlecollidercomponent)
 - [Collision](Physics.md#collision)
 - [CollisionChecker](Physics.md#collisionchecker)
 - [CollisionData](Physics.md#collisiondata)
 - [Rigidbody](Physics.md#rigidbody)
 
 ##
-## BaseColliderComponent
+## BaseBoxColliderComponent
 ### Source Code:
 [BaseBoxColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseBoxColliderComponent.h)
 
@@ -156,7 +156,7 @@ virtual void OnCollision(Collision collision);
 The `BoxColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
 It knows everything like the `BaseBoxColliderComponent`, just it subscribes/unsubscribes
-for `ComponentManager`.
+for `ComponentManager`.  
 Please check for more info about `BaseBoxColliderComponent` and `BaseColliderComponent`.
 
 ### Header:
@@ -193,12 +193,12 @@ virtual void Destroy() override;
 The `CircleColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
 It knows everything like the `BaseCircleColliderComponent`, just it subscribes/unsubscribes
-for `ComponentManager`.
+for `ComponentManager`.  
 Please check for more info about `BaseCircleColliderComponent` and `BaseColliderComponent`.
 
 ### Header:
 ```cpp
-lass CircleColliderComponent : public virtual BaseCircleColliderComponent
+class CircleColliderComponent : public virtual BaseCircleColliderComponent
 {...}
 ```
 
