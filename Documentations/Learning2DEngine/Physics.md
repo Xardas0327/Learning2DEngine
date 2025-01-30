@@ -6,6 +6,7 @@ This namespace really simple. It has only some really basic functionality.
 - [BaseColliderComponent](Physics.md#basecollidercomponent)
 - [BoxColliderComponent](Physics.md#boxcollidercomponent)
 - [CircleColliderComponent](Physics.md#circlecollidercomponent)
+- [ColliderComponentHandler](Physics.md#collidercomponenthandler)
 - [Collision](Physics.md#collision)
 - [CollisionChecker](Physics.md#collisionchecker)
 - [CollisionData](Physics.md#collisiondata)
@@ -219,6 +220,162 @@ virtual void Init() override;
 If this function is override, it must call the CircleColliderComponent::Destroy() in the first line.
 ```cpp
 virtual void Destroy() override;
+```
+
+##
+## ColliderComponentHandler
+### Source Code:
+[ColliderComponentHandler.h](../../Learning2DEngine/Learning2DEngine/Physics/ColliderComponentHandler.h)  
+[ColliderComponentHandler.cpp](../../Learning2DEngine/Learning2DEngine/Physics/ColliderComponentHandler.cpp)
+
+### Description:
+It can handle the collision between the `BaseBoxColliderComponent`
+and the `BaseCircleColliderComponent` objects.  
+The `ComponentManager` has one from it.
+
+### Header:
+```cpp
+class ColliderComponentHandler : public System::IComponentHandler
+{...}
+```
+
+### Variables:
+**Protected:**  
+**activeBoxColliders**  
+```cpp
+std::vector<BaseBoxColliderComponent*> activeBoxColliders;
+```
+
+**passiveBoxColliders**  
+```cpp
+std::vector<BaseBoxColliderComponent*> passiveBoxColliders;
+```
+
+**newBoxColliders**  
+```cpp
+std::vector<BaseBoxColliderComponent*> newBoxColliders;
+```
+
+**removeableBoxColliders**  
+```cpp
+std::vector<BaseBoxColliderComponent*> removeableBoxColliders;
+```
+
+**activeCircleColliders**  
+```cpp
+std::vector<BaseCircleColliderComponent*> activeCircleColliders;
+```
+
+**passiveCircleColliders**  
+```cpp
+std::vector<BaseCircleColliderComponent*> passiveCircleColliders;
+```
+
+**newCircleColliders**  
+```cpp
+std::vector<BaseCircleColliderComponent*> newCircleColliders;
+```
+
+**removeableCircleColliders**  
+```cpp
+std::vector<BaseCircleColliderComponent*> removeableCircleColliders;
+```
+
+### Functions:
+**Protected:**  
+**IsActiveObject**  
+It return true, that the collider is not in the removeableColliders and the collider and
+its gameobject are active.
+```cpp
+template<class T>
+bool IsActiveObject(T* collider, std::vector<T*> removeableColliders);
+```
+
+**DoCollision**  
+The function checks, that 2 object are still active and they are collided.
+If yes, It will call their OnCollision function.  
+IMPORTANT: The function returns, that the first object was active before the last OnCollision.
+The active means, that the IsActiveObject function returned with true. The reason is, that
+maybe the previous collison disabled or destroyed the collider,
+so the code can jump to the next collider.  
+The code doesn't check it after OnCollision, because code always have to check it
+before collison checking, so it would be a duplicate work only.
+```cpp
+template<class T, class U>
+bool DoCollision(T* first, std::vector<T*> firstRemoveableColliders, U* second, std::vector<U*> secondRemoveableColliders);
+```
+
+**RefreshBoxColliders**  
+It removes the `removeableBoxColliders` and adds the `newBoxColliders` to
+the `activeBoxColliders` and the `passiveBoxColliders`.
+After this, it clears the `newBoxColliders` and the `removeableBoxColliders`.
+```cpp
+template<class T>
+void RefreshBoxColliders();
+```
+
+**RefreshCircleColliders**  
+It removes the `removeableCircleColliders` and adds the `newCircleColliders` to
+the `activeCircleColliders` and the `passiveCircleColliders`.
+After this, it clears the `newCircleColliders` and the `removeableCircleColliders`.
+```cpp
+template<class T>
+void RefreshCircleColliders();
+```
+
+**CheckCollisionWithActiveBox**  
+This function checks, that the `activeBoxColliders` had collision with 
+other `activeBoxColliders` items and with `activeCircleColliders`, 
+`passiveBoxColliders` and `passiveCircleColliders` items.
+```cpp
+template<class T>
+void CheckCollisionWithActiveBox();
+```
+
+**CheckCollisionWithActiveCircle**  
+This function checks, that the `activeCircleColliders` had collision with 
+other `activeCircleColliders` items and with `passiveBoxColliders`
+and `passiveCircleColliders` items.  
+This function does not check that `activeCircleColliders` with `activeBoxColliders`,
+because the CheckCollisionWithActiveBox function do it, so it would be duplicate work only.
+```cpp
+template<class T>
+void CheckCollisionWithActiveCircle();
+```
+
+**Public:**  
+**ColliderComponentHandler**  
+```cpp
+ColliderComponentHandler();
+```
+
+**Add**  
+```cpp
+void Add(BaseBoxColliderComponent* collider);
+```
+```cpp
+void Add(BaseCircleColliderComponent* collider);
+```
+
+**Remove**  
+```cpp
+void Remove(BaseBoxColliderComponent* collider);
+```
+```cpp
+void Remove(BaseCircleColliderComponent* collider);
+```
+
+**Clear**  
+```cpp
+void Clear() override;
+```
+
+**DoWithAllComponents**  
+Firstly it calls the RefreshBoxColliders() and RefreshCircleColliders()
+functions. After that, it calls the CheckCollisionWithActiveBox()
+and CheckCollisionWithActiveCircle() functions.
+```cpp
+void DoWithAllComponents() override;
 ```
 
 ##

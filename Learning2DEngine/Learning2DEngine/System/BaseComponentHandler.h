@@ -31,9 +31,10 @@ namespace Learning2DEngine
 					if (it != components.end())
 						components.erase(it);
 				}
-				removeableComponents.clear();
 
 				components.insert(components.end(), newComponents.begin(), newComponents.end());
+
+				removeableComponents.clear();
 				newComponents.clear();
 			}
 

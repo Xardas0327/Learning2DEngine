@@ -55,7 +55,6 @@ namespace Learning2DEngine
 						passiveCircleColliders.erase(it);
 				}
 			}
-			removeableCircleColliders.clear();
 
 			for (auto collider : newCircleColliders)
 			{
@@ -64,6 +63,8 @@ namespace Learning2DEngine
 				else
 					passiveCircleColliders.push_back(collider);
 			}
+
+			removeableCircleColliders.clear();
 			newCircleColliders.clear();
 		}
 
@@ -186,7 +187,7 @@ namespace Learning2DEngine
 		{
 			for (int i = 0; i < activeCircleColliders.size(); ++i)
 			{
-				// All box colliders were checked in the previous loop
+				// All active box colliders were checked in the previous loop
 
 				bool isActive = true;
 				// activeCircleColliders
