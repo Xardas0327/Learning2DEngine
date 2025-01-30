@@ -51,7 +51,7 @@
     <ClCompile Include="Learning2DEngine\Render\PostProcessEffect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Physics\Collision.cpp">
+    <ClCompile Include="Learning2DEngine\Physics\CollisionChecker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\System\Camera.cpp">
@@ -61,6 +61,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\UI\Text2DLateRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Learning2DEngine\Physics\ColliderComponentHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -143,16 +146,7 @@
     <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Physics\Collider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Learning2DEngine\Physics\BoxCollider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Learning2DEngine\Physics\CircleCollider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Learning2DEngine\Physics\Collision.h">
+    <ClInclude Include="Learning2DEngine\Physics\CollisionChecker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h">
@@ -194,9 +188,6 @@
     <ClInclude Include="Learning2DEngine\Render\RendererComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\RendererComponentHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -210,6 +201,33 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\UI\FontSizePair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\Collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\BaseColliderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\BoxColliderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\CircleColliderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\IComponentHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\BaseBoxColliderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\BaseCircleColliderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\ColliderComponentHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

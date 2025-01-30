@@ -1,105 +1,381 @@
 # Physics
 This namespace really simple. It has only some really basic functionality.
 
-- [BoxCollider](Physics.md#boxcollider)
-- [CircleCollider](Physics.md#circlecollider)
-- [Collider](Physics.md#collider)
+- [BaseBoxColliderComponent](Physics.md#baseboxcollidercomponent)
+- [BaseCircleColliderComponent](Physics.md#basecirclecollidercomponent)
+- [BaseColliderComponent](Physics.md#basecollidercomponent)
+- [BoxColliderComponent](Physics.md#boxcollidercomponent)
+- [CircleColliderComponent](Physics.md#circlecollidercomponent)
+- [ColliderComponentHandler](Physics.md#collidercomponenthandler)
 - [Collision](Physics.md#collision)
+- [CollisionChecker](Physics.md#collisionchecker)
 - [CollisionData](Physics.md#collisiondata)
 - [Rigidbody](Physics.md#rigidbody)
 
 ##
-## BoxCollider
+## BaseBoxColliderComponent
 ### Source Code:
-[BoxCollider.h](../../Learning2DEngine/Learning2DEngine/Physics/BoxCollider.h)
+[BaseBoxColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseBoxColliderComponent.h)
 
 ### Description:
-The `BoxCollider` is really basic. It doesn't rotate, scale with the gameobject.  
-Please check the `Collider` class documentation too.
+The `BaseBoxColliderComponent` is really basic. It doesn't rotate,
+scale with the gameobject.  
+It has more attributum for box collider, but this is a support
+class only, please use `BoxColliderComponent` instead of this.  
+Please check for more info about `BoxColliderComponent` and `BaseColliderComponent`.
 
 ### Header:
 ```cpp
-class BoxCollider : public virtual Collider
+class BaseBoxColliderComponent : public virtual BaseColliderComponent
 {...}
 ```
 
 ### Variables:
 **Public:**  
-**size**
+**colliderSize**
 ```cpp
-glm::vec2 size;
+glm::vec2 colliderSize;
 ```
 
 ### Functions:
 **Protected:**  
-**BoxCollider**  
+**BaseBoxColliderComponent**  
 ```cpp
-BoxCollider(System::GameObject* gameObject, glm::vec2 size, glm::vec2 offset = glm::vec2(0.0f, 0.0f));
+BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 ##
-## CircleCollider
+## BaseCircleColliderComponent
 ### Source Code:
-[CircleCollider.h](../../Learning2DEngine/Learning2DEngine/Physics/CircleCollider.h)
+[BaseCircleColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseCircleColliderComponent.h)
 
 ### Description:
-The `CircleCollider` is really basic. It doesn't rotate, scale with the gameobject.  
-Please check the `Collider` class documentation too.
+The `BaseCircleColliderComponent` is really basic. It doesn't rotate,
+scale with the gameobject.  
+It has more attributum for circle collider, but this is a support
+class only, please use `CircleColliderComponent` instead of this.  
+Please check for more info about `CircleColliderComponent` and `BaseColliderComponent`.
 
 ### Header:
 ```cpp
-class CircleCollider : public virtual Collider
+class BaseCircleColliderComponent : public virtual BaseColliderComponent
 {...}
 ```
 
 ### Variables:
 **Public:**  
-**radius**
+**colliderRadius**
 ```cpp
-float radius;
+float colliderRadius;
 ```
 
 ### Functions:
 **Protected:**  
-**CircleCollider**  
+**BaseCircleColliderComponent**  
 ```cpp
-CircleCollider(System::GameObject* gameObject, float radius, glm::vec2 offset = glm::vec2(0.0f, 0.0f));
+BaseCircleColliderComponent(System::GameObject* gameObject, float radius, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 ##
-## Collider
+## BaseColliderComponent
 ### Source Code:
-[Collider.h](../../Learning2DEngine/Learning2DEngine/Physics/Collider.h)
+[BaseColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseColliderComponent.h)
 
 ### Description:
-The `Collider` is really basic. It does not recommended to use.
-The developer should use the `BoxCollider` and/or `CircleCollider`.
+It is a base class for the `BaseBoxColliderComponent` and
+`BaseCircleColliderComponent` classes.
+It has some basic funcionality, which is essential for the colliders.  
+The classes, which are inherited from this `BaseBoxColliderComponent`
+has to have a constructor, which first parameter is `GameObject*` for gameObject member.  
+Please check more info about `System::Component`.
 
 ### Header:
 ```cpp
-class Collider : public virtual System::Component
+class BaseColliderComponent : public virtual System::Component
 {...}
 ```
 
 ### Variables:
-**Public:**  
-**offset**
+**Private:**  
+**isActiveCollider**  
+Note: The isActive is a different variable, which came from `System::Component`.  
+A collider can be active or passive. 2 passive colliders can't collide with each other, 
+but an active collider can collide with them.  
+For example: there are 3 circles (A, B and C) with 1.0f range. A is active and another two are passive.
+If they are on the same position, the A will be triggered twice (one with B and one with C),
+but the B and the C will be triggered with A only.
 ```cpp
-glm::vec2 offset;
+const bool isPassive;
+```
+
+**Public:**  
+**colliderOffset**  
+The center point will be shifted by this one.
+```cpp
+glm::vec2 colliderOffset;
+```
+
+**maskLayer**  
+The maskLayer is int32_t, so it is always 32bit. That's why the developer should use it
+like a bit array. The colliders can trigger each other only if (maskLayer1 & maskLayer2) > 0.
+```cpp
+int32_t maskLayer;
 ```
 
 ### Functions:
 **Protected:**  
-**Collider**  
+**BaseColliderComponent**  
 ```cpp
-Collider(System::GameObject* gameObject, glm::vec2 offset = glm::vec2(0.0f, 0.0f));
+BaseColliderComponent(System::GameObject* gameObject, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Public:**  
-**GetCenter**  
-It returns the center of Collider, which is middle of the object with the offset.
+**GetColliderCenter**  
+It returns the center of Collider, which is middle of the object by shifted the offset.
 ```cpp
-glm::vec2 GetCenter() const;
+glm::vec2 GetColliderCenter() const;
+```
+
+**IsPassive**  
+```cpp
+inline bool IsPassive() const;
+```
+
+**OnCollision**  
+If 2 colliders trigger each other, their OnCollision function will be called.  
+It does nothing by default.
+```cpp
+virtual void OnCollision(Collision collision);
+```
+
+##
+## BoxColliderComponent
+### Source Code:
+[BoxColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BoxColliderComponent.h)
+
+### Description:
+The `BoxColliderComponent` is really basic. It doesn't rotate,
+scale with the gameobject.  
+It knows everything like the `BaseBoxColliderComponent`, just it subscribes/unsubscribes
+for `ComponentManager`.  
+Please check for more info about `BaseBoxColliderComponent` and `BaseColliderComponent`.
+
+### Header:
+```cpp
+class BoxColliderComponent : public virtual BaseBoxColliderComponent
+{...}
+```
+
+### Functions:
+**Protected:**  
+**BoxColliderComponent**  
+```cpp
+BoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+```
+
+**Init**  
+If this function is override, it must call the BoxColliderComponent::Init() in the first line.
+```cpp
+virtual void Init() override;
+```
+
+**Destroy**  
+If this function is override, it must call the BoxColliderComponent::Destroy() in the first line.
+```cpp
+virtual void Destroy() override;
+```
+
+##
+## CircleColliderComponent
+### Source Code:
+[CircleColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/CircleColliderComponent.h)
+
+### Description:
+The `CircleColliderComponent` is really basic. It doesn't rotate,
+scale with the gameobject.  
+It knows everything like the `BaseCircleColliderComponent`, just it subscribes/unsubscribes
+for `ComponentManager`.  
+Please check for more info about `BaseCircleColliderComponent` and `BaseColliderComponent`.
+
+### Header:
+```cpp
+class CircleColliderComponent : public virtual BaseCircleColliderComponent
+{...}
+```
+
+### Functions:
+**Protected:**  
+**CircleColliderComponent**  
+```cpp
+CircleColliderComponent(System::GameObject* gameObject, float radius, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+```
+
+**Init**  
+If this function is override, it must call the CircleColliderComponent::Init() in the first line.
+```cpp
+virtual void Init() override;
+```
+
+**Destroy**  
+If this function is override, it must call the CircleColliderComponent::Destroy() in the first line.
+```cpp
+virtual void Destroy() override;
+```
+
+##
+## ColliderComponentHandler
+### Source Code:
+[ColliderComponentHandler.h](../../Learning2DEngine/Learning2DEngine/Physics/ColliderComponentHandler.h)  
+[ColliderComponentHandler.cpp](../../Learning2DEngine/Learning2DEngine/Physics/ColliderComponentHandler.cpp)
+
+### Description:
+It can handle the collision between the `BaseBoxColliderComponent`
+and the `BaseCircleColliderComponent` objects.  
+The `ComponentManager` has one from it.
+
+### Header:
+```cpp
+class ColliderComponentHandler : public System::IComponentHandler
+{...}
+```
+
+### Variables:
+**Protected:**  
+**activeBoxColliders**  
+```cpp
+std::vector<BaseBoxColliderComponent*> activeBoxColliders;
+```
+
+**passiveBoxColliders**  
+```cpp
+std::vector<BaseBoxColliderComponent*> passiveBoxColliders;
+```
+
+**newBoxColliders**  
+```cpp
+std::vector<BaseBoxColliderComponent*> newBoxColliders;
+```
+
+**removeableBoxColliders**  
+```cpp
+std::vector<BaseBoxColliderComponent*> removeableBoxColliders;
+```
+
+**activeCircleColliders**  
+```cpp
+std::vector<BaseCircleColliderComponent*> activeCircleColliders;
+```
+
+**passiveCircleColliders**  
+```cpp
+std::vector<BaseCircleColliderComponent*> passiveCircleColliders;
+```
+
+**newCircleColliders**  
+```cpp
+std::vector<BaseCircleColliderComponent*> newCircleColliders;
+```
+
+**removeableCircleColliders**  
+```cpp
+std::vector<BaseCircleColliderComponent*> removeableCircleColliders;
+```
+
+### Functions:
+**Protected:**  
+**IsActiveObject**  
+It return true, that the collider is not in the removeableColliders and the collider and
+its gameobject are active.
+```cpp
+template<class T>
+bool IsActiveObject(T* collider, std::vector<T*> removeableColliders);
+```
+
+**DoCollision**  
+The function checks, that 2 object are still active and they are collided.
+If yes, It will call their OnCollision function.  
+IMPORTANT: The function returns, that the first object was active before the last OnCollision.
+The active means, that the IsActiveObject function returned with true. The reason is, that
+maybe the previous collison disabled or destroyed the collider,
+so the code can jump to the next collider.  
+The code doesn't check it after OnCollision, because code always have to check it
+before collison checking, so it would be a duplicate work only.
+```cpp
+template<class T, class U>
+bool DoCollision(T* first, std::vector<T*> firstRemoveableColliders, U* second, std::vector<U*> secondRemoveableColliders);
+```
+
+**RefreshBoxColliders**  
+It removes the `removeableBoxColliders` and adds the `newBoxColliders` to
+the `activeBoxColliders` and the `passiveBoxColliders`.
+After this, it clears the `newBoxColliders` and the `removeableBoxColliders`.
+```cpp
+template<class T>
+void RefreshBoxColliders();
+```
+
+**RefreshCircleColliders**  
+It removes the `removeableCircleColliders` and adds the `newCircleColliders` to
+the `activeCircleColliders` and the `passiveCircleColliders`.
+After this, it clears the `newCircleColliders` and the `removeableCircleColliders`.
+```cpp
+template<class T>
+void RefreshCircleColliders();
+```
+
+**CheckCollisionWithActiveBox**  
+This function checks, that the `activeBoxColliders` had collision with 
+other `activeBoxColliders` items and with `activeCircleColliders`, 
+`passiveBoxColliders` and `passiveCircleColliders` items.
+```cpp
+template<class T>
+void CheckCollisionWithActiveBox();
+```
+
+**CheckCollisionWithActiveCircle**  
+This function checks, that the `activeCircleColliders` had collision with 
+other `activeCircleColliders` items and with `passiveBoxColliders`
+and `passiveCircleColliders` items.  
+This function does not check that `activeCircleColliders` with `activeBoxColliders`,
+because the CheckCollisionWithActiveBox function do it, so it would be duplicate work only.
+```cpp
+template<class T>
+void CheckCollisionWithActiveCircle();
+```
+
+**Public:**  
+**ColliderComponentHandler**  
+```cpp
+ColliderComponentHandler();
+```
+
+**Add**  
+```cpp
+void Add(BaseBoxColliderComponent* collider);
+```
+```cpp
+void Add(BaseCircleColliderComponent* collider);
+```
+
+**Remove**  
+```cpp
+void Remove(BaseBoxColliderComponent* collider);
+```
+```cpp
+void Remove(BaseCircleColliderComponent* collider);
+```
+
+**Clear**  
+```cpp
+void Clear() override;
+```
+
+**DoWithAllComponents**  
+Firstly it calls the RefreshBoxColliders() and RefreshCircleColliders()
+functions. After that, it calls the CheckCollisionWithActiveBox()
+and CheckCollisionWithActiveCircle() functions.
+```cpp
+void DoWithAllComponents() override;
 ```
 
 ##
@@ -108,7 +384,40 @@ glm::vec2 GetCenter() const;
 [Collision.h](../../Learning2DEngine/Learning2DEngine/Physics/Collision.h)
 
 ### Description:
-It is a static class, which has functions to detect the collisions.
+When 2 object is collided, the `ColliderComponentHandler` calls the objects' OnCollision
+ with this type of class.  
+ The edges can useful, if the developer want to calculate rebound or similar.
+
+### Header:
+```cpp
+struct Collision
+{
+    // The closest point of current object to collided object
+    glm::vec2 edge;
+    // The closest point of collided object to current object
+    glm::vec2 edgeOfCollidedObject;
+    System::GameObject* collidedObject;
+
+    Collision(
+        glm::vec2 edge,
+        glm::vec2 edgeOfCollidedObject,
+        System::GameObject* collidedObject)
+        : edge(edge), edgeOfCollidedObject(edgeOfCollidedObject),
+        collidedObject(collidedObject)
+    {
+
+    }
+};
+```
+
+##
+## CollisionChecker
+### Source Code:
+[CollisionChecker.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionChecker.h)
+
+### Description:
+It is a static class, which has functions to detect the collisions.  
+The `ColliderComponentHandler` use it to check every collision.
 
 ### Header:
 ```cpp
@@ -126,26 +435,30 @@ Collision();
 **GetEdge**  
 It returns the closest point of collider object from other object.
 ```cpp
-static glm::vec2 GetEdge(const BoxCollider& boxCollider, glm::vec2 distanceBetweenCenters);
+static glm::vec2 GetEdge(const BaseBoxColliderComponent& boxCollider, glm::vec2 distanceBetweenCenters);
 ```
 
 ```cpp
-static glm::vec2 GetEdge(const CircleCollider& circleCollider, glm::vec2 distanceBetweenCenters);
+static glm::vec2 GetEdge(const BaseCircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters);
 ```
 
 **Public:**  
-**IsCollisoned**  
+**CheckCollision**  
 It checks, that 2 colliders have been collided.
 ```cpp
-static CollisionData IsCollisoned(const BoxCollider& collider1, const BoxCollider& collider2);
+static CollisionData CheckCollision(const BaseBoxColliderComponent& collider1, const BaseBoxColliderComponent& collider2);
 ```
 
 ```cpp
-static CollisionData IsCollisoned(const CircleCollider& collider1, const CircleCollider& collider2);
+static CollisionData CheckCollision(const BaseCircleColliderComponent& collider1, const BaseCircleColliderComponent& collider2);
 ```
 
 ```cpp
-static CollisionData IsCollisoned(const CircleCollider& circleCollider, const BoxCollider& boxCollider);
+static CollisionData CheckCollision(const BaseCircleColliderComponent& circleCollider, const BaseBoxColliderComponent& boxCollider);
+```
+
+```cpp
+static CollisionData CheckCollision(const BaseBoxColliderComponent& boxCollider, const BaseCircleColliderComponent& circleCollider);
 ```
 
 ##
@@ -154,9 +467,10 @@ static CollisionData IsCollisoned(const CircleCollider& circleCollider, const Bo
 [CollisionData.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionData.h)
 
 ### Description:
-It contains, that there was a collision or not.
-If yes, it has the collider edges, where they are collide.
-The edges can useful, if the developer want to calculate rebound or similar.
+It contains, that there was a collision or not if yes,
+it has the collider edges, where they are collide.  
+It is used by `CollisionChecker` and the checker will create
+`Collision` for collided objects.
 
 ### Header:
 ```cpp

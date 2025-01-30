@@ -10,7 +10,7 @@ namespace Learning2DEngine
 {
     namespace Render
     {
-		class RendererComponentHandler : public System::BaseComponentHandler<BaseRendererComponent>
+		class RendererComponentHandler : public virtual System::BaseComponentHandler<BaseRendererComponent>
 		{
 		protected:
 			bool isReorderNeeded;
@@ -30,7 +30,7 @@ namespace Learning2DEngine
 
 		public:
 			RendererComponentHandler()
-				: BaseComponentHandler(), isReorderNeeded(false)
+				: System::BaseComponentHandler<BaseRendererComponent>(), isReorderNeeded(false)
 			{
 			}
 
@@ -44,7 +44,7 @@ namespace Learning2DEngine
 			{
 				isReorderNeeded = true;
 			}
-			
+
 			void DoWithAllComponents() override
 			{
 				RefreshComponents();

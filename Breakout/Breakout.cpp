@@ -7,7 +7,7 @@
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/UI/TextCharacterSet.h>
-#include <Learning2DEngine/Physics/Collision.h>
+#include <Learning2DEngine/Physics/CollisionChecker.h>
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
@@ -19,7 +19,8 @@ Breakout::Breakout() :
     state(GameState::GAME_MENU), powerUps(), levels(), selectedLevel(0), lives(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
     soundEngine(nullptr), fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), postProcessData(nullptr),
-    shakeTime(0.0f), liveText(nullptr), startText(nullptr), levelSelectorText(nullptr), winText(nullptr), retryText(nullptr)
+    shakeTime(0.0f), liveText(nullptr), startText(nullptr), levelSelectorText(nullptr), winText(nullptr), retryText(nullptr),
+    powerUpActivationEventItem(this), ballHitPlayerEventItem(this), ballHitBrickEventItem(this)
 {
 
 }
@@ -113,7 +114,19 @@ void Breakout::InitObjects()
 
     // Ball
     auto ball = new GameObject();
-    ballController = ball->AddComponent<BallController, PlayerController*, const std::string&, const std::string&>(playerController, "face", "particle");
+    ballController = ball->AddComponent<
+        BallController,
+        PlayerController*,
+        const std::string&,
+        const std::string&,
+        BallHitPlayerEventItem&,
+        BallHitBrickEventItem&>(
+            playerController,
+            "face",
+            "particle",
+            ballHitPlayerEventItem,
+            ballHitBrickEventItem
+    );
 
     // Text
     auto liveGameObject = new GameObject(
@@ -336,7 +349,7 @@ void Breakout::Update()
     ballController->Move();
     ballController->particleSystem->Update();
 
-    DoCollisions();
+    //DoCollisions();
     UpdatePowerUps();
     ShakeScreen();
     
@@ -362,9 +375,9 @@ void Breakout::ResetPlayer()
     postProcessData->confuse = false;
 }
 
-void Breakout::ActivatePowerUp(PowerUpController& powerUp)
+void Breakout::ActivatePowerUp(PowerUpType powerUpType)
 {
-    switch (powerUp.powerUpObject.type)
+    switch (powerUpType)
     {
     case PowerUpType::SPEED:
         ballController->rigidbody->velocity *= 1.2;
@@ -379,7 +392,7 @@ void Breakout::ActivatePowerUp(PowerUpController& powerUp)
         break;
     case PowerUpType::PAD_SIZE_INCREASE:
         playerController->gameObject->transform.scale.x += 50;
-        playerController->collider->size = playerController->gameObject->transform.scale;
+        playerController->collider->colliderSize = playerController->gameObject->transform.scale;
         break;
     case PowerUpType::CONFUSE:
         // It will be activate only if chaos wasn't already active
@@ -394,6 +407,8 @@ void Breakout::ActivatePowerUp(PowerUpController& powerUp)
     default:
         break;
     }
+
+    soundEngine->play2D("Assets/Sounds/powerup.wav", false);
 }
 
 void Breakout::SpawnPowerUps(glm::vec2 position)
@@ -402,37 +417,37 @@ void Breakout::SpawnPowerUps(glm::vec2 position)
     if (number == 0)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpSpeed, position)
+            PowerUpController::CreatePowerUp(PowerUpSpeed, position, powerUpActivationEventItem)
         );
     }
     else if (number == 1)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpSticky, position)
+            PowerUpController::CreatePowerUp(PowerUpSticky, position, powerUpActivationEventItem)
         );
     }
     else if (number == 2)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpPassThrough, position)
+            PowerUpController::CreatePowerUp(PowerUpPassThrough, position, powerUpActivationEventItem)
         );
     }
     else if (number == 3)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpPadSizeIncrease, position)
+            PowerUpController::CreatePowerUp(PowerUpPadSizeIncrease, position, powerUpActivationEventItem)
         );
     }
     else if (number > 3 && number < 8)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpConfuse, position)
+            PowerUpController::CreatePowerUp(PowerUpConfuse, position, powerUpActivationEventItem)
         );
     }
     else if (number > 7 && number < 12)
     {
         powerUps.push_back(
-            PowerUpController::CreatePowerUp(PowerUpChaos, position)
+            PowerUpController::CreatePowerUp(PowerUpChaos, position, powerUpActivationEventItem)
         );
     }
 }
@@ -451,6 +466,9 @@ void Breakout::UpdatePowerUps()
 {
     for (PowerUpController* powerUp : powerUps)
     {
+        if (powerUp->gameObject->transform.position.y >= Game::mainCamera.GetResolution().GetHeight())
+            powerUp->gameObject->isActive = false;
+
         powerUp->rigidbody->Update();
         if (powerUp->activated)
         {
@@ -517,144 +535,23 @@ void Breakout::ClearPowerUps()
     powerUps.clear();
 }
 
-bool Breakout::CheckCollision(const BoxCollider& box1, const BoxCollider& box2)
+void Breakout::BallHitPlayer()
 {
-    return Collision::IsCollisoned(box1, box2).isCollisoned;
+    soundEngine->play2D("Assets/Sounds/bleep.wav", false);
 }
 
-Direction Breakout::VectorDirection(glm::vec2 target)
+void Breakout::BallHitBrick(BrickController* brick)
 {
-    glm::vec2 compass[] = {
-        glm::vec2(0.0f, 1.0f),	// up
-        glm::vec2(1.0f, 0.0f),	// right
-        glm::vec2(0.0f, -1.0f),	// down
-        glm::vec2(-1.0f, 0.0f)	// left
-    };
-    float max = 0.0f;
-    unsigned int best_match = -1;
-    for (unsigned int i = 0; i < 4; i++)
+    if (!brick->isSolid)
     {
-        float dot_product = glm::dot(glm::normalize(target), compass[i]);
-        if (dot_product > max)
-        {
-            max = dot_product;
-            best_match = i;
-        }
-    }
-    return (Direction)best_match;
-}
-
-CollisionResult Breakout::CheckCollision(const CircleCollider& ball, const BoxCollider& box)
-{
-    auto data = Collision::IsCollisoned(ball, box);
-    if (data.isCollisoned)
-    {
-        glm::vec2 difference = data.edge2 - ball.GetCenter();
-        return { true, VectorDirection(difference), difference };
+        brick->gameObject->isActive = false;
+        SpawnPowerUps(brick->gameObject->transform.position);
+        soundEngine->play2D("Assets/Sounds/bleep.mp3", false);
     }
     else
-        return { false, Direction::UP, glm::vec2(0.0f, 0.0f) };
-}
-
-void Breakout::CheckBricksCollision()
-{
-    for (BrickController* box : levels[selectedLevel].bricks)
     {
-        if (box->gameObject->isActive)
-        {
-            CollisionResult collision = CheckCollision(*ballController->collider, *box->collider);
-            if (collision.isCollisoned)
-            {
-                if (!box->isSolid)
-                {
-                    box->gameObject->isActive = false;
-                    SpawnPowerUps(box->gameObject->transform.position);
-                    soundEngine->play2D("Assets/Sounds/bleep.mp3", false);
-                }
-                else
-                {
-                    shakeTime = 0.05f;
-                    postProcessData->shake = true;
-                    soundEngine->play2D("Assets/Sounds/solid.wav", false);
-                }
-
-                if (!(ballController->passThrough && !box->isSolid))
-                {
-                    if (collision.direction == Direction::LEFT || collision.direction == Direction::RIGHT)
-                    {
-                        ballController->rigidbody->velocity.x = -ballController->rigidbody->velocity.x;
-
-                        float penetration = ballController->radius - std::abs(collision.differenceVector.x);
-                        if (collision.direction == Direction::LEFT)
-                            ballController->gameObject->transform.position.x += penetration;
-                        else
-                            ballController->gameObject->transform.position.x -= penetration;
-                    }
-                    else
-                    {
-                        ballController->rigidbody->velocity.y = -ballController->rigidbody->velocity.y;
-
-                        float penetration = ballController->radius - std::abs(collision.differenceVector.y);
-                        if (collision.direction == Direction::UP)
-                            ballController->gameObject->transform.position.y -= penetration;
-                        else
-                            ballController->gameObject->transform.position.y += penetration;
-                    }
-                }
-            }
-        }
+        shakeTime = 0.05f;
+        postProcessData->shake = true;
+        soundEngine->play2D("Assets/Sounds/solid.wav", false);
     }
-}
-
-void Breakout::CheckPowerUpCollision()
-{
-    for (PowerUpController* powerUp : powerUps)
-    {
-        if (powerUp->gameObject->isActive)
-        {
-            if (powerUp->gameObject->transform.position.y >= Game::mainCamera.GetResolution().GetHeight())
-                powerUp->gameObject->isActive = false;
-
-            if (CheckCollision(*playerController->collider, *powerUp->collider))
-            {
-                ActivatePowerUp(*powerUp);
-                powerUp->gameObject->isActive = false;
-                powerUp->activated = true;
-                soundEngine->play2D("Assets/Sounds/powerup.wav", false);
-            }
-        }
-    }
-}
-
-void Breakout::CheckBallPlayerCollision()
-{
-    CollisionResult result = CheckCollision(*ballController->collider, *playerController->collider);
-    if (!ballController->stuck && result.isCollisoned)
-    {
-        // check where it hit the board, and change velocity based on where it hit the board
-        float centerBoard = playerController->gameObject->transform.position.x + playerController->gameObject->transform.scale.x / 2.0f;
-        float distance = (ballController->gameObject->transform.position.x + ballController->radius) - centerBoard;
-        float percentage = distance / (playerController->gameObject->transform.scale.x / 2.0f);
-
-        // then move accordingly
-        float strength = 2.0f;
-        glm::vec2 oldVelocity = ballController->rigidbody->velocity;
-        ballController->rigidbody->velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
-
-        // keep speed consistent
-        ballController->rigidbody->velocity = glm::normalize(ballController->rigidbody->velocity) * glm::length(oldVelocity);
-
-        // fix sticky paddle
-        ballController->rigidbody->velocity.y = -1.0f * abs(ballController->rigidbody->velocity.y);
-        ballController->stuck = ballController->sticky;
-
-        soundEngine->play2D("Assets/Sounds/bleep.wav", false);
-    }
-}
-
-void Breakout::DoCollisions()
-{
-    CheckBricksCollision();
-    CheckPowerUpCollision();
-    CheckBallPlayerCollision();
 }

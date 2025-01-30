@@ -23,9 +23,9 @@
 ### Description:
 It is a base class for the `RendererComponent` and `LateRendererComponent` classes.
 It has some basic funcionality, which is essential for rendering.  
-The classes, which are inherited from this `BaseRendererComponent`, have to have a constructor,
+The classes, which are inherited from this `BaseRendererComponent` has to have a constructor,
 which first parameter is `GameObject*` for gameObject member.  
-Please check more info about `System::Component`.
+Please check for more info about `System::Component`.
 
 
 ### Header:
@@ -121,7 +121,7 @@ The LateRender is after the Render, it doesn't have anti-aliasing or post proces
 It is recommended to use it for the UI.  
 Note: The layer of the `LateRendererComponent` is the order in the LateRender only.
 So if a `RendererComponent` has a higher layer number, it will be still rendered before the `LateRendererComponent`.   
-Please check more info about `System::Component` and `BaseRendererComponent`.
+Please check for more info about `System::Component` and `BaseRendererComponent`.
 
 ### Functions:
 **Protected:**  
@@ -380,7 +380,7 @@ The developer have to inherit from this class, if they want to render something 
 The Render is before the LateRender, it can have anti-aliasing and/or post process effects.   
 Note: The layer of the `RendererComponent` is the order in the Render only.
 So if a `LateRendererComponent` has a lower layer number, it will be still rendered after the `RendererComponent`.   
-Please check more info about `System::Component` and `BaseRendererComponent`.
+Please check for more info about `System::Component` and `BaseRendererComponent`.
 
 ### Functions:
 **Protected:**  
@@ -417,12 +417,12 @@ virtual void SetLayer(int value) override;
 
 ### Description:
 It can handle the `BaseRendererComponent` objects.  
-The `ComponentManager` has 2 objects.
+The `ComponentManager` has 2 from it.
 One for `RendererComponentHandler` and one for `LateRendererComponentHandler`.
 
 ### Header:
 ```cpp
-class RendererComponentHandler : public System::BaseComponentHandler<BaseRendererComponent>
+class RendererComponentHandler : public virtual System::BaseComponentHandler<BaseRendererComponent>
 {...}
 ```
 

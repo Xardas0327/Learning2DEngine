@@ -1,13 +1,17 @@
 #pragma once
 
 #include <vector>
+#include <algorithm>
+
+#include "IComponentHandler.h"
+
 
 namespace Learning2DEngine
 {
 	namespace System
 	{
 		template<class T>
-		class BaseComponentHandler
+		class BaseComponentHandler : public IComponentHandler
 		{
 		protected:
 			std::vector<T*> components;
@@ -23,14 +27,14 @@ namespace Learning2DEngine
 			{
 				for (auto component : removeableComponents)
 				{
-					components.erase(std::remove(components.begin(), components.end(), component), components.end());
+					auto it = std::find(components.begin(), components.end(), component);
+					if (it != components.end())
+						components.erase(it);
 				}
-				removeableComponents.clear();
 
-				for (auto component : newComponents)
-				{
-					components.push_back(component);
-				}
+				components.insert(components.end(), newComponents.begin(), newComponents.end());
+
+				removeableComponents.clear();
 				newComponents.clear();
 			}
 
@@ -42,17 +46,20 @@ namespace Learning2DEngine
 
 			virtual void Remove(T* component)
 			{
-				removeableComponents.push_back(component);
+				//Check that it is not a new one.
+				auto it = std::find(newComponents.begin(), newComponents.end(), component);
+				if (it != newComponents.end())
+					newComponents.erase(it);
+				else
+					removeableComponents.push_back(component);
 			}
 
-			virtual void Clear()
+			virtual void Clear() override
 			{
 				components.clear();
 				newComponents.clear();
 				removeableComponents.clear();
 			}
-
-			virtual void DoWithAllComponents() = 0;
 		};
 	}
 }

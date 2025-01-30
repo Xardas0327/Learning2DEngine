@@ -79,8 +79,10 @@ namespace Learning2DEngine
 
                     UpdateKeyboardMouseEvents();
                     Update();
+                    componentManager.CheckCollision();
 
                     renderManager.ClearWindow();
+
                     bool usePPE = isPostProcessEffectActive && isPostProcessEffectUsed;
                     if (isMsaaActive)
                     {
@@ -90,7 +92,9 @@ namespace Learning2DEngine
                     {
                         ppeRender.StartRender();
                     }
+
                     componentManager.Render();
+
                     if (isMsaaActive)
                     {
                         msaaRender.EndRender(

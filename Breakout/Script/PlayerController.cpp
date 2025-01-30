@@ -18,7 +18,7 @@ void PlayerController::Init()
 	renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&>(
 		ResourceManager::GetInstance().GetTexture(textureId)
 	);
-	collider = gameObject->AddComponent<BoxCollider, glm::vec2>(glm::vec2(0.0f));
+	collider = gameObject->AddComponent<BoxColliderComponent, glm::vec2>(glm::vec2(0.0f));
 
 	Reset();
 }
@@ -30,6 +30,6 @@ void PlayerController::Reset()
 	gameObject->transform.scale = PLAYER_SIZE;
 	gameObject->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
 
-	collider->size = PLAYER_SIZE;
+	collider->colliderSize = PLAYER_SIZE;
 	renderer->color = glm::vec3(1.0f);
 }

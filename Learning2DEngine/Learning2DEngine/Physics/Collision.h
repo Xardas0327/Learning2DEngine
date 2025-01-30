@@ -2,27 +2,29 @@
 
 #include <glm/glm.hpp>
 
-#include "Collider.h";
-#include "BoxCollider.h";
-#include "CircleCollider.h"
-#include "CollisionData.h"
-
+#include "../System/GameObject.h"
 
 namespace Learning2DEngine
 {
     namespace Physics
     {
-        class Collision final
+        struct Collision
         {
-        private:
-            Collision() {}
+			// The closest point of current object to collided object
+            glm::vec2 edge;
+            // The closest point of collided object to current object
+            glm::vec2 edgeOfCollidedObject;
+			System::GameObject* collidedObject;
 
-            static glm::vec2 GetEdge(const BoxCollider& boxCollider, glm::vec2 distanceBetweenCenters);
-            static glm::vec2 GetEdge(const CircleCollider& circleCollider, glm::vec2 distanceBetweenCenters);
-        public:
-            static CollisionData IsCollisoned(const BoxCollider& collider1, const BoxCollider& collider2);
-            static CollisionData IsCollisoned(const CircleCollider& collider1, const CircleCollider& collider2);
-            static CollisionData IsCollisoned(const CircleCollider& circleCollider, const BoxCollider& boxCollider);
+            Collision(
+                glm::vec2 edge,
+                glm::vec2 edgeOfCollidedObject,
+                System::GameObject* collidedObject)
+                : edge(edge), edgeOfCollidedObject(edgeOfCollidedObject),
+                collidedObject(collidedObject)
+            {
+
+            }
         };
     }
 }

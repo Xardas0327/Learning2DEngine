@@ -177,12 +177,17 @@
   <ItemGroup>
     <ClInclude Include="Script\BackgroundController.h" />
     <ClInclude Include="Script\BallController.h" />
+    <ClInclude Include="Script\BallHitBrickAction.h" />
+    <ClInclude Include="Script\BallHitBrickEventItem.h" />
+    <ClInclude Include="Script\BallHitPlayerAction.h" />
+    <ClInclude Include="Script\BallHitPlayerEventItem.h" />
     <ClInclude Include="Script\BallParticleSettings.h" />
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="Script\BrickController.h" />
-    <ClInclude Include="Script\CollisionResult.h" />
     <ClInclude Include="Script\GameLevel.h" />
     <ClInclude Include="Script\PostProcessData.h" />
+    <ClInclude Include="Script\PowerUpActivation.h" />
+    <ClInclude Include="Script\PowerUpActivationEventItem.h" />
     <ClInclude Include="Script\PowerUpController.h" />
     <ClInclude Include="Script\PowerUpObject.h" />
     <ClInclude Include="Script\PowerUpType.h" />
@@ -197,6 +202,7 @@
     <ClCompile Include="Script\BackgroundController.cpp" />
     <ClCompile Include="Script\BrickController.cpp" />
     <ClCompile Include="Script\PlayerController.cpp" />
+    <ClCompile Include="Script\PowerUpController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Levels\four.lvl" />

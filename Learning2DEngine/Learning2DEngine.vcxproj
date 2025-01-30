@@ -163,7 +163,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Learning2DEngine\Physics\Collision.cpp" />
+    <ClCompile Include="Learning2DEngine\Physics\ColliderComponentHandler.cpp" />
+    <ClCompile Include="Learning2DEngine\Physics\CollisionChecker.cpp" />
     <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
     <ClCompile Include="Learning2DEngine\UI\TextCharacterSet.cpp" />
     <ClCompile Include="Plugins\glad.c" />
@@ -182,10 +183,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\ParticleSimulator\BasicParticleSettings.h" />
-    <ClInclude Include="Learning2DEngine\Physics\BoxCollider.h" />
-    <ClInclude Include="Learning2DEngine\Physics\CircleCollider.h" />
-    <ClInclude Include="Learning2DEngine\Physics\Collider.h" />
+    <ClInclude Include="Learning2DEngine\Physics\BaseBoxColliderComponent.h" />
+    <ClInclude Include="Learning2DEngine\Physics\BaseCircleColliderComponent.h" />
+    <ClInclude Include="Learning2DEngine\Physics\BoxColliderComponent.h" />
+    <ClInclude Include="Learning2DEngine\Physics\CircleColliderComponent.h" />
+    <ClInclude Include="Learning2DEngine\Physics\BaseColliderComponent.h" />
+    <ClInclude Include="Learning2DEngine\Physics\ColliderComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\Physics\Collision.h" />
+    <ClInclude Include="Learning2DEngine\Physics\CollisionChecker.h" />
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h" />
     <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h" />
     <ClInclude Include="Learning2DEngine\Render\BaseRendererComponent.h" />
@@ -213,6 +218,7 @@
     <ClInclude Include="Learning2DEngine\Render\IResolutionRefresher.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\KeyboardMouseEventItem.h" />
     <ClInclude Include="Learning2DEngine\System\GameObject.h" />
+    <ClInclude Include="Learning2DEngine\System\IComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\InputStatus.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\Log.h" />
     <ClInclude Include="Learning2DEngine\System\IKeyboardMouseRefresher.h" />
