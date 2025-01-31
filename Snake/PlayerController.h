@@ -22,8 +22,6 @@ protected:
     std::list<Learning2DEngine::Render::SpriteRenderer*> snake;
 
     PlayerController(Learning2DEngine::System::GameObject* gameObject, const std::string& textureId);
-    // TODO: This function have to be removed
-    void Init() override {};
     void Destroy() override;
     Learning2DEngine::Render::SpriteRenderer* CreateNewSnakeUnit(glm::vec2 position, glm::vec2 scale);
 public:

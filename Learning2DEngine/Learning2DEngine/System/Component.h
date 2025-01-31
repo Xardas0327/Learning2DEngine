@@ -22,8 +22,8 @@ namespace Learning2DEngine
 
 			}
 
-			virtual void Init() = 0;
-			virtual void Destroy() = 0;
+			virtual void Init() {};
+			virtual void Destroy() {};
 		public:
 			bool isActive;
 			GameObject* const gameObject;

@@ -210,7 +210,8 @@ void SetResolution(const Render::Resolution& resolution);
 ### Description:
 It is a base class for every component in the Engine.
 Some base components are inherited from this class like `BaseUpdaterComponent`,
-`BaseRendererComponent` or `BaseColliderComponent`, which are used by `ComponentManager`.   
+`BaseRendererComponent` or `BaseColliderComponent`, which are used by `ComponentManager`.
+But the developer can use this `Component` class like a data container too.  
 Fistly, it looks a bad structure, because there is a cross reference.
 A `Component` has reference about its `GameObject` and the `GameObject` has 
 reference about that `Component`. 

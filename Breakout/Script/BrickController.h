@@ -13,8 +13,6 @@ class BrickController : public virtual Learning2DEngine::System::Component
 protected:
     BrickController(Learning2DEngine::System::GameObject* gameObject, int x, int y, bool isSolid = false);
     void Init() override;
-    // TODO: This function have to be removed
-    void Destroy() override {};
 public:
     bool isSolid;
     int mapCoorX;
