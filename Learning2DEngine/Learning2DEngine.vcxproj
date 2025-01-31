@@ -222,6 +222,7 @@
     <ClInclude Include="Learning2DEngine\System\InputStatus.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\Log.h" />
     <ClInclude Include="Learning2DEngine\System\IKeyboardMouseRefresher.h" />
+    <ClInclude Include="Learning2DEngine\System\LateUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\Random.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\ResolutionEventItem.h" />
     <ClInclude Include="Learning2DEngine\System\ResourceManager.h" />
@@ -232,6 +233,7 @@
     <ClInclude Include="Learning2DEngine\Render\Texture2DSettings.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
     <ClInclude Include="Learning2DEngine\System\UpdaterComponent.h" />
+    <ClInclude Include="Learning2DEngine\System\UpdaterComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\UI\FontSizePair.h" />
     <ClInclude Include="Learning2DEngine\UI\TextCharacterSet.h" />
     <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h" />

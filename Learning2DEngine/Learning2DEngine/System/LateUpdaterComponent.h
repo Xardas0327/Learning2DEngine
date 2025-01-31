@@ -12,30 +12,30 @@ namespace Learning2DEngine
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
 		/// Please check for more info about `Component` and `BaseUpdaterComponent`.
 		/// </summary>
-		class UpdaterComponent : public virtual BaseUpdaterComponent
+		class LateUpdaterComponent : public virtual BaseUpdaterComponent
 		{
 			friend class GameObject;
 		protected:
-			UpdaterComponent(GameObject* gameObject)
+			LateUpdaterComponent(GameObject* gameObject)
 				: BaseUpdaterComponent(gameObject)
 			{
 
 			}
 
 			/// <summary>
-			/// If this function is override, it must call the UpdaterComponent::Init() in the first line.
+			/// If this function is override, it must call the LateUpdaterComponent::Init() in the first line.
 			/// </summary>
 			virtual void Init() override
 			{
-				ComponentManager::GetInstance().AddToUpdate(this);
+				ComponentManager::GetInstance().AddToLateUpdate(this);
 			}
 
 			/// <summary>
-			/// If this function is override, it must call the UpdaterComponent::Destroy() in the first line.
+			/// If this function is override, it must call the LateUpdaterComponent::Destroy() in the first line.
 			/// </summary>
 			virtual void Destroy() override
 			{
-				ComponentManager::GetInstance().RemoveFromUpdate(this);
+				ComponentManager::GetInstance().RemoveFromLateUpdate(this);
 			}
 		};
 	}

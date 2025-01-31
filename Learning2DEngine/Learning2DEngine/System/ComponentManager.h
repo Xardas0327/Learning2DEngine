@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Singleton.h"
+#include "UpdaterComponentHandler.h"
+#include "BaseUpdaterComponent.h"
 #include "../Render/BaseRendererComponent.h"
 #include "../Render/RendererComponentHandler.h"
 #include "../Physics/ColliderComponentHandler.h"
@@ -16,16 +18,53 @@ namespace Learning2DEngine
         {
             friend class Singleton<ComponentManager>;
         private:
-			Render::RendererComponentHandler rendererComponentHandler;
-            Render::RendererComponentHandler lateRendererComponentHandler;
+            UpdaterComponentHandler updaterComponentHandler;
+            UpdaterComponentHandler lateUpdaterComponentHandler;
             Physics::ColliderComponentHandler colliderComponentHandler;
+            Render::RendererComponentHandler rendererComponentHandler;
+            Render::RendererComponentHandler lateRendererComponentHandler;
 
             ComponentManager()
-				: rendererComponentHandler(), lateRendererComponentHandler(), colliderComponentHandler()
+				: updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
+                rendererComponentHandler(), lateRendererComponentHandler()
             {
 
             }
 		public:
+            //Update
+
+            inline void AddToUpdate(BaseUpdaterComponent* component)
+            {
+                updaterComponentHandler.Add(component);
+            }
+
+            inline void RemoveFromUpdate(BaseUpdaterComponent* component)
+            {
+                updaterComponentHandler.Remove(component);
+            }
+
+            inline void Update()
+            {
+                updaterComponentHandler.DoWithAllComponents();
+            }
+
+            //LateUpdate
+
+            inline void AddToLateUpdate(BaseUpdaterComponent* component)
+            {
+                lateUpdaterComponentHandler.Add(component);
+            }
+
+            inline void RemoveFromLateUpdate(BaseUpdaterComponent* component)
+            {
+                lateUpdaterComponentHandler.Remove(component);
+            }
+
+            inline void LateUpdate()
+            {
+                lateUpdaterComponentHandler.DoWithAllComponents();
+            }
+
             //Render
 
             inline void AddToRenderer(Render::BaseRendererComponent* component)
@@ -99,9 +138,11 @@ namespace Learning2DEngine
 
             void Clear()
             {
+                updaterComponentHandler. Clear();
+                lateUpdaterComponentHandler.Clear();
+                colliderComponentHandler.Clear();
 				rendererComponentHandler.Clear();
 				lateRendererComponentHandler.Clear();
-				colliderComponentHandler.Clear();
             }
         };
     }
