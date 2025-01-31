@@ -1,7 +1,5 @@
 #pragma once
 
-#include <list>
-
 #include <glm/glm.hpp>
 
 #include <Learning2DEngine/System/Game.h>

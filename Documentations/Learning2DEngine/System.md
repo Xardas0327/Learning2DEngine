@@ -210,7 +210,7 @@ void SetResolution(const Render::Resolution& resolution);
 ### Description:
 It is a base class for every component in the Engine.
 Some base components are inherited from this class like `BaseUpdaterComponent`,
-`BaseRendererComponent` or `BaseColliderComponent`.   
+`BaseRendererComponent` or `BaseColliderComponent`, which are used by `ComponentManager`.   
 Fistly, it looks a bad structure, because there is a cross reference.
 A `Component` has reference about its `GameObject` and the `GameObject` has 
 reference about that `Component`. 
@@ -844,7 +844,7 @@ enum InputStatus
     KEY_UP,
     // The key or mouse button was pressed.
     KEY_DOWN,
-    // The key was held down until it repeated.
+    // The key was held down.
     KEY_HOLD
 };
 ```

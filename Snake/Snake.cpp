@@ -56,10 +56,10 @@ void Snake::InitObjects()
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
 
     // Camera
-    mainCamera.SetResolution(resolution);
+    Game::mainCamera.SetResolution(resolution);
 
     // Unit
-    unitSize = glm::vec2(resolution.GetWidth() / levelResolution.x, resolution.GetHeight() / levelResolution.y);
+    unitSize = glm::ivec2(resolution.GetWidth() / levelResolution.x, resolution.GetHeight() / levelResolution.y);
 
     //Player
     auto player = new GameObject();
