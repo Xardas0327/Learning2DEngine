@@ -25,12 +25,12 @@ namespace Learning2DEngine
             Render::RendererComponentHandler lateRendererComponentHandler;
 
             ComponentManager()
-				: updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
+                : updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
                 rendererComponentHandler(), lateRendererComponentHandler()
             {
 
             }
-		public:
+        public:
             //Update
 
             inline void AddToUpdate(BaseUpdaterComponent* component)
@@ -72,19 +72,19 @@ namespace Learning2DEngine
                 rendererComponentHandler.Add(component);
             }
 
-			inline void RemoveFromRenderer(Render::BaseRendererComponent* component)
-			{
-				rendererComponentHandler.Remove(component);
-			}
+            inline void RemoveFromRenderer(Render::BaseRendererComponent* component)
+            {
+                rendererComponentHandler.Remove(component);
+            }
 
             inline void NeedReorderRenderers()
             {
-				rendererComponentHandler.NeedReorder();
+                rendererComponentHandler.NeedReorder();
             }
 
             inline void Render()
             {
-				rendererComponentHandler.DoWithAllComponents();
+                rendererComponentHandler.DoWithAllComponents();
             }
 
             //LateRender
@@ -133,16 +133,16 @@ namespace Learning2DEngine
 
             inline void CheckCollision()
             {
-				colliderComponentHandler.DoWithAllComponents();
+                colliderComponentHandler.DoWithAllComponents();
             }
 
             void Clear()
             {
-                updaterComponentHandler. Clear();
+                updaterComponentHandler.Clear();
                 lateUpdaterComponentHandler.Clear();
                 colliderComponentHandler.Clear();
-				rendererComponentHandler.Clear();
-				lateRendererComponentHandler.Clear();
+                rendererComponentHandler.Clear();
+                lateRendererComponentHandler.Clear();
             }
         };
     }
