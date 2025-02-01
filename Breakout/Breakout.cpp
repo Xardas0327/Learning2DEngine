@@ -347,7 +347,6 @@ void Breakout::Update()
     ProcessInput();
 
     ballController->Move();
-    ballController->particleSystem->Update();
 
     //DoCollisions();
     UpdatePowerUps();

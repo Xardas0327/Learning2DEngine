@@ -34,6 +34,7 @@ protected:
     const std::string textureId;
     const std::string particleTextureId;
     PlayerController* playerController;
+    Learning2DEngine::ParticleSimulator::ParticleSystem* particleSystem;
     Learning2DEngine::EventSystem::EventHandler<> hitPlayerEventHandler;
     Learning2DEngine::EventSystem::EventHandler<BrickController*> hitBrickEventHandler;
     bool isStuck;
@@ -47,7 +48,6 @@ protected:
 public:
     Learning2DEngine::Render::SpriteRenderer* renderer;
     Learning2DEngine::Physics::Rigidbody* rigidbody;
-    Learning2DEngine::ParticleSimulator::ParticleSystem* particleSystem;
     float radius;
     bool sticky;
     bool passThrough;
