@@ -21,7 +21,7 @@ BallController::BallController(GameObject* gameObject, PlayerController* playerC
     BaseColliderComponent(gameObject), Component(gameObject),
     textureId(textureId), particleTextureId(particleTextureId), playerController(playerController),
     renderer(nullptr), rigidbody(nullptr), particleSystem(nullptr),
-    radius(BALL_RADIUS), stuck(true), sticky(false), passThrough(false), 
+    radius(BALL_RADIUS), isStuck(true), sticky(false), passThrough(false),
     hitPlayerEventHandler(), hitBrickEventHandler()
 {
     hitPlayerEventHandler.Add(&ballHitPlayerEventItem);
@@ -32,7 +32,7 @@ void BallController::Init()
 {
     CircleColliderComponent::Init();
 
-    rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2>(INITIAL_BALL_VELOCITY);
+    rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2, bool>(INITIAL_BALL_VELOCITY, isStuck);
     renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&>(
         ResourceManager::GetInstance().GetTexture(textureId)
     );
@@ -65,10 +65,9 @@ void BallController::InitParticleSystem()
 
 void BallController::Move()
 {
-    if (!stuck)
+    if (!isStuck)
     {
         int width = Game::mainCamera.GetResolution().GetWidth();
-        rigidbody->Update();
 
         if (gameObject->transform.position.x <= 0.0f)
         {
@@ -95,7 +94,7 @@ void BallController::Reset()
     rigidbody->velocity = INITIAL_BALL_VELOCITY;
     renderer->color = glm::vec3(1.0f);
 
-    stuck = true;
+    SetStuck(true);
     sticky = false;
     passThrough = false;
 }
@@ -122,10 +121,16 @@ Direction BallController::VectorDirection(glm::vec2 target)
     return (Direction)best_match;
 }
 
+void BallController::SetStuck(bool value)
+{
+    isStuck = value;
+    rigidbody->isFrozen = value;
+}
+
 void BallController::OnCollision(Collision collision)
 {
     auto player = collision.collidedObject->GetComponent<PlayerController>();
-    if (player != nullptr && !stuck)
+    if (player != nullptr && !isStuck)
     {
         // check where it hit the board, and change velocity based on where it hit the board
         float centerBoard = collision.collidedObject->transform.position.x + collision.collidedObject->transform.scale.x / 2.0f;
@@ -142,7 +147,7 @@ void BallController::OnCollision(Collision collision)
 
         // fix sticky paddle
         rigidbody->velocity.y = -1.0f * abs(rigidbody->velocity.y);
-        stuck = sticky;
+        SetStuck(sticky);
         hitPlayerEventHandler.Invoke();
         return;
     }

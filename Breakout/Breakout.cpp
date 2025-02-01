@@ -273,7 +273,7 @@ void Breakout::ProcessInput()
             if (playerController->gameObject->transform.position.x >= 0.0f)
             {
                 playerController->gameObject->transform.position.x -= velocity;
-                if (ballController->stuck)
+                if (ballController->IsStuck())
                     ballController->gameObject->transform.position.x -= velocity;
             }
         }
@@ -283,12 +283,12 @@ void Breakout::ProcessInput()
                 Game::mainCamera.GetResolution().GetWidth() - playerController->gameObject->transform.scale.x)
             {
                 playerController->gameObject->transform.position.x += velocity;
-                if (ballController->stuck)
+                if (ballController->IsStuck())
                     ballController->gameObject->transform.position.x += velocity;
             }
         }
         if (Game::inputKeys[GLFW_KEY_SPACE])
-            ballController->stuck = false;
+            ballController->SetStuck(false);
         break;
     }
 }
@@ -469,7 +469,7 @@ void Breakout::UpdatePowerUps()
         if (powerUp->gameObject->transform.position.y >= Game::mainCamera.GetResolution().GetHeight())
             powerUp->gameObject->isActive = false;
 
-        powerUp->rigidbody->Update();
+        //powerUp->rigidbody->Update();
         if (powerUp->activated)
         {
             powerUp->actualDuration -= Game::GetDeltaTime();

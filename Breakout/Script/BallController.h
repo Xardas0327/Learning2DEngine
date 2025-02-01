@@ -36,6 +36,7 @@ protected:
     PlayerController* playerController;
     Learning2DEngine::EventSystem::EventHandler<> hitPlayerEventHandler;
     Learning2DEngine::EventSystem::EventHandler<BrickController*> hitBrickEventHandler;
+    bool isStuck;
 
     BallController(Learning2DEngine::System::GameObject* gameObject, PlayerController* playerController,
         const std::string& textureId, const std::string& particleTextureId,
@@ -48,7 +49,6 @@ public:
     Learning2DEngine::Physics::Rigidbody* rigidbody;
     Learning2DEngine::ParticleSimulator::ParticleSystem* particleSystem;
     float radius;
-    bool stuck;
     bool sticky;
     bool passThrough;
 
@@ -56,4 +56,11 @@ public:
 
     void Move();
     void Reset();
+
+    inline bool IsStuck()
+    {
+        return isStuck;
+    }
+
+    void SetStuck(bool value);
 };
