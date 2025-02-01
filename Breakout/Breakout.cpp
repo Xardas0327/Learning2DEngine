@@ -11,10 +11,9 @@ using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::UI;
 using namespace Learning2DEngine::Physics;
-using namespace irrklang;
 
 Breakout::Breakout()
-    : fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), soundEngine(nullptr), postProcessData(nullptr), gameController(nullptr)
+    : fontSizePair("Assets/Fonts/OCRAEXT.TTF", 24), postProcessData(nullptr), gameController(nullptr)
 {
 
 }
@@ -65,19 +64,13 @@ void Breakout::Init()
     // Camera
     mainCamera.SetResolution(RenderManager::GetInstance().GetResolution());
 
-
-    // Sounds
-    soundEngine = createIrrKlangDevice();
-    soundEngine->play2D("Assets/Sounds/breakout.mp3", true);
-
     // GameController
     auto gameControllerObject = new GameObject();
     gameController = gameControllerObject->AddComponent<
         GameController,
         const FontSizePair&,
-        irrklang::ISoundEngine*,
         PostProcessData*
-    >(fontSizePair, soundEngine, postProcessData);
+    >(fontSizePair, postProcessData);
 }
 
 void Breakout::Terminate()
@@ -85,7 +78,6 @@ void Breakout::Terminate()
     GameObject::Destroy(gameController);
 
     delete postProcessData;
-    soundEngine->drop();
 
     TextCharacterSet::GetInstance().Clear();
     Game::Terminate();

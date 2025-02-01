@@ -37,8 +37,8 @@ class GameController final : public virtual Learning2DEngine::System::UpdaterCom
     friend class Learning2DEngine::System::GameObject;
 private:
     const Learning2DEngine::UI::FontSizePair fontSizePair;
-    irrklang::ISoundEngine* soundEngine;
     PostProcessData* postProcessData;
+    irrklang::ISoundEngine* soundEngine;
 
     GameState state;
     std::vector<PowerUpController*> powerUps;
@@ -61,7 +61,7 @@ private:
 
 
     GameController(Learning2DEngine::System::GameObject* gameObject, const Learning2DEngine::UI::FontSizePair& fontSizePair,
-        irrklang::ISoundEngine* soundEngine, PostProcessData* postProcessData);
+        PostProcessData* postProcessData);
 
     void ProcessInput();
     void ShakeScreen();

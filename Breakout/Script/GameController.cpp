@@ -8,10 +8,9 @@ using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::UI;
 using namespace irrklang;
 
-GameController::GameController(GameObject* gameObject, const FontSizePair& fontSizePair,
-    irrklang::ISoundEngine* soundEngine, PostProcessData* postProcessData)
+GameController::GameController(GameObject* gameObject, const FontSizePair& fontSizePair, PostProcessData* postProcessData)
 	: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
-    fontSizePair(fontSizePair), soundEngine(soundEngine), postProcessData(postProcessData),
+    fontSizePair(fontSizePair), postProcessData(postProcessData), soundEngine(nullptr),
     state(GameState::GAME_MENU), powerUps(), levels(), selectedLevel(0), lives(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
     shakeTime(0.0f), liveText(nullptr), startText(nullptr), levelSelectorText(nullptr), winText(nullptr), retryText(nullptr),
@@ -130,6 +129,8 @@ void GameController::Init()
         glm::vec3(1.0f, 1.0f, 0.0f)
     );
 
+    // Sounds
+    soundEngine = createIrrKlangDevice();
     soundEngine->play2D("Assets/Sounds/breakout.mp3", true);
 }
 
@@ -149,6 +150,8 @@ void GameController::Destroy()
 
     for (auto& level : levels)
         level.ClearBricks();
+
+    soundEngine->drop();
 }
 
 void GameController::Update()
