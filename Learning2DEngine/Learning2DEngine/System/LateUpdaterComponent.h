@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BaseUpdaterComponent.h"
+#include "BaseLateUpdaterComponent.h"
 #include "ComponentManager.h"
 
 namespace Learning2DEngine
@@ -10,14 +10,14 @@ namespace Learning2DEngine
 		/// <summary>
 		/// The classes, which are inherited from UpdaterComponent,
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
-		/// Please check for more info about `Component` and `BaseUpdaterComponent`.
+		/// Please check for more info about `Component` and `BaseLateUpdaterComponent`.
 		/// </summary>
-		class LateUpdaterComponent : public virtual BaseUpdaterComponent
+		class LateUpdaterComponent : public virtual BaseLateUpdaterComponent
 		{
 			friend class GameObject;
 		protected:
 			LateUpdaterComponent(GameObject* gameObject)
-				: BaseUpdaterComponent(gameObject)
+				: BaseLateUpdaterComponent(gameObject)
 			{
 
 			}

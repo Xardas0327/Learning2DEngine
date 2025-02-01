@@ -5,6 +5,7 @@
 
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
+#include <Learning2DEngine/System/LateUpdaterComponent.h>
 #include <Learning2DEngine/UI/FontSizePair.h>
 #include <Learning2DEngine/UI/Text2DLateRenderer.h>
 
@@ -30,6 +31,7 @@ enum GameState {
 };
 
 class GameController final : public virtual Learning2DEngine::System::UpdaterComponent,
+                            public virtual Learning2DEngine::System::LateUpdaterComponent,
                             public IPowerUpActivation,
                             public IBallHitPlayerAction,
                             public IBallHitBrickAction
@@ -79,6 +81,7 @@ public:
     void Init() override;
     void Destroy() override;
     void Update() override;
+    void LateUpdate() override;
 
     void ActivatePowerUp(PowerUpType powerUpType) override;
     void BallHitPlayer() override;

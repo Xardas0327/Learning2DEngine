@@ -2,7 +2,9 @@
 
 #include "Singleton.h"
 #include "UpdaterComponentHandler.h"
+#include "LateUpdaterComponentHandler.h"
 #include "BaseUpdaterComponent.h"
+#include "BaseLateUpdaterComponent.h"
 #include "../Render/BaseRendererComponent.h"
 #include "../Render/RendererComponentHandler.h"
 #include "../Physics/ColliderComponentHandler.h"
@@ -19,7 +21,7 @@ namespace Learning2DEngine
             friend class Singleton<ComponentManager>;
         private:
             UpdaterComponentHandler updaterComponentHandler;
-            UpdaterComponentHandler lateUpdaterComponentHandler;
+            LateUpdaterComponentHandler lateUpdaterComponentHandler;
             Physics::ColliderComponentHandler colliderComponentHandler;
             Render::RendererComponentHandler rendererComponentHandler;
             Render::RendererComponentHandler lateRendererComponentHandler;
@@ -50,12 +52,12 @@ namespace Learning2DEngine
 
             //LateUpdate
 
-            inline void AddToLateUpdate(BaseUpdaterComponent* component)
+            inline void AddToLateUpdate(BaseLateUpdaterComponent* component)
             {
                 lateUpdaterComponentHandler.Add(component);
             }
 
-            inline void RemoveFromLateUpdate(BaseUpdaterComponent* component)
+            inline void RemoveFromLateUpdate(BaseLateUpdaterComponent* component)
             {
                 lateUpdaterComponentHandler.Remove(component);
             }

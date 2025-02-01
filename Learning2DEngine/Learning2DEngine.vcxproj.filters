@@ -236,5 +236,11 @@
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\BaseLateUpdaterComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\LateUpdaterComponentHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

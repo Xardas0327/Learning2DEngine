@@ -208,6 +208,7 @@
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h" />
     <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
+    <ClInclude Include="Learning2DEngine\System\BaseLateUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\BaseUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\Camera.h" />
     <ClInclude Include="Learning2DEngine\System\Component.h" />
@@ -223,6 +224,7 @@
     <ClInclude Include="Learning2DEngine\DebugTool\Log.h" />
     <ClInclude Include="Learning2DEngine\System\IKeyboardMouseRefresher.h" />
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponent.h" />
+    <ClInclude Include="Learning2DEngine\System\LateUpdaterComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\Random.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\ResolutionEventItem.h" />
     <ClInclude Include="Learning2DEngine\System\ResourceManager.h" />

@@ -11,7 +11,8 @@ using namespace Learning2DEngine::UI;
 using namespace irrklang;
 
 GameController::GameController(GameObject* gameObject, const FontSizePair& fontSizePair, PostProcessData* postProcessData)
-	: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
+	: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject),
+    LateUpdaterComponent(gameObject), BaseLateUpdaterComponent(gameObject), Component(gameObject),
     fontSizePair(fontSizePair), postProcessData(postProcessData), soundEngine(nullptr),
     state(GameState::GAME_MENU), powerUps(), levels(), selectedLevel(0), lifes(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
@@ -24,6 +25,7 @@ GameController::GameController(GameObject* gameObject, const FontSizePair& fontS
 void GameController::Init()
 {
     UpdaterComponent::Init();
+    LateUpdaterComponent::Init();
 
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
     const int middleHeight = resolution.GetHeight() / 2;
@@ -139,6 +141,7 @@ void GameController::Init()
 void GameController::Destroy()
 {
     UpdaterComponent::Destroy();
+    LateUpdaterComponent::Destroy();
 
     GameObject::Destroy(backgroundController);
     GameObject::Destroy(playerController);
@@ -158,17 +161,16 @@ void GameController::Destroy()
 
 void GameController::Update()
 {
-    //Update
     ProcessInput();
     UpdatePowerUps();
     ShakeScreen(); 
+}
 
-    //DoCollisions();
-
-    //LateUpdate
+void GameController::LateUpdate()
+{
     postProcessData->RefreshShader(glfwGetTime());
     IsLifeLost();
-    IsLevelCompleted(); 
+    IsLevelCompleted();
 }
 
 void GameController::ProcessInput()
