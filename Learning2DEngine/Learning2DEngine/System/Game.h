@@ -62,7 +62,6 @@ namespace Learning2DEngine
             static InputStatus inputKeys[INPUT_KEY_SIZE];
 
             Game();
-            virtual void Update() {};
 
             void ActivateMSAA(unsigned int sampleNumber);
             void StopMSAA();

@@ -74,7 +74,7 @@ namespace Learning2DEngine
 
 
                     UpdateKeyboardMouseEvents();
-                    Update();
+
                     componentManager.Update();
                     componentManager.CheckCollision();
                     componentManager.LateUpdate();
