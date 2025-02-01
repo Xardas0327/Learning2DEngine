@@ -175,6 +175,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Script\GameController.h" />
     <ClInclude Include="Script\BackgroundController.h" />
     <ClInclude Include="Script\BallController.h" />
     <ClInclude Include="Script\BallHitBrickAction.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Script\PlayerController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Script\GameController.cpp" />
     <ClCompile Include="Script\BallController.cpp" />
     <ClCompile Include="Script\BallParticleSettings.cpp" />
     <ClCompile Include="Breakout.cpp" />
