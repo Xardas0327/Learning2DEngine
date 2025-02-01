@@ -344,16 +344,18 @@ void Breakout::IsLevelCompleted()
 
 void Breakout::Update()
 {
-    ProcessInput();
+    //Update
+    ProcessInput(); //ScreenController/UIController + GameController combo?
+    UpdatePowerUps(); //PowerController Update?
+    ShakeScreen();  //ScreenController/UIController?
+    postProcessData->RefreshShader(glfwGetTime()); //ScreenController/UIController?
 
     //DoCollisions();
-    UpdatePowerUps();
-    ShakeScreen();
     
-    IsLiveLost();
-    IsLevelCompleted();
+    //LateUpdate
+    IsLiveLost(); //Eventbe?
+    IsLevelCompleted(); //BallHitBrick eventbe?
 
-    postProcessData->RefreshShader(glfwGetTime());
 }
 
 void Breakout::ResetLevel()
