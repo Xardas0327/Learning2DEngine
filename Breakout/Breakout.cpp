@@ -346,7 +346,7 @@ void Breakout::Update()
 {
     //Update
     ProcessInput(); //ScreenController/UIController + GameController combo?
-    UpdatePowerUps(); //PowerController Update?
+    UpdatePowerUps(); //PowerController Update/LateUpdate + event?
     ShakeScreen();  //ScreenController/UIController?
     postProcessData->RefreshShader(glfwGetTime()); //ScreenController/UIController?
 
@@ -354,7 +354,7 @@ void Breakout::Update()
     
     //LateUpdate
     IsLiveLost(); //Eventbe?
-    IsLevelCompleted(); //BallHitBrick eventbe?
+    IsLevelCompleted(); //BallHitBrick is not good, because it is called by collision
 
 }
 
