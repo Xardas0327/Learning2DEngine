@@ -2,10 +2,10 @@
 
 #include "PowerUpType.h"
 
-class PowerUpActivation
+class IPowerUpActivation
 {
 public:
-	virtual ~PowerUpActivation() {}
+	virtual ~IPowerUpActivation() {}
 
 	virtual void ActivatePowerUp(PowerUpType powerUp) = 0;
 };

@@ -33,7 +33,7 @@ namespace Learning2DEngine
             LateRender (without any effect)
             Update Window
         */
-        class Game : public virtual IKeyboardMouseRefresher, public virtual Render::IResolutionRefresher
+        class Game : public virtual IKeyboardMouseRefresher, public Render::IResolutionRefresher
         {
         private:
             float lastFrame;

@@ -2,14 +2,14 @@
 
 #include <Learning2DEngine/EventSystem/EventItem.h>
 
-#include "BallHitPlayerAction.h"
+#include "IBallHitPlayerAction.h"
 
 class BallHitPlayerEventItem final : public virtual Learning2DEngine::EventSystem::EventItem<>
 {
 private:
-	BallHitPlayerAction* item;
+	IBallHitPlayerAction* item;
 public:
-	BallHitPlayerEventItem(BallHitPlayerAction* item)
+	BallHitPlayerEventItem(IBallHitPlayerAction* item)
 		: item(item)
 	{
 

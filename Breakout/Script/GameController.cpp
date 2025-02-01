@@ -1,5 +1,7 @@
 #include "GameController.h"
 
+#include <string>
+
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/System/Random.h>
 
@@ -11,9 +13,9 @@ using namespace irrklang;
 GameController::GameController(GameObject* gameObject, const FontSizePair& fontSizePair, PostProcessData* postProcessData)
 	: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
     fontSizePair(fontSizePair), postProcessData(postProcessData), soundEngine(nullptr),
-    state(GameState::GAME_MENU), powerUps(), levels(), selectedLevel(0), lives(3),
+    state(GameState::GAME_MENU), powerUps(), levels(), selectedLevel(0), lifes(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
-    shakeTime(0.0f), liveText(nullptr), startText(nullptr), levelSelectorText(nullptr), winText(nullptr), retryText(nullptr),
+    shakeTime(0.0f), lifeText(nullptr), startText(nullptr), levelSelectorText(nullptr), winText(nullptr), retryText(nullptr),
     powerUpActivationEventItem(this), ballHitPlayerEventItem(this), ballHitBrickEventItem(this)
 {
 
@@ -72,10 +74,10 @@ void GameController::Init()
             glm::vec2(5.0f, 5.0f)
         )
     );
-    liveText = liveGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string>(
+    lifeText = liveGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string>(
         resolution,
         fontSizePair,
-        "Lives: " + std::to_string(lives)
+        "Lifes: " + std::to_string(lifes)
     );
 
     auto startGameObject = new GameObject(
@@ -142,7 +144,7 @@ void GameController::Destroy()
     GameObject::Destroy(playerController);
     GameObject::Destroy(ballController);
 
-    GameObject::Destroy(liveText);
+    GameObject::Destroy(lifeText);
     GameObject::Destroy(startText);
     GameObject::Destroy(levelSelectorText);
     GameObject::Destroy(winText);
@@ -157,16 +159,16 @@ void GameController::Destroy()
 void GameController::Update()
 {
     //Update
-    ProcessInput(); //ScreenController/UIController + GameController combo?
-    UpdatePowerUps(); //PowerController Update/LateUpdate + event?
-    ShakeScreen();  //ScreenController/UIController?
-    postProcessData->RefreshShader(glfwGetTime()); //ScreenController/UIController?
+    ProcessInput();
+    UpdatePowerUps();
+    ShakeScreen(); 
 
     //DoCollisions();
 
     //LateUpdate
-    IsLiveLost(); //Eventbe?
-    IsLevelCompleted(); //BallHitBrick is not good, because it is called by collision
+    postProcessData->RefreshShader(glfwGetTime());
+    IsLifeLost();
+    IsLevelCompleted(); 
 }
 
 void GameController::ProcessInput()
@@ -257,12 +259,12 @@ void GameController::ShakeScreen()
     }
 }
 
-void GameController::IsLiveLost()
+void GameController::IsLifeLost()
 {
     if (ballController->gameObject->transform.position.y >= Game::mainCamera.GetResolution().GetHeight())
     {
-        --lives;
-        if (lives == 0)
+        --lifes;
+        if (lifes == 0)
         {
             ResetLevel();
             state = GameState::GAME_MENU;
@@ -273,7 +275,7 @@ void GameController::IsLiveLost()
         }
         else
         {
-            liveText->text = "Lives: " + std::to_string(lives);
+            lifeText->text = "Lifes: " + std::to_string(lifes);
         }
         ResetPlayer();
         ClearPowerUps();
@@ -299,8 +301,8 @@ void GameController::IsLevelCompleted()
 void GameController::ResetLevel()
 {
     levels[selectedLevel].Load(true);
-    lives = 3;
-    liveText->text = "Lives: " + std::to_string(lives);
+    lifes = 3;
+    lifeText->text = "Lifes: " + std::to_string(lifes);
 }
 
 void GameController::ResetPlayer()

@@ -15,11 +15,11 @@
 #include "PostProcessData.h"
 #include "PowerUpController.h"
 #include "PowerUpType.h"
-#include "PowerUpActivation.h"
+#include "IPowerUpActivation.h"
 #include "PowerUpActivationEventItem.h"
-#include "BallHitPlayerAction.h"
+#include "IBallHitPlayerAction.h"
 #include "BallHitPlayerEventItem.h"
-#include "BallHitBrickAction.h"
+#include "IBallHitBrickAction.h"
 #include "BallHitBrickEventItem.h"
 
 
@@ -30,9 +30,9 @@ enum GameState {
 };
 
 class GameController final : public virtual Learning2DEngine::System::UpdaterComponent,
-                            public virtual PowerUpActivation,
-                            public virtual BallHitPlayerAction,
-                            public virtual BallHitBrickAction
+                            public IPowerUpActivation,
+                            public IBallHitPlayerAction,
+                            public IBallHitBrickAction
 {
     friend class Learning2DEngine::System::GameObject;
 private:
@@ -44,7 +44,7 @@ private:
     std::vector<PowerUpController*> powerUps;
     std::vector<GameLevel> levels;
     unsigned int selectedLevel;
-    unsigned int lives;
+    unsigned int lifes;
     BackgroundController* backgroundController;
     PlayerController* playerController;
     BallController* ballController;
@@ -53,7 +53,7 @@ private:
     BallHitPlayerEventItem ballHitPlayerEventItem;
     BallHitBrickEventItem ballHitBrickEventItem;
 
-    Learning2DEngine::UI::Text2DLateRenderer* liveText;
+    Learning2DEngine::UI::Text2DLateRenderer* lifeText;
     Learning2DEngine::UI::Text2DLateRenderer* startText;
     Learning2DEngine::UI::Text2DLateRenderer* levelSelectorText;
     Learning2DEngine::UI::Text2DLateRenderer* winText;
@@ -65,7 +65,7 @@ private:
 
     void ProcessInput();
     void ShakeScreen();
-    void IsLiveLost();
+    void IsLifeLost();
     void IsLevelCompleted();
 
     void ResetLevel();

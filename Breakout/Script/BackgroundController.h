@@ -9,7 +9,7 @@
 #include <Learning2DEngine/Render/Resolution.h>
 #include <Learning2DEngine/EventSystem/ResolutionEventItem.h>
 
-class BackgroundController : public virtual Learning2DEngine::System::Component, public virtual Learning2DEngine::Render::IResolutionRefresher
+class BackgroundController : public virtual Learning2DEngine::System::Component, public Learning2DEngine::Render::IResolutionRefresher
 {
     friend class Learning2DEngine::System::GameObject;
 protected:

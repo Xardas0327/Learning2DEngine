@@ -2,10 +2,10 @@
 
 #include "BrickController.h"
 
-class BallHitBrickAction
+class IBallHitBrickAction
 {
 public:
-	virtual ~BallHitBrickAction() {}
+	virtual ~IBallHitBrickAction() {}
 
 	virtual void BallHitBrick(BrickController* brick) = 0;
 };
