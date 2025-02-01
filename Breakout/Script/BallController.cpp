@@ -16,9 +16,8 @@ using namespace Learning2DEngine::ParticleSimulator;
 BallController::BallController(GameObject* gameObject, PlayerController* playerController,
     const std::string& textureId, const std::string& particleTextureId,
     BallHitPlayerEventItem& ballHitPlayerEventItem, BallHitBrickEventItem& ballHitBrickEventItem)
-    : CircleColliderComponent(gameObject, BALL_RADIUS),
-    BaseCircleColliderComponent(gameObject, BALL_RADIUS),
-    BaseColliderComponent(gameObject), Component(gameObject),
+    : CircleColliderComponent(gameObject, BALL_RADIUS), BaseCircleColliderComponent(gameObject, BALL_RADIUS),
+    BaseColliderComponent(gameObject), UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
     textureId(textureId), particleTextureId(particleTextureId), playerController(playerController),
     renderer(nullptr), rigidbody(nullptr), particleSystem(nullptr),
     radius(BALL_RADIUS), isStuck(true), sticky(false), passThrough(false),
@@ -31,6 +30,7 @@ BallController::BallController(GameObject* gameObject, PlayerController* playerC
 void BallController::Init()
 {
     CircleColliderComponent::Init();
+    UpdaterComponent::Init();
 
     rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2, bool>(INITIAL_BALL_VELOCITY, isStuck);
     renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&>(
@@ -63,7 +63,13 @@ void BallController::InitParticleSystem()
     particleSystem->Start();
 }
 
-void BallController::Move()
+void BallController::Destroy()
+{
+    CircleColliderComponent::Destroy();
+    UpdaterComponent::Destroy();
+}
+
+void BallController::Update()
 {
     if (!isStuck)
     {
@@ -155,7 +161,7 @@ void BallController::OnCollision(Collision collision)
     auto brick = collision.collidedObject->GetComponent<BrickController>();
     if (brick != nullptr)
     {
-        if (!(passThrough && !brick->isSolid))
+        if (!passThrough || brick->IsSolid())
         {
             glm::vec2 difference = collision.edgeOfCollidedObject - GetColliderCenter();
             Direction direction = VectorDirection(difference);

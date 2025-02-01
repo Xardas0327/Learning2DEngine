@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include <Learning2DEngine/System/Component.h>
+#include <Learning2DEngine/System/UpdaterComponent.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/Render/SpriteRenderer.h>
 #include <Learning2DEngine/Physics/Rigidbody.h>
@@ -27,7 +27,8 @@ enum Direction {
     LEFT
 };
 
-class BallController : public virtual Learning2DEngine::Physics::CircleColliderComponent
+class BallController : public virtual Learning2DEngine::Physics::CircleColliderComponent,
+                        public virtual Learning2DEngine::System::UpdaterComponent
 {
     friend class Learning2DEngine::System::GameObject;
 protected:
@@ -43,6 +44,7 @@ protected:
         const std::string& textureId, const std::string& particleTextureId,
         BallHitPlayerEventItem& ballHitPlayerEventItem, BallHitBrickEventItem& ballHitBrickEventItem);
     void Init() override;
+    void Destroy() override;
     void InitParticleSystem();
     Direction VectorDirection(glm::vec2 target);
 public:
@@ -54,7 +56,7 @@ public:
 
     void OnCollision(Learning2DEngine::Physics::Collision collision) override;
 
-    void Move();
+    void Update() override;
     void Reset();
 
     inline bool IsStuck()

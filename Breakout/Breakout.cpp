@@ -346,8 +346,6 @@ void Breakout::Update()
 {
     ProcessInput();
 
-    ballController->Move();
-
     //DoCollisions();
     UpdatePowerUps();
     ShakeScreen();
@@ -540,7 +538,7 @@ void Breakout::BallHitPlayer()
 
 void Breakout::BallHitBrick(BrickController* brick)
 {
-    if (!brick->isSolid)
+    if (!brick->IsSolid())
     {
         brick->gameObject->isActive = false;
         SpawnPowerUps(brick->gameObject->transform.position);
