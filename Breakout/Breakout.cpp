@@ -469,7 +469,6 @@ void Breakout::UpdatePowerUps()
         if (powerUp->gameObject->transform.position.y >= Game::mainCamera.GetResolution().GetHeight())
             powerUp->gameObject->isActive = false;
 
-        //powerUp->rigidbody->Update();
         if (powerUp->activated)
         {
             powerUp->actualDuration -= Game::GetDeltaTime();
