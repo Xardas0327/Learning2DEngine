@@ -478,7 +478,7 @@ EventSystem::ResolutionEventItem resolutionEventItem;
 This array contains, which button is up, down or hold.  
 The developer should not write this array, just read it.
 ```cpp
-InputStatus inputKeys[INPUT_KEY_SIZE];
+static InputStatus inputKeys[INPUT_KEY_SIZE];
 ```
 
 **deltaTime**  
