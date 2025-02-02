@@ -14,10 +14,10 @@ namespace Learning2DEngine
             // The closest point of object2 to object1
             glm::vec2 edge2;
 
-            CollisionData(bool isCollisoned = false,
+            CollisionData(bool isCollided = false,
                 glm::vec2 edge1 = glm::vec2(0.0f, 0.0f),
                 glm::vec2 edge2 = glm::vec2(0.0f, 0.0f))
-                : isCollided(isCollisoned), edge1(edge1),
+                : isCollided(isCollided), edge1(edge1),
                 edge2(edge2)
             {
 

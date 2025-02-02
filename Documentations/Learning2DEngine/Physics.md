@@ -476,16 +476,16 @@ It is used by `CollisionChecker` and the checker will create
 ```cpp
 struct CollisionData
 {
-    bool isCollisoned;
+    bool isCollided;
     // The closest point of object1 to object2
     glm::vec2 edge1;
     // The closest point of object2 to object1
     glm::vec2 edge2;
 
-    CollisionData(bool isCollisoned = false,
+    CollisionData(bool isCollided = false,
         glm::vec2 edge1 = glm::vec2(0.0f, 0.0f),
         glm::vec2 edge2 = glm::vec2(0.0f, 0.0f))
-    : isCollisoned(isCollisoned), edge1(edge1), edge2(edge2)
+    : isCollided(isCollided), edge1(edge1), edge2(edge2)
     {
 
     }
