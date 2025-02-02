@@ -351,7 +351,8 @@ virtual ~Component();
 
 ### Description:
 The `ComponentManager` manages the `Components` in the Engine by component handlers.
-The `Game` calls its CheckCollision(), Render() and LateRender() functions in every frame.
+The `Game` calls its Update(), LateUpdate(), CheckCollision(), Render()
+and LateRender() functions in every frame.
 
 ### Header:
 ```cpp
@@ -361,6 +362,21 @@ class ComponentManager final : public virtual Singleton<ComponentManager>
 
 ### Variables:
 **Private:**  
+**updaterComponentHandler**  
+```cpp
+UpdaterComponentHandler updaterComponentHandler;
+```
+
+**lateUpdaterComponentHandler**  
+```cpp
+LateUpdaterComponentHandler lateUpdaterComponentHandler;
+```
+
+**colliderComponentHandler**  
+```cpp
+Physics::ColliderComponentHandler colliderComponentHandler;
+```
+
 **rendererComponentHandler**  
 ```cpp
 Render::RendererComponentHandler rendererComponentHandler;
@@ -371,11 +387,6 @@ Render::RendererComponentHandler rendererComponentHandler;
 Render::RendererComponentHandler lateRendererComponentHandler;
 ```
 
-**colliderComponentHandler**  
-```cpp
-Physics::ColliderComponentHandler colliderComponentHandler;
-```
-
 ### Functions:
 **Private:**  
 **ComponentManager**  
@@ -384,6 +395,57 @@ ComponentManager();
 ```
 
 **Public:**  
+**AddToUpdate**  
+```cpp
+inline void AddToUpdate(BaseUpdaterComponent* component);
+```
+
+**RemoveFromUpdate**  
+```cpp
+inline void RemoveFromUpdate(BaseUpdaterComponent* component);
+```
+
+**Update**  
+```cpp
+inline void Update();
+```
+
+**AddToLateUpdate**  
+```cpp
+inline void AddToLateUpdate(BaseLateUpdaterComponent* component);
+```
+
+**RemoveFromLateUpdate**  
+```cpp
+inline void RemoveFromLateUpdate(BaseLateUpdaterComponent* component);
+```
+
+**LateUpdate**  
+```cpp
+inline void LateUpdate();
+```
+
+**AddToCollider**  
+```cpp
+inline void AddToCollider(Physics::BaseBoxColliderComponent* component);
+```
+```cpp
+inline void AddToCollider(Physics::BaseCircleColliderComponent* component);
+```
+
+**RemoveFromCollider**  
+```cpp
+inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component);
+```
+```cpp
+inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component);
+```
+
+**CheckCollision**  
+```cpp
+inline void CheckCollision();
+```
+
 **AddToRenderer**  
 ```cpp
 inline void AddToRenderer(Render::BaseRendererComponent* component);
@@ -422,27 +484,6 @@ inline void NeedReorderLateRenderers();
 **LateRender**  
 ```cpp
 inline void LateRender();
-```
-
-**AddToCollider**  
-```cpp
-inline void AddToCollider(Physics::BaseBoxColliderComponent* component);
-```
-```cpp
-inline void AddToCollider(Physics::BaseCircleColliderComponent* component);
-```
-
-**RemoveFromCollider**  
-```cpp
-inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component);
-```
-```cpp
-inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component);
-```
-
-**CheckCollision**  
-```cpp
-inline void CheckCollision();
 ```
 
 **Clear**  

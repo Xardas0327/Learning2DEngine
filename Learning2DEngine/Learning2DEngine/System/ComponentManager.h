@@ -67,6 +67,33 @@ namespace Learning2DEngine
                 lateUpdaterComponentHandler.DoWithAllComponents();
             }
 
+            //Collider
+
+            inline void AddToCollider(Physics::BaseBoxColliderComponent* component)
+            {
+                colliderComponentHandler.Add(component);
+            }
+
+            inline void AddToCollider(Physics::BaseCircleColliderComponent* component)
+            {
+                colliderComponentHandler.Add(component);
+            }
+
+            inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component)
+            {
+                colliderComponentHandler.Remove(component);
+            }
+
+            inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component)
+            {
+                colliderComponentHandler.Remove(component);
+            }
+
+            inline void CheckCollision()
+            {
+                colliderComponentHandler.DoWithAllComponents();
+            }
+
             //Render
 
             inline void AddToRenderer(Render::BaseRendererComponent* component)
@@ -109,33 +136,6 @@ namespace Learning2DEngine
             inline void LateRender()
             {
                 lateRendererComponentHandler.DoWithAllComponents();
-            }
-
-            //Collider
-
-            inline void AddToCollider(Physics::BaseBoxColliderComponent* component)
-            {
-                colliderComponentHandler.Add(component);
-            }
-
-            inline void AddToCollider(Physics::BaseCircleColliderComponent* component)
-            {
-                colliderComponentHandler.Add(component);
-            }
-
-            inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component)
-            {
-                colliderComponentHandler.Remove(component);
-            }
-
-            inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component)
-            {
-                colliderComponentHandler.Remove(component);
-            }
-
-            inline void CheckCollision()
-            {
-                colliderComponentHandler.DoWithAllComponents();
             }
 
             void Clear()
