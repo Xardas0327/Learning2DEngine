@@ -87,7 +87,7 @@ virtual void Clear() override;
 
 ### Description:
 It has some basic funcionality, which is essential, but this is a support class only,
-please use `LateUpdaterComponent` instead of this. 
+please use `LateUpdaterComponent` instead of this.  
 Please check for more info about `LateUpdaterComponent` and `Component`.
 
 ### Header:
@@ -116,7 +116,7 @@ virtual void LateUpdate() = 0;
 
 ### Description:
 It has some basic funcionality, which is essential, but this is a support class only,
-please use `UpdaterComponent` instead of this. 
+please use `UpdaterComponent` instead of this.  
 Please check for more info about `UpdaterComponent` and `Component`.
 
 ### Header:
