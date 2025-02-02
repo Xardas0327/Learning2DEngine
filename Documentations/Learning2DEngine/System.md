@@ -104,7 +104,7 @@ BaseLateUpdaterComponent(GameObject* gameObject);
 ```
 
 **Public:**  
-**Add**  
+**LateUpdate**  
 ```cpp
 virtual void LateUpdate() = 0;
 ```
@@ -133,7 +133,7 @@ BaseUpdaterComponent(GameObject* gameObject);
 ```
 
 **Public:**  
-**Add**  
+**Update**  
 ```cpp
 virtual void Update() = 0;
 ```
