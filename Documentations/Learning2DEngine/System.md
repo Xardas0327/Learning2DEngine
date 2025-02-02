@@ -11,11 +11,13 @@
 - [IKeyboardMouseRefresher](System.md#ikeyboardmouserefresher)
 - [InputStatus](System.md#inputstatus)
 - [LateUpdaterComponent](System.md#lateupdatercomponent)
+- [LateUpdaterComponentHandler](System.md#lateupdatercomponenthandler)
 - [Random](System.md#random)
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
 - [Transform](System.md#transform)
 - [UpdaterComponent](System.md#updatercomponent)
+- [UpdaterComponentHandler](System.md#updatercomponenthandler)
 
 ##
 ## BaseComponentHandler
@@ -952,6 +954,38 @@ virtual void Destroy() override;
 ```
 
 ##
+## LateUpdaterComponentHandler
+### Source Code:
+[LateUpdaterComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/LateUpdaterComponentHandler.h)  
+
+### Description:
+It can handle the `BaseLateUpdaterComponent` objects.  
+The `ComponentManager` has one from it.
+
+### Header:
+```cpp
+class LateUpdaterComponentHandler : public virtual BaseComponentHandler<BaseLateUpdaterComponent>
+{...}
+```
+
+### Functions:
+**Public:**  
+**LateUpdaterComponentHandler**  
+```cpp
+LateUpdaterComponentHandler();
+```
+
+**DoWithAllComponents**  
+Firstly it refresh the `BaseLateUpdaterComponent` objects.  
+After that it calls the LateUpdate() function of the objects
+if the object is not in the removeableComponents and the component and its gameObject are active.  
+Note: the code have to check the removeableComponents again, because
+maybe another component removed/destroyed the actual component in actual frame.
+```cpp
+void DoWithAllComponents() override;
+```
+
+##
 ## Random
 ### Source Code:
 [Random.h](../../Learning2DEngine/Learning2DEngine/System/Random.h)  
@@ -1209,4 +1243,36 @@ If this function is override, it must call the UpdaterComponent::Destroy()
 in the first line.
 ```cpp
 virtual void Destroy() override;
+```
+
+##
+## LateUpdaterComponentHandler
+### Source Code:
+[UpdaterComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/UpdaterComponentHandler.h)  
+
+### Description:
+It can handle the `BaseUpdaterComponentHandler` objects.  
+The `ComponentManager` has one from it.
+
+### Header:
+```cpp
+class UpdaterComponentHandler : public virtual BaseComponentHandler<BaseUpdaterComponent>
+{...}
+```
+
+### Functions:
+**Public:**  
+**UpdaterComponentHandler**  
+```cpp
+UpdaterComponentHandler();
+```
+
+**DoWithAllComponents**  
+Firstly it refresh the `BaseUpdaterComponent` objects.  
+After that it calls the Update() function of the objects
+if the object is not in the removeableComponents and the component and its gameObject are active.  
+Note: the code have to check the removeableComponents again, because
+maybe another component removed/destroyed the actual component in actual frame.
+```cpp
+void DoWithAllComponents() override;
 ```
