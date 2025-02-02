@@ -1246,7 +1246,7 @@ virtual void Destroy() override;
 ```
 
 ##
-## LateUpdaterComponentHandler
+## UpdaterComponentHandler
 ### Source Code:
 [UpdaterComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/UpdaterComponentHandler.h)  
 
