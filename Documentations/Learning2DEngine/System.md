@@ -127,7 +127,7 @@ class BaseUpdaterComponent : public virtual Component
 
 ### Functions:
 **Protected:**  
-**BaseLateUpdaterComponent**  
+**BaseUpdaterComponent**  
 ```cpp
 BaseUpdaterComponent(GameObject* gameObject);
 ```
