@@ -46,6 +46,8 @@ namespace Learning2DEngine
             EventSystem::KeyboardMouseEventItem keyboardMouseEventItem;
             EventSystem::ResolutionEventItem resolutionEventItem;
 
+            static InputStatus inputKeys[INPUT_KEY_SIZE];
+
             /// <summary>
             /// It is multiplied by timeScale.
             /// Before the first frame, it is 0.0f.
@@ -59,8 +61,6 @@ namespace Learning2DEngine
             /// </summary>
             void FixKeyboardMouse();
         protected:
-            static InputStatus inputKeys[INPUT_KEY_SIZE];
-
             Game();
 
             void ActivateMSAA(unsigned int sampleNumber);
@@ -149,7 +149,7 @@ namespace Learning2DEngine
                 return deltaTime;
             }
 
-            static InputStatus GetInputStatus( int key)
+            static InputStatus GetInputStatus(int key)
             {
                 return inputKeys[key];
             }

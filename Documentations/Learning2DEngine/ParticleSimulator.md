@@ -179,7 +179,7 @@ Please check the `Render::RendererComponent` class documentation too.
 
 ### Header:
 ```cpp
-class ParticleSystem : public virtual Render::RendererComponent
+class ParticleSystem : public virtual Render::RendererComponent, public virtual System::UpdaterComponent
 {...}
 ```
 
@@ -358,7 +358,7 @@ void Start();
 It update and create particle, when it has to do.
 It works only, after the `Start()` function was called and before the `Stop()`.
 ```cpp
-void Update();
+void Update() override;
 ```
 
 **Stop**  

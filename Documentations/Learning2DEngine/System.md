@@ -209,8 +209,16 @@ void SetResolution(const Render::Resolution& resolution);
 
 ### Description:
 It is a base class for every component in the Engine.
-Some base components are inherited from this class like `BaseUpdaterComponent`,
-`BaseRendererComponent` or `BaseColliderComponent`, which are used by `ComponentManager`.
+Some base components are inherited from this class, which are used by `ComponentManager`.
+That is why it is recommented to use these component classes, because they have functions,
+which can run automatically:
+* `System::UpdaterComponent`
+* `System::LateUpdaterComponent`
+* `Physics::BoxColliderComponent`
+* `Physics::CircleColliderComponent`
+* `Render::RendererComponent`
+* `Render::LateRendererComponent`  
+
 But the developer can use this `Component` class like a data container too.  
 Fistly, it looks a bad structure, because there is a cross reference.
 A `Component` has reference about its `GameObject` and the `GameObject` has 
@@ -257,13 +265,13 @@ Component(GameObject* gameObject);
 **Init**  
 It initializes the Component.
 ```cpp
-virtual void Init() = 0;
+virtual void Init();
 ```
 
 **Destroy**  
 It destroys the Component.
 ```cpp
-virtual void Destroy() = 0;
+virtual void Destroy();
 ```
 
 **Public:**  
@@ -393,16 +401,17 @@ that game must be inherited from this `Game` class.
 The Function order in the Run() (in a frame):
 1. Calculate deltaTime
 2. Refresh Keyboard and Mouse events
-3. virtual Update()
+3. Update
 4. Check Collisions
-5. Clear Window to default color
-6. Render (with MSAA and PostProcessEffect, if they are enabled)
-7. LateRender (without any effect)
-8. Update Window
+5. LateUpdate
+6. Clear Window to default color
+7. Render (with MSAA and PostProcessEffect, if they are enabled)
+8. LateRender (without any effect)
+9. Update Window
 
 ### Header:
 ```cpp
-class Game : public virtual IKeyboardMouseRefresher, public virtual Render::IResolutionRefresher
+class Game : public virtual IKeyboardMouseRefresher, public Render::IResolutionRefresher
 {...}
 ```
 
@@ -465,19 +474,18 @@ It is used to subscribe to `RenderManager::AddFramebufferSizeEvent`.
 EventSystem::ResolutionEventItem resolutionEventItem;
 ```
 
-**deltaTime**  
-It is multiplied by `timeScale`.  
-Before the first frame, it is 0.0f.
-```cpp
-static float deltaTime;
-```
-
-**Protected:**  
 **inputKeys**  
 This array contains, which button is up, down or hold.  
 The developer should not write this array, just read it.
 ```cpp
 InputStatus inputKeys[INPUT_KEY_SIZE];
+```
+
+**deltaTime**  
+It is multiplied by `timeScale`.  
+Before the first frame, it is 0.0f.
+```cpp
+static float deltaTime;
 ```
 
 **Public:**  
@@ -511,13 +519,6 @@ void FixKeyboardMouse();
 ```cpp
  Game();
 ```  
-
-**Update**  
-It is recommended, that this function should contain every update in the game,
-which is not rendering.
-```cpp
-virtual void Update();
-``` 
 
 **ActivateMSAA**  
 It activates the MSAA.
@@ -664,6 +665,12 @@ It returns the deltaTime.
 Please check for more info about deltaTime.
 ```cpp
 static float GetDeltaTime();
+``` 
+
+**GetInputStatus**  
+It returns the status of a key or mouse button.  
+```cpp
+static InputStatus GetInputStatus(int key);
 ``` 
 
 ##
