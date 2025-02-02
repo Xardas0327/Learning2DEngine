@@ -175,18 +175,19 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Script\GameController.h" />
     <ClInclude Include="Script\BackgroundController.h" />
     <ClInclude Include="Script\BallController.h" />
-    <ClInclude Include="Script\BallHitBrickAction.h" />
+    <ClInclude Include="Script\IBallHitBrickAction.h" />
     <ClInclude Include="Script\BallHitBrickEventItem.h" />
-    <ClInclude Include="Script\BallHitPlayerAction.h" />
+    <ClInclude Include="Script\IBallHitPlayerAction.h" />
     <ClInclude Include="Script\BallHitPlayerEventItem.h" />
     <ClInclude Include="Script\BallParticleSettings.h" />
     <ClInclude Include="Breakout.h" />
     <ClInclude Include="Script\BrickController.h" />
     <ClInclude Include="Script\GameLevel.h" />
     <ClInclude Include="Script\PostProcessData.h" />
-    <ClInclude Include="Script\PowerUpActivation.h" />
+    <ClInclude Include="Script\IPowerUpActivation.h" />
     <ClInclude Include="Script\PowerUpActivationEventItem.h" />
     <ClInclude Include="Script\PowerUpController.h" />
     <ClInclude Include="Script\PowerUpObject.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="Script\PlayerController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Script\GameController.cpp" />
     <ClCompile Include="Script\BallController.cpp" />
     <ClCompile Include="Script\BallParticleSettings.cpp" />
     <ClCompile Include="Breakout.cpp" />

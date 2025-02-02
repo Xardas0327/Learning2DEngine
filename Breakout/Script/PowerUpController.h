@@ -22,13 +22,13 @@ class PowerUpController : public virtual Learning2DEngine::Physics::BoxColliderC
 {
     friend class Learning2DEngine::System::GameObject;
 protected:
+    Learning2DEngine::Physics::Rigidbody* rigidbody;
     Learning2DEngine::EventSystem::EventHandler<PowerUpType> activationEventHandler;
 
     PowerUpController(Learning2DEngine::System::GameObject* gameObject, const PowerUpObject& powerUpObject);
 
     void Init() override;
 public:
-    Learning2DEngine::Physics::Rigidbody* rigidbody;
     Learning2DEngine::Render::SpriteRenderer* renderer;
     const PowerUpObject powerUpObject;
     float actualDuration;

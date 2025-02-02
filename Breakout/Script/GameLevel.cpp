@@ -51,7 +51,7 @@ bool GameLevel::IsCompleted()
 {
     for (BrickController* brick : bricks)
     {
-        if (!brick->isSolid && brick->gameObject->isActive)
+        if (!brick->IsSolid() && brick->gameObject->isActive)
             return false;
     }
 

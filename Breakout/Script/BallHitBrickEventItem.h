@@ -2,14 +2,14 @@
 
 #include <Learning2DEngine/EventSystem/EventItem.h>
 
-#include "BallHitBrickAction.h"
+#include "IBallHitBrickAction.h"
 
 class BallHitBrickEventItem final : public virtual Learning2DEngine::EventSystem::EventItem<BrickController*>
 {
 private:
-	BallHitBrickAction* item;
+	IBallHitBrickAction* item;
 public:
-	BallHitBrickEventItem(BallHitBrickAction* item)
+	BallHitBrickEventItem(IBallHitBrickAction* item)
 		: item(item)
 	{
 

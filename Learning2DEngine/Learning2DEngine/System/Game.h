@@ -25,14 +25,15 @@ namespace Learning2DEngine
             The Function order in the Run() (in a frame):
             Calculate deltaTime
             Refresh Keyboard and Mouse events
-            virtual Update()
+            Update
             Check Collisions
+            LateUpdate
             Clear Window to default color
             Render (with MSAA and PostProcessEffect, if they are enabled)
             LateRender (without any effect)
             Update Window
         */
-        class Game : public virtual IKeyboardMouseRefresher, public virtual Render::IResolutionRefresher
+        class Game : public virtual IKeyboardMouseRefresher, public Render::IResolutionRefresher
         {
         private:
             float lastFrame;
@@ -44,6 +45,8 @@ namespace Learning2DEngine
             Render::PostProcessEffect ppeRender;
             EventSystem::KeyboardMouseEventItem keyboardMouseEventItem;
             EventSystem::ResolutionEventItem resolutionEventItem;
+
+            static InputStatus inputKeys[INPUT_KEY_SIZE];
 
             /// <summary>
             /// It is multiplied by timeScale.
@@ -58,10 +61,7 @@ namespace Learning2DEngine
             /// </summary>
             void FixKeyboardMouse();
         protected:
-            InputStatus inputKeys[INPUT_KEY_SIZE];
-
             Game();
-            virtual void Update() {};
 
             void ActivateMSAA(unsigned int sampleNumber);
             void StopMSAA();
@@ -147,6 +147,11 @@ namespace Learning2DEngine
             static float GetDeltaTime()
             {
                 return deltaTime;
+            }
+
+            static InputStatus GetInputStatus(int key)
+            {
+                return inputKeys[key];
             }
         };
     }

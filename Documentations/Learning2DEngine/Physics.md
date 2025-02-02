@@ -502,7 +502,7 @@ A really basic Rigidbody for moving.
 
 ### Header:
 ```cpp
-class Rigidbody : public virtual System::Component
+class Rigidbody : public virtual System::UpdaterComponent
 {...}
 ```
 
@@ -524,7 +524,7 @@ bool isFrozen;
 **Protected:**  
 **Rigidbody**  
 ```cpp
-Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f));
+Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f), bool isFrozen = false);
 ```
 ```cpp
 Rigidbody(System::GameObject* gameObject, bool isFrozen);
@@ -535,5 +535,5 @@ Rigidbody(System::GameObject* gameObject, bool isFrozen);
 If the object is not frozen, the position of gameobject will be updated
 by `velocity` * `Game::GetDeltaTime()`.
 ```cpp
-void Update();
+virtual void Update() override;
 ```

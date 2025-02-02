@@ -1,5 +1,7 @@
 # System
 - [BaseComponentHandler](System.md#basecomponenthandler)
+- [BaseLateUpdaterComponent](System.md#baselateupdatercomponent)
+- [BaseUpdaterComponent](System.md#baseupdatercomponent)
 - [Camera](System.md#camera)
 - [Component](System.md#component)
 - [ComponentManager](System.md#componentmanager)
@@ -8,10 +10,14 @@
 - [IComponentHandler](System.md#icomponenthandler)
 - [IKeyboardMouseRefresher](System.md#ikeyboardmouserefresher)
 - [InputStatus](System.md#inputstatus)
+- [LateUpdaterComponent](System.md#lateupdatercomponent)
+- [LateUpdaterComponentHandler](System.md#lateupdatercomponenthandler)
 - [Random](System.md#random)
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
 - [Transform](System.md#transform)
+- [UpdaterComponent](System.md#updatercomponent)
+- [UpdaterComponentHandler](System.md#updatercomponenthandler)
 
 ##
 ## BaseComponentHandler
@@ -74,6 +80,64 @@ virtual void Remove(T* component);
 **Clear**  
 ```cpp
 virtual void Clear() override;
+```
+
+##
+## BaseLateUpdaterComponent
+### Source Code:
+[BaseLateUpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/BaseLateUpdaterComponent.h)  
+
+### Description:
+It has some basic funcionality, which is essential, but this is a support class only,
+please use `LateUpdaterComponent` instead of this.  
+Please check for more info about `LateUpdaterComponent` and `Component`.
+
+### Header:
+```cpp
+class BaseLateUpdaterComponent : public virtual Component
+{...}
+```
+
+### Functions:
+**Protected:**  
+**BaseLateUpdaterComponent**  
+```cpp
+BaseLateUpdaterComponent(GameObject* gameObject);
+```
+
+**Public:**  
+**LateUpdate**  
+```cpp
+virtual void LateUpdate() = 0;
+```
+
+##
+## BaseUpdaterComponent
+### Source Code:
+[BaseUpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/BaseUpdaterComponent.h)  
+
+### Description:
+It has some basic funcionality, which is essential, but this is a support class only,
+please use `UpdaterComponent` instead of this.  
+Please check for more info about `UpdaterComponent` and `Component`.
+
+### Header:
+```cpp
+class BaseUpdaterComponent : public virtual Component
+{...}
+```
+
+### Functions:
+**Protected:**  
+**BaseUpdaterComponent**  
+```cpp
+BaseUpdaterComponent(GameObject* gameObject);
+```
+
+**Public:**  
+**Update**  
+```cpp
+virtual void Update() = 0;
 ```
 
 ##
@@ -209,8 +273,17 @@ void SetResolution(const Render::Resolution& resolution);
 
 ### Description:
 It is a base class for every component in the Engine.
-Some base components are inherited from this class like `BaseUpdaterComponent`,
-`BaseRendererComponent` or `BaseColliderComponent`.   
+Some base components are inherited from this class, which are used by `ComponentManager`.
+That is why it is recommented to use these component classes, because they have functions,
+which can run automatically:
+- `System::UpdaterComponent`
+- `System::LateUpdaterComponent`
+- `Physics::BoxColliderComponent`
+- `Physics::CircleColliderComponent`
+- `Render::RendererComponent`
+- `Render::LateRendererComponent`  
+
+But the developer can use this `Component` class like a data container too.  
 Fistly, it looks a bad structure, because there is a cross reference.
 A `Component` has reference about its `GameObject` and the `GameObject` has 
 reference about that `Component`. 
@@ -256,13 +329,13 @@ Component(GameObject* gameObject);
 **Init**  
 It initializes the Component.
 ```cpp
-virtual void Init() = 0;
+virtual void Init();
 ```
 
 **Destroy**  
 It destroys the Component.
 ```cpp
-virtual void Destroy() = 0;
+virtual void Destroy();
 ```
 
 **Public:**  
@@ -278,7 +351,8 @@ virtual ~Component();
 
 ### Description:
 The `ComponentManager` manages the `Components` in the Engine by component handlers.
-The `Game` calls its CheckCollision(), Render() and LateRender() functions in every frame.
+The `Game` calls its Update(), LateUpdate(), CheckCollision(), Render()
+and LateRender() functions in every frame.
 
 ### Header:
 ```cpp
@@ -288,6 +362,21 @@ class ComponentManager final : public virtual Singleton<ComponentManager>
 
 ### Variables:
 **Private:**  
+**updaterComponentHandler**  
+```cpp
+UpdaterComponentHandler updaterComponentHandler;
+```
+
+**lateUpdaterComponentHandler**  
+```cpp
+LateUpdaterComponentHandler lateUpdaterComponentHandler;
+```
+
+**colliderComponentHandler**  
+```cpp
+Physics::ColliderComponentHandler colliderComponentHandler;
+```
+
 **rendererComponentHandler**  
 ```cpp
 Render::RendererComponentHandler rendererComponentHandler;
@@ -298,11 +387,6 @@ Render::RendererComponentHandler rendererComponentHandler;
 Render::RendererComponentHandler lateRendererComponentHandler;
 ```
 
-**colliderComponentHandler**  
-```cpp
-Physics::ColliderComponentHandler colliderComponentHandler;
-```
-
 ### Functions:
 **Private:**  
 **ComponentManager**  
@@ -311,6 +395,57 @@ ComponentManager();
 ```
 
 **Public:**  
+**AddToUpdate**  
+```cpp
+inline void AddToUpdate(BaseUpdaterComponent* component);
+```
+
+**RemoveFromUpdate**  
+```cpp
+inline void RemoveFromUpdate(BaseUpdaterComponent* component);
+```
+
+**Update**  
+```cpp
+inline void Update();
+```
+
+**AddToLateUpdate**  
+```cpp
+inline void AddToLateUpdate(BaseLateUpdaterComponent* component);
+```
+
+**RemoveFromLateUpdate**  
+```cpp
+inline void RemoveFromLateUpdate(BaseLateUpdaterComponent* component);
+```
+
+**LateUpdate**  
+```cpp
+inline void LateUpdate();
+```
+
+**AddToCollider**  
+```cpp
+inline void AddToCollider(Physics::BaseBoxColliderComponent* component);
+```
+```cpp
+inline void AddToCollider(Physics::BaseCircleColliderComponent* component);
+```
+
+**RemoveFromCollider**  
+```cpp
+inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component);
+```
+```cpp
+inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component);
+```
+
+**CheckCollision**  
+```cpp
+inline void CheckCollision();
+```
+
 **AddToRenderer**  
 ```cpp
 inline void AddToRenderer(Render::BaseRendererComponent* component);
@@ -351,27 +486,6 @@ inline void NeedReorderLateRenderers();
 inline void LateRender();
 ```
 
-**AddToCollider**  
-```cpp
-inline void AddToCollider(Physics::BaseBoxColliderComponent* component);
-```
-```cpp
-inline void AddToCollider(Physics::BaseCircleColliderComponent* component);
-```
-
-**RemoveFromCollider**  
-```cpp
-inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component);
-```
-```cpp
-inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component);
-```
-
-**CheckCollision**  
-```cpp
-inline void CheckCollision();
-```
-
 **Clear**  
 Clear all handlers.
 ```cpp
@@ -392,16 +506,17 @@ that game must be inherited from this `Game` class.
 The Function order in the Run() (in a frame):
 1. Calculate deltaTime
 2. Refresh Keyboard and Mouse events
-3. virtual Update()
+3. Update
 4. Check Collisions
-5. Clear Window to default color
-6. Render (with MSAA and PostProcessEffect, if they are enabled)
-7. LateRender (without any effect)
-8. Update Window
+5. LateUpdate
+6. Clear Window to default color
+7. Render (with MSAA and PostProcessEffect, if they are enabled)
+8. LateRender (without any effect)
+9. Update Window
 
 ### Header:
 ```cpp
-class Game : public virtual IKeyboardMouseRefresher, public virtual Render::IResolutionRefresher
+class Game : public virtual IKeyboardMouseRefresher, public Render::IResolutionRefresher
 {...}
 ```
 
@@ -464,19 +579,18 @@ It is used to subscribe to `RenderManager::AddFramebufferSizeEvent`.
 EventSystem::ResolutionEventItem resolutionEventItem;
 ```
 
+**inputKeys**  
+This array contains, which button is up, down or hold.  
+The developer should not write this array, just read it.
+```cpp
+static InputStatus inputKeys[INPUT_KEY_SIZE];
+```
+
 **deltaTime**  
 It is multiplied by `timeScale`.  
 Before the first frame, it is 0.0f.
 ```cpp
 static float deltaTime;
-```
-
-**Protected:**  
-**inputKeys**  
-This array contains, which button is up, down or hold.  
-The developer should not write this array, just read it.
-```cpp
-InputStatus inputKeys[INPUT_KEY_SIZE];
 ```
 
 **Public:**  
@@ -510,13 +624,6 @@ void FixKeyboardMouse();
 ```cpp
  Game();
 ```  
-
-**Update**  
-It is recommended, that this function should contain every update in the game,
-which is not rendering.
-```cpp
-virtual void Update();
-``` 
 
 **ActivateMSAA**  
 It activates the MSAA.
@@ -663,6 +770,12 @@ It returns the deltaTime.
 Please check for more info about deltaTime.
 ```cpp
 static float GetDeltaTime();
+``` 
+
+**GetInputStatus**  
+It returns the status of a key or mouse button.  
+```cpp
+static InputStatus GetInputStatus(int key);
 ``` 
 
 ##
@@ -844,9 +957,73 @@ enum InputStatus
     KEY_UP,
     // The key or mouse button was pressed.
     KEY_DOWN,
-    // The key was held down until it repeated.
+    // The key was held down.
     KEY_HOLD
 };
+```
+
+##
+## LateUpdaterComponent
+### Source Code:
+[LateUpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/LateUpdaterComponent.h)
+
+### Description:
+It is a class, which is inherited from `BaseLateUpdaterComponent`.  
+The developer have to inherit from this class, if they want to do something
+in LateUpdate section, after the collision checking.    
+Please check for more info about `System::Component` and `BaseLateUpdaterComponent`.
+
+### Functions:
+**Protected:**  
+**LateUpdaterComponent**  
+```cpp
+LateUpdaterComponent(GameObject* gameObject);
+```
+
+**Init**  
+If this function is override, it must call the LateUpdaterComponent::Init()
+in the first line.
+```cpp
+virtual void Init() override;
+```
+
+**Destroy**  
+If this function is override, it must call the LateUpdaterComponent::Destroy()
+in the first line.
+```cpp
+virtual void Destroy() override;
+```
+
+##
+## LateUpdaterComponentHandler
+### Source Code:
+[LateUpdaterComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/LateUpdaterComponentHandler.h)  
+
+### Description:
+It can handle the `BaseLateUpdaterComponent` objects.  
+The `ComponentManager` has one from it.
+
+### Header:
+```cpp
+class LateUpdaterComponentHandler : public virtual BaseComponentHandler<BaseLateUpdaterComponent>
+{...}
+```
+
+### Functions:
+**Public:**  
+**LateUpdaterComponentHandler**  
+```cpp
+LateUpdaterComponentHandler();
+```
+
+**DoWithAllComponents**  
+Firstly it refresh the `BaseLateUpdaterComponent` objects.  
+After that it calls the LateUpdate() function of the objects
+if the object is not in the removeableComponents and the component and its gameObject are active.  
+Note: the code have to check the removeableComponents again, because
+maybe another component removed/destroyed the actual component in actual frame.
+```cpp
+void DoWithAllComponents() override;
 ```
 
 ##
@@ -1075,4 +1252,68 @@ struct Transform
 
 	}
 };
+```
+
+##
+## UpdaterComponent
+### Source Code:
+[UpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/UpdaterComponent.h)
+
+### Description:
+It is a class, which is inherited from `BaseUpdaterComponent`.  
+The developer have to inherit from this class, if they want to do something
+in Update section, before the collision checking.    
+Please check for more info about `System::Component` and `BaseUpdaterComponent`.
+
+### Functions:
+**Protected:**  
+**UpdaterComponent**  
+```cpp
+UpdaterComponent(GameObject* gameObject);
+```
+
+**Init**  
+If this function is override, it must call the UpdaterComponent::Init()
+in the first line.
+```cpp
+virtual void Init() override;
+```
+
+**Destroy**  
+If this function is override, it must call the UpdaterComponent::Destroy()
+in the first line.
+```cpp
+virtual void Destroy() override;
+```
+
+##
+## UpdaterComponentHandler
+### Source Code:
+[UpdaterComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/UpdaterComponentHandler.h)  
+
+### Description:
+It can handle the `BaseUpdaterComponentHandler` objects.  
+The `ComponentManager` has one from it.
+
+### Header:
+```cpp
+class UpdaterComponentHandler : public virtual BaseComponentHandler<BaseUpdaterComponent>
+{...}
+```
+
+### Functions:
+**Public:**  
+**UpdaterComponentHandler**  
+```cpp
+UpdaterComponentHandler();
+```
+
+**DoWithAllComponents**  
+Firstly it refresh the `BaseUpdaterComponent` objects.  
+After that it calls the Update() function of the objects
+if the object is not in the removeableComponents and the component and its gameObject are active.  
+Note: the code have to check the removeableComponents again, because
+maybe another component removed/destroyed the actual component in actual frame.
+```cpp
+void DoWithAllComponents() override;
 ```

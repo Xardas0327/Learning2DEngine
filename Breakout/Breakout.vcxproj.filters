@@ -48,22 +48,25 @@
     <ClInclude Include="Script\PlayerController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Script\PowerUpActivation.h">
+    <ClInclude Include="Script\IPowerUpActivation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Script\PowerUpActivationEventItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Script\BallHitPlayerAction.h">
+    <ClInclude Include="Script\IBallHitPlayerAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Script\BallHitPlayerEventItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Script\BallHitBrickAction.h">
+    <ClInclude Include="Script\IBallHitBrickAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Script\BallHitBrickEventItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Script\GameController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -93,6 +96,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Script\PowerUpController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Script\GameController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

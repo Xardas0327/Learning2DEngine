@@ -1,6 +1,10 @@
 #pragma once
 
 #include "Singleton.h"
+#include "UpdaterComponentHandler.h"
+#include "LateUpdaterComponentHandler.h"
+#include "BaseUpdaterComponent.h"
+#include "BaseLateUpdaterComponent.h"
 #include "../Render/BaseRendererComponent.h"
 #include "../Render/RendererComponentHandler.h"
 #include "../Physics/ColliderComponentHandler.h"
@@ -16,58 +20,51 @@ namespace Learning2DEngine
         {
             friend class Singleton<ComponentManager>;
         private:
-			Render::RendererComponentHandler rendererComponentHandler;
-            Render::RendererComponentHandler lateRendererComponentHandler;
+            UpdaterComponentHandler updaterComponentHandler;
+            LateUpdaterComponentHandler lateUpdaterComponentHandler;
             Physics::ColliderComponentHandler colliderComponentHandler;
+            Render::RendererComponentHandler rendererComponentHandler;
+            Render::RendererComponentHandler lateRendererComponentHandler;
 
             ComponentManager()
-				: rendererComponentHandler(), lateRendererComponentHandler(), colliderComponentHandler()
+                : updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
+                rendererComponentHandler(), lateRendererComponentHandler()
             {
 
             }
-		public:
-            //Render
+        public:
+            //Update
 
-            inline void AddToRenderer(Render::BaseRendererComponent* component)
+            inline void AddToUpdate(BaseUpdaterComponent* component)
             {
-                rendererComponentHandler.Add(component);
+                updaterComponentHandler.Add(component);
             }
 
-			inline void RemoveFromRenderer(Render::BaseRendererComponent* component)
-			{
-				rendererComponentHandler.Remove(component);
-			}
-
-            inline void NeedReorderRenderers()
+            inline void RemoveFromUpdate(BaseUpdaterComponent* component)
             {
-				rendererComponentHandler.NeedReorder();
+                updaterComponentHandler.Remove(component);
             }
 
-            inline void Render()
+            inline void Update()
             {
-				rendererComponentHandler.DoWithAllComponents();
+                updaterComponentHandler.DoWithAllComponents();
             }
 
-            //LateRender
+            //LateUpdate
 
-            inline void AddToLateRenderer(Render::BaseRendererComponent* component)
+            inline void AddToLateUpdate(BaseLateUpdaterComponent* component)
             {
-                lateRendererComponentHandler.Add(component);
+                lateUpdaterComponentHandler.Add(component);
             }
 
-            inline void RemoveFromLateRenderer(Render::BaseRendererComponent* component)
+            inline void RemoveFromLateUpdate(BaseLateUpdaterComponent* component)
             {
-                lateRendererComponentHandler.Remove(component);
+                lateUpdaterComponentHandler.Remove(component);
             }
 
-            inline void NeedReorderLateRenderers()
+            inline void LateUpdate()
             {
-                lateRendererComponentHandler.NeedReorder();
-            }
-
-            inline void LateRender()
-            {
-                lateRendererComponentHandler.DoWithAllComponents();
+                lateUpdaterComponentHandler.DoWithAllComponents();
             }
 
             //Collider
@@ -94,14 +91,60 @@ namespace Learning2DEngine
 
             inline void CheckCollision()
             {
-				colliderComponentHandler.DoWithAllComponents();
+                colliderComponentHandler.DoWithAllComponents();
+            }
+
+            //Render
+
+            inline void AddToRenderer(Render::BaseRendererComponent* component)
+            {
+                rendererComponentHandler.Add(component);
+            }
+
+            inline void RemoveFromRenderer(Render::BaseRendererComponent* component)
+            {
+                rendererComponentHandler.Remove(component);
+            }
+
+            inline void NeedReorderRenderers()
+            {
+                rendererComponentHandler.NeedReorder();
+            }
+
+            inline void Render()
+            {
+                rendererComponentHandler.DoWithAllComponents();
+            }
+
+            //LateRender
+
+            inline void AddToLateRenderer(Render::BaseRendererComponent* component)
+            {
+                lateRendererComponentHandler.Add(component);
+            }
+
+            inline void RemoveFromLateRenderer(Render::BaseRendererComponent* component)
+            {
+                lateRendererComponentHandler.Remove(component);
+            }
+
+            inline void NeedReorderLateRenderers()
+            {
+                lateRendererComponentHandler.NeedReorder();
+            }
+
+            inline void LateRender()
+            {
+                lateRendererComponentHandler.DoWithAllComponents();
             }
 
             void Clear()
             {
-				rendererComponentHandler.Clear();
-				lateRendererComponentHandler.Clear();
-				colliderComponentHandler.Clear();
+                updaterComponentHandler.Clear();
+                lateUpdaterComponentHandler.Clear();
+                colliderComponentHandler.Clear();
+                rendererComponentHandler.Clear();
+                lateRendererComponentHandler.Clear();
             }
         };
     }
