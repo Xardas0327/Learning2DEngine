@@ -20,8 +20,8 @@ This namespace really simple. It has only some really basic functionality.
 ### Description:
 The `BaseBoxColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
-It has more attributum for box collider, but this is a support
-class only, please use `BoxColliderComponent` instead of this.  
+It has attributes for box collider, but this is a support
+class only. Please use `BoxColliderComponent` instead of this.  
 Please check for more info about `BoxColliderComponent` and `BaseColliderComponent`.
 
 ### Header:
@@ -52,8 +52,8 @@ BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, bool is
 ### Description:
 The `BaseCircleColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
-It has more attributum for circle collider, but this is a support
-class only, please use `CircleColliderComponent` instead of this.  
+It has attributes for circle collider, but this is a support
+class only. Please use `CircleColliderComponent` instead of this.  
 Please check for more info about `CircleColliderComponent` and `BaseColliderComponent`.
 
 ### Header:

@@ -36,7 +36,7 @@ namespace Learning2DEngine
             }
         public:
             glm::vec2 colliderOffset;
-			int32_t maskLayer;
+            int32_t maskLayer;
 
             glm::vec2 GetColliderCenter() const
             {
