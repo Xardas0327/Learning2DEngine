@@ -1,5 +1,7 @@
 # System
 - [BaseComponentHandler](System.md#basecomponenthandler)
+- [BaseLateUpdaterComponent](System.md#baselateupdatercomponent)
+- [BaseUpdaterComponent](System.md#baseupdatercomponent)
 - [Camera](System.md#camera)
 - [Component](System.md#component)
 - [ComponentManager](System.md#componentmanager)
@@ -8,10 +10,12 @@
 - [IComponentHandler](System.md#icomponenthandler)
 - [IKeyboardMouseRefresher](System.md#ikeyboardmouserefresher)
 - [InputStatus](System.md#inputstatus)
+- [LateUpdaterComponent](System.md#lateupdatercomponent)
 - [Random](System.md#random)
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
 - [Transform](System.md#transform)
+- [UpdaterComponent](System.md#updatercomponent)
 
 ##
 ## BaseComponentHandler
@@ -74,6 +78,64 @@ virtual void Remove(T* component);
 **Clear**  
 ```cpp
 virtual void Clear() override;
+```
+
+##
+## BaseLateUpdaterComponent
+### Source Code:
+[BaseLateUpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/BaseLateUpdaterComponent.h)  
+
+### Description:
+It has some basic funcionality, which is essential, but this is a support class only,
+please use `LateUpdaterComponent` instead of this. 
+Please check for more info about `LateUpdaterComponent` and `Component`.
+
+### Header:
+```cpp
+class BaseLateUpdaterComponent : public virtual Component
+{...}
+```
+
+### Functions:
+**Protected:**  
+**BaseLateUpdaterComponent**  
+```cpp
+BaseLateUpdaterComponent(GameObject* gameObject);
+```
+
+**Public:**  
+**Add**  
+```cpp
+virtual void LateUpdate() = 0;
+```
+
+##
+## BaseUpdaterComponent
+### Source Code:
+[BaseUpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/BaseUpdaterComponent.h)  
+
+### Description:
+It has some basic funcionality, which is essential, but this is a support class only,
+please use `UpdaterComponent` instead of this. 
+Please check for more info about `UpdaterComponent` and `Component`.
+
+### Header:
+```cpp
+class BaseUpdaterComponent : public virtual Component
+{...}
+```
+
+### Functions:
+**Protected:**  
+**BaseLateUpdaterComponent**  
+```cpp
+BaseUpdaterComponent(GameObject* gameObject);
+```
+
+**Public:**  
+**Add**  
+```cpp
+virtual void Update() = 0;
 ```
 
 ##
@@ -212,12 +274,12 @@ It is a base class for every component in the Engine.
 Some base components are inherited from this class, which are used by `ComponentManager`.
 That is why it is recommented to use these component classes, because they have functions,
 which can run automatically:
-* `System::UpdaterComponent`
-* `System::LateUpdaterComponent`
-* `Physics::BoxColliderComponent`
-* `Physics::CircleColliderComponent`
-* `Render::RendererComponent`
-* `Render::LateRendererComponent`  
+- `System::UpdaterComponent`
+- `System::LateUpdaterComponent`
+- `Physics::BoxColliderComponent`
+- `Physics::CircleColliderComponent`
+- `Render::RendererComponent`
+- `Render::LateRendererComponent`  
 
 But the developer can use this `Component` class like a data container too.  
 Fistly, it looks a bad structure, because there is a cross reference.
@@ -858,6 +920,38 @@ enum InputStatus
 ```
 
 ##
+## LateUpdaterComponent
+### Source Code:
+[LateUpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/LateUpdaterComponent.h)
+
+### Description:
+It is a class, which is inherited from `BaseLateUpdaterComponent`.  
+The developer have to inherit from this class, if they want to do something
+in LateUpdate section, after the collision checking.    
+Please check for more info about `System::Component` and `BaseLateUpdaterComponent`.
+
+### Functions:
+**Protected:**  
+**LateUpdaterComponent**  
+```cpp
+LateUpdaterComponent(GameObject* gameObject);
+```
+
+**Init**  
+If this function is override, it must call the LateUpdaterComponent::Init()
+in the first line.
+```cpp
+virtual void Init() override;
+```
+
+**Destroy**  
+If this function is override, it must call the LateUpdaterComponent::Destroy()
+in the first line.
+```cpp
+virtual void Destroy() override;
+```
+
+##
 ## Random
 ### Source Code:
 [Random.h](../../Learning2DEngine/Learning2DEngine/System/Random.h)  
@@ -1083,4 +1177,36 @@ struct Transform
 
 	}
 };
+```
+
+##
+## UpdaterComponent
+### Source Code:
+[UpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/UpdaterComponent.h)
+
+### Description:
+It is a class, which is inherited from `BaseUpdaterComponent`.  
+The developer have to inherit from this class, if they want to do something
+in Update section, before the collision checking.    
+Please check for more info about `System::Component` and `BaseUpdaterComponent`.
+
+### Functions:
+**Protected:**  
+**UpdaterComponent**  
+```cpp
+UpdaterComponent(GameObject* gameObject);
+```
+
+**Init**  
+If this function is override, it must call the UpdaterComponent::Init()
+in the first line.
+```cpp
+virtual void Init() override;
+```
+
+**Destroy**  
+If this function is override, it must call the UpdaterComponent::Destroy()
+in the first line.
+```cpp
+virtual void Destroy() override;
 ```
