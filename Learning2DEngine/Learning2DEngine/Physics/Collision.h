@@ -10,11 +10,11 @@ namespace Learning2DEngine
     {
         struct Collision
         {
-			// The closest point of current object to collided object
+            // The closest point of current object to collided object
             glm::vec2 edge;
             // The closest point of collided object to current object
             glm::vec2 edgeOfCollidedObject;
-			System::GameObject* collidedObject;
+            System::GameObject* collidedObject;
 
             Collision(
                 glm::vec2 edge,
