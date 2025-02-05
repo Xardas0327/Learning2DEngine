@@ -16,7 +16,7 @@ namespace Learning2DEngine
     namespace UI
     {
         /// <summary>
-		/// Note: It use the position and scale of the gameObject, but it does not use the rotation.
+        /// Note: It use the position and scale of the gameObject, but it does not use the rotation.
         /// </summary>
         class Text2DLateRenderer : public virtual Render::LateRendererComponent
         {
@@ -69,7 +69,7 @@ namespace Learning2DEngine
 
             inline void SetResolution(const Render::Resolution& cameraResolution)
             {
-				this->cameraResolution = cameraResolution;
+                this->cameraResolution = cameraResolution;
             }
         };
     }

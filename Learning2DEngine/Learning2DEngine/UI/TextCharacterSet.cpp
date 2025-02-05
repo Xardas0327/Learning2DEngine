@@ -11,15 +11,15 @@ namespace Learning2DEngine
     namespace UI
     {
         TextCharacterSet::TextCharacterSet()
-			: characters()
+            : characters()
         {
 
         }
 
         CharacterMap& TextCharacterSet::operator[](const FontSizePair& fontSizePair)
         {
-			Load(fontSizePair);
-			return characters.at(fontSizePair);
+            Load(fontSizePair);
+            return characters.at(fontSizePair);
         }
 
         const CharacterMap& TextCharacterSet::operator[](const FontSizePair& fontSizePair) const
@@ -99,10 +99,10 @@ namespace Learning2DEngine
             FT_Done_FreeType(ft);
         }
 
-		void TextCharacterSet::Unload(const std::string& font, unsigned int fontSize)
-		{
-			Unload(FontSizePair(font, fontSize));
-		}
+        void TextCharacterSet::Unload(const std::string& font, unsigned int fontSize)
+        {
+            Unload(FontSizePair(font, fontSize));
+        }
 
         void TextCharacterSet::Unload(const FontSizePair& fontSizePair)
         {
