@@ -185,8 +185,9 @@ class TextCharacterSet : public virtual System::Singleton<TextCharacterSet>
 ```
 
 ### Macros:
-**FONT_NUMBER**  
-The `TextCharacterSet` load the first `FONT_NUMBER` characters from a ttf file.
+**L2DE_FONT_NUMBER**  
+The `TextCharacterSet` load the first `L2DE_FONT_NUMBER` characters from a ttf file.
+Its value is 128.
 
 ### Auxiliary classes:
 **CharacterMap**  
@@ -219,7 +220,7 @@ const CharacterMap& operator[](const FontSizePair& fontSizePair) const;
 ```  
 
 **Load**  
-They load the first `FONT_NUMBER` characters from a ttf file with a size.
+They load the first `L2DE_FONT_NUMBER` characters from a ttf file with a size.
 ```cpp
 void Load(const std::string& font, unsigned int fontSize);
 ```

@@ -242,5 +242,8 @@
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponentHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\DebugTool\DebugMacro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

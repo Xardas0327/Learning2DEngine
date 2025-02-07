@@ -10,7 +10,7 @@ namespace Learning2DEngine
 {
     namespace UI
     {
-#define FONT_NUMBER 128
+#define L2DE_FONT_NUMBER 128
 
         typedef std::map<char, FreeTypeCharacter> CharacterMap;
 
@@ -25,11 +25,11 @@ namespace Learning2DEngine
             CharacterMap& operator[](const FontSizePair& fontSizePair);
             const CharacterMap& operator[](const FontSizePair& fontSizePair) const;
             /// <summary>
-            /// It loads FONT_NUMBER characters from the file begining
+            /// It loads L2DE_FONT_NUMBER characters from the file begining
             /// </summary>
             void Load(const std::string& font, unsigned int fontSize);
             /// <summary>
-            /// It loads FONT_NUMBER characters from the file begining
+            /// It loads L2DE_FONT_NUMBER characters from the file begining
             /// </summary>
             void Load(const FontSizePair& fontSizePair);
             void Unload(const std::string& font, unsigned int fontSize);

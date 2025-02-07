@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../Render/RenderManager.h"
+#include "../DebugTool/DebugMacro.h"
 #include "../DebugTool/Log.h"
 #include "ResourceManager.h"
 #include "ComponentManager.h"
@@ -16,10 +17,10 @@ namespace Learning2DEngine
     {
         float Game::deltaTime = 0.0f;
         Camera Game::mainCamera = Camera();
-        InputStatus Game::inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
+        InputStatus Game::inputKeys[L2DE_INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
 
         Game::Game()
-            : lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT), isMsaaActive(false),
+            : lastFrame(0.0f), timeScale(L2DE_TIME_SCALE_DEFAULT), isMsaaActive(false),
             isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
             ppeRender(), keyboardMouseEventItem(this), resolutionEventItem(this)
         {
@@ -69,9 +70,14 @@ namespace Learning2DEngine
                 {
                     // Calc deltaTime
                     float currentFrame = glfwGetTime();
-                    Game::deltaTime = (currentFrame - lastFrame) * timeScale;
+                    Game::deltaTime = (currentFrame - lastFrame);
                     lastFrame = currentFrame;
-
+#if L2DE_DEBUG
+                    // It is useful if the game stop by a breakpoint
+                    if (Game::deltaTime > L2DE_DEBUG_MAX_BASE_DELTATIME)
+                        Game::deltaTime = L2DE_DEBUG_MAX_BASE_DELTATIME;
+#endif
+                    Game::deltaTime *= timeScale;
 
                     UpdateKeyboardMouseEvents();
 
@@ -114,11 +120,11 @@ namespace Learning2DEngine
             }
             catch (std::exception e)
             {
-                LOG_ERROR(std::string("GAME: Unhandled Exception: ") +  e.what());
+                L2DE_LOG_ERROR(std::string("GAME: Unhandled Exception: ") +  e.what());
             }
             catch (...)
             {
-                LOG_ERROR(std::string("GAME: Unknown Exception."));
+                L2DE_LOG_ERROR(std::string("GAME: Unknown Exception."));
             }
         }
 
@@ -126,7 +132,7 @@ namespace Learning2DEngine
         {
             if (isMsaaActive)
             {
-                LOG_WARNING("Game: The MSAA was activated with " + std::to_string(msaaRender.GetSampleNumber())
+                L2DE_LOG_WARNING("Game: The MSAA was activated with " + std::to_string(msaaRender.GetSampleNumber())
                     + " samples. That is why the Game does not activated the MSAA with " + std::to_string(sampleNumber));
                 return;
             }
@@ -182,7 +188,7 @@ namespace Learning2DEngine
 
         void Game::RefreshKeyboardMouse(int key, int scancode, int action, int mode)
         {
-            if (key >= 0 && key < 1024)
+            if (key > GLFW_KEY_UNKNOWN && key < L2DE_INPUT_KEY_SIZE)
             {
                 switch (action)
                 {
@@ -196,7 +202,7 @@ namespace Learning2DEngine
                     inputKeys[key] = InputStatus::KEY_HOLD;
                     break;
                 default:
-                    LOG_WARNING("GAME: Unknow input action: " + action);
+                    L2DE_LOG_ERROR("GAME: Unknow input action: " + action);
                 }
             }
         }
@@ -219,7 +225,7 @@ namespace Learning2DEngine
 
         void Game::FixKeyboardMouse()
         {
-            for (int i = 0; i < INPUT_KEY_SIZE; ++i)
+            for (int i = 0; i < L2DE_INPUT_KEY_SIZE; ++i)
             {
                 if(Game::inputKeys[i] == InputStatus::KEY_DOWN)
                     Game::inputKeys[i] = InputStatus::KEY_HOLD;

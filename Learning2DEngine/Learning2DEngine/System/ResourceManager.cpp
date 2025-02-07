@@ -62,7 +62,7 @@ namespace Learning2DEngine
                 if (shaderFile.is_open())
                     shaderFile.close();
 
-                LOG_ERROR(std::string("SHADER: Failed to read shader file.\n File: ") + filePath + "\n Message: " + e.what());
+                L2DE_LOG_ERROR(std::string("SHADER: Failed to read shader file.\n File: ") + filePath + "\n Message: " + e.what());
                 return false;
             }
 

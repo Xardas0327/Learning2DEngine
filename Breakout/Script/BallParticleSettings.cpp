@@ -19,7 +19,7 @@ void BallParticleSettings::Init(const GameObject& gameObject)
 
 	if (rigidbody == nullptr)
 	{
-		LOG_ERROR("BallParticleSettings: Rigidbody is missing.");
+		L2DE_LOG_ERROR("BallParticleSettings: Rigidbody is missing.");
 	}
 }
 void BallParticleSettings::SpawnParticle(Particle& particle, const GameObject& gameObject)
