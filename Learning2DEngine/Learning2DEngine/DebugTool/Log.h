@@ -26,7 +26,7 @@ namespace Learning2DEngine
 
 		/// <summary>
 		/// Use this Log class only, if you want to the logs everytime.
-		/// The LOG_INFO, LOG_WARNING, LOG_ERROR macros are defined.
+		/// The L2DE_LOG_INFO, L2DE_LOG_WARNING, L2DE_LOG_ERROR macros are defined.
 		/// These macros run only, if L2DE_DEBUG macro are defined as 1.
 		/// </summary>
 		class Log final
