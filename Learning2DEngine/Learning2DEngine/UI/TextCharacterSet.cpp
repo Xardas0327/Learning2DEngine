@@ -56,7 +56,7 @@ namespace Learning2DEngine
             characters.insert(std::pair<FontSizePair, CharacterMap>(fontSizePair, CharacterMap()));
 
             glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-            for (GLubyte ch = 0; ch < FONT_NUMBER; ++ch)
+            for (GLubyte ch = 0; ch < L2DE_FONT_NUMBER; ++ch)
             {
                 if (FT_Load_Char(face, ch, FT_LOAD_RENDER))
                 {

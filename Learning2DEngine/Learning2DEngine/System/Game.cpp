@@ -17,10 +17,10 @@ namespace Learning2DEngine
     {
         float Game::deltaTime = 0.0f;
         Camera Game::mainCamera = Camera();
-        InputStatus Game::inputKeys[INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
+        InputStatus Game::inputKeys[L2DE_INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
 
         Game::Game()
-            : lastFrame(0.0f), timeScale(TIME_SCALE_DEFAULT), isMsaaActive(false),
+            : lastFrame(0.0f), timeScale(L2DE_TIME_SCALE_DEFAULT), isMsaaActive(false),
             isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
             ppeRender(), keyboardMouseEventItem(this), resolutionEventItem(this)
         {
@@ -224,7 +224,7 @@ namespace Learning2DEngine
 
         void Game::FixKeyboardMouse()
         {
-            for (int i = 0; i < INPUT_KEY_SIZE; ++i)
+            for (int i = 0; i < L2DE_INPUT_KEY_SIZE; ++i)
             {
                 if(Game::inputKeys[i] == InputStatus::KEY_DOWN)
                     Game::inputKeys[i] = InputStatus::KEY_HOLD;

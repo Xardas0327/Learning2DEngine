@@ -18,8 +18,8 @@ namespace Learning2DEngine
 {
     namespace System
     {
-#define INPUT_KEY_SIZE 1024
-#define TIME_SCALE_DEFAULT 1.0f
+#define L2DE_INPUT_KEY_SIZE 1024
+#define L2DE_TIME_SCALE_DEFAULT 1.0f
 
         /*
             The Function order in the Run() (in a frame):
@@ -46,7 +46,7 @@ namespace Learning2DEngine
             EventSystem::KeyboardMouseEventItem keyboardMouseEventItem;
             EventSystem::ResolutionEventItem resolutionEventItem;
 
-            static InputStatus inputKeys[INPUT_KEY_SIZE];
+            static InputStatus inputKeys[L2DE_INPUT_KEY_SIZE];
 
             /// <summary>
             /// It is multiplied by timeScale.
@@ -98,7 +98,7 @@ namespace Learning2DEngine
 
             inline void ResetTimeScale()
             {
-                timeScale = TIME_SCALE_DEFAULT;
+                timeScale = L2DE_TIME_SCALE_DEFAULT;
             }
 
             inline void SetTimeScale(float value)
