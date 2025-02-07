@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../Render/RenderManager.h"
+#include "../DebugTool/DebugMacro.h"
 #include "../DebugTool/Log.h"
 #include "ResourceManager.h"
 #include "ComponentManager.h"
@@ -71,7 +72,11 @@ namespace Learning2DEngine
                     float currentFrame = glfwGetTime();
                     Game::deltaTime = (currentFrame - lastFrame) * timeScale;
                     lastFrame = currentFrame;
-
+#if L2DE_DEBUG
+                    // It is useful if the game stop by a breakpoint
+                    if (Game::deltaTime > L2DE_DEBUG_MAX_DELTATIME)
+                        Game::deltaTime = L2DE_DEBUG_MAX_DELTATIME;
+#endif
 
                     UpdateKeyboardMouseEvents();
 

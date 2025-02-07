@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+#include "DebugMacro.h"
+
 namespace Learning2DEngine
 {
 	namespace DebugTool
@@ -11,7 +13,7 @@ namespace Learning2DEngine
 #define LOG_ERROR_COLOR "\033[31m"
 #define LOG_CLEAR_COLOR "\033[0m"
 
-#if _DEBUG || LEARNING2DENGINE_DEBUG
+#if L2DE_DEBUG
 #define LOG_INFO(message) Learning2DEngine::DebugTool::Log::Info(message,__FILE__, __LINE__)
 #define LOG_WARNING(message) Learning2DEngine::DebugTool::Log::Warning(message,__FILE__, __LINE__)
 #define LOG_ERROR(message) Learning2DEngine::DebugTool::Log::Error(message,__FILE__, __LINE__)
@@ -25,7 +27,7 @@ namespace Learning2DEngine
 		/// <summary>
 		/// Use this Log class only, if you want to the logs everytime.
 		/// The LOG_INFO, LOG_WARNING, LOG_ERROR macros are defined.
-		/// These macros run only, if _DEBUG or LEARNING2DENGINE_DEBUG macros are defined as 1.
+		/// These macros run only, if L2DE_DEBUG macro are defined as 1.
 		/// </summary>
 		class Log final
 		{
