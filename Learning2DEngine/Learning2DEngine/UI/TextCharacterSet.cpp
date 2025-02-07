@@ -40,7 +40,7 @@ namespace Learning2DEngine
             FT_Library ft;
             if (FT_Init_FreeType(&ft))
             {
-                LOG_ERROR("FREETYPE: Could not init FreeType Library");
+                L2DE_LOG_ERROR("FREETYPE: Could not init FreeType Library");
                 return;
             }
 
@@ -48,7 +48,7 @@ namespace Learning2DEngine
 
             if (FT_New_Face(ft, fontSizePair.first.c_str(), 0, &face))
             {
-                LOG_ERROR("FREETYPE: Failed to load font: " + fontSizePair.first);
+                L2DE_LOG_ERROR("FREETYPE: Failed to load font: " + fontSizePair.first);
                 return;
             }
 
@@ -60,7 +60,7 @@ namespace Learning2DEngine
             {
                 if (FT_Load_Char(face, ch, FT_LOAD_RENDER))
                 {
-                    LOG_WARNING("FREETYTPE: Failed to load Glyph: " + ch);
+                    L2DE_LOG_WARNING("FREETYTPE: Failed to load Glyph: " + ch);
                     continue;
                 }
 

@@ -119,11 +119,11 @@ namespace Learning2DEngine
             }
             catch (std::exception e)
             {
-                LOG_ERROR(std::string("GAME: Unhandled Exception: ") +  e.what());
+                L2DE_LOG_ERROR(std::string("GAME: Unhandled Exception: ") +  e.what());
             }
             catch (...)
             {
-                LOG_ERROR(std::string("GAME: Unknown Exception."));
+                L2DE_LOG_ERROR(std::string("GAME: Unknown Exception."));
             }
         }
 
@@ -131,7 +131,7 @@ namespace Learning2DEngine
         {
             if (isMsaaActive)
             {
-                LOG_WARNING("Game: The MSAA was activated with " + std::to_string(msaaRender.GetSampleNumber())
+                L2DE_LOG_WARNING("Game: The MSAA was activated with " + std::to_string(msaaRender.GetSampleNumber())
                     + " samples. That is why the Game does not activated the MSAA with " + std::to_string(sampleNumber));
                 return;
             }
@@ -201,7 +201,7 @@ namespace Learning2DEngine
                     inputKeys[key] = InputStatus::KEY_HOLD;
                     break;
                 default:
-                    LOG_WARNING("GAME: Unknow input action: " + action);
+                    L2DE_LOG_ERROR("GAME: Unknow input action: " + action);
                 }
             }
         }
