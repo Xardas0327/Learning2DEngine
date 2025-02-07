@@ -18,7 +18,7 @@ namespace Learning2DEngine
 {
     namespace System
     {
-#define L2DE_INPUT_KEY_SIZE 1024
+#define L2DE_INPUT_KEY_SIZE 512
 #define L2DE_TIME_SCALE_DEFAULT 1.0f
 
         /*

@@ -70,13 +70,14 @@ namespace Learning2DEngine
                 {
                     // Calc deltaTime
                     float currentFrame = glfwGetTime();
-                    Game::deltaTime = (currentFrame - lastFrame) * timeScale;
+                    Game::deltaTime = (currentFrame - lastFrame);
                     lastFrame = currentFrame;
 #if L2DE_DEBUG
                     // It is useful if the game stop by a breakpoint
-                    if (Game::deltaTime > L2DE_DEBUG_MAX_DELTATIME)
-                        Game::deltaTime = L2DE_DEBUG_MAX_DELTATIME;
+                    if (Game::deltaTime > L2DE_DEBUG_MAX_BASE_DELTATIME)
+                        Game::deltaTime = L2DE_DEBUG_MAX_BASE_DELTATIME;
 #endif
+                    Game::deltaTime *= timeScale;
 
                     UpdateKeyboardMouseEvents();
 
@@ -187,7 +188,7 @@ namespace Learning2DEngine
 
         void Game::RefreshKeyboardMouse(int key, int scancode, int action, int mode)
         {
-            if (key >= 0 && key < 1024)
+            if (key > GLFW_KEY_UNKNOWN && key < L2DE_INPUT_KEY_SIZE)
             {
                 switch (action)
                 {

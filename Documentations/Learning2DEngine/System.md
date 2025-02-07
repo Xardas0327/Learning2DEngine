@@ -521,11 +521,13 @@ class Game : public virtual IKeyboardMouseRefresher, public Render::IResolutionR
 ```
 
 ### Macros:
-**INPUT_KEY_SIZE**  
+**L2DE_INPUT_KEY_SIZE**  
 The number of keyboard and mouse buttons.
+Its value is 512.
 
-**TIME_SCALE_DEFAULT**  
+**L2DE_TIME_SCALE_DEFAULT**  
 The default value of the `timeScale`.
+Its value is 1.0f.
 
 ### Variables:
 **Private:**  
@@ -583,7 +585,7 @@ EventSystem::ResolutionEventItem resolutionEventItem;
 This array contains, which button is up, down or hold.  
 The developer should not write this array, just read it.
 ```cpp
-static InputStatus inputKeys[INPUT_KEY_SIZE];
+static InputStatus inputKeys[L2DE_INPUT_KEY_SIZE];
 ```
 
 **deltaTime**  
