@@ -650,25 +650,25 @@ inline BlendFuncFactor GetBlendFunc();
 **AddKeyboardEvent**  
 It adds event to Keyboard events.
 ```cpp
-void AddKeyboardEvent(EventSystem::EventItem<int, int, int, int>* evenItem);
+void AddKeyboardEvent(EventSystem::EventItem<int, int, int, int>* eventItem);
 ```
 
 **RemoveKeyboardEvent**  
 It removes event from Keyboard events.
 ```cpp
-void RemoveKeyboardEvent(EventSystem::EventItem<int, int, int, int>* evenItem);
+void RemoveKeyboardEvent(EventSystem::EventItem<int, int, int, int>* eventItem);
 ```
 
 **AddFramebufferSizeEvent**  
 It adds event to Resolution changing events.
 ```cpp
-void AddFramebufferSizeEvent(EventSystem::EventItem<Resolution>* evenItem);
+void AddFramebufferSizeEvent(EventSystem::EventItem<Resolution>* eventItem);
 ```
 
 **RemoveFramebufferSizeEvent**  
 It removes event from Resolution changing events.
 ```cpp
-void RemoveFramebufferSizeEvent(EventSystem::EventItem<Resolution>* evenItem);
+void RemoveFramebufferSizeEvent(EventSystem::EventItem<Resolution>* eventItem);
 ```
 
 ##
