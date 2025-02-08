@@ -521,7 +521,7 @@ class Game : public IKeyboardRefresher, public Render::IResolutionRefresher
 ```
 
 ### Macros:
-**L2DE_INPUT_KEY_SIZE**  
+**L2DE_KEYBOARD_BUTTON_NUMBER**  
 The number of keyboard buttons.
 Its value is 512.
 
@@ -581,11 +581,10 @@ It is used to subscribe to `RenderManager::AddFramebufferSizeEvent`.
 EventSystem::ResolutionEventItem resolutionEventItem;
 ```
 
-**inputKeys**  
-This array contains, which button is up, down or hold.  
-The developer should not write this array, just read it.
+**keyboardButtons**  
+This array contains, which keyboard button is up, down or hold.
 ```cpp
-static InputStatus inputKeys[L2DE_INPUT_KEY_SIZE];
+static InputStatus keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER];
 ```
 
 **deltaTime**  
@@ -774,10 +773,10 @@ Please check for more info about deltaTime.
 static float GetDeltaTime();
 ``` 
 
-**GetInputStatus**  
-It returns the status of a key button.  
+**GetKeyboardButtonStatus**  
+It returns the status of a keyboard button.  
 ```cpp
-static InputStatus GetInputStatus(int key);
+static InputStatus GetKeyboardButtonStatus(int key);
 ``` 
 
 ##

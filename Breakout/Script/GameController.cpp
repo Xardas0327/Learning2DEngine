@@ -175,7 +175,7 @@ void GameController::LateUpdate()
 
 void GameController::ProcessInput()
 {
-    if (Game::GetInputStatus(GLFW_KEY_ESCAPE) == InputStatus::KEY_DOWN)
+    if (Game::GetKeyboardButtonStatus(GLFW_KEY_ESCAPE) == InputStatus::KEY_DOWN)
     {
         RenderManager::GetInstance().CloseWindow();
         return;
@@ -184,7 +184,7 @@ void GameController::ProcessInput()
     switch (state)
     {
     case GameState::GAME_MENU:
-        if (Game::GetInputStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
+        if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
         {
             state = GameState::GAME_ACTIVE;
             startText->gameObject->isActive = false;
@@ -193,7 +193,7 @@ void GameController::ProcessInput()
             retryText->gameObject->isActive = false;
         }
 
-        if (Game::GetInputStatus(GLFW_KEY_W) == InputStatus::KEY_DOWN)
+        if (Game::GetKeyboardButtonStatus(GLFW_KEY_W) == InputStatus::KEY_DOWN)
         {
             int oldLevel = selectedLevel;
             selectedLevel = (selectedLevel + 1) % levels.size();
@@ -201,7 +201,7 @@ void GameController::ProcessInput()
             levels[oldLevel].SetBricksActive(false);
             levels[selectedLevel].SetBricksActive(true);
         }
-        if (Game::GetInputStatus(GLFW_KEY_S) == InputStatus::KEY_DOWN)
+        if (Game::GetKeyboardButtonStatus(GLFW_KEY_S) == InputStatus::KEY_DOWN)
         {
             int oldLevel = selectedLevel;
             if (selectedLevel > 0)
@@ -214,7 +214,7 @@ void GameController::ProcessInput()
         }
         break;
     case GameState::GAME_WIN:
-        if (Game::GetInputStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
+        if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
         {
             postProcessData->chaos = false;
             state = GameState::GAME_MENU;
@@ -226,7 +226,7 @@ void GameController::ProcessInput()
         break;
     case GameState::GAME_ACTIVE:
         float velocity = PLAYER_VELOCITY * Game::GetDeltaTime();
-        if (Game::GetInputStatus(GLFW_KEY_A))
+        if (Game::GetKeyboardButtonStatus(GLFW_KEY_A))
         {
             if (playerController->gameObject->transform.position.x >= 0.0f)
             {
@@ -235,7 +235,7 @@ void GameController::ProcessInput()
                     ballController->gameObject->transform.position.x -= velocity;
             }
         }
-        if (Game::GetInputStatus(GLFW_KEY_D))
+        if (Game::GetKeyboardButtonStatus(GLFW_KEY_D))
         {
             if (playerController->gameObject->transform.position.x <=
                 Game::mainCamera.GetResolution().GetWidth() - playerController->gameObject->transform.scale.x)
@@ -245,7 +245,7 @@ void GameController::ProcessInput()
                     ballController->gameObject->transform.position.x += velocity;
             }
         }
-        if (Game::GetInputStatus(GLFW_KEY_SPACE))
+        if (Game::GetKeyboardButtonStatus(GLFW_KEY_SPACE))
             ballController->SetStuck(false);
         break;
     }

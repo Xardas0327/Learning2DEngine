@@ -17,7 +17,7 @@ namespace Learning2DEngine
     {
         float Game::deltaTime = 0.0f;
         Camera Game::mainCamera = Camera();
-        InputStatus Game::inputKeys[L2DE_INPUT_KEY_SIZE] = { InputStatus::KEY_UP };
+        InputStatus Game::keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER] = { InputStatus::KEY_UP };
 
         Game::Game()
             : lastFrame(0.0f), timeScale(L2DE_TIME_SCALE_DEFAULT), isMsaaActive(false),
@@ -188,18 +188,18 @@ namespace Learning2DEngine
 
         void Game::RefreshKeyboard(int key, int scancode, int action, int mode)
         {
-            if (key > GLFW_KEY_UNKNOWN && key < L2DE_INPUT_KEY_SIZE)
+            if (key > GLFW_KEY_UNKNOWN && key < L2DE_KEYBOARD_BUTTON_NUMBER)
             {
                 switch (action)
                 {
                 case GLFW_RELEASE:
-                    inputKeys[key] = InputStatus::KEY_UP;
+                    keyboardButtons[key] = InputStatus::KEY_UP;
                     break;
                 case GLFW_PRESS:
-                    inputKeys[key] = InputStatus::KEY_DOWN;
+                    keyboardButtons[key] = InputStatus::KEY_DOWN;
                     break;
                 case GLFW_REPEAT:
-                    inputKeys[key] = InputStatus::KEY_HOLD;
+                    keyboardButtons[key] = InputStatus::KEY_HOLD;
                     break;
                 default:
                     L2DE_LOG_ERROR("GAME: Unknow input action: " + action);
@@ -225,10 +225,10 @@ namespace Learning2DEngine
 
         void Game::FixKeyboardButtons()
         {
-            for (int i = 0; i < L2DE_INPUT_KEY_SIZE; ++i)
+            for (int i = 0; i < L2DE_KEYBOARD_BUTTON_NUMBER; ++i)
             {
-                if(Game::inputKeys[i] == InputStatus::KEY_DOWN)
-                    Game::inputKeys[i] = InputStatus::KEY_HOLD;
+                if(Game::keyboardButtons[i] == InputStatus::KEY_DOWN)
+                    Game::keyboardButtons[i] = InputStatus::KEY_HOLD;
             }
         }
     }

@@ -18,7 +18,7 @@ namespace Learning2DEngine
 {
     namespace System
     {
-#define L2DE_INPUT_KEY_SIZE 512
+#define L2DE_KEYBOARD_BUTTON_NUMBER 512
 #define L2DE_TIME_SCALE_DEFAULT 1.0f
 
         /*
@@ -46,7 +46,7 @@ namespace Learning2DEngine
             EventSystem::KeyboardEventItem keyboardEventItem;
             EventSystem::ResolutionEventItem resolutionEventItem;
 
-            static InputStatus inputKeys[L2DE_INPUT_KEY_SIZE];
+            static InputStatus keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER];
 
             /// <summary>
             /// It is multiplied by timeScale.
@@ -149,9 +149,9 @@ namespace Learning2DEngine
                 return deltaTime;
             }
 
-            static InputStatus GetInputStatus(int key)
+            static InputStatus GetKeyboardButtonStatus(int key)
             {
-                return inputKeys[key];
+                return keyboardButtons[key];
             }
         };
     }
