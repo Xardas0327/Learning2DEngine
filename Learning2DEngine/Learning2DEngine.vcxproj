@@ -216,6 +216,7 @@
     <ClInclude Include="Learning2DEngine\EventSystem\EventHandler.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventItem.h" />
     <ClInclude Include="Learning2DEngine\System\ComponentManager.h" />
+    <ClInclude Include="Learning2DEngine\System\Cursor.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />
     <ClInclude Include="Learning2DEngine\Render\IResolutionRefresher.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\KeyboardEventItem.h" />
