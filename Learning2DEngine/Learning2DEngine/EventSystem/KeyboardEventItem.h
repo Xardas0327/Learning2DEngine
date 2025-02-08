@@ -7,7 +7,7 @@ namespace Learning2DEngine
 {
 	namespace EventSystem
 	{
-		class KeyboardEventItem final : public virtual EventItem<int, int, int, int>
+		class KeyboardEventItem final : public EventItem<int, int, int, int>
 		{
 		private:
 			System::IKeyboardRefresher* refresher;

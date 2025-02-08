@@ -516,7 +516,7 @@ The Function order in the Run() (in a frame):
 
 ### Header:
 ```cpp
-class Game : public virtual IKeyboardRefresher, public Render::IResolutionRefresher
+class Game : public IKeyboardRefresher, public Render::IResolutionRefresher
 {...}
 ```
 

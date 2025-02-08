@@ -96,7 +96,7 @@ when the developer want to subscribe to Keyboard events.
 
 ### Header:
 ```cpp
-class KeyboardEventItem final : public virtual EventItem<int, int, int, int>
+class KeyboardEventItem final : public EventItem<int, int, int, int>
 {...}
 ```
 
@@ -131,7 +131,7 @@ when the developer want to subscribe to (game) screen's resolution changes.
 
 ### Header:
 ```cpp
-class ResolutionEventItem final : public virtual EventItem<Render::Resolution>
+class ResolutionEventItem final : public EventItem<Render::Resolution>
 {...}
 ```
 
