@@ -3,7 +3,9 @@
 #include <glm/glm.hpp>
 
 #include "InputStatus.h"
+#include "Cursor.h"
 #include "IKeyboardRefresher.h"
+#include "ICursorRefresher.h"
 #include "Camera.h"
 #include "../EventSystem/KeyboardEventItem.h"
 #include "../Render/RenderManager.h"
@@ -33,7 +35,9 @@ namespace Learning2DEngine
             LateRender (without any effect)
             Update Window
         */
-        class Game : public IKeyboardRefresher, public Render::IResolutionRefresher
+        class Game : public IKeyboardRefresher,
+                    public ICursorRefresher,
+                    public Render::IResolutionRefresher
         {
         private:
             float lastFrame;
@@ -47,6 +51,7 @@ namespace Learning2DEngine
             EventSystem::ResolutionEventItem resolutionEventItem;
 
             static InputStatus keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER];
+            static Cursor cursor;
 
             /// <summary>
             /// It is multiplied by timeScale.
@@ -60,6 +65,12 @@ namespace Learning2DEngine
             /// That's why this function update the InputStatus::KEY_DOWN to InputStatus::KEY_HOLD.
             /// </summary>
             void FixKeyboardButtons();
+            /// <summary>
+            /// The glfwPollEvents doesn't have InputStatus::KEY_HOLD for Mouse buttons.
+            /// Moreover it doesn't refresh the scroll values to 0.0f.
+            /// So this function do it.
+            /// </summary>
+            void FixCursor();
         protected:
             Game();
 
@@ -139,6 +150,11 @@ namespace Learning2DEngine
             void Run();
 
             void RefreshKeyboard(int key, int scancode, int action, int mode) override;
+            void RefreshMouseButton(int button, int action, int mods) override;
+            void RefreshPosition(double xpos, double ypos) override;
+            void RefreshIsInWindows(bool entered) override;
+            void RefreshScroll(double xoffset, double yoffset) override;
+
             /// <summary>
             /// If this function is override, it must call the Game::RefreshResolution(const Resolution& resolution) in the first line.
             /// </summary>

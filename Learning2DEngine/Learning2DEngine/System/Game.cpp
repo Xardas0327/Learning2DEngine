@@ -18,6 +18,7 @@ namespace Learning2DEngine
         float Game::deltaTime = 0.0f;
         Camera Game::mainCamera = Camera();
         InputStatus Game::keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER] = { InputStatus::KEY_UP };
+        Cursor Game::cursor = Cursor();
 
         Game::Game()
             : lastFrame(0.0f), timeScale(L2DE_TIME_SCALE_DEFAULT), isMsaaActive(false),
@@ -183,6 +184,7 @@ namespace Learning2DEngine
         void Game::UpdateEvents()
         {
             FixKeyboardButtons();
+            FixCursor();
             glfwPollEvents();
         }
 
@@ -205,6 +207,44 @@ namespace Learning2DEngine
                     L2DE_LOG_ERROR("GAME: Unknow input action: " + action);
                 }
             }
+        }
+
+        void Game::RefreshMouseButton(int button, int action, int mods)
+        {
+            if (button >= 0  && button < L2DE_MOUSE_BUTTON_NUMBER)
+            {
+                switch (action)
+                {
+                case GLFW_RELEASE:
+                    cursor.mouseButtons[button] = InputStatus::KEY_UP;
+                    break;
+                case GLFW_PRESS:
+                    cursor.mouseButtons[button] = InputStatus::KEY_DOWN;
+                    break;
+                case GLFW_REPEAT:
+                    cursor.mouseButtons[button] = InputStatus::KEY_HOLD;
+                    break;
+                default:
+                    L2DE_LOG_ERROR("GAME: Unknow input action: " + action);
+                }
+            }
+        }
+
+        void Game::RefreshPosition(double xpos, double ypos)
+        {
+            cursor.position.x = static_cast<float>(xpos);
+            cursor.position.y = static_cast<float>(ypos);
+        }
+
+        void Game::RefreshIsInWindows(bool entered)
+        {
+            cursor.isInWindow = entered;
+        }
+
+        void Game::RefreshScroll(double xoffset, double yoffset)
+        {
+            cursor.scroll.x = static_cast<float>(xoffset);
+            cursor.scroll.y = static_cast<float>(yoffset);
         }
 
         void Game::RefreshResolution(const Resolution& resolution)
@@ -230,6 +270,18 @@ namespace Learning2DEngine
                 if(Game::keyboardButtons[i] == InputStatus::KEY_DOWN)
                     Game::keyboardButtons[i] = InputStatus::KEY_HOLD;
             }
+        }
+
+        void Game::FixCursor()
+        {
+            for (int i = 0; i < L2DE_MOUSE_BUTTON_NUMBER; ++i)
+            {
+                if (Game::cursor.mouseButtons[i] == InputStatus::KEY_DOWN)
+                    Game::cursor.mouseButtons[i] = InputStatus::KEY_HOLD;
+            }
+
+            cursor.scroll.x = 0.0f;
+            cursor.scroll.y = 0.0f;
         }
     }
 }

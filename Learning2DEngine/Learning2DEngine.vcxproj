@@ -222,6 +222,7 @@
     <ClInclude Include="Learning2DEngine\EventSystem\KeyboardEventItem.h" />
     <ClInclude Include="Learning2DEngine\System\GameObject.h" />
     <ClInclude Include="Learning2DEngine\System\IComponentHandler.h" />
+    <ClInclude Include="Learning2DEngine\System\ICursorRefresher.h" />
     <ClInclude Include="Learning2DEngine\System\InputStatus.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\Log.h" />
     <ClInclude Include="Learning2DEngine\System\IKeyboardRefresher.h" />

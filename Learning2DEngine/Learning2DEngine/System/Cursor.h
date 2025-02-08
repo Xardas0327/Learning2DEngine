@@ -12,7 +12,7 @@ namespace Learning2DEngine
 		struct Cursor {
 			int mouseButtons[L2DE_MOUSE_BUTTON_NUMBER];
 			glm::vec2 position;
-			glm::vec2 scrollPosition;
+			glm::vec2 scroll;
 			bool isInWindow;
 		};
 	}
