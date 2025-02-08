@@ -1,7 +1,7 @@
 # EventSystem
 - [EventHandler](EventSystem.md#eventhandler)
 - [EventItem](EventSystem.md#eventitem)
-- [KeyboardMouseEventItem](EventSystem.md#keyboardmouseeventitem)
+- [KeyboardEventItem](EventSystem.md#keyboardeventitem)
 - [ResolutionEventItem](EventSystem.md#resolutioneventitem)
 
 ##
@@ -86,17 +86,17 @@ virtual void Call(Params... params) = 0;
 ```
 
 ##
-## KeyboardMouseEventItem
+## KeyboardEventItem
 ### Source Code:
-[KeyboardMouseEventItem.h](../../Learning2DEngine/Learning2DEngine/EventSystem/KeyboardMouseEventItem.h)
+[KeyboardEventItem.h](../../Learning2DEngine/Learning2DEngine/EventSystem/KeyboardEventItem.h)
 
 ### Description:
 It is a `EventItem` implementation. It can be used
-when the developer want to subscribe to Keyboard and Mouse events.
+when the developer want to subscribe to Keyboard events.
 
 ### Header:
 ```cpp
-class KeyboardMouseEventItem final : public virtual EventItem<int, int, int, int>
+class KeyboardEventItem final : public virtual EventItem<int, int, int, int>
 {...}
 ```
 
@@ -104,15 +104,15 @@ class KeyboardMouseEventItem final : public virtual EventItem<int, int, int, int
 **Private:**  
 **refresher**  
 ```cpp
-System::IKeyboardMouseRefresher* refresher;
+System::IKeyboardRefresher* refresher;
 ```
 
 ### Functions:
 **Public:**  
 
-**KeyboardMouseEventItem**  
+**KeyboardEventItem**  
 ```cpp
-KeyboardMouseEventItem(System::IKeyboardMouseRefresher* refresher);
+KeyboardEventItem(System::IKeyboardRefresher* refresher);
 ```
 
 **Call**  

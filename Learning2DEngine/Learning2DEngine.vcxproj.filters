@@ -158,10 +158,10 @@
     <ClInclude Include="Learning2DEngine\EventSystem\EventItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\EventSystem\KeyboardMouseEventItem.h">
+    <ClInclude Include="Learning2DEngine\EventSystem\KeyboardEventItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\System\IKeyboardMouseRefresher.h">
+    <ClInclude Include="Learning2DEngine\System\IKeyboardRefresher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\IResolutionRefresher.h">

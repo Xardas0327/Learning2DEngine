@@ -8,7 +8,7 @@
 - [Game](System.md#game)
 - [GameObject](System.md#gameobject)
 - [IComponentHandler](System.md#icomponenthandler)
-- [IKeyboardMouseRefresher](System.md#ikeyboardmouserefresher)
+- [IKeyboardRefresher](System.md#ikeyboardrefresher)
 - [InputStatus](System.md#inputstatus)
 - [LateUpdaterComponent](System.md#lateupdatercomponent)
 - [LateUpdaterComponentHandler](System.md#lateupdatercomponenthandler)
@@ -505,7 +505,7 @@ that game must be inherited from this `Game` class.
 
 The Function order in the Run() (in a frame):
 1. Calculate deltaTime
-2. Refresh Keyboard and Mouse events
+2. Refresh Events (Keyboard, Mouse, Window etc)
 3. Update
 4. Check Collisions
 5. LateUpdate
@@ -516,13 +516,13 @@ The Function order in the Run() (in a frame):
 
 ### Header:
 ```cpp
-class Game : public virtual IKeyboardMouseRefresher, public Render::IResolutionRefresher
+class Game : public virtual IKeyboardRefresher, public Render::IResolutionRefresher
 {...}
 ```
 
 ### Macros:
 **L2DE_INPUT_KEY_SIZE**  
-The number of keyboard and mouse buttons.
+The number of keyboard buttons.
 Its value is 512.
 
 **L2DE_TIME_SCALE_DEFAULT**  
@@ -569,10 +569,10 @@ Render::MSAA msaaRender;
 Render::PostProcessEffect ppeRender;
 ```
 
-**keyboardMouseEventItem**  
+**keyboardEventItem**  
 It is used to subscribe to `RenderManager::AddKeyboardEvent`.
 ```cpp
-EventSystem::KeyboardMouseEventItem keyboardMouseEventItem;
+EventSystem::KeyboardEventItem keyboardEventItem;
 ```
 
 **resolutionEventItem** 
@@ -608,17 +608,17 @@ static Camera mainCamera;
 
 ### Functions:
 **Private:**  
-**UpdateKeyboardMouseEvents**  
+**UpdateEvents**  
 ```cpp
-void UpdateKeyboardMouseEvents();
+void UpdateEvents();
 ```
 
-**FixKeyboardMouse**  
+**FixKeyboardButtons**  
 The *glfwPollEvents* does not refresh the data on every frame.
 That's why this function update the `InputStatus::KEY_DOWN`
 to `InputStatus::KEY_HOLD`.
 ```cpp
-void FixKeyboardMouse();
+void FixKeyboardButtons();
 ```
 
 **Protected:**  
@@ -751,12 +751,12 @@ Please check the Game's Description for the function order.
 void Run();
 ``` 
 
-**RefreshKeyboardMouse**  
+**RefreshKeyboard**  
 The developer should not use this function.
 The `Game` subscribes for button events and the `RenderManager` call
 this function by an event.
 ```cpp
-void RefreshKeyboardMouse(int key, int scancode, int action, int mode) override;
+void RefreshKeyboard(int key, int scancode, int action, int mode) override;
 ``` 
 
 **RefreshResolution**  
@@ -775,7 +775,7 @@ static float GetDeltaTime();
 ``` 
 
 **GetInputStatus**  
-It returns the status of a key or mouse button.  
+It returns the status of a key button.  
 ```cpp
 static InputStatus GetInputStatus(int key);
 ``` 
@@ -917,30 +917,30 @@ virtual void DoWithAllComponents() = 0;
 
 
 ##
-## IKeyboardMouseRefresher
+## IKeyboardRefresher
 ### Source Code:
-[IKeyboardMouseRefresher.h](../../Learning2DEngine/Learning2DEngine/System/IKeyboardMouseRefresher.h)
+[IKeyboardRefresher.h](../../Learning2DEngine/Learning2DEngine/System/IKeyboardRefresher.h)
 
 ### Description:
 It is a little interface, which the developer can use to wrap
-a class into `KeyboardMouseEventItem`.
+a class into `KeyboardEventItem`.
 
 ### Header:
 ```cpp
-class IKeyboardMouseRefresher
+class IKeyboardRefresher
 {...}
 ```
 
 ### Functions:
 **Public:**  
-**~IKeyboardMouseRefresher**  
+**~IKeyboardRefresher**  
 ```cpp
-virtual ~IKeyboardMouseRefresher();
+virtual ~IKeyboardRefresher();
 ```
 
-**RefreshKeyboardMouse**  
+**RefreshKeyboard**  
 ```cpp
-virtual void RefreshKeyboardMouse(int key, int scancode, int action, int mode) = 0;
+virtual void RefreshKeyboard(int key, int scancode, int action, int mode) = 0;
 ```
 
 ##

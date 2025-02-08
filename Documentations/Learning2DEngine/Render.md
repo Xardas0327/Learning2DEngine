@@ -529,16 +529,16 @@ BlendFuncFactor blendFuncFactor;
 RenderManager();
 ```
 
-**CallbackUpdateKeyboardMouse**  
+**CallbackUpdateKeyboard**  
 It is used to subscribe to `glfwSetKeyCallback`.
 ```cpp
-static void CallbackUpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode);
+static void CallbackUpdateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mode);
 ```
 
-**UpdateKeyboardMouse**  
-`CallbackUpdateKeyboardMouse` call this function.
+**UpdateKeyboard**  
+`CallbackUpdateKeyboard` call this function.
 ```cpp
-void UpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode);
+void UpdateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mode);
 ```
 
 **CallbackUpdateFramebufferSize**  
@@ -648,13 +648,13 @@ inline BlendFuncFactor GetBlendFunc();
 ```
 
 **AddKeyboardEvent**  
-It adds event to Keyboard and Mouse events.
+It adds event to Keyboard events.
 ```cpp
 void AddKeyboardEvent(EventSystem::EventItem<int, int, int, int>* evenItem);
 ```
 
 **RemoveKeyboardEvent**  
-It removes event from Keyboard and Mouse events.
+It removes event from Keyboard events.
 ```cpp
 void RemoveKeyboardEvent(EventSystem::EventItem<int, int, int, int>* evenItem);
 ```

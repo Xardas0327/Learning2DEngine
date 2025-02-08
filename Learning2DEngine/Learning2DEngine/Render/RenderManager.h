@@ -28,8 +28,8 @@ namespace Learning2DEngine
 
 			RenderManager();
 
-			static void CallbackUpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode);
-			void UpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode);
+			static void CallbackUpdateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mode);
+			void UpdateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mode);
 			static void CallbackUpdateFramebufferSize(GLFWwindow* window, int width, int height);
 			void UpdateFramebufferSize(GLFWwindow* window, int width, int height);
 		public:

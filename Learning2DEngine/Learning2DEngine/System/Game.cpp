@@ -22,7 +22,7 @@ namespace Learning2DEngine
         Game::Game()
             : lastFrame(0.0f), timeScale(L2DE_TIME_SCALE_DEFAULT), isMsaaActive(false),
             isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
-            ppeRender(), keyboardMouseEventItem(this), resolutionEventItem(this)
+            ppeRender(), keyboardEventItem(this), resolutionEventItem(this)
         {
         }
 
@@ -40,7 +40,7 @@ namespace Learning2DEngine
         void Game::Init()
         {
             auto& renderManager = RenderManager::GetInstance();
-            renderManager.AddKeyboardEvent(&keyboardMouseEventItem);
+            renderManager.AddKeyboardEvent(&keyboardEventItem);
             renderManager.AddFramebufferSizeEvent(&resolutionEventItem);
             renderManager.EnableBlend();
             renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -52,7 +52,7 @@ namespace Learning2DEngine
             StopPostProcessEffect();
 
             auto& renderManager = RenderManager::GetInstance();
-            renderManager.RemoveKeyboardEvent(&keyboardMouseEventItem);
+            renderManager.RemoveKeyboardEvent(&keyboardEventItem);
             renderManager.RemoveFramebufferSizeEvent(&resolutionEventItem);
 
             ComponentManager::GetInstance().Clear();
@@ -79,7 +79,7 @@ namespace Learning2DEngine
 #endif
                     Game::deltaTime *= timeScale;
 
-                    UpdateKeyboardMouseEvents();
+                    UpdateEvents();
 
                     componentManager.Update();
                     componentManager.CheckCollision();
@@ -180,13 +180,13 @@ namespace Learning2DEngine
             ppeRender.ClearShader();
         }
 
-        void Game::UpdateKeyboardMouseEvents()
+        void Game::UpdateEvents()
         {
-            FixKeyboardMouse();
+            FixKeyboardButtons();
             glfwPollEvents();
         }
 
-        void Game::RefreshKeyboardMouse(int key, int scancode, int action, int mode)
+        void Game::RefreshKeyboard(int key, int scancode, int action, int mode)
         {
             if (key > GLFW_KEY_UNKNOWN && key < L2DE_INPUT_KEY_SIZE)
             {
@@ -223,7 +223,7 @@ namespace Learning2DEngine
             }
         }
 
-        void Game::FixKeyboardMouse()
+        void Game::FixKeyboardButtons()
         {
             for (int i = 0; i < L2DE_INPUT_KEY_SIZE; ++i)
             {

@@ -3,9 +3,9 @@
 #include <glm/glm.hpp>
 
 #include "InputStatus.h"
-#include "IKeyboardMouseRefresher.h"
+#include "IKeyboardRefresher.h"
 #include "Camera.h"
-#include "../EventSystem/KeyboardMouseEventItem.h"
+#include "../EventSystem/KeyboardEventItem.h"
 #include "../Render/RenderManager.h"
 #include "../Render/IResolutionRefresher.h"
 #include "../Render/Resolution.h"
@@ -24,7 +24,7 @@ namespace Learning2DEngine
         /*
             The Function order in the Run() (in a frame):
             Calculate deltaTime
-            Refresh Keyboard and Mouse events
+            Refresh Events (Keyboard, Mouse, Window etc)
             Update
             Check Collisions
             LateUpdate
@@ -33,7 +33,7 @@ namespace Learning2DEngine
             LateRender (without any effect)
             Update Window
         */
-        class Game : public virtual IKeyboardMouseRefresher, public Render::IResolutionRefresher
+        class Game : public virtual IKeyboardRefresher, public Render::IResolutionRefresher
         {
         private:
             float lastFrame;
@@ -43,7 +43,7 @@ namespace Learning2DEngine
             bool isPostProcessEffectUsed;
             Render::MSAA msaaRender;
             Render::PostProcessEffect ppeRender;
-            EventSystem::KeyboardMouseEventItem keyboardMouseEventItem;
+            EventSystem::KeyboardEventItem keyboardEventItem;
             EventSystem::ResolutionEventItem resolutionEventItem;
 
             static InputStatus inputKeys[L2DE_INPUT_KEY_SIZE];
@@ -54,12 +54,12 @@ namespace Learning2DEngine
             /// </summary>
             static float deltaTime;
 
-            void UpdateKeyboardMouseEvents();
+            void UpdateEvents();
             /// <summary>
             /// The glfwPollEvents doesn't refresh the data on every frame.
             /// That's why this function update the InputStatus::KEY_DOWN to InputStatus::KEY_HOLD.
             /// </summary>
-            void FixKeyboardMouse();
+            void FixKeyboardButtons();
         protected:
             Game();
 
@@ -138,7 +138,7 @@ namespace Learning2DEngine
             virtual void Terminate();
             void Run();
 
-            void RefreshKeyboardMouse(int key, int scancode, int action, int mode) override;
+            void RefreshKeyboard(int key, int scancode, int action, int mode) override;
             /// <summary>
             /// If this function is override, it must call the Game::RefreshResolution(const Resolution& resolution) in the first line.
             /// </summary>

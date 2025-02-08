@@ -218,12 +218,12 @@
     <ClInclude Include="Learning2DEngine\System\ComponentManager.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />
     <ClInclude Include="Learning2DEngine\Render\IResolutionRefresher.h" />
-    <ClInclude Include="Learning2DEngine\EventSystem\KeyboardMouseEventItem.h" />
+    <ClInclude Include="Learning2DEngine\EventSystem\KeyboardEventItem.h" />
     <ClInclude Include="Learning2DEngine\System\GameObject.h" />
     <ClInclude Include="Learning2DEngine\System\IComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\InputStatus.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\Log.h" />
-    <ClInclude Include="Learning2DEngine\System\IKeyboardMouseRefresher.h" />
+    <ClInclude Include="Learning2DEngine\System\IKeyboardRefresher.h" />
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\Random.h" />

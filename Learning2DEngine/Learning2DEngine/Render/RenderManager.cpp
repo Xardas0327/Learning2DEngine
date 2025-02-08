@@ -39,7 +39,7 @@ namespace Learning2DEngine
                 return;
             }
             glfwMakeContextCurrent(window);
-            glfwSetKeyCallback(window, RenderManager::CallbackUpdateKeyboardMouse);
+            glfwSetKeyCallback(window, RenderManager::CallbackUpdateKeyboard);
             glfwSetFramebufferSizeCallback(window, RenderManager::CallbackUpdateFramebufferSize);
 
             if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -124,12 +124,12 @@ namespace Learning2DEngine
             }
         }
 
-        void RenderManager::CallbackUpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode)
+        void RenderManager::CallbackUpdateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mode)
         {
-            RenderManager::GetInstance().UpdateKeyboardMouse(window, key, scancode, action, mode);
+            RenderManager::GetInstance().UpdateKeyboard(window, key, scancode, action, mode);
         }
 
-        void RenderManager::UpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode)
+        void RenderManager::UpdateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mode)
         {
             keyboardEventHandler.Invoke(key, scancode, action, mode);
         }
