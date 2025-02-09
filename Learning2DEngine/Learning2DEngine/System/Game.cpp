@@ -23,7 +23,8 @@ namespace Learning2DEngine
         Game::Game()
             : lastFrame(0.0f), timeScale(L2DE_TIME_SCALE_DEFAULT), isMsaaActive(false),
             isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
-            ppeRender(), keyboardEventItem(this), resolutionEventItem(this)
+            ppeRender(), keyboardEventItem(this), resolutionEventItem(this),
+            mouseButtonEventItem(this), cursorPositionEventItem(this), cursorEnterEventItem(this), scrollEventItem(this)
         {
         }
 
@@ -41,8 +42,13 @@ namespace Learning2DEngine
         void Game::Init()
         {
             auto& renderManager = RenderManager::GetInstance();
-            renderManager.AddKeyboardEvent(&keyboardEventItem);
             renderManager.AddFramebufferSizeEvent(&resolutionEventItem);
+            renderManager.AddKeyboardEvent(&keyboardEventItem);
+            renderManager.AddMouseButtonEvent(&mouseButtonEventItem);
+            renderManager.AddCursorPositonEvent(&cursorPositionEventItem);
+            renderManager.AddCursorEnterEvent(&cursorEnterEventItem);
+            renderManager.AddScrollEvent(&scrollEventItem);
+            //Because of images' alpha channel
             renderManager.EnableBlend();
             renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         }
@@ -53,8 +59,12 @@ namespace Learning2DEngine
             StopPostProcessEffect();
 
             auto& renderManager = RenderManager::GetInstance();
-            renderManager.RemoveKeyboardEvent(&keyboardEventItem);
             renderManager.RemoveFramebufferSizeEvent(&resolutionEventItem);
+            renderManager.RemoveKeyboardEvent(&keyboardEventItem);
+            renderManager.RemoveMouseButtonEvent(&mouseButtonEventItem);
+            renderManager.RemoveCursorPositonEvent(&cursorPositionEventItem);
+            renderManager.RemoveCursorEnterEvent(&cursorEnterEventItem);
+            renderManager.RemoveScrollEvent(&scrollEventItem);
 
             ComponentManager::GetInstance().Clear();
             ResourceManager::GetInstance().Clear();

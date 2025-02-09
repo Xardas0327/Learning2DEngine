@@ -183,6 +183,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\DebugTool\DebugMacro.h" />
+    <ClInclude Include="Learning2DEngine\EventSystem\CursorEnterEventItem.h" />
+    <ClInclude Include="Learning2DEngine\EventSystem\CursorPositionEventItem.h" />
+    <ClInclude Include="Learning2DEngine\EventSystem\MouseButtonEventItem.h" />
+    <ClInclude Include="Learning2DEngine\EventSystem\ScrollEventItem.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\BasicParticleSettings.h" />
     <ClInclude Include="Learning2DEngine\Physics\BaseBoxColliderComponent.h" />
     <ClInclude Include="Learning2DEngine\Physics\BaseCircleColliderComponent.h" />

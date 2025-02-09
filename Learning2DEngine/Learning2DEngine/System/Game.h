@@ -8,10 +8,14 @@
 #include "ICursorRefresher.h"
 #include "Camera.h"
 #include "../EventSystem/KeyboardEventItem.h"
+#include "../EventSystem/MouseButtonEventItem.h"
+#include "../EventSystem/CursorPositionEventItem.h"
+#include "../EventSystem/CursorEnterEventItem.h"
+#include "../EventSystem/ScrollEventItem.h"
+#include "../EventSystem/ResolutionEventItem.h"
 #include "../Render/RenderManager.h"
 #include "../Render/IResolutionRefresher.h"
 #include "../Render/Resolution.h"
-#include "../EventSystem/ResolutionEventItem.h"
 #include "../Render/Shader.h"
 #include "../Render/MSAA.h"
 #include "../Render/PostProcessEffect.h"
@@ -48,6 +52,10 @@ namespace Learning2DEngine
             Render::MSAA msaaRender;
             Render::PostProcessEffect ppeRender;
             EventSystem::KeyboardEventItem keyboardEventItem;
+            EventSystem::MouseButtonEventItem mouseButtonEventItem;
+            EventSystem::CursorPositionEventItem cursorPositionEventItem;
+            EventSystem::CursorEnterEventItem cursorEnterEventItem;
+            EventSystem::ScrollEventItem scrollEventItem;
             EventSystem::ResolutionEventItem resolutionEventItem;
 
             static InputStatus keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER];
@@ -168,6 +176,26 @@ namespace Learning2DEngine
             static InputStatus GetKeyboardButtonStatus(int key)
             {
                 return keyboardButtons[key];
+            }
+
+            static InputStatus GetMouseButtonStatus(int key)
+            {
+                return cursor.mouseButtons[key];
+            }
+
+            static glm::vec2 GetCursorPosition()
+            {
+                return cursor.position;
+            }
+
+            static bool IsCursorInWindow()
+            {
+                return cursor.isInWindow;
+            }
+
+            static glm::vec2 GetScroll()
+            {
+                return cursor.scroll;
             }
         };
     }
