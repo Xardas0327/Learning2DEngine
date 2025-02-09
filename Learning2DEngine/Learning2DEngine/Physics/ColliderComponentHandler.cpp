@@ -1,5 +1,7 @@
 #include "ColliderComponentHandler.h"
 
+#include <algorithm>
+
 namespace Learning2DEngine
 {
 	namespace Physics
@@ -12,19 +14,23 @@ namespace Learning2DEngine
 
 		void ColliderComponentHandler::RefreshBoxColliders()
 		{
-			for (auto collider : removeableBoxColliders)
+			if (removeableBoxColliders.size() > 0)
 			{
-				auto it = std::find(activeBoxColliders.begin(), activeBoxColliders.end(), collider);
-				if (it != activeBoxColliders.end())
-				{
-					activeBoxColliders.erase(it);
-				}
-				else
-				{
-					it = std::find(passiveBoxColliders.begin(), passiveBoxColliders.end(), collider);
-					if (it != passiveBoxColliders.end())
-						passiveBoxColliders.erase(it);
-				}
+				auto newActiveEnd = remove_if(activeBoxColliders.begin(), activeBoxColliders.end(),
+					[this](BaseBoxColliderComponent* collider)
+					{
+						auto it = std::find(removeableBoxColliders.begin(), removeableBoxColliders.end(), collider);
+						return it != removeableBoxColliders.end();
+					});
+				activeBoxColliders.erase(newActiveEnd, activeBoxColliders.end());
+
+				auto newPassiveEnd = remove_if(passiveBoxColliders.begin(), passiveBoxColliders.end(),
+					[this](BaseBoxColliderComponent* collider)
+					{
+						auto it = std::find(removeableBoxColliders.begin(), removeableBoxColliders.end(), collider);
+						return it != removeableBoxColliders.end();
+					});
+				passiveBoxColliders.erase(newPassiveEnd, passiveBoxColliders.end());
 			}
 
 			for (auto collider : newBoxColliders)
@@ -41,19 +47,23 @@ namespace Learning2DEngine
 
 		void ColliderComponentHandler::RefreshCircleColliders()
 		{
-			for (auto collider : removeableCircleColliders)
+			if (removeableCircleColliders.size() > 0)
 			{
-				auto it = std::find(activeCircleColliders.begin(), activeCircleColliders.end(), collider);
-				if (it != activeCircleColliders.end())
-				{
-					activeCircleColliders.erase(it);
-				}
-				else
-				{
-					it = std::find(passiveCircleColliders.begin(), passiveCircleColliders.end(), collider);
-					if (it != passiveCircleColliders.end())
-						passiveCircleColliders.erase(it);
-				}
+				auto newActiveEnd = remove_if(activeCircleColliders.begin(), activeCircleColliders.end(),
+					[this](BaseCircleColliderComponent* collider)
+					{
+						auto it = std::find(removeableCircleColliders.begin(), removeableCircleColliders.end(), collider);
+						return it != removeableCircleColliders.end();
+					});
+				activeCircleColliders.erase(newActiveEnd, activeCircleColliders.end());
+
+				auto newPassiveEnd = remove_if(passiveCircleColliders.begin(), passiveCircleColliders.end(),
+					[this](BaseCircleColliderComponent* collider)
+					{
+						auto it = std::find(removeableCircleColliders.begin(), removeableCircleColliders.end(), collider);
+						return it != removeableCircleColliders.end();
+					});
+				passiveCircleColliders.erase(newPassiveEnd, passiveCircleColliders.end());
 			}
 
 			for (auto collider : newCircleColliders)
