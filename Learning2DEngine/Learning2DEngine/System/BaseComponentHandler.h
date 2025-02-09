@@ -25,11 +25,15 @@ namespace Learning2DEngine
 
 			virtual void RefreshComponents()
 			{
-				for (auto component : removeableComponents)
+				if (removeableComponents.size() > 0)
 				{
-					auto it = std::find(components.begin(), components.end(), component);
-					if (it != components.end())
-						components.erase(it);
+					auto newEnd = remove_if(components.begin(), components.end(),
+						[this](T* component)
+						{
+							auto it = std::find(removeableComponents.begin(), removeableComponents.end(), component);
+							return it != removeableComponents.end();
+						});
+					components.erase(newEnd, components.end());
 				}
 
 				components.insert(components.end(), newComponents.begin(), newComponents.end());
