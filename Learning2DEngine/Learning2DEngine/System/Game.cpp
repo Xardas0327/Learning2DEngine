@@ -240,13 +240,13 @@ namespace Learning2DEngine
             }
         }
 
-        void Game::RefreshPosition(double xpos, double ypos)
+        void Game::RefreshCursorPosition(double xpos, double ypos)
         {
             cursor.position.x = static_cast<float>(xpos);
             cursor.position.y = static_cast<float>(ypos);
         }
 
-        void Game::RefreshIsInWindows(bool entered)
+        void Game::RefreshCursorInWindows(bool entered)
         {
             cursor.isInWindow = entered;
         }

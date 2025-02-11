@@ -20,7 +20,7 @@ namespace Learning2DEngine
 
 			void Call(bool entered) override
 			{
-				refresher->RefreshIsInWindows(entered);
+				refresher->RefreshCursorInWindows(entered);
 			}
 		};
 	}

@@ -20,7 +20,7 @@ namespace Learning2DEngine
 
 			void Call(double xpos, double ypos) override
 			{
-				refresher->RefreshPosition(xpos, ypos);
+				refresher->RefreshCursorPosition(xpos, ypos);
 			}
 		};
 	}

@@ -11,9 +11,9 @@ namespace Learning2DEngine
 
 			virtual void RefreshMouseButton(int button, int action, int mods) = 0;
 
-			virtual void RefreshPosition(double xpos, double ypos) = 0;
+			virtual void RefreshCursorPosition(double xpos, double ypos) = 0;
 
-			virtual void RefreshIsInWindows(bool entered) = 0;
+			virtual void RefreshCursorInWindows(bool entered) = 0;
 
 			virtual void RefreshScroll(double xoffset, double yoffset) = 0;
 		};

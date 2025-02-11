@@ -159,8 +159,8 @@ namespace Learning2DEngine
 
             void RefreshKeyboard(int key, int scancode, int action, int mode) override;
             void RefreshMouseButton(int button, int action, int mods) override;
-            void RefreshPosition(double xpos, double ypos) override;
-            void RefreshIsInWindows(bool entered) override;
+            void RefreshCursorPosition(double xpos, double ypos) override;
+            void RefreshCursorInWindows(bool entered) override;
             void RefreshScroll(double xoffset, double yoffset) override;
 
             /// <summary>

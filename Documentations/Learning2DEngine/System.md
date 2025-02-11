@@ -5,9 +5,11 @@
 - [Camera](System.md#camera)
 - [Component](System.md#component)
 - [ComponentManager](System.md#componentmanager)
+- [Cursor](System.md#cursor)
 - [Game](System.md#game)
 - [GameObject](System.md#gameobject)
 - [IComponentHandler](System.md#icomponenthandler)
+- [ICursorRefresher](System.md#icursorrefresher)
 - [IKeyboardRefresher](System.md#ikeyboardrefresher)
 - [InputStatus](System.md#inputstatus)
 - [LateUpdaterComponent](System.md#lateupdatercomponent)
@@ -493,6 +495,30 @@ void Clear();
 ```
 
 ##
+## Cursor
+### Source Code:
+[Cursor.h](../../Learning2DEngine/Learning2DEngine/System/Cursor.h)  
+
+### Description: 
+It contains the mouse buttons, cursor position, scroll and the
+cursor is in the window.
+
+### Header:
+```cpp
+struct Cursor {
+	InputStatus mouseButtons[L2DE_MOUSE_BUTTON_NUMBER];
+	glm::vec2 position;
+	glm::vec2 scroll;
+	bool isInWindow;
+};
+```
+
+### Macros:
+**L2DE_MOUSE_BUTTON_NUMBER**  
+The number of mouse buttons.
+Its value is 8.
+
+##
 ## Game
 ### Source Code:
 [Game.h](../../Learning2DEngine/Learning2DEngine/System/Game.h)  
@@ -914,6 +940,47 @@ virtual void Clear() = 0;
 virtual void DoWithAllComponents() = 0;
 ```
 
+##
+## ICursorRefresher
+### Source Code:
+[ICursorRefresher.h](../../Learning2DEngine/Learning2DEngine/System/ICursorRefresher.h)
+
+### Description:
+It is a little interface, which can be used for mouse/cursor events and it is wrapable
+into `CursorEnterEventItem`, `CursorPositionEventItem`, `MouseButtonEventItem` or `ScrollEventItem`.
+
+### Header:
+```cpp
+class ICursorRefresher
+{...}
+```
+
+### Functions:
+**Public:**  
+**~ICursorRefresher**  
+```cpp
+virtual ~ICursorRefresher();
+```
+
+**RefreshMouseButton**  
+```cpp
+virtual void RefreshMouseButton(int button, int action, int mods) = 0;
+```
+
+**RefreshCursorPosition**  
+```cpp
+virtual void RefreshCursorPosition(double xpos, double ypos) = 0;
+```
+
+**RefreshCursorInWindows**  
+```cpp
+virtual void RefreshCursorInWindows(bool entered) = 0;
+```
+
+**RefreshScroll**  
+```cpp
+virtual void RefreshScroll(double xoffset, double yoffset) = 0;
+```
 
 ##
 ## IKeyboardRefresher
@@ -921,8 +988,7 @@ virtual void DoWithAllComponents() = 0;
 [IKeyboardRefresher.h](../../Learning2DEngine/Learning2DEngine/System/IKeyboardRefresher.h)
 
 ### Description:
-It is a little interface, which the developer can use to wrap
-a class into `KeyboardEventItem`.
+It is a little interface, which can be used for keyboard events and it is wrapable into `KeyboardEventItem`.
 
 ### Header:
 ```cpp
