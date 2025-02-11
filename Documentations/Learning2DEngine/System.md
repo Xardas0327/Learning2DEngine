@@ -5,10 +5,12 @@
 - [Camera](System.md#camera)
 - [Component](System.md#component)
 - [ComponentManager](System.md#componentmanager)
+- [Cursor](System.md#cursor)
 - [Game](System.md#game)
 - [GameObject](System.md#gameobject)
 - [IComponentHandler](System.md#icomponenthandler)
-- [IKeyboardMouseRefresher](System.md#ikeyboardmouserefresher)
+- [ICursorRefresher](System.md#icursorrefresher)
+- [IKeyboardRefresher](System.md#ikeyboardrefresher)
 - [InputStatus](System.md#inputstatus)
 - [LateUpdaterComponent](System.md#lateupdatercomponent)
 - [LateUpdaterComponentHandler](System.md#lateupdatercomponenthandler)
@@ -493,6 +495,30 @@ void Clear();
 ```
 
 ##
+## Cursor
+### Source Code:
+[Cursor.h](../../Learning2DEngine/Learning2DEngine/System/Cursor.h)  
+
+### Description: 
+It contains the mouse buttons, cursor position, scroll and the
+cursor is in the window.
+
+### Header:
+```cpp
+struct Cursor {
+	InputStatus mouseButtons[L2DE_MOUSE_BUTTON_NUMBER];
+	glm::vec2 position;
+	glm::vec2 scroll;
+	bool isInWindow;
+};
+```
+
+### Macros:
+**L2DE_MOUSE_BUTTON_NUMBER**  
+The number of mouse buttons.  
+Its value is 8.
+
+##
 ## Game
 ### Source Code:
 [Game.h](../../Learning2DEngine/Learning2DEngine/System/Game.h)  
@@ -505,7 +531,7 @@ that game must be inherited from this `Game` class.
 
 The Function order in the Run() (in a frame):
 1. Calculate deltaTime
-2. Refresh Keyboard and Mouse events
+2. Refresh Events (Keyboard, Mouse, Window etc)
 3. Update
 4. Check Collisions
 5. LateUpdate
@@ -516,13 +542,13 @@ The Function order in the Run() (in a frame):
 
 ### Header:
 ```cpp
-class Game : public virtual IKeyboardMouseRefresher, public Render::IResolutionRefresher
+class Game : public IKeyboardRefresher, public Render::IResolutionRefresher
 {...}
 ```
 
 ### Macros:
-**L2DE_INPUT_KEY_SIZE**  
-The number of keyboard and mouse buttons.
+**L2DE_KEYBOARD_BUTTON_NUMBER**  
+The number of keyboard buttons.
 Its value is 512.
 
 **L2DE_TIME_SCALE_DEFAULT**  
@@ -569,23 +595,45 @@ Render::MSAA msaaRender;
 Render::PostProcessEffect ppeRender;
 ```
 
-**keyboardMouseEventItem**  
-It is used to subscribe to `RenderManager::AddKeyboardEvent`.
+**keyboardEventItem**  
 ```cpp
-EventSystem::KeyboardMouseEventItem keyboardMouseEventItem;
+EventSystem::KeyboardEventItem keyboardEventItem;
+```
+
+**mouseButtonEventItem**  
+```cpp
+ EventSystem::MouseButtonEventItem mouseButtonEventItem;
+```
+
+**cursorPositionEventItem**  
+```cpp
+EventSystem::CursorPositionEventItem cursorPositionEventItem;
+```
+
+**cursorEnterEventItem**  
+```cpp
+EventSystem::CursorEnterEventItem cursorEnterEventItem;
+```
+
+**scrollEventItem**  
+```cpp
+EventSystem::ScrollEventItem scrollEventItem;
 ```
 
 **resolutionEventItem** 
-It is used to subscribe to `RenderManager::AddFramebufferSizeEvent`. 
 ```cpp
 EventSystem::ResolutionEventItem resolutionEventItem;
 ```
 
-**inputKeys**  
-This array contains, which button is up, down or hold.  
-The developer should not write this array, just read it.
+**keyboardButtons**  
+This array contains, which keyboard button is up, down or hold.
 ```cpp
-static InputStatus inputKeys[L2DE_INPUT_KEY_SIZE];
+static InputStatus keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER];
+```
+
+**cursor**  
+```cpp
+static Cursor cursor;
 ```
 
 **deltaTime**  
@@ -608,17 +656,25 @@ static Camera mainCamera;
 
 ### Functions:
 **Private:**  
-**UpdateKeyboardMouseEvents**  
+**UpdateEvents**  
 ```cpp
-void UpdateKeyboardMouseEvents();
+void UpdateEvents();
 ```
 
-**FixKeyboardMouse**  
+**FixCursor**  
+The *glfwPollEvents* does have InputStatus::KEY_HOLD for Mouse buttons.
+Moreover it doesn't refresh the scroll values to 0.0f.  
+So this function do it.
+```cpp
+void FixCursor();
+```
+
+**FixKeyboardButtons**  
 The *glfwPollEvents* does not refresh the data on every frame.
 That's why this function update the `InputStatus::KEY_DOWN`
 to `InputStatus::KEY_HOLD`.
 ```cpp
-void FixKeyboardMouse();
+void FixKeyboardButtons();
 ```
 
 **Protected:**  
@@ -751,12 +807,44 @@ Please check the Game's Description for the function order.
 void Run();
 ``` 
 
-**RefreshKeyboardMouse**  
+**RefreshKeyboard**  
 The developer should not use this function.
 The `Game` subscribes for button events and the `RenderManager` call
 this function by an event.
 ```cpp
-void RefreshKeyboardMouse(int key, int scancode, int action, int mode) override;
+void RefreshKeyboard(int key, int scancode, int action, int mode) override;
+``` 
+
+**RefreshMouseButton**  
+The developer should not use this function.
+The `Game` subscribes for button events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshMouseButton(int button, int action, int mods) override;
+``` 
+
+**RefreshCursorPosition**  
+The developer should not use this function.
+The `Game` subscribes for button events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshCursorPosition(double xpos, double ypos) override;
+``` 
+
+**RefreshCursorInWindows**  
+The developer should not use this function.
+The `Game` subscribes for button events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshCursorInWindows(bool entered) override;
+``` 
+
+**RefreshScroll**  
+The developer should not use this function.
+The `Game` subscribes for button events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshScroll(double xoffset, double yoffset) override;
 ``` 
 
 **RefreshResolution**  
@@ -774,10 +862,34 @@ Please check for more info about deltaTime.
 static float GetDeltaTime();
 ``` 
 
-**GetInputStatus**  
-It returns the status of a key or mouse button.  
+**GetKeyboardButtonStatus**  
+It returns the status of a keyboard button.  
 ```cpp
-static InputStatus GetInputStatus(int key);
+static InputStatus GetKeyboardButtonStatus(int key);
+``` 
+
+**GetMouseButtonStatus**  
+It returns the status of a mouse button.  
+```cpp
+static InputStatus GetMouseButtonStatus(int key);
+``` 
+
+**GetCursorPosition**  
+It returns the cursor's position.  
+```cpp
+static glm::vec2 GetCursorPosition();
+``` 
+
+**IsCursorInWindow**  
+It returns, that the cursor is in the window or not.  
+```cpp
+static bool IsCursorInWindow();
+``` 
+
+**GetScroll**  
+It returns the scroll's position. 
+```cpp
+static glm::vec2 GetScroll();
 ``` 
 
 ##
@@ -915,32 +1027,72 @@ virtual void Clear() = 0;
 virtual void DoWithAllComponents() = 0;
 ```
 
-
 ##
-## IKeyboardMouseRefresher
+## ICursorRefresher
 ### Source Code:
-[IKeyboardMouseRefresher.h](../../Learning2DEngine/Learning2DEngine/System/IKeyboardMouseRefresher.h)
+[ICursorRefresher.h](../../Learning2DEngine/Learning2DEngine/System/ICursorRefresher.h)
 
 ### Description:
-It is a little interface, which the developer can use to wrap
-a class into `KeyboardMouseEventItem`.
+It is a little interface, which can be used for mouse/cursor events and it is wrapable
+into `CursorEnterEventItem`, `CursorPositionEventItem`, `MouseButtonEventItem` or `ScrollEventItem`.
 
 ### Header:
 ```cpp
-class IKeyboardMouseRefresher
+class ICursorRefresher
 {...}
 ```
 
 ### Functions:
 **Public:**  
-**~IKeyboardMouseRefresher**  
+**~ICursorRefresher**  
 ```cpp
-virtual ~IKeyboardMouseRefresher();
+virtual ~ICursorRefresher();
 ```
 
-**RefreshKeyboardMouse**  
+**RefreshMouseButton**  
 ```cpp
-virtual void RefreshKeyboardMouse(int key, int scancode, int action, int mode) = 0;
+virtual void RefreshMouseButton(int button, int action, int mods) = 0;
+```
+
+**RefreshCursorPosition**  
+```cpp
+virtual void RefreshCursorPosition(double xpos, double ypos) = 0;
+```
+
+**RefreshCursorInWindows**  
+```cpp
+virtual void RefreshCursorInWindows(bool entered) = 0;
+```
+
+**RefreshScroll**  
+```cpp
+virtual void RefreshScroll(double xoffset, double yoffset) = 0;
+```
+
+##
+## IKeyboardRefresher
+### Source Code:
+[IKeyboardRefresher.h](../../Learning2DEngine/Learning2DEngine/System/IKeyboardRefresher.h)
+
+### Description:
+It is a little interface, which can be used for keyboard events and it is wrapable into `KeyboardEventItem`.
+
+### Header:
+```cpp
+class IKeyboardRefresher
+{...}
+```
+
+### Functions:
+**Public:**  
+**~IKeyboardRefresher**  
+```cpp
+virtual ~IKeyboardRefresher();
+```
+
+**RefreshKeyboard**  
+```cpp
+virtual void RefreshKeyboard(int key, int scancode, int action, int mode) = 0;
 ```
 
 ##

@@ -3,13 +3,19 @@
 #include <glm/glm.hpp>
 
 #include "InputStatus.h"
-#include "IKeyboardMouseRefresher.h"
+#include "Cursor.h"
+#include "IKeyboardRefresher.h"
+#include "ICursorRefresher.h"
 #include "Camera.h"
-#include "../EventSystem/KeyboardMouseEventItem.h"
+#include "../EventSystem/KeyboardEventItem.h"
+#include "../EventSystem/MouseButtonEventItem.h"
+#include "../EventSystem/CursorPositionEventItem.h"
+#include "../EventSystem/CursorEnterEventItem.h"
+#include "../EventSystem/ScrollEventItem.h"
+#include "../EventSystem/ResolutionEventItem.h"
 #include "../Render/RenderManager.h"
 #include "../Render/IResolutionRefresher.h"
 #include "../Render/Resolution.h"
-#include "../EventSystem/ResolutionEventItem.h"
 #include "../Render/Shader.h"
 #include "../Render/MSAA.h"
 #include "../Render/PostProcessEffect.h"
@@ -18,13 +24,13 @@ namespace Learning2DEngine
 {
     namespace System
     {
-#define L2DE_INPUT_KEY_SIZE 512
+#define L2DE_KEYBOARD_BUTTON_NUMBER 512
 #define L2DE_TIME_SCALE_DEFAULT 1.0f
 
         /*
             The Function order in the Run() (in a frame):
             Calculate deltaTime
-            Refresh Keyboard and Mouse events
+            Refresh Events (Keyboard, Mouse, Window etc)
             Update
             Check Collisions
             LateUpdate
@@ -33,7 +39,9 @@ namespace Learning2DEngine
             LateRender (without any effect)
             Update Window
         */
-        class Game : public virtual IKeyboardMouseRefresher, public Render::IResolutionRefresher
+        class Game : public IKeyboardRefresher,
+                    public ICursorRefresher,
+                    public Render::IResolutionRefresher
         {
         private:
             float lastFrame;
@@ -43,10 +51,15 @@ namespace Learning2DEngine
             bool isPostProcessEffectUsed;
             Render::MSAA msaaRender;
             Render::PostProcessEffect ppeRender;
-            EventSystem::KeyboardMouseEventItem keyboardMouseEventItem;
+            EventSystem::KeyboardEventItem keyboardEventItem;
+            EventSystem::MouseButtonEventItem mouseButtonEventItem;
+            EventSystem::CursorPositionEventItem cursorPositionEventItem;
+            EventSystem::CursorEnterEventItem cursorEnterEventItem;
+            EventSystem::ScrollEventItem scrollEventItem;
             EventSystem::ResolutionEventItem resolutionEventItem;
 
-            static InputStatus inputKeys[L2DE_INPUT_KEY_SIZE];
+            static InputStatus keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER];
+            static Cursor cursor;
 
             /// <summary>
             /// It is multiplied by timeScale.
@@ -54,12 +67,18 @@ namespace Learning2DEngine
             /// </summary>
             static float deltaTime;
 
-            void UpdateKeyboardMouseEvents();
+            void UpdateEvents();
             /// <summary>
             /// The glfwPollEvents doesn't refresh the data on every frame.
             /// That's why this function update the InputStatus::KEY_DOWN to InputStatus::KEY_HOLD.
             /// </summary>
-            void FixKeyboardMouse();
+            void FixKeyboardButtons();
+            /// <summary>
+            /// The glfwPollEvents doesn't have InputStatus::KEY_HOLD for Mouse buttons.
+            /// Moreover it doesn't refresh the scroll values to 0.0f.
+            /// So this function do it.
+            /// </summary>
+            void FixCursor();
         protected:
             Game();
 
@@ -138,7 +157,12 @@ namespace Learning2DEngine
             virtual void Terminate();
             void Run();
 
-            void RefreshKeyboardMouse(int key, int scancode, int action, int mode) override;
+            void RefreshKeyboard(int key, int scancode, int action, int mode) override;
+            void RefreshMouseButton(int button, int action, int mods) override;
+            void RefreshCursorPosition(double xpos, double ypos) override;
+            void RefreshCursorInWindows(bool entered) override;
+            void RefreshScroll(double xoffset, double yoffset) override;
+
             /// <summary>
             /// If this function is override, it must call the Game::RefreshResolution(const Resolution& resolution) in the first line.
             /// </summary>
@@ -149,9 +173,29 @@ namespace Learning2DEngine
                 return deltaTime;
             }
 
-            static InputStatus GetInputStatus(int key)
+            static InputStatus GetKeyboardButtonStatus(int key)
             {
-                return inputKeys[key];
+                return keyboardButtons[key];
+            }
+
+            static InputStatus GetMouseButtonStatus(int key)
+            {
+                return cursor.mouseButtons[key];
+            }
+
+            static glm::vec2 GetCursorPosition()
+            {
+                return cursor.position;
+            }
+
+            static bool IsCursorInWindow()
+            {
+                return cursor.isInWindow;
+            }
+
+            static glm::vec2 GetScroll()
+            {
+                return cursor.scroll;
             }
         };
     }

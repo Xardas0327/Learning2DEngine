@@ -8,7 +8,7 @@ namespace Learning2DEngine
 {
 	namespace EventSystem
 	{
-		class ResolutionEventItem final : public virtual EventItem<Render::Resolution>
+		class ResolutionEventItem final : public EventItem<Render::Resolution>
 		{
 		private:
 			Render::IResolutionRefresher* refresher;

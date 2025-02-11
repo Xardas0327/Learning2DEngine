@@ -88,7 +88,7 @@ void GameController::Update()
 
 void GameController::ProcessInput()
 {
-    if (Game::GetInputStatus(GLFW_KEY_ESCAPE) == InputStatus::KEY_DOWN)
+    if (Game::GetKeyboardButtonStatus(GLFW_KEY_ESCAPE) == InputStatus::KEY_DOWN)
     {
         RenderManager::GetInstance().CloseWindow();
         return;
@@ -97,7 +97,7 @@ void GameController::ProcessInput()
     switch (state)
     {
     case GameState::GAME_MENU:
-        if (Game::GetInputStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
+        if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
         {
             state = GameState::GAME_ACTIVE;
             startText->gameObject->isActive = false;
@@ -106,26 +106,26 @@ void GameController::ProcessInput()
     case GameState::GAME_ACTIVE:
         if (lastMoveDirection == Direction::LEFT || lastMoveDirection == Direction::RIGHT)
         {
-            if (Game::GetInputStatus(GLFW_KEY_W) == InputStatus::KEY_DOWN
-                || Game::GetInputStatus(GLFW_KEY_UP) == InputStatus::KEY_DOWN)
+            if (Game::GetKeyboardButtonStatus(GLFW_KEY_W) == InputStatus::KEY_DOWN
+                || Game::GetKeyboardButtonStatus(GLFW_KEY_UP) == InputStatus::KEY_DOWN)
             {
                 moveDirection = Direction::UP;
             }
-            else if (Game::GetInputStatus(GLFW_KEY_S) == InputStatus::KEY_DOWN
-                || Game::GetInputStatus(GLFW_KEY_DOWN) == InputStatus::KEY_DOWN)
+            else if (Game::GetKeyboardButtonStatus(GLFW_KEY_S) == InputStatus::KEY_DOWN
+                || Game::GetKeyboardButtonStatus(GLFW_KEY_DOWN) == InputStatus::KEY_DOWN)
             {
                 moveDirection = Direction::DOWN;
             }
         }
         else if (lastMoveDirection == Direction::UP || lastMoveDirection == Direction::DOWN)
         {
-            if (Game::GetInputStatus(GLFW_KEY_A) == InputStatus::KEY_DOWN
-                || Game::GetInputStatus(GLFW_KEY_LEFT) == InputStatus::KEY_DOWN)
+            if (Game::GetKeyboardButtonStatus(GLFW_KEY_A) == InputStatus::KEY_DOWN
+                || Game::GetKeyboardButtonStatus(GLFW_KEY_LEFT) == InputStatus::KEY_DOWN)
             {
                 moveDirection = Direction::LEFT;
             }
-            else if (Game::GetInputStatus(GLFW_KEY_D) == InputStatus::KEY_DOWN
-                || Game::GetInputStatus(GLFW_KEY_RIGHT) == InputStatus::KEY_DOWN)
+            else if (Game::GetKeyboardButtonStatus(GLFW_KEY_D) == InputStatus::KEY_DOWN
+                || Game::GetKeyboardButtonStatus(GLFW_KEY_RIGHT) == InputStatus::KEY_DOWN)
             {
                 moveDirection = Direction::RIGHT;
             }

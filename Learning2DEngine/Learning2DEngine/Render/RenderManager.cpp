@@ -11,6 +11,7 @@ namespace Learning2DEngine
         RenderManager::RenderManager() :
             window(nullptr), resolution(0, 0), clearColor(0.0f, 0.0f, 0.0f, 1.0f),
             keyboardEventHandler(), framebufferSizeEventHandler(),
+            mouseButtonEventHandler(), cursorPositonEventHandler(), cursorEnterEventHandler(), scrollEventHandler(),
             isBlendActive(false), blendFuncFactor(GL_ONE, GL_ZERO)
         {
 
@@ -39,8 +40,12 @@ namespace Learning2DEngine
                 return;
             }
             glfwMakeContextCurrent(window);
-            glfwSetKeyCallback(window, RenderManager::CallbackUpdateKeyboardMouse);
             glfwSetFramebufferSizeCallback(window, RenderManager::CallbackUpdateFramebufferSize);
+            glfwSetKeyCallback(window, RenderManager::CallbackUpdateKeyboard);
+            glfwSetMouseButtonCallback(window, RenderManager::CallbackUpdateMouseButton);
+            glfwSetCursorPosCallback(window, RenderManager::CallbackUpdateCursorPositon);
+            glfwSetCursorEnterCallback(window, RenderManager::CallbackUpdateCursorEnter);
+            glfwSetScrollCallback(window, RenderManager::CallbackUpdateScroll);
 
             if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
             {
@@ -124,12 +129,12 @@ namespace Learning2DEngine
             }
         }
 
-        void RenderManager::CallbackUpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode)
+        void RenderManager::CallbackUpdateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mode)
         {
-            RenderManager::GetInstance().UpdateKeyboardMouse(window, key, scancode, action, mode);
+            RenderManager::GetInstance().UpdateKeyboard(window, key, scancode, action, mode);
         }
 
-        void RenderManager::UpdateKeyboardMouse(GLFWwindow* window, int key, int scancode, int action, int mode)
+        void RenderManager::UpdateKeyboard(GLFWwindow* window, int key, int scancode, int action, int mode)
         {
             keyboardEventHandler.Invoke(key, scancode, action, mode);
         }
@@ -146,24 +151,104 @@ namespace Learning2DEngine
             framebufferSizeEventHandler.Invoke(resolution);
         }
 
-        void RenderManager::AddKeyboardEvent(EventItem<int, int, int, int>* evenItem)
+        void RenderManager::CallbackUpdateMouseButton(GLFWwindow* window, int button, int action, int mods)
         {
-            keyboardEventHandler.Add(evenItem);
+            RenderManager::GetInstance().UpdateMouseButton(window, button, action, mods);
         }
 
-        void RenderManager::RemoveKeyboardEvent(EventItem<int, int, int, int>* evenItem)
+        void RenderManager::UpdateMouseButton(GLFWwindow* window, int button, int action, int mods)
         {
-            keyboardEventHandler.Remove(evenItem);
+            mouseButtonEventHandler.Invoke(button, action, mods);
         }
 
-        void RenderManager::AddFramebufferSizeEvent(EventItem<Resolution>* evenItem)
+        void RenderManager::CallbackUpdateCursorPositon(GLFWwindow* window, double xpos, double ypos)
         {
-            framebufferSizeEventHandler.Add(evenItem);
+            RenderManager::GetInstance().UpdateCursorPositon(window, xpos, ypos);
         }
 
-        void RenderManager::RemoveFramebufferSizeEvent(EventItem<Resolution>* evenItem)
+        void RenderManager::UpdateCursorPositon(GLFWwindow* window, double xpos, double ypos)
         {
-            framebufferSizeEventHandler.Remove(evenItem);
+            cursorPositonEventHandler.Invoke(xpos, ypos);
+        }
+
+        void RenderManager::CallbackUpdateCursorEnter(GLFWwindow* window, int entered)
+        {
+            RenderManager::GetInstance().UpdateCursorEnter(window, entered);
+        }
+
+        void RenderManager::UpdateCursorEnter(GLFWwindow* window, int entered)
+        {
+            cursorEnterEventHandler.Invoke((bool)entered);
+        }
+
+        void RenderManager::CallbackUpdateScroll(GLFWwindow* window, double xoffset, double yoffset)
+        {
+            RenderManager::GetInstance().UpdateScroll(window, xoffset, yoffset);
+        }
+
+        void RenderManager::UpdateScroll(GLFWwindow* window, double xoffset, double yoffset)
+        {
+            scrollEventHandler.Invoke(xoffset, yoffset);
+        }
+
+        void RenderManager::AddKeyboardEvent(EventItem<int, int, int, int>* eventItem)
+        {
+            keyboardEventHandler.Add(eventItem);
+        }
+
+        void RenderManager::RemoveKeyboardEvent(EventItem<int, int, int, int>* eventItem)
+        {
+            keyboardEventHandler.Remove(eventItem);
+        }
+
+        void RenderManager::AddFramebufferSizeEvent(EventItem<Resolution>* eventItem)
+        {
+            framebufferSizeEventHandler.Add(eventItem);
+        }
+
+        void RenderManager::RemoveFramebufferSizeEvent(EventItem<Resolution>* eventItem)
+        {
+            framebufferSizeEventHandler.Remove(eventItem);
+        }
+
+        void RenderManager::AddMouseButtonEvent(EventSystem::EventItem<int, int, int>* eventItem)
+        {
+            mouseButtonEventHandler.Add(eventItem);
+        }
+
+        void RenderManager::RemoveMouseButtonEvent(EventSystem::EventItem<int, int, int>* eventItem)
+        {
+            mouseButtonEventHandler.Remove(eventItem);
+        }
+
+        void RenderManager::AddCursorPositonEvent(EventSystem::EventItem<double, double>* eventItem)
+        {
+            cursorPositonEventHandler.Add(eventItem);
+        }
+
+        void RenderManager::RemoveCursorPositonEvent(EventSystem::EventItem<double, double>* eventItem)
+        {
+            cursorPositonEventHandler.Remove(eventItem);
+        }
+
+        void RenderManager::AddCursorEnterEvent(EventSystem::EventItem<bool>* eventItem)
+        {
+            cursorEnterEventHandler.Add(eventItem);
+        }
+
+        void RenderManager::RemoveCursorEnterEvent(EventSystem::EventItem<bool>* eventItem)
+        {
+            cursorEnterEventHandler.Remove(eventItem);
+        }
+
+        void RenderManager::AddScrollEvent(EventSystem::EventItem<double, double>* eventItem)
+        {
+            scrollEventHandler.Add(eventItem);
+        }
+
+        void RenderManager::RemoveScrollEvent(EventSystem::EventItem<double, double>* eventItem)
+        {
+            scrollEventHandler.Remove(eventItem);
         }
     }
 }

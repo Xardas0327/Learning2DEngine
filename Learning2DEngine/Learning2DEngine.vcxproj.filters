@@ -158,10 +158,10 @@
     <ClInclude Include="Learning2DEngine\EventSystem\EventItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\EventSystem\KeyboardMouseEventItem.h">
+    <ClInclude Include="Learning2DEngine\EventSystem\KeyboardEventItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\System\IKeyboardMouseRefresher.h">
+    <ClInclude Include="Learning2DEngine\System\IKeyboardRefresher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\IResolutionRefresher.h">
@@ -243,6 +243,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\DebugTool\DebugMacro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\Cursor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\ICursorRefresher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\EventSystem\MouseButtonEventItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\EventSystem\CursorPositionEventItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\EventSystem\ScrollEventItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\EventSystem\CursorEnterEventItem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
