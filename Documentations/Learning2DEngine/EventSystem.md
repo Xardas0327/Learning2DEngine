@@ -16,7 +16,7 @@
 ### Description:
 It is an `EventItem` implementation. It can be used
 when the developer want to subscribe to Cursor Enter events.  
-It does not recommend to use. Please use the Gane::IsCursorInWindow().
+It does not recommend to use. Please use the Game::IsCursorInWindow().
 
 ### Header:
 ```cpp
@@ -51,7 +51,7 @@ void Call(bool entered) override;
 ### Description:
 It is an `EventItem` implementation. It can be used
 when the developer want to subscribe to Cursor Position events.  
-It does not recommend to use. Please use the Gane::GetCursorPosition().
+It does not recommend to use. Please use the Game::GetCursorPosition().
 
 ### Header:
 ```cpp
@@ -165,7 +165,7 @@ virtual void Call(Params... params) = 0;
 ### Description:
 It is an `EventItem` implementation. It can be used
 when the developer want to subscribe to Keyboard events.  
-It does not recommend to use. Please use the Gane::GetKeyboardButtonStatus(int key).
+It does not recommend to use. Please use the Game::GetKeyboardButtonStatus(int key).
 
 ### Header:
 ```cpp
@@ -200,7 +200,7 @@ void Call(int key, int scancode, int action, int mode) override;
 ### Description:
 It is an `EventItem` implementation. It can be used
 when the developer want to subscribe to Mouse Buttons events.  
-It does not recommend to use. Please use the Gane::GetMouseButtonStatus(int key).
+It does not recommend to use. Please use the Game::GetMouseButtonStatus(int key).
 
 ### Header:
 ```cpp
@@ -270,7 +270,7 @@ void Call(Render::Resolution resolution) override;
 ### Description:
 It is an `EventItem` implementation. It can be used
 when the developer want to subscribe to Scroll events.  
-It does not recommend to use. Please use the Gane::GetScroll().
+It does not recommend to use. Please use the Game::GetScroll().
 
 ### Header:
 ```cpp
