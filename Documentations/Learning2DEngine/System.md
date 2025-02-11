@@ -515,7 +515,7 @@ struct Cursor {
 
 ### Macros:
 **L2DE_MOUSE_BUTTON_NUMBER**  
-The number of mouse buttons.
+The number of mouse buttons.  
 Its value is 8.
 
 ##
@@ -596,13 +596,31 @@ Render::PostProcessEffect ppeRender;
 ```
 
 **keyboardEventItem**  
-It is used to subscribe to `RenderManager::AddKeyboardEvent`.
 ```cpp
 EventSystem::KeyboardEventItem keyboardEventItem;
 ```
 
+**mouseButtonEventItem**  
+```cpp
+ EventSystem::MouseButtonEventItem mouseButtonEventItem;
+```
+
+**cursorPositionEventItem**  
+```cpp
+EventSystem::CursorPositionEventItem cursorPositionEventItem;
+```
+
+**cursorEnterEventItem**  
+```cpp
+EventSystem::CursorEnterEventItem cursorEnterEventItem;
+```
+
+**scrollEventItem**  
+```cpp
+EventSystem::ScrollEventItem scrollEventItem;
+```
+
 **resolutionEventItem** 
-It is used to subscribe to `RenderManager::AddFramebufferSizeEvent`. 
 ```cpp
 EventSystem::ResolutionEventItem resolutionEventItem;
 ```
@@ -611,6 +629,11 @@ EventSystem::ResolutionEventItem resolutionEventItem;
 This array contains, which keyboard button is up, down or hold.
 ```cpp
 static InputStatus keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER];
+```
+
+**cursor**  
+```cpp
+static Cursor cursor;
 ```
 
 **deltaTime**  
@@ -636,6 +659,14 @@ static Camera mainCamera;
 **UpdateEvents**  
 ```cpp
 void UpdateEvents();
+```
+
+**FixCursor**  
+The *glfwPollEvents* does have InputStatus::KEY_HOLD for Mouse buttons.
+Moreover it doesn't refresh the scroll values to 0.0f.  
+So this function do it.
+```cpp
+void FixCursor();
 ```
 
 **FixKeyboardButtons**  
@@ -784,6 +815,38 @@ this function by an event.
 void RefreshKeyboard(int key, int scancode, int action, int mode) override;
 ``` 
 
+**RefreshMouseButton**  
+The developer should not use this function.
+The `Game` subscribes for button events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshMouseButton(int button, int action, int mods) override;
+``` 
+
+**RefreshCursorPosition**  
+The developer should not use this function.
+The `Game` subscribes for button events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshCursorPosition(double xpos, double ypos) override;
+``` 
+
+**RefreshCursorInWindows**  
+The developer should not use this function.
+The `Game` subscribes for button events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshCursorInWindows(bool entered) override;
+``` 
+
+**RefreshScroll**  
+The developer should not use this function.
+The `Game` subscribes for button events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshScroll(double xoffset, double yoffset) override;
+``` 
+
 **RefreshResolution**  
 The developer should not use this function.
 The `Game` subscribe for (game) screen resolution events
@@ -803,6 +866,30 @@ static float GetDeltaTime();
 It returns the status of a keyboard button.  
 ```cpp
 static InputStatus GetKeyboardButtonStatus(int key);
+``` 
+
+**GetMouseButtonStatus**  
+It returns the status of a mouse button.  
+```cpp
+static InputStatus GetMouseButtonStatus(int key);
+``` 
+
+**GetCursorPosition**  
+It returns the cursor's position.  
+```cpp
+static glm::vec2 GetCursorPosition();
+``` 
+
+**IsCursorInWindow**  
+It returns, that the cursor is in the window or not.  
+```cpp
+static bool IsCursorInWindow();
+``` 
+
+**GetScroll**  
+It returns the scroll's position. 
+```cpp
+static glm::vec2 GetScroll();
 ``` 
 
 ##
