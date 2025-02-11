@@ -512,6 +512,26 @@ EventSystem::EventHandler<int, int, int, int> keyboardEventHandler;
 EventSystem::EventHandler<Resolution> framebufferSizeEventHandler;
 ```
 
+**mouseButtonEventHandler**  
+```cpp
+EventSystem::EventHandler<int, int, int> mouseButtonEventHandler;
+```
+
+**cursorPositonEventHandler**  
+```cpp
+EventSystem::EventHandler<double, double> cursorPositonEventHandler;
+```
+
+**cursorEnterEventHandler**  
+```cpp
+EventSystem::EventHandler<bool> cursorEnterEventHandler;
+```
+
+**scrollEventHandler**  
+```cpp
+EventSystem::EventHandler<double, double> scrollEventHandler;
+```
+
 **isBlendActive**  
 ```cpp
 bool isBlendActive;
@@ -551,6 +571,54 @@ static void CallbackUpdateFramebufferSize(GLFWwindow* window, int width, int hei
 `CallbackUpdateFramebufferSize` call this function.
 ```cpp
 void UpdateFramebufferSize(GLFWwindow* window, int width, int height);
+```
+
+**CallbackUpdateMouseButton**  
+It is used to subscribe to `glfwSetMouseButtonCallback`.
+```cpp
+static void CallbackUpdateMouseButton(GLFWwindow* window, int button, int action, int mods);
+```
+
+**UpdateMouseButton**  
+`CallbackUpdateMouseButton` call this function.
+```cpp
+void UpdateMouseButton(GLFWwindow* window, int button, int action, int mods);
+```
+
+**CallbackUpdateCursorPositon**  
+It is used to subscribe to `glfwSetCursorPosCallback`.
+```cpp
+static void CallbackUpdateCursorPositon(GLFWwindow* window, double xpos, double ypos);
+```
+
+**UpdateCursorPositon**  
+`CallbackUpdateCursorPositon` call this function.
+```cpp
+void UpdateCursorPositon(GLFWwindow* window, double xpos, double ypos);
+```
+
+**CallbackUpdateCursorEnter**  
+It is used to subscribe to `glfwSetCursorEnterCallback`.
+```cpp
+static void CallbackUpdateCursorEnter(GLFWwindow* window, int entered);
+```
+
+**UpdateCursorEnter**  
+`CallbackUpdateCursorEnter` call this function.
+```cpp
+void UpdateCursorEnter(GLFWwindow* window, int entered);
+```
+
+**CallbackUpdateScroll**  
+It is used to subscribe to `glfwSetScrollCallback`.
+```cpp
+static void CallbackUpdateScroll(GLFWwindow* window, double xoffset, double yoffset);
+```
+
+**UpdateScroll**  
+`CallbackUpdateScroll` call this function.
+```cpp
+void UpdateScroll(GLFWwindow* window, double xoffset, double yoffset);
 ```
 
 **Public:**  
@@ -648,27 +716,75 @@ inline BlendFuncFactor GetBlendFunc();
 ```
 
 **AddKeyboardEvent**  
-It adds event to Keyboard events.
+It adds event to keyboard events.
 ```cpp
 void AddKeyboardEvent(EventSystem::EventItem<int, int, int, int>* eventItem);
 ```
 
 **RemoveKeyboardEvent**  
-It removes event from Keyboard events.
+It removes event from keyboard events.
 ```cpp
 void RemoveKeyboardEvent(EventSystem::EventItem<int, int, int, int>* eventItem);
 ```
 
 **AddFramebufferSizeEvent**  
-It adds event to Resolution changing events.
+It adds event to resolution changing events.
 ```cpp
 void AddFramebufferSizeEvent(EventSystem::EventItem<Resolution>* eventItem);
 ```
 
 **RemoveFramebufferSizeEvent**  
-It removes event from Resolution changing events.
+It removes event from resolution changing events.
 ```cpp
 void RemoveFramebufferSizeEvent(EventSystem::EventItem<Resolution>* eventItem);
+```
+
+**AddMouseButtonEvent**  
+It adds event to mouse button events.
+```cpp
+void AddMouseButtonEvent(EventSystem::EventItem<int, int, int>* eventItem);
+```
+
+**RemoveMouseButtonEvent**  
+It removes event from mouse button events.
+```cpp
+void RemoveMouseButtonEvent(EventSystem::EventItem<int, int, int>* eventItem);
+```
+
+**AddCursorPositonEvent**  
+It adds event to cursor position events.
+```cpp
+void AddCursorPositonEvent(EventSystem::EventItem<double, double>* eventItem);
+```
+
+**RemoveCursorPositonEvent**  
+It removes event from cursor position events.
+```cpp
+void RemoveCursorPositonEvent(EventSystem::EventItem<double, double>* eventItem);
+```
+
+**AddCursorEnterEvent**  
+It adds event to cursor enter events.
+```cpp
+void AddCursorEnterEvent(EventSystem::EventItem<bool>* eventItem);
+```
+
+**RemoveCursorEnterEvent**  
+It removes event from cursor enter events.
+```cpp
+void RemoveCursorEnterEvent(EventSystem::EventItem<bool>* eventItem);
+```
+
+**AddScrollEvent**  
+It adds event to scroll events.
+```cpp
+void AddScrollEvent(EventSystem::EventItem<double, double>* eventItem);
+```
+
+**RemoveScrollEvent**  
+It removes event from scroll events.
+```cpp
+void RemoveScrollEvent(EventSystem::EventItem<double, double>* eventItem);
 ```
 
 ##

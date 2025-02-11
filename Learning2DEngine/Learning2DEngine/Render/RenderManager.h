@@ -45,7 +45,6 @@ namespace Learning2DEngine
 			static void CallbackUpdateScroll(GLFWwindow* window, double xoffset, double yoffset);
 			void UpdateScroll(GLFWwindow* window, double xoffset, double yoffset);
 		public:
-		public:
 			void Init(int majorVersion, int minorVersion, Resolution resolution, const char* title, bool resizableWindows = true);
 			void Terminate();
 			void CloseWindow();
