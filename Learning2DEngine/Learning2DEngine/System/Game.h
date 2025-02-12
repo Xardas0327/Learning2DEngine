@@ -39,9 +39,9 @@ namespace Learning2DEngine
             LateRender (without any effect)
             Update Window
         */
-        class Game : public IKeyboardRefresher,
-                    public ICursorRefresher,
-                    public Render::IResolutionRefresher
+        class Game : private IKeyboardRefresher,
+                    private ICursorRefresher,
+                    protected Render::IResolutionRefresher
         {
         private:
             float lastFrame;
@@ -79,6 +79,12 @@ namespace Learning2DEngine
             /// So this function do it.
             /// </summary>
             void FixCursor();
+
+            void RefreshKeyboard(int key, int scancode, int action, int mode) override;
+            void RefreshMouseButton(int button, int action, int mods) override;
+            void RefreshCursorPosition(double xpos, double ypos) override;
+            void RefreshCursorInWindows(bool entered) override;
+            void RefreshScroll(double xoffset, double yoffset) override;
         protected:
             Game();
 
@@ -130,6 +136,10 @@ namespace Learning2DEngine
                 return timeScale;
             }
 
+            /// <summary>
+            /// If this function is override, it must call the Game::RefreshResolution(const Resolution& resolution) in the first line.
+            /// </summary>
+            virtual void RefreshResolution(const Render::Resolution& resolution) override;
         public:
             virtual ~Game();
 
@@ -156,17 +166,6 @@ namespace Learning2DEngine
             /// </summary>
             virtual void Terminate();
             void Run();
-
-            void RefreshKeyboard(int key, int scancode, int action, int mode) override;
-            void RefreshMouseButton(int button, int action, int mods) override;
-            void RefreshCursorPosition(double xpos, double ypos) override;
-            void RefreshCursorInWindows(bool entered) override;
-            void RefreshScroll(double xoffset, double yoffset) override;
-
-            /// <summary>
-            /// If this function is override, it must call the Game::RefreshResolution(const Resolution& resolution) in the first line.
-            /// </summary>
-            virtual void RefreshResolution(const Render::Resolution& resolution) override;
 
             static float GetDeltaTime()
             {

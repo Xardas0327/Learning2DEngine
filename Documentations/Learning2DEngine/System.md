@@ -542,7 +542,7 @@ The Function order in the Run() (in a frame):
 
 ### Header:
 ```cpp
-class Game : public IKeyboardRefresher, public Render::IResolutionRefresher
+class Game : private IKeyboardRefresher, private ICursorRefresher, public protected::IResolutionRefresher
 {...}
 ```
 
@@ -677,6 +677,42 @@ to `InputStatus::KEY_HOLD`.
 void FixKeyboardButtons();
 ```
 
+**RefreshKeyboard**  
+The `Game` subscribes for keyboard events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshKeyboard(int key, int scancode, int action, int mode) override;
+``` 
+
+**RefreshMouseButton**  
+The `Game` subscribes for mouse button events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshMouseButton(int button, int action, int mods) override;
+``` 
+
+**RefreshCursorPosition**  
+The `Game` subscribes for cursor position events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshCursorPosition(double xpos, double ypos) override;
+``` 
+
+**RefreshCursorInWindows**  
+The `Game` subscribes for cursor enter and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshCursorInWindows(bool entered) override;
+``` 
+
+**RefreshScroll**  
+The developer should not use this function.
+The `Game` subscribes for scroll events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshScroll(double xoffset, double yoffset) override;
+``` 
+
 **Protected:**  
 **Game**  
 ```cpp
@@ -768,6 +804,15 @@ It returns the `timeScale`.
 inline float GetTimeScale();
 ``` 
 
+**RefreshResolution**  
+If this function is override, it must call the Game::RefreshResolution(const Resolution& resolution)
+in the first line.  
+The `Game` subscribe for (game) screen resolution events
+and the `RenderManager` call this function by an event.
+```cpp
+virtual void RefreshResolution(const Render::Resolution& resolution) override;
+``` 
+
 **Public:**  
 **~Game**  
 ```cpp
@@ -805,55 +850,7 @@ It has an infinite loop, that's why it will run until the game window is closed.
 Please check the Game's Description for the function order.
 ```cpp
 void Run();
-``` 
-
-**RefreshKeyboard**  
-The developer should not use this function.
-The `Game` subscribes for button events and the `RenderManager` call
-this function by an event.
-```cpp
-void RefreshKeyboard(int key, int scancode, int action, int mode) override;
-``` 
-
-**RefreshMouseButton**  
-The developer should not use this function.
-The `Game` subscribes for button events and the `RenderManager` call
-this function by an event.
-```cpp
-void RefreshMouseButton(int button, int action, int mods) override;
-``` 
-
-**RefreshCursorPosition**  
-The developer should not use this function.
-The `Game` subscribes for button events and the `RenderManager` call
-this function by an event.
-```cpp
-void RefreshCursorPosition(double xpos, double ypos) override;
-``` 
-
-**RefreshCursorInWindows**  
-The developer should not use this function.
-The `Game` subscribes for button events and the `RenderManager` call
-this function by an event.
-```cpp
-void RefreshCursorInWindows(bool entered) override;
-``` 
-
-**RefreshScroll**  
-The developer should not use this function.
-The `Game` subscribes for button events and the `RenderManager` call
-this function by an event.
-```cpp
-void RefreshScroll(double xoffset, double yoffset) override;
-``` 
-
-**RefreshResolution**  
-The developer should not use this function.
-The `Game` subscribe for (game) screen resolution events
-and the `RenderManager` call this function by an event.
-```cpp
-virtual void RefreshResolution(const Render::Resolution& resolution) override;
-``` 
+```
 
 **GetDeltaTime**  
 It returns the deltaTime.  
