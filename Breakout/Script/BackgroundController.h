@@ -9,9 +9,12 @@
 #include <Learning2DEngine/Render/Resolution.h>
 #include <Learning2DEngine/EventSystem/ResolutionEventItem.h>
 
-class BackgroundController : public virtual Learning2DEngine::System::Component, public Learning2DEngine::Render::IResolutionRefresher
+class BackgroundController : public virtual Learning2DEngine::System::Component, private Learning2DEngine::Render::IResolutionRefresher
 {
     friend class Learning2DEngine::System::GameObject;
+private:
+    void RefreshResolution(const Learning2DEngine::Render::Resolution& resolution) override;
+
 protected:
     Learning2DEngine::Render::SpriteRenderer* renderer;
     Learning2DEngine::EventSystem::ResolutionEventItem resolutionEventItem;
@@ -22,7 +25,4 @@ protected:
 
     void Init() override;
     void Destroy() override;
-
-public:
-    void RefreshResolution(const Learning2DEngine::Render::Resolution& resolution) override;
 };
