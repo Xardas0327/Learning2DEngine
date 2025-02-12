@@ -442,6 +442,12 @@ static glm::vec2 GetEdge(const BaseBoxColliderComponent& boxCollider, glm::vec2 
 static glm::vec2 GetEdge(const BaseCircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters);
 ```
 
+**GetLength2**  
+It does not use sqrt.
+```cpp
+static inline float GetLength2(glm::vec2 distance);
+```
+
 **Public:**  
 **CheckCollision**  
 It checks, that 2 colliders have been collided.
