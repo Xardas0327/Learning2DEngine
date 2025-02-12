@@ -19,6 +19,11 @@ namespace Learning2DEngine
             return circleCollider.GetColliderCenter() + edge;
         }
 
+        inline float CollisionChecker::length2(glm::vec2 distance)
+        {
+            return distance.x * distance.x + distance.y * distance.y;
+        }
+
         CollisionData CollisionChecker::CheckCollision(const BaseBoxColliderComponent& collider1, const BaseBoxColliderComponent& collider2)
         {
             glm::vec2 box1Center = collider1.GetColliderCenter();
@@ -47,13 +52,9 @@ namespace Learning2DEngine
         CollisionData CollisionChecker::CheckCollision(const BaseCircleColliderComponent& collider1, const BaseCircleColliderComponent& collider2)
         {
             glm::vec2 distance = collider2.GetColliderCenter() - collider1.GetColliderCenter();
+            float radius = collider1.colliderRadius + collider2.colliderRadius;
             CollisionData data;
-            data.isCollided =
-                // distance between 2 centers
-                glm::length(distance)
-                <=
-                // their radius
-                collider1.colliderRadius + collider2.colliderRadius;
+            data.isCollided = CollisionChecker::length2(distance) <= (radius * radius);
 
             if (data.isCollided)
             {
@@ -74,7 +75,7 @@ namespace Learning2DEngine
             glm::vec2 distance = boxEdge - circleCenter;
 
             CollisionData data;
-            data.isCollided = glm::length(distance) <= circleCollider.colliderRadius;
+            data.isCollided = CollisionChecker::length2(distance) <= (circleCollider.colliderRadius * circleCollider.colliderRadius);
 
             if (data.isCollided)
             {
