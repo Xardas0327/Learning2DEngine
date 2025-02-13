@@ -15,9 +15,6 @@ namespace Learning2DEngine
 {
     namespace UI
     {
-        /// <summary>
-        /// Note: It use the position and scale of the gameObject, but it does not use the rotation.
-        /// </summary>
         class Text2DLateRenderer : public virtual Render::LateRendererComponent
         {
             friend class System::GameObject;
@@ -55,6 +52,7 @@ namespace Learning2DEngine
 
             void Init() override;
             void Destroy() override;
+            glm::mat2 GetRotationMatrix();
         public:
             FontSizePair fontSizePair;
             std::string text;
