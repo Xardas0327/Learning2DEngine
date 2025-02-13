@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 
+#include <Learning2DEngine/Object/FpsShower.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
 #include <Learning2DEngine/UI/FontSizePair.h>
@@ -55,6 +56,7 @@ private:
 
     Learning2DEngine::UI::Text2DLateRenderer* scoreText;
     Learning2DEngine::UI::Text2DLateRenderer* startText;
+    Learning2DEngine::Object::FpsShower* fpsShower;
 
 
     GameController(Learning2DEngine::System::GameObject* gameObject, const Learning2DEngine::UI::FontSizePair& fontSizePair);

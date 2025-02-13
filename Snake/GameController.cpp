@@ -8,13 +8,14 @@
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::UI;
+using namespace Learning2DEngine::Object;
 
 GameController::GameController(GameObject* gameObject, const FontSizePair& fontSizePair)
 	: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
 	levelResolution(MAP_SIZE), fontSizePair(fontSizePair), startMoveWaitingTime(START_MOVE_WAITING_TIME),
 	dencreaseTimeAfterEat(TIME_DECREASE), baseSnakeLength(3),
 	state(GameState::GAME_MENU), score(0), unitSize(0), foodController(nullptr), playerController(nullptr),
-	moveWaitingTime(0.0f), actualWaitingTime(0.0f), moveDirection(), lastMoveDirection(), scoreText(nullptr), startText(nullptr)
+	moveWaitingTime(0.0f), actualWaitingTime(0.0f), moveDirection(), lastMoveDirection(), scoreText(nullptr), startText(nullptr), fpsShower(nullptr)
 {
 
 }
@@ -65,6 +66,14 @@ void GameController::Init()
         "Press ENTER to start"
     );
 
+    fpsShower = FpsShower::CreateFpsShowerObject(
+        Transform(
+            glm::vec2(5.0f, resolution.GetHeight() - 30)
+        ),
+        resolution, 
+        fontSizePair,
+        99);
+
     ResetLevel();
 }
 
@@ -76,6 +85,7 @@ void GameController::Destroy()
     GameObject::Destroy(foodController);
     GameObject::Destroy(scoreText);
     GameObject::Destroy(startText);
+    GameObject::Destroy(fpsShower);
 }
 
 
