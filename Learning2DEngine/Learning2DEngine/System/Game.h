@@ -44,7 +44,6 @@ namespace Learning2DEngine
                     protected Render::IResolutionRefresher
         {
         private:
-            float lastFrame;
             float timeScale;
             bool isMsaaActive;
             bool isPostProcessEffectActive;
