@@ -126,6 +126,16 @@ namespace Learning2DEngine
             glBindVertexArray(0);
         }
 
+        glm::mat2 Text2DLateRenderer::GetRotationMatrix()
+        {
+            float radians = glm::radians(gameObject->transform.rotation);
+
+            return glm::mat2(
+                glm::cos(radians), -glm::sin(radians),
+                glm::sin(radians), glm::cos(radians)
+            );
+        }
+
         void Text2DLateRenderer::Draw()
         {
             TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
@@ -145,23 +155,29 @@ namespace Learning2DEngine
             glActiveTexture(GL_TEXTURE0);
             glBindVertexArray(vao);
 
+            glm::vec2 startPosition(gameObject->transform.position);
+            glm::mat2 rotationMatrix = GetRotationMatrix();
             std::string::const_iterator c;
-            int xPosition = gameObject->transform.position.x;
             for (c = text.begin(); c != text.end(); ++c)
             {
-                auto& ch = characterMap[*c];
+                const auto& ch = characterMap[*c];
 
-                float xpos = xPosition + ch.bearing.x * gameObject->transform.scale.x;
-                float ypos = gameObject->transform.position.y + (characterMap['H'].bearing.y - ch.bearing.y) * gameObject->transform.scale.y;
+                float chPositionX = ch.bearing.x * gameObject->transform.scale.x;
+                float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * gameObject->transform.scale.y;
 
-                float w = ch.size.x * gameObject->transform.scale.x;
-                float h = ch.size.y * gameObject->transform.scale.y;
+                float chWidth = ch.size.x * gameObject->transform.scale.x;
+                float chHeight = ch.size.y * gameObject->transform.scale.y;
+
+                glm::vec2 a = rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY + chHeight);
+                glm::vec2 b = rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY);
+                glm::vec2 c = rotationMatrix * glm::vec2(chPositionX,           chPositionY);
+                glm::vec2 d = rotationMatrix * glm::vec2(chPositionX,           chPositionY + chHeight);
 
                 float vertices[4][4] = {
-                    { xpos + w, ypos + h,   1.0f, 1.0f },
-                    { xpos + w, ypos,       1.0f, 0.0f },
-                    { xpos,     ypos,       0.0f, 0.0f },
-                    { xpos,     ypos + h,   0.0f, 1.0f }
+                    { startPosition.x + a.x, startPosition.y + a.y,   1.0f, 1.0f },
+                    { startPosition.x + b.x, startPosition.y + b.y,   1.0f, 0.0f },
+                    { startPosition.x + c.x, startPosition.y + c.y,   0.0f, 0.0f },
+                    { startPosition.x + d.x, startPosition.y + d.y,   0.0f, 1.0f }
                 };
 
                 glBindTexture(GL_TEXTURE_2D, ch.textureId);
@@ -172,8 +188,11 @@ namespace Learning2DEngine
 
                 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-                // bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
-                xPosition += (ch.advance >> 6) * gameObject->transform.scale.x;
+                startPosition += rotationMatrix *
+                    glm::vec2(
+                        // bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
+                        (ch.advance >> 6) * gameObject->transform.scale.x,
+                        0);
             }
             glBindVertexArray(0);
             glBindTexture(GL_TEXTURE_2D, 0);

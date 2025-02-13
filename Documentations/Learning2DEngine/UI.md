@@ -53,7 +53,6 @@ It uses static variables to count how many GameObject initialized it.
 That's why it will destroy its Vertex Array Object only
 if the reference number is 0, otherway it will decrease
 the reference number only.  
-Note: It use the position and scale of the gameObject, but it does not use the rotation.  
 Please more info about `LateRendererComponent`.
 
 ### Header:
@@ -150,6 +149,11 @@ void Init() override;
 It destroys the `Text2DLateRenderer`.
 ```cpp
 void Destroy() override;
+```
+
+**GetRotationMatrix**  
+```cpp
+glm::mat2 GetRotationMatrix();
 ```
 
 **Public:**  
