@@ -1,7 +1,7 @@
 # Object
 It contains the predefined components and game objects.
 
-- [FpsShower](Physics.md#fpsshower)
+- [FpsShower](Object.md#fpsshower)
 
 ##
 ## FpsShower
