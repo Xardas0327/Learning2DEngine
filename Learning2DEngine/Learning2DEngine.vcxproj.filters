@@ -66,6 +66,9 @@
     <ClCompile Include="Learning2DEngine\Physics\ColliderComponentHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Learning2DEngine\Object\FpsShower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\Render\RenderManager.h">
@@ -261,6 +264,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\EventSystem\CursorEnterEventItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Object\FpsShower.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,7 +21,7 @@ namespace Learning2DEngine
         Cursor Game::cursor = Cursor();
 
         Game::Game()
-            : lastFrame(0.0f), timeScale(L2DE_TIME_SCALE_DEFAULT), isMsaaActive(false),
+            : timeScale(L2DE_TIME_SCALE_DEFAULT), isMsaaActive(false),
             isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
             ppeRender(), keyboardEventItem(this), resolutionEventItem(this),
             mouseButtonEventItem(this), cursorPositionEventItem(this), cursorEnterEventItem(this), scrollEventItem(this)
@@ -77,12 +77,14 @@ namespace Learning2DEngine
             {
                 auto& renderManager = RenderManager::GetInstance();
 				auto& componentManager = ComponentManager::GetInstance();
+                float lastTime = glfwGetTime();
                 while (!renderManager.IsWindowClosed())
                 {
                     // Calc deltaTime
-                    float currentFrame = glfwGetTime();
-                    Game::deltaTime = (currentFrame - lastFrame);
-                    lastFrame = currentFrame;
+                    float currentTime = glfwGetTime();
+                    Game::deltaTime = (currentTime - lastTime);
+                    lastTime = currentTime;
+
 #if L2DE_DEBUG
                     // It is useful if the game stop by a breakpoint
                     if (Game::deltaTime > L2DE_DEBUG_MAX_BASE_DELTATIME)

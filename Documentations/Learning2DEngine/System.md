@@ -557,11 +557,6 @@ Its value is 1.0f.
 
 ### Variables:
 **Private:**  
-**lastFrame**  
-```cpp
- float lastFrame;
-```
-
 **timeScale**  
 ```cpp
 float timeScale;

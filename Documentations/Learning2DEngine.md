@@ -42,6 +42,7 @@ what they are.
 - Learning2DEngine
   - [DebugTool](Learning2DEngine/DebugTool.md)
   - [EventSystem](Learning2DEngine/EventSystem.md)
+  - [Object](Learning2DEngine/Object.md)
   - [ParticleSimulator](Learning2DEngine/ParticleSimulator.md)
   - [Physics](Learning2DEngine/Physics.md)
   - [Render](Learning2DEngine/Render.md)
