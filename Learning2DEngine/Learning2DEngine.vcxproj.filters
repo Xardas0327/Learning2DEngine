@@ -176,7 +176,7 @@
     <ClInclude Include="Learning2DEngine\System\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\System\ObjectManager.h">
+    <ClInclude Include="Learning2DEngine\System\ComponentManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\System\BaseUpdaterComponent.h">

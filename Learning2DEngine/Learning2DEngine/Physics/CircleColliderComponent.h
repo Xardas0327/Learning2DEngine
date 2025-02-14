@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "../System/GameObject.h"
-#include "../System/ObjectManager.h"
+#include "../System/ComponentManager.h"
 #include "BaseCircleColliderComponent.h"
 
 namespace Learning2DEngine
@@ -36,7 +36,7 @@ namespace Learning2DEngine
             /// </summary>
             virtual void Init() override
             {
-				System::ObjectManager::GetInstance().AddToCollider(this);
+				System::ComponentManager::GetInstance().AddToCollider(this);
             }
 
             /// <summary>
@@ -44,7 +44,7 @@ namespace Learning2DEngine
             /// </summary>
             virtual void Destroy() override
             {
-				System::ObjectManager::GetInstance().RemoveFromCollider(this);
+				System::ComponentManager::GetInstance().RemoveFromCollider(this);
             }
         };
     }

@@ -16,9 +16,9 @@ namespace Learning2DEngine
 
     namespace System
     {
-        class ObjectManager final : public virtual Singleton<ObjectManager>
+        class ComponentManager final : public virtual Singleton<ComponentManager>
         {
-            friend class Singleton<ObjectManager>;
+            friend class Singleton<ComponentManager>;
         private:
             UpdaterComponentHandler updaterComponentHandler;
             LateUpdaterComponentHandler lateUpdaterComponentHandler;
@@ -26,7 +26,7 @@ namespace Learning2DEngine
             Render::RendererComponentHandler rendererComponentHandler;
             Render::RendererComponentHandler lateRendererComponentHandler;
 
-            ObjectManager()
+            ComponentManager()
                 : updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
                 rendererComponentHandler(), lateRendererComponentHandler()
             {

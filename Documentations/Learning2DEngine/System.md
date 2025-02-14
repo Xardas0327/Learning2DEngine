@@ -4,6 +4,7 @@
 - [BaseUpdaterComponent](System.md#baseupdatercomponent)
 - [Camera](System.md#camera)
 - [Component](System.md#component)
+- [ComponentManager](System.md#componentmanager)
 - [Cursor](System.md#cursor)
 - [Game](System.md#game)
 - [GameObject](System.md#gameobject)
@@ -13,7 +14,6 @@
 - [InputStatus](System.md#inputstatus)
 - [LateUpdaterComponent](System.md#lateupdatercomponent)
 - [LateUpdaterComponentHandler](System.md#lateupdatercomponenthandler)
-- [ObjectManager](System.md#objectmanager)
 - [Random](System.md#random)
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
@@ -28,7 +28,7 @@
 
 ### Description:
 It is a simple class for most component handlers.  
-Please check for more info about the `ObjectManager`.
+Please check for more info about the `ComponentManager`.
 
 ### Header:
 ```cpp
@@ -275,7 +275,7 @@ void SetResolution(const Render::Resolution& resolution);
 
 ### Description:
 It is a base class for every component in the Engine.
-Some base components are inherited from this class, which are used by `ObjectManager`.
+Some base components are inherited from this class, which are used by `ComponentManager`.
 That is why it is recommented to use these component classes, because they have functions,
 which can run automatically:
 - `System::UpdaterComponent`
@@ -310,7 +310,7 @@ class Component
 ### Variables:
 **Public:**  
 **isActive**  
-It shows, that the actual component is active or not. If not, the `ObjectManager` will not
+It shows, that the actual component is active or not. If not, the `ComponentManager` will not
 call the component's functions.
 ```cpp
 bool isActive;
@@ -347,18 +347,18 @@ virtual ~Component();
 ```  
 
 ##
-## ObjectManager
+## ComponentManager
 ### Source Code:
-[ObjectManager.h](../../Learning2DEngine/Learning2DEngine/System/ObjectManager.h)  
+[ComponentManager.h](../../Learning2DEngine/Learning2DEngine/System/ComponentManager.h)  
 
 ### Description:
-The `ObjectManager` manages the `Components` in the Engine by component handlers.
+The `ComponentManager` manages the `Components` in the Engine by component handlers.
 The `Game` calls its Update(), LateUpdate(), CheckCollision(), Render()
 and LateRender() functions in every frame.
 
 ### Header:
 ```cpp
-class ObjectManager final : public virtual Singleton<ObjectManager>
+class ComponentManager final : public virtual Singleton<ComponentManager>
 {...}
 ```
 
@@ -391,9 +391,9 @@ Render::RendererComponentHandler lateRendererComponentHandler;
 
 ### Functions:
 **Private:**  
-**ObjectManager**  
+**ComponentManager**  
 ```cpp
-ObjectManager();
+ComponentManager();
 ```
 
 **Public:**  
@@ -910,7 +910,7 @@ std::vector<Component*> components;
 **Public:**  
 **isActive**  
 It shows, that the actual game object is active or not.
-If not, the `ObjectManager` will not call the components of the game object.
+If not, the `ComponentManager` will not call the components of the game object.
 ```cpp
 bool isActive;
 ```
@@ -1147,7 +1147,7 @@ virtual void Destroy() override;
 
 ### Description:
 It can handle the `BaseLateUpdaterComponent` objects.  
-The `ObjectManager` has one from it.
+The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
@@ -1439,7 +1439,7 @@ virtual void Destroy() override;
 
 ### Description:
 It can handle the `BaseUpdaterComponentHandler` objects.  
-The `ObjectManager` has one from it.
+The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
