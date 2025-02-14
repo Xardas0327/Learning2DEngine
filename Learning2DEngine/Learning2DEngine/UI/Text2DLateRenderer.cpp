@@ -28,7 +28,7 @@ namespace Learning2DEngine
             int layer,
             glm::vec3 color)
             :Component(gameObject), BaseRendererComponent(gameObject, layer), LateRendererComponent(gameObject, layer),
-            isInit(false), cameraResolution(cameraResolution), fontSizePair(fontSizePair), text(""), color(color)
+            cameraResolution(cameraResolution), fontSizePair(fontSizePair), text(""), color(color)
         {
 
         }
@@ -41,7 +41,7 @@ namespace Learning2DEngine
             int layer,
             glm::vec3 color)
             :Component(gameObject), BaseRendererComponent(gameObject, layer), LateRendererComponent(gameObject, layer),
-            isInit(false), cameraResolution(cameraResolution), fontSizePair(fontSizePair), text(text), color(color)
+            cameraResolution(cameraResolution), fontSizePair(fontSizePair), text(text), color(color)
         {
 
         }
@@ -49,11 +49,6 @@ namespace Learning2DEngine
 
         void Text2DLateRenderer::Init()
         {
-            if (isInit)
-                return;
-
-            isInit = true;
-
             LateRendererComponent::Init();
 
             // If nothing use it
@@ -67,11 +62,6 @@ namespace Learning2DEngine
 
         void Text2DLateRenderer::Destroy()
         {
-            if (!isInit)
-                return;
-
-            isInit = false;
-
             LateRendererComponent::Destroy();
 
             --Text2DLateRenderer::referenceNumber;

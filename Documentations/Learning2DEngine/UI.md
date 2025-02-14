@@ -63,11 +63,6 @@ class Text2DLateRenderer : public virtual Render::LateRendererComponent
 
 ### Variables:
 **Private:**  
-**isInit**  
-```cpp
-bool isInit;
-```  
-
 **cameraResolution**  
 ```cpp
 Render::Resolution cameraResolution;

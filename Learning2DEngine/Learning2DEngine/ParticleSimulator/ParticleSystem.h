@@ -22,7 +22,6 @@ namespace Learning2DEngine
 		{
 			friend class System::GameObject;
 		protected:
-			bool isInit;
 			bool isRunning;
 			unsigned int particleAmount;
 			Particle* particles;

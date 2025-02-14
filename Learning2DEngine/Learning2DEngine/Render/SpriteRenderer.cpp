@@ -21,14 +21,14 @@ namespace Learning2DEngine
 
         SpriteRenderer::SpriteRenderer(GameObject* gameObject, int layer, glm::vec3 color)
             : Component(gameObject), BaseRendererComponent(gameObject, layer), RendererComponent(gameObject, layer),
-            texture(nullptr), color(color), isInit(false)
+            texture(nullptr), color(color)
         {
 
         }
 
         SpriteRenderer::SpriteRenderer(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec3 color)
             : Component(gameObject), BaseRendererComponent(gameObject, layer), RendererComponent(gameObject, layer),
-            color(color), isInit(false), texture(new Texture2D(texture))
+            color(color), texture(new Texture2D(texture))
         {
         }
 
@@ -42,11 +42,6 @@ namespace Learning2DEngine
 
         void SpriteRenderer::Init()
         {
-            if (isInit)
-                return;
-
-            isInit = true;
-
 			RendererComponent::Init();
 
             // If nothing use it
@@ -60,11 +55,6 @@ namespace Learning2DEngine
 
         void SpriteRenderer::Destroy()
         {
-            if (!isInit)
-                return;
-
-            isInit = false;
-
             RendererComponent::Destroy();
 
             --SpriteRenderer::referenceNumber;

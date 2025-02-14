@@ -994,11 +994,6 @@ class SpriteRenderer : public virtual RendererComponent
 
 ### Variables:
 **Private:**  
-**isInit**  
-```cpp
-bool isInit;
-```
-
 **referenceNumber**  
 All `SpriteRenderer` use the same shader and vertex array object.
 That's why it is counted, that how many `SpriteRenderers` there are in the game.

@@ -19,7 +19,6 @@ namespace Learning2DEngine
         {
             friend class System::GameObject;
         private:
-            bool isInit;
             Render::Resolution cameraResolution;
 
             /// <summary>

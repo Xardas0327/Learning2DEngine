@@ -185,12 +185,6 @@ class ParticleSystem : public virtual Render::RendererComponent, public virtual 
 
 ### Variables:
 **Protected:**  
-
-**isInit**  
-```cpp
-bool isInit;
-```
-
 **isRunning**  
 ```cpp
 bool isRunning;
