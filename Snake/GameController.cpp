@@ -82,21 +82,6 @@ void GameController::Init()
     ResetLevel();
 }
 
-void GameController::Destroy()
-{
-    UpdaterComponent::Destroy();
-
-    GameObject::Destroy(playerController);
-    GameObject::Destroy(foodController);
-    GameObject::Destroy(scoreText);
-    GameObject::Destroy(startText);
-
-#if L2DE_DEBUG
-    GameObject::Destroy(fpsShower);
-#endif
-}
-
-
 void GameController::Update()
 {
     ProcessInput();

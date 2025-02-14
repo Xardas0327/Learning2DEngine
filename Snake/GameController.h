@@ -74,7 +74,6 @@ private:
     void RefreshScore();
 
     void Init() override;
-    void Destroy() override;
     void Update() override;
 };
 

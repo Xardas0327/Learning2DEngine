@@ -75,8 +75,6 @@ void Breakout::Init()
 
 void Breakout::Terminate()
 {
-    GameObject::Destroy(gameController);
-
     delete postProcessData;
 
     TextCharacterSet::GetInstance().Clear();

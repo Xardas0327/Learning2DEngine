@@ -48,8 +48,6 @@ void Snake::Init()
 
 void Snake::Terminate()
 {
-    GameObject::Destroy(gameController);
-
     TextCharacterSet::GetInstance().Clear();
 	Game::Terminate();
 }

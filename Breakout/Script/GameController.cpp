@@ -142,20 +142,6 @@ void GameController::Destroy()
 {
     UpdaterComponent::Destroy();
     LateUpdaterComponent::Destroy();
-
-    GameObject::Destroy(backgroundController);
-    GameObject::Destroy(playerController);
-    GameObject::Destroy(ballController);
-
-    GameObject::Destroy(lifeText);
-    GameObject::Destroy(startText);
-    GameObject::Destroy(levelSelectorText);
-    GameObject::Destroy(winText);
-    GameObject::Destroy(retryText);
-
-    for (auto& level : levels)
-        level.ClearBricks();
-
     soundEngine->drop();
 }
 
