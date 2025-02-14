@@ -15,8 +15,6 @@ namespace Learning2DEngine
         {
             friend class System::GameObject;
         private:
-            bool isInit;
-
             /// <summary>
             /// It is counted, that how many SpriteRenderer use shader and voa.
             /// It is important, that the shader will be created, if it is used and
@@ -36,13 +34,12 @@ namespace Learning2DEngine
 
             void Init() override;
             void Destroy() override;
+            void Draw() override;
         public:
             Texture2D* texture;
             glm::vec3 color;
 
             ~SpriteRenderer();
-
-            void Draw() override;
 
             inline bool IsUseTexture()
             {

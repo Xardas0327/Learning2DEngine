@@ -28,9 +28,9 @@ namespace Learning2DEngine
 
 			void Init() override;
 			void Destroy() override;
-		public:
 			void Update() override;
 
+		public:
 			static FpsShower* CreateFpsShowerObject(
 				const System::Transform& transform,
 				const Render::Resolution& cameraResolution,

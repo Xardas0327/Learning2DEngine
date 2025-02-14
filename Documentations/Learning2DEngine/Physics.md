@@ -536,7 +536,6 @@ Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0
 Rigidbody(System::GameObject* gameObject, bool isFrozen);
 ```
 
-**Public:**  
 **Update()**  
 If the object is not frozen, the position of gameobject will be updated
 by `velocity` * `Game::GetDeltaTime()`.

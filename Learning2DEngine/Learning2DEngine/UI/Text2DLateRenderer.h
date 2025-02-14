@@ -19,7 +19,6 @@ namespace Learning2DEngine
         {
             friend class System::GameObject;
         private:
-            bool isInit;
             Render::Resolution cameraResolution;
 
             /// <summary>
@@ -52,13 +51,13 @@ namespace Learning2DEngine
 
             void Init() override;
             void Destroy() override;
+            void Draw() override;
+
             glm::mat2 GetRotationMatrix();
         public:
             FontSizePair fontSizePair;
             std::string text;
             glm::vec3 color;
-
-            void Draw() override;
 
             inline Render::Resolution GetResolution()
             {

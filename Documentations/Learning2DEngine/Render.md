@@ -994,11 +994,6 @@ class SpriteRenderer : public virtual RendererComponent
 
 ### Variables:
 **Private:**  
-**isInit**  
-```cpp
-bool isInit;
-```
-
 **referenceNumber**  
 All `SpriteRenderer` use the same shader and vertex array object.
 That's why it is counted, that how many `SpriteRenderers` there are in the game.
@@ -1078,6 +1073,12 @@ It destroys the `SpriteRenderer`.
 void Destroy() override;
 ```
 
+**Draw**  
+It draws the sprite. 
+```cpp
+void Draw() override;
+``` 
+
 **Public:**  
 **~SpriteRenderer**  
 It will delete the `texture` pointer.  
@@ -1087,18 +1088,6 @@ If the `texture` was created by the developer,
 they have to care with this problem.
 ```cpp
 ~SpriteRenderer();
-``` 
-
-**Draw**  
-It draws the sprite. 
-```cpp
-void Draw() override;
-``` 
-
-**Draw**  
-It draws the sprite. 
-```cpp
-void Draw() override;
 ``` 
 
 **IsUseTexture**  

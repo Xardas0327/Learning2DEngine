@@ -49,12 +49,12 @@ void Init() override;
 void Destroy() override;
 ```
 
-**Public:**  
 **Update**  
 ```cpp
 void Update() override;
 ```
 
+**Public:**  
 **CreateFpsShowerObject**  
 It creates a GameObject with FpsShower component.
 ```cpp
