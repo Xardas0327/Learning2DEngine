@@ -47,16 +47,15 @@ protected:
     void Destroy() override;
     void InitParticleSystem();
     Direction VectorDirection(glm::vec2 target);
+
+    void OnCollision(Learning2DEngine::Physics::Collision collision) override;
+    void Update() override;
 public:
     Learning2DEngine::Render::SpriteRenderer* renderer;
     Learning2DEngine::Physics::Rigidbody* rigidbody;
     float radius;
     bool sticky;
     bool passThrough;
-
-    void OnCollision(Learning2DEngine::Physics::Collision collision) override;
-
-    void Update() override;
     void Reset();
 
     inline bool IsStuck()

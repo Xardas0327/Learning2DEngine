@@ -57,6 +57,9 @@ namespace Learning2DEngine
 				int renderLayer = 0);
 			void Init() override;
 			void Destroy() override;
+			void Update() override;
+			void Draw() override;
+
 			void InitShader();
 			void InitVao();
 			void UpdateActiveParticles();
@@ -69,10 +72,7 @@ namespace Learning2DEngine
 
 			~ParticleSystem();
 
-			void Draw() override;
-
 			void Start();
-			void Update() override;
 			void Stop();
 
 			inline void Restart()

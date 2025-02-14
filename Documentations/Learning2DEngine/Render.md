@@ -1078,6 +1078,12 @@ It destroys the `SpriteRenderer`.
 void Destroy() override;
 ```
 
+**Draw**  
+It draws the sprite. 
+```cpp
+void Draw() override;
+``` 
+
 **Public:**  
 **~SpriteRenderer**  
 It will delete the `texture` pointer.  
@@ -1087,18 +1093,6 @@ If the `texture` was created by the developer,
 they have to care with this problem.
 ```cpp
 ~SpriteRenderer();
-``` 
-
-**Draw**  
-It draws the sprite. 
-```cpp
-void Draw() override;
-``` 
-
-**Draw**  
-It draws the sprite. 
-```cpp
-void Draw() override;
 ``` 
 
 **IsUseTexture**  

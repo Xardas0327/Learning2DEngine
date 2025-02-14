@@ -300,6 +300,19 @@ void Init() override;
 void Destroy() override;
 ```
 
+**Draw**  
+It draws the particles.
+```cpp
+void Draw() override;
+```
+
+**Update**  
+It update and create particle, when it has to do.
+It works only, after the `Start()` function was called and before the `Stop()`.
+```cpp
+void Update() override;
+```
+
 **InitShader**  
 ```cpp
 void InitShader();
@@ -342,23 +355,10 @@ they have to care with this problem.
 ~ParticleSystem();
 ```
 
-**Draw**  
-It draws the particles.
-```cpp
-void Draw() override;
-```
-
 **Start**  
 It set everything for the running.
 ```cpp
 void Start();
-```
-
-**Update**  
-It update and create particle, when it has to do.
-It works only, after the `Start()` function was called and before the `Stop()`.
-```cpp
-void Update() override;
 ```
 
 **Stop**  

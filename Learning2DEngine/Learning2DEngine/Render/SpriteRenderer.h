@@ -36,13 +36,12 @@ namespace Learning2DEngine
 
             void Init() override;
             void Destroy() override;
+            void Draw() override;
         public:
             Texture2D* texture;
             glm::vec3 color;
 
             ~SpriteRenderer();
-
-            void Draw() override;
 
             inline bool IsUseTexture()
             {

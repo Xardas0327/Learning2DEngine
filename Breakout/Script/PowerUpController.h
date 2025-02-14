@@ -28,13 +28,12 @@ protected:
     PowerUpController(Learning2DEngine::System::GameObject* gameObject, const PowerUpObject& powerUpObject);
 
     void Init() override;
+    void OnCollision(Learning2DEngine::Physics::Collision collision) override;
 public:
     Learning2DEngine::Render::SpriteRenderer* renderer;
     const PowerUpObject powerUpObject;
     float actualDuration;
     bool activated;
-
-    void OnCollision(Learning2DEngine::Physics::Collision collision) override;
 
     static PowerUpController* CreatePowerUp(
         const PowerUpObject& powerUpObject,

@@ -27,9 +27,6 @@ namespace Learning2DEngine
             {
 
             }
-        public:
-            glm::vec2 velocity;
-            bool isFrozen;
 
             /// <summary>
             /// If it is not frozen, the position of gameobject will be updated.
@@ -41,6 +38,9 @@ namespace Learning2DEngine
                     gameObject->transform.position += velocity * System::Game::GetDeltaTime();
                 }
             }
+        public:
+            glm::vec2 velocity;
+            bool isFrozen;
         };
     }
 }

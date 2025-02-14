@@ -151,18 +151,18 @@ It destroys the `Text2DLateRenderer`.
 void Destroy() override;
 ```
 
-**GetRotationMatrix**  
-```cpp
-glm::mat2 GetRotationMatrix();
-```
-
-**Public:**  
 **Draw**  
 It draws the text. 
 ```cpp
 void Draw() override;
 ```  
 
+**GetRotationMatrix**  
+```cpp
+glm::mat2 GetRotationMatrix();
+```
+
+**Public:**  
 **GetResolution**  
 ```cpp
 inline Render::Resolution GetResolution();

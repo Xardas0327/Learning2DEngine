@@ -77,7 +77,7 @@ private:
     bool IsPowerUpActive(const PowerUpType& type);
     void UpdatePowerUps();
     void ClearPowerUps();
-public:
+
     void Init() override;
     void Destroy() override;
     void Update() override;

@@ -73,7 +73,6 @@ private:
     void EatFood();
     void RefreshScore();
 
-public:
     void Init() override;
     void Destroy() override;
     void Update() override;
