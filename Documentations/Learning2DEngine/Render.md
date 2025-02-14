@@ -416,7 +416,7 @@ virtual void SetLayer(int value) override;
 
 ### Description:
 It can handle the `BaseRendererComponent` objects.  
-The `ComponentManager` has 2 from it.
+The `ObjectManager` has 2 from it.
 One for `RendererComponentHandler` and one for `LateRendererComponentHandler`.
 
 ### Header:

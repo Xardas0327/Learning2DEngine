@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BaseRendererComponent.h"
-#include "../System/ComponentManager.h"
+#include "../System/ObjectManager.h"
 
 namespace Learning2DEngine
 {
@@ -33,7 +33,7 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Init() override
 			{
-				System::ComponentManager::GetInstance().AddToLateRenderer(this);
+				System::ObjectManager::GetInstance().AddToLateRenderer(this);
 			}
 
 			/// <summary>
@@ -41,14 +41,14 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Destroy() override
 			{
-				System::ComponentManager::GetInstance().RemoveFromLateRenderer(this);
+				System::ObjectManager::GetInstance().RemoveFromLateRenderer(this);
 			}
 
 		public:
 			virtual void SetLayer(int value) override
 			{
 				BaseRendererComponent::SetLayer(value);
-				System::ComponentManager::GetInstance().NeedReorderLateRenderers();
+				System::ObjectManager::GetInstance().NeedReorderLateRenderers();
 			}
 		};
 	}

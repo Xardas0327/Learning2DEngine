@@ -157,7 +157,7 @@ virtual void OnCollision(Collision collision);
 The `BoxColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
 It knows everything like the `BaseBoxColliderComponent`, just it subscribes/unsubscribes
-for `ComponentManager`.  
+for `ObjectManager`.  
 Please check for more info about `BaseBoxColliderComponent` and `BaseColliderComponent`.
 
 ### Header:
@@ -194,7 +194,7 @@ virtual void Destroy() override;
 The `CircleColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
 It knows everything like the `BaseCircleColliderComponent`, just it subscribes/unsubscribes
-for `ComponentManager`.  
+for `ObjectManager`.  
 Please check for more info about `BaseCircleColliderComponent` and `BaseColliderComponent`.
 
 ### Header:
@@ -231,7 +231,7 @@ virtual void Destroy() override;
 ### Description:
 It can handle the collision between the `BaseBoxColliderComponent`
 and the `BaseCircleColliderComponent` objects.  
-The `ComponentManager` has one from it.
+The `ObjectManager` has one from it.
 
 ### Header:
 ```cpp

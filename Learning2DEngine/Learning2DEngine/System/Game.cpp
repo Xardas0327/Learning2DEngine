@@ -7,7 +7,7 @@
 #include "../DebugTool/DebugMacro.h"
 #include "../DebugTool/Log.h"
 #include "ResourceManager.h"
-#include "ComponentManager.h"
+#include "ObjectManager.h"
 
 namespace Learning2DEngine
 {
@@ -66,7 +66,7 @@ namespace Learning2DEngine
             renderManager.RemoveCursorEnterEvent(&cursorEnterEventItem);
             renderManager.RemoveScrollEvent(&scrollEventItem);
 
-            ComponentManager::GetInstance().Clear();
+            ObjectManager::GetInstance().Clear();
             ResourceManager::GetInstance().Clear();
             RenderManager::GetInstance().Terminate();
         }
@@ -76,7 +76,7 @@ namespace Learning2DEngine
             try
             {
                 auto& renderManager = RenderManager::GetInstance();
-				auto& componentManager = ComponentManager::GetInstance();
+				auto& objectManager = ObjectManager::GetInstance();
                 float lastTime = glfwGetTime();
                 while (!renderManager.IsWindowClosed())
                 {
@@ -94,9 +94,9 @@ namespace Learning2DEngine
 
                     UpdateEvents();
 
-                    componentManager.Update();
-                    componentManager.CheckCollision();
-                    componentManager.LateUpdate();
+                    objectManager.Update();
+                    objectManager.CheckCollision();
+                    objectManager.LateUpdate();
 
                     renderManager.ClearWindow();
 
@@ -110,7 +110,7 @@ namespace Learning2DEngine
                         ppeRender.StartRender();
                     }
 
-                    componentManager.Render();
+                    objectManager.Render();
 
                     if (isMsaaActive)
                     {
@@ -126,7 +126,7 @@ namespace Learning2DEngine
                     if (usePPE)
                         ppeRender.Render();
 
-				    componentManager.LateRender();
+                    objectManager.LateRender();
 
                     renderManager.UpdateWindow();
                 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BaseLateUpdaterComponent.h"
-#include "ComponentManager.h"
+#include "ObjectManager.h"
 
 namespace Learning2DEngine
 {
@@ -27,7 +27,7 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Init() override
 			{
-				ComponentManager::GetInstance().AddToLateUpdate(this);
+				ObjectManager::GetInstance().AddToLateUpdate(this);
 			}
 
 			/// <summary>
@@ -35,7 +35,7 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Destroy() override
 			{
-				ComponentManager::GetInstance().RemoveFromLateUpdate(this);
+				ObjectManager::GetInstance().RemoveFromLateUpdate(this);
 			}
 		};
 	}
