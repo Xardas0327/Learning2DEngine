@@ -4,6 +4,7 @@
 
 #include "Transform.h"
 #include "Component.h"
+#include "GameObjectManager.h"
 
 namespace Learning2DEngine
 {
@@ -29,6 +30,7 @@ namespace Learning2DEngine
 
 			~GameObject()
 			{
+				int a = 1;
 				for (Component* component : components)
 				{
 					if (component != nullptr)
@@ -98,30 +100,38 @@ namespace Learning2DEngine
 
 			static GameObject* Create(bool isActive = true)
 			{
-				return new GameObject(isActive);
+				auto gameObject = new GameObject(isActive);
+				GameObjectManager::GetInstance().Add(gameObject);
+				return gameObject;
 			}
 
 			static GameObject* Create(const Transform& transform, bool isActive = true)
 			{
-				return new GameObject(transform, isActive);
+				auto gameObject = new GameObject(transform, isActive);
+				GameObjectManager::GetInstance().Add(gameObject);
+				return gameObject;
 			}
 
 			/// <summary>
 			/// The gameObject and its components will be destroyed.
+			/// It will be inactive immediately, but it will be destroyed just end of the frame only.
 			/// </summary>
 			/// <param name="gameObject"></param>
 			static void Destroy(GameObject* gameObject)
 			{
-				delete gameObject;
+				gameObject->isActive = false;
+				GameObjectManager::GetInstance().MarkForDestroy(gameObject);
 			}
 
 			/// <summary>
 			/// The gameObject of component and its components will be destroyed.
+			/// It will be inactive immediately, but it will be destroyed just end of the frame only.
 			/// </summary>
 			/// <param name="gameObject"></param>
 			static void Destroy(Component* component)
 			{
-				delete component->gameObject;
+				component->gameObject->isActive = false;
+				GameObjectManager::GetInstance().MarkForDestroy(component->gameObject);
 			}
 		};
 	}

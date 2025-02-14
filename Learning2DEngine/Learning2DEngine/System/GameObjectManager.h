@@ -3,20 +3,23 @@
 #include <vector>
 #include <algorithm>
 
-#include "GameObject.h"
+#include "Singleton.h"
 
 namespace Learning2DEngine
 {
 	namespace System
 	{
-		class GameObjectHandler final
+		class GameObject;
+
+		class GameObjectManager : public virtual Singleton<GameObjectManager>
 		{
+			friend class Singleton<GameObjectManager>;
 		private:
 			std::vector<GameObject*> gameObjects;
 			std::vector<GameObject*> removeableGameObject;
 
 		public:
-			GameObjectHandler()
+			GameObjectManager()
 				: gameObjects(), removeableGameObject()
 			{
 			}

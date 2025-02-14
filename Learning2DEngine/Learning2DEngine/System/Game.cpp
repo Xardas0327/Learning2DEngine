@@ -8,6 +8,7 @@
 #include "../DebugTool/Log.h"
 #include "ResourceManager.h"
 #include "ComponentManager.h"
+#include "GameObjectManager.h"
 
 namespace Learning2DEngine
 {
@@ -66,6 +67,7 @@ namespace Learning2DEngine
             renderManager.RemoveCursorEnterEvent(&cursorEnterEventItem);
             renderManager.RemoveScrollEvent(&scrollEventItem);
 
+            GameObjectManager::GetInstance().DestroyAllGameObjects();
             ComponentManager::GetInstance().Clear();
             ResourceManager::GetInstance().Clear();
             RenderManager::GetInstance().Terminate();
@@ -76,6 +78,7 @@ namespace Learning2DEngine
             try
             {
                 auto& renderManager = RenderManager::GetInstance();
+                auto& gameObjectManager = GameObjectManager::GetInstance();
 				auto& componentManager = ComponentManager::GetInstance();
                 float lastTime = glfwGetTime();
                 while (!renderManager.IsWindowClosed())
@@ -129,6 +132,8 @@ namespace Learning2DEngine
 				    componentManager.LateRender();
 
                     renderManager.UpdateWindow();
+
+                    gameObjectManager.DestroyMarkedGameObjects();
                 }
             }
             catch (std::exception e)
