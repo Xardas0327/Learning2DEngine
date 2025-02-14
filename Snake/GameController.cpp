@@ -33,11 +33,11 @@ void GameController::Init()
     unitSize = glm::ivec2(resolution.GetWidth() / levelResolution.x, resolution.GetHeight() / levelResolution.y);
 
     //Player
-    auto player = new GameObject();
+    auto player = GameObject::Create();
     playerController = player->AddComponent<PlayerController, const std::string&>("Unit");
 
     //Food
-    auto food = new GameObject(
+    auto food = GameObject::Create(
         Transform(
             glm::vec2(0.0f, 0.0f),
             unitSize
@@ -47,7 +47,7 @@ void GameController::Init()
 
 
     // Text
-    auto scoreGameObject = new GameObject(
+    auto scoreGameObject = GameObject::Create(
         Transform(
             glm::vec2(5.0f, 5.0f)
         )
@@ -58,7 +58,7 @@ void GameController::Init()
         "Score: " + std::to_string(score)
     );
 
-    auto startGameObject = new GameObject(
+    auto startGameObject = GameObject::Create(
         Transform(
             glm::vec2(175.0f, static_cast<float>(resolution.GetHeight() / 2))
         )
