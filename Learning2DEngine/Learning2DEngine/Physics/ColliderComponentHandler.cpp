@@ -31,6 +31,8 @@ namespace Learning2DEngine
 						return it != removeableBoxColliders.end();
 					});
 				passiveBoxColliders.erase(newPassiveEnd, passiveBoxColliders.end());
+
+				removeableBoxColliders.clear();
 			}
 
 			for (auto collider : newBoxColliders)
@@ -41,7 +43,6 @@ namespace Learning2DEngine
 					passiveBoxColliders.push_back(collider);
 			}
 
-			removeableBoxColliders.clear();
 			newBoxColliders.clear();
 		}
 
@@ -64,6 +65,8 @@ namespace Learning2DEngine
 						return it != removeableCircleColliders.end();
 					});
 				passiveCircleColliders.erase(newPassiveEnd, passiveCircleColliders.end());
+
+				removeableCircleColliders.clear();
 			}
 
 			for (auto collider : newCircleColliders)
@@ -74,7 +77,6 @@ namespace Learning2DEngine
 					passiveCircleColliders.push_back(collider);
 			}
 
-			removeableCircleColliders.clear();
 			newCircleColliders.clear();
 		}
 
