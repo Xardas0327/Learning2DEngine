@@ -58,7 +58,7 @@ namespace Learning2DEngine
 			int layer,
 			glm::vec3 color)
 		{
-			auto gameObject = new GameObject(transform);
+			auto gameObject = GameObject::Create(transform);
 			return gameObject->AddComponent<FpsShower, const Resolution&, const FontSizePair&, int, glm::vec3>(
 				cameraResolution,
 				fontSizePair,

@@ -13,19 +13,19 @@ namespace Learning2DEngine
 		{
 		private:
 			std::vector<Component*> components;
-		public:
-			bool isActive;
-			Transform transform;
 
 			GameObject(bool isActive = true)
 				: isActive(isActive), transform(), components()
 			{
 			}
 
-			GameObject(Transform transform, bool isActive = true)
+			GameObject(const Transform& transform, bool isActive = true)
 				: isActive(isActive), transform(transform), components()
 			{
 			}
+		public:
+			bool isActive;
+			Transform transform;
 
 			~GameObject()
 			{
@@ -94,6 +94,16 @@ namespace Learning2DEngine
 				}
 
 				return selectedComponents;
+			}
+
+			static GameObject* Create(bool isActive = true)
+			{
+				return new GameObject(isActive);
+			}
+
+			static GameObject* Create(const Transform& transform, bool isActive = true)
+			{
+				return new GameObject(transform, isActive);
 			}
 
 			/// <summary>
