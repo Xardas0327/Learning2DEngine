@@ -35,15 +35,18 @@ namespace Learning2DEngine
 				removeableBoxColliders.clear();
 			}
 
-			for (auto collider : newBoxColliders)
+			if (newBoxColliders.size() > 0)
 			{
-				if (collider->IsActiveCollider())
-					activeBoxColliders.push_back(collider);
-				else
-					passiveBoxColliders.push_back(collider);
-			}
+				for (auto collider : newBoxColliders)
+				{
+					if (collider->IsActiveCollider())
+						activeBoxColliders.push_back(collider);
+					else
+						passiveBoxColliders.push_back(collider);
+				}
 
-			newBoxColliders.clear();
+				newBoxColliders.clear();
+			}
 		}
 
 		void ColliderComponentHandler::RefreshCircleColliders()
@@ -69,15 +72,18 @@ namespace Learning2DEngine
 				removeableCircleColliders.clear();
 			}
 
-			for (auto collider : newCircleColliders)
+			if (newCircleColliders.size() > 0)
 			{
-				if (collider->IsActiveCollider())
-					activeCircleColliders.push_back(collider);
-				else
-					passiveCircleColliders.push_back(collider);
-			}
+				for (auto collider : newCircleColliders)
+				{
+					if (collider->IsActiveCollider())
+						activeCircleColliders.push_back(collider);
+					else
+						passiveCircleColliders.push_back(collider);
+				}
 
-			newCircleColliders.clear();
+				newCircleColliders.clear();
+			}
 		}
 
 		void ColliderComponentHandler::Add(BaseBoxColliderComponent* component)

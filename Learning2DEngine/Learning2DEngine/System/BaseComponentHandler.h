@@ -38,8 +38,11 @@ namespace Learning2DEngine
 					removeableComponents.clear();
 				}
 
-				components.insert(components.end(), newComponents.begin(), newComponents.end());
-				newComponents.clear();
+				if (newComponents.size() > 0)
+				{
+					components.insert(components.end(), newComponents.begin(), newComponents.end());
+					newComponents.clear();
+				}
 			}
 
 		public:
