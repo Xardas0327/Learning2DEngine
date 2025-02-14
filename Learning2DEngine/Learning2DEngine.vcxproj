@@ -221,6 +221,7 @@
     <ClInclude Include="Learning2DEngine\System\Component.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventHandler.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventItem.h" />
+    <ClInclude Include="Learning2DEngine\System\GameObjectHandler.h" />
     <ClInclude Include="Learning2DEngine\System\ObjectManager.h" />
     <ClInclude Include="Learning2DEngine\System\Cursor.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />

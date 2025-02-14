@@ -269,5 +269,8 @@
     <ClInclude Include="Learning2DEngine\Object\FpsShower.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\GameObjectHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
