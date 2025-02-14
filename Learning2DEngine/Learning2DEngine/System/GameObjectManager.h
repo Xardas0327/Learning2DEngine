@@ -4,19 +4,18 @@
 #include <algorithm>
 
 #include "Singleton.h"
+#include "BaseGameObject.h"
 
 namespace Learning2DEngine
 {
 	namespace System
 	{
-		class GameObject;
-
 		class GameObjectManager : public virtual Singleton<GameObjectManager>
 		{
 			friend class Singleton<GameObjectManager>;
 		private:
-			std::vector<GameObject*> gameObjects;
-			std::vector<GameObject*> removeableGameObject;
+			std::vector<BaseGameObject*> gameObjects;
+			std::vector<BaseGameObject*> removeableGameObject;
 
 		public:
 			GameObjectManager()
@@ -24,12 +23,12 @@ namespace Learning2DEngine
 			{
 			}
 
-			void Add(GameObject* gameobject)
+			void Add(BaseGameObject* gameobject)
 			{
 				gameObjects.push_back(gameobject);
 			}
 
-			void MarkForDestroy(GameObject* gameobject)
+			void MarkForDestroy(BaseGameObject* gameobject)
 			{
 				removeableGameObject.push_back(gameobject);
 			}
@@ -39,7 +38,7 @@ namespace Learning2DEngine
 				if (removeableGameObject.size() > 0)
 				{
 					auto newEnd = remove_if(gameObjects.begin(), gameObjects.end(),
-						[this](GameObject* gameObject)
+						[this](BaseGameObject* gameObject)
 						{
 							auto it = std::find(removeableGameObject.begin(), removeableGameObject.end(), gameObject);
 							if (it != removeableGameObject.end())
@@ -58,7 +57,7 @@ namespace Learning2DEngine
 
 			void DestroyAllGameObjects()
 			{
-				for(GameObject* gameObject : gameObjects)
+				for(BaseGameObject* gameObject : gameObjects)
 				{
 					delete gameObject;
 				}

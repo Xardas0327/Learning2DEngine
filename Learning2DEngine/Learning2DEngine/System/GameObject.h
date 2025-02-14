@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "BaseGameObject.h"
 #include "Transform.h"
 #include "Component.h"
 #include "GameObjectManager.h"
@@ -10,27 +11,26 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-		class GameObject final
+		class GameObject final : private BaseGameObject
 		{
 		private:
 			std::vector<Component*> components;
 
 			GameObject(bool isActive = true)
-				: isActive(isActive), transform(), components()
+				: BaseGameObject(), isActive(isActive), transform(), components()
 			{
 			}
 
 			GameObject(const Transform& transform, bool isActive = true)
-				: isActive(isActive), transform(transform), components()
+				:BaseGameObject(), isActive(isActive), transform(transform), components()
 			{
 			}
 		public:
 			bool isActive;
 			Transform transform;
 
-			~GameObject()
+			~GameObject() override
 			{
-				int a = 1;
 				for (Component* component : components)
 				{
 					if (component != nullptr)

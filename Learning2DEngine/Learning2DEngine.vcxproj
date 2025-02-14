@@ -215,6 +215,7 @@
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h" />
     <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
+    <ClInclude Include="Learning2DEngine\System\BaseGameObject.h" />
     <ClInclude Include="Learning2DEngine\System\BaseLateUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\BaseUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\Camera.h" />

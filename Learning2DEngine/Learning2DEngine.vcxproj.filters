@@ -272,5 +272,8 @@
     <ClInclude Include="Learning2DEngine\System\GameObjectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\BaseGameObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
