@@ -65,7 +65,7 @@ void Breakout::Init()
     mainCamera.SetResolution(RenderManager::GetInstance().GetResolution());
 
     // GameController
-    auto gameControllerObject = new GameObject();
+    auto gameControllerObject = GameObject::Create();
     gameController = gameControllerObject->AddComponent<
         GameController,
         const FontSizePair&,
@@ -75,8 +75,6 @@ void Breakout::Init()
 
 void Breakout::Terminate()
 {
-    GameObject::Destroy(gameController);
-
     delete postProcessData;
 
     TextCharacterSet::GetInstance().Clear();

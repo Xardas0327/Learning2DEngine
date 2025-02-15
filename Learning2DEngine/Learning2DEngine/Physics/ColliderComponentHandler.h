@@ -28,11 +28,8 @@ namespace Learning2DEngine
 			template<class T>
 			bool IsActiveObject(T* collider, std::vector<T*> removeableColliders)
 			{
-				// Check if the collider is added into the removeable colliders
-				auto isRemoveable = std::find(removeableColliders.begin(), removeableColliders.end(), collider);
-
-				return isRemoveable == removeableColliders.end()
-					&& collider->isActive
+				//A GameObject will only be destroyed at the end of the frame.
+				return collider->isActive
 					&& collider->gameObject->isActive;
 			}
 

@@ -45,7 +45,7 @@ PowerUpController* PowerUpController::CreatePowerUp(
     glm::vec2 position, 
     PowerUpActivationEventItem& eventItem)
 {
-    auto powerUp = new Learning2DEngine::System::GameObject(
+    auto powerUp = Learning2DEngine::System::GameObject::Create(
         Learning2DEngine::System::Transform(position)
     );
 

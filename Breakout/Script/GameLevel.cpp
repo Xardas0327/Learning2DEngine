@@ -87,7 +87,7 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bo
             else if (brickData[y][x] == 5)
                 color = glm::vec3(1.0f, 0.5f, 0.0f);
 
-            GameObject* brick = new GameObject(areBricksActive);
+            GameObject* brick = GameObject::Create(areBricksActive);
             auto brickController = brick->AddComponent<BrickController, int, int, bool>(x, y, brickData[y][x] == 1);
             brickController->renderer->texture =
                 brickData[y][x] == 1

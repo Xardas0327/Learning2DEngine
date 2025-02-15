@@ -33,7 +33,7 @@ void PlayerController::Regenerate(glm::ivec2 unitSize)
 
 SpriteRenderer* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm::vec2 scale)
 {
-    auto playerUnit = new GameObject(
+    auto playerUnit = GameObject::Create(
         Transform(
             position,
             scale

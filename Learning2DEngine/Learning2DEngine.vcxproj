@@ -215,12 +215,14 @@
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h" />
     <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
+    <ClInclude Include="Learning2DEngine\System\BaseGameObject.h" />
     <ClInclude Include="Learning2DEngine\System\BaseLateUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\BaseUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\Camera.h" />
     <ClInclude Include="Learning2DEngine\System\Component.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventHandler.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventItem.h" />
+    <ClInclude Include="Learning2DEngine\System\GameObjectManager.h" />
     <ClInclude Include="Learning2DEngine\System\ComponentManager.h" />
     <ClInclude Include="Learning2DEngine\System\Cursor.h" />
     <ClInclude Include="Learning2DEngine\System\Game.h" />

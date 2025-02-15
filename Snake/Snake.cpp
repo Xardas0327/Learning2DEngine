@@ -42,14 +42,12 @@ void Snake::Init()
     Game::mainCamera.SetResolution(RenderManager::GetInstance().GetResolution());
 
     //GameController
-    auto gameControllerObject = new GameObject();
+    auto gameControllerObject = GameObject::Create();
     gameController = gameControllerObject->AddComponent<GameController, const FontSizePair&>(fontSizePair);
 }
 
 void Snake::Terminate()
 {
-    GameObject::Destroy(gameController);
-
     TextCharacterSet::GetInstance().Clear();
 	Game::Terminate();
 }

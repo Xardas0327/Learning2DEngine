@@ -38,6 +38,7 @@ namespace Learning2DEngine
             Render (with MSAA and PostProcessEffect, if they are enabled)
             LateRender (without any effect)
             Update Window
+            Destroy Marked GameObjects
         */
         class Game : private IKeyboardRefresher,
                     private ICursorRefresher,

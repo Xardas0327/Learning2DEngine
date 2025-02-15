@@ -31,7 +31,7 @@ void GameController::Init()
     const int middleHeight = resolution.GetHeight() / 2;
 
     // Background
-    auto background = new GameObject();
+    auto background = GameObject::Create();
     backgroundController = background->AddComponent<BackgroundController, const std::string&, const Resolution&>("background", resolution);
 
     // Levels
@@ -51,11 +51,11 @@ void GameController::Init()
     selectedLevel = 0;
 
     // Player
-    auto player = new GameObject();
+    auto player = GameObject::Create();
     playerController = player->AddComponent<PlayerController, const std::string&>("paddle");
 
     // Ball
-    auto ball = new GameObject();
+    auto ball = GameObject::Create();
     ballController = ball->AddComponent<
         BallController,
         PlayerController*,
@@ -71,7 +71,7 @@ void GameController::Init()
         );
 
     // Text
-    auto liveGameObject = new GameObject(
+    auto liveGameObject = GameObject::Create(
         Transform(
             glm::vec2(5.0f, 5.0f)
         )
@@ -82,7 +82,7 @@ void GameController::Init()
         "Lifes: " + std::to_string(lifes)
     );
 
-    auto startGameObject = new GameObject(
+    auto startGameObject = GameObject::Create(
         Transform(
             glm::vec2(250.0f, static_cast<float>(middleHeight))
         )
@@ -93,7 +93,7 @@ void GameController::Init()
         "Press ENTER to start"
     );
 
-    auto levelSelectorGameObject = new GameObject(
+    auto levelSelectorGameObject = GameObject::Create(
         Transform(
             glm::vec2(245.0f, static_cast<float>(middleHeight) + 20.0f),
             glm::vec2(0.75f, 0.75f)
@@ -105,7 +105,7 @@ void GameController::Init()
         "Press W or S to select level"
     );
 
-    auto winGameObject = new GameObject(
+    auto winGameObject = GameObject::Create(
         Transform(
             glm::vec2(320.0f, static_cast<float>(middleHeight) - 20.0f)
         ),
@@ -119,7 +119,7 @@ void GameController::Init()
         glm::vec3(0.0f, 1.0f, 0.0f)
     );
 
-    auto retryGameObject = new GameObject(
+    auto retryGameObject = GameObject::Create(
         Transform(
             glm::vec2(130.0f, static_cast<float>(middleHeight))
         ),
@@ -142,20 +142,6 @@ void GameController::Destroy()
 {
     UpdaterComponent::Destroy();
     LateUpdaterComponent::Destroy();
-
-    GameObject::Destroy(backgroundController);
-    GameObject::Destroy(playerController);
-    GameObject::Destroy(ballController);
-
-    GameObject::Destroy(lifeText);
-    GameObject::Destroy(startText);
-    GameObject::Destroy(levelSelectorText);
-    GameObject::Destroy(winText);
-    GameObject::Destroy(retryText);
-
-    for (auto& level : levels)
-        level.ClearBricks();
-
     soundEngine->drop();
 }
 

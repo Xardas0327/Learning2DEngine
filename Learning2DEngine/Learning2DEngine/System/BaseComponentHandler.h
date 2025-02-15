@@ -34,12 +34,15 @@ namespace Learning2DEngine
 							return it != removeableComponents.end();
 						});
 					components.erase(newEnd, components.end());
+
+					removeableComponents.clear();
 				}
 
-				components.insert(components.end(), newComponents.begin(), newComponents.end());
-
-				removeableComponents.clear();
-				newComponents.clear();
+				if (newComponents.size() > 0)
+				{
+					components.insert(components.end(), newComponents.begin(), newComponents.end());
+					newComponents.clear();
+				}
 			}
 
 		public:
