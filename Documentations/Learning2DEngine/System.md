@@ -1,5 +1,6 @@
 # System
 - [BaseComponentHandler](System.md#basecomponenthandler)
+- [BaseGameObject](System.md#basegameobject)
 - [BaseLateUpdaterComponent](System.md#baselateupdatercomponent)
 - [BaseUpdaterComponent](System.md#baseupdatercomponent)
 - [Camera](System.md#camera)
@@ -8,6 +9,7 @@
 - [Cursor](System.md#cursor)
 - [Game](System.md#game)
 - [GameObject](System.md#gameobject)
+- [GameObjectManager](System.md#gameobjectmanager)
 - [IComponentHandler](System.md#icomponenthandler)
 - [ICursorRefresher](System.md#icursorrefresher)
 - [IKeyboardRefresher](System.md#ikeyboardrefresher)
@@ -82,6 +84,27 @@ virtual void Remove(T* component);
 **Clear**  
 ```cpp
 virtual void Clear() override;
+```
+
+##
+## BaseGameObject
+### Source Code:
+[BaseGameObject.h](../../Learning2DEngine/Learning2DEngine/System/BaseGameObject.h)  
+
+### Description:
+It exists only for `GameObjectManager`.  
+Do not use it.  
+Please check for more info about `GameObject` and `GameObjectManager`.
+
+### Header:
+```cpp
+class BaseGameObject
+{
+protected:
+	BaseGameObject() {};
+public:
+	virtual ~BaseGameObject() {};
+};
 ```
 
 ##
@@ -539,6 +562,7 @@ The Function order in the Run() (in a frame):
 7. Render (with MSAA and PostProcessEffect, if they are enabled)
 8. LateRender (without any effect)
 9. Update Window
+10. Destroy Marked GameObjects
 
 ### Header:
 ```cpp
@@ -896,7 +920,7 @@ Please check the `Component` too.
 
 ### Header:
 ```cpp
-class GameObject final
+class GameObject final : private BaseGameObject
 {...}
 ```
 
@@ -921,20 +945,21 @@ Transform transform;
 ```
 
 ### Functions:
-**Public:**  
+**Private:**  
 **GameObject**  
 ```cpp
 GameObject(bool isActive = true);
 ```
 ```cpp
-GameObject(Transform transform, bool isActive = true);
+GameObject(const Transform& transform, bool isActive = true);
 ```
 
+**Public:**  
 **~GameObject()**  
 It calls `Destroy()` function of the current gameobject's components
 and delete them.
 ```cpp
-~GameObject();
+~GameObject() override;
 ```
 
 **AddComponent**  
@@ -976,17 +1001,83 @@ template <class TComponent>
 std::vector<TComponent*> GetComponents();
 ```
 
+**Create**  
+It creates a `GameObject` and returns its pointer.
+```cpp
+static GameObject* Create(bool isActive = true);
+```
+```cpp
+static GameObject* Create(const Transform& transform, bool isActive = true);
+```
+
 **Destroy**  
-It destroys the `GameObject`.  
-If the developer give a `Component`, it will destroy
-the `GameObject` of the `Component`.  
-That's why all other `Components`,which the `GameObject` has, will be destroyed.
+The `GameObject` and its components will be destroyed.  
+If the developer give a `Component`, it will destroy the `GameObject` of the `Component`.  
+That's why all other `Components`,which the `GameObject` has, will be destroyed.  
+`GameObject` will be inactive immediately, but it will be destroyed just at end of the frame only.
 ```cpp
 static void Destroy(GameObject* gameObject);
 ```
 ```cpp
 static void Destroy(Component* component);
 ```
+
+##
+## GameObjectManager
+### Source Code:
+[GameObjectManager.h](../../Learning2DEngine/Learning2DEngine/System/GameObjectManager.h)
+
+### Description:
+The `GameObjectManager` manages the `GameObjects` in the Engine.  
+With this class, the `Game` destroy the marked `GameObjects` at end of the frame and all `GameObjects`
+when we close the window.
+
+### Header:
+```cpp
+class GameObjectManager : public virtual Singleton<GameObjectManager>
+{...}
+```
+
+### Variables:
+**Private:**  
+**gameObjects**  
+```cpp
+std::vector<BaseGameObject*> gameObjects;
+```
+
+**removeableGameObjects**  
+```cpp
+std::vector<BaseGameObject*> removeableGameObjects;
+```
+
+### Functions:
+**Private:**  
+**GameObjectManager**  
+```cpp
+GameObjectManager();
+```
+
+**Public:**  
+**Add**  
+```cpp
+void Add(BaseGameObject* gameobject);
+```
+
+**MarkForDestroy**  
+```cpp
+void MarkForDestroy(BaseGameObject* gameobject);
+```
+
+**DestroyMarkedGameObjects**  
+```cpp
+void DestroyMarkedGameObjects();
+```
+
+**DestroyAllGameObjects**  
+```cpp
+void DestroyAllGameObjects();
+```
+
 
 ##
 ## IComponentHandler

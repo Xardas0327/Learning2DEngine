@@ -10,18 +10,18 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-		class GameObjectManager : public virtual Singleton<GameObjectManager>
+		class GameObjectManager final : public virtual Singleton<GameObjectManager>
 		{
 			friend class Singleton<GameObjectManager>;
 		private:
 			std::vector<BaseGameObject*> gameObjects;
-			std::vector<BaseGameObject*> removeableGameObject;
+			std::vector<BaseGameObject*> removeableGameObjects;
 
-		public:
 			GameObjectManager()
-				: gameObjects(), removeableGameObject()
+				: gameObjects(), removeableGameObjects()
 			{
 			}
+		public:
 
 			void Add(BaseGameObject* gameobject)
 			{
@@ -30,18 +30,18 @@ namespace Learning2DEngine
 
 			void MarkForDestroy(BaseGameObject* gameobject)
 			{
-				removeableGameObject.push_back(gameobject);
+				removeableGameObjects.push_back(gameobject);
 			}
 
 			void DestroyMarkedGameObjects()
 			{
-				if (removeableGameObject.size() > 0)
+				if (removeableGameObjects.size() > 0)
 				{
 					auto newEnd = remove_if(gameObjects.begin(), gameObjects.end(),
 						[this](BaseGameObject* gameObject)
 						{
-							auto it = std::find(removeableGameObject.begin(), removeableGameObject.end(), gameObject);
-							if (it != removeableGameObject.end())
+							auto it = std::find(removeableGameObjects.begin(), removeableGameObjects.end(), gameObject);
+							if (it != removeableGameObjects.end())
 							{
 								delete gameObject;
 								return true;
@@ -51,7 +51,7 @@ namespace Learning2DEngine
 						});
 					gameObjects.erase(newEnd, gameObjects.end());
 
-					removeableGameObject.clear();
+					removeableGameObjects.clear();
 				}
 			}
 
@@ -63,7 +63,7 @@ namespace Learning2DEngine
 				}
 
 				gameObjects.clear();
-				removeableGameObject.clear();
+				removeableGameObjects.clear();
 			}
 		};
 	}
