@@ -283,26 +283,21 @@ std::vector<BaseCircleColliderComponent*> removeableCircleColliders;
 
 ### Functions:
 **Protected:**  
-**IsActiveObject**  
-It return true, that the collider is not in the removeableColliders and the collider and
-its gameobject are active.
-```cpp
-template<class T>
-bool IsActiveObject(T* collider, std::vector<T*> removeableColliders);
-```
+**CheckCollision**  
+1. CheckCollision: The first function iterate on colliders from startIndex with collider
+and it call the second CheckCollision function.
+2. CheckCollision: The function checks only the second object is still active and they are collided
+or not. If yes, It will call their OnCollision function.  
 
-**DoCollision**  
-The function checks, that 2 object are still active and they are collided.
-If yes, It will call their OnCollision function.  
-IMPORTANT: The function returns, that the first object was active before the last OnCollision.
-The active means, that the IsActiveObject function returned with true. The reason is, that
-maybe the previous collison disabled or destroyed the collider,
-so the code can jump to the next collider.  
-The code doesn't check it after OnCollision, because code always have to check it
-before collison checking, so it would be a duplicate work only.
+IMPORTANT: The functions return, that the first object is still active
+after the OnCollision(s).
 ```cpp
 template<class T, class U>
-bool DoCollision(T* first, std::vector<T*> firstRemoveableColliders, U* second, std::vector<U*> secondRemoveableColliders);
+bool CheckCollision(T* collider, std::vector<U*> colliders, int startIndex);
+```
+```cpp
+template<class T, class U>
+bool CheckCollision(T* first, U* second);
 ```
 
 **RefreshBoxColliders**  
