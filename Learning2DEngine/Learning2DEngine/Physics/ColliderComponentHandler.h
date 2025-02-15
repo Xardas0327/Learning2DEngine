@@ -25,27 +25,26 @@ namespace Learning2DEngine
 			std::vector<BaseCircleColliderComponent*> newCircleColliders;
 			std::vector<BaseCircleColliderComponent*> removeableCircleColliders;
 
-			template<class T>
-			bool IsActiveObject(T* collider, std::vector<T*> removeableColliders)
+			// The function returns, that the collider is still active after the OnCollision
+			template<class T, class U>
+			bool CheckCollision(T* collider, std::vector<U*> colliders, int startIndex)
 			{
-				//A GameObject will only be destroyed at the end of the frame.
-				return collider->isActive
-					&& collider->gameObject->isActive;
+				for (int i = startIndex; i < colliders.size(); ++i)
+				{
+					if (!CheckCollision(collider, colliders[i]))
+						return false;
+				}
+
+				return true;
 			}
 
-
-			// The function checks, that 2 object are still active
+			// The function checks only the second object is still active
 			// and they are collided. If yes, It will call their OnCollision function.
-			// IMPORTANT: The function returns, that the first object was active before the last OnCollision
+			// IMPORTANT: The function returns, that the first object is still active after the OnCollision
 			template<class T, class U>
-			bool DoCollision(T* first, std::vector<T*> firstRemoveableColliders, U* second, std::vector<U*> secondRemoveableColliders)
+			bool CheckCollision(T* first, U* second)
 			{
-				// Check if the component is added into the removeable components in actual frame
-				//Maybe the previous collision made it inactive
-				if (!IsActiveObject<T>(first, firstRemoveableColliders))
-					return false;
-
-				if (IsActiveObject<U>(second, secondRemoveableColliders)
+				if (second->isActive && second->gameObject->isActive
 					&& (first->maskLayer & second->maskLayer))
 				{
 					CollisionData data = CollisionChecker::CheckCollision(*first, *second);
@@ -56,9 +55,8 @@ namespace Learning2DEngine
 					}
 				}
 
-				return true;
+				return first->isActive && first->gameObject->isActive;
 			}
-
 
 			void RefreshBoxColliders();
 			void RefreshCircleColliders();

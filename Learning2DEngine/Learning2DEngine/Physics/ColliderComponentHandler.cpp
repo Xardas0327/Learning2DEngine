@@ -133,70 +133,27 @@ namespace Learning2DEngine
 		{
 			for (int i = 0; i < activeBoxColliders.size(); ++i)
 			{
-				bool isActive = true;
+				bool isActive = activeBoxColliders[i]->isActive && activeBoxColliders[i]->gameObject->isActive;
+				if (!isActive)
+					continue;
+
 				// activeBoxColliders
-				for (int j = i + 1; j < activeBoxColliders.size(); ++j)
-				{
-					isActive = DoCollision(
-						activeBoxColliders[i],
-						removeableBoxColliders,
-						activeBoxColliders[j],
-						removeableBoxColliders);
-
-					if (!isActive)
-						break;
-				}
-
+				isActive = CheckCollision(activeBoxColliders[i], activeBoxColliders, i + 1);
 				if (!isActive)
 					continue;
 
 				// activeCircleColliders
-				for (int j = 0; j < activeCircleColliders.size(); ++j)
-				{
-
-					isActive = DoCollision(
-						activeBoxColliders[i],
-						removeableBoxColliders,
-						activeCircleColliders[j],
-						removeableCircleColliders);
-
-					if (!isActive)
-						break;
-				}
-
+				isActive = CheckCollision(activeBoxColliders[i], activeCircleColliders, 0);
 				if (!isActive)
 					continue;
 
 				// passiveBoxColliders
-				for (int j = 0; j < passiveBoxColliders.size(); ++j)
-				{
-
-					isActive = DoCollision(
-						activeBoxColliders[i],
-						removeableBoxColliders,
-						passiveBoxColliders[j],
-						removeableBoxColliders);
-
-					if (!isActive)
-						break;
-				}
-
+				isActive = CheckCollision(activeBoxColliders[i], passiveBoxColliders, 0);
 				if (!isActive)
 					continue;
 
 				// passiveCircleColliders
-				for (int j = 0; j < passiveCircleColliders.size(); ++j)
-				{
-
-					isActive = DoCollision(
-						activeBoxColliders[i],
-						removeableBoxColliders,
-						passiveCircleColliders[j],
-						removeableCircleColliders);
-
-					if (!isActive)
-						break;
-				}
+				CheckCollision(activeBoxColliders[i], passiveCircleColliders, 0);
 			}
 
 		}
@@ -206,54 +163,22 @@ namespace Learning2DEngine
 			for (int i = 0; i < activeCircleColliders.size(); ++i)
 			{
 				// All active box colliders were checked in the previous loop
+				bool isActive = activeCircleColliders[i]->isActive && activeCircleColliders[i]->gameObject->isActive;
+				if (!isActive)
+					continue;
 
-				bool isActive = true;
 				// activeCircleColliders
-				for (int j = i + 1; j < activeCircleColliders.size(); ++j)
-				{
-					isActive = DoCollision(
-						activeCircleColliders[i],
-						removeableCircleColliders,
-						activeCircleColliders[j],
-						removeableCircleColliders);
-
-					if (!isActive)
-						break;
-				}
-
+				isActive = CheckCollision(activeCircleColliders[i], activeCircleColliders, i + 1);
 				if (!isActive)
 					continue;
 
 				// passiveBoxColliders
-				for (int j = 0; j < passiveBoxColliders.size(); ++j)
-				{
-
-					isActive = DoCollision(
-						activeCircleColliders[i],
-						removeableCircleColliders,
-						passiveBoxColliders[j],
-						removeableBoxColliders);
-
-					if (!isActive)
-						break;
-				}
-
+				isActive = CheckCollision(activeCircleColliders[i], passiveBoxColliders, 0);
 				if (!isActive)
 					continue;
 
 				// passiveCircleColliders
-				for (int j = 0; j < passiveCircleColliders.size(); ++j)
-				{
-
-					isActive = DoCollision(
-						activeCircleColliders[i],
-						removeableCircleColliders,
-						passiveCircleColliders[j],
-						removeableCircleColliders);
-
-					if (!isActive)
-						break;
-				}
+				CheckCollision(activeCircleColliders[i], passiveCircleColliders, 0);
 			}
 		}
 
