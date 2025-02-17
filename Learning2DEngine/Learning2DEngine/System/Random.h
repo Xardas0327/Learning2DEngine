@@ -13,10 +13,7 @@ namespace Learning2DEngine
 		{
 		private:
 			Random() { }
-			static void Init();
 		public:
-			static bool isInited;
-
 			/// <summary>
 			/// Return a random int within [minInclusive..maxExclusive)
 			/// </summary>

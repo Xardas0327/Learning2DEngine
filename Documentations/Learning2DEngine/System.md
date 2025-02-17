@@ -1271,10 +1271,6 @@ void DoWithAllComponents() override;
 
 ### Description:
 It is a static random number generator.
-It uses the *rand()* function from *cstdlib*.
-So, the randomness is depend on *RAND_MAX*. If the isInited is false,
-the next `GetNumber` function will run the *std::srand(std::time(nullptr))*,
-before generation.
 
 ### Header:
 ```cpp
@@ -1282,23 +1278,11 @@ class Random
 {...}
 ```
 
-### Variables:
-**Public:**  
-**isInited**  
-```cpp
-static bool isInited;
-```
-
 ### Functions:
 **Private:**  
 **Random**  
 ```cpp
 Random();
-```
-
-**Init**  
-```cpp
-static void Init();
 ```
 
 **Public:**  

@@ -1,7 +1,6 @@
 #include "Random.h"
 
-#include <cstdlib>
-#include <ctime>
+#include <random>
 #include <exception>
 #include <string>
 
@@ -11,18 +10,6 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-		bool Random::isInited = false;
-
-		void Random::Init()
-		{
-			if (isInited)
-				return;
-
-			std::srand(std::time(nullptr));
-
-			isInited = true;
-		}
-		
 		int Random::GetNumber(int minInclusive, int maxExclusive)
 		{
 			if (minInclusive >= maxExclusive)
@@ -33,10 +20,11 @@ namespace Learning2DEngine
 				throw std::exception(errorMessage.c_str());
 			}
 
-			Init();
-			int range = maxExclusive - minInclusive;
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_int_distribution<> dis(minInclusive, maxExclusive);
 
-			return (rand() % range) + minInclusive;
+			return dis(gen);
 		}
 
 		float Random::GetNumber(float minInclusive, float maxInclusive)
@@ -49,13 +37,11 @@ namespace Learning2DEngine
 				throw std::exception(errorMessage.c_str());
 			}
 
-			Init();
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_real_distribution<> dis(minInclusive, std::nextafter(maxInclusive, DBL_MAX));
 
-			//Between [0..1]
-			float number = static_cast<float>(std::rand()) / RAND_MAX;
-			float range = maxInclusive - minInclusive;
-
-			return number * range + minInclusive;
+			return dis(gen);
 		}
 	}
 }
