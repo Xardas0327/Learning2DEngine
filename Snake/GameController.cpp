@@ -1,9 +1,11 @@
 #include "GameController.h"
 
+#include <Learning2DEngine/DebugTool/DebugMacro.h>
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/InputStatus.h>
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/Render/RenderManager.h>
+#include <Learning2DEngine/Object/FpsShower.h>
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
@@ -16,9 +18,6 @@ GameController::GameController(GameObject* gameObject, const FontSizePair& fontS
 	dencreaseTimeAfterEat(TIME_DECREASE), baseSnakeLength(3),
 	state(GameState::GAME_MENU), score(0), unitSize(0), foodController(nullptr), playerController(nullptr),
 	moveWaitingTime(0.0f), actualWaitingTime(0.0f), moveDirection(), lastMoveDirection(), scoreText(nullptr), startText(nullptr)
-#if L2DE_DEBUG
-    , fpsShower(nullptr)
-#endif
 {
 
 }
@@ -70,7 +69,7 @@ void GameController::Init()
     );
 
 #if L2DE_DEBUG
-    fpsShower = FpsShower::CreateFpsShowerObject(
+    FpsShower::CreateFpsShowerObject(
         Transform(
             glm::vec2(5.0f, resolution.GetHeight() - 30)
         ),
