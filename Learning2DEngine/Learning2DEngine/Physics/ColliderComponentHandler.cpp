@@ -9,6 +9,9 @@ namespace Learning2DEngine
 		ColliderComponentHandler::ColliderComponentHandler()
 			: activeBoxColliders(), passiveBoxColliders(), newBoxColliders(), removeableBoxColliders(),
 			activeCircleColliders(), passiveCircleColliders(), newCircleColliders(), removeableCircleColliders()
+#if USE_THREAD
+			, boxMutex(), circleMutex()
+#endif
 		{
 		}
 
@@ -88,11 +91,17 @@ namespace Learning2DEngine
 
 		void ColliderComponentHandler::Add(BaseBoxColliderComponent* component)
 		{
+#if USE_THREAD
+			std::lock_guard<std::mutex> lock(boxMutex);
+#endif
 			newBoxColliders.push_back(component);
 		}
 
 		void ColliderComponentHandler::Remove(BaseBoxColliderComponent* component)
 		{
+#if USE_THREAD
+			std::lock_guard<std::mutex> lock(boxMutex);
+#endif
 			//Check that it is not a new one.
 			auto it = std::find(newBoxColliders.begin(), newBoxColliders.end(), component);
 			if (it != newBoxColliders.end())
@@ -103,11 +112,17 @@ namespace Learning2DEngine
 
 		void ColliderComponentHandler::Add(BaseCircleColliderComponent* component)
 		{
+#if USE_THREAD
+			std::lock_guard<std::mutex> lock(circleMutex);
+#endif
 			newCircleColliders.push_back(component);
 		}
 
 		void ColliderComponentHandler::Remove(BaseCircleColliderComponent* component)
 		{
+#if USE_THREAD
+			std::lock_guard<std::mutex> lock(circleMutex);
+#endif
 			//Check that it is not a new one.
 			auto it = std::find(newCircleColliders.begin(), newCircleColliders.end(), component);
 			if (it != newCircleColliders.end())

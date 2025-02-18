@@ -2,11 +2,16 @@
 
 #include <algorithm>
 
+#include "../System/EngineMacro.h"
 #include "../System/GameObject.h"
 #include "../System/IComponentHandler.h"
 #include "BaseBoxColliderComponent.h"
 #include "BaseCircleColliderComponent.h"
 #include "CollisionChecker.h"
+
+#if USE_THREAD
+#include <mutex>
+#endif
 
 namespace Learning2DEngine
 {
@@ -24,6 +29,11 @@ namespace Learning2DEngine
 			std::vector<BaseCircleColliderComponent*> passiveCircleColliders;
 			std::vector<BaseCircleColliderComponent*> newCircleColliders;
 			std::vector<BaseCircleColliderComponent*> removeableCircleColliders;
+
+#if USE_THREAD
+			std::mutex boxMutex;
+			std::mutex circleMutex;
+#endif
 
 			// The function returns, that the collider is still active after the OnCollision
 			template<class T, class U>
