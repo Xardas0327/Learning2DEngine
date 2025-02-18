@@ -4,11 +4,6 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-		/// <summary>
-		/// It uses the rand() function from cstdlib.
-		/// So, the randomness is depend on RAND_MAX.
-		/// If the isInited is false, the next GetNumber function will run the std::srand(std::time(nullptr)), before generation.
-		/// </summary>
 		class Random
 		{
 		private:
