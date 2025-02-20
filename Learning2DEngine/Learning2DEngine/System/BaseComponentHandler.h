@@ -2,13 +2,10 @@
 
 #include <vector>
 #include <algorithm>
+#include <mutex>
 
 #include "EngineMacro.h"
 #include "IComponentHandler.h"
-
-#if USE_THREAD
-#include <mutex>
-#endif
 
 namespace Learning2DEngine
 {
@@ -21,15 +18,10 @@ namespace Learning2DEngine
 			std::vector<T*> components;
 			std::vector<T*> newComponents;
 			std::vector<T*> removeableComponents;
-#if USE_THREAD
 			std::mutex mutex;
-#endif
 
 			BaseComponentHandler()
-				: components(), newComponents(), removeableComponents()
-#if USE_THREAD
-				, mutex()
-#endif
+				: components(), newComponents(), removeableComponents(), mutex()
 			{
 			}
 
@@ -55,26 +47,40 @@ namespace Learning2DEngine
 				}
 			}
 
-		public:
-			virtual void Add(T* component)
+			void RemoveItem(T* component)
 			{
-#if USE_THREAD
-				std::lock_guard<std::mutex> lock(mutex);
-#endif
-				newComponents.push_back(component);
-			}
-
-			virtual void Remove(T* component)
-			{
-#if USE_THREAD
-				std::lock_guard<std::mutex> lock(mutex);
-#endif
-				//Check that it is not a new one.
+				//Check it, that it is a new one or not.
 				auto it = std::find(newComponents.begin(), newComponents.end(), component);
 				if (it != newComponents.end())
 					newComponents.erase(it);
 				else
 					removeableComponents.push_back(component);
+			}
+		public:
+			virtual void Add(T* component, bool isThreadSafe)
+			{
+				if (isThreadSafe)
+				{
+					std::lock_guard<std::mutex> lock(mutex);
+					newComponents.push_back(component);
+				}
+				else
+				{
+					newComponents.push_back(component);
+				}
+			}
+
+			virtual void Remove(T* component, bool isThreadSafe)
+			{
+				if (isThreadSafe)
+				{
+					std::lock_guard<std::mutex> lock(mutex);
+					RemoveItem(component);
+				}
+				else
+				{
+					RemoveItem(component);
+				}
 			}
 
 			virtual void Clear() override

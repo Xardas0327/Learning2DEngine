@@ -34,9 +34,9 @@ namespace Learning2DEngine
 			{
 			}
 
-			void Add(BaseRendererComponent* component) override
+			void Add(BaseRendererComponent* component, bool isThreadSafe) override
 			{
-				BaseComponentHandler::Add(component);
+				BaseComponentHandler::Add(component, isThreadSafe);
 				isReorderNeeded = true;
 			}
 

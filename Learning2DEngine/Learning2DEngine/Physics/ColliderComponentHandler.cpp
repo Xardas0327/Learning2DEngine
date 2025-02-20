@@ -8,10 +8,8 @@ namespace Learning2DEngine
 	{
 		ColliderComponentHandler::ColliderComponentHandler()
 			: activeBoxColliders(), passiveBoxColliders(), newBoxColliders(), removeableBoxColliders(),
-			activeCircleColliders(), passiveCircleColliders(), newCircleColliders(), removeableCircleColliders()
-#if USE_THREAD
-			, boxMutex(), circleMutex()
-#endif
+			activeCircleColliders(), passiveCircleColliders(), newCircleColliders(), removeableCircleColliders(),
+			boxMutex(), circleMutex()
 		{
 		}
 
@@ -89,20 +87,22 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ColliderComponentHandler::Add(BaseBoxColliderComponent* component)
+		void ColliderComponentHandler::Add(BaseBoxColliderComponent* component, bool isThreadSafe)
 		{
-#if USE_THREAD
-			std::lock_guard<std::mutex> lock(boxMutex);
-#endif
-			newBoxColliders.push_back(component);
+			if (isThreadSafe)
+			{
+				std::lock_guard<std::mutex> lock(boxMutex);
+				newBoxColliders.push_back(component);
+			}
+			else
+			{
+				newBoxColliders.push_back(component);
+			}
 		}
 
-		void ColliderComponentHandler::Remove(BaseBoxColliderComponent* component)
+		void ColliderComponentHandler::RemoveItem(BaseBoxColliderComponent* component)
 		{
-#if USE_THREAD
-			std::lock_guard<std::mutex> lock(boxMutex);
-#endif
-			//Check that it is not a new one.
+			//Check it, that it is a new one or not.
 			auto it = std::find(newBoxColliders.begin(), newBoxColliders.end(), component);
 			if (it != newBoxColliders.end())
 				newBoxColliders.erase(it);
@@ -110,25 +110,53 @@ namespace Learning2DEngine
 				removeableBoxColliders.push_back(component);
 		}
 
-		void ColliderComponentHandler::Add(BaseCircleColliderComponent* component)
+		void ColliderComponentHandler::Remove(BaseBoxColliderComponent* component, bool isThreadSafe)
 		{
-#if USE_THREAD
-			std::lock_guard<std::mutex> lock(circleMutex);
-#endif
-			newCircleColliders.push_back(component);
+			if (isThreadSafe)
+			{
+				std::lock_guard<std::mutex> lock(boxMutex);
+				RemoveItem(component);
+			}
+			else
+			{
+				RemoveItem(component);
+			}
 		}
 
-		void ColliderComponentHandler::Remove(BaseCircleColliderComponent* component)
+		void ColliderComponentHandler::Add(BaseCircleColliderComponent* component, bool isThreadSafe)
 		{
-#if USE_THREAD
-			std::lock_guard<std::mutex> lock(circleMutex);
-#endif
-			//Check that it is not a new one.
+			if (isThreadSafe)
+			{
+				std::lock_guard<std::mutex> lock(circleMutex);
+				newCircleColliders.push_back(component);
+			}
+			else
+			{
+				newCircleColliders.push_back(component);
+			}
+		}
+
+		void ColliderComponentHandler::RemoveItem(BaseCircleColliderComponent* component)
+		{
+			//Check it, that it is a new one or not.
 			auto it = std::find(newCircleColliders.begin(), newCircleColliders.end(), component);
 			if (it != newCircleColliders.end())
 				newCircleColliders.erase(it);
 			else
 				removeableCircleColliders.push_back(component);
+		}
+
+		void ColliderComponentHandler::Remove(BaseCircleColliderComponent* component, bool isThreadSafe)
+		{
+			if (isThreadSafe)
+			{
+				std::lock_guard<std::mutex> lock(circleMutex);
+				RemoveItem(component);
+			}
+			else
+			{
+				RemoveItem(component);
+			}
 		}
 
 		void ColliderComponentHandler::Clear()

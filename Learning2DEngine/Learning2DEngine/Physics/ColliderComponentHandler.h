@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <mutex>
 
 #include "../System/EngineMacro.h"
 #include "../System/GameObject.h"
@@ -8,10 +9,6 @@
 #include "BaseBoxColliderComponent.h"
 #include "BaseCircleColliderComponent.h"
 #include "CollisionChecker.h"
-
-#if USE_THREAD
-#include <mutex>
-#endif
 
 namespace Learning2DEngine
 {
@@ -30,10 +27,8 @@ namespace Learning2DEngine
 			std::vector<BaseCircleColliderComponent*> newCircleColliders;
 			std::vector<BaseCircleColliderComponent*> removeableCircleColliders;
 
-#if USE_THREAD
 			std::mutex boxMutex;
 			std::mutex circleMutex;
-#endif
 
 			// The function returns, that the collider is still active after the OnCollision
 			template<class T, class U>
@@ -68,6 +63,9 @@ namespace Learning2DEngine
 				return first->isActive && first->gameObject->isActive;
 			}
 
+			void RemoveItem(BaseBoxColliderComponent* component);
+			void RemoveItem(BaseCircleColliderComponent* component);
+
 			void RefreshBoxColliders();
 			void RefreshCircleColliders();
 			void CheckCollisionWithActiveBox();
@@ -76,11 +74,11 @@ namespace Learning2DEngine
 		public:
 			ColliderComponentHandler();
 
-			void Add(BaseBoxColliderComponent* collider);
-			void Remove(BaseBoxColliderComponent* collider);
+			void Add(BaseBoxColliderComponent* collider, bool isThreadSafe);
+			void Remove(BaseBoxColliderComponent* collider, bool isThreadSafe);
 
-			void Add(BaseCircleColliderComponent* collider);
-			void Remove(BaseCircleColliderComponent* collider);
+			void Add(BaseCircleColliderComponent* collider, bool isThreadSafe);
+			void Remove(BaseCircleColliderComponent* collider, bool isThreadSafe);
 
 			void Clear() override;
 			void Run() override;

@@ -26,9 +26,11 @@ namespace Learning2DEngine
             Render::RendererComponentHandler rendererComponentHandler;
             Render::RendererComponentHandler lateRendererComponentHandler;
 
+            bool isThreadSafe;
+
             ComponentManager()
                 : updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
-                rendererComponentHandler(), lateRendererComponentHandler()
+                rendererComponentHandler(), lateRendererComponentHandler(), isThreadSafe(false)
             {
 
             }
@@ -37,12 +39,12 @@ namespace Learning2DEngine
 
             inline void AddToUpdate(BaseUpdaterComponent* component)
             {
-                updaterComponentHandler.Add(component);
+                updaterComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromUpdate(BaseUpdaterComponent* component)
             {
-                updaterComponentHandler.Remove(component);
+                updaterComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void Update()
@@ -54,12 +56,12 @@ namespace Learning2DEngine
 
             inline void AddToLateUpdate(BaseLateUpdaterComponent* component)
             {
-                lateUpdaterComponentHandler.Add(component);
+                lateUpdaterComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromLateUpdate(BaseLateUpdaterComponent* component)
             {
-                lateUpdaterComponentHandler.Remove(component);
+                lateUpdaterComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void LateUpdate()
@@ -71,22 +73,22 @@ namespace Learning2DEngine
 
             inline void AddToCollider(Physics::BaseBoxColliderComponent* component)
             {
-                colliderComponentHandler.Add(component);
+                colliderComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void AddToCollider(Physics::BaseCircleColliderComponent* component)
             {
-                colliderComponentHandler.Add(component);
+                colliderComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component)
             {
-                colliderComponentHandler.Remove(component);
+                colliderComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component)
             {
-                colliderComponentHandler.Remove(component);
+                colliderComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void CheckCollision()
@@ -98,12 +100,12 @@ namespace Learning2DEngine
 
             inline void AddToRenderer(Render::BaseRendererComponent* component)
             {
-                rendererComponentHandler.Add(component);
+                rendererComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromRenderer(Render::BaseRendererComponent* component)
             {
-                rendererComponentHandler.Remove(component);
+                rendererComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void NeedReorderRenderers()
@@ -120,12 +122,12 @@ namespace Learning2DEngine
 
             inline void AddToLateRenderer(Render::BaseRendererComponent* component)
             {
-                lateRendererComponentHandler.Add(component);
+                lateRendererComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromLateRenderer(Render::BaseRendererComponent* component)
             {
-                lateRendererComponentHandler.Remove(component);
+                lateRendererComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void NeedReorderLateRenderers()
@@ -136,6 +138,18 @@ namespace Learning2DEngine
             inline void LateRender()
             {
                 lateRendererComponentHandler.Run();
+            }
+
+            //All
+
+            inline void SetThreadSafe(bool value)
+            {
+                isThreadSafe = value;
+            }
+
+            inline bool GetThreadSafe()
+            {
+                return isThreadSafe;
             }
 
             void Clear()
