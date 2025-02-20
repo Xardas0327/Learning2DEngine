@@ -45,7 +45,7 @@ namespace Learning2DEngine
 				isReorderNeeded = true;
 			}
 
-			void DoWithAllComponents() override
+			void Run() override
 			{
 				RefreshComponents();
 				ReorderComponents();

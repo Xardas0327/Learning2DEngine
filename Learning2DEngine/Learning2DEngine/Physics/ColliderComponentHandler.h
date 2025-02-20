@@ -83,7 +83,7 @@ namespace Learning2DEngine
 			void Remove(BaseCircleColliderComponent* collider);
 
 			void Clear() override;
-			void DoWithAllComponents() override;
+			void Run() override;
 		};
 	}
 }

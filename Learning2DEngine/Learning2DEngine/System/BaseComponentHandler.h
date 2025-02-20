@@ -60,7 +60,6 @@ namespace Learning2DEngine
 			{
 #if USE_THREAD
 				std::lock_guard<std::mutex> lock(mutex);
-				int a = 1;
 #endif
 				newComponents.push_back(component);
 			}

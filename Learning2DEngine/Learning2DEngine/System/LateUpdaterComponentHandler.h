@@ -16,7 +16,7 @@ namespace Learning2DEngine
 			{
 			}
 
-			void DoWithAllComponents() override
+			void Run() override
 			{
 				RefreshComponents();
 

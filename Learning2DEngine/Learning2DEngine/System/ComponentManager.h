@@ -47,7 +47,7 @@ namespace Learning2DEngine
 
             inline void Update()
             {
-                updaterComponentHandler.DoWithAllComponents();
+                updaterComponentHandler.Run();
             }
 
             //LateUpdate
@@ -64,7 +64,7 @@ namespace Learning2DEngine
 
             inline void LateUpdate()
             {
-                lateUpdaterComponentHandler.DoWithAllComponents();
+                lateUpdaterComponentHandler.Run();
             }
 
             //Collider
@@ -91,7 +91,7 @@ namespace Learning2DEngine
 
             inline void CheckCollision()
             {
-                colliderComponentHandler.DoWithAllComponents();
+                colliderComponentHandler.Run();
             }
 
             //Render
@@ -113,7 +113,7 @@ namespace Learning2DEngine
 
             inline void Render()
             {
-                rendererComponentHandler.DoWithAllComponents();
+                rendererComponentHandler.Run();
             }
 
             //LateRender
@@ -135,7 +135,7 @@ namespace Learning2DEngine
 
             inline void LateRender()
             {
-                lateRendererComponentHandler.DoWithAllComponents();
+                lateRendererComponentHandler.Run();
             }
 
             void Clear()

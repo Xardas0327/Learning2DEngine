@@ -197,7 +197,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ColliderComponentHandler::DoWithAllComponents()
+		void ColliderComponentHandler::Run()
 		{
 			RefreshBoxColliders();
 			RefreshCircleColliders();
