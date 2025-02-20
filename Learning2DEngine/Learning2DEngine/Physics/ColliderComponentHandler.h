@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <mutex>
 
-#include "../System/EngineMacro.h"
 #include "../System/GameObject.h"
 #include "../System/IComponentHandler.h"
 #include "BaseBoxColliderComponent.h"

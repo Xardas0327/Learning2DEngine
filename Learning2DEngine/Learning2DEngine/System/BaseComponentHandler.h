@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <mutex>
 
-#include "EngineMacro.h"
 #include "IComponentHandler.h"
 
 namespace Learning2DEngine
