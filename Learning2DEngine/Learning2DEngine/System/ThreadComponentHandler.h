@@ -20,36 +20,33 @@ namespace Learning2DEngine
 
 			void RunOnThreads()
 			{
-				size_t oldSize = threads.size();
+				size_t oldCapacity = threads.capacity();
 				threads.clear();
 
-				// -1, because one thread is the main thread.
-				size_t threadNumber = this->components.size() / maxComponentPerThread - 1;
+				size_t threadNumber = this->components.size() / maxComponentPerThread;
 
-				//if remainder is not 0.
+				//if remainder is not 0
 				if (this->components.size() % maxComponentPerThread)
-				{
 					++threadNumber;
-				}
+
+				//the threads should work more or less with the same number of items
+				size_t itemsPerThread = this->components.size() / threadNumber;
+				// -1, because one thread is the main thread.
+				--threadNumber;
 				
-				if (oldSize > threadNumber * 2)
-				{
-					//if the threads vector is too big, it will be reallocated.
+				//if the threads vector is too big, it will be reallocated.
+				if (oldCapacity > threadNumber * 2)
 					threads.shrink_to_fit();
-				}
+
 				threads.reserve(threadNumber);
 
 				for (size_t i = 0; i < threadNumber; ++i)
-				{
-					threads.emplace_back(&ThreadComponentHandler::RunPart, this, i * maxComponentPerThread, (i + 1) * maxComponentPerThread);
-				}
+					threads.emplace_back(&ThreadComponentHandler::RunPart, this, i * itemsPerThread, (i + 1) * itemsPerThread);
 
-				RunPart(threadNumber * maxComponentPerThread, this->components.size());
+				RunPart(threadNumber * itemsPerThread, this->components.size());
 
 				for (std::thread& t : threads)
-				{
 					t.join();
-				}
 			}
 
 		public:
