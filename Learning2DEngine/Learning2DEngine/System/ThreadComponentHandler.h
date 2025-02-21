@@ -14,29 +14,37 @@ namespace Learning2DEngine
 		protected:
 			//If it is 0, the class will not use threads
 			unsigned int maxComponentPerThread;
+			std::vector<std::thread> threads;
 
 			virtual void RunPart(size_t startIndex, size_t endIndex) = 0;
 
 			void RunOnThreads()
 			{
+				size_t oldSize = threads.size();
+				threads.clear();
+
 				// -1, because one thread is the main thread.
 				size_t threadNumber = this->components.size() / maxComponentPerThread - 1;
 
-				//If remainder is not 0.
+				//if remainder is not 0.
 				if (this->components.size() % maxComponentPerThread)
 				{
 					++threadNumber;
 				}
-				std::vector<std::thread> threads;
+				
+				if (oldSize > threadNumber * 2)
+				{
+					//if the threads vector is too big, it will be reallocated.
+					threads.shrink_to_fit();
+				}
 				threads.reserve(threadNumber);
 
-				size_t i = 0;
-				for (; i < threadNumber * maxComponentPerThread; i += maxComponentPerThread)
+				for (size_t i = 0; i < threadNumber; ++i)
 				{
-					threads.emplace_back(&ThreadComponentHandler::RunPart, this, i, (i + maxComponentPerThread));
+					threads.emplace_back(&ThreadComponentHandler::RunPart, this, i * maxComponentPerThread, (i + 1) * maxComponentPerThread);
 				}
 
-				RunPart(i, this->components.size());
+				RunPart(threadNumber * maxComponentPerThread, this->components.size());
 
 				for (std::thread& t : threads)
 				{
@@ -46,7 +54,7 @@ namespace Learning2DEngine
 
 		public:
 			ThreadComponentHandler()
-				: BaseComponentHandler<T>(), maxComponentPerThread(0)
+				: BaseComponentHandler<T>(), maxComponentPerThread(0), threads()
 			{
 			}
 
