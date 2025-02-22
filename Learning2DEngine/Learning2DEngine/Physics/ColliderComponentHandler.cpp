@@ -9,7 +9,7 @@ namespace Learning2DEngine
 		ColliderComponentHandler::ColliderComponentHandler()
 			: activeBoxColliders(), passiveBoxColliders(), newBoxColliders(), removableBoxColliders(),
 			activeCircleColliders(), passiveCircleColliders(), newCircleColliders(), removableCircleColliders(),
-			boxMutex(), circleMutex()
+			boxMutex(), circleMutex(), threads(), maxCheckingPerThread()
 		{
 		}
 
@@ -181,22 +181,22 @@ namespace Learning2DEngine
 					continue;
 
 				// activeBoxColliders
-				isActive = CheckCollision(activeBoxColliders[i], activeBoxColliders, i + 1);
+				isActive = CheckCollisions(activeBoxColliders[i], activeBoxColliders, i + 1);
 				if (!isActive)
 					continue;
 
 				// activeCircleColliders
-				isActive = CheckCollision(activeBoxColliders[i], activeCircleColliders, 0);
+				isActive = CheckCollisions(activeBoxColliders[i], activeCircleColliders, 0);
 				if (!isActive)
 					continue;
 
 				// passiveBoxColliders
-				isActive = CheckCollision(activeBoxColliders[i], passiveBoxColliders, 0);
+				isActive = CheckCollisions(activeBoxColliders[i], passiveBoxColliders, 0);
 				if (!isActive)
 					continue;
 
 				// passiveCircleColliders
-				CheckCollision(activeBoxColliders[i], passiveCircleColliders, 0);
+				CheckCollisions(activeBoxColliders[i], passiveCircleColliders, 0);
 			}
 
 		}
@@ -211,17 +211,17 @@ namespace Learning2DEngine
 					continue;
 
 				// activeCircleColliders
-				isActive = CheckCollision(activeCircleColliders[i], activeCircleColliders, i + 1);
+				isActive = CheckCollisions(activeCircleColliders[i], activeCircleColliders, i + 1);
 				if (!isActive)
 					continue;
 
 				// passiveBoxColliders
-				isActive = CheckCollision(activeCircleColliders[i], passiveBoxColliders, 0);
+				isActive = CheckCollisions(activeCircleColliders[i], passiveBoxColliders, 0);
 				if (!isActive)
 					continue;
 
 				// passiveCircleColliders
-				CheckCollision(activeCircleColliders[i], passiveCircleColliders, 0);
+				CheckCollisions(activeCircleColliders[i], passiveCircleColliders, 0);
 			}
 		}
 
