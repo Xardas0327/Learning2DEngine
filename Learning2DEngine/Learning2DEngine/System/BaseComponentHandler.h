@@ -2,9 +2,9 @@
 
 #include <vector>
 #include <algorithm>
+#include <mutex>
 
 #include "IComponentHandler.h"
-
 
 namespace Learning2DEngine
 {
@@ -16,26 +16,27 @@ namespace Learning2DEngine
 		protected:
 			std::vector<T*> components;
 			std::vector<T*> newComponents;
-			std::vector<T*> removeableComponents;
+			std::vector<T*> removableComponents;
+			std::mutex mutex;
 
 			BaseComponentHandler()
-				: components(), newComponents(), removeableComponents()
+				: components(), newComponents(), removableComponents(), mutex()
 			{
 			}
 
 			virtual void RefreshComponents()
 			{
-				if (removeableComponents.size() > 0)
+				if (removableComponents.size() > 0)
 				{
 					auto newEnd = remove_if(components.begin(), components.end(),
 						[this](T* component)
 						{
-							auto it = std::find(removeableComponents.begin(), removeableComponents.end(), component);
-							return it != removeableComponents.end();
+							auto it = std::find(removableComponents.begin(), removableComponents.end(), component);
+							return it != removableComponents.end();
 						});
 					components.erase(newEnd, components.end());
 
-					removeableComponents.clear();
+					removableComponents.clear();
 				}
 
 				if (newComponents.size() > 0)
@@ -45,27 +46,47 @@ namespace Learning2DEngine
 				}
 			}
 
-		public:
-			virtual void Add(T* component)
+			void RemoveItem(T* component)
 			{
-				newComponents.push_back(component);
-			}
-
-			virtual void Remove(T* component)
-			{
-				//Check that it is not a new one.
+				//Check it, that it is a new one or not.
 				auto it = std::find(newComponents.begin(), newComponents.end(), component);
 				if (it != newComponents.end())
 					newComponents.erase(it);
 				else
-					removeableComponents.push_back(component);
+					removableComponents.push_back(component);
+			}
+		public:
+			virtual void Add(T* component, bool isThreadSafe)
+			{
+				if (isThreadSafe)
+				{
+					std::lock_guard<std::mutex> lock(mutex);
+					newComponents.push_back(component);
+				}
+				else
+				{
+					newComponents.push_back(component);
+				}
+			}
+
+			virtual void Remove(T* component, bool isThreadSafe)
+			{
+				if (isThreadSafe)
+				{
+					std::lock_guard<std::mutex> lock(mutex);
+					RemoveItem(component);
+				}
+				else
+				{
+					RemoveItem(component);
+				}
 			}
 
 			virtual void Clear() override
 			{
 				components.clear();
 				newComponents.clear();
-				removeableComponents.clear();
+				removableComponents.clear();
 			}
 		};
 	}

@@ -26,9 +26,11 @@ namespace Learning2DEngine
             Render::RendererComponentHandler rendererComponentHandler;
             Render::RendererComponentHandler lateRendererComponentHandler;
 
+            bool isThreadSafe;
+
             ComponentManager()
                 : updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
-                rendererComponentHandler(), lateRendererComponentHandler()
+                rendererComponentHandler(), lateRendererComponentHandler(), isThreadSafe(false)
             {
 
             }
@@ -37,73 +39,93 @@ namespace Learning2DEngine
 
             inline void AddToUpdate(BaseUpdaterComponent* component)
             {
-                updaterComponentHandler.Add(component);
+                updaterComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromUpdate(BaseUpdaterComponent* component)
             {
-                updaterComponentHandler.Remove(component);
+                updaterComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void Update()
             {
-                updaterComponentHandler.DoWithAllComponents();
+                updaterComponentHandler.Run();
+            }
+
+            // If it is bigger then 0, than every component handler will be thread safe.
+            // But if it is 0, the thread safe will not be turn off automatically.
+            void SetUpdateMaxComponentPerThread(unsigned int value)
+            {
+                if (value > 0)
+                    SetThreadSafe(true);
+
+                updaterComponentHandler.SetMaxComponentPerThread(value);
             }
 
             //LateUpdate
 
             inline void AddToLateUpdate(BaseLateUpdaterComponent* component)
             {
-                lateUpdaterComponentHandler.Add(component);
+                lateUpdaterComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromLateUpdate(BaseLateUpdaterComponent* component)
             {
-                lateUpdaterComponentHandler.Remove(component);
+                lateUpdaterComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void LateUpdate()
             {
-                lateUpdaterComponentHandler.DoWithAllComponents();
+                lateUpdaterComponentHandler.Run();
+            }
+
+            // If it is bigger then 0, than every component handler will be thread safe.
+            // But if it is 0, the thread safe will not be turn off automatically.
+            void SetLateUpdateMaxComponentPerThread(unsigned int value)
+            {
+                if (value > 0)
+                    SetThreadSafe(true);
+
+                lateUpdaterComponentHandler.SetMaxComponentPerThread(value);
             }
 
             //Collider
 
             inline void AddToCollider(Physics::BaseBoxColliderComponent* component)
             {
-                colliderComponentHandler.Add(component);
+                colliderComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void AddToCollider(Physics::BaseCircleColliderComponent* component)
             {
-                colliderComponentHandler.Add(component);
+                colliderComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component)
             {
-                colliderComponentHandler.Remove(component);
+                colliderComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component)
             {
-                colliderComponentHandler.Remove(component);
+                colliderComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void CheckCollision()
             {
-                colliderComponentHandler.DoWithAllComponents();
+                colliderComponentHandler.Run();
             }
 
             //Render
 
             inline void AddToRenderer(Render::BaseRendererComponent* component)
             {
-                rendererComponentHandler.Add(component);
+                rendererComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromRenderer(Render::BaseRendererComponent* component)
             {
-                rendererComponentHandler.Remove(component);
+                rendererComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void NeedReorderRenderers()
@@ -113,19 +135,19 @@ namespace Learning2DEngine
 
             inline void Render()
             {
-                rendererComponentHandler.DoWithAllComponents();
+                rendererComponentHandler.Run();
             }
 
             //LateRender
 
             inline void AddToLateRenderer(Render::BaseRendererComponent* component)
             {
-                lateRendererComponentHandler.Add(component);
+                lateRendererComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromLateRenderer(Render::BaseRendererComponent* component)
             {
-                lateRendererComponentHandler.Remove(component);
+                lateRendererComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void NeedReorderLateRenderers()
@@ -135,7 +157,19 @@ namespace Learning2DEngine
 
             inline void LateRender()
             {
-                lateRendererComponentHandler.DoWithAllComponents();
+                lateRendererComponentHandler.Run();
+            }
+
+            //All
+
+            inline void SetThreadSafe(bool value)
+            {
+                isThreadSafe = value;
+            }
+
+            inline bool GetThreadSafe()
+            {
+                return isThreadSafe;
             }
 
             void Clear()

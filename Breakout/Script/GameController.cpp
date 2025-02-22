@@ -2,12 +2,15 @@
 
 #include <string>
 
+#include <Learning2DEngine/DebugTool/DebugMacro.h>
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/System/Random.h>
+#include <Learning2DEngine/Object/FpsShower.h>
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::UI;
+using namespace Learning2DEngine::Object;
 using namespace irrklang;
 
 GameController::GameController(GameObject* gameObject, const FontSizePair& fontSizePair, PostProcessData* postProcessData)
@@ -35,19 +38,15 @@ void GameController::Init()
     backgroundController = background->AddComponent<BackgroundController, const std::string&, const Resolution&>("background", resolution);
 
     // Levels
-    GameLevel one("Assets/Levels/one.lvl");
-    one.Load(true);
-    GameLevel two("Assets/Levels/two.lvl");
-    two.Load(false);
-    GameLevel three("Assets/Levels/three.lvl");
-    three.Load(false);
-    GameLevel four("Assets/Levels/four.lvl");
-    four.Load(false);
-
-    levels.push_back(one);
-    levels.push_back(two);
-    levels.push_back(three);
-    levels.push_back(four);
+    levels.reserve(4);
+    levels.emplace_back("Assets/Levels/one.lvl");
+    levels.emplace_back("Assets/Levels/two.lvl");
+    levels.emplace_back("Assets/Levels/three.lvl");
+    levels.emplace_back("Assets/Levels/four.lvl");
+    levels[0].Load(true);
+    levels[1].Load(false);
+    levels[2].Load(false);
+    levels[3].Load(false);
     selectedLevel = 0;
 
     // Player
@@ -132,6 +131,16 @@ void GameController::Init()
         0,
         glm::vec3(1.0f, 1.0f, 0.0f)
     );
+
+#if L2DE_DEBUG
+    FpsShower::CreateFpsShowerObject(
+        Transform(
+            glm::vec2(5.0f, resolution.GetHeight() - 30)
+        ),
+        resolution,
+        fontSizePair,
+        99);
+#endif
 
     // Sounds
     soundEngine = createIrrKlangDevice();

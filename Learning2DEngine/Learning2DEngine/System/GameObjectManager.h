@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <mutex>
 
 #include "Singleton.h"
 #include "BaseGameObject.h"
@@ -15,33 +16,49 @@ namespace Learning2DEngine
 			friend class Singleton<GameObjectManager>;
 		private:
 			std::vector<BaseGameObject*> gameObjects;
-			std::vector<BaseGameObject*> removeableGameObjects;
+			std::vector<BaseGameObject*> removableGameObjects;
+			std::mutex addMutex;
+			std::mutex removeMutex;
+
+			bool isThreadSafe;
 
 			GameObjectManager()
-				: gameObjects(), removeableGameObjects()
+				: gameObjects(), removableGameObjects(), addMutex(), removeMutex(), isThreadSafe(false)
 			{
 			}
 		public:
 
 			void Add(BaseGameObject* gameobject)
 			{
-				gameObjects.push_back(gameobject);
+				if (isThreadSafe)
+				{
+					std::lock_guard<std::mutex> lock(addMutex);
+					gameObjects.push_back(gameobject);
+				}
+				else
+					gameObjects.push_back(gameobject);
 			}
 
 			void MarkForDestroy(BaseGameObject* gameobject)
 			{
-				removeableGameObjects.push_back(gameobject);
+				if (isThreadSafe)
+				{
+					std::lock_guard<std::mutex> lock(removeMutex);
+					removableGameObjects.push_back(gameobject);
+				}
+				else
+					removableGameObjects.push_back(gameobject);
 			}
 
 			void DestroyMarkedGameObjects()
 			{
-				if (removeableGameObjects.size() > 0)
+				if (removableGameObjects.size() > 0)
 				{
 					auto newEnd = remove_if(gameObjects.begin(), gameObjects.end(),
 						[this](BaseGameObject* gameObject)
 						{
-							auto it = std::find(removeableGameObjects.begin(), removeableGameObjects.end(), gameObject);
-							if (it != removeableGameObjects.end())
+							auto it = std::find(removableGameObjects.begin(), removableGameObjects.end(), gameObject);
+							if (it != removableGameObjects.end())
 							{
 								delete gameObject;
 								return true;
@@ -51,7 +68,7 @@ namespace Learning2DEngine
 						});
 					gameObjects.erase(newEnd, gameObjects.end());
 
-					removeableGameObjects.clear();
+					removableGameObjects.clear();
 				}
 			}
 
@@ -63,7 +80,17 @@ namespace Learning2DEngine
 				}
 
 				gameObjects.clear();
-				removeableGameObjects.clear();
+				removableGameObjects.clear();
+			}
+
+			inline void SetThreadSafe(bool value)
+			{
+				isThreadSafe = value;
+			}
+
+			inline bool GetThreadSafe()
+			{
+				return isThreadSafe;
 			}
 		};
 	}

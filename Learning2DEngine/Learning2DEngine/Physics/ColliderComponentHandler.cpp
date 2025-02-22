@@ -7,32 +7,33 @@ namespace Learning2DEngine
 	namespace Physics
 	{
 		ColliderComponentHandler::ColliderComponentHandler()
-			: activeBoxColliders(), passiveBoxColliders(), newBoxColliders(), removeableBoxColliders(),
-			activeCircleColliders(), passiveCircleColliders(), newCircleColliders(), removeableCircleColliders()
+			: activeBoxColliders(), passiveBoxColliders(), newBoxColliders(), removableBoxColliders(),
+			activeCircleColliders(), passiveCircleColliders(), newCircleColliders(), removableCircleColliders(),
+			boxMutex(), circleMutex()
 		{
 		}
 
 		void ColliderComponentHandler::RefreshBoxColliders()
 		{
-			if (removeableBoxColliders.size() > 0)
+			if (removableBoxColliders.size() > 0)
 			{
 				auto newActiveEnd = remove_if(activeBoxColliders.begin(), activeBoxColliders.end(),
 					[this](BaseBoxColliderComponent* collider)
 					{
-						auto it = std::find(removeableBoxColliders.begin(), removeableBoxColliders.end(), collider);
-						return it != removeableBoxColliders.end();
+						auto it = std::find(removableBoxColliders.begin(), removableBoxColliders.end(), collider);
+						return it != removableBoxColliders.end();
 					});
 				activeBoxColliders.erase(newActiveEnd, activeBoxColliders.end());
 
 				auto newPassiveEnd = remove_if(passiveBoxColliders.begin(), passiveBoxColliders.end(),
 					[this](BaseBoxColliderComponent* collider)
 					{
-						auto it = std::find(removeableBoxColliders.begin(), removeableBoxColliders.end(), collider);
-						return it != removeableBoxColliders.end();
+						auto it = std::find(removableBoxColliders.begin(), removableBoxColliders.end(), collider);
+						return it != removableBoxColliders.end();
 					});
 				passiveBoxColliders.erase(newPassiveEnd, passiveBoxColliders.end());
 
-				removeableBoxColliders.clear();
+				removableBoxColliders.clear();
 			}
 
 			if (newBoxColliders.size() > 0)
@@ -51,25 +52,25 @@ namespace Learning2DEngine
 
 		void ColliderComponentHandler::RefreshCircleColliders()
 		{
-			if (removeableCircleColliders.size() > 0)
+			if (removableCircleColliders.size() > 0)
 			{
 				auto newActiveEnd = remove_if(activeCircleColliders.begin(), activeCircleColliders.end(),
 					[this](BaseCircleColliderComponent* collider)
 					{
-						auto it = std::find(removeableCircleColliders.begin(), removeableCircleColliders.end(), collider);
-						return it != removeableCircleColliders.end();
+						auto it = std::find(removableCircleColliders.begin(), removableCircleColliders.end(), collider);
+						return it != removableCircleColliders.end();
 					});
 				activeCircleColliders.erase(newActiveEnd, activeCircleColliders.end());
 
 				auto newPassiveEnd = remove_if(passiveCircleColliders.begin(), passiveCircleColliders.end(),
 					[this](BaseCircleColliderComponent* collider)
 					{
-						auto it = std::find(removeableCircleColliders.begin(), removeableCircleColliders.end(), collider);
-						return it != removeableCircleColliders.end();
+						auto it = std::find(removableCircleColliders.begin(), removableCircleColliders.end(), collider);
+						return it != removableCircleColliders.end();
 					});
 				passiveCircleColliders.erase(newPassiveEnd, passiveCircleColliders.end());
 
-				removeableCircleColliders.clear();
+				removableCircleColliders.clear();
 			}
 
 			if (newCircleColliders.size() > 0)
@@ -86,34 +87,76 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ColliderComponentHandler::Add(BaseBoxColliderComponent* component)
+		void ColliderComponentHandler::Add(BaseBoxColliderComponent* component, bool isThreadSafe)
 		{
-			newBoxColliders.push_back(component);
+			if (isThreadSafe)
+			{
+				std::lock_guard<std::mutex> lock(boxMutex);
+				newBoxColliders.push_back(component);
+			}
+			else
+			{
+				newBoxColliders.push_back(component);
+			}
 		}
 
-		void ColliderComponentHandler::Remove(BaseBoxColliderComponent* component)
+		void ColliderComponentHandler::RemoveItem(BaseBoxColliderComponent* component)
 		{
-			//Check that it is not a new one.
+			//Check it, that it is a new one or not.
 			auto it = std::find(newBoxColliders.begin(), newBoxColliders.end(), component);
 			if (it != newBoxColliders.end())
 				newBoxColliders.erase(it);
 			else
-				removeableBoxColliders.push_back(component);
+				removableBoxColliders.push_back(component);
 		}
 
-		void ColliderComponentHandler::Add(BaseCircleColliderComponent* component)
+		void ColliderComponentHandler::Remove(BaseBoxColliderComponent* component, bool isThreadSafe)
 		{
-			newCircleColliders.push_back(component);
+			if (isThreadSafe)
+			{
+				std::lock_guard<std::mutex> lock(boxMutex);
+				RemoveItem(component);
+			}
+			else
+			{
+				RemoveItem(component);
+			}
 		}
 
-		void ColliderComponentHandler::Remove(BaseCircleColliderComponent* component)
+		void ColliderComponentHandler::Add(BaseCircleColliderComponent* component, bool isThreadSafe)
 		{
-			//Check that it is not a new one.
+			if (isThreadSafe)
+			{
+				std::lock_guard<std::mutex> lock(circleMutex);
+				newCircleColliders.push_back(component);
+			}
+			else
+			{
+				newCircleColliders.push_back(component);
+			}
+		}
+
+		void ColliderComponentHandler::RemoveItem(BaseCircleColliderComponent* component)
+		{
+			//Check it, that it is a new one or not.
 			auto it = std::find(newCircleColliders.begin(), newCircleColliders.end(), component);
 			if (it != newCircleColliders.end())
 				newCircleColliders.erase(it);
 			else
-				removeableCircleColliders.push_back(component);
+				removableCircleColliders.push_back(component);
+		}
+
+		void ColliderComponentHandler::Remove(BaseCircleColliderComponent* component, bool isThreadSafe)
+		{
+			if (isThreadSafe)
+			{
+				std::lock_guard<std::mutex> lock(circleMutex);
+				RemoveItem(component);
+			}
+			else
+			{
+				RemoveItem(component);
+			}
 		}
 
 		void ColliderComponentHandler::Clear()
@@ -121,12 +164,12 @@ namespace Learning2DEngine
 			activeBoxColliders.clear();
 			passiveBoxColliders.clear();
 			newBoxColliders.clear();
-			removeableBoxColliders.clear();
+			removableBoxColliders.clear();
 
 			activeCircleColliders.clear();
 			passiveCircleColliders.clear();
 			newCircleColliders.clear();
-			removeableCircleColliders.clear();
+			removableCircleColliders.clear();
 		}
 
 		void ColliderComponentHandler::CheckCollisionWithActiveBox()
@@ -182,7 +225,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ColliderComponentHandler::DoWithAllComponents()
+		void ColliderComponentHandler::Run()
 		{
 			RefreshBoxColliders();
 			RefreshCircleColliders();

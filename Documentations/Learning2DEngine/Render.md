@@ -450,7 +450,7 @@ RendererComponentHandler();
 It not just adds the `BaseRendererComponent` object to the vector,
 but it also sets the `isReorderNeeded` to true.
 ```cpp
-void Add(BaseRendererComponent* component) override;
+void Add(BaseRendererComponent* component, bool isThreadSafe) override;
 ```
 
 **NeedReorder**  
@@ -459,14 +459,12 @@ It sets the `isReorderNeeded` to true.
 inline void NeedReorder();
 ```
 
-**DoWithAllComponents**  
+**Run**  
 Firstly it refresh and reorder the `BaseRendererComponent` objects.  
-After that it calls the Draw() function of the objects
-if the object is not in the removeableComponents and the component and its gameObject are active.  
-Note: the code have to check the removeableComponents again, because
-maybe another component removed/destroyed the actual component in actual frame.
+After that it iterates on the components.  
+If the component and its gameobject is active, its Draw() function will be called.
 ```cpp
-void DoWithAllComponents() override;
+void Run() override;
 ```
 
 ##

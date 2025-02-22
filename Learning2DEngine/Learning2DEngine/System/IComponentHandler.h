@@ -13,7 +13,7 @@ namespace Learning2DEngine
 
 			virtual void Clear() = 0;
 
-			virtual void DoWithAllComponents() = 0;
+			virtual void Run() = 0;
 		};
 	}
 }
