@@ -16,27 +16,27 @@ namespace Learning2DEngine
 		protected:
 			std::vector<T*> components;
 			std::vector<T*> newComponents;
-			std::vector<T*> removeableComponents;
+			std::vector<T*> removableComponents;
 			std::mutex mutex;
 
 			BaseComponentHandler()
-				: components(), newComponents(), removeableComponents(), mutex()
+				: components(), newComponents(), removableComponents(), mutex()
 			{
 			}
 
 			virtual void RefreshComponents()
 			{
-				if (removeableComponents.size() > 0)
+				if (removableComponents.size() > 0)
 				{
 					auto newEnd = remove_if(components.begin(), components.end(),
 						[this](T* component)
 						{
-							auto it = std::find(removeableComponents.begin(), removeableComponents.end(), component);
-							return it != removeableComponents.end();
+							auto it = std::find(removableComponents.begin(), removableComponents.end(), component);
+							return it != removableComponents.end();
 						});
 					components.erase(newEnd, components.end());
 
-					removeableComponents.clear();
+					removableComponents.clear();
 				}
 
 				if (newComponents.size() > 0)
@@ -53,7 +53,7 @@ namespace Learning2DEngine
 				if (it != newComponents.end())
 					newComponents.erase(it);
 				else
-					removeableComponents.push_back(component);
+					removableComponents.push_back(component);
 			}
 		public:
 			virtual void Add(T* component, bool isThreadSafe)
@@ -86,7 +86,7 @@ namespace Learning2DEngine
 			{
 				components.clear();
 				newComponents.clear();
-				removeableComponents.clear();
+				removableComponents.clear();
 			}
 		};
 	}

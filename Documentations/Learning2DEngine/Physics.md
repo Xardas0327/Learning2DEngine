@@ -256,9 +256,9 @@ std::vector<BaseBoxColliderComponent*> passiveBoxColliders;
 std::vector<BaseBoxColliderComponent*> newBoxColliders;
 ```
 
-**removeableBoxColliders**  
+**removableBoxColliders**  
 ```cpp
-std::vector<BaseBoxColliderComponent*> removeableBoxColliders;
+std::vector<BaseBoxColliderComponent*> removableBoxColliders;
 ```
 
 **activeCircleColliders**  
@@ -276,9 +276,19 @@ std::vector<BaseCircleColliderComponent*> passiveCircleColliders;
 std::vector<BaseCircleColliderComponent*> newCircleColliders;
 ```
 
-**removeableCircleColliders**  
+**removableCircleColliders**  
 ```cpp
-std::vector<BaseCircleColliderComponent*> removeableCircleColliders;
+std::vector<BaseCircleColliderComponent*> removableCircleColliders;
+```
+
+**boxMutex**  
+```cpp
+std::mutex boxMutex;
+```
+
+**circleMutex**  
+```cpp
+std::mutex circleMutex;
 ```
 
 ### Functions:
@@ -300,19 +310,29 @@ template<class T, class U>
 bool CheckCollision(T* first, U* second);
 ```
 
+**RemoveItem**  
+They will remove the item from the new colliders or they will add the item into removable colliders.  
+They are used by Remove functions.
+```cpp
+void RemoveItem(BaseBoxColliderComponent* component);
+```
+```cpp
+void RemoveItem(BaseCircleColliderComponent* component);
+```
+
 **RefreshBoxColliders**  
-It removes the `removeableBoxColliders` and adds the `newBoxColliders` to
+It removes the `removableBoxColliders` and adds the `newBoxColliders` to
 the `activeBoxColliders` and the `passiveBoxColliders`.
-After this, it clears the `newBoxColliders` and the `removeableBoxColliders`.
+After this, it clears the `newBoxColliders` and the `removableBoxColliders`.
 ```cpp
 template<class T>
 void RefreshBoxColliders();
 ```
 
 **RefreshCircleColliders**  
-It removes the `removeableCircleColliders` and adds the `newCircleColliders` to
+It removes the `removableCircleColliders` and adds the `newCircleColliders` to
 the `activeCircleColliders` and the `passiveCircleColliders`.
-After this, it clears the `newCircleColliders` and the `removeableCircleColliders`.
+After this, it clears the `newCircleColliders` and the `removableCircleColliders`.
 ```cpp
 template<class T>
 void RefreshCircleColliders();
@@ -345,19 +365,21 @@ ColliderComponentHandler();
 ```
 
 **Add**  
+If the isThreadSafe is true, their mutex will be used.
 ```cpp
-void Add(BaseBoxColliderComponent* collider);
+void Add(BaseBoxColliderComponent* collider, bool isThreadSafe);
 ```
 ```cpp
-void Add(BaseCircleColliderComponent* collider);
+void Add(BaseCircleColliderComponent* collider, bool isThreadSafe);
 ```
 
 **Remove**  
+If the isThreadSafe is true, their mutex will be used.
 ```cpp
-void Remove(BaseBoxColliderComponent* collider);
+void Remove(BaseBoxColliderComponent* collider, bool isThreadSafe);
 ```
 ```cpp
-void Remove(BaseCircleColliderComponent* collider);
+void Remove(BaseCircleColliderComponent* collider, bool isThreadSafe);
 ```
 
 **Clear**  
@@ -365,12 +387,12 @@ void Remove(BaseCircleColliderComponent* collider);
 void Clear() override;
 ```
 
-**DoWithAllComponents**  
+**Run**  
 Firstly it calls the RefreshBoxColliders() and RefreshCircleColliders()
 functions. After that, it calls the CheckCollisionWithActiveBox()
 and CheckCollisionWithActiveCircle() functions.
 ```cpp
-void DoWithAllComponents() override;
+void Run() override;
 ```
 
 ##

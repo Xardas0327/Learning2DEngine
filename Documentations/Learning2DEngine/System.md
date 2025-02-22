@@ -51,9 +51,9 @@ std::vector<T*> components;
 std::vector<T*> newComponents;
 ```
 
-**removeableComponents**  
+**removableComponents**  
 ```cpp
-std::vector<T*> removeableComponents;
+std::vector<T*> removableComponents;
 ```
 
 ### Functions:
@@ -64,8 +64,8 @@ BaseComponentHandler();
 ```
 
 **RefreshComponents**  
-It removes the `removeableComponents` and adds the `newComponents` to the `components`.
-After this, it clears the `newComponents` and the `removeableComponents`.
+It removes the `removableComponents` and adds the `newComponents` to the `components`.
+After this, it clears the `newComponents` and the `removableComponents`.
 ```cpp
 virtual void RefreshComponents();
 ```
@@ -1045,9 +1045,9 @@ class GameObjectManager : public virtual Singleton<GameObjectManager>
 std::vector<BaseGameObject*> gameObjects;
 ```
 
-**removeableGameObjects**  
+**removableGameObjects**  
 ```cpp
-std::vector<BaseGameObject*> removeableGameObjects;
+std::vector<BaseGameObject*> removableGameObjects;
 ```
 
 ### Functions:
@@ -1256,8 +1256,8 @@ LateUpdaterComponentHandler();
 **DoWithAllComponents**  
 Firstly it refresh the `BaseLateUpdaterComponent` objects.  
 After that it calls the LateUpdate() function of the objects
-if the object is not in the removeableComponents and the component and its gameObject are active.  
-Note: the code have to check the removeableComponents again, because
+if the object is not in the removableComponents and the component and its gameObject are active.  
+Note: the code have to check the removableComponents again, because
 maybe another component removed/destroyed the actual component in actual frame.
 ```cpp
 void DoWithAllComponents() override;
@@ -1532,8 +1532,8 @@ UpdaterComponentHandler();
 **DoWithAllComponents**  
 Firstly it refresh the `BaseUpdaterComponent` objects.  
 After that it calls the Update() function of the objects
-if the object is not in the removeableComponents and the component and its gameObject are active.  
-Note: the code have to check the removeableComponents again, because
+if the object is not in the removableComponents and the component and its gameObject are active.  
+Note: the code have to check the removableComponents again, because
 maybe another component removed/destroyed the actual component in actual frame.
 ```cpp
 void DoWithAllComponents() override;

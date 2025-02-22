@@ -462,8 +462,8 @@ inline void NeedReorder();
 **DoWithAllComponents**  
 Firstly it refresh and reorder the `BaseRendererComponent` objects.  
 After that it calls the Draw() function of the objects
-if the object is not in the removeableComponents and the component and its gameObject are active.  
-Note: the code have to check the removeableComponents again, because
+if the object is not in the removableComponents and the component and its gameObject are active.  
+Note: the code have to check the removableComponents again, because
 maybe another component removed/destroyed the actual component in actual frame.
 ```cpp
 void DoWithAllComponents() override;

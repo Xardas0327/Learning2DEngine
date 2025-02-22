@@ -19,12 +19,12 @@ namespace Learning2DEngine
 			std::vector<BaseBoxColliderComponent*> activeBoxColliders;
 			std::vector<BaseBoxColliderComponent*> passiveBoxColliders;
 			std::vector<BaseBoxColliderComponent*> newBoxColliders;
-			std::vector<BaseBoxColliderComponent*> removeableBoxColliders;
+			std::vector<BaseBoxColliderComponent*> removableBoxColliders;
 
 			std::vector<BaseCircleColliderComponent*> activeCircleColliders;
 			std::vector<BaseCircleColliderComponent*> passiveCircleColliders;
 			std::vector<BaseCircleColliderComponent*> newCircleColliders;
-			std::vector<BaseCircleColliderComponent*> removeableCircleColliders;
+			std::vector<BaseCircleColliderComponent*> removableCircleColliders;
 
 			std::mutex boxMutex;
 			std::mutex circleMutex;
