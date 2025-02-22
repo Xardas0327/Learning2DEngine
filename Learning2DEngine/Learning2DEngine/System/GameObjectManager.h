@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <mutex>
 
 #include "Singleton.h"
 #include "BaseGameObject.h"
@@ -16,21 +17,37 @@ namespace Learning2DEngine
 		private:
 			std::vector<BaseGameObject*> gameObjects;
 			std::vector<BaseGameObject*> removableGameObjects;
+			std::mutex addMutex;
+			std::mutex removeMutex;
+
+			bool isThreadSafe;
 
 			GameObjectManager()
-				: gameObjects(), removableGameObjects()
+				: gameObjects(), removableGameObjects(), addMutex(), removeMutex(), isThreadSafe(false)
 			{
 			}
 		public:
 
 			void Add(BaseGameObject* gameobject)
 			{
-				gameObjects.push_back(gameobject);
+				if (isThreadSafe)
+				{
+					std::lock_guard<std::mutex> lock(addMutex);
+					gameObjects.push_back(gameobject);
+				}
+				else
+					gameObjects.push_back(gameobject);
 			}
 
 			void MarkForDestroy(BaseGameObject* gameobject)
 			{
-				removableGameObjects.push_back(gameobject);
+				if (isThreadSafe)
+				{
+					std::lock_guard<std::mutex> lock(removeMutex);
+					removableGameObjects.push_back(gameobject);
+				}
+				else
+					removableGameObjects.push_back(gameobject);
 			}
 
 			void DestroyMarkedGameObjects()
@@ -64,6 +81,16 @@ namespace Learning2DEngine
 
 				gameObjects.clear();
 				removableGameObjects.clear();
+			}
+
+			inline void SetThreadSafe(bool value)
+			{
+				isThreadSafe = value;
+			}
+
+			inline bool GetThreadSafe()
+			{
+				return isThreadSafe;
 			}
 		};
 	}

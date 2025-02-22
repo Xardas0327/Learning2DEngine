@@ -456,7 +456,8 @@ inline void Update();
 
 **SetUpdateMaxComponentPerThread**  
 If it is bigger then 0, than every component handler will be thread safe.  
-But if it is 0, the thread safe will not be turn off automatically.
+But if it is 0, the thread safe will not be turn off automatically.  
+Note: `GameObjectManager` will not be thread safe automatically.
 ```cpp
 void SetUpdateMaxComponentPerThread(unsigned int value)
 ```
@@ -478,7 +479,8 @@ inline void LateUpdate();
 
 **SetLateUpdateMaxComponentPerThread**  
 If it is bigger then 0, than every component handler will be thread safe.  
-But if it is 0, the thread safe will not be turn off automatically.
+But if it is 0, the thread safe will not be turn off automatically.  
+Note: `GameObjectManager` will not be thread safe automatically.
 ```cpp
 void SetLateUpdateMaxComponentPerThread(unsigned int value)
 ```
@@ -1093,6 +1095,21 @@ std::vector<BaseGameObject*> gameObjects;
 std::vector<BaseGameObject*> removableGameObjects;
 ```
 
+**addMutex**  
+```cpp
+std::mutex addMutex;
+```
+
+**removeMutex**  
+```cpp
+std::mutex removeMutex;
+```
+
+**isThreadSafe**  
+```cpp
+bool isThreadSafe;
+```
+
 ### Functions:
 **Private:**  
 **GameObjectManager**  
@@ -1119,6 +1136,16 @@ void DestroyMarkedGameObjects();
 **DestroyAllGameObjects**  
 ```cpp
 void DestroyAllGameObjects();
+```
+
+**SetThreadSafe**  
+```cpp
+inline void SetThreadSafe(bool value);
+```
+
+**GetThreadSafe**  
+```cpp
+inline bool GetThreadSafe();
 ```
 
 
