@@ -35,9 +35,9 @@ namespace Learning2DEngine
 
 			// The function returns, that the collider is still active after the OnCollision
 			template<class T, class U>
-			bool CheckCollisions(T* collider, std::vector<U*> colliders, int startIndex)
+			bool CheckCollisions(T* collider, std::vector<U*> colliders, size_t startIndex)
 			{
-				for (int i = startIndex; i < colliders.size(); ++i)
+				for (size_t i = startIndex; i < colliders.size(); ++i)
 				{
 					if (!CheckCollision(collider, colliders[i]))
 						return false;
@@ -71,8 +71,10 @@ namespace Learning2DEngine
 
 			void RefreshBoxColliders();
 			void RefreshCircleColliders();
-			void CheckCollisionWithActiveBox();
-			void CheckCollisionWithActiveCircle();
+
+			void RunActiveColliderPart(size_t startIndex, size_t endIndex);
+			void RunPassiveColliderPart(size_t startIndex, size_t endIndex);
+			void RunOnThreads();
 
 		public:
 			ColliderComponentHandler();

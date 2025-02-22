@@ -172,57 +172,96 @@ namespace Learning2DEngine
 			removableCircleColliders.clear();
 		}
 
-		void ColliderComponentHandler::CheckCollisionWithActiveBox()
+		void ColliderComponentHandler::RunActiveColliderPart(size_t startIndex, size_t endIndex)
 		{
-			for (int i = 0; i < activeBoxColliders.size(); ++i)
+			size_t end;
+			if (startIndex < activeBoxColliders.size())
 			{
-				bool isActive = activeBoxColliders[i]->isActive && activeBoxColliders[i]->gameObject->isActive;
-				if (!isActive)
+				end = endIndex > activeBoxColliders.size() ? activeBoxColliders.size() : endIndex;
+				for (size_t i = startIndex; i < end; ++i)
+				{
+					if (!activeBoxColliders[i]->isActive || !activeBoxColliders[i]->gameObject->isActive)
+						continue;
+
+					// activeBoxColliders
+					if (!CheckCollisions(activeBoxColliders[i], activeBoxColliders, i + 1))
+						continue;
+
+					// activeCircleColliders
+					CheckCollisions(activeBoxColliders[i], activeCircleColliders, 0);
+				}
+
+				// decrease the indexes for another loop
+				startIndex = 0;
+				endIndex -= end;
+			}
+			else
+			{
+				// decrease the indexes for another loop
+				startIndex -= activeBoxColliders.size();
+				endIndex -= activeBoxColliders.size();
+			}
+
+			end = endIndex > activeCircleColliders.size() ? activeCircleColliders.size() : endIndex;
+			for (size_t i = startIndex; i < endIndex; ++i)
+			{
+				// All active box colliders were checked in the previous loop
+				if (!activeCircleColliders[i]->isActive || !activeCircleColliders[i]->gameObject->isActive)
+					continue;
+
+				// activeCircleColliders
+				CheckCollisions(activeCircleColliders[i], activeCircleColliders, i + 1);
+			}
+		}
+
+		void ColliderComponentHandler::RunPassiveColliderPart(size_t startIndex, size_t endIndex)
+		{
+			size_t end;
+			if (startIndex < passiveBoxColliders.size())
+			{
+				end = endIndex > passiveBoxColliders.size() ? passiveBoxColliders.size() : endIndex;
+				for (size_t i = startIndex; i < end; ++i)
+				{
+					if (!passiveBoxColliders[i]->isActive || !passiveBoxColliders[i]->gameObject->isActive)
+						continue;
+
+					// activeBoxColliders
+					if (!CheckCollisions(passiveBoxColliders[i], activeBoxColliders, 0))
+						continue;
+
+					// activeCircleColliders
+					CheckCollisions(passiveBoxColliders[i], activeCircleColliders, 0);
+				}
+
+				// decrease the indexes for another loop
+				startIndex = 0;
+				endIndex -= end;
+			}
+			else
+			{
+				// decrease the indexes for another loop
+				startIndex -= passiveBoxColliders.size();
+				endIndex -= passiveBoxColliders.size();
+			}
+
+			end = endIndex > passiveCircleColliders.size() ? passiveCircleColliders.size() : endIndex;
+			for (size_t i = startIndex; i < endIndex; ++i)
+			{
+				if (!passiveCircleColliders[i]->isActive || !passiveCircleColliders[i]->gameObject->isActive)
 					continue;
 
 				// activeBoxColliders
-				isActive = CheckCollisions(activeBoxColliders[i], activeBoxColliders, i + 1);
-				if (!isActive)
+				if (!CheckCollisions(passiveCircleColliders[i], activeBoxColliders, 0))
 					continue;
 
 				// activeCircleColliders
-				isActive = CheckCollisions(activeBoxColliders[i], activeCircleColliders, 0);
-				if (!isActive)
-					continue;
-
-				// passiveBoxColliders
-				isActive = CheckCollisions(activeBoxColliders[i], passiveBoxColliders, 0);
-				if (!isActive)
-					continue;
-
-				// passiveCircleColliders
-				CheckCollisions(activeBoxColliders[i], passiveCircleColliders, 0);
+				CheckCollisions(passiveCircleColliders[i], activeCircleColliders, 0);
 			}
-
 		}
 
-		void ColliderComponentHandler::CheckCollisionWithActiveCircle()
+		void ColliderComponentHandler::RunOnThreads()
 		{
-			for (int i = 0; i < activeCircleColliders.size(); ++i)
-			{
-				// All active box colliders were checked in the previous loop
-				bool isActive = activeCircleColliders[i]->isActive && activeCircleColliders[i]->gameObject->isActive;
-				if (!isActive)
-					continue;
-
-				// activeCircleColliders
-				isActive = CheckCollisions(activeCircleColliders[i], activeCircleColliders, i + 1);
-				if (!isActive)
-					continue;
-
-				// passiveBoxColliders
-				isActive = CheckCollisions(activeCircleColliders[i], passiveBoxColliders, 0);
-				if (!isActive)
-					continue;
-
-				// passiveCircleColliders
-				CheckCollisions(activeCircleColliders[i], passiveCircleColliders, 0);
-			}
+			//Missing yet
 		}
 
 		void ColliderComponentHandler::Run()
@@ -230,8 +269,18 @@ namespace Learning2DEngine
 			RefreshBoxColliders();
 			RefreshCircleColliders();
 
-			CheckCollisionWithActiveBox();
-			CheckCollisionWithActiveCircle();
+			int allActiveColliders = activeBoxColliders.size() + activeCircleColliders.size();
+			int allPassiveColliders = passiveBoxColliders.size() + passiveCircleColliders.size();
+
+			int allColliderChecking = allActiveColliders * (allActiveColliders - 1) / 2 + allActiveColliders * allPassiveColliders;
+
+			if (maxCheckingPerThread == 0 || allColliderChecking < maxCheckingPerThread)
+			{
+				RunActiveColliderPart(0, allActiveColliders);
+				RunPassiveColliderPart(0, allPassiveColliders);
+			}
+			else
+				RunOnThreads();
 		}
 
 	}
