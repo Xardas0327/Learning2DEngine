@@ -52,6 +52,16 @@ namespace Learning2DEngine
                 updaterComponentHandler.Run();
             }
 
+            // If it is bigger then 0, than every component handler will be thread safe.
+            // But if it is 0, the thread safe will not be turn off automatically.
+            void SetUpdateMaxComponentPerThread(unsigned int value)
+            {
+                if (value > 0)
+                    SetThreadSafe(true);
+
+                updaterComponentHandler.SetMaxComponentPerThread(value);
+            }
+
             //LateUpdate
 
             inline void AddToLateUpdate(BaseLateUpdaterComponent* component)
@@ -67,6 +77,16 @@ namespace Learning2DEngine
             inline void LateUpdate()
             {
                 lateUpdaterComponentHandler.Run();
+            }
+
+            // If it is bigger then 0, than every component handler will be thread safe.
+            // But if it is 0, the thread safe will not be turn off automatically.
+            void SetLateUpdateMaxComponentPerThread(unsigned int value)
+            {
+                if (value > 0)
+                    SetThreadSafe(true);
+
+                lateUpdaterComponentHandler.SetMaxComponentPerThread(value);
             }
 
             //Collider

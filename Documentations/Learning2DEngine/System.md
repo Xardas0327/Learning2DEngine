@@ -454,6 +454,13 @@ inline void RemoveFromUpdate(BaseUpdaterComponent* component);
 inline void Update();
 ```
 
+**SetUpdateMaxComponentPerThread**  
+If it is bigger then 0, than every component handler will be thread safe.  
+But if it is 0, the thread safe will not be turn off automatically.
+```cpp
+void SetUpdateMaxComponentPerThread(unsigned int value)
+```
+
 **AddToLateUpdate**  
 ```cpp
 inline void AddToLateUpdate(BaseLateUpdaterComponent* component);
@@ -467,6 +474,13 @@ inline void RemoveFromLateUpdate(BaseLateUpdaterComponent* component);
 **LateUpdate**  
 ```cpp
 inline void LateUpdate();
+```
+
+**SetLateUpdateMaxComponentPerThread**  
+If it is bigger then 0, than every component handler will be thread safe.  
+But if it is 0, the thread safe will not be turn off automatically.
+```cpp
+void SetLateUpdateMaxComponentPerThread(unsigned int value)
 ```
 
 **AddToCollider**  
