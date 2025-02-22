@@ -19,6 +19,7 @@
 - [Random](System.md#random)
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
+- [ThreadComponentHandler](System.md#threadcomponenthandler)
 - [Transform](System.md#transform)
 - [UpdaterComponent](System.md#updatercomponent)
 - [UpdaterComponentHandler](System.md#updatercomponenthandler)
@@ -56,6 +57,11 @@ std::vector<T*> newComponents;
 std::vector<T*> removableComponents;
 ```
 
+**mutex**  
+```cpp
+std::mutex mutex;
+```
+
 ### Functions:
 **Protected:**  
 **BaseComponentHandler**  
@@ -69,16 +75,24 @@ After this, it clears the `newComponents` and the `removableComponents`.
 ```cpp
 virtual void RefreshComponents();
 ```
+**RemoveItem**  
+It will remove the item from the new colliders or they will add the item into removable colliders.  
+It is used by Remove function.
+```cpp
+void RemoveItem(T* component);
+```
 
 **Public:**  
 **Add**  
+If the isThreadSafe is true, the mutex will be used.
 ```cpp
-virtual void Add(T* component);
+virtual void Add(T* component, bool isThreadSafe);
 ```
 
 **Remove**  
+If the isThreadSafe is true, the mutex will be used.
 ```cpp
-virtual void Remove(T* component);
+virtual void Remove(T* component, bool isThreadSafe);
 ```
 
 **Clear**  
@@ -412,6 +426,11 @@ Render::RendererComponentHandler rendererComponentHandler;
 Render::RendererComponentHandler lateRendererComponentHandler;
 ```
 
+**isThreadSafe**  
+```cpp
+bool isThreadSafe;
+```
+
 ### Functions:
 **Private:**  
 **ComponentManager**  
@@ -509,6 +528,16 @@ inline void NeedReorderLateRenderers();
 **LateRender**  
 ```cpp
 inline void LateRender();
+```
+
+**SetThreadSafe**  
+```cpp
+inline void SetThreadSafe(bool value);
+```
+
+**GetThreadSafe**  
+```cpp
+inline bool GetThreadSafe();
 ```
 
 **Clear**  
@@ -1105,9 +1134,9 @@ virtual ~IComponentHandler();
 virtual void Clear() = 0;
 ```
 
-**DoWithAllComponents**  
+**Run**  
 ```cpp
-virtual void DoWithAllComponents() = 0;
+virtual void Run() = 0;
 ```
 
 ##
@@ -1242,25 +1271,23 @@ The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class LateUpdaterComponentHandler : public virtual BaseComponentHandler<BaseLateUpdaterComponent>
+class LateUpdaterComponentHandler : public virtual ThreadComponentHandler<BaseLateUpdaterComponent>
 {...}
 ```
 
 ### Functions:
+**Protected:**  
+**RunPart** 
+It iterates on the components vector in [startIndex, endIndex) range.  
+If the component and its gameobject is active, its LateUpdate() function will be called.
+```cpp
+void RunPart(size_t startIndex, size_t endIndex) override;
+```
+
 **Public:**  
 **LateUpdaterComponentHandler**  
 ```cpp
 LateUpdaterComponentHandler();
-```
-
-**DoWithAllComponents**  
-Firstly it refresh the `BaseLateUpdaterComponent` objects.  
-After that it calls the LateUpdate() function of the objects
-if the object is not in the removableComponents and the component and its gameObject are active.  
-Note: the code have to check the removableComponents again, because
-maybe another component removed/destroyed the actual component in actual frame.
-```cpp
-void DoWithAllComponents() override;
 ```
 
 ##
@@ -1451,6 +1478,73 @@ static T& GetInstance();
 ```
 
 ##
+## ThreadComponentHandler
+### Source Code:
+[ThreadComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/ThreadComponentHandler.h)  
+
+### Description: 
+It is a component handler, which can use threads.
+
+### Header:
+```cpp
+template<class T>
+class ThreadComponentHandler : public virtual BaseComponentHandler<T>
+{...}
+```
+
+### Variables:
+**Protected:**  
+**maxComponentPerThread**  
+If it is 0, the class will not use threads.
+```cpp
+unsigned int maxComponentPerThread;
+```
+
+**threads**  
+```cpp
+std::vector<std::thread> threads;
+```
+
+### Functions:
+**Protected:**  
+**RunPart**  
+The threads will call this function with the component vector indexes.
+```cpp
+virtual void RunPart(size_t startIndex, size_t endIndex) = 0;
+```
+
+**RunOnThreads**  
+```cpp
+void RunOnThreads();
+```
+
+**Public:**  
+**ThreadComponentHandler**  
+```cpp
+ThreadComponentHandler();
+```
+
+**Run**  
+Firstly it refresh the component vector and it will call the RunPart and/or RunOnThreads functions.  
+How many threads will run, it is depend on the number of components and maxComponentPerThread.
+```cpp
+virtual void Run() override;
+```
+
+**SetMaxComponentPerThread**  
+If it is 0, the class will not use threads.
+```cpp
+inline void SetMaxComponentPerThread(unsigned int value);
+```
+
+**GetMaxComponentPerThread**  
+If it is 0, the class will not use threads.
+```cpp
+inline unsigned int GetMaxComponentPerThread();
+```
+
+
+##
 ## Transform
 ### Source Code:
 [Transform.h](../../Learning2DEngine/Learning2DEngine/System/Transform.h)  
@@ -1518,23 +1612,21 @@ The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class UpdaterComponentHandler : public virtual BaseComponentHandler<BaseUpdaterComponent>
+class UpdaterComponentHandler : public virtual ThreadComponentHandler<BaseUpdaterComponent>
 {...}
 ```
 
 ### Functions:
+**Protected:**  
+**RunPart** 
+It iterates on the components vector in [startIndex, endIndex) range.  
+If the component and its gameobject is active, its Update() function will be called.
+```cpp
+void RunPart(size_t startIndex, size_t endIndex) override;
+```
+
 **Public:**  
 **UpdaterComponentHandler**  
 ```cpp
 UpdaterComponentHandler();
-```
-
-**DoWithAllComponents**  
-Firstly it refresh the `BaseUpdaterComponent` objects.  
-After that it calls the Update() function of the objects
-if the object is not in the removableComponents and the component and its gameObject are active.  
-Note: the code have to check the removableComponents again, because
-maybe another component removed/destroyed the actual component in actual frame.
-```cpp
-void DoWithAllComponents() override;
 ```
