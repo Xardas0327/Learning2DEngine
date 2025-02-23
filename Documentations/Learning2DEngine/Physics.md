@@ -310,7 +310,7 @@ IMPORTANT: The functions return, that the first object is still active
 after the OnCollision(s).
 ```cpp
 template<class T, class U>
-bool CheckCollisions(T* collider, std::vector<U*> colliders, size_t
+bool CheckCollisions(T* collider, std::vector<U*> colliders, size_t startIndex);
 ```
 
 **CheckCollision**  
@@ -351,9 +351,9 @@ void RefreshCircleColliders();
 
 **RunActiveColliderPart**  
 It iterates on the all active box and circle colliders in [startIndex, endIndex) range
-and check these colliders has a collision with other active colliders.  
+and check these colliders have collision(s) with other active colliders.  
 Note: Firstly the function checks the box colliders and after the circle colliders.  
-For example: if there are 5 box colliders and 2 circle colliders. The box colliders' index is [0..4] and
+For example: If there are 5 box colliders and 2 circle colliders. The box colliders' index is [0..4] and
 the circle colliders' index is [5..6].
 ```cpp
 void RunActiveColliderPart(size_t startIndex, size_t endIndex);
@@ -361,9 +361,9 @@ void RunActiveColliderPart(size_t startIndex, size_t endIndex);
 
 **RunPassiveColliderPart**  
 It iterates on the all passive box and circle colliders in [startIndex, endIndex) range
-and check these colliders has a collision with active colliders.  
+and check these colliders have collision(s) with active colliders.  
 Note: Firstly the function checks the box colliders and after the circle colliders.  
-For example: if there are 5 box colliders and 2 circle colliders. The box colliders' index is [0..4] and
+For example: If there are 5 box colliders and 2 circle colliders. The box colliders' index is [0..4] and
 the circle colliders' index is [5..6].
 ```cpp
 void RunPassiveColliderPart(size_t startIndex, size_t endIndex);
