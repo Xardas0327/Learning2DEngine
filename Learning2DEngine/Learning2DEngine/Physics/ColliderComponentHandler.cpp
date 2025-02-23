@@ -341,6 +341,9 @@ namespace Learning2DEngine
 			size_t activeColliderNumber = GetActiveColliderNumber();
 			size_t passiveColliderNumber = GetPassiveColliderNumber();
 
+			if (activeColliderNumber == 0 && passiveColliderNumber == 0)
+				return;
+
 			size_t allColliderChecking = activeColliderNumber * (activeColliderNumber - 1) / 2 + activeColliderNumber * passiveColliderNumber;
 
 			if (maxColliderPerThread == 0 || allColliderChecking < maxColliderPerThread)
