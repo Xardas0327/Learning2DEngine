@@ -29,11 +29,15 @@ namespace Learning2DEngine
 			std::mutex boxMutex;
 			std::mutex circleMutex;
 
+			std::vector<std::thread> threads;
+			//If it is 0, the class will not use threads
+			unsigned int maxColliderPerThread;
+
 			// The function returns, that the collider is still active after the OnCollision
 			template<class T, class U>
-			bool CheckCollision(T* collider, std::vector<U*> colliders, int startIndex)
+			bool CheckCollisions(T* collider, std::vector<U*> colliders, size_t startIndex)
 			{
-				for (int i = startIndex; i < colliders.size(); ++i)
+				for (size_t i = startIndex; i < colliders.size(); ++i)
 				{
 					if (!CheckCollision(collider, colliders[i]))
 						return false;
@@ -67,8 +71,20 @@ namespace Learning2DEngine
 
 			void RefreshBoxColliders();
 			void RefreshCircleColliders();
-			void CheckCollisionWithActiveBox();
-			void CheckCollisionWithActiveCircle();
+
+			void RunActiveColliderPart(size_t startIndex, size_t endIndex);
+			void RunPassiveColliderPart(size_t startIndex, size_t endIndex);
+			void RunOnThreads();
+
+			inline size_t GetActiveColliderNumber()
+			{
+				return activeBoxColliders.size() + activeCircleColliders.size();
+			}
+
+			inline size_t GetPassiveColliderNumber()
+			{
+				return passiveBoxColliders.size() + passiveCircleColliders.size();
+			}
 
 		public:
 			ColliderComponentHandler();
@@ -81,6 +97,18 @@ namespace Learning2DEngine
 
 			void Clear() override;
 			void Run() override;
+
+			//If it is 0, the class will not use threads
+			inline void SetMaxColliderPerThread(unsigned int value)
+			{
+				maxColliderPerThread = value;
+			}
+
+			//If it is 0, the class will not use threads
+			inline unsigned int GetMaxColliderPerThread()
+			{
+				return maxColliderPerThread;
+			}
 		};
 	}
 }

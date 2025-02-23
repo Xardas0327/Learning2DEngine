@@ -459,7 +459,7 @@ If it is bigger then 0, than every component handler will be thread safe.
 But if it is 0, the thread safe will not be turn off automatically.  
 Note: `GameObjectManager` will not be thread safe automatically.
 ```cpp
-void SetUpdateMaxComponentPerThread(unsigned int value)
+void SetUpdateMaxComponentPerThread(unsigned int value);
 ```
 
 **AddToLateUpdate**  
@@ -482,7 +482,7 @@ If it is bigger then 0, than every component handler will be thread safe.
 But if it is 0, the thread safe will not be turn off automatically.  
 Note: `GameObjectManager` will not be thread safe automatically.
 ```cpp
-void SetLateUpdateMaxComponentPerThread(unsigned int value)
+void SetLateUpdateMaxComponentPerThread(unsigned int value);
 ```
 
 **AddToCollider**  
@@ -504,6 +504,14 @@ inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component);
 **CheckCollision**  
 ```cpp
 inline void CheckCollision();
+```
+
+**SetMaxColliderPerThread**  
+If it is bigger then 0, than every component handler will be thread safe.  
+But if it is 0, the thread safe will not be turn off automatically.  
+Note: `GameObjectManager` will not be thread safe automatically.
+```cpp
+void SetMaxColliderPerThread(unsigned int value);
 ```
 
 **AddToRenderer**  

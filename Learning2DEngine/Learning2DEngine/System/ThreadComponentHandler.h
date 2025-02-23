@@ -58,6 +58,10 @@ namespace Learning2DEngine
 			virtual void Run() override
 			{
 				this->RefreshComponents();
+
+				if (this->components.size() == 0)
+					return;
+
 				if (maxComponentPerThread == 0 || this->components.size() < maxComponentPerThread)
 					RunPart(0, this->components.size());
 				else

@@ -18,7 +18,7 @@ void PlayerController::Init()
 	renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&>(
 		ResourceManager::GetInstance().GetTexture(textureId)
 	);
-	collider = gameObject->AddComponent<BoxColliderComponent, glm::vec2>(glm::vec2(0.0f));
+	collider = gameObject->AddComponent<BoxColliderComponent, glm::vec2, bool, glm::vec2, int32_t>(glm::vec2(0.0f, 0.0f), true, glm::vec2(0.0f, 0.0f), 0b110);
 
 	Reset();
 }
