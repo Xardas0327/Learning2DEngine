@@ -31,7 +31,7 @@ namespace Learning2DEngine
 
 			std::vector<std::thread> threads;
 			//If it is 0, the class will not use threads
-			unsigned int maxCheckingPerThread;
+			unsigned int maxColliderPerThread;
 
 			// The function returns, that the collider is still active after the OnCollision
 			template<class T, class U>
@@ -76,6 +76,16 @@ namespace Learning2DEngine
 			void RunPassiveColliderPart(size_t startIndex, size_t endIndex);
 			void RunOnThreads();
 
+			inline size_t GetActiveColliderNumber()
+			{
+				return activeBoxColliders.size() + activeCircleColliders.size();
+			}
+
+			inline size_t GetPassiveColliderNumber()
+			{
+				return passiveBoxColliders.size() + passiveCircleColliders.size();
+			}
+
 		public:
 			ColliderComponentHandler();
 
@@ -89,15 +99,15 @@ namespace Learning2DEngine
 			void Run() override;
 
 			//If it is 0, the class will not use threads
-			inline void SetMaxCheckingPerThread(unsigned int value)
+			inline void SetMaxColliderPerThread(unsigned int value)
 			{
-				maxCheckingPerThread = value;
+				maxColliderPerThread = value;
 			}
 
 			//If it is 0, the class will not use threads
-			inline unsigned int GetMaxComponentPerThread()
+			inline unsigned int GetMaxColliderPerThread()
 			{
-				return maxCheckingPerThread;
+				return maxColliderPerThread;
 			}
 		};
 	}

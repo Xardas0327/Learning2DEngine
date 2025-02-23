@@ -9,7 +9,7 @@ namespace Learning2DEngine
 		ColliderComponentHandler::ColliderComponentHandler()
 			: activeBoxColliders(), passiveBoxColliders(), newBoxColliders(), removableBoxColliders(),
 			activeCircleColliders(), passiveCircleColliders(), newCircleColliders(), removableCircleColliders(),
-			boxMutex(), circleMutex(), threads(), maxCheckingPerThread()
+			boxMutex(), circleMutex(), threads(), maxColliderPerThread()
 		{
 		}
 
@@ -172,6 +172,8 @@ namespace Learning2DEngine
 			removableCircleColliders.clear();
 		}
 
+		/// <param name="startIndex">Inclusive</param>
+		/// <param name="endIndex">Exclusive</param>
 		void ColliderComponentHandler::RunActiveColliderPart(size_t startIndex, size_t endIndex)
 		{
 			size_t end;
@@ -203,7 +205,7 @@ namespace Learning2DEngine
 			}
 
 			end = endIndex > activeCircleColliders.size() ? activeCircleColliders.size() : endIndex;
-			for (size_t i = startIndex; i < endIndex; ++i)
+			for (size_t i = startIndex; i < end; ++i)
 			{
 				// All active box colliders were checked in the previous loop
 				if (!activeCircleColliders[i]->isActive || !activeCircleColliders[i]->gameObject->isActive)
@@ -214,6 +216,8 @@ namespace Learning2DEngine
 			}
 		}
 
+		/// <param name="startIndex">Inclusive</param>
+		/// <param name="endIndex">Exclusive</param>
 		void ColliderComponentHandler::RunPassiveColliderPart(size_t startIndex, size_t endIndex)
 		{
 			size_t end;
@@ -245,7 +249,7 @@ namespace Learning2DEngine
 			}
 
 			end = endIndex > passiveCircleColliders.size() ? passiveCircleColliders.size() : endIndex;
-			for (size_t i = startIndex; i < endIndex; ++i)
+			for (size_t i = startIndex; i < end; ++i)
 			{
 				if (!passiveCircleColliders[i]->isActive || !passiveCircleColliders[i]->gameObject->isActive)
 					continue;
@@ -261,7 +265,72 @@ namespace Learning2DEngine
 
 		void ColliderComponentHandler::RunOnThreads()
 		{
-			//Missing yet
+			size_t oldCapacity = threads.capacity();
+			threads.clear();
+
+			size_t activeColliderNumber = GetActiveColliderNumber();
+			size_t passiveColliderNumber = GetPassiveColliderNumber();
+
+			size_t activeThreadNumber = activeColliderNumber / maxColliderPerThread;
+			//if remainder is not 0
+			if (activeColliderNumber % maxColliderPerThread)
+				++activeThreadNumber;
+
+			//the threads should work more or less with the same number of items
+			size_t activeItemsPerThread = activeColliderNumber / activeThreadNumber;
+
+			size_t passiveThreadNumber = passiveColliderNumber / maxColliderPerThread;
+			//if remainder is not 0
+			if (passiveColliderNumber % maxColliderPerThread)
+				++passiveThreadNumber;
+
+			//the threads should work more or less with the same number of items
+			size_t passiveItemsPerThread = passiveColliderNumber / passiveThreadNumber;
+
+			// -1, because one thread is the main thread.
+			size_t allThreadNumber = activeThreadNumber + passiveThreadNumber - 1;
+
+			//if the threads vector is too big, it will be reallocated.
+			if (oldCapacity > allThreadNumber * 2)
+				threads.shrink_to_fit();
+
+			threads.reserve(allThreadNumber);
+
+			for (size_t i = 0; i < allThreadNumber; ++i)
+			{
+				if (i < activeThreadNumber)
+				{
+					//If the passiveThreadNumber is not 0, the last branch should run all remainder
+					size_t endIndex = i + 1 == activeThreadNumber ? activeColliderNumber : (i + 1) * activeItemsPerThread;
+
+					threads.emplace_back(
+						&ColliderComponentHandler::RunActiveColliderPart,
+						this,
+						i * activeItemsPerThread,
+						endIndex
+					);
+				}
+				else
+					threads.emplace_back(
+						&ColliderComponentHandler::RunPassiveColliderPart,
+						this,
+						(i - activeThreadNumber) * passiveItemsPerThread,
+						//if it is too big the RunPassiveColliderPart will fix it
+						(i - activeThreadNumber + 1) * passiveItemsPerThread
+					);
+			}
+
+			// The main thread will run the last part
+			if (allThreadNumber < activeThreadNumber)
+				// This is possible if the passiveThreadNumber is 0.
+				RunActiveColliderPart(allThreadNumber * activeItemsPerThread, activeColliderNumber);
+			else
+				RunPassiveColliderPart((passiveThreadNumber -1) * passiveItemsPerThread, passiveColliderNumber);
+
+
+			for (std::thread& t : threads)
+				t.join();
+
 		}
 
 		void ColliderComponentHandler::Run()
@@ -269,15 +338,15 @@ namespace Learning2DEngine
 			RefreshBoxColliders();
 			RefreshCircleColliders();
 
-			int allActiveColliders = activeBoxColliders.size() + activeCircleColliders.size();
-			int allPassiveColliders = passiveBoxColliders.size() + passiveCircleColliders.size();
+			size_t activeColliderNumber = GetActiveColliderNumber();
+			size_t passiveColliderNumber = GetPassiveColliderNumber();
 
-			int allColliderChecking = allActiveColliders * (allActiveColliders - 1) / 2 + allActiveColliders * allPassiveColliders;
+			size_t allColliderChecking = activeColliderNumber * (activeColliderNumber - 1) / 2 + activeColliderNumber * passiveColliderNumber;
 
-			if (maxCheckingPerThread == 0 || allColliderChecking < maxCheckingPerThread)
+			if (maxColliderPerThread == 0 || allColliderChecking < maxColliderPerThread)
 			{
-				RunActiveColliderPart(0, allActiveColliders);
-				RunPassiveColliderPart(0, allPassiveColliders);
+				RunActiveColliderPart(0, activeColliderNumber);
+				RunPassiveColliderPart(0, passiveColliderNumber);
 			}
 			else
 				RunOnThreads();
