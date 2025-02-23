@@ -291,20 +291,33 @@ std::mutex boxMutex;
 std::mutex circleMutex;
 ```
 
+**threads**  
+```cpp
+std::vector<std::thread> threads;
+```
+
+**maxColliderPerThread**  
+If it is 0, the class will not use threads.
+```cpp
+unsigned int maxColliderPerThread;
+```
+
 ### Functions:
 **Protected:**  
-**CheckCollision**  
-1. CheckCollision: The first function iterate on colliders from startIndex with collider
-and it call the second CheckCollision function.
-2. CheckCollision: The function checks only the second object is still active and they are collided
-or not. If yes, It will call their OnCollision function.  
-
+**CheckCollisions**  
+The function iterates on colliders from startIndex with the collider.  
 IMPORTANT: The functions return, that the first object is still active
 after the OnCollision(s).
 ```cpp
 template<class T, class U>
-bool CheckCollision(T* collider, std::vector<U*> colliders, int startIndex);
+bool CheckCollisions(T* collider, std::vector<U*> colliders, size_t
 ```
+
+**CheckCollision**  
+The function checks only the second object is still active and they are collided
+or not. If yes, It will call their OnCollision function.  
+IMPORTANT: The functions return, that the first object is still active
+after the OnCollision(s).
 ```cpp
 template<class T, class U>
 bool CheckCollision(T* first, U* second);
@@ -325,7 +338,6 @@ It removes the `removableBoxColliders` and adds the `newBoxColliders` to
 the `activeBoxColliders` and the `passiveBoxColliders`.
 After this, it clears the `newBoxColliders` and the `removableBoxColliders`.
 ```cpp
-template<class T>
 void RefreshBoxColliders();
 ```
 
@@ -334,28 +346,42 @@ It removes the `removableCircleColliders` and adds the `newCircleColliders` to
 the `activeCircleColliders` and the `passiveCircleColliders`.
 After this, it clears the `newCircleColliders` and the `removableCircleColliders`.
 ```cpp
-template<class T>
 void RefreshCircleColliders();
 ```
 
-**CheckCollisionWithActiveBox**  
-This function checks, that the `activeBoxColliders` had collision with 
-other `activeBoxColliders` items and with `activeCircleColliders`, 
-`passiveBoxColliders` and `passiveCircleColliders` items.
+**RunActiveColliderPart**  
+It iterates on the all active box and circle colliders in [startIndex, endIndex) range
+and check these colliders has a collision with other active colliders.  
+Note: Firstly the function checks the box colliders and after the circle colliders.  
+For example: if there are 5 box colliders and 2 circle colliders. The box colliders' index is [0..4] and
+the circle colliders' index is [5..6].
 ```cpp
-template<class T>
-void CheckCollisionWithActiveBox();
+void RunActiveColliderPart(size_t startIndex, size_t endIndex);
 ```
 
-**CheckCollisionWithActiveCircle**  
-This function checks, that the `activeCircleColliders` had collision with 
-other `activeCircleColliders` items and with `passiveBoxColliders`
-and `passiveCircleColliders` items.  
-This function does not check that `activeCircleColliders` with `activeBoxColliders`,
-because the CheckCollisionWithActiveBox function do it, so it would be duplicate work only.
+**RunPassiveColliderPart**  
+It iterates on the all passive box and circle colliders in [startIndex, endIndex) range
+and check these colliders has a collision with active colliders.  
+Note: Firstly the function checks the box colliders and after the circle colliders.  
+For example: if there are 5 box colliders and 2 circle colliders. The box colliders' index is [0..4] and
+the circle colliders' index is [5..6].
 ```cpp
-template<class T>
-void CheckCollisionWithActiveCircle();
+void RunPassiveColliderPart(size_t startIndex, size_t endIndex);
+```
+
+**RunOnThreads**  
+```cpp
+void RunOnThreads();
+```
+
+**GetActiveColliderNumber**  
+```cpp
+inline size_t GetActiveColliderNumber();
+```
+
+**GetPassiveColliderNumber**  
+```cpp
+inline size_t GetPassiveColliderNumber();
 ```
 
 **Public:**  
@@ -389,10 +415,22 @@ void Clear() override;
 
 **Run**  
 Firstly it calls the RefreshBoxColliders() and RefreshCircleColliders()
-functions. After that, it calls the CheckCollisionWithActiveBox()
-and CheckCollisionWithActiveCircle() functions.
+functions and it will call the RunActiveColliderPart, RunPassiveColliderPart and/or RunOnThreads functions.  
+How many threads will run, it is depend on the number of colliders and maxColliderPerThread.
 ```cpp
 void Run() override;
+```
+
+**SetMaxColliderPerThread**  
+If it is 0, the class will not use threads.
+```cpp
+inline void SetMaxColliderPerThread(unsigned int value);
+```
+
+**GetMaxColliderPerThread**  
+If it is 0, the class will not use threads.
+```cpp
+inline unsigned int GetMaxColliderPerThread();
 ```
 
 ##
