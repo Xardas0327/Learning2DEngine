@@ -172,8 +172,6 @@ namespace Learning2DEngine
 			removableCircleColliders.clear();
 		}
 
-		/// <param name="startIndex">Inclusive</param>
-		/// <param name="endIndex">Exclusive</param>
 		void ColliderComponentHandler::RunDynamicColliderPart(size_t startIndex, size_t endIndex)
 		{
 			size_t end;
@@ -216,8 +214,6 @@ namespace Learning2DEngine
 			}
 		}
 
-		/// <param name="startIndex">Inclusive</param>
-		/// <param name="endIndex">Exclusive</param>
 		void ColliderComponentHandler::RunKinematicColliderPart(size_t startIndex, size_t endIndex)
 		{
 			size_t end;

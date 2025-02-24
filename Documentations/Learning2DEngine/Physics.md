@@ -41,7 +41,7 @@ glm::vec2 colliderSize;
 **Protected:**  
 **BaseBoxColliderComponent**  
 ```cpp
-BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, bool isKinematic = false, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 ##
@@ -73,7 +73,7 @@ float colliderRadius;
 **Protected:**  
 **BaseCircleColliderComponent**  
 ```cpp
-BaseCircleColliderComponent(System::GameObject* gameObject, float radius, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseCircleColliderComponent(System::GameObject* gameObject, float radius, bool isKinematic = false, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 ##
@@ -97,15 +97,14 @@ class BaseColliderComponent : public virtual System::Component
 
 ### Variables:
 **Private:**  
-**isActiveCollider**  
-Note: The isActive is a different variable, which came from `System::Component`.  
-A collider can be active or passive. 2 passive colliders can't collide with each other, 
-but an active collider can collide with them.  
-For example: there are 3 circles (A, B and C) with 1.0f range. A is active and another two are passive.
+**isKinematic**   
+A collider can be dynamic or kinematic. 2 kinematic colliders can't collide with each other, 
+but an dynamic collider can collide with them.  
+For example: there are 3 circles (A, B and C) with 1.0f range. A is dynamic and another two are kinematic.
 If they are on the same position, the A will be triggered twice (one with B and one with C),
 but the B and the C will be triggered with A only.
 ```cpp
-const bool isPassive;
+const bool isKinematic;
 ```
 
 **Public:**  
@@ -126,7 +125,7 @@ int32_t maskLayer;
 **Protected:**  
 **BaseColliderComponent**  
 ```cpp
-BaseColliderComponent(System::GameObject* gameObject, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseColliderComponent(System::GameObject* gameObject, bool isKinematic = false, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Public:**  
@@ -136,9 +135,9 @@ It returns the center of Collider, which is middle of the object by shifted the 
 glm::vec2 GetColliderCenter() const;
 ```
 
-**IsPassive**  
+**IsKinematic**  
 ```cpp
-inline bool IsPassive() const;
+inline bool IsKinematic() const;
 ```
 
 **OnCollision**  
@@ -170,7 +169,7 @@ class BoxColliderComponent : public virtual BaseBoxColliderComponent
 **Protected:**  
 **BoxColliderComponent**  
 ```cpp
-BoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, bool isKinematic = false, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Init**  
@@ -207,7 +206,7 @@ class CircleColliderComponent : public virtual BaseCircleColliderComponent
 **Protected:**  
 **CircleColliderComponent**  
 ```cpp
-CircleColliderComponent(System::GameObject* gameObject, float radius, bool isActiveCollider = true, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+CircleColliderComponent(System::GameObject* gameObject, float radius, bool isKinematic = false, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Init**  
@@ -241,14 +240,14 @@ class ColliderComponentHandler : public System::IComponentHandler
 
 ### Variables:
 **Protected:**  
-**activeBoxColliders**  
+**dynamicBoxColliders**  
 ```cpp
-std::vector<BaseBoxColliderComponent*> activeBoxColliders;
+std::vector<BaseBoxColliderComponent*> dynamicBoxColliders;
 ```
 
-**passiveBoxColliders**  
+**kinematicBoxColliders**  
 ```cpp
-std::vector<BaseBoxColliderComponent*> passiveBoxColliders;
+std::vector<BaseBoxColliderComponent*> kinematicBoxColliders;
 ```
 
 **newBoxColliders**  
@@ -261,14 +260,14 @@ std::vector<BaseBoxColliderComponent*> newBoxColliders;
 std::vector<BaseBoxColliderComponent*> removableBoxColliders;
 ```
 
-**activeCircleColliders**  
+**dynamicCircleColliders**  
 ```cpp
-std::vector<BaseCircleColliderComponent*> activeCircleColliders;
+std::vector<BaseCircleColliderComponent*> dynamicCircleColliders;
 ```
 
-**passiveCircleColliders**  
+**kinematicCircleColliders**  
 ```cpp
-std::vector<BaseCircleColliderComponent*> passiveCircleColliders;
+std::vector<BaseCircleColliderComponent*> kinematicCircleColliders;
 ```
 
 **newCircleColliders**  
@@ -349,24 +348,24 @@ After this, it clears the `newCircleColliders` and the `removableCircleColliders
 void RefreshCircleColliders();
 ```
 
-**RunActiveColliderPart**  
-It iterates on the all active box and circle colliders in [startIndex, endIndex) range
-and check these colliders have collision(s) with other active colliders.  
+**RunDynamicColliderPart**  
+It iterates on the all dynamic box and circle colliders in [startIndex, endIndex) range
+and check these colliders have collision(s) with other dynamic colliders.  
 Note: Firstly the function checks the box colliders and after the circle colliders.  
 For example: If there are 5 box colliders and 2 circle colliders. The box colliders' index is [0..4] and
 the circle colliders' index is [5..6].
 ```cpp
-void RunActiveColliderPart(size_t startIndex, size_t endIndex);
+void RunDynamicColliderPart(size_t startIndex, size_t endIndex);
 ```
 
-**RunPassiveColliderPart**  
-It iterates on the all passive box and circle colliders in [startIndex, endIndex) range
-and check these colliders have collision(s) with active colliders.  
+**RunKinematicColliderPart**  
+It iterates on the all kinematic box and circle colliders in [startIndex, endIndex) range
+and check these colliders have collision(s) with dynamic colliders.  
 Note: Firstly the function checks the box colliders and after the circle colliders.  
 For example: If there are 5 box colliders and 2 circle colliders. The box colliders' index is [0..4] and
 the circle colliders' index is [5..6].
 ```cpp
-void RunPassiveColliderPart(size_t startIndex, size_t endIndex);
+void RunKinematicColliderPart(size_t startIndex, size_t endIndex);
 ```
 
 **RunOnThreads**  
@@ -374,14 +373,14 @@ void RunPassiveColliderPart(size_t startIndex, size_t endIndex);
 void RunOnThreads();
 ```
 
-**GetActiveColliderNumber**  
+**GetDynamicColliderNumber**  
 ```cpp
-inline size_t GetActiveColliderNumber();
+inline size_t GetDynamicColliderNumber();
 ```
 
-**GetPassiveColliderNumber**  
+**GetKinematicColliderNumber**  
 ```cpp
-inline size_t GetPassiveColliderNumber();
+inline size_t GetKinematicColliderNumber();
 ```
 
 **Public:**  

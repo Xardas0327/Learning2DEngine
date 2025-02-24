@@ -72,7 +72,12 @@ namespace Learning2DEngine
 			void RefreshBoxColliders();
 			void RefreshCircleColliders();
 
+			/// <param name="startIndex">Inclusive</param>
+			/// <param name="endIndex">Exclusive</param>
 			void RunDynamicColliderPart(size_t startIndex, size_t endIndex);
+
+			/// <param name="startIndex">Inclusive</param>
+			/// <param name="endIndex">Exclusive</param>
 			void RunKinematicColliderPart(size_t startIndex, size_t endIndex);
 			void RunOnThreads();
 
