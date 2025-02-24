@@ -16,13 +16,13 @@ namespace Learning2DEngine
 		class ColliderComponentHandler : public System::IComponentHandler
 		{
 		protected:
-			std::vector<BaseBoxColliderComponent*> activeBoxColliders;
-			std::vector<BaseBoxColliderComponent*> passiveBoxColliders;
+			std::vector<BaseBoxColliderComponent*> dynamicBoxColliders;
+			std::vector<BaseBoxColliderComponent*> kinematicBoxColliders;
 			std::vector<BaseBoxColliderComponent*> newBoxColliders;
 			std::vector<BaseBoxColliderComponent*> removableBoxColliders;
 
-			std::vector<BaseCircleColliderComponent*> activeCircleColliders;
-			std::vector<BaseCircleColliderComponent*> passiveCircleColliders;
+			std::vector<BaseCircleColliderComponent*> dynamicCircleColliders;
+			std::vector<BaseCircleColliderComponent*> kinematicCircleColliders;
 			std::vector<BaseCircleColliderComponent*> newCircleColliders;
 			std::vector<BaseCircleColliderComponent*> removableCircleColliders;
 
@@ -72,18 +72,23 @@ namespace Learning2DEngine
 			void RefreshBoxColliders();
 			void RefreshCircleColliders();
 
-			void RunActiveColliderPart(size_t startIndex, size_t endIndex);
-			void RunPassiveColliderPart(size_t startIndex, size_t endIndex);
+			/// <param name="startIndex">Inclusive</param>
+			/// <param name="endIndex">Exclusive</param>
+			void RunDynamicColliderPart(size_t startIndex, size_t endIndex);
+
+			/// <param name="startIndex">Inclusive</param>
+			/// <param name="endIndex">Exclusive</param>
+			void RunKinematicColliderPart(size_t startIndex, size_t endIndex);
 			void RunOnThreads();
 
-			inline size_t GetActiveColliderNumber()
+			inline size_t GetDynamicColliderNumber()
 			{
-				return activeBoxColliders.size() + activeCircleColliders.size();
+				return dynamicBoxColliders.size() + dynamicCircleColliders.size();
 			}
 
-			inline size_t GetPassiveColliderNumber()
+			inline size_t GetKinematicColliderNumber()
 			{
-				return passiveBoxColliders.size() + passiveCircleColliders.size();
+				return kinematicBoxColliders.size() + kinematicCircleColliders.size();
 			}
 
 		public:

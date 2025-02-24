@@ -20,10 +20,10 @@ namespace Learning2DEngine
             BaseCircleColliderComponent(
                 System::GameObject* gameObject,
                 float radius,
-                bool isActiveCollider = true,
+                bool isKinematic = false,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), BaseColliderComponent(gameObject, isActiveCollider, offset, maskLayer),
+                : System::Component(gameObject), BaseColliderComponent(gameObject, isKinematic, offset, maskLayer),
                 colliderRadius(radius)
             {
 

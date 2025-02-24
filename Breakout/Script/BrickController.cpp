@@ -14,6 +14,6 @@ BrickController::BrickController(GameObject* gameObject, int x, int y, bool isSo
 
 void BrickController::Init()
 {
-    collider = gameObject->AddComponent<BoxColliderComponent, glm::vec2, bool, glm::vec2, int32_t>(gameObject->transform.scale, false, glm::vec2(0.0f, 0.0f), 0b1);
+    collider = gameObject->AddComponent<BoxColliderComponent, glm::vec2, bool, glm::vec2, int32_t>(gameObject->transform.scale, true, glm::vec2(0.0f, 0.0f), 0b1);
     renderer = gameObject->AddComponent<SpriteRenderer>();
 }

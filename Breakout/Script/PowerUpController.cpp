@@ -8,7 +8,7 @@ using namespace Learning2DEngine::Physics;
 
 PowerUpController::PowerUpController(GameObject* gameObject, const PowerUpObject& powerUpObject)
 	: BoxColliderComponent(gameObject, POWERUP_SIZE), BaseBoxColliderComponent(gameObject, POWERUP_SIZE),
-	BaseColliderComponent(gameObject, false, glm::vec2(0.0f, 0.0f), 0b100), Component(gameObject),
+	BaseColliderComponent(gameObject, true, glm::vec2(0.0f, 0.0f), 0b100), Component(gameObject),
 	rigidbody(nullptr), renderer(nullptr), powerUpObject(powerUpObject), actualDuration(powerUpObject.duration), activated(false),
     activationEventHandler()
 {

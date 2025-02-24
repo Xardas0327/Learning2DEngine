@@ -22,15 +22,15 @@ namespace Learning2DEngine
         class BaseColliderComponent : public virtual System::Component
         {
         private:
-            const bool isActiveCollider;
+            const bool isKinematic;
 
         protected:
             BaseColliderComponent(
                 System::GameObject* gameObject,
-                bool isActiveCollider = true,
+                bool isKinematic = false,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), isActiveCollider(isActiveCollider), colliderOffset(offset), maskLayer(maskLayer)
+                : System::Component(gameObject), isKinematic(isKinematic), colliderOffset(offset), maskLayer(maskLayer)
             {
 
             }
@@ -47,9 +47,9 @@ namespace Learning2DEngine
                 return position;
             }
 
-            inline bool IsActiveCollider() const
+            inline bool IsKinematic() const
             {
-                return isActiveCollider;
+                return isKinematic;
             }
 
             virtual void OnCollision(Collision collision)
