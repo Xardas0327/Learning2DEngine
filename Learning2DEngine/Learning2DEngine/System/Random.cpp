@@ -12,6 +12,8 @@ namespace Learning2DEngine
 	{
 		int Random::GetNumber(int minInclusive, int maxExclusive)
 		{
+			//now the max number is exclusive.
+			--maxExclusive;
 			if (minInclusive >= maxExclusive)
 			{
 				std::string errorMessage = "Random::GetNumber: The minInclusive ("+std::to_string(minInclusive)
