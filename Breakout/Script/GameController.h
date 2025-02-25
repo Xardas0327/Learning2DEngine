@@ -75,7 +75,7 @@ private:
 
     void SpawnPowerUps(glm::vec2 position);
     bool IsPowerUpActive(const PowerUpType& type);
-    void LateUpdatePowerUps();
+    void UpdatePowerUps();
     void ClearPowerUps();
 
     void Init() override;
@@ -83,7 +83,7 @@ private:
     void Update() override;
     void LateUpdate() override;
 
-    void ActivatePowerUp(PowerUpType powerUpType, bool isActive) override;
+    void ActivatePowerUp(PowerUpType powerUpType) override;
     void BallHitPlayer() override;
     void BallHitBrick(BrickController* brick) override;
 };

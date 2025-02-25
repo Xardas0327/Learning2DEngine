@@ -4,7 +4,7 @@
 
 #include "IPowerUpActivation.h"
 
-class PowerUpActivationEventItem final : public virtual Learning2DEngine::EventSystem::EventItem<PowerUpType, bool>
+class PowerUpActivationEventItem final : public virtual Learning2DEngine::EventSystem::EventItem<PowerUpType>
 {
 private:
 	IPowerUpActivation* powerUpActivation;
@@ -15,8 +15,8 @@ public:
 
 	}
 
-	void Call(PowerUpType powerUpType, bool isActive) override
+	void Call(PowerUpType powerUpType) override
 	{
-		powerUpActivation->ActivatePowerUp(powerUpType, isActive);
+		powerUpActivation->ActivatePowerUp(powerUpType);
 	}
 };

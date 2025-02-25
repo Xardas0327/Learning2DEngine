@@ -157,13 +157,13 @@ void GameController::Destroy()
 void GameController::Update()
 {
     ProcessInput();
+    UpdatePowerUps();
     ShakeScreen(); 
 }
 
 void GameController::LateUpdate()
 {
     postProcessData->RefreshShader(glfwGetTime());
-    LateUpdatePowerUps();
     IsLifeLost();
     IsLevelCompleted();
 }
@@ -313,7 +313,7 @@ void GameController::ResetPlayer()
 
 void GameController::SpawnPowerUps(glm::vec2 position)
 {
-    int number = Random::GetNumber(0, 20);
+    int number = Random::GetNumber(0, 50);
     if (number == 0)
     {
         powerUps.push_back(
@@ -326,7 +326,7 @@ void GameController::SpawnPowerUps(glm::vec2 position)
             PowerUpController::CreatePowerUp(PowerUpSticky, position, powerUpActivationEventItem)
         );
     }
-    else if (number == 2 || number > 11)
+    else if (number == 2)
     {
         powerUps.push_back(
             PowerUpController::CreatePowerUp(PowerUpPassThrough, position, powerUpActivationEventItem)
@@ -362,12 +362,59 @@ bool GameController::IsPowerUpActive(const PowerUpType& type)
     return false;
 }
 
-void GameController::LateUpdatePowerUps()
+void GameController::UpdatePowerUps()
 {
+    for (PowerUpController* powerUp : powerUps)
+    {
+        if (powerUp->gameObject->transform.position.y >= Game::mainCamera.GetResolution().GetHeight())
+            powerUp->gameObject->isActive = false;
+
+        if (powerUp->activated)
+        {
+            powerUp->actualDuration -= Game::GetDeltaTime();
+
+            if (powerUp->actualDuration <= 0.0f)
+            {
+                powerUp->activated = false;
+                switch (powerUp->powerUpObject.type)
+                {
+                case PowerUpType::STICKY:
+                    if (!IsPowerUpActive(PowerUpType::STICKY))
+                    {
+                        ballController->sticky = false;
+                        playerController->renderer->color = glm::vec3(1.0f);
+                    }
+                    break;
+                case PowerUpType::PASS_THROUGH:
+                    if (!IsPowerUpActive(PowerUpType::PASS_THROUGH))
+                    {
+                        ballController->passThrough = false;
+                        ballController->renderer->color = glm::vec3(1.0f);
+                    }
+                    break;
+                case PowerUpType::CONFUSE:
+                    if (!IsPowerUpActive(PowerUpType::CONFUSE))
+                    {
+                        postProcessData->confuse = false;
+                    }
+                    break;
+                case PowerUpType::CHAOS:
+                    if (!IsPowerUpActive(PowerUpType::CHAOS))
+                    {
+                        postProcessData->chaos = false;
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
+
     powerUps.erase(std::remove_if(powerUps.begin(), powerUps.end(),
         [](PowerUpController* powerUp)
         {
-            bool isDeletable = !powerUp->gameObject->isActive;
+            bool isDeletable = !powerUp->gameObject->isActive && !powerUp->activated;
             if (isDeletable)
             {
                 GameObject::Destroy(powerUp);
@@ -387,68 +434,34 @@ void GameController::ClearPowerUps()
     powerUps.clear();
 }
 
-void GameController::ActivatePowerUp(PowerUpType powerUpType, bool isActive)
+void GameController::ActivatePowerUp(PowerUpType powerUpType)
 {
     switch (powerUpType)
     {
     case PowerUpType::SPEED:
-        if(isActive)
-            ballController->rigidbody->velocity *= 1.2;
+        ballController->rigidbody->velocity *= 1.2;
         break;
     case PowerUpType::STICKY:
-        if (isActive)
-        {
-            ballController->sticky = true;
-            playerController->renderer->color = glm::vec3(1.0f, 0.5f, 1.0f);
-        }
-        else if (!IsPowerUpActive(PowerUpType::STICKY))
-        {
-            ballController->sticky = false;
-            playerController->renderer->color = glm::vec3(1.0f);
-        }
+        ballController->sticky = true;
+        playerController->renderer->color = glm::vec3(1.0f, 0.5f, 1.0f);
         break;
     case PowerUpType::PASS_THROUGH:
-        if (isActive)
-        {
-            ballController->passThrough = true;
-            ballController->renderer->color = glm::vec3(1.0f, 0.5f, 0.5f);
-        }
-        else if (!IsPowerUpActive(PowerUpType::PASS_THROUGH))
-        {
-            ballController->passThrough = false;
-            ballController->renderer->color = glm::vec3(1.0f);
-        }
+        ballController->passThrough = true;
+        ballController->renderer->color = glm::vec3(1.0f, 0.5f, 0.5f);
         break;
     case PowerUpType::PAD_SIZE_INCREASE:
-        if (isActive)
-        {
-            playerController->gameObject->transform.scale.x += 50;
-            playerController->collider->colliderSize = playerController->gameObject->transform.scale;
-        }
+        playerController->gameObject->transform.scale.x += 50;
+        playerController->collider->colliderSize = playerController->gameObject->transform.scale;
         break;
     case PowerUpType::CONFUSE:
-        if (isActive)
-        {
-            // It will be activate only if chaos wasn't already active
-            if (!postProcessData->chaos)
-                postProcessData->confuse = true;
-        }
-        else if (!IsPowerUpActive(PowerUpType::CONFUSE))
-        {
-            postProcessData->confuse = false;
-        }
+        // It will be activate only if chaos wasn't already active
+        if (!postProcessData->chaos)
+            postProcessData->confuse = true;
         break;
     case PowerUpType::CHAOS:
-        if (isActive)
-        {
-            // It will be activate only if confuse wasn't already active
-            if (!postProcessData->confuse)
-                postProcessData->chaos = true;
-        }
-        else if (!IsPowerUpActive(PowerUpType::CHAOS))
-        {
-            postProcessData->chaos = false;
-        }
+        // It will be activate only if confuse wasn't already active
+        if (!postProcessData->confuse)
+            postProcessData->chaos = true;
         break;
     default:
         break;
