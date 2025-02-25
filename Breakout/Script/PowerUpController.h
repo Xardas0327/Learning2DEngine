@@ -2,8 +2,9 @@
 
 #include <glm/glm.hpp>
 
-#include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/GameObject.h>
+#include <Learning2DEngine/System/UpdaterComponent.h>
+#include <Learning2DEngine/System/LateUpdaterComponent.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/Render/SpriteRenderer.h>
 #include <Learning2DEngine/Render/Texture2D.h>
@@ -18,16 +19,21 @@
 const glm::vec2 POWERUP_SIZE(60.0f, 20.0f);
 const glm::vec2 VELOCITY(0.0f, 150.0f);
 
-class PowerUpController : public virtual Learning2DEngine::Physics::BoxColliderComponent
+class PowerUpController : public virtual Learning2DEngine::Physics::BoxColliderComponent,
+                            public virtual Learning2DEngine::System::UpdaterComponent,
+                            public virtual Learning2DEngine::System::LateUpdaterComponent
 {
     friend class Learning2DEngine::System::GameObject;
 protected:
     Learning2DEngine::Physics::Rigidbody* rigidbody;
-    Learning2DEngine::EventSystem::EventHandler<PowerUpType> activationEventHandler;
+    Learning2DEngine::EventSystem::EventHandler<PowerUpType, bool> activationEventHandler;
 
     PowerUpController(Learning2DEngine::System::GameObject* gameObject, const PowerUpObject& powerUpObject);
 
     void Init() override;
+    void Destroy() override;
+    void Update() override;
+    void LateUpdate() override;
     void OnCollision(Learning2DEngine::Physics::Collision collision) override;
 public:
     Learning2DEngine::Render::SpriteRenderer* renderer;

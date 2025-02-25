@@ -7,5 +7,5 @@ class IPowerUpActivation
 public:
 	virtual ~IPowerUpActivation() {}
 
-	virtual void ActivatePowerUp(PowerUpType powerUp) = 0;
+	virtual void ActivatePowerUp(PowerUpType powerUp, bool isActive) = 0;
 };
