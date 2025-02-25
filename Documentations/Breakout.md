@@ -12,6 +12,13 @@ which is [here](https://www.ambiera.com/irrklang/license.html).
 ## License:
 Breakout © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
 
+## Control
+- Start: Press Enter
+- Close Window: Press Esc or use your mouse.
+- Select Map: Press W and S
+- Player control: Press A and D
+- Shooting the ball: Press Space
+
 ## Assets:
 The assets files came from learnopengl tutorial.
 
