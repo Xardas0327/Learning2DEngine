@@ -22,9 +22,9 @@ namespace Learning2DEngine
             /// </summary>
             static int referenceNumber;
             static Shader shader;
-            static unsigned int vao;
-            static unsigned int vbo;
-            static unsigned int ebo;
+            static GLuint vao;
+            static GLuint vbo;
+            static GLuint ebo;
 
             void InitShader();
             void InitVao();

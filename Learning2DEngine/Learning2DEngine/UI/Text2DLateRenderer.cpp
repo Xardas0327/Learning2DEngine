@@ -17,9 +17,9 @@ namespace Learning2DEngine
         int Text2DLateRenderer::referenceNumber = 0;
         Shader Text2DLateRenderer::shader;
 
-        unsigned int Text2DLateRenderer::vao = 0;
-        unsigned int Text2DLateRenderer::vbo = 0;
-        unsigned int Text2DLateRenderer::ebo = 0;
+        GLuint Text2DLateRenderer::vao = 0;
+        GLuint Text2DLateRenderer::vbo = 0;
+        GLuint Text2DLateRenderer::ebo = 0;
 
         Text2DLateRenderer::Text2DLateRenderer(
             GameObject* gameObject,
@@ -104,7 +104,7 @@ namespace Learning2DEngine
             glBindBuffer(GL_ARRAY_BUFFER, Text2DLateRenderer::vbo);
             glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 4, NULL, GL_DYNAMIC_DRAW);
 
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Text2DLateRenderer::ebo);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
             glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
@@ -172,7 +172,7 @@ namespace Learning2DEngine
 
                 glBindTexture(GL_TEXTURE_2D, ch.textureId);
 
-                glBindBuffer(GL_ARRAY_BUFFER, vbo);
+                glBindBuffer(GL_ARRAY_BUFFER, Text2DLateRenderer::vbo);
                 glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
 

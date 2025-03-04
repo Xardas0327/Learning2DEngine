@@ -1008,17 +1008,17 @@ static Shader shader
 
 **vao**  
 ```cpp
-static unsigned int vao;
+static GLuint vao;
 ```
 
 **vbo**  
 ```cpp
-static unsigned int vbo;
+static GLuint vbo;
 ```
 
 **ebo**  
 ```cpp
-static unsigned int ebo;
+static GLuint ebo;
 ```
 
 **Public:**  
