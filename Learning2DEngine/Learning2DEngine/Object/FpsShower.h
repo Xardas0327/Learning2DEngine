@@ -23,7 +23,7 @@ namespace Learning2DEngine
 				System::GameObject* gameObject,
 				const UI::FontSizePair& fontSizePair,
 				int layer = 0,
-				glm::vec3 color = glm::vec3(1.0f));
+				glm::vec4 color = glm::vec4(1.0f));
 
 			void Init() override;
 			void Destroy() override;
@@ -34,7 +34,7 @@ namespace Learning2DEngine
 				const System::Transform& transform,
 				const UI::FontSizePair& fontSizePair,
 				int layer = 0,
-				glm::vec3 color = glm::vec3(1.0f));
+				glm::vec4 color = glm::vec4(1.0f));
 		};
 	}
 }

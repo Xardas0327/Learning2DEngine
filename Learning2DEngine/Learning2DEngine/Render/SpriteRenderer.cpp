@@ -17,14 +17,14 @@ namespace Learning2DEngine
         GLuint SpriteRenderer::vbo = 0;
         GLuint SpriteRenderer::ebo = 0;
 
-        SpriteRenderer::SpriteRenderer(GameObject* gameObject, int layer, glm::vec3 color)
+        SpriteRenderer::SpriteRenderer(GameObject* gameObject, int layer, glm::vec4 color)
             : Component(gameObject), BaseRendererComponent(gameObject, layer), RendererComponent(gameObject, layer),
             texture(nullptr), color(color)
         {
 
         }
 
-        SpriteRenderer::SpriteRenderer(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec3 color)
+        SpriteRenderer::SpriteRenderer(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec4 color)
             : Component(gameObject), BaseRendererComponent(gameObject, layer), RendererComponent(gameObject, layer),
             color(color), texture(new Texture2D(texture))
         {
@@ -121,7 +121,7 @@ namespace Learning2DEngine
             SpriteRenderer::shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
             SpriteRenderer::shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 
-            SpriteRenderer::shader.SetVector3f("spriteColor", color);
+            SpriteRenderer::shader.SetVector4f("spriteColor", color);
             SpriteRenderer::shader.SetInteger("isUseTexture", IsUseTexture());
 
             if (IsUseTexture())

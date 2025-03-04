@@ -26,7 +26,7 @@ namespace Learning2DEngine
             GameObject* gameObject,
             const FontSizePair& fontSizePair,
             int layer,
-            glm::vec3 color)
+            glm::vec4 color)
             :Component(gameObject), BaseRendererComponent(gameObject, layer), LateRendererComponent(gameObject, layer),
             fontSizePair(fontSizePair), text(""), color(color)
         {
@@ -38,7 +38,7 @@ namespace Learning2DEngine
             const FontSizePair& fontSizePair,
             std::string text,
             int layer,
-            glm::vec3 color)
+            glm::vec4 color)
             :Component(gameObject), BaseRendererComponent(gameObject, layer), LateRendererComponent(gameObject, layer),
             fontSizePair(fontSizePair), text(text), color(color)
         {
@@ -133,7 +133,7 @@ namespace Learning2DEngine
             CharacterMap& characterMap = textCharacterSet[fontSizePair];
 
             Text2DLateRenderer::shader.Use();
-            Text2DLateRenderer::shader.SetVector3f("characterColor", color);
+            Text2DLateRenderer::shader.SetVector4f("characterColor", color);
             Text2DLateRenderer::shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
             glActiveTexture(GL_TEXTURE0);
             glBindVertexArray(vao);

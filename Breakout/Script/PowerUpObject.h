@@ -11,7 +11,7 @@ struct PowerUpObject
     PowerUpType type;
     float duration;
     std::string textureId;
-    glm::vec3 color;
+    glm::vec4 color;
 };
 
 const PowerUpObject PowerUpSpeed
@@ -19,7 +19,7 @@ const PowerUpObject PowerUpSpeed
     PowerUpType::SPEED,
     0.0f,
     "powerup_speed",
-    glm::vec3(0.5f, 0.5f, 1.0f)
+    glm::vec4(0.5f, 0.5f, 1.0f, 1.0f)
 };
 
 const PowerUpObject PowerUpSticky
@@ -27,7 +27,7 @@ const PowerUpObject PowerUpSticky
     PowerUpType::STICKY,
     20.0f,
     "powerup_sticky",
-    glm::vec3(1.0f, 0.5f, 1.0f)
+    glm::vec4(1.0f, 0.5f, 1.0f, 1.0f)
 };
 
 const PowerUpObject PowerUpPassThrough
@@ -35,7 +35,7 @@ const PowerUpObject PowerUpPassThrough
     PowerUpType::PASS_THROUGH,
     10.0f,
     "powerup_passthrough",
-    glm::vec3(0.5f, 1.0f, 0.5f)
+    glm::vec4(0.5f, 1.0f, 0.5f, 1.0f)
 };
 
 const PowerUpObject PowerUpPadSizeIncrease
@@ -43,7 +43,7 @@ const PowerUpObject PowerUpPadSizeIncrease
     PowerUpType::PAD_SIZE_INCREASE,
     0.0f,
     "powerup_increase",
-    glm::vec3(1.0f, 0.6f, 0.4f)
+    glm::vec4(1.0f, 0.6f, 0.4f, 1.0f)
 };
 
 const PowerUpObject PowerUpConfuse
@@ -51,7 +51,7 @@ const PowerUpObject PowerUpConfuse
     PowerUpType::CONFUSE,
     15.0f,
     "powerup_confuse",
-    glm::vec3(1.0f, 0.3f, 0.3f)
+    glm::vec4(1.0f, 0.3f, 0.3f, 1.0f)
 };
 
 const PowerUpObject PowerUpChaos
@@ -59,5 +59,5 @@ const PowerUpObject PowerUpChaos
     PowerUpType::CHAOS,
     15.0f,
     "powerup_chaos",
-    glm::vec3(0.9f, 0.25f, 0.25f)
+    glm::vec4(0.9f, 0.25f, 0.25f, 1.0f)
 };

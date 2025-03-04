@@ -98,7 +98,7 @@ void BallController::Reset()
     gameObject->transform.position = 
         playerController->gameObject->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
     rigidbody->velocity = INITIAL_BALL_VELOCITY;
-    renderer->color = glm::vec3(1.0f);
+    renderer->color = glm::vec4(1.0f);
 
     SetStuck(true);
     sticky = false;

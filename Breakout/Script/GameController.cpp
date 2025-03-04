@@ -107,11 +107,11 @@ void GameController::Init()
         ),
         false
     );
-    winText = winGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string, int, glm::vec3>(
+    winText = winGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string, int, glm::vec4>(
         fontSizePair,
         "You WON!!!",
         0,
-        glm::vec3(0.0f, 1.0f, 0.0f)
+        glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)
     );
 
     auto retryGameObject = GameObject::Create(
@@ -120,11 +120,11 @@ void GameController::Init()
         ),
         false
     );
-    retryText = retryGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string, int, glm::vec3>(
+    retryText = retryGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string, int, glm::vec4>(
         fontSizePair,
         "Press ENTER to retry or ESC to quit",
         0,
-        glm::vec3(1.0f, 1.0f, 0.0f)
+        glm::vec4(1.0f, 1.0f, 0.0f, 1.0f)
     );
 
 #if L2DE_DEBUG
@@ -376,14 +376,14 @@ void GameController::UpdatePowerUps()
                     if (!IsPowerUpActive(PowerUpType::STICKY))
                     {
                         ballController->sticky = false;
-                        playerController->renderer->color = glm::vec3(1.0f);
+                        playerController->renderer->color = glm::vec4(1.0f);
                     }
                     break;
                 case PowerUpType::PASS_THROUGH:
                     if (!IsPowerUpActive(PowerUpType::PASS_THROUGH))
                     {
                         ballController->passThrough = false;
-                        ballController->renderer->color = glm::vec3(1.0f);
+                        ballController->renderer->color = glm::vec4(1.0f);
                     }
                     break;
                 case PowerUpType::CONFUSE:
@@ -437,11 +437,11 @@ void GameController::ActivatePowerUp(PowerUpType powerUpType)
         break;
     case PowerUpType::STICKY:
         ballController->sticky = true;
-        playerController->renderer->color = glm::vec3(1.0f, 0.5f, 1.0f);
+        playerController->renderer->color = glm::vec4(1.0f, 0.5f, 1.0f, 1.0f);
         break;
     case PowerUpType::PASS_THROUGH:
         ballController->passThrough = true;
-        ballController->renderer->color = glm::vec3(1.0f, 0.5f, 0.5f);
+        ballController->renderer->color = glm::vec4(1.0f, 0.5f, 0.5f, 1.0f);
         break;
     case PowerUpType::PAD_SIZE_INCREASE:
         playerController->gameObject->transform.scale.x += 50;

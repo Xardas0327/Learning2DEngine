@@ -37,13 +37,13 @@ namespace Learning2DEngine
                 System::GameObject* gameObject,
                 const FontSizePair& fontSizePair,
                 int layer = 0,
-                glm::vec3 color = glm::vec3(1.0f));
+                glm::vec4 color = glm::vec4(1.0f));
             Text2DLateRenderer(
                 System::GameObject* gameObject,
                 const FontSizePair& fontSizePair,
                 std::string text,
                 int layer = 0,
-                glm::vec3 color = glm::vec3(1.0f));
+                glm::vec4 color = glm::vec4(1.0f));
 
             void Init() override;
             void Destroy() override;
@@ -53,7 +53,7 @@ namespace Learning2DEngine
         public:
             FontSizePair fontSizePair;
             std::string text;
-            glm::vec3 color;
+            glm::vec4 color;
         };
     }
 }

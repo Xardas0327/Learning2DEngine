@@ -10,7 +10,7 @@
 #include <Learning2DEngine/Render/SpriteRenderer.h>
 
 const unsigned int INIT_SNAKE_LENGTH = 3;
-const glm::vec3 PLAYER_COLOR = glm::vec3(0.0f, 0.75f, 0.0f);
+const glm::vec4 PLAYER_COLOR = glm::vec4(0.0f, 0.75f, 0.0f, 1.0f);
 
 class PlayerController : public virtual Learning2DEngine::System::Component
 {
@@ -18,7 +18,7 @@ class PlayerController : public virtual Learning2DEngine::System::Component
 protected:
     const std::string textureId;
     const int initSize;
-    const glm::vec3 color;
+    const glm::vec4 color;
     std::list<Learning2DEngine::Render::SpriteRenderer*> snake;
 
     PlayerController(Learning2DEngine::System::GameObject* gameObject, const std::string& textureId);

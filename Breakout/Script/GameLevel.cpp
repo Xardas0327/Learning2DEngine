@@ -75,17 +75,17 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bo
                 continue;
 
             //white
-            glm::vec3 color = glm::vec3(1.0f);
+            auto color = glm::vec4(1.0f);
             if (brickData[y][x] == 1)
-                color = glm::vec3(0.8f, 0.8f, 0.7f);
+                color = glm::vec4(0.8f, 0.8f, 0.7f, 1.0f);
             else if (brickData[y][x] == 2)
-                color = glm::vec3(0.2f, 0.6f, 1.0f);
+                color = glm::vec4(0.2f, 0.6f, 1.0f, 1.0f);
             else if (brickData[y][x] == 3)
-                color = glm::vec3(0.0f, 0.7f, 0.0f);
+                color = glm::vec4(0.0f, 0.7f, 0.0f, 1.0f);
             else if (brickData[y][x] == 4)
-                color = glm::vec3(0.8f, 0.8f, 0.4f);
+                color = glm::vec4(0.8f, 0.8f, 0.4f, 1.0f);
             else if (brickData[y][x] == 5)
-                color = glm::vec3(1.0f, 0.5f, 0.0f);
+                color = glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
 
             GameObject* brick = GameObject::Create(areBricksActive);
             auto brickController = brick->AddComponent<BrickController, int, int, bool>(x, y, brickData[y][x] == 1);

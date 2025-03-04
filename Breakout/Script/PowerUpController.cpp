@@ -20,7 +20,7 @@ void PowerUpController::Init()
     BoxColliderComponent::Init();
 
     rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2>(VELOCITY);
-    renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&, int, glm::vec3>(
+    renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&, int, glm::vec4>(
         ResourceManager::GetInstance().GetTexture(powerUpObject.textureId),
         1,
         powerUpObject.color

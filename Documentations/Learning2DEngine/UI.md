@@ -106,7 +106,7 @@ std::string text;
 **color**  
 The `color`, which will be mixed with the texture in the shader.
 ```cpp
-glm::vec3 color;
+glm::vec4 color;
 ```
 
 ### Functions:
@@ -124,10 +124,10 @@ void InitVao();
 **Protected:**  
 **Text2DLateRenderer**  
 ```cpp
-Text2DLateRenderer(System::GameObject* gameObject, const FontSizePair& fontSizePair, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+Text2DLateRenderer(System::GameObject* gameObject, const FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 ```cpp
-Text2DLateRenderer(System::GameObject* gameObject, const FontSizePair& fontSizePair, std::string text, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+Text2DLateRenderer(System::GameObject* gameObject, const FontSizePair& fontSizePair, std::string text, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 **Init**  

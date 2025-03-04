@@ -1036,7 +1036,7 @@ Texture2D* texture;
 **color**  
 The `color`, which will be mixed with the texture in the shader.
 ```cpp
-glm::vec3 color;
+glm::vec4 color;
 ```
 
 ### Functions:
@@ -1054,10 +1054,10 @@ void InitVao();
 **Protected:**  
 **SpriteRenderer**  
 ```cpp
-SpriteRenderer(System::GameObject* gameObject, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+SpriteRenderer(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 ```cpp
-SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 **Init**  
