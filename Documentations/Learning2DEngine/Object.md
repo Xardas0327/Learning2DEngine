@@ -36,7 +36,7 @@ int fps;
 **Protected:**  
 **FpsShower**  
 ```cpp
-FpsShower(System::GameObject* gameObject, const Render::Resolution& cameraResolution, const UI::FontSizePair& fontSizePair, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+FpsShower(System::GameObject* gameObject, const UI::FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 **Init**  
@@ -58,5 +58,5 @@ void Update() override;
 **CreateFpsShowerObject**  
 It creates a GameObject with FpsShower component.
 ```cpp
-static FpsShower* CreateFpsShowerObject(const System::Transform& transform, const Render::Resolution& cameraResolution, const UI::FontSizePair& fontSizePair, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+static FpsShower* CreateFpsShowerObject(const System::Transform& transform, const UI::FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```

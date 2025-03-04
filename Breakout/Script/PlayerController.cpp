@@ -31,5 +31,5 @@ void PlayerController::Reset()
 	gameObject->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
 
 	collider->colliderSize = PLAYER_SIZE;
-	renderer->color = glm::vec3(1.0f);
+	renderer->color = glm::vec4(1.0f);
 }

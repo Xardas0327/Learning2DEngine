@@ -75,8 +75,7 @@ void GameController::Init()
             glm::vec2(5.0f, 5.0f)
         )
     );
-    lifeText = liveGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string>(
-        resolution,
+    lifeText = liveGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string>(
         fontSizePair,
         "Lifes: " + std::to_string(lifes)
     );
@@ -86,8 +85,7 @@ void GameController::Init()
             glm::vec2(250.0f, static_cast<float>(middleHeight))
         )
     );
-    startText = startGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string>(
-        resolution,
+    startText = startGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string>(
         fontSizePair,
         "Press ENTER to start"
     );
@@ -98,8 +96,7 @@ void GameController::Init()
             glm::vec2(0.75f, 0.75f)
         )
     );
-    levelSelectorText = levelSelectorGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string>(
-        resolution,
+    levelSelectorText = levelSelectorGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string>(
         fontSizePair,
         "Press W or S to select level"
     );
@@ -110,12 +107,11 @@ void GameController::Init()
         ),
         false
     );
-    winText = winGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string, int, glm::vec3>(
-        resolution,
+    winText = winGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string, int, glm::vec4>(
         fontSizePair,
         "You WON!!!",
         0,
-        glm::vec3(0.0f, 1.0f, 0.0f)
+        glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)
     );
 
     auto retryGameObject = GameObject::Create(
@@ -124,12 +120,11 @@ void GameController::Init()
         ),
         false
     );
-    retryText = retryGameObject->AddComponent<Text2DLateRenderer, const Resolution&, const FontSizePair&, std::string, int, glm::vec3>(
-        resolution,
+    retryText = retryGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string, int, glm::vec4>(
         fontSizePair,
         "Press ENTER to retry or ESC to quit",
         0,
-        glm::vec3(1.0f, 1.0f, 0.0f)
+        glm::vec4(1.0f, 1.0f, 0.0f, 1.0f)
     );
 
 #if L2DE_DEBUG
@@ -137,7 +132,6 @@ void GameController::Init()
         Transform(
             glm::vec2(5.0f, resolution.GetHeight() - 30)
         ),
-        resolution,
         fontSizePair,
         99);
 #endif
@@ -382,14 +376,14 @@ void GameController::UpdatePowerUps()
                     if (!IsPowerUpActive(PowerUpType::STICKY))
                     {
                         ballController->sticky = false;
-                        playerController->renderer->color = glm::vec3(1.0f);
+                        playerController->renderer->color = glm::vec4(1.0f);
                     }
                     break;
                 case PowerUpType::PASS_THROUGH:
                     if (!IsPowerUpActive(PowerUpType::PASS_THROUGH))
                     {
                         ballController->passThrough = false;
-                        ballController->renderer->color = glm::vec3(1.0f);
+                        ballController->renderer->color = glm::vec4(1.0f);
                     }
                     break;
                 case PowerUpType::CONFUSE:
@@ -443,11 +437,11 @@ void GameController::ActivatePowerUp(PowerUpType powerUpType)
         break;
     case PowerUpType::STICKY:
         ballController->sticky = true;
-        playerController->renderer->color = glm::vec3(1.0f, 0.5f, 1.0f);
+        playerController->renderer->color = glm::vec4(1.0f, 0.5f, 1.0f, 1.0f);
         break;
     case PowerUpType::PASS_THROUGH:
         ballController->passThrough = true;
-        ballController->renderer->color = glm::vec3(1.0f, 0.5f, 0.5f);
+        ballController->renderer->color = glm::vec4(1.0f, 0.5f, 0.5f, 1.0f);
         break;
     case PowerUpType::PAD_SIZE_INCREASE:
         playerController->gameObject->transform.scale.x += 50;

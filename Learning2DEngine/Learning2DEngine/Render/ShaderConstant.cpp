@@ -30,11 +30,11 @@ namespace Learning2DEngine
 
 			uniform bool isUseTexture;
 			uniform sampler2D spriteTexture;
-			uniform vec3 spriteColor;
+			uniform vec4 spriteColor;
 
 			void main()
 			{
-				color = vec4(spriteColor, 1.0);
+				color = spriteColor;
 				if (isUseTexture)
 				{
 					color *= texture(spriteTexture, TextureCoords);
@@ -64,12 +64,12 @@ namespace Learning2DEngine
 			out vec4 color;
 
 			uniform sampler2D characterTexture;
-			uniform vec3 characterColor;
+			uniform vec4 characterColor;
 
 			void main()
 			{
 				vec4 sampled = vec4(1.0, 1.0, 1.0, texture(characterTexture, TextureCoords).r);
-				color = vec4(characterColor, 1.0) * sampled;
+				color = characterColor * sampled;
 			})";
 
 		//PostProcessEffect

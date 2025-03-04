@@ -982,7 +982,8 @@ It uses static variables to count how many GameObject initialized it.
 That's why it will destroy its Vertex Array Object only
 if the reference number is 0, otherway it will decrease
 the reference number only.  
-Please more info about `RendererComponent`.
+Please more info about `RendererComponent`.  
+Note: The projection and the view matrix are came from Game::mainCamera.
 
 ### Header:
 ```cpp
@@ -1008,17 +1009,17 @@ static Shader shader
 
 **vao**  
 ```cpp
-static unsigned int vao;
+static GLuint vao;
 ```
 
 **vbo**  
 ```cpp
-static unsigned int vbo;
+static GLuint vbo;
 ```
 
 **ebo**  
 ```cpp
-static unsigned int ebo;
+static GLuint ebo;
 ```
 
 **Public:**  
@@ -1035,7 +1036,7 @@ Texture2D* texture;
 **color**  
 The `color`, which will be mixed with the texture in the shader.
 ```cpp
-glm::vec3 color;
+glm::vec4 color;
 ```
 
 ### Functions:
@@ -1053,10 +1054,10 @@ void InitVao();
 **Protected:**  
 **SpriteRenderer**  
 ```cpp
-SpriteRenderer(System::GameObject* gameObject, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+SpriteRenderer(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 ```cpp
-SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 **Init**  

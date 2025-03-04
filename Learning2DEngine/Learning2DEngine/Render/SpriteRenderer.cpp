@@ -1,7 +1,5 @@
 #include "SpriteRenderer.h"
 
-#include <glm/gtc/matrix_transform.hpp>
-
 #include "../System/ResourceManager.h"
 #include "../System/Game.h"
 #include "ShaderConstant.h"
@@ -15,18 +13,18 @@ namespace Learning2DEngine
         int SpriteRenderer::referenceNumber = 0;
         Shader SpriteRenderer::shader;
 
-        unsigned int SpriteRenderer::vao = 0;
-        unsigned int SpriteRenderer::vbo = 0;
-        unsigned int SpriteRenderer::ebo = 0;
+        GLuint SpriteRenderer::vao = 0;
+        GLuint SpriteRenderer::vbo = 0;
+        GLuint SpriteRenderer::ebo = 0;
 
-        SpriteRenderer::SpriteRenderer(GameObject* gameObject, int layer, glm::vec3 color)
+        SpriteRenderer::SpriteRenderer(GameObject* gameObject, int layer, glm::vec4 color)
             : Component(gameObject), BaseRendererComponent(gameObject, layer), RendererComponent(gameObject, layer),
             texture(nullptr), color(color)
         {
 
         }
 
-        SpriteRenderer::SpriteRenderer(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec3 color)
+        SpriteRenderer::SpriteRenderer(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec4 color)
             : Component(gameObject), BaseRendererComponent(gameObject, layer), RendererComponent(gameObject, layer),
             color(color), texture(new Texture2D(texture))
         {
@@ -118,23 +116,12 @@ namespace Learning2DEngine
         void SpriteRenderer::Draw()
         {
             SpriteRenderer::shader.Use();
-            glm::mat4 model = glm::mat4(1.0f);
-            // first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
-            model = glm::translate(model, glm::vec3(gameObject->transform.position, 0.0f));
-            // move origin of rotation to center of quad
-            model = glm::translate(model, glm::vec3(0.5f * gameObject->transform.scale.x, 0.5f * gameObject->transform.scale.y, 0.0f));
-            // then rotate
-            model = glm::rotate(model, glm::radians(gameObject->transform.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-            // move origin back
-            model = glm::translate(model, glm::vec3(-0.5f * gameObject->transform.scale.x, -0.5f * gameObject->transform.scale.y, 0.0f));
-            // then rotate
-            model = glm::scale(model, glm::vec3(gameObject->transform.scale, 1.0f)); // last scale
 
-            SpriteRenderer::shader.SetMatrix4("model", model);
+            SpriteRenderer::shader.SetMatrix4("model", gameObject->transform.GetModelMatrix());
             SpriteRenderer::shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
             SpriteRenderer::shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 
-            SpriteRenderer::shader.SetVector3f("spriteColor", color);
+            SpriteRenderer::shader.SetVector4f("spriteColor", color);
             SpriteRenderer::shader.SetInteger("isUseTexture", IsUseTexture());
 
             if (IsUseTexture())

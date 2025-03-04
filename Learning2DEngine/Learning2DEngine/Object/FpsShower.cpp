@@ -13,12 +13,11 @@ namespace Learning2DEngine
 	{
 		FpsShower::FpsShower(
 			GameObject* gameObject,
-			const Resolution& cameraResolution,
 			const FontSizePair& fontSizePair,
 			int layer,
-			glm::vec3 color)
+			glm::vec4 color)
 			: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
-			Text2DLateRenderer(gameObject, cameraResolution, fontSizePair, layer, color),
+			Text2DLateRenderer(gameObject, fontSizePair, layer, color),
 			LateRendererComponent(gameObject, layer),  BaseRendererComponent(gameObject, layer), previousTime(0.0f), fps(0)
 		{
 
@@ -53,14 +52,12 @@ namespace Learning2DEngine
 
 		FpsShower* FpsShower::CreateFpsShowerObject(
 			const System::Transform& transform,
-			const Resolution& cameraResolution,
 			const FontSizePair& fontSizePair,
 			int layer,
-			glm::vec3 color)
+			glm::vec4 color)
 		{
 			auto gameObject = GameObject::Create(transform);
-			return gameObject->AddComponent<FpsShower, const Resolution&, const FontSizePair&, int, glm::vec3>(
-				cameraResolution,
+			return gameObject->AddComponent<FpsShower, const FontSizePair&, int, glm::vec4>(
 				fontSizePair,
 				layer,
 				color
