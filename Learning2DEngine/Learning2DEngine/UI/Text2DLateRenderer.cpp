@@ -2,6 +2,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "../System/Game.h"
 #include "../System/ResourceManager.h"
 #include "../Render/ShaderConstant.h"
 
@@ -23,25 +24,23 @@ namespace Learning2DEngine
 
         Text2DLateRenderer::Text2DLateRenderer(
             GameObject* gameObject,
-            const Resolution& cameraResolution,
             const FontSizePair& fontSizePair,
             int layer,
             glm::vec3 color)
             :Component(gameObject), BaseRendererComponent(gameObject, layer), LateRendererComponent(gameObject, layer),
-            cameraResolution(cameraResolution), fontSizePair(fontSizePair), text(""), color(color)
+            fontSizePair(fontSizePair), text(""), color(color)
         {
 
         }
 
         Text2DLateRenderer::Text2DLateRenderer(
             GameObject* gameObject,
-            const Resolution& cameraResolution,
             const FontSizePair& fontSizePair,
             std::string text,
             int layer,
             glm::vec3 color)
             :Component(gameObject), BaseRendererComponent(gameObject, layer), LateRendererComponent(gameObject, layer),
-            cameraResolution(cameraResolution), fontSizePair(fontSizePair), text(text), color(color)
+            fontSizePair(fontSizePair), text(text), color(color)
         {
 
         }
@@ -135,13 +134,7 @@ namespace Learning2DEngine
 
             Text2DLateRenderer::shader.Use();
             Text2DLateRenderer::shader.SetVector3f("characterColor", color);
-            Text2DLateRenderer::shader.SetMatrix4(
-                "projection",
-                glm::ortho(
-                    0.0f,
-                    static_cast<float>(cameraResolution.GetWidth()),
-                    static_cast<float>(cameraResolution.GetHeight()),
-                    0.0f));
+            Text2DLateRenderer::shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
             glActiveTexture(GL_TEXTURE0);
             glBindVertexArray(vao);
 

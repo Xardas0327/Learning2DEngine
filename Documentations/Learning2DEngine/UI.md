@@ -63,16 +63,12 @@ class Text2DLateRenderer : public virtual Render::LateRendererComponent
 
 ### Variables:
 **Private:**  
-**cameraResolution**  
-```cpp
-Render::Resolution cameraResolution;
-```
-
 **referenceNumber**  
 All `Text2DLateRenderer` use the same shader and vertex array object.
 That's why it is counted, that how many `Text2DLateRenderer` there are in the game.
 It is important, that the shader will be created if it is used and
-it will be destroyed if nothing uses it.
+it will be destroyed if nothing uses it.  
+Note: The projection is came from Game::mainCamera.
 ```cpp
 static int referenceNumber;
 ```
@@ -128,10 +124,10 @@ void InitVao();
 **Protected:**  
 **Text2DLateRenderer**  
 ```cpp
-Text2DLateRenderer(System::GameObject* gameObject, const Render::Resolution& cameraResolution, const FontSizePair& fontSizePair, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+Text2DLateRenderer(System::GameObject* gameObject, const FontSizePair& fontSizePair, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
 ```
 ```cpp
-Text2DLateRenderer(System::GameObject* gameObject, const Render::Resolution& cameraResolution, const FontSizePair& fontSizePair, std::string text, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
+Text2DLateRenderer(System::GameObject* gameObject, const FontSizePair& fontSizePair, std::string text, int layer = 0, glm::vec3 color = glm::vec3(1.0f));
 ```
 
 **Init**  
@@ -156,17 +152,6 @@ void Draw() override;
 ```cpp
 glm::mat2 GetRotationMatrix();
 ```
-
-**Public:**  
-**GetResolution**  
-```cpp
-inline Render::Resolution GetResolution();
-``` 
-
-**SetResolution**  
-```cpp
-inline void SetResolution(const Render::Resolution& cameraResolution);
-``` 
 
 ##
 ## TextCharacterSet

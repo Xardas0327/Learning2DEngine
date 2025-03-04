@@ -982,7 +982,8 @@ It uses static variables to count how many GameObject initialized it.
 That's why it will destroy its Vertex Array Object only
 if the reference number is 0, otherway it will decrease
 the reference number only.  
-Please more info about `RendererComponent`.
+Please more info about `RendererComponent`.  
+Note: The projection and the view matrix are came from Game::mainCamera.
 
 ### Header:
 ```cpp
