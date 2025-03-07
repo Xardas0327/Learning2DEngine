@@ -5,7 +5,7 @@
 #include "LateUpdaterComponentHandler.h"
 #include "BaseUpdaterComponent.h"
 #include "BaseLateUpdaterComponent.h"
-#include "../Render/BaseRendererComponent.h"
+#include "../Render/OldBaseRendererComponent.h"
 #include "../Render/RendererComponentHandler.h"
 #include "../Physics/ColliderComponentHandler.h"
 #include "../Physics/BaseBoxColliderComponent.h"
@@ -128,12 +128,12 @@ namespace Learning2DEngine
 
             //Render
 
-            inline void AddToRenderer(Render::BaseRendererComponent* component)
+            inline void AddToRenderer(Render::OldBaseRendererComponent* component)
             {
                 rendererComponentHandler.Add(component, isThreadSafe);
             }
 
-            inline void RemoveFromRenderer(Render::BaseRendererComponent* component)
+            inline void RemoveFromRenderer(Render::OldBaseRendererComponent* component)
             {
                 rendererComponentHandler.Remove(component, isThreadSafe);
             }
@@ -150,12 +150,12 @@ namespace Learning2DEngine
 
             //LateRender
 
-            inline void AddToLateRenderer(Render::BaseRendererComponent* component)
+            inline void AddToLateRenderer(Render::OldBaseRendererComponent* component)
             {
                 lateRendererComponentHandler.Add(component, isThreadSafe);
             }
 
-            inline void RemoveFromLateRenderer(Render::BaseRendererComponent* component)
+            inline void RemoveFromLateRenderer(Render::OldBaseRendererComponent* component)
             {
                 lateRendererComponentHandler.Remove(component, isThreadSafe);
             }

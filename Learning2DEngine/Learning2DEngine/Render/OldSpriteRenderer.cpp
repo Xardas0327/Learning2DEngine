@@ -18,14 +18,14 @@ namespace Learning2DEngine
         GLuint OldSpriteRenderer::ebo = 0;
 
         OldSpriteRenderer::OldSpriteRenderer(GameObject* gameObject, int layer, glm::vec4 color)
-            : Component(gameObject), BaseRendererComponent(gameObject, layer), RendererComponent(gameObject, layer),
+            : Component(gameObject), OldBaseRendererComponent(gameObject, layer), OldRendererComponent(gameObject, layer),
             texture(nullptr), color(color)
         {
 
         }
 
         OldSpriteRenderer::OldSpriteRenderer(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec4 color)
-            : Component(gameObject), BaseRendererComponent(gameObject, layer), RendererComponent(gameObject, layer),
+            : Component(gameObject), OldBaseRendererComponent(gameObject, layer), OldRendererComponent(gameObject, layer),
             color(color), texture(new Texture2D(texture))
         {
         }
@@ -40,7 +40,7 @@ namespace Learning2DEngine
 
         void OldSpriteRenderer::Init()
         {
-			RendererComponent::Init();
+            OldRendererComponent::Init();
 
             // If nothing use it
             if (!OldSpriteRenderer::referenceNumber)
@@ -53,7 +53,7 @@ namespace Learning2DEngine
 
         void OldSpriteRenderer::Destroy()
         {
-            RendererComponent::Destroy();
+            OldRendererComponent::Destroy();
 
             --OldSpriteRenderer::referenceNumber;
             // If nothing use it

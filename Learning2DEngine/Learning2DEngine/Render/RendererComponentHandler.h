@@ -4,13 +4,13 @@
 
 #include "../System/GameObject.h"
 #include "../System/BaseComponentHandler.h"
-#include "BaseRendererComponent.h"
+#include "OldBaseRendererComponent.h"
 
 namespace Learning2DEngine
 {
     namespace Render
     {
-		class RendererComponentHandler : public virtual System::BaseComponentHandler<BaseRendererComponent>
+		class RendererComponentHandler : public virtual System::BaseComponentHandler<OldBaseRendererComponent>
 		{
 		protected:
 			bool isReorderNeeded;
@@ -22,7 +22,7 @@ namespace Learning2DEngine
 
 				isReorderNeeded = false;
 
-				std::sort(components.begin(), components.end(), [](BaseRendererComponent* a, BaseRendererComponent* b)
+				std::sort(components.begin(), components.end(), [](OldBaseRendererComponent* a, OldBaseRendererComponent* b)
 					{
 						return a->GetLayer() < b->GetLayer();
 					});
@@ -30,11 +30,11 @@ namespace Learning2DEngine
 
 		public:
 			RendererComponentHandler()
-				: System::BaseComponentHandler<BaseRendererComponent>(), isReorderNeeded(false)
+				: System::BaseComponentHandler<OldBaseRendererComponent>(), isReorderNeeded(false)
 			{
 			}
 
-			void Add(BaseRendererComponent* component, bool isThreadSafe) override
+			void Add(OldBaseRendererComponent* component, bool isThreadSafe) override
 			{
 				BaseComponentHandler::Add(component, isThreadSafe);
 				isReorderNeeded = true;

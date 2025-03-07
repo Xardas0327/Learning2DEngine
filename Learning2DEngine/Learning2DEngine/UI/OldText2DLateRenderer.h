@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include "../Render/LateRendererComponent.h"
+#include "../Render/OldLateRendererComponent.h"
 #include "../Render/Shader.h"
 #include "../Render/Resolution.h"
 #include "../System/GameObject.h"
@@ -15,7 +15,7 @@ namespace Learning2DEngine
 {
     namespace UI
     {
-        class OldText2DLateRenderer : public virtual Render::LateRendererComponent
+        class OldText2DLateRenderer : public virtual Render::OldLateRendererComponent
         {
             friend class System::GameObject;
         private:

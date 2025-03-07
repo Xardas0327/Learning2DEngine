@@ -27,7 +27,7 @@ namespace Learning2DEngine
 			unsigned int particleAmount,
 			ParticleSettings* particleSettings,
 			int renderLayer)
-			: Component(gameObject), BaseRendererComponent(gameObject, renderLayer), RendererComponent(gameObject, renderLayer),
+			: Component(gameObject), OldBaseRendererComponent(gameObject, renderLayer), OldRendererComponent(gameObject, renderLayer),
 			BaseUpdaterComponent(gameObject), UpdaterComponent(gameObject),
 			isRunning(false), particleAmount(particleAmount), systemSettings(),
 			texture(nullptr), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
@@ -43,7 +43,7 @@ namespace Learning2DEngine
 			const ParticleSystemSettings& systemSettings,
 			ParticleSettings* particleSettings,
 			int renderLayer)
-			: Component(gameObject), BaseRendererComponent(gameObject, renderLayer), RendererComponent(gameObject, renderLayer),
+			: Component(gameObject), OldBaseRendererComponent(gameObject, renderLayer), OldRendererComponent(gameObject, renderLayer),
 			BaseUpdaterComponent(gameObject), UpdaterComponent(gameObject),
 			isRunning(false), particleAmount(particleAmount), systemSettings(systemSettings),
 			delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
@@ -120,7 +120,7 @@ namespace Learning2DEngine
 
 		void ParticleSystem::Init()
 		{
-			RendererComponent::Init();
+			OldRendererComponent::Init();
 			UpdaterComponent::Init();
 			particles = new Particle[particleAmount];
 
@@ -135,7 +135,7 @@ namespace Learning2DEngine
 
 		void ParticleSystem::Destroy()
 		{
-			RendererComponent::Destroy();
+			OldRendererComponent::Destroy();
 			UpdaterComponent::Destroy();
 			delete[] particles;
 			particles = nullptr;

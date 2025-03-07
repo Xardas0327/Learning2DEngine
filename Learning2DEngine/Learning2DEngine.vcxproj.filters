@@ -185,16 +185,16 @@
     <ClInclude Include="Learning2DEngine\System\UpdaterComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\BaseRendererComponent.h">
+    <ClInclude Include="Learning2DEngine\Render\OldBaseRendererComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\RendererComponent.h">
+    <ClInclude Include="Learning2DEngine\Render\OldRendererComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\RendererComponentHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\LateRendererComponent.h">
+    <ClInclude Include="Learning2DEngine\Render\OldLateRendererComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\UI\TextCharacterSet.h">

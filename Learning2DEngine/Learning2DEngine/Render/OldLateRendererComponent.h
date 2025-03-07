@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BaseRendererComponent.h"
+#include "OldBaseRendererComponent.h"
 #include "../System/ComponentManager.h"
 
 namespace Learning2DEngine
@@ -12,18 +12,18 @@ namespace Learning2DEngine
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
 		/// Please check for more info about `System::Component` and `BaseRendererComponent`.
 		/// </summary>
-		class LateRendererComponent : public virtual BaseRendererComponent
+		class OldLateRendererComponent : public virtual OldBaseRendererComponent
 		{
 			friend class System::GameObject;
 		protected:
-			LateRendererComponent(System::GameObject* gameObject)
-				: BaseRendererComponent(gameObject)
+			OldLateRendererComponent(System::GameObject* gameObject)
+				: OldBaseRendererComponent(gameObject)
 			{
 
 			}
 
-			LateRendererComponent(System::GameObject* gameObject, int layer)
-				: BaseRendererComponent(gameObject, layer)
+			OldLateRendererComponent(System::GameObject* gameObject, int layer)
+				: OldBaseRendererComponent(gameObject, layer)
 			{
 
 			}
@@ -47,7 +47,7 @@ namespace Learning2DEngine
 		public:
 			virtual void SetLayer(int value) override
 			{
-				BaseRendererComponent::SetLayer(value);
+				OldBaseRendererComponent::SetLayer(value);
 				System::ComponentManager::GetInstance().NeedReorderLateRenderers();
 			}
 		};

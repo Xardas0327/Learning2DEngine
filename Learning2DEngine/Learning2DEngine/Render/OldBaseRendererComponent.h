@@ -11,18 +11,18 @@ namespace Learning2DEngine
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
 		/// Please check for more info about System::Component
 		/// </summary>
-		class BaseRendererComponent : public virtual System::Component
+		class OldBaseRendererComponent : public virtual System::Component
 		{
 		private:
 			int layer;
 		protected:
-			BaseRendererComponent(System::GameObject* gameObject)
+			OldBaseRendererComponent(System::GameObject* gameObject)
 				: System::Component(gameObject), layer(0)
 			{
 
 			}
 
-			BaseRendererComponent(System::GameObject* gameObject, int layer)
+			OldBaseRendererComponent(System::GameObject* gameObject, int layer)
 				: System::Component(gameObject), layer(layer)
 			{
 

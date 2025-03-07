@@ -27,7 +27,7 @@ namespace Learning2DEngine
             const FontSizePair& fontSizePair,
             int layer,
             glm::vec4 color)
-            :Component(gameObject), BaseRendererComponent(gameObject, layer), LateRendererComponent(gameObject, layer),
+            :Component(gameObject), OldBaseRendererComponent(gameObject, layer), OldLateRendererComponent(gameObject, layer),
             fontSizePair(fontSizePair), text(""), color(color)
         {
 
@@ -39,7 +39,7 @@ namespace Learning2DEngine
             std::string text,
             int layer,
             glm::vec4 color)
-            :Component(gameObject), BaseRendererComponent(gameObject, layer), LateRendererComponent(gameObject, layer),
+            :Component(gameObject), OldBaseRendererComponent(gameObject, layer), OldLateRendererComponent(gameObject, layer),
             fontSizePair(fontSizePair), text(text), color(color)
         {
 
@@ -48,7 +48,7 @@ namespace Learning2DEngine
 
         void OldText2DLateRenderer::Init()
         {
-            LateRendererComponent::Init();
+            OldLateRendererComponent::Init();
 
             // If nothing use it
             if (!OldText2DLateRenderer::referenceNumber)
@@ -61,7 +61,7 @@ namespace Learning2DEngine
 
         void OldText2DLateRenderer::Destroy()
         {
-            LateRendererComponent::Destroy();
+            OldLateRendererComponent::Destroy();
 
             --OldText2DLateRenderer::referenceNumber;
             // If nothing use it
