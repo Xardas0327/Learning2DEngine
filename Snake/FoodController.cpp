@@ -13,7 +13,7 @@ FoodController::FoodController(GameObject* gameObject, const std::string& textur
 
 void FoodController::Init()
 {
-    renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&, int, glm::vec4>(
+    renderer = gameObject->AddComponent<OldSpriteRenderer, const Texture2D&, int, glm::vec4>(
         ResourceManager::GetInstance().GetTexture(textureId),
         0,
         color

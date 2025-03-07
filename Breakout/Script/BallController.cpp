@@ -33,7 +33,7 @@ void BallController::Init()
     UpdaterComponent::Init();
 
     rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2, bool>(INITIAL_BALL_VELOCITY, isStuck);
-    renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&>(
+    renderer = gameObject->AddComponent<OldSpriteRenderer, const Texture2D&>(
         ResourceManager::GetInstance().GetTexture(textureId)
     );
 

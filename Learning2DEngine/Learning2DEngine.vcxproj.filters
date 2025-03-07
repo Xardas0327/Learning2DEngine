@@ -36,7 +36,7 @@
     <ClCompile Include="Learning2DEngine\System\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp">
+    <ClCompile Include="Learning2DEngine\Render\OldSpriteRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystem.cpp">
@@ -60,7 +60,7 @@
     <ClCompile Include="Learning2DEngine\UI\TextCharacterSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\UI\Text2DLateRenderer.cpp">
+    <ClCompile Include="Learning2DEngine\UI\OldText2DLateRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\Physics\ColliderComponentHandler.cpp">
@@ -110,7 +110,7 @@
     <ClInclude Include="Learning2DEngine\Render\Texture2DSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h">
+    <ClInclude Include="Learning2DEngine\Render\OldSpriteRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\System\GameObject.h">
@@ -200,7 +200,7 @@
     <ClInclude Include="Learning2DEngine\UI\TextCharacterSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\UI\Text2DLateRenderer.h">
+    <ClInclude Include="Learning2DEngine\UI\OldText2DLateRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\UI\FontSizePair.h">

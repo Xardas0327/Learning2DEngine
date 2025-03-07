@@ -11,7 +11,7 @@ namespace Learning2DEngine
 {
     namespace Render
     {
-        class SpriteRenderer : public virtual RendererComponent
+        class OldSpriteRenderer : public virtual RendererComponent
         {
             friend class System::GameObject;
         private:
@@ -29,8 +29,8 @@ namespace Learning2DEngine
             void InitShader();
             void InitVao();
         protected:
-            SpriteRenderer(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
-            SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+            OldSpriteRenderer(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+            OldSpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 
             void Init() override;
             void Destroy() override;
@@ -39,7 +39,7 @@ namespace Learning2DEngine
             Texture2D* texture;
             glm::vec4 color;
 
-            ~SpriteRenderer();
+            ~OldSpriteRenderer();
 
             inline bool IsUseTexture()
             {

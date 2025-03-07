@@ -15,7 +15,7 @@ namespace Learning2DEngine
 {
     namespace UI
     {
-        class Text2DLateRenderer : public virtual Render::LateRendererComponent
+        class OldText2DLateRenderer : public virtual Render::LateRendererComponent
         {
             friend class System::GameObject;
         private:
@@ -33,12 +33,12 @@ namespace Learning2DEngine
             void InitShader();
             void InitVao();
         protected:
-            Text2DLateRenderer(
+            OldText2DLateRenderer(
                 System::GameObject* gameObject,
                 const FontSizePair& fontSizePair,
                 int layer = 0,
                 glm::vec4 color = glm::vec4(1.0f));
-            Text2DLateRenderer(
+            OldText2DLateRenderer(
                 System::GameObject* gameObject,
                 const FontSizePair& fontSizePair,
                 std::string text,

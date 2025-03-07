@@ -5,7 +5,7 @@
 #include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
-#include <Learning2DEngine/Render/SpriteRenderer.h>
+#include <Learning2DEngine/Render/OldSpriteRenderer.h>
 
 class BrickController : public virtual Learning2DEngine::System::Component
 {
@@ -19,7 +19,7 @@ public:
     int mapCoorX;
     int mapCoorY;
     Learning2DEngine::Physics::BoxColliderComponent* collider;
-    Learning2DEngine::Render::SpriteRenderer* renderer;
+    Learning2DEngine::Render::OldSpriteRenderer* renderer;
 
     inline bool IsSolid()
     {

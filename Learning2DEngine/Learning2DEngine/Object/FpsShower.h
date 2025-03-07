@@ -5,14 +5,14 @@
 #include "../System/UpdaterComponent.h"
 #include "../System/Transform.h"
 #include "../UI/FontSizePair.h"
-#include "../UI/Text2DLateRenderer.h"
+#include "../UI/OldText2DLateRenderer.h"
 
 namespace Learning2DEngine
 {
 	namespace Object
 	{
 		class FpsShower : public virtual System::UpdaterComponent,
-							public virtual UI::Text2DLateRenderer
+							public virtual UI::OldText2DLateRenderer
 		{
 			friend class System::GameObject;
 		protected:

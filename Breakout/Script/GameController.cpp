@@ -75,7 +75,7 @@ void GameController::Init()
             glm::vec2(5.0f, 5.0f)
         )
     );
-    lifeText = liveGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string>(
+    lifeText = liveGameObject->AddComponent<OldText2DLateRenderer, const FontSizePair&, std::string>(
         fontSizePair,
         "Lifes: " + std::to_string(lifes)
     );
@@ -85,7 +85,7 @@ void GameController::Init()
             glm::vec2(250.0f, static_cast<float>(middleHeight))
         )
     );
-    startText = startGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string>(
+    startText = startGameObject->AddComponent<OldText2DLateRenderer, const FontSizePair&, std::string>(
         fontSizePair,
         "Press ENTER to start"
     );
@@ -96,7 +96,7 @@ void GameController::Init()
             glm::vec2(0.75f, 0.75f)
         )
     );
-    levelSelectorText = levelSelectorGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string>(
+    levelSelectorText = levelSelectorGameObject->AddComponent<OldText2DLateRenderer, const FontSizePair&, std::string>(
         fontSizePair,
         "Press W or S to select level"
     );
@@ -107,7 +107,7 @@ void GameController::Init()
         ),
         false
     );
-    winText = winGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string, int, glm::vec4>(
+    winText = winGameObject->AddComponent<OldText2DLateRenderer, const FontSizePair&, std::string, int, glm::vec4>(
         fontSizePair,
         "You WON!!!",
         0,
@@ -120,7 +120,7 @@ void GameController::Init()
         ),
         false
     );
-    retryText = retryGameObject->AddComponent<Text2DLateRenderer, const FontSizePair&, std::string, int, glm::vec4>(
+    retryText = retryGameObject->AddComponent<OldText2DLateRenderer, const FontSizePair&, std::string, int, glm::vec4>(
         fontSizePair,
         "Press ENTER to retry or ESC to quit",
         0,

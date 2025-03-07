@@ -6,7 +6,7 @@
 
 #include <Learning2DEngine/System/UpdaterComponent.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/Render/SpriteRenderer.h>
+#include <Learning2DEngine/Render/OldSpriteRenderer.h>
 #include <Learning2DEngine/Physics/Rigidbody.h>
 #include <Learning2DEngine/Physics/CircleColliderComponent.h>
 #include <Learning2DEngine/ParticleSimulator/ParticleSystem.h>
@@ -51,7 +51,7 @@ protected:
     void OnCollision(Learning2DEngine::Physics::Collision collision) override;
     void Update() override;
 public:
-    Learning2DEngine::Render::SpriteRenderer* renderer;
+    Learning2DEngine::Render::OldSpriteRenderer* renderer;
     Learning2DEngine::Physics::Rigidbody* rigidbody;
     float radius;
     bool sticky;

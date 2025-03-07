@@ -174,13 +174,13 @@
     <ClCompile Include="Learning2DEngine\Render\PostProcessEffect.cpp" />
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp" />
     <ClCompile Include="Learning2DEngine\Render\ShaderConstant.cpp" />
-    <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp" />
+    <ClCompile Include="Learning2DEngine\Render\OldSpriteRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\System\Game.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Shader.cpp" />
     <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp" />
     <ClCompile Include="Learning2DEngine\System\Random.cpp" />
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
-    <ClCompile Include="Learning2DEngine\UI\Text2DLateRenderer.cpp" />
+    <ClCompile Include="Learning2DEngine\UI\OldText2DLateRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\DebugTool\DebugMacro.h" />
@@ -212,7 +212,7 @@
     <ClInclude Include="Learning2DEngine\Render\RendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\RendererComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
-    <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h" />
+    <ClInclude Include="Learning2DEngine\Render\OldSpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h" />
     <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\BaseGameObject.h" />
@@ -251,7 +251,7 @@
     <ClInclude Include="Learning2DEngine\UI\FontSizePair.h" />
     <ClInclude Include="Learning2DEngine\UI\TextCharacterSet.h" />
     <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h" />
-    <ClInclude Include="Learning2DEngine\UI\Text2DLateRenderer.h" />
+    <ClInclude Include="Learning2DEngine\UI\OldText2DLateRenderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

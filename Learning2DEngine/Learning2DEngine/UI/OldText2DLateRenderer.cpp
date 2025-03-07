@@ -1,4 +1,4 @@
-#include "Text2DLateRenderer.h"
+#include "OldText2DLateRenderer.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -15,14 +15,14 @@ namespace Learning2DEngine
 
     namespace UI
     {
-        int Text2DLateRenderer::referenceNumber = 0;
-        Shader Text2DLateRenderer::shader;
+        int OldText2DLateRenderer::referenceNumber = 0;
+        Shader OldText2DLateRenderer::shader;
 
-        GLuint Text2DLateRenderer::vao = 0;
-        GLuint Text2DLateRenderer::vbo = 0;
-        GLuint Text2DLateRenderer::ebo = 0;
+        GLuint OldText2DLateRenderer::vao = 0;
+        GLuint OldText2DLateRenderer::vbo = 0;
+        GLuint OldText2DLateRenderer::ebo = 0;
 
-        Text2DLateRenderer::Text2DLateRenderer(
+        OldText2DLateRenderer::OldText2DLateRenderer(
             GameObject* gameObject,
             const FontSizePair& fontSizePair,
             int layer,
@@ -33,7 +33,7 @@ namespace Learning2DEngine
 
         }
 
-        Text2DLateRenderer::Text2DLateRenderer(
+        OldText2DLateRenderer::OldText2DLateRenderer(
             GameObject* gameObject,
             const FontSizePair& fontSizePair,
             std::string text,
@@ -46,64 +46,64 @@ namespace Learning2DEngine
         }
 
 
-        void Text2DLateRenderer::Init()
+        void OldText2DLateRenderer::Init()
         {
             LateRendererComponent::Init();
 
             // If nothing use it
-            if (!Text2DLateRenderer::referenceNumber)
+            if (!OldText2DLateRenderer::referenceNumber)
             {
                 InitShader();
                 InitVao();
             }
-            ++Text2DLateRenderer::referenceNumber;
+            ++OldText2DLateRenderer::referenceNumber;
         }
 
-        void Text2DLateRenderer::Destroy()
+        void OldText2DLateRenderer::Destroy()
         {
             LateRendererComponent::Destroy();
 
-            --Text2DLateRenderer::referenceNumber;
+            --OldText2DLateRenderer::referenceNumber;
             // If nothing use it
-            if (!Text2DLateRenderer::referenceNumber)
+            if (!OldText2DLateRenderer::referenceNumber)
             {
-                glDeleteVertexArrays(1, &Text2DLateRenderer::vao);
-                glDeleteBuffers(1, &Text2DLateRenderer::vbo);
-                glDeleteBuffers(1, &Text2DLateRenderer::ebo);
+                glDeleteVertexArrays(1, &OldText2DLateRenderer::vao);
+                glDeleteBuffers(1, &OldText2DLateRenderer::vbo);
+                glDeleteBuffers(1, &OldText2DLateRenderer::ebo);
                 glDeleteVertexArrays(1, &vao);
             }
         }
 
-        void Text2DLateRenderer::InitShader()
+        void OldText2DLateRenderer::InitShader()
         {
             auto& resourceManager = ResourceManager::GetInstance();
 
-            Text2DLateRenderer::shader = resourceManager.IsShaderExist(ShaderConstant::TEXT2D_SHADER_NAME)
+            OldText2DLateRenderer::shader = resourceManager.IsShaderExist(ShaderConstant::TEXT2D_SHADER_NAME)
                 ? resourceManager.GetShader(ShaderConstant::TEXT2D_SHADER_NAME)
                 : resourceManager.LoadShader(
                     ShaderConstant::TEXT2D_SHADER_NAME,
                     ShaderConstant::TEXT2D_VERTEX_SHADER,
                     ShaderConstant::TEXT2D_FRAGMENT_SHADER);
 
-            Text2DLateRenderer::shader.Use();
-            Text2DLateRenderer::shader.SetInteger("characterTexture", 0);
+            OldText2DLateRenderer::shader.Use();
+            OldText2DLateRenderer::shader.SetInteger("characterTexture", 0);
         }
 
-        void Text2DLateRenderer::InitVao()
+        void OldText2DLateRenderer::InitVao()
         {
             unsigned int indices[] = {
                 0, 1, 3,
                 1, 2, 3
             };
 
-            glGenVertexArrays(1, &Text2DLateRenderer::vao);
-            glGenBuffers(1, &Text2DLateRenderer::vbo);
-            glGenBuffers(1, &Text2DLateRenderer::ebo);
-            glBindVertexArray(Text2DLateRenderer::vao);
-            glBindBuffer(GL_ARRAY_BUFFER, Text2DLateRenderer::vbo);
+            glGenVertexArrays(1, &OldText2DLateRenderer::vao);
+            glGenBuffers(1, &OldText2DLateRenderer::vbo);
+            glGenBuffers(1, &OldText2DLateRenderer::ebo);
+            glBindVertexArray(OldText2DLateRenderer::vao);
+            glBindBuffer(GL_ARRAY_BUFFER, OldText2DLateRenderer::vbo);
             glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 4, NULL, GL_DYNAMIC_DRAW);
 
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, Text2DLateRenderer::ebo);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, OldText2DLateRenderer::ebo);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
             glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
@@ -115,7 +115,7 @@ namespace Learning2DEngine
             glBindVertexArray(0);
         }
 
-        glm::mat2 Text2DLateRenderer::GetRotationMatrix()
+        glm::mat2 OldText2DLateRenderer::GetRotationMatrix()
         {
             float radians = glm::radians(gameObject->transform.rotation);
 
@@ -125,16 +125,16 @@ namespace Learning2DEngine
             );
         }
 
-        void Text2DLateRenderer::Draw()
+        void OldText2DLateRenderer::Draw()
         {
             TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
             textCharacterSet.Load(fontSizePair);
 
             CharacterMap& characterMap = textCharacterSet[fontSizePair];
 
-            Text2DLateRenderer::shader.Use();
-            Text2DLateRenderer::shader.SetVector4f("characterColor", color);
-            Text2DLateRenderer::shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+            OldText2DLateRenderer::shader.Use();
+            OldText2DLateRenderer::shader.SetVector4f("characterColor", color);
+            OldText2DLateRenderer::shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
             glActiveTexture(GL_TEXTURE0);
             glBindVertexArray(vao);
 
@@ -165,7 +165,7 @@ namespace Learning2DEngine
 
                 glBindTexture(GL_TEXTURE_2D, ch.textureId);
 
-                glBindBuffer(GL_ARRAY_BUFFER, Text2DLateRenderer::vbo);
+                glBindBuffer(GL_ARRAY_BUFFER, OldText2DLateRenderer::vbo);
                 glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
                 glBindBuffer(GL_ARRAY_BUFFER, 0);
 

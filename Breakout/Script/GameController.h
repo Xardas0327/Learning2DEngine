@@ -7,7 +7,7 @@
 #include <Learning2DEngine/System/UpdaterComponent.h>
 #include <Learning2DEngine/System/LateUpdaterComponent.h>
 #include <Learning2DEngine/UI/FontSizePair.h>
-#include <Learning2DEngine/UI/Text2DLateRenderer.h>
+#include <Learning2DEngine/UI/OldText2DLateRenderer.h>
 
 #include "GameLevel.h"
 #include "BackgroundController.h"
@@ -55,11 +55,11 @@ private:
     BallHitPlayerEventItem ballHitPlayerEventItem;
     BallHitBrickEventItem ballHitBrickEventItem;
 
-    Learning2DEngine::UI::Text2DLateRenderer* lifeText;
-    Learning2DEngine::UI::Text2DLateRenderer* startText;
-    Learning2DEngine::UI::Text2DLateRenderer* levelSelectorText;
-    Learning2DEngine::UI::Text2DLateRenderer* winText;
-    Learning2DEngine::UI::Text2DLateRenderer* retryText;
+    Learning2DEngine::UI::OldText2DLateRenderer* lifeText;
+    Learning2DEngine::UI::OldText2DLateRenderer* startText;
+    Learning2DEngine::UI::OldText2DLateRenderer* levelSelectorText;
+    Learning2DEngine::UI::OldText2DLateRenderer* winText;
+    Learning2DEngine::UI::OldText2DLateRenderer* retryText;
 
 
     GameController(Learning2DEngine::System::GameObject* gameObject, const Learning2DEngine::UI::FontSizePair& fontSizePair,
