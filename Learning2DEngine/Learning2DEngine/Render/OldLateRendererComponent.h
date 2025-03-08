@@ -14,7 +14,7 @@ namespace Learning2DEngine
 		/// </summary>
 		class OldLateRendererComponent : public virtual OldBaseRendererComponent
 		{
-			friend class System::GameObject;
+			//friend class System::GameObject;
 		protected:
 			OldLateRendererComponent(System::GameObject* gameObject)
 				: OldBaseRendererComponent(gameObject)

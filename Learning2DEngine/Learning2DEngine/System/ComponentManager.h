@@ -6,7 +6,7 @@
 #include "BaseUpdaterComponent.h"
 #include "BaseLateUpdaterComponent.h"
 #include "../Render/OldBaseRendererComponent.h"
-#include "../Render/RendererComponentHandler.h"
+#include "../Render/OldRendererComponentHandler.h"
 #include "../Physics/ColliderComponentHandler.h"
 #include "../Physics/BaseBoxColliderComponent.h"
 #include "../Physics/BaseCircleColliderComponent.h"
@@ -23,8 +23,8 @@ namespace Learning2DEngine
             UpdaterComponentHandler updaterComponentHandler;
             LateUpdaterComponentHandler lateUpdaterComponentHandler;
             Physics::ColliderComponentHandler colliderComponentHandler;
-            Render::RendererComponentHandler rendererComponentHandler;
-            Render::RendererComponentHandler lateRendererComponentHandler;
+            Render::OldRendererComponentHandler rendererComponentHandler;
+            Render::OldRendererComponentHandler lateRendererComponentHandler;
 
             bool isThreadSafe;
 

@@ -166,6 +166,7 @@
     <ClCompile Include="Learning2DEngine\Object\FpsShower.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\ColliderComponentHandler.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\CollisionChecker.cpp" />
+    <ClCompile Include="Learning2DEngine\Render\RendererComponentHandler.cpp" />
     <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
     <ClCompile Include="Learning2DEngine\UI\TextCharacterSet.cpp" />
     <ClCompile Include="Plugins\glad.c" />
@@ -200,6 +201,10 @@
     <ClInclude Include="Learning2DEngine\Physics\CollisionChecker.h" />
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h" />
     <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h" />
+    <ClInclude Include="Learning2DEngine\Render\BaseRendererComponent.h" />
+    <ClInclude Include="Learning2DEngine\Render\IRenderData.h" />
+    <ClInclude Include="Learning2DEngine\Render\IRenderer.h" />
+    <ClInclude Include="Learning2DEngine\Render\LateRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\OldBaseRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\Blend.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSettings.h" />
@@ -210,6 +215,8 @@
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h" />
     <ClInclude Include="Learning2DEngine\Render\OldRendererComponent.h" />
+    <ClInclude Include="Learning2DEngine\Render\RendererComponent.h" />
+    <ClInclude Include="Learning2DEngine\Render\OldRendererComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\Render\RendererComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\OldSpriteRenderer.h" />

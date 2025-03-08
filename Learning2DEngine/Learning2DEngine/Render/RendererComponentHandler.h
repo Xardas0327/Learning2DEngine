@@ -1,62 +1,45 @@
 #pragma once
 
-#include <algorithm>
+#include <map>
+#include <mutex>
+#include <string>
+#include <tuple>
+#include <vector>
 
-#include "../System/GameObject.h"
-#include "../System/BaseComponentHandler.h"
-#include "OldBaseRendererComponent.h"
+#include "../System/IComponentHandler.h"
+#include "IRenderData.h"
+#include "IRenderer.h"
 
 namespace Learning2DEngine
 {
     namespace Render
     {
-		class RendererComponentHandler : public virtual System::BaseComponentHandler<OldBaseRendererComponent>
-		{
-		protected:
-			bool isReorderNeeded;
+        class RendererComponentHandler final : public System::IComponentHandler
+        {
+        private:
+			//The int is, that how many data use this renderer.
+			std::map<std::string, std::tuple<IRenderer*, int>> renderers;
+			//The int is the layer.
+			std::map<int, std::map<std::string, std::vector<IRenderData*>>> renderData;
+            //Help for find the data faster.
+            std::map<IRenderData*, std::tuple<std::string, int>> renderDataMapping;
+			std::mutex rendererMutex;
+            std::mutex dataMutex;
 
-			void ReorderComponents()
-			{
-				if (!isReorderNeeded)
-					return;
+            void Add(const std::string& id, IRenderer* renderer, bool mustOverride);
+            void Add(const std::string& id, IRenderData* data, int layer);
+            void ChangeLayer(IRenderData* data, int newLayer);
+            void Remove(IRenderData* data);
+        public:
+            RendererComponentHandler();
 
-				isReorderNeeded = false;
+            void Add(const std::string& id, IRenderer* renderer, bool mustOverride, bool isThreadSafe);
+            void Add(const std::string& id, IRenderData* data, int layer, bool isThreadSafe);
+            void ChangeLayer(IRenderData* data, int newLayer, bool isThreadSafe);
+            void Remove(IRenderData* data, bool isThreadSafe);
 
-				std::sort(components.begin(), components.end(), [](OldBaseRendererComponent* a, OldBaseRendererComponent* b)
-					{
-						return a->GetLayer() < b->GetLayer();
-					});
-			}
-
-		public:
-			RendererComponentHandler()
-				: System::BaseComponentHandler<OldBaseRendererComponent>(), isReorderNeeded(false)
-			{
-			}
-
-			void Add(OldBaseRendererComponent* component, bool isThreadSafe) override
-			{
-				BaseComponentHandler::Add(component, isThreadSafe);
-				isReorderNeeded = true;
-			}
-
-			inline void NeedReorder()
-			{
-				isReorderNeeded = true;
-			}
-
-			void Run() override
-			{
-				RefreshComponents();
-				ReorderComponents();
-
-				for (auto component : components)
-				{
-					//A GameObject will only be destroyed at the end of the frame.
-					if (component->isActive && component->gameObject->isActive)
-						component->Draw();
-				}
-			}
-		};
+			void Run() override;
+			void Clear() override;
+        };
     }
 }
