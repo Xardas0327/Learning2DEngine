@@ -202,7 +202,6 @@
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h" />
     <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h" />
     <ClInclude Include="Learning2DEngine\Render\BaseRendererComponent.h" />
-    <ClInclude Include="Learning2DEngine\Render\IRenderData.h" />
     <ClInclude Include="Learning2DEngine\Render\IRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\LateRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\OldBaseRendererComponent.h" />
@@ -215,6 +214,7 @@
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h" />
     <ClInclude Include="Learning2DEngine\Render\OldRendererComponent.h" />
+    <ClInclude Include="Learning2DEngine\Render\RenderData.h" />
     <ClInclude Include="Learning2DEngine\Render\RendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\OldRendererComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\Render\RendererComponentHandler.h" />

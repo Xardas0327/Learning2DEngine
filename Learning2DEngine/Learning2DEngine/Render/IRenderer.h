@@ -2,7 +2,7 @@
 
 #include "vector"
 
-#include "IRenderData.h"
+#include "RenderData.h"
 
 namespace Learning2DEngine
 {
@@ -10,7 +10,7 @@ namespace Learning2DEngine
 	{
 		struct IRenderer
 		{
-			virtual void Draw(std::vector<IRenderData*> renderData) = 0;
+			virtual void Draw(std::vector<RenderData*> renderData) = 0;
 			virtual ~IRenderer() = default;
 		};
 	}

@@ -10,7 +10,7 @@ namespace Learning2DEngine
 		/// <summary>
 		/// The classes, which are inherited from LateRendererComponent,
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
-		/// The TRenderData should be a class, which is inhereted from IRenderData.
+		/// The TRenderData should be a class, which is inhereted from RenderData.
 		/// The TRenderer should be a class, which is inhereted from IRenderer.
 		/// Please check for more info about `System::Component` and `BaseRendererComponent`.
 		/// </summary>
@@ -20,12 +20,6 @@ namespace Learning2DEngine
 		protected:
 			LateRendererComponent(System::GameObject* gameObject, int layer = 0)
 				: BaseRendererComponent(gameObject, layer)
-			{
-
-			}
-
-			LateRendererComponent(System::GameObject* gameObject, const TRenderData& data, int layer = 0)
-				: BaseRendererComponent(gameObject, data, layer)
 			{
 
 			}

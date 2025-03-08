@@ -22,24 +22,19 @@ namespace Learning2DEngine
 			int layer;
 		protected:
 			BaseRendererComponent(System::GameObject* gameObject, int layer = 0)
-				: System::Component(gameObject), layer(0), data()
-			{
-
-			}
-			BaseRendererComponent(System::GameObject* gameObject, const TRenderData& data, int layer = 0)
-				: System::Component(gameObject), layer(0), data(data)
+				: System::Component(gameObject), layer(0), data(gameObject)
 			{
 
 			}
 		public:
 			TRenderData data;
 
-			virtual const std::string& GetId() const = 0;
-
-			virtual TRenderer GetRenderer()
+			virtual const std::string& GetId() const
 			{
-				return TRenderer();
-			};
+				return typeid(TRenderData).name();
+			}
+
+			virtual TRenderer* GetRenderer() const = 0;
 
 			virtual void SetLayer(int value)
 			{

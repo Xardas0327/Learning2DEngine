@@ -9,54 +9,65 @@ namespace Learning2DEngine
 		{
 		}
 
-		void RendererComponentHandler::Add(const std::string& id, IRenderer* renderer, bool mustOverride)
-		{
-			bool isFound = renderers.find(id) != renderers.end();
-			if (!isFound || mustOverride)
-			{
-				if (isFound)
-					renderers[id] = std::make_tuple(renderer, std::get<1>(renderers[id]));
-				else
-					renderers[id] = std::make_tuple(renderer, 0);
-			}
-		}
-
-		void RendererComponentHandler::Add(const std::string& id, IRenderer* renderer, bool mustOverride, bool isThreadSafe)
+		bool RendererComponentHandler::IsRendererExist(const std::string& id, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{
 				std::lock_guard<std::mutex> lock(rendererMutex);
-				Add(id, renderer, mustOverride);
+				return renderers.find(id) != renderers.end();
 			}
 			else
 			{
-				Add(id, renderer, mustOverride);
+				return renderers.find(id) != renderers.end();
 			}
 		}
 
+		void RendererComponentHandler::AddRenderer(const std::string& id, IRenderer* renderer, bool isThreadSafe)
+		{
+			if (isThreadSafe)
+			{
+				std::lock_guard<std::mutex> lock(rendererMutex);
+				renderers[id] = renderer;
+			}
+			else
+			{
+				renderers[id] = renderer;
+			}
+		}
 
-		void RendererComponentHandler::Add(const std::string& id, IRenderData* data, int layer)
+		void RendererComponentHandler::RemoveRenderer(const std::string& id, bool isThreadSafe)
+		{
+			if (isThreadSafe)
+			{
+				std::lock_guard<std::mutex> lock(rendererMutex);
+				renderers.erase(id);
+			}
+			else
+			{
+				renderers.erase(id);
+			}
+		}
+
+		void RendererComponentHandler::AddData(const std::string& id, RenderData* data, int layer)
 		{
 			renderData[layer][id].push_back(data);
 			renderDataMapping[data] = std::make_tuple(id, layer);
-			++std::get<1>(renderers[id]);
 		}
 
-		void RendererComponentHandler::Add(const std::string& id, IRenderData* data, int layer, bool isThreadSafe)
+		void RendererComponentHandler::AddData(const std::string& id, RenderData* data, int layer, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{
-				std::lock_guard<std::mutex> lock(rendererMutex);
 				std::lock_guard<std::mutex> lock(dataMutex);
-				Add(id, data, layer);
+				AddData(id, data, layer);
 			}
 			else
 			{
-				Add(id, data, layer);
+				AddData(id, data, layer);
 			}
 		}
 
-		void RendererComponentHandler::ChangeLayer(IRenderData* data, int newLayer)
+		void RendererComponentHandler::ChangeLayer(RenderData* data, int newLayer)
 		{
 			bool isFound = renderDataMapping.find(data) != renderDataMapping.end();
 			if (!isFound)
@@ -72,7 +83,7 @@ namespace Learning2DEngine
 			renderDataMapping[data] = std::make_tuple(id, newLayer);
 		}
 
-		void RendererComponentHandler::ChangeLayer(IRenderData* data, int newLayer, bool isThreadSafe)
+		void RendererComponentHandler::ChangeLayer(RenderData* data, int newLayer, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{
@@ -85,7 +96,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void RendererComponentHandler::Remove(IRenderData* data)
+		void RendererComponentHandler::RemoveData(RenderData* data)
 		{
 			bool isFound = renderDataMapping.find(data) != renderDataMapping.end();
 			if (!isFound)
@@ -99,29 +110,26 @@ namespace Learning2DEngine
 			);
 			if (renderData[layer][id].size() == 0)
 			{
-				renderData[layer].erase(id);
 				if(renderData[layer].size() == 0)
 					renderData.erase(layer);
+				else
+					renderData[layer].erase(id);
+
 			}
 
 			renderDataMapping.erase(data);
-
-			--std::get<1>(renderers[id]);
-			if (std::get<1>(renderers[id]) == 0)
-				renderers.erase(id);
 		}
 
-		void RendererComponentHandler::Remove(IRenderData* data, bool isThreadSafe)
+		void RendererComponentHandler::RemoveData(RenderData* data, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{
-				std::lock_guard<std::mutex> lock(rendererMutex);
 				std::lock_guard<std::mutex> lock(dataMutex);
-				Remove(data);
+				RemoveData(data);
 			}
 			else
 			{
-				Remove(data);
+				RemoveData(data);
 			}
 		}
 
@@ -131,8 +139,7 @@ namespace Learning2DEngine
 			{
 				for (auto& dataPair : data.second)
 				{
-					auto& renderer = std::get<0>(renderers[dataPair.first]);
-					renderer->Draw(dataPair.second);
+					renderers[dataPair.first]->Draw(dataPair.second);
 				}
 			}
 		}
