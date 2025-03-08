@@ -97,9 +97,16 @@ namespace Learning2DEngine
 			renderData[layer][id].erase(
 				std::remove(renderData[layer][id].begin(), renderData[layer][id].end(), data), renderData[layer][id].end()
 			);
-			renderDataMapping.erase(data);
-			--std::get<1>(renderers[id]);
+			if (renderData[layer][id].size() == 0)
+			{
+				renderData[layer].erase(id);
+				if(renderData[layer].size() == 0)
+					renderData.erase(layer);
+			}
 
+			renderDataMapping.erase(data);
+
+			--std::get<1>(renderers[id]);
 			if (std::get<1>(renderers[id]) == 0)
 				renderers.erase(id);
 		}
