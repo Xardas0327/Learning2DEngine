@@ -19,40 +19,39 @@ namespace Learning2DEngine
 		{
 		protected:
 			LateRendererComponent(System::GameObject* gameObject, int layer = 0)
-				: BaseRendererComponent(gameObject, layer)
+				: BaseRendererComponent(gameObject, layer), System::Component(gameObject)
 			{
 
 			}
 
 			/// <summary>
-			/// If this function is override, it should call the LateRendererComponent::Init() in the first line.
+			/// If this function is override, it should care, that the renderer and renderdata will be added to the ComponentManager's LateRender.
 			/// </summary>
 			virtual void Init() override
 			{
-				//System::ComponentManager::GetInstance().AddToRenderer(this);
+				auto& componentManager = System::ComponentManager::GetInstance();
+				if (!componentManager.IsRendererExistInLateRender(GetId()))
+				{
+					componentManager.AddRendererToLateRender(GetId(), GetRenderer());
+				}
 
-				//if ComponentManager's LateRenderer doesn't have TRenderer add it with Id
-				//and the TRenderData should be added always.
+				componentManager.AddDataToLateRender(GetId(), &data, layer);
 			}
 
 			/// <summary>
-			/// If this function is override, it should call the LateRendererComponent::Destroy() in the first line.
+			/// If this function is override, it should care, that the renderdata will be removed from the ComponentManager's LateRender.
+			/// By default the renderer will not be removed automatically.
 			/// </summary>
 			virtual void Destroy() override
 			{
-				//System::ComponentManager::GetInstance().RemoveFromRenderer(this);
-
-				// Remove the TRenderData from ComponentManager's LateRenderer.
-				// The TRenderer removing should be automatically.
+				System::ComponentManager::GetInstance().RemoveDataFromLateRender(&data);
 			}
 
 		public:
 			virtual void SetLayer(int value) override
 			{
-				BaseRendererComponent::SetLayer(value);
-				//System::ComponentManager::GetInstance().NeedReorderRenderers();
-
-				// This should trigger a reordering
+				layer = value;
+				System::ComponentManager::GetInstance().ChangeLayerInLateRender(&data, layer);
 			}
 		};
 	}

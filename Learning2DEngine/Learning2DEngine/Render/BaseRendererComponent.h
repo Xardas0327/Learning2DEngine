@@ -18,9 +18,9 @@ namespace Learning2DEngine
 		template<class TRenderData, class TRenderer>
 		class BaseRendererComponent : public virtual System::Component
 		{
-		private:
-			int layer;
 		protected:
+			int layer;
+
 			BaseRendererComponent(System::GameObject* gameObject, int layer = 0)
 				: System::Component(gameObject), layer(0), data(gameObject)
 			{

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Singleton.h"
 #include "UpdaterComponentHandler.h"
 #include "LateUpdaterComponentHandler.h"
@@ -7,6 +9,9 @@
 #include "BaseLateUpdaterComponent.h"
 #include "../Render/OldBaseRendererComponent.h"
 #include "../Render/OldRendererComponentHandler.h"
+#include "../Render/IRenderer.h"
+#include "../Render/RenderData.h"
+#include "../Render/RendererComponentHandler.h"
 #include "../Physics/ColliderComponentHandler.h"
 #include "../Physics/BaseBoxColliderComponent.h"
 #include "../Physics/BaseCircleColliderComponent.h"
@@ -23,13 +28,16 @@ namespace Learning2DEngine
             UpdaterComponentHandler updaterComponentHandler;
             LateUpdaterComponentHandler lateUpdaterComponentHandler;
             Physics::ColliderComponentHandler colliderComponentHandler;
-            Render::OldRendererComponentHandler rendererComponentHandler;
-            Render::OldRendererComponentHandler lateRendererComponentHandler;
+            Render::OldRendererComponentHandler oldRendererComponentHandler;
+            Render::OldRendererComponentHandler oldLateRendererComponentHandler;
+            Render::RendererComponentHandler rendererComponentHandler;
+            Render::RendererComponentHandler lateRendererComponentHandler;
 
             bool isThreadSafe;
 
             ComponentManager()
                 : updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
+                oldRendererComponentHandler(), oldLateRendererComponentHandler(),
                 rendererComponentHandler(), lateRendererComponentHandler(), isThreadSafe(false)
             {
 
@@ -126,43 +134,117 @@ namespace Learning2DEngine
                 colliderComponentHandler.SetMaxColliderPerThread(value);
             }
 
-            //Render
+            //OldRender
 
             inline void AddToRenderer(Render::OldBaseRendererComponent* component)
             {
-                rendererComponentHandler.Add(component, isThreadSafe);
+                oldRendererComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromRenderer(Render::OldBaseRendererComponent* component)
             {
-                rendererComponentHandler.Remove(component, isThreadSafe);
+                oldRendererComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void NeedReorderRenderers()
             {
-                rendererComponentHandler.NeedReorder();
+                oldRendererComponentHandler.NeedReorder();
             }
 
-            inline void Render()
+            inline void OldRender()
             {
-                rendererComponentHandler.Run();
+                oldRendererComponentHandler.Run();
             }
 
-            //LateRender
+            //OldLateRender
 
             inline void AddToLateRenderer(Render::OldBaseRendererComponent* component)
             {
-                lateRendererComponentHandler.Add(component, isThreadSafe);
+                oldLateRendererComponentHandler.Add(component, isThreadSafe);
             }
 
             inline void RemoveFromLateRenderer(Render::OldBaseRendererComponent* component)
             {
-                lateRendererComponentHandler.Remove(component, isThreadSafe);
+                oldLateRendererComponentHandler.Remove(component, isThreadSafe);
             }
 
             inline void NeedReorderLateRenderers()
             {
-                lateRendererComponentHandler.NeedReorder();
+                oldLateRendererComponentHandler.NeedReorder();
+            }
+
+            inline void OldLateRender()
+            {
+                oldLateRendererComponentHandler.Run();
+            }
+
+			//Render
+
+			inline void IsRendererExistInRender(const std::string& id)
+			{
+				rendererComponentHandler.IsRendererExist(id, isThreadSafe);
+			}
+
+            inline void AddRendererToRender(const std::string& id, Render::IRenderer* renderer)
+            {
+				rendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
+            }
+
+            inline void RemoveRendererFromRender(const std::string& id)
+            {
+				rendererComponentHandler.RemoveRenderer(id, isThreadSafe);
+            }
+
+            inline void AddDataToRender(const std::string& id, Render::RenderData* data, int layer)
+            {
+				rendererComponentHandler.AddData(id, data, layer, isThreadSafe);
+            }
+
+            inline void ChangeLayerInRender(Render::RenderData* data, int newLayer)
+            {
+				rendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
+            }
+
+            inline void RemoveDataFromRender(Render::RenderData* data)
+            {
+				rendererComponentHandler.RemoveData(data, isThreadSafe);
+            }
+
+            inline void Render()
+            {
+				rendererComponentHandler.Run();
+            }
+
+            //LateRender
+
+            inline void IsRendererExistInLateRender(const std::string& id)
+            {
+                lateRendererComponentHandler.IsRendererExist(id, isThreadSafe);
+            }
+
+            inline void AddRendererToLateRender(const std::string& id, Render::IRenderer* renderer)
+            {
+                lateRendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
+            }
+
+            inline void RemoveRendererFromLateRender(const std::string& id)
+            {
+                lateRendererComponentHandler.RemoveRenderer(id, isThreadSafe);
+            }
+
+            inline void AddDataToLateRender(const std::string& id, Render::RenderData* data, int layer)
+            {
+                lateRendererComponentHandler.AddData(id, data, layer, isThreadSafe);
+            }
+
+            inline void ChangeLayerInLateRender(Render::RenderData* data, int newLayer)
+            {
+                lateRendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
+            }
+
+            inline void RemoveDataFromLateRender(Render::RenderData* data)
+            {
+                lateRendererComponentHandler.RemoveData(data, isThreadSafe);
             }
 
             inline void LateRender()
@@ -187,6 +269,8 @@ namespace Learning2DEngine
                 updaterComponentHandler.Clear();
                 lateUpdaterComponentHandler.Clear();
                 colliderComponentHandler.Clear();
+                oldRendererComponentHandler.Clear();
+                oldLateRendererComponentHandler.Clear();
                 rendererComponentHandler.Clear();
                 lateRendererComponentHandler.Clear();
             }

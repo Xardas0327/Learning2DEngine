@@ -19,40 +19,39 @@ namespace Learning2DEngine
 		{
 		protected:
 			RendererComponent(System::GameObject* gameObject, int layer = 0)
-				: BaseRendererComponent(gameObject, layer)
+				: BaseRendererComponent(gameObject, layer), System::Component(gameObject)
 			{
 
 			}
 
 			/// <summary>
-			/// If this function is override, it should call the RendererComponent::Init() in the first line.
+			/// If this function is override, it should care, that the renderer and renderdata will be added to the ComponentManager's Render.
 			/// </summary>
 			virtual void Init() override
 			{
-				//System::ComponentManager::GetInstance().AddToRenderer(this);
+				auto& componentManager = System::ComponentManager::GetInstance();
+				if (!componentManager.IsRendererExistInRender(GetId()))
+				{
+					componentManager.AddRendererToRender(GetId(), GetRenderer());
+				}
 
-				//if ComponentManager's Renderer doesn't have TRenderer add it with Id
-				//and the TRenderData should be added always.
+				componentManager.AddDataToRender(GetId(), &data, layer);
 			}
 
 			/// <summary>
-			/// If this function is override, it should call the RendererComponent::Destroy() in the first line.
+			/// If this function is override, it should care, that the renderdata will be removed from the ComponentManager's Render.
+			/// By default the renderer will not be removed automatically.
 			/// </summary>
 			virtual void Destroy() override
 			{
-				//System::ComponentManager::GetInstance().RemoveFromRenderer(this);
-
-				// Remove the TRenderData from ComponentManager's Renderer.
-				// The TRenderer removing should be automatically.
+				System::ComponentManager::GetInstance().RemoveDataFromRender(&data);
 			}
 
 		public:
 			virtual void SetLayer(int value) override
 			{
-				BaseRendererComponent::SetLayer(value);
-				//System::ComponentManager::GetInstance().NeedReorderRenderers();
-
-				// This should trigger a reordering
+				layer = value;
+				System::ComponentManager::GetInstance().ChangeLayerInRender(&data, layer);
 			}
 		};
 	}
