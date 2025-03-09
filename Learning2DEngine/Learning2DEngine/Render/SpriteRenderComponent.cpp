@@ -1,0 +1,80 @@
+#include "SpriteRenderComponent.h"
+
+namespace Learning2DEngine
+{
+	using namespace System;
+
+	namespace Render
+	{
+		const std::string SpriteRenderComponent::id = "L2DE_SpriteRenderComponent";
+		int SpriteRenderComponent::refrenceNumber = 0;
+
+		SpriteRenderComponent::SpriteRenderComponent(GameObject* gameObject, int layer, glm::vec4 color)
+			: RendererComponent(gameObject, layer), Component(gameObject), mutex()
+		{
+			data.color = color;
+		}
+
+		SpriteRenderComponent::SpriteRenderComponent(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec4 color)
+			: RendererComponent(gameObject, layer), Component(gameObject), mutex()
+		{
+			data.texture = &texture;
+			data.color = color;
+		}
+
+		void SpriteRenderComponent::Init()
+		{
+			auto& componentManager = System::ComponentManager::GetInstance();
+			if (componentManager.GetThreadSafe())
+			{
+				std::lock_guard<std::mutex> lock(mutex);
+				RendererComponent::Init();
+				++refrenceNumber;
+			}
+			else
+			{
+				RendererComponent::Init();
+				++refrenceNumber;
+			}
+		}
+
+		void SpriteRenderComponent::Destroy()
+		{
+			auto& componentManager = System::ComponentManager::GetInstance();
+			if (componentManager.GetThreadSafe())
+			{
+				std::lock_guard<std::mutex> lock(mutex);
+				RendererComponent::Destroy();
+
+				if (refrenceNumber--)
+				{
+					SpriteRenderer::GetInstance().Destroy();
+					componentManager.RemoveRendererFromRender(GetId());
+				}
+			}
+			else
+			{
+				RendererComponent::Destroy();
+
+				if (refrenceNumber--)
+				{
+					SpriteRenderer::GetInstance().Destroy();
+					componentManager.RemoveRendererFromRender(GetId());
+				}
+			}
+		}
+
+		const std::string& SpriteRenderComponent::GetId() const
+		{
+			return SpriteRenderComponent::id;
+		}
+
+		SpriteRenderer* SpriteRenderComponent::GetRenderer() const
+		{
+			auto& renderer = SpriteRenderer::GetInstance();
+			renderer.Init();
+
+			return &renderer;
+		}
+	}
+}

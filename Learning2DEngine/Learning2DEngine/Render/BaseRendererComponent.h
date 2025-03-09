@@ -26,15 +26,12 @@ namespace Learning2DEngine
 			{
 
 			}
-		public:
-			TRenderData data;
 
-			virtual const std::string& GetId() const
-			{
-				return typeid(TRenderData).name();
-			}
+			virtual const std::string& GetId() const = 0;
 
 			virtual TRenderer* GetRenderer() const = 0;
+		public:
+			TRenderData data;
 
 			virtual void SetLayer(int value)
 			{

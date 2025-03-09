@@ -180,9 +180,9 @@ namespace Learning2DEngine
 
 			//Render
 
-			inline void IsRendererExistInRender(const std::string& id)
+			inline bool IsRendererExistInRender(const std::string& id)
 			{
-				rendererComponentHandler.IsRendererExist(id, isThreadSafe);
+				return rendererComponentHandler.IsRendererExist(id, isThreadSafe);
 			}
 
             inline void AddRendererToRender(const std::string& id, Render::IRenderer* renderer)
@@ -217,9 +217,9 @@ namespace Learning2DEngine
 
             //LateRender
 
-            inline void IsRendererExistInLateRender(const std::string& id)
+            inline bool IsRendererExistInLateRender(const std::string& id)
             {
-                lateRendererComponentHandler.IsRendererExist(id, isThreadSafe);
+                return lateRendererComponentHandler.IsRendererExist(id, isThreadSafe);
             }
 
             inline void AddRendererToLateRender(const std::string& id, Render::IRenderer* renderer)

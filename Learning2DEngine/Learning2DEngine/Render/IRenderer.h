@@ -10,6 +10,8 @@ namespace Learning2DEngine
 	{
 		struct IRenderer
 		{
+			virtual void Init() = 0;
+			virtual void Destroy() = 0;
 			virtual void Draw(std::vector<RenderData*> renderData) = 0;
 			virtual ~IRenderer() = default;
 		};
