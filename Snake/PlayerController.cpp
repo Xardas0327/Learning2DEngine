@@ -31,7 +31,7 @@ void PlayerController::Regenerate(glm::ivec2 unitSize)
     }
 }
 
-OldSpriteRenderer* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm::vec2 scale)
+SpriteRenderComponent* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm::vec2 scale)
 {
     auto playerUnit = GameObject::Create(
         Transform(
@@ -39,7 +39,7 @@ OldSpriteRenderer* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm:
             scale
         )
     );
-    return playerUnit->AddComponent<OldSpriteRenderer, const Texture2D&, int, glm::vec4>(
+    return playerUnit->AddComponent<SpriteRenderComponent, const Texture2D&, int, glm::vec4>(
         ResourceManager::GetInstance().GetTexture(textureId),
         0,
         color

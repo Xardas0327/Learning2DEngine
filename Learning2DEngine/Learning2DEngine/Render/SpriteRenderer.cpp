@@ -82,6 +82,7 @@ namespace Learning2DEngine
 		void SpriteRenderer::Draw(std::vector<RenderData*> renderData)
 		{
 			shader.Use();
+			shader.SetInteger("spriteTexture", 0);
 			glBindVertexArray(vao);
 
 			for (auto data : renderData)

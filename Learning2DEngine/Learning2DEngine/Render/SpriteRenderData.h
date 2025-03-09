@@ -21,8 +21,16 @@ namespace Learning2DEngine
 			}
 
 			SpriteRenderData(System::GameObject* gameObject, const Texture2D& texture, glm::vec4 color = glm::vec4(1.0f))
-				: RenderData(gameObject), color(color), texture(&texture)
+				: RenderData(gameObject), color(color), texture(new Texture2D(texture))
 			{
+			}
+
+			~SpriteRenderData()
+			{
+				if (IsUseTexture())
+				{
+					delete texture;
+				}
 			}
 
 			inline bool IsUseTexture() const

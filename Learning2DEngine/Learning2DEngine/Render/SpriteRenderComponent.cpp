@@ -18,7 +18,7 @@ namespace Learning2DEngine
 		SpriteRenderComponent::SpriteRenderComponent(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec4 color)
 			: RendererComponent(gameObject, layer), BaseRendererComponent(gameObject, layer), Component(gameObject), mutex()
 		{
-			data.texture = &texture;
+			data.texture = new Texture2D(texture);
 			data.color = color;
 		}
 
