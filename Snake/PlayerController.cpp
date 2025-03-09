@@ -13,7 +13,7 @@ PlayerController::PlayerController(GameObject* gameObject, const std::string& te
 
 void PlayerController::Destroy()
 {
-    for (std::list<OldSpriteRenderer*>::iterator it = snake.begin(); it != snake.end(); ++it) {
+    for (auto it = snake.begin(); it != snake.end(); ++it) {
         GameObject::Destroy(*it);
     }
     snake.clear();
@@ -21,7 +21,7 @@ void PlayerController::Destroy()
 
 void PlayerController::Regenerate(glm::ivec2 unitSize)
 {
-    for (std::list<OldSpriteRenderer*>::iterator it = snake.begin(); it != snake.end(); ++it) {
+    for (auto it = snake.begin(); it != snake.end(); ++it) {
         GameObject::Destroy(*it);
     }
     snake.clear();
@@ -48,7 +48,7 @@ OldSpriteRenderer* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm:
 
 bool PlayerController::IsInSnake(glm::vec2 position)
 {
-    for (std::list<OldSpriteRenderer*>::iterator it = snake.begin(); it != snake.end(); ++it) {
+    for (auto it = snake.begin(); it != snake.end(); ++it) {
         if ((*it)->gameObject->transform.position == position)
         {
             return true;
