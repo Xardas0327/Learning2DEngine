@@ -10,13 +10,13 @@ namespace Learning2DEngine
 		int SpriteRenderComponent::refrenceNumber = 0;
 
 		SpriteRenderComponent::SpriteRenderComponent(GameObject* gameObject, int layer, glm::vec4 color)
-			: RendererComponent(gameObject, layer), Component(gameObject), mutex()
+			: RendererComponent(gameObject, layer), BaseRendererComponent(gameObject, layer), Component(gameObject), mutex()
 		{
 			data.color = color;
 		}
 
 		SpriteRenderComponent::SpriteRenderComponent(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec4 color)
-			: RendererComponent(gameObject, layer), Component(gameObject), mutex()
+			: RendererComponent(gameObject, layer), BaseRendererComponent(gameObject, layer), Component(gameObject), mutex()
 		{
 			data.texture = &texture;
 			data.color = color;
