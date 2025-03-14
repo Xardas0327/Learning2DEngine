@@ -11,7 +11,6 @@ namespace Learning2DEngine
 	{
 		struct SpriteRenderData : public RenderData
 		{
-		public:
 			const Texture2D* texture;
 			glm::vec4 color;
 

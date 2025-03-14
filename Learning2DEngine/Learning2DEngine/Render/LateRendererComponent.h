@@ -19,7 +19,7 @@ namespace Learning2DEngine
 		{
 		protected:
 			LateRendererComponent(System::GameObject* gameObject, int layer = 0)
-				: BaseRendererComponent(gameObject, layer), System::Component(gameObject)
+				: BaseRendererComponent<TRenderData, TRenderer>(gameObject, layer), System::Component(gameObject)
 			{
 
 			}
@@ -30,12 +30,12 @@ namespace Learning2DEngine
 			virtual void Init() override
 			{
 				auto& componentManager = System::ComponentManager::GetInstance();
-				if (!componentManager.IsRendererExistInLateRender(GetId()))
+				if (!componentManager.IsRendererExistInLateRender(this->GetId()))
 				{
-					componentManager.AddRendererToLateRender(GetId(), GetRenderer());
+					componentManager.AddRendererToLateRender(this->GetId(), this->GetRenderer());
 				}
 
-				componentManager.AddDataToLateRender(GetId(), &data, layer);
+				componentManager.AddDataToLateRender(this->GetId(), &this->data, this->layer);
 			}
 
 			/// <summary>
@@ -44,14 +44,14 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Destroy() override
 			{
-				System::ComponentManager::GetInstance().RemoveDataFromLateRender(&data);
+				System::ComponentManager::GetInstance().RemoveDataFromLateRender(&this->data);
 			}
 
 		public:
 			virtual void SetLayer(int value) override
 			{
-				layer = value;
-				System::ComponentManager::GetInstance().ChangeLayerInLateRender(&data, layer);
+				this->layer = value;
+				System::ComponentManager::GetInstance().ChangeLayerInLateRender(&this->data, this->layer);
 			}
 		};
 	}

@@ -51,7 +51,7 @@ void GameController::Init()
             glm::vec2(5.0f, 5.0f)
         )
     );
-    scoreText = scoreGameObject->AddComponent<OldText2DLateRenderer, const FontSizePair&, std::string>(
+    scoreText = scoreGameObject->AddComponent<Text2DLateRenderComponent, const FontSizePair&, std::string>(
         fontSizePair,
         "Score: " + std::to_string(score)
     );
@@ -61,7 +61,7 @@ void GameController::Init()
             glm::vec2(175.0f, static_cast<float>(resolution.GetHeight() / 2))
         )
     );
-    startText = startGameObject->AddComponent<OldText2DLateRenderer, const FontSizePair&, std::string>(
+    startText = startGameObject->AddComponent<Text2DLateRenderComponent, const FontSizePair&, std::string>(
         fontSizePair,
         "Press ENTER to start"
     );
@@ -239,5 +239,5 @@ void GameController::EatFood()
 
 void GameController::RefreshScore()
 {
-    scoreText->text = "Score: " + std::to_string(score);
+	scoreText->data.text = "Score: " + std::to_string(score);
 }
