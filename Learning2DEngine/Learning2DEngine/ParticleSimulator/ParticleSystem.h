@@ -13,11 +13,6 @@ namespace Learning2DEngine
 {
 	namespace ParticleSimulator
 	{
-		/// <summary>
-		/// ParticleSystem::Update() update the particles.
-		/// This should be called in the Game::Update() only ones.
-		/// It and ParticleSystem::Draw() work only, when the ParticleSystem::IsRunning() is true.
-		/// </summary>
 		class ParticleSystem : public virtual Render::OldRendererComponent, public virtual System::UpdaterComponent
 		{
 			friend class System::GameObject;

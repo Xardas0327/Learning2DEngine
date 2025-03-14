@@ -172,10 +172,7 @@ virtual void UpdateParticle(Particle& particle, const System::GameObject& gameOb
 ### Description:
 This is the heart of the Engine's particle system.
 It control the particles by the `ParticleSettings` and the `ParticleSystemSettings`.  
-`Update()` update the particles.
-This should be called in the `Game::Update()` only ones.
-It and `Draw()` work only, when the `IsRunning()` is true.  
-Please check the `Render::RendererComponent` class documentation too.
+Please check the `Render::RendererComponent` and `System::UpdaterComponent` documentation too.
 
 ### Header:
 ```cpp
