@@ -6,7 +6,7 @@
 
 #include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/Render/OldSpriteRenderer.h>
+#include <Learning2DEngine/Render/SpriteRenderComponent.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 
 const glm::vec2 PLAYER_SIZE(100.0f, 20.0f);
@@ -22,7 +22,7 @@ protected:
 
     void Init() override;
 public:
-    Learning2DEngine::Render::OldSpriteRenderer* renderer;
+    Learning2DEngine::Render::SpriteRenderComponent* renderer;
     Learning2DEngine::Physics::BoxColliderComponent* collider;
 
     void Reset();

@@ -88,11 +88,11 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bo
 
             GameObject* brick = GameObject::Create(areBricksActive);
             auto brickController = brick->AddComponent<BrickController, int, int, bool>(x, y, brickData[y][x] == 1);
-            brickController->renderer->texture =
+            brickController->renderer->data.texture =
                 brickData[y][x] == 1
                 ? new Texture2D(solidBlockTexture)
                 : new Texture2D(blockTexture);
-            brickController->renderer->color = color;
+            brickController->renderer->data.color = color;
 
             bricks.push_back(brickController);
         }

@@ -181,19 +181,7 @@ namespace Learning2DEngine
 			{
 				if (particles[i].lifeTime > 0.0f)
 				{
-					glm::mat4 model = glm::mat4(1.0f);
-					// first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
-					model = glm::translate(model, glm::vec3(particles[i].transform.position, 0.0f));
-					// move origin of rotation to center of quad
-					model = glm::translate(model, glm::vec3(0.5f * particles[i].transform.scale.x, 0.5f * particles[i].transform.scale.y, 0.0f));
-					// then rotate
-					model = glm::rotate(model, glm::radians(particles[i].transform.rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-					// move origin back
-					model = glm::translate(model, glm::vec3(-0.5f * particles[i].transform.scale.x, -0.5f * particles[i].transform.scale.y, 0.0f));
-					// then rotate
-					model = glm::scale(model, glm::vec3(particles[i].transform.scale, 1.0f)); // last scale
-
-					ParticleSystem::shader.SetMatrix4("model", model);
+					ParticleSystem::shader.SetMatrix4("model", particles[i].transform.GetModelMatrix());
 					ParticleSystem::shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
 					ParticleSystem::shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 					ParticleSystem::shader.SetVector3f("spriteColor", particles[i].color);
