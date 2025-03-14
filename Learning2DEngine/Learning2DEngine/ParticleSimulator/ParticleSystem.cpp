@@ -73,15 +73,12 @@ namespace Learning2DEngine
 		void ParticleSystem::InitShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
-
-
 			ParticleSystem::shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
 				? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
 				: resourceManager.LoadShader(
 					ShaderConstant::SPRITE_SHADER_NAME,
 					ShaderConstant::SPRITE_VERTEX_SHADER,
 					ShaderConstant::SPRITE_FRAGMENT_SHADER);
-			ParticleSystem::shader.SetInteger("spriteTexture", 0);
 		}
 
 		void ParticleSystem::InitVao()
@@ -169,6 +166,7 @@ namespace Learning2DEngine
 			}
 
 			ParticleSystem::shader.Use();
+			ParticleSystem::shader.SetInteger("spriteTexture", 0);
 			if (IsUseTexture())
 			{
 				glActiveTexture(GL_TEXTURE0);
