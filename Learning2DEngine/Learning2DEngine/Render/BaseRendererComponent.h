@@ -22,7 +22,7 @@ namespace Learning2DEngine
 			int layer;
 
 			BaseRendererComponent(System::GameObject* gameObject, int layer = 0)
-				: System::Component(gameObject), layer(0), data(gameObject)
+				: System::Component(gameObject), layer(layer), data(gameObject)
 			{
 
 			}

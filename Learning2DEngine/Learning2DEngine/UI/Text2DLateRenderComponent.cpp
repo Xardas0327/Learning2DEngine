@@ -31,12 +31,12 @@ namespace Learning2DEngine
 			{
 				std::lock_guard<std::mutex> lock(mutex);
 				LateRendererComponent::Init();
-				++refrenceNumber;
+				++Text2DLateRenderComponent::refrenceNumber;
 			}
 			else
 			{
 				LateRendererComponent::Init();
-				++refrenceNumber;
+				++Text2DLateRenderComponent::refrenceNumber;
 			}
 		}
 
@@ -48,7 +48,7 @@ namespace Learning2DEngine
 				std::lock_guard<std::mutex> lock(mutex);
 				LateRendererComponent::Destroy();
 
-				if (!(--refrenceNumber))
+				if (!(--Text2DLateRenderComponent::refrenceNumber))
 				{
 					Text2DRenderer::GetInstance().Destroy();
 					componentManager.RemoveRendererFromRender(GetId());
@@ -58,7 +58,7 @@ namespace Learning2DEngine
 			{
 				LateRendererComponent::Destroy();
 
-				if (!(--refrenceNumber))
+				if (!(--Text2DLateRenderComponent::refrenceNumber))
 				{
 					Text2DRenderer::GetInstance().Destroy();
 					componentManager.RemoveRendererFromRender(GetId());

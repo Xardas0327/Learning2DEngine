@@ -19,6 +19,9 @@ namespace Learning2DEngine
 			friend class System::GameObject;
 		private:
 			static const std::string id;
+			/// <summary>
+			/// It is counted, that how many SpriteRenderComponent exist.
+			/// </summary>
 			static int refrenceNumber;
 		protected:
 			std::mutex mutex;
@@ -29,9 +32,9 @@ namespace Learning2DEngine
 			void Init() override;
 			void Destroy() override;
 
-			const std::string& GetId() const;
+			const std::string& GetId() const override;
 
-			SpriteRenderer* GetRenderer() const;
+			SpriteRenderer* GetRenderer() const override;
 		};
 	}
 }

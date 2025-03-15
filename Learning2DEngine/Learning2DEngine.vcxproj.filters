@@ -84,6 +84,12 @@
     <ClCompile Include="Learning2DEngine\UI\Text2DLateRenderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystemComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\Render\RenderManager.h">
@@ -327,6 +333,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\UI\Text2DLateRenderComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleRenderData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

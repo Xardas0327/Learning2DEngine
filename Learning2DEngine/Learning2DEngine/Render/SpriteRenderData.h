@@ -11,7 +11,7 @@ namespace Learning2DEngine
 	{
 		struct SpriteRenderData : public RenderData
 		{
-			const Texture2D* texture;
+			Texture2D* texture;
 			glm::vec4 color;
 
 			SpriteRenderData(System::GameObject* gameObject, glm::vec4 color = glm::vec4(1.0f))
@@ -24,7 +24,7 @@ namespace Learning2DEngine
 			{
 			}
 
-			~SpriteRenderData()
+			~SpriteRenderData() override
 			{
 				if (IsUseTexture())
 				{

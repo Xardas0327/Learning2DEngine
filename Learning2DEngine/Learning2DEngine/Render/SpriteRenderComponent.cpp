@@ -29,12 +29,12 @@ namespace Learning2DEngine
 			{
 				std::lock_guard<std::mutex> lock(mutex);
 				RendererComponent::Init();
-				++refrenceNumber;
+				++SpriteRenderComponent::refrenceNumber;
 			}
 			else
 			{
 				RendererComponent::Init();
-				++refrenceNumber;
+				++SpriteRenderComponent::refrenceNumber;
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace Learning2DEngine
 				std::lock_guard<std::mutex> lock(mutex);
 				RendererComponent::Destroy();
 
-				if (!(--refrenceNumber))
+				if (!(--SpriteRenderComponent::refrenceNumber))
 				{
 					SpriteRenderer::GetInstance().Destroy();
 					componentManager.RemoveRendererFromRender(GetId());
@@ -56,7 +56,7 @@ namespace Learning2DEngine
 			{
 				RendererComponent::Destroy();
 
-				if (!(--refrenceNumber))
+				if (!(--SpriteRenderComponent::refrenceNumber))
 				{
 					SpriteRenderer::GetInstance().Destroy();
 					componentManager.RemoveRendererFromRender(GetId());

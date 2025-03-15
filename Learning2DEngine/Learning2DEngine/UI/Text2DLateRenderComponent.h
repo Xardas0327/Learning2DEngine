@@ -20,6 +20,9 @@ namespace Learning2DEngine
 			friend class System::GameObject;
 		private:
 			static const std::string id;
+			/// <summary>
+			/// It is counted, that how many Text2DLateRenderComponent exist.
+			/// </summary>
 			static int refrenceNumber;
 		protected:
 			std::mutex mutex;
@@ -39,9 +42,9 @@ namespace Learning2DEngine
 			void Init() override;
 			void Destroy() override;
 
-			const std::string& GetId() const;
+			const std::string& GetId() const override;
 
-			Text2DRenderer* GetRenderer() const;
+			Text2DRenderer* GetRenderer() const override;
 		};
     }
 }

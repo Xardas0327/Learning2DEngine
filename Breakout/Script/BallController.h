@@ -9,7 +9,7 @@
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
 #include <Learning2DEngine/Physics/Rigidbody.h>
 #include <Learning2DEngine/Physics/CircleColliderComponent.h>
-#include <Learning2DEngine/ParticleSimulator/OldParticleSystem.h>
+#include <Learning2DEngine/ParticleSimulator/ParticleSystemComponent.h>
 #include <Learning2DEngine/EventSystem/EventHandler.h>
 
 #include "PlayerController.h"
@@ -35,7 +35,7 @@ protected:
     const std::string textureId;
     const std::string particleTextureId;
     PlayerController* playerController;
-    Learning2DEngine::ParticleSimulator::OldParticleSystem* particleSystem;
+    Learning2DEngine::ParticleSimulator::ParticleSystemComponent* particleSystem;
     Learning2DEngine::EventSystem::EventHandler<> hitPlayerEventHandler;
     Learning2DEngine::EventSystem::EventHandler<BrickController*> hitBrickEventHandler;
     bool isStuck;
