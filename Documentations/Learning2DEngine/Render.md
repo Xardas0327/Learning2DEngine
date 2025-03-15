@@ -13,6 +13,8 @@
 - [Resolution](Render.md#resolution)
 - [Shader](Render.md#shader)
 - [ShaderConstant](Render.md#shaderconstant)
+- [SpriteRenderComponent](Render.md#spriterendercomponent)
+- [SpriteRenderData](Render.md#spriterenderdata)
 - [SpriteRenderer](Render.md#spriterenderer)
 - [Texture2D](Render.md#texture2d)
 - [Texture2DSettings](Render.md#texture2dsettings)
@@ -1121,72 +1123,161 @@ static const char* const DEFAULT_POSTPROCESS_EFFECT_FRAGMENT_SHADER;
 ```
 
 ##
+## SpriteRenderComponent
+### Source Code:
+[SpriteRenderComponent.h](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderComponent.h)  
+[SpriteRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderComponent.cpp)
+
+### Description:
+It can render a sprite with color and texture.
+It uses static variables to count how many GameObject initialized it.
+That's why it will destroy renderer only
+if the reference number is 0, otherway it will decrease
+the reference number.  
+Please more info about `RendererComponent`.
+
+### Header:
+```cpp
+class SpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, SpriteRenderer>
+{...}
+```
+
+### Variables:
+**Private:**  
+**id**  
+```cpp
+static const std::string id;
+```
+
+**refrenceNumber**  
+It is counted, that how many SpriteRenderComponent exist.
+```cpp
+static int refrenceNumber;
+```
+
+**Protected:**  
+**mutex**  
+```cpp
+std::mutex mutex;
+```
+
+### Functions:
+**Protected:**  
+**SpriteRenderComponent**  
+```cpp
+SpriteRenderComponent(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+```
+```cpp
+SpriteRenderComponent(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+```
+
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**GetId**  
+```cpp
+const std::string& GetId() const override;
+```
+
+**GetRenderer**  
+```cpp
+SpriteRenderer* GetRenderer() const override;
+```
+
+##
+## SpriteRenderData
+### Source Code:
+[SpriteRenderData.h](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderData.h)  
+
+### Description:
+It contains the data, which is important to render the sprite.
+
+### Header:
+```cpp
+struct SpriteRenderData : public RenderData
+{...}
+```
+
+### Variables:
+**Public:**  
+**texture**
+```cpp
+Render::Texture2D* texture;
+```
+
+**color**
+```cpp
+glm::vec4 color;
+```
+
+### Functions:
+**Public:**  
+**SpriteRenderData**
+```cpp
+SpriteRenderData(const System::Component* component, glm::vec4 color = glm::vec4(1.0f));
+```
+```cpp
+SpriteRenderData(const System::Component* component, const Texture2D& texture, glm::vec4 color = glm::vec4(1.0f));
+```
+
+**~SpriteRenderData**
+```cpp
+~SpriteRenderData() override;
+```
+
+**IsUseTexture**
+```cpp
+inline bool IsUseTexture() const;
+```
+
+**ClearTexture**
+```cpp
+inline void ClearTexture();
+```
+
+##
 ## SpriteRenderer
 ### Source Code:
 [SpriteRenderer.h](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderer.h)  
 [SpriteRenderer.cpp](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderer.cpp)
 
 ### Description:
-The `SpriteRenderer` is for the `GameObjects`.
-It uses static variables to count how many GameObject initialized it.
-That's why it will destroy its Vertex Array Object only
-if the reference number is 0, otherway it will decrease
-the reference number only.  
-Please more info about `RendererComponent`.  
+It can render the sprites.
 Note: The projection and the view matrix are came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class SpriteRenderer : public virtual RendererComponent
+class SpriteRenderer : public IRenderer, public virtual System::Singleton<SpriteRenderer>
 {...}
 ```
 
 ### Variables:
 **Private:**  
-**referenceNumber**  
-All `SpriteRenderer` use the same shader and vertex array object.
-That's why it is counted, that how many `SpriteRenderers` there are in the game.
-It is important, that the shader will be created if it is used and
-it will be destroyed if nothing uses it.
-```cpp
-static int referenceNumber;
-```
-
 **shader**  
 ```cpp
-static Shader shader
+Shader shader;
 ```
 
 **vao**  
 ```cpp
-static GLuint vao;
+GLuint vao;
 ```
 
 **vbo**  
 ```cpp
-static GLuint vbo;
+GLuint vbo;
 ```
 
 **ebo**  
 ```cpp
-static GLuint ebo;
-```
-
-**Public:**  
-**texture**  
-The `texture`, which the `SpriteRenderer` will use.
-This can be useful if the developer want to
-change anything in the `texture`.
-But if the developer want to remove it,
-they should use the `ClearTexture()` function.
-```cpp
-Texture2D* texture;
-```
-
-**color**  
-The `color`, which will be mixed with the texture in the shader.
-```cpp
-glm::vec4 color;
+GLuint ebo;
 ```
 
 ### Functions:
@@ -1204,53 +1295,34 @@ void InitVao();
 **Protected:**  
 **SpriteRenderer**  
 ```cpp
-SpriteRenderer(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
-```
-```cpp
-SpriteRenderer(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+SpriteRenderer();
 ```
 
+**InitShader**  
+```cpp
+void InitShader();
+```
+
+**InitVao**  
+```cpp
+void InitVao();
+```
+
+**Public:**  
 **Init**  
-It initializes the `SpriteRenderer`.
 ```cpp
 void Init() override;
 ```
 
 **Destroy**  
-It destroys the `SpriteRenderer`.
 ```cpp
 void Destroy() override;
 ```
 
 **Draw**  
-It draws the sprite. 
 ```cpp
-void Draw() override;
-``` 
-
-**Public:**  
-**~SpriteRenderer**  
-It will delete the `texture` pointer.  
-It won't call the `Destroy()` of the `texture`.
-That's why the texture still will be available in the `ResourceManager`. 
-If the `texture` was created by the developer,
-they have to care with this problem.
-```cpp
-~SpriteRenderer();
-``` 
-
-**IsUseTexture**  
-It returns true, if `SpriteRenderer` has `texture`.
-```cpp
-inline bool IsUseTexture();
-``` 
-
-**ClearTexture**  
-It deletes the texture pointer.
-But it won't call the `Destroy()` of the `texture`.
-```cpp
-inline bool ClearTexture();
-``` 
+void Draw(std::vector<Render::RenderData*> renderData) override;
+```
 
 ##
 ## Texture2D

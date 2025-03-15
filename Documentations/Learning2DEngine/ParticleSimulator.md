@@ -201,6 +201,7 @@ inline unsigned int GetParticleAmount() const;
 
 ### Description:
 It can render the particles.
+Note: The projection and the view matrix are came from Game::mainCamera.
 
 ### Header:
 ```cpp
