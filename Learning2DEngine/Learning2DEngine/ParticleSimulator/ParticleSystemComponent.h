@@ -14,7 +14,8 @@ namespace Learning2DEngine
 {
 	namespace ParticleSimulator
 	{
-		class ParticleSystemComponent final : public virtual Render::RendererComponent<ParticleRenderData, ParticleRenderer>, public virtual System::UpdaterComponent
+		class ParticleSystemComponent final : public virtual Render::RendererComponent<ParticleRenderData, ParticleRenderer>,
+											public virtual System::UpdaterComponent
 		{
 			friend class System::GameObject;
 		private:

@@ -40,8 +40,8 @@ namespace Learning2DEngine
             void ChangeLayer(RenderData* data, int newLayer, bool isThreadSafe);
             void RemoveData(RenderData* data, bool isThreadSafe);
 
-			void Run() override;
-			void Clear() override;
+            void Run() override;
+            void Clear() override;
         };
     }
 }

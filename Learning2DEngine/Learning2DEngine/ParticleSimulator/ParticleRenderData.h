@@ -16,9 +16,9 @@ namespace Learning2DEngine
 		{
 			friend class ParticleSystemComponent;
 		private:
-			unsigned int particleAmount;
 			bool isRenderable;
-			//We have to init it, when we didn't gave the particleAmount
+			unsigned int particleAmount;
+			//We have to init it, when we didn't give the particleAmount
 			Particle* particles;
 
 		public:

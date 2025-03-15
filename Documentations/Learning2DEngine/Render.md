@@ -1173,7 +1173,7 @@ void Bind() const;
 **GetId**  
 It returns the id of the `Texture2D`.
 ```cpp
-inline unsigned int GetId();
+inline unsigned int GetId() const;
 ```
 
 ##

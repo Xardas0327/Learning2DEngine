@@ -15,7 +15,7 @@ It uses glfwGetTime(), the Game::deltaTime is not good here, because it is multi
 
 ### Header:
 ```cpp
-class FpsShower : public virtual System::UpdaterComponent, public virtual UI::Text2DLateRenderer
+class FpsShower : public virtual System::UpdaterComponent, public virtual UI::Text2DLateRenderComponent
 {...}
 ```
 

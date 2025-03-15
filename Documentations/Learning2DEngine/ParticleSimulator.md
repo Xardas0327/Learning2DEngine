@@ -1,8 +1,10 @@
 # ParticleSimulator
 - [BasicParticleSettings](ParticleSimulator.md#basicparticlesettings)
 - [Particle](ParticleSimulator.md#particle)
+- [ParticleRenderData](ParticleSimulator.md#particlerenderdata)
+- [ParticleRenderer](ParticleSimulator.md#particlerenderer)
 - [ParticleSettings](ParticleSimulator.md#particlesettings)
-- [ParticleSystem](ParticleSimulator.md#particlesystem)
+- [ParticleSystemComponent](ParticleSimulator.md#particlesystemcomponent)
 - [ParticleSystemSettings](ParticleSimulator.md#particlesystemsettings)
 
 ##
@@ -12,7 +14,7 @@
 
 ### Description:
 It just basic implementation of the `ParticleSettings`.
-The `ParticleSystem` uses this `ParticleSettings` if the developer does not give another one.  
+The `ParticleSystemComponent` uses this `ParticleSettings` if the developer does not give another one.  
 Please check the `ParticleSettings` too.
 
 ### Header:
@@ -110,6 +112,158 @@ struct Particle
 ```
 
 ##
+## ParticleRenderData
+### Source Code:
+[ParticleRenderData.h](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleRenderData.h)
+
+### Description:
+It contains the data, which is important to render the particles.
+
+### Header:
+```cpp
+class ParticleRenderData final : public Render::RenderData
+{...}
+```
+
+### Variables:
+**Private:**  
+**isRenderable**
+```cpp
+bool isRenderable;
+```
+
+**particleAmount**
+```cpp
+unsigned int particleAmount;
+```
+
+**particles**  
+The developer has to init it, when they didn't give the particleAmount
+```cpp
+Particle* particles;
+```
+
+**Public:**  
+**systemSettings**
+```cpp
+ParticleSystemSettings systemSettings;
+```
+
+**texture**
+```cpp
+Render::Texture2D* texture;
+```
+
+### Functions:
+**Public:**  
+**ParticleRenderData**  
+```cpp
+ParticleRenderData(const System::Component* component);
+```
+```cpp
+ParticleRenderData(const System::Component* component, unsigned int particleAmount, const ParticleSystemSettings& systemSettings, const Render::Texture2D& texture)
+```
+
+**~ParticleRenderData**  
+```cpp
+~ParticleRenderData() override;
+```
+
+**IsUseTexture**  
+```cpp
+inline bool IsUseTexture() const;
+```
+
+**ClearTexture**  
+```cpp
+inline void ClearTexture();
+```
+
+**IsRenderable**  
+```cpp
+inline bool IsRenderable() const;
+```
+
+**GetParticles**  
+```cpp
+inline const Particle* GetParticles() const;
+```
+
+**GetParticleAmount**  
+```cpp
+inline unsigned int GetParticleAmount() const;
+```
+
+##
+## ParticleRenderer
+### Source Code:
+[ParticleRenderer.h](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleRenderer.h)
+
+### Description:
+It can render the particles.
+
+### Header:
+```cpp
+class ParticleRenderer : public Render::IRenderer, public virtual System::Singleton<ParticleRenderer>
+{...}
+```
+
+### Variables:
+**Private:**  
+**shader**
+```cpp
+Render::Shader shader;
+```
+
+**vao**
+```cpp
+GLuint vao;
+```
+
+**vbo**
+```cpp
+GLuint vbo;
+```
+
+**ebo**
+```cpp
+GLuint ebo;
+```
+
+### Functions:
+**Protected:**  
+**ParticleRenderer**  
+```cpp
+ParticleRenderer();
+```
+
+**InitShader**  
+```cpp
+void InitShader();
+```
+
+**InitVao**  
+```cpp
+void InitVao();
+```
+
+**Public:**  
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**Draw**  
+```cpp
+void Draw(std::vector<Render::RenderData*> renderData) override;
+```
+
+##
 ## ParticleSettings
 ### Source Code:
 [ParticleSettings.h](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleSettings.h)
@@ -134,14 +288,14 @@ virtual ~ParticleSettings();
 **Init**  
 It is initialized the ParticleSettings.
 It can be useful, if the developer want to generate or cache some data for the particles.  
-It will run in the `ParticleSystem::Start()`.
+It will run in the `ParticleSystemComponent::Start()`.
 ```cpp
 virtual void Init(const System::GameObject& gameObject);
 ```
 
 **Destroy**  
 It can destroy everything, which was generated or cached in the other functions. 
-It will run in the `ParticleSystem::Stop()`.
+It will run in the `ParticleSystemComponent::Stop()`.
 ```cpp
 virtual void Destroy();
 ```
@@ -150,7 +304,7 @@ virtual void Destroy();
 It is an abstract function, which the developer has to define.
 The developer has to set the life time of the particles here and any other parameters,
 which the developer want to initialize on the particle.  
-It will run in the `ParticleSystem::TryToSpawnNewParticles()`, which is in `ParticleSystem::Update()`.
+It will run in the `ParticleSystemComponent::TryToSpawnNewParticles()`, which is in `ParticleSystemComponent::Update()`.
 ```cpp
 virtual void SpawnParticle(Particle& particle, const System::GameObject& gameObject) = 0;
 ```
@@ -158,16 +312,16 @@ virtual void SpawnParticle(Particle& particle, const System::GameObject& gameObj
 **UpdateParticle**  
 It is an abstract function, which the developer has to define.
 This function will be called with that particle, which life time is bigger than 0, after it was decreased.  
-It will run in the `ParticleSystem::UpdateActiveParticles()`, which is in `ParticleSystem::Update()`.
+It will run in the `ParticleSystemComponent::UpdateActiveParticles()`, which is in `ParticleSystemComponent::Update()`.
 ```cpp
 virtual void UpdateParticle(Particle& particle, const System::GameObject& gameObject) = 0;
 ```
 
 ##
-## ParticleSystem
+## ParticleSystemComponent
 ### Source Code:
-[ParticleSystem.h](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleSystem.h)  
-[ParticleSystem.cpp](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleSystem.cpp)
+[ParticleSystemComponent.h](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleSystemComponent.h)  
+[ParticleSystemComponent.cpp](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleSystemComponent.cpp)
 
 ### Description:
 This is the heart of the Engine's particle system.
@@ -176,25 +330,15 @@ Please check the `Render::RendererComponent` and `System::UpdaterComponent` docu
 
 ### Header:
 ```cpp
-class ParticleSystem : public virtual Render::RendererComponent, public virtual System::UpdaterComponent
+class ParticleSystemComponent final : public virtual Render::RendererComponent<ParticleRenderData, ParticleRenderer>, public virtual System::UpdaterComponent
 {...}
 ```
 
 ### Variables:
-**Protected:**  
+**Private:**  
 **isRunning**  
 ```cpp
 bool isRunning;
-```
-
-**particleAmount**  
-```cpp
-unsigned int particleAmount;
-```
-
-**particles**  
-```cpp
-Particle* particles;
 ```
 
 **delayTime**  
@@ -212,33 +356,9 @@ float nextSpawnTime;
 unsigned int lastUsedParticleIndex;
 ```
 
-**referenceNumber**  
-All `ParticleSystems` use the same shader and vertex array object.
-That's why it is counted, that how many `ParticleSystems` there are in the game.
-It is important, that the shader will be created if it is used and
-it will be destroyed if nothing uses it.
+**mutex**  
 ```cpp
-static int referenceNumber;
-```
-
-**shader**  
-```cpp
-static Render::Shader shader;
-```
-
-**vao**  
-```cpp
-static unsigned int vao;
-```
-
-**vbo**  
-```cpp
-static unsigned int vbo;
-```
-
-**ebo**  
-```cpp
-static unsigned int ebo;
+std::mutex mutex;
 ```
 
 **particleSettings**  
@@ -246,39 +366,26 @@ static unsigned int ebo;
 ParticleSettings* particleSettings;
 ```
 
-**Public:**  
-**systemSettings**  
-The systemSettings is a public variable, that the developer can change its values any time.
+**id**  
+It is used by the `Render::RendererComponentHandler`.
 ```cpp
-ParticleSystemSettings systemSettings;
+static const std::string id;
 ```
 
-**texture**  
-The texture, which the particle will use.
-This can be useful if the developer want to change anything in the texture.
-But if the developer want to remove it, they should use the `ClearTexture()` function.
+**refrenceNumber**  
+It is counted, that how many ParticleSystem exist.
 ```cpp
-Render::Texture2D* texture;
+static int refrenceNumber;
 ```
 
 ### Functions:
-**Protected:**  
-**ParticleSystem**  
+**Private:**  
+**ParticleSystemComponent**  
 ```cpp
-ParticleSystem(
-    System::GameObject* gameObject,
-    unsigned int particleAmount,
-    ParticleSettings* particleSettings = nullptr,
-	int renderLayer = 0);
+ParticleSystemComponent(System::GameObject* gameObject, unsigned int particleAmount, ParticleSettings* particleSettings = nullptr, int renderLayer = 0);
 ```
 ```cpp
-ParticleSystem(
-    System::GameObject* gameObject,
-    unsigned int particleAmount,
-    const Render::Texture2D& texture,
-    const ParticleSystemSettings& systemSettings,
-    ParticleSettings* particleSettings = nullptr,
-	int renderLayer = 0);
+ParticleSystemComponent(System::GameObject* gameObject, unsigned int particleAmount, const Render::Texture2D& texture, const ParticleSystemSettings& systemSettings, ParticleSettings* particleSettings = nullptr, int renderLayer = 0);
 ```
 
 **Init**  
@@ -291,12 +398,6 @@ void Init() override;
 void Destroy() override;
 ```
 
-**Draw**  
-It draws the particles.
-```cpp
-void Draw() override;
-```
-
 **Update**  
 It update and create particle, when it has to do.
 It works only, after the `Start()` function was called and before the `Stop()`.
@@ -304,14 +405,20 @@ It works only, after the `Start()` function was called and before the `Stop()`.
 void Update() override;
 ```
 
-**InitShader**  
+**GetId**  
 ```cpp
-void InitShader();
+const std::string& GetId() const override;
 ```
 
-**InitVao**  
+**GetRenderer**  
 ```cpp
-void InitVao();
+ParticleRenderer* GetRenderer() const override;
+```
+
+**DestroyObject**  
+The `ParticleSystemComponent::Destroy()` call it with or without mutex.
+```cpp
+void DestroyObject();
 ```
 
 **UpdateActiveParticles**  
@@ -333,34 +440,28 @@ void SpawnNewParticles();
 ```cpp
 unsigned int GetUnusedParticleIndex();
 ```
-
 **Public:**  
-**~ParticleSystem**  
+**~ParticleSystemComponent**  
 If the destructor is called. It will call the `Stop()` function
-and it will delete the `texture` and the `particleSettings` pointers.  
-It won't call the `Destroy()` of the `texture`.
-That's why the texture still will be available in the `ResourceManager`. 
-If the `texture` was created by the developer,
-they have to care with this problem.
+and it will delete  the `particleSettings` pointers.  
 ```cpp
-~ParticleSystem();
+~ParticleSystemComponent() override;
 ```
 
 **Start**  
-It set everything for the running.
+It sets everything for the running.
 ```cpp
 void Start();
 ```
 
 **Stop**  
-It stop the `ParticleSystem`'s running.
+It stops the `ParticleSystemComponent`'s running.
 ```cpp
 void Stop();
 ```
-
 **Restart**  
-It stop and start `ParticleSystem` immeditaly.  
-(It calls the `Stop()` and the `Start()` function)
+It stops and start `ParticleSystemComponent` immeditaly.  
+(It calls the `Stop()` and the `Start()` functions.)
 ```cpp
 inline void Restart();
 ```
@@ -375,19 +476,6 @@ inline bool IsRunning();
 It gets back the ParticleSettings, that the developer can change its parameters.
 ```cpp
 inline ParticleSettings* const GetParticleSettings();
-```
-
-**IsUseTexture**  
-It returns true if the `texture` is not null.
-```cpp
-inline bool IsUseTexture();
-```
-
-**ClearTexture**  
-It destroys the `texture`.
-But it won't call the `Destroy()` of the `texture`.
-```cpp
-void ClearTexture();
 ```
 
 ##
