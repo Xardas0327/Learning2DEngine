@@ -7,8 +7,6 @@
 #include "LateUpdaterComponentHandler.h"
 #include "BaseUpdaterComponent.h"
 #include "BaseLateUpdaterComponent.h"
-#include "../Render/OldBaseRendererComponent.h"
-#include "../Render/OldRendererComponentHandler.h"
 #include "../Render/IRenderer.h"
 #include "../Render/RenderData.h"
 #include "../Render/RendererComponentHandler.h"
@@ -28,8 +26,6 @@ namespace Learning2DEngine
             UpdaterComponentHandler updaterComponentHandler;
             LateUpdaterComponentHandler lateUpdaterComponentHandler;
             Physics::ColliderComponentHandler colliderComponentHandler;
-            Render::OldRendererComponentHandler oldRendererComponentHandler;
-            Render::OldRendererComponentHandler oldLateRendererComponentHandler;
             Render::RendererComponentHandler rendererComponentHandler;
             Render::RendererComponentHandler lateRendererComponentHandler;
 
@@ -37,7 +33,6 @@ namespace Learning2DEngine
 
             ComponentManager()
                 : updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
-                oldRendererComponentHandler(), oldLateRendererComponentHandler(),
                 rendererComponentHandler(), lateRendererComponentHandler(), isThreadSafe(false)
             {
 
@@ -134,50 +129,6 @@ namespace Learning2DEngine
                 colliderComponentHandler.SetMaxColliderPerThread(value);
             }
 
-            //OldRender
-
-            inline void AddToRenderer(Render::OldBaseRendererComponent* component)
-            {
-                oldRendererComponentHandler.Add(component, isThreadSafe);
-            }
-
-            inline void RemoveFromRenderer(Render::OldBaseRendererComponent* component)
-            {
-                oldRendererComponentHandler.Remove(component, isThreadSafe);
-            }
-
-            inline void NeedReorderRenderers()
-            {
-                oldRendererComponentHandler.NeedReorder();
-            }
-
-            inline void OldRender()
-            {
-                oldRendererComponentHandler.Run();
-            }
-
-            //OldLateRender
-
-            inline void AddToLateRenderer(Render::OldBaseRendererComponent* component)
-            {
-                oldLateRendererComponentHandler.Add(component, isThreadSafe);
-            }
-
-            inline void RemoveFromLateRenderer(Render::OldBaseRendererComponent* component)
-            {
-                oldLateRendererComponentHandler.Remove(component, isThreadSafe);
-            }
-
-            inline void NeedReorderLateRenderers()
-            {
-                oldLateRendererComponentHandler.NeedReorder();
-            }
-
-            inline void OldLateRender()
-            {
-                oldLateRendererComponentHandler.Run();
-            }
-
 			//Render
 
 			inline bool IsRendererExistInRender(const std::string& id)
@@ -269,8 +220,6 @@ namespace Learning2DEngine
                 updaterComponentHandler.Clear();
                 lateUpdaterComponentHandler.Clear();
                 colliderComponentHandler.Clear();
-                oldRendererComponentHandler.Clear();
-                oldLateRendererComponentHandler.Clear();
                 rendererComponentHandler.Clear();
                 lateRendererComponentHandler.Clear();
             }

@@ -115,7 +115,6 @@ namespace Learning2DEngine
                         ppeRender.StartRender();
                     }
 
-                    componentManager.OldRender();
                     componentManager.Render();
 
                     // Change the framebuffer back to the default
@@ -132,8 +131,7 @@ namespace Learning2DEngine
 
                     if (usePPE)
                         ppeRender.Render();
-
-                    componentManager.OldLateRender();
+                    
                     componentManager.LateRender();
 
                     renderManager.UpdateWindow();

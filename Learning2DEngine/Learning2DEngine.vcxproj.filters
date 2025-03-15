@@ -36,12 +36,6 @@
     <ClCompile Include="Learning2DEngine\System\Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Render\OldSpriteRenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Learning2DEngine\ParticleSimulator\OldParticleSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\ShaderConstant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -58,9 +52,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\UI\TextCharacterSet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Learning2DEngine\UI\OldText2DLateRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\Physics\ColliderComponentHandler.cpp">
@@ -131,9 +122,6 @@
     <ClInclude Include="Learning2DEngine\Render\Texture2DSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\OldSpriteRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Learning2DEngine\System\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -141,9 +129,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\ParticleSimulator\Particle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Learning2DEngine\ParticleSimulator\OldParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\Blend.h">
@@ -206,22 +191,7 @@
     <ClInclude Include="Learning2DEngine\System\UpdaterComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\OldBaseRendererComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\OldRendererComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\OldRendererComponentHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\OldLateRendererComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Learning2DEngine\UI\TextCharacterSet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Learning2DEngine\UI\OldText2DLateRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\UI\FontSizePair.h">
@@ -326,9 +296,6 @@
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\UI\Text2DRenderData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Learning2DEngine\UI\Text2DRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -342,6 +309,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\UI\Text2DRenderData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
