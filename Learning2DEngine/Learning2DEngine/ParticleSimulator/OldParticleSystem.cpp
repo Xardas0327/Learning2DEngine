@@ -1,4 +1,4 @@
-#include "ParticleSystem.h"
+#include "OldParticleSystem.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -15,14 +15,14 @@ namespace Learning2DEngine
 
 	namespace ParticleSimulator
 	{
-        int ParticleSystem::referenceNumber = 0;
-        Shader ParticleSystem::shader;
+        int OldParticleSystem::referenceNumber = 0;
+        Shader OldParticleSystem::shader;
 
-        unsigned int ParticleSystem::vao = 0;
-        unsigned int ParticleSystem::vbo = 0;
-        unsigned int ParticleSystem::ebo = 0;
+        unsigned int OldParticleSystem::vao = 0;
+        unsigned int OldParticleSystem::vbo = 0;
+        unsigned int OldParticleSystem::ebo = 0;
 
-		ParticleSystem::ParticleSystem(
+		OldParticleSystem::OldParticleSystem(
 			GameObject* gameObject,
 			unsigned int particleAmount,
 			ParticleSettings* particleSettings,
@@ -36,7 +36,7 @@ namespace Learning2DEngine
 		{
 		}
 
-		ParticleSystem::ParticleSystem(
+		OldParticleSystem::OldParticleSystem(
 			GameObject* gameObject,
 			unsigned int particleAmount,
 			const Texture2D& texture,
@@ -53,7 +53,7 @@ namespace Learning2DEngine
 
 		}
 
-		ParticleSystem::~ParticleSystem()
+		OldParticleSystem::~OldParticleSystem()
 		{
 			if (IsRunning())
 			{
@@ -70,10 +70,10 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ParticleSystem::InitShader()
+		void OldParticleSystem::InitShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
-			ParticleSystem::shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
+			OldParticleSystem::shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
 				? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
 				: resourceManager.LoadShader(
 					ShaderConstant::SPRITE_SHADER_NAME,
@@ -81,7 +81,7 @@ namespace Learning2DEngine
 					ShaderConstant::SPRITE_FRAGMENT_SHADER);
 		}
 
-		void ParticleSystem::InitVao()
+		void OldParticleSystem::InitVao()
 		{
 			float vertices[] = {
 				// pos      // tex
@@ -96,14 +96,14 @@ namespace Learning2DEngine
 			   1, 2, 3
 			};
 
-			glGenVertexArrays(1, &ParticleSystem::vao);
-			glGenBuffers(1, &ParticleSystem::vbo);
-			glGenBuffers(1, &ParticleSystem::ebo);
-			glBindVertexArray(ParticleSystem::vao);
-			glBindBuffer(GL_ARRAY_BUFFER, ParticleSystem::vbo);
+			glGenVertexArrays(1, &OldParticleSystem::vao);
+			glGenBuffers(1, &OldParticleSystem::vbo);
+			glGenBuffers(1, &OldParticleSystem::ebo);
+			glBindVertexArray(OldParticleSystem::vao);
+			glBindBuffer(GL_ARRAY_BUFFER, OldParticleSystem::vbo);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ParticleSystem::ebo);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, OldParticleSystem::ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
@@ -115,22 +115,22 @@ namespace Learning2DEngine
 			glBindVertexArray(0);
 		}
 
-		void ParticleSystem::Init()
+		void OldParticleSystem::Init()
 		{
 			OldRendererComponent::Init();
 			UpdaterComponent::Init();
 			particles = new Particle[particleAmount];
 
 			// If nothing use it
-			if (!ParticleSystem::referenceNumber)
+			if (!OldParticleSystem::referenceNumber)
 			{
 				InitShader();
 				InitVao();
 			}
-			++ParticleSystem::referenceNumber;
+			++OldParticleSystem::referenceNumber;
 		}
 
-		void ParticleSystem::Destroy()
+		void OldParticleSystem::Destroy()
 		{
 			OldRendererComponent::Destroy();
 			UpdaterComponent::Destroy();
@@ -142,17 +142,17 @@ namespace Learning2DEngine
 				Stop();
 			}
 
-			--ParticleSystem::referenceNumber;
+			--OldParticleSystem::referenceNumber;
 			// If nothing use it
-			if (!ParticleSystem::referenceNumber)
+			if (!OldParticleSystem::referenceNumber)
 			{
-				glDeleteVertexArrays(1, &ParticleSystem::vao);
-				glDeleteBuffers(1, &ParticleSystem::vbo);
-				glDeleteBuffers(1, &ParticleSystem::ebo);
+				glDeleteVertexArrays(1, &OldParticleSystem::vao);
+				glDeleteBuffers(1, &OldParticleSystem::vbo);
+				glDeleteBuffers(1, &OldParticleSystem::ebo);
 			}
 		}
 
-		void ParticleSystem::Draw()
+		void OldParticleSystem::Draw()
 		{
 			if (!isRunning || delayTime > 0.0f)
 				return;
@@ -165,25 +165,25 @@ namespace Learning2DEngine
 				renderManager.SetBlendFunc(systemSettings.blendFuncFactor);
 			}
 
-			ParticleSystem::shader.Use();
-			ParticleSystem::shader.SetInteger("spriteTexture", 0);
+			OldParticleSystem::shader.Use();
+			OldParticleSystem::shader.SetInteger("spriteTexture", 0);
 			if (IsUseTexture())
 			{
 				glActiveTexture(GL_TEXTURE0);
 				texture->Bind();
 			}
 
-			glBindVertexArray(ParticleSystem::vao);
+			glBindVertexArray(OldParticleSystem::vao);
 
 			for (int i = 0; i < particleAmount; ++i)
 			{
 				if (particles[i].lifeTime > 0.0f)
 				{
-					ParticleSystem::shader.SetMatrix4("model", particles[i].transform.GetModelMatrix());
-					ParticleSystem::shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
-					ParticleSystem::shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
-					ParticleSystem::shader.SetVector3f("spriteColor", particles[i].color);
-					ParticleSystem::shader.SetInteger("isUseTexture", IsUseTexture());
+					OldParticleSystem::shader.SetMatrix4("model", particles[i].transform.GetModelMatrix());
+					OldParticleSystem::shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+					OldParticleSystem::shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
+					OldParticleSystem::shader.SetVector3f("spriteColor", particles[i].color);
+					OldParticleSystem::shader.SetInteger("isUseTexture", IsUseTexture());
 
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 				}
@@ -198,7 +198,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ParticleSystem::Start()
+		void OldParticleSystem::Start()
 		{
 			particleSettings->Init(*gameObject);
 
@@ -208,7 +208,7 @@ namespace Learning2DEngine
 			isRunning = true;
 		}
 
-		void ParticleSystem::Update()
+		void OldParticleSystem::Update()
 		{
 			if (!isRunning)
 				return;
@@ -223,13 +223,13 @@ namespace Learning2DEngine
 			TryToSpawnNewParticles();
 		}
 
-		void ParticleSystem::Stop()
+		void OldParticleSystem::Stop()
 		{
 			particleSettings->Destroy();
 			isRunning = false;
 		}
 
-		void ParticleSystem::UpdateActiveParticles()
+		void OldParticleSystem::UpdateActiveParticles()
 		{
 			for (int i = 0; i < particleAmount; ++i)
 			{
@@ -241,7 +241,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ParticleSystem::TryToSpawnNewParticles()
+		void OldParticleSystem::TryToSpawnNewParticles()
 		{
 			nextSpawnTime -= Game::GetDeltaTime();
 
@@ -263,7 +263,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ParticleSystem::SpawnNewParticles()
+		void OldParticleSystem::SpawnNewParticles()
 		{
 			for (int i = 0; i < systemSettings.newParticlesPerSpawn; ++i)
 			{
@@ -272,7 +272,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		unsigned int ParticleSystem::GetUnusedParticleIndex()
+		unsigned int OldParticleSystem::GetUnusedParticleIndex()
 		{
 			for (unsigned int i = lastUsedParticleIndex; i < particleAmount; ++i) {
 				if (particles[i].lifeTime <= 0.0f) {
@@ -293,7 +293,7 @@ namespace Learning2DEngine
 			return 0;
 		}
 
-		void ParticleSystem::ClearTexture()
+		void OldParticleSystem::ClearTexture()
 		{
 			if (IsUseTexture())
 			{

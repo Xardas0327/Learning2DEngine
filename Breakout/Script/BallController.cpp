@@ -53,7 +53,7 @@ void BallController::InitParticleSystem()
         0.0f
     );
 
-    particleSystem = gameObject->AddComponent<ParticleSystem, unsigned int, const Texture2D&, const ParticleSystemSettings&, ParticleSettings*, int>(
+    particleSystem = gameObject->AddComponent<OldParticleSystem, unsigned int, const Texture2D&, const ParticleSystemSettings&, ParticleSettings*, int>(
         500,
         ResourceManager::GetInstance().GetTexture(particleTextureId),
         ballParticleSystemSettings,

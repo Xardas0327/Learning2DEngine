@@ -13,7 +13,7 @@ namespace Learning2DEngine
 {
 	namespace ParticleSimulator
 	{
-		class ParticleSystem : public virtual Render::OldRendererComponent, public virtual System::UpdaterComponent
+		class OldParticleSystem : public virtual Render::OldRendererComponent, public virtual System::UpdaterComponent
 		{
 			friend class System::GameObject;
 		protected:
@@ -37,12 +37,12 @@ namespace Learning2DEngine
 
 			ParticleSettings* particleSettings;
 
-			ParticleSystem(
+			OldParticleSystem(
 				System::GameObject* gameObject,
 				unsigned int particleAmount,
 				ParticleSettings* particleSettings = nullptr,
 				int renderLayer = 0);
-			ParticleSystem(
+			OldParticleSystem(
 				System::GameObject* gameObject,
 				unsigned int particleAmount,
 				const Render::Texture2D& texture,
@@ -64,7 +64,7 @@ namespace Learning2DEngine
 			ParticleSystemSettings systemSettings;
 			Render::Texture2D* texture;
 
-			~ParticleSystem();
+			~OldParticleSystem();
 
 			void Start();
 			void Stop();
@@ -80,7 +80,7 @@ namespace Learning2DEngine
 				return isRunning;
 			}
 
-			inline ParticleSettings* const GetParticleSettings()
+			inline ParticleSettings* GetParticleSettings()
 			{
 				return particleSettings;
 			}

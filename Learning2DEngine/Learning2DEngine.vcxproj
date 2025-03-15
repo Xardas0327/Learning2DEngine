@@ -175,7 +175,7 @@
     <ClCompile Include="Learning2DEngine\UI\TextCharacterSet.cpp" />
     <ClCompile Include="Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\MSAA.cpp" />
-    <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystem.cpp" />
+    <ClCompile Include="Learning2DEngine\ParticleSimulator\OldParticleSystem.cpp" />
     <ClCompile Include="Learning2DEngine\Render\PostProcessEffect.cpp" />
     <ClCompile Include="Learning2DEngine\Render\RenderManager.cpp" />
     <ClCompile Include="Learning2DEngine\Render\ShaderConstant.cpp" />
@@ -214,7 +214,7 @@
     <ClInclude Include="Learning2DEngine\Render\OldLateRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\MSAA.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\Particle.h" />
-    <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystem.h" />
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\OldParticleSystem.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h" />
     <ClInclude Include="Learning2DEngine\Render\OldRendererComponent.h" />
