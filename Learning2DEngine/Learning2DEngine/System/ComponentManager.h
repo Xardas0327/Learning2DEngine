@@ -129,41 +129,41 @@ namespace Learning2DEngine
                 colliderComponentHandler.SetMaxColliderPerThread(value);
             }
 
-			//Render
+            //Render
 
-			inline bool IsRendererExistInRender(const std::string& id)
-			{
-				return rendererComponentHandler.IsRendererExist(id, isThreadSafe);
-			}
+            inline bool IsRendererExistInRender(const std::string& id)
+            {
+                return rendererComponentHandler.IsRendererExist(id, isThreadSafe);
+            }
 
             inline void AddRendererToRender(const std::string& id, Render::IRenderer* renderer)
             {
-				rendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
+                rendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
             }
 
             inline void RemoveRendererFromRender(const std::string& id)
             {
-				rendererComponentHandler.RemoveRenderer(id, isThreadSafe);
+                rendererComponentHandler.RemoveRenderer(id, isThreadSafe);
             }
 
             inline void AddDataToRender(const std::string& id, Render::RenderData* data, int layer)
             {
-				rendererComponentHandler.AddData(id, data, layer, isThreadSafe);
+                rendererComponentHandler.AddData(id, data, layer, isThreadSafe);
             }
 
             inline void ChangeLayerInRender(Render::RenderData* data, int newLayer)
             {
-				rendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
+                rendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
             }
 
             inline void RemoveDataFromRender(Render::RenderData* data)
             {
-				rendererComponentHandler.RemoveData(data, isThreadSafe);
+                rendererComponentHandler.RemoveData(data, isThreadSafe);
             }
 
             inline void Render()
             {
-				rendererComponentHandler.Run();
+                rendererComponentHandler.Run();
             }
 
             //LateRender
