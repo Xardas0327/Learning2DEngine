@@ -509,6 +509,7 @@ virtual void SetLayer(int value) override;
 ## RendererComponentHandler
 ### Source Code:
 [RendererComponentHandler.h](../../Learning2DEngine/Learning2DEngine/Render/RendererComponentHandler.h)  
+[RendererComponentHandler.cpp](../../Learning2DEngine/Learning2DEngine/Render/RendererComponentHandler.cpp)  
 
 ### Description:
 It can handle the `IRenderer` and the `RenderData` objects.  
