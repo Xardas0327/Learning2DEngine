@@ -1250,7 +1250,7 @@ inline void ClearTexture();
 
 ### Description:
 It can render the sprites.
-Note: The projection and the view matrix are came from Game::mainCamera.
+Note: The projection and the view matrix came from Game::mainCamera.
 
 ### Header:
 ```cpp
@@ -1282,17 +1282,6 @@ GLuint ebo;
 
 ### Functions:
 **Private:**  
-**InitShader**  
-```cpp
-void InitShader();
-```
-
-**InitVao**  
-```cpp
-void InitVao();
-```
-
-**Protected:**  
 **SpriteRenderer**  
 ```cpp
 SpriteRenderer();
