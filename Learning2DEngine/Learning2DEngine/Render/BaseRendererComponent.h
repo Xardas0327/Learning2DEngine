@@ -20,8 +20,8 @@ namespace Learning2DEngine
 		{
 		private:
 			int layer;
-		protected:
 
+		protected:
 			BaseRendererComponent(System::GameObject* gameObject, int layer = 0)
 				: System::Component(gameObject), layer(layer), data(this)
 			{

@@ -391,7 +391,7 @@ virtual ~Component();
 ### Description:
 The `ComponentManager` manages the `Components` in the Engine by component handlers.
 The `Game` calls its Update(), LateUpdate(), CheckCollision(), Render()
-and LateRender() functions in every frame.
+and LateRender() functions in every frame.  
 
 ### Header:
 ```cpp

@@ -17,9 +17,9 @@ namespace Learning2DEngine
         class RendererComponentHandler final : public System::IComponentHandler
         {
         private:
-            //The int is, that how many data use this renderer.
             std::map<std::string, IRenderer*> renderers;
             //The int is the layer.
+            //The string is the id.
             std::map<int, std::map<std::string, std::vector<RenderData*>>> renderData;
             //Help for find the data faster.
             std::map<RenderData*, std::tuple<std::string, int>> renderDataMapping;

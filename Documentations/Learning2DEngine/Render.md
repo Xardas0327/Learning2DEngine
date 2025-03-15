@@ -1,10 +1,12 @@
 # Render
 - [BaseRendererComponent](Render.md#baserenderercomponent)
 - [BlendFuncFactor](Render.md#blendfuncfactor)
+- [IRenderer](Render.md#irenderer)
 - [IResolutionRefresher](Render.md#iresolutionrefresher)
 - [LateRendererComponent](Render.md#laterenderercomponent)
 - [MSAA](Render.md#msaa)
 - [PostProcessEffect](Render.md#postprocesseffect)
+- [RenderData](Render.md#renderdata)
 - [RendererComponent](Render.md#renderercomponent)
 - [RendererComponentHandler](Render.md#renderercomponenthandler)
 - [RenderManager](Render.md#rendermanager)
@@ -22,13 +24,16 @@
 
 ### Description:
 It has some basic funcionality, which is essential for rendering, but this is a support
-class only, please use `RendererComponent` and `LateRendererComponent` instead of this. 
+class only, please use `RendererComponent` and `LateRendererComponent` instead of this.  
+The TRenderData should be a class, which is inhereted from IRenderData.  
+The TRenderer should be a class, which is inhereted from IRenderer.  
 Please check for more info about `RendererComponent`, `LateRendererComponent`
 and `System::Component`.
 
 
 ### Header:
 ```cpp
+template<class TRenderData, class TRenderer>
 class BaseRendererComponent : public virtual System::Component
 {...}
 ```
@@ -41,22 +46,32 @@ This is the order of the rendering. The lower number means, this renderer will b
 int layer;
 ```
 
+**Public:**  
+**data**  
+This one contains the data, which will be used in the rendering.
+```cpp
+TRenderData data;
+```
+
 ### Functions:
 **Protected:**  
 **BaseRendererComponent**  
 ```cpp
-BaseRendererComponent(System::GameObject* gameObject);
+BaseRendererComponent(System::GameObject* gameObject, int layer = 0);
 ```
+
+**GetId**  
+It returns the id, which is used to find the data and renderer pairs by the `RendererComponentHandler`.
 ```cpp
-BaseRendererComponent(System::GameObject* gameObject, int layer);
+virtual const std::string& GetId() const = 0;
+```
+
+**GetRenderer**  
+```cpp
+virtual TRenderer* GetRenderer() const = 0;
 ```
 
 **Public:**  
-**Draw**  
-```cpp
-virtual void Draw() = 0;
-```
-
 **SetLayer**  
 ```cpp
 virtual void SetLayer(int value);
@@ -80,6 +95,42 @@ The second is the destination factor.
 ### Header:
 ```cpp
 typedef std::pair<unsigned int, unsigned int> BlendFuncFactor;
+```
+
+##
+## IRenderer
+### Source Code:
+[IRenderer.h](../../Learning2DEngine/Learning2DEngine/Render/IRenderer.h)
+
+### Description:
+It is am interface for the renderers.
+
+### Header:
+```cpp
+struct IRenderer
+{...}
+```
+
+### Functions:
+**Public:**  
+**~IRenderer**  
+```cpp
+virtual ~IRenderer() = default;
+```
+
+**Init**  
+```cpp
+virtual void Init() = 0;
+```
+
+**Destroy**  
+```cpp
+virtual void Destroy() = 0;
+```
+
+**Draw**  
+```cpp
+virtual void Draw(std::vector<RenderData*> renderData) = 0;
 ```
 
 ##
@@ -113,6 +164,13 @@ virtual void RefreshResolution(const Resolution& resolution) = 0;
 ### Source Code:
 [LateRendererComponent.h](../../Learning2DEngine/Learning2DEngine/Render/LateRendererComponent.h)
 
+### Header:
+```cpp
+template<class TRenderData, class TRenderer>
+class LateRendererComponent : public virtual BaseRendererComponent<TRenderData, TRenderer>
+{...}
+```
+
 ### Description:
 It is a class, which is inherited from `BaseRendererComponent`.  
 The developer have to inherit from this class, if they want to render something in LateRender.  
@@ -126,20 +184,18 @@ Please check for more info about `System::Component` and `BaseRendererComponent`
 **Protected:**  
 **LateRendererComponent**  
 ```cpp
-LateRendererComponent(System::GameObject* gameObject);
-```
-```cpp
-LateRendererComponent(System::GameObject* gameObject, int layer);
+LateRendererComponent(System::GameObject* gameObject, int layer = 0);
 ```
 
 **Init**  
-If this function is override, it must call the LateRendererComponent::Init() in the first line.
+If this function is override, it should care, that the renderer and renderdata will be added to the ComponentManager's LateRender.
 ```cpp
 virtual void Init() override;
 ```
 
 **Destroy**  
-If this function is override, it must call the LateRendererComponent::Destroy() in the first line.
+If this function is override, it should care, that the renderdata will be removed from the ComponentManager's LateRender.  
+By default the renderer will not be removed automatically.
 ```cpp
 virtual void Destroy() override;
 ```
@@ -369,6 +425,41 @@ inline unsigned int GetFrameBufferId();
 ```
 
 ##
+## RenderData
+### Source Code:
+[RenderData.h](../../Learning2DEngine/Learning2DEngine/Render/RenderData.h)
+
+### Description:
+It contains the data, which will be used in the rendering.
+
+### Header:
+```cpp
+struct RenderData
+{...}
+```
+
+### Variables:
+**Public:**  
+**component**  
+It is a reference to the `System::Component` object, that `RendererComponentHandler` can ask, that
+the component and the gameobject are active or not.
+```cpp
+const System::Component* const component;
+```
+
+### Functions:
+**Public:**  
+**RenderData**  
+```cpp
+RenderData(const System::Component* component);
+```
+
+**~RenderData**  
+```cpp
+virtual ~RenderData() = default;
+```
+
+##
 ## RendererComponent
 ### Source Code:
 [RendererComponent.h](../../Learning2DEngine/Learning2DEngine/Render/RendererComponent.h)
@@ -381,24 +472,29 @@ Note: The layer of the `RendererComponent` is the order in the Render only.
 So if a `LateRendererComponent` has a lower layer number, it will be still rendered after the `RendererComponent`.   
 Please check for more info about `System::Component` and `BaseRendererComponent`.
 
+### Header:
+```cpp
+template<class TRenderData, class TRenderer>
+class RendererComponent : public virtual BaseRendererComponent<TRenderData, TRenderer>
+{...}
+```
+
 ### Functions:
 **Protected:**  
 **RendererComponent**  
 ```cpp
-RendererComponent(System::GameObject* gameObject);
-```
-```cpp
-RendererComponent(System::GameObject* gameObject, int layer);
+RendererComponent(System::GameObject* gameObject, int layer = 0);
 ```
 
 **Init**  
-If this function is override, it must call the RendererComponent::Init() in the first line.
+If this function is override, it should care, that the renderer and renderdata will be added to the ComponentManager's Render.
 ```cpp
 virtual void Init() override;
 ```
 
 **Destroy**  
-If this function is override, it must call the RendererComponent::Destroy() in the first line.
+If this function is override, it should care, that the renderdata will be removed from the ComponentManager's Render.  
+By default the renderer will not be removed automatically.
 ```cpp
 virtual void Destroy() override;
 ```
@@ -415,29 +511,61 @@ virtual void SetLayer(int value) override;
 [RendererComponentHandler.h](../../Learning2DEngine/Learning2DEngine/Render/RendererComponentHandler.h)  
 
 ### Description:
-It can handle the `BaseRendererComponent` objects.  
+It can handle the `IRenderer` and the `RenderData` objects.  
 The `ComponentManager` has 2 from it.
 One for `RendererComponentHandler` and one for `LateRendererComponentHandler`.
 
 ### Header:
 ```cpp
-class RendererComponentHandler : public virtual System::BaseComponentHandler<BaseRendererComponent>
+class RendererComponentHandler final : public System::IComponentHandler
 {...}
 ```
 
 ### Variables:
-**Protected:**  
-**isReorderNeeded**  
+**Private:**  
+**renderers**  
 ```cpp
-bool isReorderNeeded;
+std::map<std::string, IRenderer*> renderers;
+```
+
+**renderData**  
+The int is the layer.  
+The string is the id.
+```cpp
+std::map<int, std::map<std::string, std::vector<RenderData*>>> renderData;
+```
+
+**renderDataMapping**  
+It helps for find the data faster, when the layer is changed.
+```cpp
+std::map<RenderData*, std::tuple<std::string, int>> renderDataMapping;
+```
+
+**rendererMutex**  
+```cpp
+std::mutex rendererMutex;
+```
+
+**dataMutex**  
+```cpp
+std::mutex dataMutex;
 ```
 
 ### Functions:
-**Protected:**  
-**ReorderComponents**  
-It reorders the `BaseRendererComponent` objects by their layer number.
+**Private:**  
+**AddData**  
 ```cpp
-void ReorderComponents();
+void AddData(const std::string& id, RenderData* data, int layer);
+```
+
+**ChangeLayer**  
+```cpp
+void ChangeLayer(RenderData* data, int newLayer);
+```
+
+**RemoveData**  
+```cpp
+void RemoveData(RenderData* data);
 ```
 
 **Public:**  
@@ -446,25 +574,46 @@ void ReorderComponents();
 RendererComponentHandler();
 ```
 
-**Add**  
-It not just adds the `BaseRendererComponent` object to the vector,
-but it also sets the `isReorderNeeded` to true.
+**IsRendererExist**  
 ```cpp
-void Add(BaseRendererComponent* component, bool isThreadSafe) override;
+bool IsRendererExist(const std::string& id, bool isThreadSafe);
 ```
 
-**NeedReorder**  
-It sets the `isReorderNeeded` to true.
+**AddRenderer**  
 ```cpp
-inline void NeedReorder();
+void AddRenderer(const std::string& id, IRenderer* renderer, bool isThreadSafe);
+```
+
+**RemoveRenderer**  
+```cpp
+void RemoveRenderer(const std::string& id, bool isThreadSafe);
+```
+
+**AddData**  
+```cpp
+void AddData(const std::string& id, RenderData* data, int layer, bool isThreadSafe);
+```
+
+**ChangeLayer**  
+```cpp
+void ChangeLayer(RenderData* data, int newLayer, bool isThreadSafe);
+```
+
+**RemoveData**  
+```cpp
+void RemoveData(RenderData* data, bool isThreadSafe);
 ```
 
 **Run**  
-Firstly it refresh and reorder the `BaseRendererComponent` objects.  
-After that it iterates on the components.  
-If the component and its gameobject is active, its Draw() function will be called.
+It iterates through renderData. Those data, which are on the same layer and use the same id,
+they will be called by the same renderer, the renderer will care that it can render them.
 ```cpp
 void Run() override;
+```
+
+**Clear**  
+```cpp
+void Clear() override;
 ```
 
 ##

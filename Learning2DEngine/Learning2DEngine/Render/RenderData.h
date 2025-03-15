@@ -9,7 +9,6 @@ namespace Learning2DEngine
 	{
 		struct RenderData
 		{
-		public:
 			const System::Component* const component;
 
 			RenderData(const System::Component* component)
