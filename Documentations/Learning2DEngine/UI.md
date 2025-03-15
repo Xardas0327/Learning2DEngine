@@ -115,7 +115,7 @@ Text2DRenderer* GetRenderer() const override;
 ##
 ## Text2DRenderData
 ### Source Code:
-[Text2DRenderData.h](../../Learning2DEngine/Learning2DEngine/Render/Text2DRenderData.h)  
+[Text2DRenderData.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderData.h)  
 
 ### Description:
 It contains the data, which is important to render a text.
