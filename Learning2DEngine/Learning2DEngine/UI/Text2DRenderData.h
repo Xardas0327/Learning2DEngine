@@ -18,19 +18,19 @@ namespace Learning2DEngine
             std::string text;
             glm::vec4 color;
 
-            Text2DRenderData(System::GameObject* gameObject, const glm::vec4 color = glm::vec4(1.0f))
-                : RenderData(gameObject), fontSizePair(), text(""), color(color)
+            Text2DRenderData(const System::Component* component, const glm::vec4 color = glm::vec4(1.0f))
+                : RenderData(component), fontSizePair(), text(""), color(color)
             {
             }
 
-            Text2DRenderData(System::GameObject* gameObject, const FontSizePair& fontSizePair, const std::string& text, glm::vec4 color = glm::vec4(1.0f))
-                : RenderData(gameObject), fontSizePair(fontSizePair), text(text), color(color)
+            Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, const std::string& text, glm::vec4 color = glm::vec4(1.0f))
+                : RenderData(component), fontSizePair(fontSizePair), text(text), color(color)
             {
             }
 
             glm::mat2 GetRotationMatrix()
             {
-                float radians = glm::radians(gameObject->transform.rotation);
+                float radians = glm::radians(component->gameObject->transform.rotation);
 
                 return glm::mat2(
                     glm::cos(radians), -glm::sin(radians),

@@ -14,13 +14,13 @@ namespace Learning2DEngine
 			Texture2D* texture;
 			glm::vec4 color;
 
-			SpriteRenderData(System::GameObject* gameObject, glm::vec4 color = glm::vec4(1.0f))
-				: RenderData(gameObject), color(color), texture(nullptr)
+			SpriteRenderData(const System::Component* component, glm::vec4 color = glm::vec4(1.0f))
+				: RenderData(component), color(color), texture(nullptr)
 			{
 			}
 
-			SpriteRenderData(System::GameObject* gameObject, const Texture2D& texture, glm::vec4 color = glm::vec4(1.0f))
-				: RenderData(gameObject), color(color), texture(new Texture2D(texture))
+			SpriteRenderData(const System::Component* component, const Texture2D& texture, glm::vec4 color = glm::vec4(1.0f))
+				: RenderData(component), color(color), texture(new Texture2D(texture))
 			{
 			}
 

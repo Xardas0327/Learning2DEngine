@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../System/GameObject.h"
+#include "../System/Component.h"
 
 namespace Learning2DEngine
 {
@@ -9,10 +10,10 @@ namespace Learning2DEngine
 		struct RenderData
 		{
 		public:
-			const System::GameObject* const gameObject;
+			const System::Component* const component;
 
-			RenderData(System::GameObject* gameObject)
-				: gameObject(gameObject)
+			RenderData(const System::Component* component)
+				: component(component)
 			{
 			}
 

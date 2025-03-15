@@ -25,17 +25,17 @@ namespace Learning2DEngine
 			ParticleSystemSettings systemSettings;
 			Render::Texture2D* texture;
 
-			ParticleRenderData(System::GameObject* gameObject)
-				: RenderData(gameObject), particleAmount(0), isRenderable(false), particles(nullptr), systemSettings(), texture(nullptr)
+			ParticleRenderData(const System::Component* component)
+				: RenderData(component), particleAmount(0), isRenderable(false), particles(nullptr), systemSettings(), texture(nullptr)
 			{
 			}
 
 			ParticleRenderData(
-				System::GameObject* gameObject,
+				const System::Component* component,
 				unsigned int particleAmount,
 				const ParticleSystemSettings& systemSettings,
 				const Render::Texture2D& texture)
-				: RenderData(gameObject), particleAmount(particleAmount), isRenderable(false), particles(nullptr),
+				: RenderData(component), particleAmount(particleAmount), isRenderable(false), particles(nullptr),
 				systemSettings(systemSettings), texture(new Render::Texture2D(texture))
 			{
 				particles = new Particle[particleAmount];

@@ -85,10 +85,8 @@ namespace Learning2DEngine
 			for (auto data : renderData)
 			{
 				auto spriteData = static_cast<SpriteRenderData*>(data);
-				if (!spriteData->gameObject->isActive)
-					continue;
 
-				shader.SetMatrix4("model", spriteData->gameObject->transform.GetModelMatrix());
+				shader.SetMatrix4("model", spriteData->component->gameObject->transform.GetModelMatrix());
 				shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
 				shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 

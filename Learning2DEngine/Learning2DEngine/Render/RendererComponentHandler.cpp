@@ -139,7 +139,27 @@ namespace Learning2DEngine
 			{
 				for (auto& dataPair : data.second)
 				{
-					renderers[dataPair.first]->Draw(dataPair.second);
+					size_t activeData = 0;
+					for (const RenderData* renderData : dataPair.second)
+					{
+						if (renderData->component->isActive && renderData->component->gameObject->isActive)
+							activeData++;
+					}
+
+					if(activeData == dataPair.second.size())
+						renderers[dataPair.first]->Draw(dataPair.second);
+					else if (activeData > 0)
+					{
+						std::vector<RenderData*> activeRenderData;
+						activeRenderData.reserve(activeData);
+						for (RenderData* renderData : dataPair.second)
+						{
+							if (renderData->component->isActive && renderData->component->gameObject->isActive)
+								activeRenderData.push_back(renderData);
+						}
+						renderers[dataPair.first]->Draw(activeRenderData);
+					}
+
 				}
 			}
 		}

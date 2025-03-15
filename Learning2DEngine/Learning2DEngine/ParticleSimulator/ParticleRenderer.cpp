@@ -87,7 +87,7 @@ namespace Learning2DEngine
 			for (auto data : renderData)
 			{
 				auto particleData = static_cast<ParticleRenderData*>(data);
-				if (!particleData->gameObject->isActive || !particleData->IsRenderable())
+				if (!particleData->IsRenderable())
 					continue;
 
 				BlendFuncFactor previousBlendFuncFactor = renderManager.GetBlendFunc();

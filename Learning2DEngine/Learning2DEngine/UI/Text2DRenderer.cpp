@@ -83,8 +83,6 @@ namespace Learning2DEngine
 			for (auto data : renderData)
 			{
 				auto textData = static_cast<Text2DRenderData*>(data);
-				if(!textData->gameObject->isActive)
-					continue;
 
 				textCharacterSet.Load(textData->fontSizePair);
 
@@ -92,7 +90,7 @@ namespace Learning2DEngine
 
 				shader.SetVector4f("characterColor", textData->color);
 
-				glm::vec2 startPosition(textData->gameObject->transform.position);
+				glm::vec2 startPosition(textData->component->gameObject->transform.position);
 				glm::mat2 rotationMatrix = textData->GetRotationMatrix();
 
 				std::string::const_iterator c;
@@ -100,11 +98,11 @@ namespace Learning2DEngine
 				{
 					const auto& ch = characterMap[*c];
 
-					float chPositionX = ch.bearing.x * textData->gameObject->transform.scale.x;
-					float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * textData->gameObject->transform.scale.y;
+					float chPositionX = ch.bearing.x * textData->component->gameObject->transform.scale.x;
+					float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * textData->component->gameObject->transform.scale.y;
 
-					float chWidth = ch.size.x * textData->gameObject->transform.scale.x;
-					float chHeight = ch.size.y * textData->gameObject->transform.scale.y;
+					float chWidth = ch.size.x * textData->component->gameObject->transform.scale.x;
+					float chHeight = ch.size.y * textData->component->gameObject->transform.scale.y;
 
 					glm::vec2 a = rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY + chHeight);
 					glm::vec2 b = rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY);
@@ -129,7 +127,7 @@ namespace Learning2DEngine
 					startPosition += rotationMatrix *
 						glm::vec2(
 							// bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
-							(ch.advance >> 6) * textData->gameObject->transform.scale.x,
+							(ch.advance >> 6) * textData->component->gameObject->transform.scale.x,
 							0);
 				}
 			}
