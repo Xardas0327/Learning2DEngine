@@ -35,7 +35,7 @@ namespace Learning2DEngine
 					componentManager.AddRendererToLateRender(this->GetId(), this->GetRenderer());
 				}
 
-				componentManager.AddDataToLateRender(this->GetId(), &this->data, this->layer);
+				componentManager.AddDataToLateRender(this->GetId(), &this->data, this->GetLayer());
 			}
 
 			/// <summary>
@@ -50,8 +50,8 @@ namespace Learning2DEngine
 		public:
 			virtual void SetLayer(int value) override
 			{
-				this->layer = value;
-				System::ComponentManager::GetInstance().ChangeLayerInLateRender(&this->data, this->layer);
+				BaseRendererComponent<TRenderData, TRenderer>::SetLayer(value);
+				System::ComponentManager::GetInstance().ChangeLayerInLateRender(&this->data, this->GetLayer());
 			}
 		};
 	}
