@@ -10,45 +10,48 @@ namespace Learning2DEngine
 		/// <summary>
 		/// The classes, which are inherited from RendererComponent,
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
+		/// The TRenderData should be a class, which is inhereted from RenderData.
+		/// The TRenderer should be a class, which is inhereted from IRenderer.
 		/// Please check for more info about `System::Component` and `BaseRendererComponent`.
 		/// </summary>
-		class RendererComponent : public virtual BaseRendererComponent
+		template<class TRenderData, class TRenderer>
+		class RendererComponent : public virtual BaseRendererComponent<TRenderData, TRenderer>
 		{
-			friend class System::GameObject;
 		protected:
-			RendererComponent(System::GameObject* gameObject)
-				: BaseRendererComponent(gameObject)
-			{
-
-			}
-
-			RendererComponent(System::GameObject* gameObject, int layer)
-				: BaseRendererComponent(gameObject, layer)
+			RendererComponent(System::GameObject* gameObject, int layer = 0)
+				: BaseRendererComponent<TRenderData, TRenderer>(gameObject, layer), System::Component(gameObject)
 			{
 
 			}
 
 			/// <summary>
-			/// If this function is override, it must call the RendererComponent::Init() in the first line.
+			/// If this function is override, it should care, that the renderer and renderdata will be added to the ComponentManager's Render.
 			/// </summary>
 			virtual void Init() override
 			{
-				System::ComponentManager::GetInstance().AddToRenderer(this);
+				auto& componentManager = System::ComponentManager::GetInstance();
+				if (!componentManager.IsRendererExistInRender(this->GetId()))
+				{
+					componentManager.AddRendererToRender(this->GetId(), this->GetRenderer());
+				}
+
+				componentManager.AddDataToRender(this->GetId(), &this->data, this->GetLayer());
 			}
 
 			/// <summary>
-			/// If this function is override, it must call the RendererComponent::Destroy() in the first line.
+			/// If this function is override, it should care, that the renderdata will be removed from the ComponentManager's Render.
+			/// By default the renderer will not be removed automatically.
 			/// </summary>
 			virtual void Destroy() override
 			{
-				System::ComponentManager::GetInstance().RemoveFromRenderer(this);
+				System::ComponentManager::GetInstance().RemoveDataFromRender(&this->data);
 			}
 
 		public:
 			virtual void SetLayer(int value) override
 			{
-				BaseRendererComponent::SetLayer(value);
-				System::ComponentManager::GetInstance().NeedReorderRenderers();
+				BaseRendererComponent<TRenderData, TRenderer>::SetLayer(value);
+				System::ComponentManager::GetInstance().ChangeLayerInRender(&this->data, this->GetLayer());
 			}
 		};
 	}

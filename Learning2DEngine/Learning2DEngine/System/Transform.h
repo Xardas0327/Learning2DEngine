@@ -19,7 +19,7 @@ namespace Learning2DEngine
 
 			}
 
-			glm::mat4 GetModelMatrix()
+			glm::mat4 GetModelMatrix() const
 			{
 				glm::mat4 model = glm::mat4(1.0f);
 				// first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)

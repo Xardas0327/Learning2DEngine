@@ -33,7 +33,7 @@ void BallController::Init()
     UpdaterComponent::Init();
 
     rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2, bool>(INITIAL_BALL_VELOCITY, isStuck);
-    renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&>(
+    renderer = gameObject->AddComponent<SpriteRenderComponent, const Texture2D&>(
         ResourceManager::GetInstance().GetTexture(textureId)
     );
 
@@ -53,7 +53,7 @@ void BallController::InitParticleSystem()
         0.0f
     );
 
-    particleSystem = gameObject->AddComponent<ParticleSystem, unsigned int, const Texture2D&, const ParticleSystemSettings&, ParticleSettings*, int>(
+    particleSystem = gameObject->AddComponent<ParticleSystemComponent, unsigned int, const Texture2D&, const ParticleSystemSettings&, ParticleSettings*, int>(
         500,
         ResourceManager::GetInstance().GetTexture(particleTextureId),
         ballParticleSystemSettings,
@@ -98,7 +98,7 @@ void BallController::Reset()
     gameObject->transform.position = 
         playerController->gameObject->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
     rigidbody->velocity = INITIAL_BALL_VELOCITY;
-    renderer->color = glm::vec4(1.0f);
+    renderer->data.color = glm::vec4(1.0f);
 
     SetStuck(true);
     sticky = false;

@@ -4,7 +4,7 @@
 
 #include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/Render/SpriteRenderer.h>
+#include <Learning2DEngine/Render/SpriteRenderComponent.h>
 #include <Learning2DEngine/Render/IResolutionRefresher.h>
 #include <Learning2DEngine/Render/Resolution.h>
 #include <Learning2DEngine/EventSystem/ResolutionEventItem.h>
@@ -16,7 +16,7 @@ private:
     void RefreshResolution(const Learning2DEngine::Render::Resolution& resolution) override;
 
 protected:
-    Learning2DEngine::Render::SpriteRenderer* renderer;
+    Learning2DEngine::Render::SpriteRenderComponent* renderer;
     Learning2DEngine::EventSystem::ResolutionEventItem resolutionEventItem;
     const std::string textureId;
 

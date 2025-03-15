@@ -24,7 +24,8 @@ namespace Learning2DEngine
             void Create(unsigned int width, unsigned int height, const unsigned char* data);
             void Destroy();
             void Bind() const;
-            inline unsigned int GetId()
+
+            inline unsigned int GetId() const
             {
                 return id;
             }

@@ -15,7 +15,7 @@ PlayerController::PlayerController(Learning2DEngine::System::GameObject* gameObj
 
 void PlayerController::Init()
 {
-	renderer = gameObject->AddComponent<SpriteRenderer, const Texture2D&>(
+	renderer = gameObject->AddComponent<SpriteRenderComponent, const Texture2D&>(
 		ResourceManager::GetInstance().GetTexture(textureId)
 	);
 	collider = gameObject->AddComponent<BoxColliderComponent, glm::vec2, bool, glm::vec2, int32_t>(glm::vec2(0.0f, 0.0f), false, glm::vec2(0.0f, 0.0f), 0b110);
@@ -31,5 +31,5 @@ void PlayerController::Reset()
 	gameObject->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
 
 	collider->colliderSize = PLAYER_SIZE;
-	renderer->color = glm::vec4(1.0f);
+	renderer->data.color = glm::vec4(1.0f);
 }

@@ -1,7 +1,9 @@
 # UI
 - [FontSizePair](UI.md#fontsizepair)
 - [FreeTypeCharacter](UI.md#freetypecharacter)
-- [Text2DLateRenderer](UI.md#text2dlaterenderer)
+- [Text2DLateRenderComponent](UI.md#text2dlaterendercomponent)
+- [Text2DRenderData](UI.md#text2drenderdata)
+- [Text2DRenderer](UI.md#text2drenderer)
 - [TextCharacterSet](UI.md#textcharacterset)
 
 ##
@@ -42,75 +44,165 @@ struct FreeTypeCharacter
 ```
 
 ##
-## Text2DLateRenderer
+## Text2DLateRenderComponent
 ### Source Code:
-[Text2DLateRenderer.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DLateRenderer.h)  
-[Text2DLateRenderer.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DLateRenderer.cpp)
+[Text2DLateRenderComponent.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DLateRenderComponent.h)  
+[Text2DLateRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DLateRenderComponent.cpp)
 
 ### Description:
-The `Text2DLateRenderer` is for the text rendering to UI.  
+It can render a text with a color.
 It uses static variables to count how many GameObject initialized it.
-That's why it will destroy its Vertex Array Object only
+That's why it will destroy renderer only
 if the reference number is 0, otherway it will decrease
-the reference number only.  
+the reference number.  
 Please more info about `LateRendererComponent`.
 
 ### Header:
 ```cpp
-class Text2DLateRenderer : public virtual Render::LateRendererComponent
+class Text2DLateRenderComponent : public virtual Render::LateRendererComponent<Text2DRenderData, Text2DRenderer>
 {...}
 ```
 
 ### Variables:
 **Private:**  
-**referenceNumber**  
-All `Text2DLateRenderer` use the same shader and vertex array object.
-That's why it is counted, that how many `Text2DLateRenderer` there are in the game.
-It is important, that the shader will be created if it is used and
-it will be destroyed if nothing uses it.  
-Note: The projection is came from Game::mainCamera.
+**id**  
 ```cpp
-static int referenceNumber;
+static const std::string id;
 ```
 
-**shader**  
+**refrenceNumber**  
+It is counted, that how many SpriteRenderComponent exist.
 ```cpp
-static Shader shader
+static int refrenceNumber;
 ```
 
-**vao**  
+**Protected:**  
+**mutex**  
 ```cpp
-static GLuint vao;
+std::mutex mutex;
 ```
 
-**vbo**  
+### Functions:
+**Protected:**  
+**Text2DLateRenderComponent**  
 ```cpp
-static GLuint vbo;
+Text2DLateRenderComponent(System::GameObject* gameObject, const FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+```
+```cpp
+Text2DLateRenderComponent(System::GameObject* gameObject, const FontSizePair& fontSizePair, std::string text, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 
-**ebo**  
+**Init**  
 ```cpp
-static GLuint ebo;
+void Init() override;
 ```
 
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**GetId**  
+```cpp
+const std::string& GetId() const override;
+```
+
+**GetRenderer**  
+```cpp
+Text2DRenderer* GetRenderer() const override;
+```
+
+##
+## Text2DRenderData
+### Source Code:
+[Text2DRenderData.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderData.h)  
+
+### Description:
+It contains the data, which is important to render a text.
+
+### Header:
+```cpp
+struct Text2DRenderData : public Render::RenderData
+{...}
+```
+
+### Variables:
 **Public:**  
-**fontSizePair**  
+**fontSizePair**
 ```cpp
 FontSizePair fontSizePair;
-```  
-**text**  
+```
+
+**text**
 ```cpp
 std::string text;
-```  
+```
 
-**color**  
-The `color`, which will be mixed with the texture in the shader.
+**color**
 ```cpp
 glm::vec4 color;
 ```
 
 ### Functions:
+**Public:**  
+**Text2DRenderData**
+```cpp
+Text2DRenderData(const System::Component* component, const glm::vec4 color = glm::vec4(1.0f));
+```
+```cpp
+Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, const std::string& text, glm::vec4 color = glm::vec4(1.0f));
+```
+
+**GetRotationMatrix**
+```cpp
+glm::mat2 GetRotationMatrix();
+```
+
+##
+## Text2DRenderer
+### Source Code:
+[Text2DRenderer.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderer.h)  
+[Text2DRenderer.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderer.cpp)
+
+### Description:
+It can render texts.
+Note: The projection came from Game::mainCamera.
+
+### Header:
+```cpp
+class Text2DRenderer : public Render::IRenderer, public virtual System::Singleton<Text2DRenderer>
+{...}
+```
+
+### Variables:
 **Private:**  
+**shader**  
+```cpp
+Render::Shader shader;
+```
+
+**vao**  
+```cpp
+GLuint vao;
+```
+
+**vbo**  
+```cpp
+GLuint vbo;
+```
+
+**ebo**  
+```cpp
+GLuint ebo;
+```
+
+### Functions:
+**Private:**  
+**SpriteRenderer**  
+```cpp
+SpriteRenderer();
+```
+
 **InitShader**  
 ```cpp
 void InitShader();
@@ -121,36 +213,20 @@ void InitShader();
 void InitVao();
 ```
 
-**Protected:**  
-**Text2DLateRenderer**  
-```cpp
-Text2DLateRenderer(System::GameObject* gameObject, const FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
-```
-```cpp
-Text2DLateRenderer(System::GameObject* gameObject, const FontSizePair& fontSizePair, std::string text, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
-```
-
+**Public:**  
 **Init**  
-It initializes the `Text2DLateRenderer`.
 ```cpp
 void Init() override;
 ```
 
 **Destroy**  
-It destroys the `Text2DLateRenderer`.
 ```cpp
 void Destroy() override;
 ```
 
 **Draw**  
-It draws the text. 
 ```cpp
-void Draw() override;
-```  
-
-**GetRotationMatrix**  
-```cpp
-glm::mat2 GetRotationMatrix();
+void Draw(std::vector<Render::RenderData*> renderData) override;
 ```
 
 ##

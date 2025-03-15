@@ -13,7 +13,7 @@ PlayerController::PlayerController(GameObject* gameObject, const std::string& te
 
 void PlayerController::Destroy()
 {
-    for (std::list<SpriteRenderer*>::iterator it = snake.begin(); it != snake.end(); ++it) {
+    for (auto it = snake.begin(); it != snake.end(); ++it) {
         GameObject::Destroy(*it);
     }
     snake.clear();
@@ -21,7 +21,7 @@ void PlayerController::Destroy()
 
 void PlayerController::Regenerate(glm::ivec2 unitSize)
 {
-    for (std::list<SpriteRenderer*>::iterator it = snake.begin(); it != snake.end(); ++it) {
+    for (auto it = snake.begin(); it != snake.end(); ++it) {
         GameObject::Destroy(*it);
     }
     snake.clear();
@@ -31,7 +31,7 @@ void PlayerController::Regenerate(glm::ivec2 unitSize)
     }
 }
 
-SpriteRenderer* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm::vec2 scale)
+SpriteRenderComponent* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm::vec2 scale)
 {
     auto playerUnit = GameObject::Create(
         Transform(
@@ -39,7 +39,7 @@ SpriteRenderer* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm::ve
             scale
         )
     );
-    return playerUnit->AddComponent<SpriteRenderer, const Texture2D&, int, glm::vec4>(
+    return playerUnit->AddComponent<SpriteRenderComponent, const Texture2D&, int, glm::vec4>(
         ResourceManager::GetInstance().GetTexture(textureId),
         0,
         color
@@ -48,7 +48,7 @@ SpriteRenderer* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm::ve
 
 bool PlayerController::IsInSnake(glm::vec2 position)
 {
-    for (std::list<SpriteRenderer*>::iterator it = snake.begin(); it != snake.end(); ++it) {
+    for (auto it = snake.begin(); it != snake.end(); ++it) {
         if ((*it)->gameObject->transform.position == position)
         {
             return true;

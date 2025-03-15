@@ -6,10 +6,10 @@
 
 #include <Learning2DEngine/System/UpdaterComponent.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/Render/SpriteRenderer.h>
+#include <Learning2DEngine/Render/SpriteRenderComponent.h>
 #include <Learning2DEngine/Physics/Rigidbody.h>
 #include <Learning2DEngine/Physics/CircleColliderComponent.h>
-#include <Learning2DEngine/ParticleSimulator/ParticleSystem.h>
+#include <Learning2DEngine/ParticleSimulator/ParticleSystemComponent.h>
 #include <Learning2DEngine/EventSystem/EventHandler.h>
 
 #include "PlayerController.h"
@@ -35,7 +35,7 @@ protected:
     const std::string textureId;
     const std::string particleTextureId;
     PlayerController* playerController;
-    Learning2DEngine::ParticleSimulator::ParticleSystem* particleSystem;
+    Learning2DEngine::ParticleSimulator::ParticleSystemComponent* particleSystem;
     Learning2DEngine::EventSystem::EventHandler<> hitPlayerEventHandler;
     Learning2DEngine::EventSystem::EventHandler<BrickController*> hitBrickEventHandler;
     bool isStuck;
@@ -51,7 +51,7 @@ protected:
     void OnCollision(Learning2DEngine::Physics::Collision collision) override;
     void Update() override;
 public:
-    Learning2DEngine::Render::SpriteRenderer* renderer;
+    Learning2DEngine::Render::SpriteRenderComponent* renderer;
     Learning2DEngine::Physics::Rigidbody* rigidbody;
     float radius;
     bool sticky;

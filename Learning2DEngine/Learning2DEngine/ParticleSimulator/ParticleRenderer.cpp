@@ -1,24 +1,25 @@
-#include "SpriteRenderer.h"
+#include "ParticleRenderer.h"
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
-#include "ShaderConstant.h"
-#include "SpriteRenderData.h"
+#include "../Render/RenderManager.h"
+#include "../Render/ShaderConstant.h"
+#include "ParticleRenderData.h"
 
 namespace Learning2DEngine
 {
 	using namespace System;
+	using namespace Render;
 
-	namespace Render
+	namespace ParticleSimulator
 	{
-
-		SpriteRenderer::SpriteRenderer()
+		ParticleRenderer::ParticleRenderer()
 			: shader(), vao(0), vbo(0), ebo(0)
 		{
 
 		}
 
-		void SpriteRenderer::InitShader()
+		void ParticleRenderer::InitShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
 			shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
@@ -29,7 +30,7 @@ namespace Learning2DEngine
 					ShaderConstant::SPRITE_FRAGMENT_SHADER);
 		}
 
-		void SpriteRenderer::InitVao()
+		void ParticleRenderer::InitVao()
 		{
 			float vertices[] = {
 				// pos      // tex
@@ -63,46 +64,67 @@ namespace Learning2DEngine
 			glBindVertexArray(0);
 		}
 
-		void SpriteRenderer::Init()
+		void ParticleRenderer::Init()
 		{
 			InitShader();
 			InitVao();
 		}
 
-		void SpriteRenderer::Destroy()
+		void ParticleRenderer::Destroy()
 		{
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &vbo);
 			glDeleteBuffers(1, &ebo);
 		}
 
-		void SpriteRenderer::Draw(std::vector<RenderData*> renderData)
+		void ParticleRenderer::Draw(std::vector<RenderData*> renderData)
 		{
 			shader.Use();
 			shader.SetInteger("spriteTexture", 0);
 			glBindVertexArray(vao);
 
+			auto& renderManager = RenderManager::GetInstance();
 			for (auto data : renderData)
 			{
-				auto spriteData = static_cast<SpriteRenderData*>(data);
+				auto particleData = static_cast<ParticleRenderData*>(data);
+				if (!particleData->IsRenderable())
+					continue;
 
-				shader.SetMatrix4("model", spriteData->component->gameObject->transform.GetModelMatrix());
-				shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
-				shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
-
-				shader.SetVector4f("spriteColor", spriteData->color);
-				shader.SetInteger("isUseTexture", spriteData->IsUseTexture());
-
-				if (spriteData->IsUseTexture())
+				BlendFuncFactor previousBlendFuncFactor = renderManager.GetBlendFunc();
+				if (particleData->systemSettings.isUseBlend)
 				{
-					glActiveTexture(GL_TEXTURE0);
-					spriteData->texture->Bind();
+					renderManager.SetBlendFunc(particleData->systemSettings.blendFuncFactor);
 				}
 
-				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-				glBindTexture(GL_TEXTURE_2D, 0);
-			}
+				if (particleData->IsUseTexture())
+				{
+					glActiveTexture(GL_TEXTURE0);
+					particleData->texture->Bind();
+				}
+				shader.SetInteger("isUseTexture", particleData->IsUseTexture());
 
+				auto particles = particleData->GetParticles();
+
+				for (int i = 0; i < particleData->GetParticleAmount(); ++i)
+				{
+					if (particles[i].lifeTime > 0.0f)
+					{
+						shader.SetMatrix4("model", particles[i].transform.GetModelMatrix());
+						shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+						shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
+						shader.SetVector3f("spriteColor", particles[i].color);
+
+						glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+					}
+				}
+				glBindTexture(GL_TEXTURE_2D, 0);
+
+
+				if (particleData->systemSettings.isUseBlend)
+				{
+					renderManager.SetBlendFunc(previousBlendFuncFactor);
+				}
+			}
 
 			glBindVertexArray(0);
 		}

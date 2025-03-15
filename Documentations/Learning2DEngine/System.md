@@ -391,7 +391,7 @@ virtual ~Component();
 ### Description:
 The `ComponentManager` manages the `Components` in the Engine by component handlers.
 The `Game` calls its Update(), LateUpdate(), CheckCollision(), Render()
-and LateRender() functions in every frame.
+and LateRender() functions in every frame.  
 
 ### Header:
 ```cpp
@@ -514,19 +514,34 @@ Note: `GameObjectManager` will not be thread safe automatically.
 void SetMaxColliderPerThread(unsigned int value);
 ```
 
-**AddToRenderer**  
+**IsRendererExistInRender**  
 ```cpp
-inline void AddToRenderer(Render::BaseRendererComponent* component);
+inline bool IsRendererExistInRender(const std::string& id);
 ```
 
-**RemoveFromRenderer**  
+**AddRendererToRender**  
 ```cpp
-inline void RemoveFromRenderer(Render::BaseRendererComponent* component);
+inline void AddRendererToRender(const std::string& id, Render::IRenderer* renderer);
 ```
 
-**NeedReorderRenderers**  
+**RemoveRendererFromRender**  
 ```cpp
-inline void NeedReorderRenderers();
+inline void RemoveRendererFromRender(const std::string& id);
+```
+
+**AddDataToRender**  
+```cpp
+inline void AddDataToRender(const std::string& id, Render::RenderData* data, int layer);
+```
+
+**ChangeLayerInRender**  
+```cpp
+inline void ChangeLayerInRender(Render::RenderData* data, int newLayer);
+```
+
+**RemoveDataFromRender**  
+```cpp
+inline void RemoveDataFromRender(Render::RenderData* data);
 ```
 
 **Render**  
@@ -534,19 +549,34 @@ inline void NeedReorderRenderers();
 inline void Render();
 ```
 
-**AddToLateRenderer**  
+**IsRendererExistInLateRender**  
 ```cpp
-inline void AddToLateRenderer(Render::BaseRendererComponent* component);
+inline bool IsRendererExistInLateRender(const std::string& id);
 ```
 
-**RemoveFromLateRenderer**  
+**AddRendererToLateRender**  
 ```cpp
-inline void RemoveFromLateRenderer(Render::BaseRendererComponent* component);
+inline void AddRendererToLateRender(const std::string& id, Render::IRenderer* renderer;
 ```
 
-**NeedReorderLateRenderers**  
+**RemoveRendererFromLateRender**  
 ```cpp
-inline void NeedReorderLateRenderers();
+inline void RemoveRendererFromLateRender(const std::string& id);
+```
+
+**AddDataToLateRender**  
+```cpp
+nline void AddDataToLateRender(const std::string& id, Render::RenderData* data, int layer);
+```
+
+**ChangeLayerInLateRender**  
+```cpp
+inline void ChangeLayerInLateRender(Render::RenderData* data, int newLayer);
+```
+
+**RemoveDataFromLateRender**  
+```cpp
+inline void RemoveDataFromLateRender(Render::RenderData* data);
 ```
 
 **LateRender**  
@@ -1175,7 +1205,7 @@ class IComponentHandler
 **Public:**  
 **~IComponentHandler**  
 ```cpp
-virtual ~IComponentHandler();
+virtual ~IComponentHandler() = default;
 ```
 
 **Clear**  
@@ -1634,7 +1664,7 @@ Transform(glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec
 
 **GetModelMatrix**  
 ```cpp
-glm::mat4 GetModelMatrix();
+glm::mat4 GetModelMatrix() const;
 ```
 
 ##

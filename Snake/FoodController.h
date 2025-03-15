@@ -6,7 +6,7 @@
 
 #include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/Render/SpriteRenderer.h>
+#include <Learning2DEngine/Render/SpriteRenderComponent.h>
 
 const glm::vec4 FOOD_COLOR = glm::vec4(0.75f, 0.0f, 0.0f, 1.0f);
 
@@ -16,7 +16,7 @@ class FoodController : public virtual Learning2DEngine::System::Component
 protected:
     const std::string textureId;
     const glm::vec4 color;
-    Learning2DEngine::Render::SpriteRenderer* renderer;
+    Learning2DEngine::Render::SpriteRenderComponent* renderer;
 
     FoodController(Learning2DEngine::System::GameObject* gameObject, const std::string& textureId);
     void Init() override;

@@ -104,6 +104,8 @@ namespace Learning2DEngine
                     renderManager.ClearWindow();
 
                     bool usePPE = isPostProcessEffectActive && isPostProcessEffectUsed;
+
+                    // Change the framebuffer to the MSAA and/or PostProcessEffect
                     if (isMsaaActive)
                     {
                         msaaRender.StartRender();
@@ -115,6 +117,7 @@ namespace Learning2DEngine
 
                     componentManager.Render();
 
+                    // Change the framebuffer back to the default
                     if (isMsaaActive)
                     {
                         msaaRender.EndRender(
@@ -128,8 +131,8 @@ namespace Learning2DEngine
 
                     if (usePPE)
                         ppeRender.Render();
-
-				    componentManager.LateRender();
+                    
+                    componentManager.LateRender();
 
                     renderManager.UpdateWindow();
 

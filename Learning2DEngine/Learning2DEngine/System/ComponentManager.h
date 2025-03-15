@@ -1,11 +1,14 @@
 #pragma once
 
+#include <string>
+
 #include "Singleton.h"
 #include "UpdaterComponentHandler.h"
 #include "LateUpdaterComponentHandler.h"
 #include "BaseUpdaterComponent.h"
 #include "BaseLateUpdaterComponent.h"
-#include "../Render/BaseRendererComponent.h"
+#include "../Render/IRenderer.h"
+#include "../Render/RenderData.h"
 #include "../Render/RendererComponentHandler.h"
 #include "../Physics/ColliderComponentHandler.h"
 #include "../Physics/BaseBoxColliderComponent.h"
@@ -128,19 +131,34 @@ namespace Learning2DEngine
 
             //Render
 
-            inline void AddToRenderer(Render::BaseRendererComponent* component)
+            inline bool IsRendererExistInRender(const std::string& id)
             {
-                rendererComponentHandler.Add(component, isThreadSafe);
+                return rendererComponentHandler.IsRendererExist(id, isThreadSafe);
             }
 
-            inline void RemoveFromRenderer(Render::BaseRendererComponent* component)
+            inline void AddRendererToRender(const std::string& id, Render::IRenderer* renderer)
             {
-                rendererComponentHandler.Remove(component, isThreadSafe);
+                rendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
             }
 
-            inline void NeedReorderRenderers()
+            inline void RemoveRendererFromRender(const std::string& id)
             {
-                rendererComponentHandler.NeedReorder();
+                rendererComponentHandler.RemoveRenderer(id, isThreadSafe);
+            }
+
+            inline void AddDataToRender(const std::string& id, Render::RenderData* data, int layer)
+            {
+                rendererComponentHandler.AddData(id, data, layer, isThreadSafe);
+            }
+
+            inline void ChangeLayerInRender(Render::RenderData* data, int newLayer)
+            {
+                rendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
+            }
+
+            inline void RemoveDataFromRender(Render::RenderData* data)
+            {
+                rendererComponentHandler.RemoveData(data, isThreadSafe);
             }
 
             inline void Render()
@@ -150,19 +168,34 @@ namespace Learning2DEngine
 
             //LateRender
 
-            inline void AddToLateRenderer(Render::BaseRendererComponent* component)
+            inline bool IsRendererExistInLateRender(const std::string& id)
             {
-                lateRendererComponentHandler.Add(component, isThreadSafe);
+                return lateRendererComponentHandler.IsRendererExist(id, isThreadSafe);
             }
 
-            inline void RemoveFromLateRenderer(Render::BaseRendererComponent* component)
+            inline void AddRendererToLateRender(const std::string& id, Render::IRenderer* renderer)
             {
-                lateRendererComponentHandler.Remove(component, isThreadSafe);
+                lateRendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
             }
 
-            inline void NeedReorderLateRenderers()
+            inline void RemoveRendererFromLateRender(const std::string& id)
             {
-                lateRendererComponentHandler.NeedReorder();
+                lateRendererComponentHandler.RemoveRenderer(id, isThreadSafe);
+            }
+
+            inline void AddDataToLateRender(const std::string& id, Render::RenderData* data, int layer)
+            {
+                lateRendererComponentHandler.AddData(id, data, layer, isThreadSafe);
+            }
+
+            inline void ChangeLayerInLateRender(Render::RenderData* data, int newLayer)
+            {
+                lateRendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
+            }
+
+            inline void RemoveDataFromLateRender(Render::RenderData* data)
+            {
+                lateRendererComponentHandler.RemoveData(data, isThreadSafe);
             }
 
             inline void LateRender()
