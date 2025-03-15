@@ -607,7 +607,7 @@ void RemoveData(RenderData* data, bool isThreadSafe);
 
 **Run**  
 It iterates through renderData. Those data, which are on the same layer and use the same id,
-they will be called by the same renderer, the renderer will care that it can render them.
+they will be called by the same renderer. The renderer will solve that how it can render them.
 ```cpp
 void Run() override;
 ```
