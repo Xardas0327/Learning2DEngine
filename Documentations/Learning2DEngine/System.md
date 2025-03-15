@@ -1664,7 +1664,7 @@ Transform(glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec
 
 **GetModelMatrix**  
 ```cpp
-glm::mat4 GetModelMatrix() const
+glm::mat4 GetModelMatrix() const;
 ```
 
 ##
