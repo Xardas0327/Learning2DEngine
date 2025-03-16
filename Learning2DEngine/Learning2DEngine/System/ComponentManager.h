@@ -7,6 +7,7 @@
 #include "LateUpdaterComponentHandler.h"
 #include "BaseUpdaterComponent.h"
 #include "BaseLateUpdaterComponent.h"
+#include "../DebugTool/Log.h"
 #include "../Render/IRenderer.h"
 #include "../Render/RenderData.h"
 #include "../Render/RendererComponentHandler.h"
@@ -208,6 +209,16 @@ namespace Learning2DEngine
             inline void SetThreadSafe(bool value)
             {
                 isThreadSafe = value;
+#if L2DE_DEBUG
+                if (!isThreadSafe && (
+                    updaterComponentHandler.GetMaxComponentPerThread() > 0
+                    || lateUpdaterComponentHandler.GetMaxComponentPerThread() > 0
+                    || colliderComponentHandler.GetMaxColliderPerThread() > 0
+                    ))
+                {
+                    L2DE_LOG_WARNING("COMPONENT MANAGER: The thread safe is turned off. But the component handlers still use threads.");
+                }
+#endif
             }
 
             inline bool GetThreadSafe()
