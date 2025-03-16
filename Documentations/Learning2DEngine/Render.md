@@ -59,7 +59,8 @@ TRenderData data;
 **Protected:**  
 **BaseRendererComponent**  
 ```cpp
-BaseRendererComponent(System::GameObject* gameObject, int layer = 0);
+template <class ...TRenderDataParams>
+BaseRendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams... renderDataParams);
 ```
 
 **GetId**  
@@ -186,7 +187,8 @@ Please check for more info about `System::Component` and `BaseRendererComponent`
 **Protected:**  
 **LateRendererComponent**  
 ```cpp
-LateRendererComponent(System::GameObject* gameObject, int layer = 0);
+template <class ...TRenderDataParams>
+LateRendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams... renderDataParams);
 ```
 
 **Init**  
@@ -485,7 +487,8 @@ class RendererComponent : public virtual BaseRendererComponent<TRenderData, TRen
 **Protected:**  
 **RendererComponent**  
 ```cpp
-RendererComponent(System::GameObject* gameObject, int layer = 0);
+template <class ...TRenderDataParams>
+RendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams... renderDataParams);
 ```
 
 **Init**  

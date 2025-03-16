@@ -18,8 +18,9 @@ namespace Learning2DEngine
 		class LateRendererComponent : public virtual BaseRendererComponent<TRenderData, TRenderer>
 		{
 		protected:
-			LateRendererComponent(System::GameObject* gameObject, int layer = 0)
-				: BaseRendererComponent<TRenderData, TRenderer>(gameObject, layer), System::Component(gameObject)
+			template <class ...TRenderDataParams>
+			LateRendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams... renderDataParams)
+				: BaseRendererComponent<TRenderData, TRenderer>(gameObject, layer, renderDataParams...), System::Component(gameObject)
 			{
 
 			}

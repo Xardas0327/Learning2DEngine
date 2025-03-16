@@ -134,7 +134,7 @@ bool isRenderable;
 
 **particleAmount**
 ```cpp
-unsigned int particleAmount;
+const unsigned int particleAmount;
 ```
 
 **particles**  
@@ -158,7 +158,7 @@ Render::Texture2D* texture;
 **Public:**  
 **ParticleRenderData**  
 ```cpp
-ParticleRenderData(const System::Component* component);
+ParticleRenderData(const System::Component* component, unsigned int particleAmount);
 ```
 ```cpp
 ParticleRenderData(const System::Component* component, unsigned int particleAmount, const ParticleSystemSettings& systemSettings, const Render::Texture2D& texture)

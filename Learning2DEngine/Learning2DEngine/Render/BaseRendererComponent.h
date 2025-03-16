@@ -22,8 +22,9 @@ namespace Learning2DEngine
 			int layer;
 
 		protected:
-			BaseRendererComponent(System::GameObject* gameObject, int layer = 0)
-				: System::Component(gameObject), layer(layer), data(this)
+			template <class ...TRenderDataParams>
+			BaseRendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams... renderDataParams)
+				: System::Component(gameObject), layer(layer), data(this, renderDataParams...)
 			{
 
 			}
