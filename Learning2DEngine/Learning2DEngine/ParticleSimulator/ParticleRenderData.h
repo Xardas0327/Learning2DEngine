@@ -17,17 +17,17 @@ namespace Learning2DEngine
 			friend class ParticleSystemComponent;
 		private:
 			bool isRenderable;
-			unsigned int particleAmount;
-			//We have to init it, when we didn't give the particleAmount
+			const unsigned int particleAmount;
 			Particle* particles;
 
 		public:
 			ParticleSystemSettings systemSettings;
 			Render::Texture2D* texture;
 
-			ParticleRenderData(const System::Component* component)
-				: RenderData(component), particleAmount(0), isRenderable(false), particles(nullptr), systemSettings(), texture(nullptr)
+			ParticleRenderData(const System::Component* component, unsigned int particleAmount)
+				: RenderData(component), particleAmount(particleAmount), isRenderable(false), particles(nullptr), systemSettings(), texture(nullptr)
 			{
+				particles = new Particle[particleAmount];
 			}
 
 			ParticleRenderData(

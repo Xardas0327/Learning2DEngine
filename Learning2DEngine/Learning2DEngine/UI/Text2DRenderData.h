@@ -17,9 +17,8 @@ namespace Learning2DEngine
             FontSizePair fontSizePair;
             std::string text;
             glm::vec4 color;
-
-            Text2DRenderData(const System::Component* component, const glm::vec4 color = glm::vec4(1.0f))
-                : RenderData(component), fontSizePair(), text(""), color(color)
+            Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, glm::vec4 color = glm::vec4(1.0f))
+                : RenderData(component), fontSizePair(fontSizePair), text(""), color(color)
             {
             }
 

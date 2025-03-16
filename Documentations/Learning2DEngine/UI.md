@@ -89,7 +89,7 @@ std::mutex mutex;
 Text2DLateRenderComponent(System::GameObject* gameObject, const FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 ```cpp
-Text2DLateRenderComponent(System::GameObject* gameObject, const FontSizePair& fontSizePair, std::string text, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+Text2DLateRenderComponent(System::GameObject* gameObject, const FontSizePair& fontSizePair, const std::string& text, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 **Init**  
@@ -147,7 +147,7 @@ glm::vec4 color;
 **Public:**  
 **Text2DRenderData**
 ```cpp
-Text2DRenderData(const System::Component* component, const glm::vec4 color = glm::vec4(1.0f));
+Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, glm::vec4 color = glm::vec4(1.0f));
 ```
 ```cpp
 Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, const std::string& text, glm::vec4 color = glm::vec4(1.0f));

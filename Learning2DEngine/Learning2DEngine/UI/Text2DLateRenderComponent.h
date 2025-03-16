@@ -35,7 +35,7 @@ namespace Learning2DEngine
 			Text2DLateRenderComponent(
 				System::GameObject* gameObject,
 				const FontSizePair& fontSizePair,
-				std::string text,
+				const std::string& text,
 				int layer = 0,
 				glm::vec4 color = glm::vec4(1.0f));
 

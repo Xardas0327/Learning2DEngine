@@ -17,13 +17,11 @@ namespace Learning2DEngine
 			unsigned int particleAmount,
 			ParticleSettings* particleSettings,
 			int renderLayer)
-			: RendererComponent(gameObject, renderLayer), BaseRendererComponent(gameObject, renderLayer), Component(gameObject),
-			BaseUpdaterComponent(gameObject), UpdaterComponent(gameObject),
+			: RendererComponent(gameObject, renderLayer, particleAmount), BaseRendererComponent(gameObject, renderLayer, particleAmount),
+			BaseUpdaterComponent(gameObject), UpdaterComponent(gameObject), Component(gameObject),
 			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0), mutex(),
 			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
 		{
-			data.particleAmount = particleAmount;
-			data.particles = new Particle[particleAmount];
 		}
 
 		ParticleSystemComponent::ParticleSystemComponent(
@@ -33,15 +31,13 @@ namespace Learning2DEngine
 			const ParticleSystemSettings& systemSettings,
 			ParticleSettings* particleSettings,
 			int renderLayer)
-			: RendererComponent(gameObject, renderLayer), BaseRendererComponent(gameObject, renderLayer), Component(gameObject),
-			BaseUpdaterComponent(gameObject), UpdaterComponent(gameObject),
+			: RendererComponent(gameObject, renderLayer, particleAmount, systemSettings, texture),
+			BaseRendererComponent(gameObject, renderLayer, particleAmount, systemSettings, texture),
+			BaseUpdaterComponent(gameObject), UpdaterComponent(gameObject), Component(gameObject),
 			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0), mutex(),
 			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
 		{
-			data.particleAmount = particleAmount;
-			data.particles = new Particle[particleAmount];
-			data.systemSettings = systemSettings;
-			data.texture = new Render::Texture2D(texture);
+
 		}
 
 		ParticleSystemComponent::~ParticleSystemComponent()

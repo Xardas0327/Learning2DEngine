@@ -10,18 +10,22 @@ namespace Learning2DEngine
 		int Text2DLateRenderComponent::refrenceNumber = 0;
 
 		Text2DLateRenderComponent::Text2DLateRenderComponent(GameObject* gameObject, const FontSizePair& fontSizePair, int layer, glm::vec4 color)
-			: LateRendererComponent(gameObject, layer), BaseRendererComponent(gameObject, layer), Component(gameObject), mutex()
+			: LateRendererComponent(gameObject, layer, fontSizePair, color), BaseRendererComponent(gameObject, layer, fontSizePair, color),
+			Component(gameObject), mutex()
 		{
-			data.fontSizePair = fontSizePair;
-			data.color = color;
 		}
 
-		Text2DLateRenderComponent::Text2DLateRenderComponent(GameObject* gameObject, const FontSizePair& fontSizePair, std::string text, int layer, glm::vec4 color)
-			: LateRendererComponent(gameObject, layer), BaseRendererComponent(gameObject, layer), Component(gameObject), mutex()
+		Text2DLateRenderComponent::Text2DLateRenderComponent(
+			GameObject* gameObject,
+			const FontSizePair& fontSizePair,
+			const std::string& text,
+			int layer,
+			glm::vec4 color
+		) : LateRendererComponent(gameObject, layer, fontSizePair, text, color),
+			BaseRendererComponent(gameObject, layer, fontSizePair, text, color),
+			Component(gameObject), mutex()
 		{
-			data.fontSizePair = fontSizePair;
-			data.text = text;
-			data.color = color;
+
 		}
 
 		void Text2DLateRenderComponent::Init()

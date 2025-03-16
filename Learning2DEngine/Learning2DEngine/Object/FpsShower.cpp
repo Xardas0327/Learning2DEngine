@@ -18,7 +18,9 @@ namespace Learning2DEngine
 			glm::vec4 color)
 			: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
 			Text2DLateRenderComponent(gameObject, fontSizePair, layer, color),
-			LateRendererComponent(gameObject, layer), BaseRendererComponent(gameObject, layer), previousTime(0.0f), fps(0)
+			LateRendererComponent(gameObject, layer, fontSizePair, color),
+			BaseRendererComponent(gameObject, layer, fontSizePair, color),
+			previousTime(0.0f), fps(0)
 		{
 
 		}
