@@ -81,6 +81,8 @@ namespace Learning2DEngine
 		{
 			shader.Use();
 			shader.SetInteger("spriteTexture", 0);
+			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
 
 			for (auto data : renderData)
@@ -88,9 +90,6 @@ namespace Learning2DEngine
 				auto spriteData = static_cast<SpriteRenderData*>(data);
 
 				shader.SetMatrix4("model", spriteData->component->gameObject->transform.GetModelMatrix());
-				shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
-				shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
-
 				shader.SetVector4f("spriteColor", spriteData->color);
 				shader.SetInteger("isUseTexture", spriteData->IsUseTexture());
 
