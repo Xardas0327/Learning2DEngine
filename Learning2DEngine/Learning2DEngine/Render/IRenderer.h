@@ -12,7 +12,7 @@ namespace Learning2DEngine
 		{
 			virtual void Init() = 0;
 			virtual void Destroy() = 0;
-			virtual void Draw(std::vector<RenderData*> renderData) = 0;
+			virtual void Draw(const std::vector<RenderData*>& renderData) = 0;
 			virtual ~IRenderer() = default;
 		};
 	}

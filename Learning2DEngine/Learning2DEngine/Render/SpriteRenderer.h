@@ -28,7 +28,7 @@ namespace Learning2DEngine
 		public:
 			void Init() override;
 			void Destroy() override;
-			void Draw(std::vector<RenderData*> renderData) override;
+			void Draw(const std::vector<RenderData*>& renderData) override;
 		};
 	}
 }

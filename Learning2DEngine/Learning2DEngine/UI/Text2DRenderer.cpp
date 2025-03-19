@@ -69,7 +69,7 @@ namespace Learning2DEngine
 			glDeleteBuffers(1, &ebo);
 		}
 
-		void Text2DRenderer::Draw(std::vector<RenderData*> renderData)
+		void Text2DRenderer::Draw(const std::vector<RenderData*>& renderData)
 		{
 			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
 

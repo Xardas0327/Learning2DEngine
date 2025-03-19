@@ -77,7 +77,7 @@ namespace Learning2DEngine
 			glDeleteBuffers(1, &ebo);
 		}
 
-		void ParticleRenderer::Draw(std::vector<RenderData*> renderData)
+		void ParticleRenderer::Draw(const std::vector<RenderData*>& renderData)
 		{
 			shader.Use();
 			shader.SetInteger("spriteTexture", 0);
