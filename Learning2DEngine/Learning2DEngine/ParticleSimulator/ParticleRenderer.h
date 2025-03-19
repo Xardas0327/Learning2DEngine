@@ -19,8 +19,11 @@ namespace Learning2DEngine
 		private:
 			Render::Shader shader;
 			GLuint vao;
-			GLuint vbo;
 			GLuint ebo;
+			GLuint vboBasic;
+			GLuint vboModel;
+			GLuint vboColor;
+			unsigned int lastObjectSize;
 
 			ParticleRenderer();
 
