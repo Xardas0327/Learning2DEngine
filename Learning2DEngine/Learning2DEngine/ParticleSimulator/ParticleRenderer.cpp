@@ -83,6 +83,8 @@ namespace Learning2DEngine
 		{
 			shader.Use();
 			shader.SetInteger("spriteTexture", 0);
+			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
 
 			auto& renderManager = RenderManager::GetInstance();
@@ -112,8 +114,6 @@ namespace Learning2DEngine
 					if (particles[i].lifeTime > 0.0f)
 					{
 						shader.SetMatrix4("model", particles[i].transform.GetModelMatrix());
-						shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
-						shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 						shader.SetVector4f("spriteColor", particles[i].color);
 
 						glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
