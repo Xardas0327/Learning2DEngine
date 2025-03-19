@@ -11,17 +11,26 @@ namespace Learning2DEngine
 		private:
 			ShaderConstant() {}
 		public:
+			//Old Sprite
+
+			static const std::string OLD_SPRITE_SHADER_NAME;
+			static const char* const OLD_SPRITE_VERTEX_SHADER;
+			static const char* const OLD_SPRITE_FRAGMENT_SHADER;
+
 			//Sprite
+
 			static const std::string SPRITE_SHADER_NAME;
 			static const char* const SPRITE_VERTEX_SHADER;
 			static const char* const SPRITE_FRAGMENT_SHADER;
 
 			//Text2D
+
 			static const std::string TEXT2D_SHADER_NAME;
 			static const char* const TEXT2D_VERTEX_SHADER;
 			static const char* const TEXT2D_FRAGMENT_SHADER;
 
 			//PostProcessEffect
+
 			static const std::string DEFAULT_POSTPROCESS_EFFECT_NAME;
 			static const char* const DEFAULT_POSTPROCESS_EFFECT_VERTEX_SHADER;
 			static const char* const DEFAULT_POSTPROCESS_EFFECT_FRAGMENT_SHADER;

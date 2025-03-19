@@ -21,12 +21,12 @@ namespace Learning2DEngine
 		void SpriteRenderer::InitShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
-			shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
-				? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
+			shader = resourceManager.IsShaderExist(ShaderConstant::OLD_SPRITE_SHADER_NAME)
+				? resourceManager.GetShader(ShaderConstant::OLD_SPRITE_SHADER_NAME)
 				: resourceManager.LoadShader(
-					ShaderConstant::SPRITE_SHADER_NAME,
-					ShaderConstant::SPRITE_VERTEX_SHADER,
-					ShaderConstant::SPRITE_FRAGMENT_SHADER);
+					ShaderConstant::OLD_SPRITE_SHADER_NAME,
+					ShaderConstant::OLD_SPRITE_VERTEX_SHADER,
+					ShaderConstant::OLD_SPRITE_FRAGMENT_SHADER);
 		}
 
 		void SpriteRenderer::InitVao()
