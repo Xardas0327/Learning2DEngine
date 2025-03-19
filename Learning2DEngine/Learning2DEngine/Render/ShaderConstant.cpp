@@ -6,7 +6,7 @@ namespace Learning2DEngine
 	{
 		//Old Sprite
 
-		const std::string ShaderConstant::OLD_SPRITE_SHADER_NAME = "L2DE_Sprite";
+		const std::string ShaderConstant::OLD_SPRITE_SHADER_NAME = "OLD_L2DE_Sprite";
 		const char* const ShaderConstant::OLD_SPRITE_VERTEX_SHADER =
 			R"(#version 330 core
 			layout(location = 0) in vec2 postion;
@@ -49,10 +49,12 @@ namespace Learning2DEngine
 			R"(#version 330 core
 			layout(location = 0) in vec2 postion;
 			layout(location = 1) in vec2 textureCoords;
+			layout(location = 2) in mat4 model;
+			layout(location = 6) in vec4 spriteColor;
 
 			out vec2 TextureCoords;
+			out vec4 SpriteColor;
 
-			uniform mat4 model;
 			uniform mat4 view;
 			uniform mat4 projection;
 
@@ -60,20 +62,21 @@ namespace Learning2DEngine
 			{
 				gl_Position = projection * view * model * vec4(postion, 0.0, 1.0);
 				TextureCoords = textureCoords;
+				SpriteColor = spriteColor;
 			})";
 		const char* const ShaderConstant::SPRITE_FRAGMENT_SHADER =
 			R"(#version 330 core
 			in vec2 TextureCoords;
+			in vec4 SpriteColor;
 
 			out vec4 color;
 
 			uniform bool isUseTexture;
 			uniform sampler2D spriteTexture;
-			uniform vec4 spriteColor;
 
 			void main()
 			{
-				color = spriteColor;
+				color = SpriteColor;
 				if (isUseTexture)
 				{
 					color *= texture(spriteTexture, TextureCoords);
