@@ -29,6 +29,8 @@ namespace Learning2DEngine
 
 			void InitShader();
 			void InitVao();
+
+			int CountMaxActiveParticle(const std::vector<Render::RenderData*>& renderData);
 		public:
 			void Init() override;
 			void Destroy() override;

@@ -107,6 +107,32 @@ namespace Learning2DEngine
 			glDeleteBuffers(1, &vboColor);
 		}
 
+		int ParticleRenderer::CountMaxActiveParticle(const std::vector<RenderData*>& renderData)
+		{
+			int maxActiveParticleCount = 0;
+			for (auto data : renderData)
+			{
+				auto particleData = static_cast<ParticleRenderData*>(data);
+				if (!particleData->IsRenderable())
+					continue;
+
+				auto particles = particleData->GetParticles();
+				int activeParticleCount = 0;
+				for (int i = 0; i < particleData->GetParticleAmount(); ++i)
+				{
+					if (particles[i].lifeTime > 0.0f)
+					{
+						++activeParticleCount;
+					}
+				}
+
+				if (maxActiveParticleCount < activeParticleCount)
+					maxActiveParticleCount = activeParticleCount;
+			}
+
+			return maxActiveParticleCount;
+		}
+
 		void ParticleRenderer::Draw(const std::vector<RenderData*>& renderData)
 		{
 			shader.Use();
@@ -114,6 +140,22 @@ namespace Learning2DEngine
 			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
 			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
+
+			int maxActiveParticleCount = CountMaxActiveParticle(renderData);
+
+			//if the size is not enough or too big, it will be reallocated.
+			if (maxActiveParticleCount > lastObjectSize || lastObjectSize > maxActiveParticleCount * 2)
+			{
+				glBindBuffer(GL_ARRAY_BUFFER, vboModel);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * maxActiveParticleCount, NULL, GL_DYNAMIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, vboColor);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * maxActiveParticleCount, NULL, GL_DYNAMIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				lastObjectSize = maxActiveParticleCount;
+			}
+
+			auto models = new glm::mat4[maxActiveParticleCount];
+			auto colors = new glm::vec4[maxActiveParticleCount];
 
 			auto& renderManager = RenderManager::GetInstance();
 			for (auto data : renderData)
@@ -135,42 +177,19 @@ namespace Learning2DEngine
 					glActiveTexture(GL_TEXTURE0);
 					particleData->texture->Bind();
 				}
-				shader.SetInteger("isUseTexture", particleData->IsUseTexture()); 
+				shader.SetInteger("isUseTexture", particleData->IsUseTexture());
 
-				//Count active particles
+				//Collect data
 				auto particles = particleData->GetParticles();
 				int activeParticleCount = 0;
 				for (int i = 0; i < particleData->GetParticleAmount(); ++i)
 				{
 					if (particles[i].lifeTime > 0.0f)
 					{
+						models[activeParticleCount] = particles[i].transform.GetModelMatrix();
+						colors[activeParticleCount] = particles[i].color;
 						++activeParticleCount;
 					}
-				}
-
-				//Collect data
-				auto models = new glm::mat4[activeParticleCount];
-				auto colors = new glm::vec4[activeParticleCount];
-				int index = 0;
-				for (int i = 0; i < particleData->GetParticleAmount(); ++i)
-				{
-					if (particles[i].lifeTime > 0.0f)
-					{
-						models[index] = particles[i].transform.GetModelMatrix();
-						colors[index] = particles[i].color;
-						++index;
-					}
-				}
-
-				//if the size is not enough or too big, it will be reallocated.
-				if (activeParticleCount > lastObjectSize || lastObjectSize > activeParticleCount * 2)
-				{
-					glBindBuffer(GL_ARRAY_BUFFER, vboModel);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * activeParticleCount, NULL, GL_DYNAMIC_DRAW);
-					glBindBuffer(GL_ARRAY_BUFFER, vboColor);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * activeParticleCount, NULL, GL_DYNAMIC_DRAW);
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
-					lastObjectSize = activeParticleCount;
 				}
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboModel);
@@ -181,8 +200,6 @@ namespace Learning2DEngine
 				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, activeParticleCount);
 
 				glBindTexture(GL_TEXTURE_2D, 0);
-				delete[] models;
-				delete[] colors;
 
 
 				if (particleData->systemSettings.isUseBlend)
@@ -191,6 +208,8 @@ namespace Learning2DEngine
 				}
 			}
 
+			delete[] models;
+			delete[] colors;
 			glBindVertexArray(0);
 		}
 	}
