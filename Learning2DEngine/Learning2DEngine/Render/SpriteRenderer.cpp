@@ -13,7 +13,7 @@ namespace Learning2DEngine
 	{
 
 		SpriteRenderer::SpriteRenderer()
-			: shader(), vao(0), vbo(0), ebo(0)
+			: shader(), vao(0), vbo(0), ebo(0), spriteRenderData()
 		{
 
 		}
@@ -75,17 +75,27 @@ namespace Learning2DEngine
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &vbo);
 			glDeleteBuffers(1, &ebo);
+
+			spriteRenderData.clear();
 		}
 
-		void SpriteRenderer::Draw(const std::vector<RenderData*>& renderData)
+		void SpriteRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
 		{
+			spriteRenderData = renderData;
+		}
+
+		void SpriteRenderer::Draw(int layer)
+		{
+			if (spriteRenderData.find(layer) == spriteRenderData.end())
+				return;
+
 			shader.Use();
 			shader.SetInteger("spriteTexture", 0);
 			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
 			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
 
-			for (auto data : renderData)
+			for (auto data : spriteRenderData[layer])
 			{
 				auto spriteData = static_cast<SpriteRenderData*>(data);
 
@@ -102,7 +112,6 @@ namespace Learning2DEngine
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
-
 
 			glBindVertexArray(0);
 		}

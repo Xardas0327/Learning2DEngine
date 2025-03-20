@@ -8,6 +8,8 @@
 #include "../Render/IRenderer.h"
 #include "../Render/Shader.h"
 
+#include "ParticleRenderData.h"
+
 
 namespace Learning2DEngine
 {
@@ -24,17 +26,17 @@ namespace Learning2DEngine
 			GLuint vboModel;
 			GLuint vboColor;
 			unsigned int lastObjectSize;
+			std::map<int, std::vector<ParticleRenderData*>> particleRenderData;
 
 			ParticleRenderer();
 
 			void InitShader();
 			void InitVao();
-
-			int CountMaxActiveParticle(const std::vector<Render::RenderData*>& renderData);
 		public:
 			void Init() override;
 			void Destroy() override;
-			void Draw(const std::vector<Render::RenderData*>& renderData) override;
+			void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+			void Draw(int layer) override;
 
 		};
 	}

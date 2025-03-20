@@ -14,7 +14,7 @@ namespace Learning2DEngine
 	namespace UI
 	{
 		Text2DRenderer::Text2DRenderer()
-			: shader(), vao(0), vbo(0), ebo(0)
+			: shader(), vao(0), vbo(0), ebo(0), textRenderData()
 		{
 
 		}
@@ -67,10 +67,20 @@ namespace Learning2DEngine
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &vbo);
 			glDeleteBuffers(1, &ebo);
+
+			textRenderData.clear();
 		}
 
-		void Text2DRenderer::Draw(const std::vector<RenderData*>& renderData)
+		void Text2DRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
 		{
+			textRenderData = renderData;
+		}
+
+		void Text2DRenderer::Draw(int layer)
+		{
+			if (textRenderData.find(layer) == textRenderData.end())
+				return;
+
 			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
 
 			shader.Use();
@@ -80,7 +90,7 @@ namespace Learning2DEngine
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(vao);
 
-			for (auto data : renderData)
+			for (auto& data : textRenderData[layer])
 			{
 				auto textData = static_cast<Text2DRenderData*>(data);
 

@@ -4,7 +4,6 @@
 #include "../System/ResourceManager.h"
 #include "../Render/RenderManager.h"
 #include "../Render/ShaderConstant.h"
-#include "ParticleRenderData.h"
 
 namespace Learning2DEngine
 {
@@ -14,7 +13,8 @@ namespace Learning2DEngine
 	namespace ParticleSimulator
 	{
 		ParticleRenderer::ParticleRenderer()
-			: shader(), vao(0), ebo(0), vboBasic(0), vboModel(0), vboColor(0), lastObjectSize(0)
+			: shader(), vao(0), ebo(0), vboBasic(0), vboModel(0), vboColor(0), lastObjectSize(0),
+			particleRenderData()
 		{
 
 		}
@@ -105,43 +105,41 @@ namespace Learning2DEngine
 			glDeleteBuffers(1, &vboBasic);
 			glDeleteBuffers(1, &vboModel);
 			glDeleteBuffers(1, &vboColor);
+
+			particleRenderData.clear();
 		}
 
-		int ParticleRenderer::CountMaxActiveParticle(const std::vector<RenderData*>& renderData)
+		void ParticleRenderer::SetData(const std::map<int, std::vector<RenderData*>>& renderData)
 		{
+			particleRenderData.clear();
 			int maxActiveParticleCount = 0;
-			for (auto data : renderData)
+			for (auto& layerData : renderData)
 			{
-				auto particleData = static_cast<ParticleRenderData*>(data);
-				if (!particleData->IsRenderable())
-					continue;
-
-				auto particles = particleData->GetParticles();
-				int activeParticleCount = 0;
-				for (int i = 0; i < particleData->GetParticleAmount(); ++i)
+				for (auto& data : layerData.second)
 				{
-					if (particles[i].lifeTime > 0.0f)
+					auto particleData = static_cast<ParticleRenderData*>(data);
+					if (!particleData->IsRenderable())
+						continue;
+
+					auto particles = particleData->GetParticles();
+					int activeParticleCount = 0;
+					for (int i = 0; i < particleData->GetParticleAmount(); ++i)
 					{
-						++activeParticleCount;
+						if (particles[i].lifeTime > 0.0f)
+						{
+							++activeParticleCount;
+						}
+					}
+
+					if (activeParticleCount > 0)
+					{
+						particleRenderData[layerData.first].push_back(particleData);
+
+						if (maxActiveParticleCount < activeParticleCount)
+							maxActiveParticleCount = activeParticleCount;
 					}
 				}
-
-				if (maxActiveParticleCount < activeParticleCount)
-					maxActiveParticleCount = activeParticleCount;
 			}
-
-			return maxActiveParticleCount;
-		}
-
-		void ParticleRenderer::Draw(const std::vector<RenderData*>& renderData)
-		{
-			shader.Use();
-			shader.SetInteger("spriteTexture", 0);
-			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
-			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
-			glBindVertexArray(vao);
-
-			int maxActiveParticleCount = CountMaxActiveParticle(renderData);
 
 			//if the size is not enough or too big, it will be reallocated.
 			if (maxActiveParticleCount > lastObjectSize || lastObjectSize > maxActiveParticleCount * 2)
@@ -153,16 +151,25 @@ namespace Learning2DEngine
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 				lastObjectSize = maxActiveParticleCount;
 			}
+		}
 
-			auto models = new glm::mat4[maxActiveParticleCount];
-			auto colors = new glm::vec4[maxActiveParticleCount];
+		void ParticleRenderer::Draw(int layer)
+		{
+			if (particleRenderData.find(layer) == particleRenderData.end())
+				return;
+
+			shader.Use();
+			shader.SetInteger("spriteTexture", 0);
+			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
+			glBindVertexArray(vao);
+
+			auto models = new glm::mat4[lastObjectSize];
+			auto colors = new glm::vec4[lastObjectSize];
 
 			auto& renderManager = RenderManager::GetInstance();
-			for (auto data : renderData)
+			for (auto& particleData : particleRenderData[layer])
 			{
-				auto particleData = static_cast<ParticleRenderData*>(data);
-				if (!particleData->IsRenderable())
-					continue;
 
 				//Activate Blend
 				BlendFuncFactor previousBlendFuncFactor = renderManager.GetBlendFunc();
