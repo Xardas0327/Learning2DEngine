@@ -27,8 +27,10 @@ namespace Learning2DEngine
 			EventSystem::EventHandler<double, double> cursorPositonEventHandler;
 			EventSystem::EventHandler<bool> cursorEnterEventHandler;
 			EventSystem::EventHandler<double, double> scrollEventHandler;
-			bool isBlendActive;
 			BlendFuncFactor blendFuncFactor;
+			bool isBlendActive;
+			GLint maxTextureUnits;
+
 
 			RenderManager();
 
@@ -52,29 +54,34 @@ namespace Learning2DEngine
 			void SetVSync(bool value);
 			void UpdateWindow();
 			void ClearWindow();
-			inline Resolution GetResolution() 
+			inline Resolution GetResolution()  const
 			{
 				return resolution;
 			}
 
 			void SetClearColor(float r, float g, float b, float a);
-			inline glm::vec4 GetClearColor()
+			inline glm::vec4 GetClearColor() const
 			{
 				return clearColor;
 			}
 
 			void EnableBlend();
 			void DisableBlend();
-			inline bool IsBlendActive()
+			inline bool IsBlendActive() const
 			{
 				return isBlendActive;
 			}
 
 			void SetBlendFunc(unsigned int sourceFactor, unsigned int destinationFactor);
 			void SetBlendFunc(BlendFuncFactor blendFuncFactor);
-			inline BlendFuncFactor GetBlendFunc()
+			inline BlendFuncFactor GetBlendFunc() const
 			{
 				return blendFuncFactor;
+			}
+
+			inline GLint GetMaxTextureUnits() const
+			{
+				return maxTextureUnits;
 			}
 
 			void AddKeyboardEvent(EventSystem::EventItem<int, int, int, int>* eventItem);
