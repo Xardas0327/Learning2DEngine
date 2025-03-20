@@ -7,6 +7,7 @@
 #include "../System/Singleton.h"
 #include "IRenderer.h"
 #include "Shader.h"
+#include "SpriteRenderData.h"
 
 namespace Learning2DEngine
 {
@@ -18,9 +19,16 @@ namespace Learning2DEngine
 		private:
 			Shader shader;
 			GLuint vao;
-			GLuint vbo;
 			GLuint ebo;
-			std::map<int, std::vector<RenderData*>> spriteRenderData;
+			GLuint vboBasic;
+			GLuint vboModel;
+			GLuint vboColor;
+			unsigned int lastObjectSize;
+
+			//int is the layer
+			//GLuint is the texture id.
+			//0 means, that these data doesn't have texture.
+			std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
 
 			SpriteRenderer();
 
