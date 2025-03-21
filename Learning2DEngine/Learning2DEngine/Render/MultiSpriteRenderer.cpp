@@ -1,4 +1,4 @@
-#include "SpriteRenderer.h"
+#include "MultiSpriteRenderer.h"
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
@@ -11,14 +11,14 @@ namespace Learning2DEngine
 	namespace Render
 	{
 
-		SpriteRenderer::SpriteRenderer()
+		MultiSpriteRenderer::MultiSpriteRenderer()
 			: shader(), vao(0), ebo(0), vboBasic(0), vboModel(0), vboColor(0), lastObjectSize(0),
 			spriteRenderData(), models(nullptr), colors(nullptr)
 		{
 
 		}
 
-		void SpriteRenderer::InitShader()
+		void MultiSpriteRenderer::InitShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
 			shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
@@ -29,7 +29,7 @@ namespace Learning2DEngine
 					ShaderConstant::SPRITE_FRAGMENT_SHADER);
 		}
 
-		void SpriteRenderer::InitVao()
+		void MultiSpriteRenderer::InitVao()
 		{
 			float vertices[] = {
 				// pos      // tex
@@ -93,13 +93,13 @@ namespace Learning2DEngine
 			colors = new glm::vec4[lastObjectSize];
 		}
 
-		void SpriteRenderer::Init()
+		void MultiSpriteRenderer::Init()
 		{
 			InitShader();
 			InitVao();
 		}
 
-		void SpriteRenderer::Destroy()
+		void MultiSpriteRenderer::Destroy()
 		{
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &ebo);
@@ -117,7 +117,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void SpriteRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
+		void MultiSpriteRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
 		{
 			spriteRenderData.clear();
 			int maxSize = 0;
@@ -156,7 +156,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void SpriteRenderer::Draw(int layer)
+		void MultiSpriteRenderer::Draw(int layer)
 		{
 			if (spriteRenderData.find(layer) == spriteRenderData.end())
 				return;

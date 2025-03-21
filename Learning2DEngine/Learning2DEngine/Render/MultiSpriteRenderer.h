@@ -14,9 +14,9 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
-		class SpriteRenderer : public IRenderer, public virtual System::Singleton<SpriteRenderer>
+		class MultiSpriteRenderer : public IRenderer, public virtual System::Singleton<MultiSpriteRenderer>
 		{
-			friend class Singleton<SpriteRenderer>;
+			friend class Singleton<MultiSpriteRenderer>;
 		private:
 			Shader shader;
 			GLuint vao;
@@ -33,7 +33,7 @@ namespace Learning2DEngine
 			glm::mat4* models;
 			glm::vec4* colors;
 
-			SpriteRenderer();
+			MultiSpriteRenderer();
 
 			void InitShader();
 			void InitVao();

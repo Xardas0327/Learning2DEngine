@@ -6,7 +6,7 @@
 
 #include "../System/GameObject.h"
 #include "RendererComponent.h"
-#include "SpriteRenderer.h"
+#include "MultiSpriteRenderer.h"
 #include "SpriteRenderData.h"
 #include "Texture2D.h"
 
@@ -14,7 +14,7 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
-		class SpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, SpriteRenderer>
+		class SpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, MultiSpriteRenderer>
 		{
 			friend class System::GameObject;
 		private:
@@ -34,7 +34,7 @@ namespace Learning2DEngine
 
 			const std::string& GetId() const override;
 
-			SpriteRenderer* GetRenderer() const override;
+			MultiSpriteRenderer* GetRenderer() const override;
 		};
 	}
 }

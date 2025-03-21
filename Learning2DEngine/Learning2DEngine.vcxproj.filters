@@ -63,7 +63,7 @@
     <ClCompile Include="Learning2DEngine\Render\RendererComponentHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Render\SpriteRenderer.cpp">
+    <ClCompile Include="Learning2DEngine\Render\MultiSpriteRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderComponent.cpp">
@@ -290,7 +290,7 @@
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\SpriteRenderer.h">
+    <ClInclude Include="Learning2DEngine\Render\MultiSpriteRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderComponent.h">
