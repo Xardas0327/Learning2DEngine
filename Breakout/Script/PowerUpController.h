@@ -5,7 +5,7 @@
 #include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/ResourceManager.h>
-#include <Learning2DEngine/Render/SpriteRenderComponent.h>
+#include <Learning2DEngine/Render/SimpleSpriteRenderComponent.h>
 #include <Learning2DEngine/Render/Texture2D.h>
 #include <Learning2DEngine/Physics/Rigidbody.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
@@ -30,7 +30,7 @@ protected:
     void Init() override;
     void OnCollision(Learning2DEngine::Physics::Collision collision) override;
 public:
-    Learning2DEngine::Render::SpriteRenderComponent* renderer;
+    Learning2DEngine::Render::SimpleSpriteRenderComponent* renderer;
     const PowerUpObject powerUpObject;
     float actualDuration;
     bool activated;

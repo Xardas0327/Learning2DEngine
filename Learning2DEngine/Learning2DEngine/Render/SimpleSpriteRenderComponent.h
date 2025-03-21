@@ -6,7 +6,7 @@
 
 #include "../System/GameObject.h"
 #include "RendererComponent.h"
-#include "MultiSpriteRenderer.h"
+#include "SimpleSpriteRenderer.h"
 #include "SpriteRenderData.h"
 #include "Texture2D.h"
 
@@ -14,8 +14,7 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
-		//It supports the multi instance rendering
-		class SpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, MultiSpriteRenderer>
+		class SimpleSpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, SimpleSpriteRenderer>
 		{
 			friend class System::GameObject;
 		private:
@@ -27,15 +26,15 @@ namespace Learning2DEngine
 		protected:
 			std::mutex mutex;
 
-			SpriteRenderComponent(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
-			SpriteRenderComponent(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+			SimpleSpriteRenderComponent(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+			SimpleSpriteRenderComponent(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 
 			void Init() override;
 			void Destroy() override;
 
 			const std::string& GetId() const override;
 
-			MultiSpriteRenderer* GetRenderer() const override;
+			SimpleSpriteRenderer* GetRenderer() const override;
 		};
 	}
 }

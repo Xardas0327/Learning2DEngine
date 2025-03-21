@@ -11,7 +11,13 @@ namespace Learning2DEngine
 		private:
 			ShaderConstant() {}
 		public:
-			//Sprite
+			//Simple Sprite
+
+			static const std::string SIMPLE_SPRITE_SHADER_NAME;
+			static const char* const SIMPLE_SPRITE_VERTEX_SHADER;
+			static const char* const SIMPLE_SPRITE_FRAGMENT_SHADER;
+
+			//Sprite (Multi instancing support)
 
 			static const std::string SPRITE_SHADER_NAME;
 			static const char* const SPRITE_VERTEX_SHADER;

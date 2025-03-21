@@ -169,6 +169,8 @@
     <ClCompile Include="Learning2DEngine\Physics\ColliderComponentHandler.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\CollisionChecker.cpp" />
     <ClCompile Include="Learning2DEngine\Render\RendererComponentHandler.cpp" />
+    <ClCompile Include="Learning2DEngine\Render\SimpleSpriteRenderComponent.cpp" />
+    <ClCompile Include="Learning2DEngine\Render\SimpleSpriteRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\Render\MultiSpriteRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
@@ -221,6 +223,8 @@
     <ClInclude Include="Learning2DEngine\Render\RendererComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h" />
+    <ClInclude Include="Learning2DEngine\Render\SimpleSpriteRenderComponent.h" />
+    <ClInclude Include="Learning2DEngine\Render\SimpleSpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderData.h" />
     <ClInclude Include="Learning2DEngine\Render\MultiSpriteRenderer.h" />
