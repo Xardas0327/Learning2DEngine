@@ -13,7 +13,7 @@ namespace Learning2DEngine
 
 		SpriteRenderer::SpriteRenderer()
 			: shader(), vao(0), ebo(0), vboBasic(0), vboModel(0), vboColor(0), lastObjectSize(0),
-			spriteRenderData()
+			spriteRenderData(), models(nullptr), colors(nullptr)
 		{
 
 		}
@@ -84,12 +84,13 @@ namespace Learning2DEngine
 			glVertexAttribDivisor(5, 1);
 			glVertexAttribDivisor(6, 1);
 
-
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 			lastObjectSize = 1;
+			models = new glm::mat4[lastObjectSize];
+			colors = new glm::vec4[lastObjectSize];
 		}
 
 		void SpriteRenderer::Init()
@@ -107,6 +108,13 @@ namespace Learning2DEngine
 			glDeleteBuffers(1, &vboColor);
 
 			spriteRenderData.clear();
+
+			//if the model is not null, the colors is also not null
+			if (models != nullptr)
+			{
+				delete[] models;
+				delete[] colors;
+			}
 		}
 
 		void SpriteRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
@@ -140,6 +148,11 @@ namespace Learning2DEngine
 				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * maxSize, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 				lastObjectSize = maxSize;
+
+				delete[] models;
+				delete[] colors;
+				models = new glm::mat4[lastObjectSize];
+				colors = new glm::vec4[lastObjectSize];
 			}
 		}
 
@@ -154,8 +167,6 @@ namespace Learning2DEngine
 			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
 
-			auto models = new glm::mat4[lastObjectSize];
-			auto colors = new glm::vec4[lastObjectSize];
 			for (auto& data : spriteRenderData[layer])
 			{
 				if (data.first != 0)
@@ -182,8 +193,6 @@ namespace Learning2DEngine
 
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
-			delete[] models;
-			delete[] colors;
 
 			glBindVertexArray(0);
 		}

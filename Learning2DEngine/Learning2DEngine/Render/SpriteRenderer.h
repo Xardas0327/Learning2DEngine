@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
 #include "IRenderer.h"
@@ -29,6 +30,8 @@ namespace Learning2DEngine
 			//GLuint is the texture id.
 			//0 means, that these data doesn't have texture.
 			std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
+			glm::mat4* models;
+			glm::vec4* colors;
 
 			SpriteRenderer();
 

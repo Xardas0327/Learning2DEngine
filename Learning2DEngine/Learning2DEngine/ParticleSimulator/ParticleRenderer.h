@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
 #include "../Render/IRenderer.h"
@@ -26,7 +27,10 @@ namespace Learning2DEngine
 			GLuint vboModel;
 			GLuint vboColor;
 			unsigned int lastObjectSize;
+
 			std::map<int, std::vector<ParticleRenderData*>> particleRenderData;
+			glm::mat4* models;
+			glm::vec4* colors;
 
 			ParticleRenderer();
 
