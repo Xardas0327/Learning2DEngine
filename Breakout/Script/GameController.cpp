@@ -139,10 +139,6 @@ void GameController::Init()
     // Sounds
     soundEngine = createIrrKlangDevice();
     soundEngine->play2D("Assets/Sounds/breakout.mp3", true);
-
-    //ComponentManager::GetInstance().SetUpdateMaxComponentPerThread(10);
-    //ComponentManager::GetInstance().SetMaxColliderPerThread(100);
-    //GameObjectManager::GetInstance().SetThreadSafe(true);
 }
 
 void GameController::Destroy()

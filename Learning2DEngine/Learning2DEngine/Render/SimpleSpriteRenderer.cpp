@@ -2,8 +2,10 @@
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
+#include "../System/ComponentManager.h"
 #include "ShaderConstant.h"
 #include "SpriteRenderData.h"
+#include "RenderManager.h"
 
 namespace Learning2DEngine
 {
@@ -66,17 +68,39 @@ namespace Learning2DEngine
 
 		void SimpleSpriteRenderer::Init()
 		{
-			InitShader();
-			InitVao();
+			if (ComponentManager::GetInstance().GetThreadSafe())
+			{
+				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
+				InitShader();
+				InitVao();
+			}
+			else
+			{
+				InitShader();
+				InitVao();
+			}
 		}
 
-		void SimpleSpriteRenderer::Destroy()
+		void SimpleSpriteRenderer::DestroyObject()
 		{
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &vbo);
 			glDeleteBuffers(1, &ebo);
 
 			spriteRenderData.clear();
+		}
+
+		void SimpleSpriteRenderer::Destroy()
+		{
+			if (ComponentManager::GetInstance().GetThreadSafe())
+			{
+				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
+				DestroyObject();
+			}
+			else
+			{
+				DestroyObject();
+			}
 		}
 
 		void SimpleSpriteRenderer::SetData(const std::map<int, std::vector<RenderData*>>& renderData)
