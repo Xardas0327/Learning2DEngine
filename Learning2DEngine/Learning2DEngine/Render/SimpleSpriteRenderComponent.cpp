@@ -8,14 +8,15 @@ namespace Learning2DEngine
 	{
 		const std::string SimpleSpriteRenderComponent::id = "L2DE_SimpleSpriteRenderComponent";
 		int SimpleSpriteRenderComponent::refrenceNumber = 0;
+		std::mutex SimpleSpriteRenderComponent::mutex;
 
 		SimpleSpriteRenderComponent::SimpleSpriteRenderComponent(GameObject* gameObject, int layer, glm::vec4 color)
-			: RendererComponent(gameObject, layer, color), BaseRendererComponent(gameObject, layer, color), Component(gameObject), mutex()
+			: RendererComponent(gameObject, layer, color), BaseRendererComponent(gameObject, layer, color), Component(gameObject)
 		{
 		}
 
 		SimpleSpriteRenderComponent::SimpleSpriteRenderComponent(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec4 color)
-			: RendererComponent(gameObject, layer, texture, color), BaseRendererComponent(gameObject, layer, texture, color), Component(gameObject), mutex()
+			: RendererComponent(gameObject, layer, texture, color), BaseRendererComponent(gameObject, layer, texture, color), Component(gameObject)
 		{
 		}
 

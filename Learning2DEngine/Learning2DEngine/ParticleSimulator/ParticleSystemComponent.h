@@ -23,7 +23,6 @@ namespace Learning2DEngine
 			float delayTime;
 			float nextSpawnTime;
 			unsigned int lastUsedParticleIndex;
-			std::mutex mutex;
 
 			ParticleSettings* particleSettings;
 
@@ -32,6 +31,7 @@ namespace Learning2DEngine
 			/// It is counted, that how many ParticleSystem exist.
 			/// </summary>
 			static int refrenceNumber;
+			static std::mutex mutex;
 
 			ParticleSystemComponent(
 				System::GameObject* gameObject,
