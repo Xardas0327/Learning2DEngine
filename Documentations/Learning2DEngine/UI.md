@@ -76,10 +76,9 @@ It is counted, that how many SpriteRenderComponent exist.
 static int refrenceNumber;
 ```
 
-**Protected:**  
 **mutex**  
 ```cpp
-std::mutex mutex;
+static std::mutex mutex;
 ```
 
 ### Functions:
@@ -217,6 +216,12 @@ void InitShader();
 **InitVao**  
 ```cpp
 void InitVao();
+```
+
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+void DestroyObject();
 ```
 
 **Public:**  

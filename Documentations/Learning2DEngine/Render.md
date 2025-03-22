@@ -402,6 +402,12 @@ void InitShader();
 void InitVao();
 ```
 
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+void DestroyObject();
+```
+
 **Public:**  
 **Init**  
 ```cpp
@@ -828,6 +834,13 @@ bool isBlendActive;
 **maxTextureUnits**  
 ```cpp
 GLint maxTextureUnits;
+```
+
+**Public:**  
+**mutex**  
+It is a "global" mutex, that the OpenGL can be thread-safe.
+```cpp
+std::mutex mutex;
 ```
 
 ### Functions:
@@ -1310,11 +1323,10 @@ It is counted, that how many SimpleSpriteRenderComponent exist.
 ```cpp
 static int refrenceNumber;
 ```
-
-**Protected:**  
+ 
 **mutex**  
 ```cpp
-std::mutex mutex;
+static std::mutex mutex;
 ```
 
 ### Functions:
@@ -1410,6 +1422,12 @@ void InitShader();
 void InitVao();
 ```
 
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+void DestroyObject();
+```
+
 **Public:**  
 **Init**  
 ```cpp
@@ -1470,10 +1488,9 @@ It is counted, that how many SpriteRenderComponent exist.
 static int refrenceNumber;
 ```
 
-**Protected:**  
 **mutex**  
 ```cpp
-std::mutex mutex;
+static std::mutex mutex;
 ```
 
 ### Functions:

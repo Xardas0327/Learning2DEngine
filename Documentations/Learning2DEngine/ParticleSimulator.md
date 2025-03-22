@@ -289,6 +289,12 @@ void InitShader();
 void InitVao();
 ```
 
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+void DestroyObject();
+```
+
 **Public:**  
 **Init**  
 ```cpp
@@ -405,11 +411,6 @@ float nextSpawnTime;
 unsigned int lastUsedParticleIndex;
 ```
 
-**mutex**  
-```cpp
-std::mutex mutex;
-```
-
 **particleSettings**  
 ```cpp
 ParticleSettings* particleSettings;
@@ -425,6 +426,11 @@ static const std::string id;
 It is counted, that how many ParticleSystem exist.
 ```cpp
 static int refrenceNumber;
+```
+
+**mutex**  
+```cpp
+static std::mutex mutex;
 ```
 
 ### Functions:
@@ -465,7 +471,7 @@ ParticleRenderer* GetRenderer() const override;
 ```
 
 **DestroyObject**  
-The `ParticleSystemComponent::Destroy()` call it with or without mutex.
+The Destroy() call it with or without mutex.
 ```cpp
 void DestroyObject();
 ```
