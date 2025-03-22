@@ -12,7 +12,7 @@ namespace Learning2DEngine
 	{
 
 		MultiSpriteRenderer::MultiSpriteRenderer()
-			: shader(), vao(0), ebo(0), vboBasic(0), vboModel(0), vboColor(0), lastObjectSize(0),
+			: shader(), vao(0), ebo(0), vboBasic(0), vboModel(0), vboColor(0), maxObjectSize(0),
 			spriteRenderData(), models(nullptr), colors(nullptr)
 		{
 
@@ -88,9 +88,9 @@ namespace Learning2DEngine
 			glBindVertexArray(0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-			lastObjectSize = 1;
-			models = new glm::mat4[lastObjectSize];
-			colors = new glm::vec4[lastObjectSize];
+			maxObjectSize = 1;
+			models = new glm::mat4[maxObjectSize];
+			colors = new glm::vec4[maxObjectSize];
 		}
 
 		void MultiSpriteRenderer::Init()
@@ -140,19 +140,19 @@ namespace Learning2DEngine
 			}
 
 			//if the size is not enough or too big, it will be reallocated.
-			if (maxSize > lastObjectSize || lastObjectSize > maxSize * 2)
+			if (maxSize > maxObjectSize || maxObjectSize > maxSize * 2)
 			{
 				glBindBuffer(GL_ARRAY_BUFFER, vboModel);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * maxSize, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, vboColor);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * maxSize, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				lastObjectSize = maxSize;
+				maxObjectSize = maxSize;
 
 				delete[] models;
 				delete[] colors;
-				models = new glm::mat4[lastObjectSize];
-				colors = new glm::vec4[lastObjectSize];
+				models = new glm::mat4[maxObjectSize];
+				colors = new glm::vec4[maxObjectSize];
 			}
 		}
 

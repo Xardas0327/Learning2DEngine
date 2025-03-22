@@ -13,7 +13,7 @@ namespace Learning2DEngine
 	namespace ParticleSimulator
 	{
 		ParticleRenderer::ParticleRenderer()
-			: shader(), vao(0), ebo(0), vboBasic(0), vboModel(0), vboColor(0), lastObjectSize(0),
+			: shader(), vao(0), ebo(0), vboBasic(0), vboModel(0), vboColor(0), maxObjectSize(0),
 			particleRenderData(), models(nullptr), colors(nullptr)
 		{
 
@@ -89,9 +89,9 @@ namespace Learning2DEngine
 			glBindVertexArray(0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-			lastObjectSize = 1;
-			models = new glm::mat4[lastObjectSize];
-			colors = new glm::vec4[lastObjectSize];
+			maxObjectSize = 1;
+			models = new glm::mat4[maxObjectSize];
+			colors = new glm::vec4[maxObjectSize];
 		}
 
 		void ParticleRenderer::Init()
@@ -151,19 +151,19 @@ namespace Learning2DEngine
 			}
 
 			//if the size is not enough or too big, it will be reallocated.
-			if (maxActiveParticleCount > lastObjectSize || lastObjectSize > maxActiveParticleCount * 2)
+			if (maxActiveParticleCount > maxObjectSize || maxObjectSize > maxActiveParticleCount * 2)
 			{
 				glBindBuffer(GL_ARRAY_BUFFER, vboModel);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * maxActiveParticleCount, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, vboColor);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * maxActiveParticleCount, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				lastObjectSize = maxActiveParticleCount;
+				maxObjectSize = maxActiveParticleCount;
 
 				delete[] models;
 				delete[] colors;
-				models = new glm::mat4[lastObjectSize];
-				colors = new glm::vec4[lastObjectSize];
+				models = new glm::mat4[maxObjectSize];
+				colors = new glm::vec4[maxObjectSize];
 			}
 		}
 

@@ -24,11 +24,10 @@ namespace Learning2DEngine
 			GLuint vboBasic;
 			GLuint vboModel;
 			GLuint vboColor;
-			unsigned int lastObjectSize;
+			unsigned int maxObjectSize;
 
 			//int is the layer
-			//GLuint is the texture id.
-			//0 means, that these data doesn't have texture.
+			//GLuint is the texture id. 0 means, that these data doesn't have texture.
 			std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
 			glm::mat4* models;
 			glm::vec4* colors;
@@ -40,6 +39,7 @@ namespace Learning2DEngine
 		public:
 			void Init() override;
 			void Destroy() override;
+			//int is the layer
 			void SetData(const std::map<int, std::vector<RenderData*>>& renderData) override;
 			void Draw(int layer) override;
 		};

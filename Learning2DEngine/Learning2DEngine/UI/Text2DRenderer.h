@@ -20,6 +20,8 @@ namespace Learning2DEngine
 			GLuint vao;
 			GLuint vbo;
 			GLuint ebo;
+
+			//int is the layer
 			std::map<int, std::vector<Render::RenderData*>> textRenderData;
 
 			Text2DRenderer();
@@ -29,6 +31,7 @@ namespace Learning2DEngine
 		public:
 			void Init() override;
 			void Destroy() override;
+			//int is the layer
 			void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
 			void Draw(int layer) override;
 		};

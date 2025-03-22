@@ -26,8 +26,9 @@ namespace Learning2DEngine
 			GLuint vboBasic;
 			GLuint vboModel;
 			GLuint vboColor;
-			unsigned int lastObjectSize;
+			unsigned int maxObjectSize;
 
+			//int is the layer
 			std::map<int, std::vector<ParticleRenderData*>> particleRenderData;
 			glm::mat4* models;
 			glm::vec4* colors;
@@ -39,6 +40,7 @@ namespace Learning2DEngine
 		public:
 			void Init() override;
 			void Destroy() override;
+			//int is the layer
 			void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
 			void Draw(int layer) override;
 

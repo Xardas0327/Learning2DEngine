@@ -13,6 +13,7 @@ namespace Learning2DEngine
 		{
 			virtual void Init() = 0;
 			virtual void Destroy() = 0;
+			//int is the layer
 			virtual void SetData(const std::map<int, std::vector<RenderData*>>& renderData) = 0;
 			virtual void Draw(int layer) = 0;
 			virtual ~IRenderer() = default;
