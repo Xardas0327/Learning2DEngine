@@ -1,25 +1,24 @@
-#include "ParticleRenderer.h"
+#include "MultiSpriteRenderer.h"
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
-#include "../Render/RenderManager.h"
-#include "../Render/ShaderConstant.h"
+#include "ShaderConstant.h"
 
 namespace Learning2DEngine
 {
 	using namespace System;
-	using namespace Render;
 
-	namespace ParticleSimulator
+	namespace Render
 	{
-		ParticleRenderer::ParticleRenderer()
+
+		MultiSpriteRenderer::MultiSpriteRenderer()
 			: shader(), vao(0), ebo(0), vboBasic(0), vboModel(0), vboColor(0), maxObjectSize(0),
-			particleRenderData(), models(nullptr), colors(nullptr)
+			spriteRenderData(), models(nullptr), colors(nullptr)
 		{
 
 		}
 
-		void ParticleRenderer::InitShader()
+		void MultiSpriteRenderer::InitShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
 			shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
@@ -30,7 +29,7 @@ namespace Learning2DEngine
 					ShaderConstant::SPRITE_FRAGMENT_SHADER);
 		}
 
-		void ParticleRenderer::InitVao()
+		void MultiSpriteRenderer::InitVao()
 		{
 			float vertices[] = {
 				// pos      // tex
@@ -56,10 +55,10 @@ namespace Learning2DEngine
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
 			glGenBuffers(1, &vboModel);
 			glBindBuffer(GL_ARRAY_BUFFER, vboModel);
@@ -94,13 +93,13 @@ namespace Learning2DEngine
 			colors = new glm::vec4[maxObjectSize];
 		}
 
-		void ParticleRenderer::Init()
+		void MultiSpriteRenderer::Init()
 		{
 			InitShader();
 			InitVao();
 		}
 
-		void ParticleRenderer::Destroy()
+		void MultiSpriteRenderer::Destroy()
 		{
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &ebo);
@@ -108,7 +107,7 @@ namespace Learning2DEngine
 			glDeleteBuffers(1, &vboModel);
 			glDeleteBuffers(1, &vboColor);
 
-			particleRenderData.clear();
+			spriteRenderData.clear();
 
 			//if the model is not null, the colors is also not null
 			if (models != nullptr)
@@ -118,47 +117,37 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ParticleRenderer::SetData(const std::map<int, std::vector<RenderData*>>& renderData)
+		void MultiSpriteRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
 		{
-			particleRenderData.clear();
-			int maxActiveParticleCount = 0;
+			spriteRenderData.clear();
+			int maxSize = 0;
 			for (auto& layerData : renderData)
 			{
 				for (auto& data : layerData.second)
 				{
-					auto particleData = static_cast<ParticleRenderData*>(data);
-					if (!particleData->IsRenderable())
-						continue;
+					auto spriteData = static_cast<SpriteRenderData*>(data);
+					if (spriteData->IsUseTexture())
+						spriteRenderData[layerData.first][spriteData->texture->GetId()].push_back(spriteData);
+					else
+						spriteRenderData[layerData.first][0].push_back(spriteData);
+				}
 
-					auto particles = particleData->GetParticles();
-					int activeParticleCount = 0;
-					for (int i = 0; i < particleData->GetParticleAmount(); ++i)
-					{
-						if (particles[i].lifeTime > 0.0f)
-						{
-							++activeParticleCount;
-						}
-					}
-
-					if (activeParticleCount > 0)
-					{
-						particleRenderData[layerData.first].push_back(particleData);
-
-						if (maxActiveParticleCount < activeParticleCount)
-							maxActiveParticleCount = activeParticleCount;
-					}
+				for (auto& data : spriteRenderData[layerData.first])
+				{
+					if (data.second.size() > maxSize)
+						maxSize = data.second.size();
 				}
 			}
 
 			//if the size is not enough or too big, it will be reallocated.
-			if (maxActiveParticleCount > maxObjectSize || maxObjectSize > maxActiveParticleCount * 2)
+			if (maxSize > maxObjectSize || maxObjectSize > maxSize * 2)
 			{
 				glBindBuffer(GL_ARRAY_BUFFER, vboModel);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * maxActiveParticleCount, NULL, GL_DYNAMIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * maxSize, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, vboColor);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * maxActiveParticleCount, NULL, GL_DYNAMIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * maxSize, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				maxObjectSize = maxActiveParticleCount;
+				maxObjectSize = maxSize;
 
 				delete[] models;
 				delete[] colors;
@@ -167,9 +156,9 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ParticleRenderer::Draw(int layer)
+		void MultiSpriteRenderer::Draw(int layer)
 		{
-			if (particleRenderData.find(layer) == particleRenderData.end())
+			if (spriteRenderData.find(layer) == spriteRenderData.end())
 				return;
 
 			shader.Use();
@@ -178,52 +167,31 @@ namespace Learning2DEngine
 			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
 
-			auto& renderManager = RenderManager::GetInstance();
-			for (auto& particleData : particleRenderData[layer])
+			for (auto& data : spriteRenderData[layer])
 			{
-
-				//Activate Blend
-				BlendFuncFactor previousBlendFuncFactor = renderManager.GetBlendFunc();
-				if (particleData->systemSettings.isUseBlend)
-				{
-					renderManager.SetBlendFunc(particleData->systemSettings.blendFuncFactor);
-				}
-
-				//Activate Texture
-				if (particleData->IsUseTexture())
+				if (data.first != 0)
 				{
 					glActiveTexture(GL_TEXTURE0);
-					particleData->texture->Bind();
+					data.second[0]->texture->Bind();
 				}
-				shader.SetInteger("isUseTexture", particleData->IsUseTexture());
+				shader.SetInteger("isUseTexture", data.first != 0);
 
-				//Collect data
-				auto particles = particleData->GetParticles();
-				int activeParticleCount = 0;
-				for (int i = 0; i < particleData->GetParticleAmount(); ++i)
+				for (size_t i = 0; i < data.second.size(); ++i)
 				{
-					if (particles[i].lifeTime > 0.0f)
-					{
-						models[activeParticleCount] = particles[i].transform.GetModelMatrix();
-						colors[activeParticleCount] = particles[i].color;
-						++activeParticleCount;
-					}
+					models[i] = data.second[i]->component->gameObject->transform.GetModelMatrix();
+					colors[i] = data.second[i]->color;
 				}
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboModel);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4) * activeParticleCount, &models[0]);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4) * data.second.size(), &models[0]);
 				glBindBuffer(GL_ARRAY_BUFFER, vboColor);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec4) * activeParticleCount, &colors[0]);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec4) * data.second.size(), &colors[0]);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, activeParticleCount);
+				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, data.second.size());
+
 
 				glBindTexture(GL_TEXTURE_2D, 0);
-
-
-				if (particleData->systemSettings.isUseBlend)
-				{
-					renderManager.SetBlendFunc(previousBlendFuncFactor);
-				}
 			}
 
 			glBindVertexArray(0);

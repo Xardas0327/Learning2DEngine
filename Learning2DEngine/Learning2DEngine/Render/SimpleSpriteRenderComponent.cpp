@@ -1,4 +1,4 @@
-#include "SpriteRenderComponent.h"
+#include "SimpleSpriteRenderComponent.h"
 
 namespace Learning2DEngine
 {
@@ -6,36 +6,36 @@ namespace Learning2DEngine
 
 	namespace Render
 	{
-		const std::string SpriteRenderComponent::id = "L2DE_SpriteRenderComponent";
-		int SpriteRenderComponent::refrenceNumber = 0;
+		const std::string SimpleSpriteRenderComponent::id = "L2DE_SimpleSpriteRenderComponent";
+		int SimpleSpriteRenderComponent::refrenceNumber = 0;
 
-		SpriteRenderComponent::SpriteRenderComponent(GameObject* gameObject, int layer, glm::vec4 color)
+		SimpleSpriteRenderComponent::SimpleSpriteRenderComponent(GameObject* gameObject, int layer, glm::vec4 color)
 			: RendererComponent(gameObject, layer, color), BaseRendererComponent(gameObject, layer, color), Component(gameObject), mutex()
 		{
 		}
 
-		SpriteRenderComponent::SpriteRenderComponent(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec4 color)
+		SimpleSpriteRenderComponent::SimpleSpriteRenderComponent(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec4 color)
 			: RendererComponent(gameObject, layer, texture, color), BaseRendererComponent(gameObject, layer, texture, color), Component(gameObject), mutex()
 		{
 		}
 
-		void SpriteRenderComponent::Init()
+		void SimpleSpriteRenderComponent::Init()
 		{
 			auto& componentManager = System::ComponentManager::GetInstance();
 			if (componentManager.GetThreadSafe())
 			{
 				std::lock_guard<std::mutex> lock(mutex);
 				RendererComponent::Init();
-				++SpriteRenderComponent::refrenceNumber;
+				++SimpleSpriteRenderComponent::refrenceNumber;
 			}
 			else
 			{
 				RendererComponent::Init();
-				++SpriteRenderComponent::refrenceNumber;
+				++SimpleSpriteRenderComponent::refrenceNumber;
 			}
 		}
 
-		void SpriteRenderComponent::Destroy()
+		void SimpleSpriteRenderComponent::Destroy()
 		{
 			auto& componentManager = System::ComponentManager::GetInstance();
 			if (componentManager.GetThreadSafe())
@@ -43,9 +43,9 @@ namespace Learning2DEngine
 				std::lock_guard<std::mutex> lock(mutex);
 				RendererComponent::Destroy();
 
-				if (!(--SpriteRenderComponent::refrenceNumber))
+				if (!(--SimpleSpriteRenderComponent::refrenceNumber))
 				{
-					MultiSpriteRenderer::GetInstance().Destroy();
+					SimpleSpriteRenderer::GetInstance().Destroy();
 					componentManager.RemoveRendererFromRender(GetId());
 				}
 			}
@@ -53,22 +53,22 @@ namespace Learning2DEngine
 			{
 				RendererComponent::Destroy();
 
-				if (!(--SpriteRenderComponent::refrenceNumber))
+				if (!(--SimpleSpriteRenderComponent::refrenceNumber))
 				{
-					MultiSpriteRenderer::GetInstance().Destroy();
+					SimpleSpriteRenderer::GetInstance().Destroy();
 					componentManager.RemoveRendererFromRender(GetId());
 				}
 			}
 		}
 
-		const std::string& SpriteRenderComponent::GetId() const
+		const std::string& SimpleSpriteRenderComponent::GetId() const
 		{
-			return SpriteRenderComponent::id;
+			return SimpleSpriteRenderComponent::id;
 		}
 
-		MultiSpriteRenderer* SpriteRenderComponent::GetRenderer() const
+		SimpleSpriteRenderer* SimpleSpriteRenderComponent::GetRenderer() const
 		{
-			auto& renderer = MultiSpriteRenderer::GetInstance();
+			auto& renderer = SimpleSpriteRenderer::GetInstance();
 			renderer.Init();
 
 			return &renderer;

@@ -72,19 +72,34 @@ namespace Learning2DEngine
 
 		void ParticleSystemComponent::DestroyObject()
 		{
-			RendererComponent::Destroy();
-			UpdaterComponent::Destroy();
-
 			if (IsRunning())
 			{
 				Stop();
 			}
 
-			if (!(--ParticleSystemComponent::refrenceNumber))
+			auto& componentManager = System::ComponentManager::GetInstance();
+			if (componentManager.GetThreadSafe())
 			{
-				ParticleRenderer::GetInstance().Destroy();
-				ComponentManager::GetInstance().RemoveRendererFromRender(GetId());
+				std::lock_guard<std::mutex> lock(mutex);
+				RendererComponent::Destroy();
+				UpdaterComponent::Destroy();
+				if (!(--ParticleSystemComponent::refrenceNumber))
+				{
+					ParticleRenderer::GetInstance().Destroy();
+					ComponentManager::GetInstance().RemoveRendererFromRender(GetId());
+				}
 			}
+			else
+			{
+				RendererComponent::Destroy();
+				UpdaterComponent::Destroy();
+				if (!(--ParticleSystemComponent::refrenceNumber))
+				{
+					ParticleRenderer::GetInstance().Destroy();
+					ComponentManager::GetInstance().RemoveRendererFromRender(GetId());
+				}
+			}
+
 		}
 
 		void ParticleSystemComponent::Destroy()

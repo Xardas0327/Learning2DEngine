@@ -18,9 +18,9 @@ namespace Learning2DEngine
         {
         private:
             std::map<std::string, IRenderer*> renderers;
-            //The int is the layer.
             //The string is the id.
-            std::map<int, std::map<std::string, std::vector<RenderData*>>> renderData;
+            //The int is the layer.
+            std::map<std::string, std::map<int, std::vector<RenderData*>>> renderData;
             //Help for find the data faster.
             std::map<RenderData*, std::tuple<std::string, int>> renderDataMapping;
             std::mutex rendererMutex;

@@ -1,5 +1,7 @@
 #include "RendererComponentHandler.h"
 
+#include <set>
+
 namespace Learning2DEngine
 {
     namespace Render
@@ -50,7 +52,7 @@ namespace Learning2DEngine
 
 		void RendererComponentHandler::AddData(const std::string& id, RenderData* data, int layer)
 		{
-			renderData[layer][id].push_back(data);
+			renderData[id][layer].push_back(data);
 			renderDataMapping[data] = std::make_tuple(id, layer);
 		}
 
@@ -76,10 +78,10 @@ namespace Learning2DEngine
 			const int oldLayer = std::get<1>(renderDataMapping[data]);
 			const std::string& id = std::get<0>(renderDataMapping[data]);
 
-			renderData[oldLayer][id].erase(
-				std::remove(renderData[oldLayer][id].begin(), renderData[oldLayer][id].end(), data), renderData[oldLayer][id].end()
+			renderData[id][oldLayer].erase(
+				std::remove(renderData[id][oldLayer].begin(), renderData[id][oldLayer].end(), data), renderData[id][oldLayer].end()
 			);
-			renderData[newLayer][id].push_back(data);
+			renderData[id][oldLayer].push_back(data);
 			renderDataMapping[data] = std::make_tuple(id, newLayer);
 		}
 
@@ -105,15 +107,15 @@ namespace Learning2DEngine
 			const int layer = std::get<1>(renderDataMapping[data]);
 			const std::string& id = std::get<0>(renderDataMapping[data]);
 
-			renderData[layer][id].erase(
-				std::remove(renderData[layer][id].begin(), renderData[layer][id].end(), data), renderData[layer][id].end()
+			renderData[id][layer].erase(
+				std::remove(renderData[id][layer].begin(), renderData[id][layer].end(), data), renderData[id][layer].end()
 			);
-			if (renderData[layer][id].size() == 0)
+			if (renderData[id][layer].size() == 0)
 			{
-				if(renderData[layer].size() == 0)
-					renderData.erase(layer);
+				if(renderData[id].size() == 0)
+					renderData.erase(id);
 				else
-					renderData[layer].erase(id);
+					renderData[id].erase(layer);
 
 			}
 
@@ -135,33 +137,57 @@ namespace Learning2DEngine
 
 		void RendererComponentHandler::Run()
 		{
+			//Collect active data
+			std::set<int> activeLayers;
+			std::map<int, std::vector<RenderData*>> activeData;
+			std::set<IRenderer*> activeRenderers;
 			for (auto& data : renderData)
 			{
 				for (auto& dataPair : data.second)
 				{
-					size_t activeData = 0;
+					size_t activeDataCount = 0;
 					for (const RenderData* renderData : dataPair.second)
 					{
 						if (renderData->component->isActive && renderData->component->gameObject->isActive)
-							activeData++;
+							activeDataCount++;
 					}
 
-					if(activeData == dataPair.second.size())
-						renderers[dataPair.first]->Draw(dataPair.second);
-					else if (activeData > 0)
+					if (activeDataCount > 0)
 					{
-						std::vector<RenderData*> activeRenderData;
-						activeRenderData.reserve(activeData);
-						for (RenderData* renderData : dataPair.second)
-						{
-							if (renderData->component->isActive && renderData->component->gameObject->isActive)
-								activeRenderData.push_back(renderData);
-						}
-						renderers[dataPair.first]->Draw(activeRenderData);
-					}
+						activeLayers.insert(dataPair.first);
 
+						if (activeDataCount == dataPair.second.size())
+							activeData[dataPair.first] = dataPair.second;
+						else
+						{
+							activeData[dataPair.first].reserve(activeDataCount);
+							for (RenderData* renderData : dataPair.second)
+							{
+								if (renderData->component->isActive && renderData->component->gameObject->isActive)
+									activeData[dataPair.first].push_back(renderData);
+							}
+						}
+					}
+				}
+
+				if (activeData.size() > 0)
+				{
+					activeRenderers.insert(renderers[data.first]);
+
+					renderers[data.first]->SetData(activeData);
+					activeData.clear();
 				}
 			}
+
+			//Render
+			for (int layer : activeLayers)
+			{
+				for (auto renderer : activeRenderers)
+				{
+					renderer->Draw(layer);
+				}
+			}
+
 		}
 
 		void RendererComponentHandler::Clear()

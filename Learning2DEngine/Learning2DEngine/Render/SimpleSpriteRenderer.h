@@ -12,23 +12,25 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
-		class SpriteRenderer : public IRenderer, public virtual System::Singleton<SpriteRenderer>
+		class SimpleSpriteRenderer : public IRenderer, public virtual System::Singleton<SimpleSpriteRenderer>
 		{
-			friend class Singleton<SpriteRenderer>;
+			friend class Singleton<SimpleSpriteRenderer>;
 		private:
 			Shader shader;
 			GLuint vao;
 			GLuint vbo;
 			GLuint ebo;
+			std::map<int, std::vector<RenderData*>> spriteRenderData;
 
-			SpriteRenderer();
+			SimpleSpriteRenderer();
 
 			void InitShader();
 			void InitVao();
 		public:
 			void Init() override;
 			void Destroy() override;
-			void Draw(std::vector<RenderData*> renderData) override;
+			void SetData(const std::map<int, std::vector<RenderData*>>& renderData) override;
+			void Draw(int layer) override;
 		};
 	}
 }

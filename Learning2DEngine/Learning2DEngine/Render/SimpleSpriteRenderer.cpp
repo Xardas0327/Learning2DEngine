@@ -1,4 +1,4 @@
-#include "SpriteRenderer.h"
+#include "SimpleSpriteRenderer.h"
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
@@ -12,24 +12,24 @@ namespace Learning2DEngine
 	namespace Render
 	{
 
-		SpriteRenderer::SpriteRenderer()
-			: shader(), vao(0), vbo(0), ebo(0)
+		SimpleSpriteRenderer::SimpleSpriteRenderer()
+			: shader(), vao(0), vbo(0), ebo(0), spriteRenderData()
 		{
 
 		}
 
-		void SpriteRenderer::InitShader()
+		void SimpleSpriteRenderer::InitShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
-			shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
-				? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
+			shader = resourceManager.IsShaderExist(ShaderConstant::SIMPLE_SPRITE_SHADER_NAME)
+				? resourceManager.GetShader(ShaderConstant::SIMPLE_SPRITE_SHADER_NAME)
 				: resourceManager.LoadShader(
-					ShaderConstant::SPRITE_SHADER_NAME,
-					ShaderConstant::SPRITE_VERTEX_SHADER,
-					ShaderConstant::SPRITE_FRAGMENT_SHADER);
+					ShaderConstant::SIMPLE_SPRITE_SHADER_NAME,
+					ShaderConstant::SIMPLE_SPRITE_VERTEX_SHADER,
+					ShaderConstant::SIMPLE_SPRITE_FRAGMENT_SHADER);
 		}
 
-		void SpriteRenderer::InitVao()
+		void SimpleSpriteRenderer::InitVao()
 		{
 			float vertices[] = {
 				// pos      // tex
@@ -54,42 +54,52 @@ namespace Learning2DEngine
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		}
 
-		void SpriteRenderer::Init()
+		void SimpleSpriteRenderer::Init()
 		{
 			InitShader();
 			InitVao();
 		}
 
-		void SpriteRenderer::Destroy()
+		void SimpleSpriteRenderer::Destroy()
 		{
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &vbo);
 			glDeleteBuffers(1, &ebo);
+
+			spriteRenderData.clear();
 		}
 
-		void SpriteRenderer::Draw(std::vector<RenderData*> renderData)
+		void SimpleSpriteRenderer::SetData(const std::map<int, std::vector<RenderData*>>& renderData)
 		{
+			spriteRenderData = renderData;
+		}
+
+		void SimpleSpriteRenderer::Draw(int layer)
+		{
+			if (spriteRenderData.find(layer) == spriteRenderData.end())
+				return;
+
 			shader.Use();
 			shader.SetInteger("spriteTexture", 0);
+			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
 
-			for (auto data : renderData)
+			for (auto data : spriteRenderData[layer])
 			{
 				auto spriteData = static_cast<SpriteRenderData*>(data);
 
 				shader.SetMatrix4("model", spriteData->component->gameObject->transform.GetModelMatrix());
-				shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
-				shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
-
 				shader.SetVector4f("spriteColor", spriteData->color);
 				shader.SetInteger("isUseTexture", spriteData->IsUseTexture());
 
@@ -102,7 +112,6 @@ namespace Learning2DEngine
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
-
 
 			glBindVertexArray(0);
 		}

@@ -12,7 +12,7 @@ namespace Learning2DEngine
             window(nullptr), resolution(0, 0), clearColor(0.0f, 0.0f, 0.0f, 1.0f),
             keyboardEventHandler(), framebufferSizeEventHandler(),
             mouseButtonEventHandler(), cursorPositonEventHandler(), cursorEnterEventHandler(), scrollEventHandler(),
-            isBlendActive(false), blendFuncFactor(GL_ONE, GL_ZERO)
+            blendFuncFactor(GL_ONE, GL_ZERO), isBlendActive(false), maxTextureUnits(1)
         {
 
         }
@@ -52,6 +52,8 @@ namespace Learning2DEngine
                 L2DE_LOG_ERROR("GLAD: Failed to initialize GLAD");
                 return;
             }
+
+            glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
 
             glViewport(0, 0, resolution.GetWidth(), resolution.GetHeight());
         }

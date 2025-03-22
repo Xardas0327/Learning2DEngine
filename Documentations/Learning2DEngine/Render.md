@@ -5,6 +5,7 @@
 - [IResolutionRefresher](Render.md#iresolutionrefresher)
 - [LateRendererComponent](Render.md#laterenderercomponent)
 - [MSAA](Render.md#msaa)
+- [MultiSpriteRenderer](Render.md#multispriterenderer)
 - [PostProcessEffect](Render.md#postprocesseffect)
 - [RenderData](Render.md#renderdata)
 - [RendererComponent](Render.md#renderercomponent)
@@ -13,9 +14,10 @@
 - [Resolution](Render.md#resolution)
 - [Shader](Render.md#shader)
 - [ShaderConstant](Render.md#shaderconstant)
+- [SimpleSpriteRenderComponent](Render.md#simplespriterendercomponent)
+- [SimpleSpriteRenderer](Render.md#simplespriterenderer)
 - [SpriteRenderComponent](Render.md#spriterendercomponent)
 - [SpriteRenderData](Render.md#spriterenderdata)
-- [SpriteRenderer](Render.md#spriterenderer)
 - [Texture2D](Render.md#texture2d)
 - [Texture2DSettings](Render.md#texture2dsettings)
 
@@ -131,9 +133,16 @@ virtual void Init() = 0;
 virtual void Destroy() = 0;
 ```
 
-**Draw**  
+**SetData**  
+Note: the int is the layer.
 ```cpp
-virtual void Draw(std::vector<RenderData*> renderData) = 0;
+virtual void SetData(const std::map<int, std::vector<RenderData*>>& renderData) = 0;
+```
+
+**Draw**  
+It draws those objects, which was added with SetData and they are on the selected layer.
+```cpp
+virtual void Draw(int layer) = 0;
 ```
 
 ##
@@ -293,6 +302,127 @@ inline unsigned int GetId();
 It returns the sample number.
 ```cpp
 inline unsigned int GetSampleNumber();
+```
+
+##
+## MultiSpriteRenderer
+### Source Code:
+[MultiSpriteRenderer.h](../../Learning2DEngine/Learning2DEngine/Render/MultiSpriteRenderer.h)  
+[MultiSpriteRenderer.cpp](../../Learning2DEngine/Learning2DEngine/Render/MultiSpriteRenderer.cpp)
+
+### Description:
+A sprite renderer, which has multi instancing support.  
+It has better performance, than the `SimpleSpriteRenderer`,
+when the object has a lot of instances in a layer.  
+Note: The projection and the view matrix came from Game::mainCamera.
+
+### Header:
+```cpp
+class MultiSpriteRenderer : public IRenderer, public virtual System::Singleton<MultiSpriteRenderer>
+{...}
+```
+
+### Variables:
+**Private:**  
+**shader**
+```cpp
+Render::Shader shader;
+```
+
+**vao**
+```cpp
+GLuint vao;
+```
+
+**ebo**
+```cpp
+GLuint ebo;
+```
+
+**vboBasic**  
+It contains the vertex positions and texture coordinates.
+```cpp
+GLuint vboBasic;
+```
+
+**vboModel**  
+It contains the uploaded model matrices of the renderable objects.
+```cpp
+GLuint vboModel;
+```
+
+**vboColor**  
+It contains the uploaded colors of the renderable objects.
+```cpp
+GLuint vboColor;
+```
+
+**maxObjectSize**  
+The size of the vboModel, vboColor, models and the colors.
+```cpp
+unsigned int maxObjectSize;
+```
+
+**spriteRenderData**  
+When the SetData is called, the renderData will be converted to this format.  
+Note: The int is the layer.  
+GLuint is the texture id. 0 means, that these data doesn't have texture.
+```cpp
+std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
+```
+
+**models**  
+It is array, which contains the model matrices of the renderable objects, before the upload.
+Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
+```cpp
+glm::mat4* models;
+```
+
+**colors**  
+It is array, which contains the colors of the renderable objects, before the upload.
+Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
+```cpp
+glm::vec4* colors;
+```
+
+### Functions:
+**Private:**  
+**MultiSpriteRenderer**  
+```cpp
+MultiSpriteRenderer();
+```
+
+**InitShader**  
+```cpp
+void InitShader();
+```
+
+**InitVao**  
+```cpp
+void InitVao();
+```
+
+**Public:**  
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**SetData**  
+Note: the int is the layer.
+```cpp
+void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+```
+
+**Draw**  
+It draws those objects, which was added with SetData and they are on the selected layer.
+```cpp
+void Draw(int layer) override;
 ```
 
 ##
@@ -535,10 +665,10 @@ std::map<std::string, IRenderer*> renderers;
 ```
 
 **renderData**  
-The int is the layer.  
-The string is the id.
+The string is the id.  
+The int is the layer.
 ```cpp
-std::map<int, std::map<std::string, std::vector<RenderData*>>> renderData;
+std::map<std::string, std::map<int, std::vector<RenderData*>>> renderData;
 ```
 
 **renderDataMapping**  
@@ -685,14 +815,19 @@ EventSystem::EventHandler<bool> cursorEnterEventHandler;
 EventSystem::EventHandler<double, double> scrollEventHandler;
 ```
 
+**blendFuncFactor**  
+```cpp
+BlendFuncFactor blendFuncFactor;
+```
+
 **isBlendActive**  
 ```cpp
 bool isBlendActive;
 ```
 
-**blendFuncFactor**  
+**maxTextureUnits**  
 ```cpp
-BlendFuncFactor blendFuncFactor;
+GLint maxTextureUnits;
 ```
 
 ### Functions:
@@ -820,7 +955,7 @@ void ClearWindow();
 **GetResolution**  
 It returns the (game) screen resolution.
 ```cpp
-inline Resolution GetResolution();
+inline Resolution GetResolution() const;
 ```
 
 **SetClearColor**  
@@ -832,7 +967,7 @@ void SetClearColor(float r, float g, float b, float a);
 **GetClearColor**  
 It returns the current `clearColor`.
 ```cpp
-inline glm::vec4 GetClearColor();
+inline glm::vec4 GetClearColor() const;
 ```
 
 **EnableBlend**  
@@ -850,7 +985,7 @@ void DisableBlend();
 **IsBlendActive**  
 It returns true if the blend is enabled.
 ```cpp
-inline bool IsBlendActive();
+inline bool IsBlendActive() const;
 ```
 
 **SetBlendFunc**  
@@ -865,7 +1000,13 @@ void SetBlendFunc(BlendFuncFactor blendFuncFactor);
 **GetBlendFunc**  
 It returns the current BlendFuncFactor.
 ```cpp
-inline BlendFuncFactor GetBlendFunc();
+inline BlendFuncFactor GetBlendFunc() const;
+```
+
+**GetMaxTextureUnits**  
+It returns how many texture units the GPU can handle at once.
+```cpp
+inline GLint GetMaxTextureUnits() const;
 ```
 
 **AddKeyboardEvent**  
@@ -1098,9 +1239,19 @@ class ShaderConstant final
 
 ### Variables:
 **Public:**  
+**Simple Sprite shader**  
+The simple sprite shader's name (for `ResourceManager`),
+vertex and fragment shaders.
+```cpp
+static const std::string SIMPLE_SPRITE_SHADER_NAME;
+static const char* const SIMPLE_SPRITE_VERTEX_SHADER;
+static const char* const SIMPLE_SPRITE_FRAGMENT_SHADER;
+```
+
 **Sprite shader**  
 The sprite shader's name (for `ResourceManager`),
-vertex and fragment shaders.
+vertex and fragment shaders.  
+It has multi instancing support.
 ```cpp
 static const std::string SPRITE_SHADER_NAME;
 static const char* const SPRITE_VERTEX_SHADER;
@@ -1126,13 +1277,15 @@ static const char* const DEFAULT_POSTPROCESS_EFFECT_FRAGMENT_SHADER;
 ```
 
 ##
-## SpriteRenderComponent
+## SimpleSpriteRenderComponent
 ### Source Code:
-[SpriteRenderComponent.h](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderComponent.h)  
-[SpriteRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderComponent.cpp)
+[SimpleSpriteRenderComponent.h](../../Learning2DEngine/Learning2DEngine/Render/SimpleSpriteRenderComponent.h)  
+[SimpleSpriteRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/Render/SimpleSpriteRenderComponent.cpp)
 
 ### Description:
-It can render a sprite with color and texture.
+It is for render a sprite with color and texture.  
+It uses `SimpleSpriteRenderer` for rendering. It is recommand, when the developer knows,
+the object has just a couple instances in a layer.  
 It uses static variables to count how many GameObject initialized it.
 That's why it will destroy renderer only
 if the reference number is 0, otherway it will decrease
@@ -1141,7 +1294,166 @@ Please more info about `RendererComponent`.
 
 ### Header:
 ```cpp
-class SpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, SpriteRenderer>
+class SimpleSpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, SimpleSpriteRenderer>
+{...}
+```
+
+### Variables:
+**Private:**  
+**id**  
+```cpp
+static const std::string id;
+```
+
+**refrenceNumber**  
+It is counted, that how many SimpleSpriteRenderComponent exist.
+```cpp
+static int refrenceNumber;
+```
+
+**Protected:**  
+**mutex**  
+```cpp
+std::mutex mutex;
+```
+
+### Functions:
+**Protected:**  
+**SimpleSpriteRenderComponent**  
+```cpp
+SimpleSpriteRenderComponent(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+```
+```cpp
+SimpleSpriteRenderComponent(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+```
+
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**GetId**  
+```cpp
+const std::string& GetId() const override;
+```
+
+**GetRenderer**  
+```cpp
+SimpleSpriteRenderer* GetRenderer() const override;
+```
+
+##
+## SimpleSpriteRenderer
+### Source Code:
+[SimpleSpriteRenderer.h](../../Learning2DEngine/Learning2DEngine/Render/SimpleSpriteRenderer.h)  
+[SimpleSpriteRenderer.cpp](../../Learning2DEngine/Learning2DEngine/Render/SimpleSpriteRenderer.cpp)
+
+### Description:
+It can render the sprites. 
+It has better performance, than the `MultiSpriteRenderer`,
+when the object has just a couple instances in a layer.  
+Note: The projection and the view matrix came from Game::mainCamera.
+
+### Header:
+```cpp
+class SimpleSpriteRenderer : public IRenderer, public virtual System::Singleton<SimpleSpriteRenderer>
+{...}
+```
+
+### Variables:
+**Private:**  
+**shader**  
+```cpp
+Shader shader;
+```
+
+**vao**  
+```cpp
+GLuint vao;
+```
+
+**vbo**  
+```cpp
+GLuint vbo;
+```
+
+**ebo**  
+```cpp
+GLuint ebo;
+```
+
+**spriteRenderData**  
+Note: The int is the layer.  
+```cpp
+std::map<int, std::vector<RenderData*>> spriteRenderData;
+```
+
+### Functions:
+**Private:**  
+**SimpleSpriteRenderer**  
+```cpp
+SimpleSpriteRenderer();
+```
+
+**InitShader**  
+```cpp
+void InitShader();
+```
+
+**InitVao**  
+```cpp
+void InitVao();
+```
+
+**Public:**  
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**SetData**  
+Note: the int is the layer.
+```cpp
+void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+```
+
+**Draw**  
+It draws those objects, which was added with SetData and they are on the selected layer.
+```cpp
+void Draw(int layer) override;
+```
+
+
+##
+## SpriteRenderComponent
+### Source Code:
+[SpriteRenderComponent.h](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderComponent.h)  
+[SpriteRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderComponent.cpp)
+
+### Description:
+It is for render a sprite with color and texture.   
+It uses `MultiSpriteRenderer` for rendering. It is recommand, when the developer knows,
+the object has a lot of instances in a layer.  
+It uses static variables to count how many GameObject initialized it.
+That's why it will destroy renderer only
+if the reference number is 0, otherway it will decrease
+the reference number.  
+It supports the multi instance rendering.  
+Please more info about `RendererComponent`.
+
+### Header:
+```cpp
+class SpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, MultiSpriteRenderer>
 {...}
 ```
 
@@ -1191,7 +1503,7 @@ const std::string& GetId() const override;
 
 **GetRenderer**  
 ```cpp
-SpriteRenderer* GetRenderer() const override;
+MultiSpriteRenderer* GetRenderer() const override;
 ```
 
 ##
@@ -1246,77 +1558,6 @@ inline void ClearTexture();
 ```
 
 ##
-## SpriteRenderer
-### Source Code:
-[SpriteRenderer.h](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderer.h)  
-[SpriteRenderer.cpp](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderer.cpp)
-
-### Description:
-It can render the sprites.
-Note: The projection and the view matrix came from Game::mainCamera.
-
-### Header:
-```cpp
-class SpriteRenderer : public IRenderer, public virtual System::Singleton<SpriteRenderer>
-{...}
-```
-
-### Variables:
-**Private:**  
-**shader**  
-```cpp
-Shader shader;
-```
-
-**vao**  
-```cpp
-GLuint vao;
-```
-
-**vbo**  
-```cpp
-GLuint vbo;
-```
-
-**ebo**  
-```cpp
-GLuint ebo;
-```
-
-### Functions:
-**Private:**  
-**SpriteRenderer**  
-```cpp
-SpriteRenderer();
-```
-
-**InitShader**  
-```cpp
-void InitShader();
-```
-
-**InitVao**  
-```cpp
-void InitVao();
-```
-
-**Public:**  
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
-```
-
-**Draw**  
-```cpp
-void Draw(std::vector<Render::RenderData*> renderData) override;
-```
-
-##
 ## Texture2D
 ### Source Code:
 [Texture2D.h](../../Learning2DEngine/Learning2DEngine/Render/Texture2D.h)  
@@ -1337,7 +1578,7 @@ class Texture2D
 **Private:**  
 **id**  
 ```cpp
-unsigned int id;
+GLuint id;
 ``` 
 
 **Public:**  
@@ -1387,7 +1628,7 @@ void Bind() const;
 **GetId**  
 It returns the id of the `Texture2D`.
 ```cpp
-inline unsigned int GetId() const;
+inline GLuint GetId() const
 ```
 
 ##

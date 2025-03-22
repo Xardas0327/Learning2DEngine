@@ -11,7 +11,7 @@ namespace Learning2DEngine
         class Texture2D
         {
         private:
-            unsigned int id;
+            GLuint id;
         public:
             // Width of the loaded image in pixels
             unsigned int width;
@@ -25,7 +25,7 @@ namespace Learning2DEngine
             void Destroy();
             void Bind() const;
 
-            inline unsigned int GetId() const
+            inline GLuint GetId() const
             {
                 return id;
             }
