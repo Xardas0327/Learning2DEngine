@@ -2,6 +2,7 @@
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
+#include "../System/ComponentManager.h"
 #include "../Render/RenderManager.h"
 #include "../Render/ShaderConstant.h"
 
@@ -96,11 +97,20 @@ namespace Learning2DEngine
 
 		void ParticleRenderer::Init()
 		{
-			InitShader();
-			InitVao();
+			if (ComponentManager::GetInstance().GetThreadSafe())
+			{
+				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
+				InitShader();
+				InitVao();
+			}
+			else
+			{
+				InitShader();
+				InitVao();
+			}
 		}
 
-		void ParticleRenderer::Destroy()
+		void ParticleRenderer::DestroyObject()
 		{
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &ebo);
@@ -115,6 +125,19 @@ namespace Learning2DEngine
 			{
 				delete[] models;
 				delete[] colors;
+			}
+		}
+
+		void ParticleRenderer::Destroy()
+		{
+			if (ComponentManager::GetInstance().GetThreadSafe())
+			{
+				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
+				DestroyObject();
+			}
+			else
+			{
+				DestroyObject();
 			}
 		}
 

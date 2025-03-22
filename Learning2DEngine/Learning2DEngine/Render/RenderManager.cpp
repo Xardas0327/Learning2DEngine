@@ -12,7 +12,7 @@ namespace Learning2DEngine
             window(nullptr), resolution(0, 0), clearColor(0.0f, 0.0f, 0.0f, 1.0f),
             keyboardEventHandler(), framebufferSizeEventHandler(),
             mouseButtonEventHandler(), cursorPositonEventHandler(), cursorEnterEventHandler(), scrollEventHandler(),
-            blendFuncFactor(GL_ONE, GL_ZERO), isBlendActive(false), maxTextureUnits(1)
+            blendFuncFactor(GL_ONE, GL_ZERO), isBlendActive(false), maxTextureUnits(1), mutex()
         {
 
         }

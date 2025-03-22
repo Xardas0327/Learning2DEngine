@@ -310,9 +310,9 @@ namespace Learning2DEngine
 					threads.emplace_back(
 						&ColliderComponentHandler::RunKinematicColliderPart,
 						this,
-						(i - dynamicItemsPerThread) * kinematicItemsPerThread,
+						(i - dynamicThreadNumber) * kinematicItemsPerThread,
 						//if it is too big the RunKinematicColliderPart will fix it
-						(i - dynamicItemsPerThread + 1) * kinematicItemsPerThread
+						(i - dynamicThreadNumber + 1) * kinematicItemsPerThread
 					);
 			}
 

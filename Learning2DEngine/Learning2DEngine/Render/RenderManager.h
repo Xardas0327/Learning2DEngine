@@ -1,5 +1,7 @@
 #pragma once
 
+#include <mutex>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -47,6 +49,9 @@ namespace Learning2DEngine
 			static void CallbackUpdateScroll(GLFWwindow* window, double xoffset, double yoffset);
 			void UpdateScroll(GLFWwindow* window, double xoffset, double yoffset);
 		public:
+			//It is a "global" mutex, that the OpenGL can be thread-safe
+			std::mutex mutex;
+
 			void Init(int majorVersion, int minorVersion, Resolution resolution, const char* title, bool resizableWindows = true);
 			void Terminate();
 			void CloseWindow();

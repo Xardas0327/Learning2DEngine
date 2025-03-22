@@ -24,9 +24,9 @@ namespace Learning2DEngine
 			/// It is counted, that how many Text2DLateRenderComponent exist.
 			/// </summary>
 			static int refrenceNumber;
-		protected:
-			std::mutex mutex;
+			static std::mutex mutex;
 
+		protected:
 			Text2DLateRenderComponent(
 				System::GameObject* gameObject,
 				const FontSizePair& fontSizePair,

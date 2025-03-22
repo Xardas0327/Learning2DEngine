@@ -11,6 +11,7 @@ namespace Learning2DEngine
 	{
 		const std::string ParticleSystemComponent::id = "L2DE_ParticleSystemComponent";
 		int ParticleSystemComponent::refrenceNumber = 0;
+		std::mutex ParticleSystemComponent::mutex;
 
 		ParticleSystemComponent::ParticleSystemComponent(
 			GameObject* gameObject,
@@ -19,7 +20,7 @@ namespace Learning2DEngine
 			int renderLayer)
 			: RendererComponent(gameObject, renderLayer, particleAmount), BaseRendererComponent(gameObject, renderLayer, particleAmount),
 			BaseUpdaterComponent(gameObject), UpdaterComponent(gameObject), Component(gameObject),
-			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0), mutex(),
+			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
 			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
 		{
 		}
@@ -34,7 +35,7 @@ namespace Learning2DEngine
 			: RendererComponent(gameObject, renderLayer, particleAmount, systemSettings, texture),
 			BaseRendererComponent(gameObject, renderLayer, particleAmount, systemSettings, texture),
 			BaseUpdaterComponent(gameObject), UpdaterComponent(gameObject), Component(gameObject),
-			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0), mutex(),
+			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
 			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
 		{
 

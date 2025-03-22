@@ -23,9 +23,9 @@ namespace Learning2DEngine
 			/// It is counted, that how many SimpleSpriteRenderComponent exist.
 			/// </summary>
 			static int refrenceNumber;
-		protected:
-			std::mutex mutex;
+			static std::mutex mutex;
 
+		protected:
 			SimpleSpriteRenderComponent(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 			SimpleSpriteRenderComponent(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 

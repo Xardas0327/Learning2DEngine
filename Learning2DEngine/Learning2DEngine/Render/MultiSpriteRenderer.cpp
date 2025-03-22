@@ -2,7 +2,9 @@
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
+#include "../System/ComponentManager.h"
 #include "ShaderConstant.h"
+#include "RenderManager.h"
 
 namespace Learning2DEngine
 {
@@ -95,11 +97,20 @@ namespace Learning2DEngine
 
 		void MultiSpriteRenderer::Init()
 		{
-			InitShader();
-			InitVao();
+			if (ComponentManager::GetInstance().GetThreadSafe())
+			{
+				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
+				InitShader();
+				InitVao();
+			}
+			else
+			{
+				InitShader();
+				InitVao();
+			}
 		}
 
-		void MultiSpriteRenderer::Destroy()
+		void MultiSpriteRenderer::DestroyObject()
 		{
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &ebo);
@@ -114,6 +125,19 @@ namespace Learning2DEngine
 			{
 				delete[] models;
 				delete[] colors;
+			}
+		}
+
+		void MultiSpriteRenderer::Destroy()
+		{
+			if (ComponentManager::GetInstance().GetThreadSafe())
+			{
+				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
+				DestroyObject();
+			}
+			else
+			{
+				DestroyObject();
 			}
 		}
 

@@ -2,7 +2,9 @@
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
+#include "../System/ComponentManager.h"
 #include "../Render/ShaderConstant.h"
+#include "../Render/RenderManager.h"
 #include "Text2DRenderData.h"
 #include "TextCharacterSet.h"
 
@@ -59,16 +61,39 @@ namespace Learning2DEngine
 
 		void Text2DRenderer::Init()
 		{
-			InitShader();
-			InitVao();
+			if (ComponentManager::GetInstance().GetThreadSafe())
+			{
+				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
+				InitShader();
+				InitVao();
+			}
+			else
+			{
+				InitShader();
+				InitVao();
+			}
 		}
-		void Text2DRenderer::Destroy()
+
+		void Text2DRenderer::DestroyObject()
 		{
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &vbo);
 			glDeleteBuffers(1, &ebo);
 
 			textRenderData.clear();
+		}
+
+		void Text2DRenderer::Destroy()
+		{
+			if (ComponentManager::GetInstance().GetThreadSafe())
+			{
+				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
+				DestroyObject();
+			}
+			else
+			{
+				DestroyObject();
+			}
 		}
 
 		void Text2DRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
