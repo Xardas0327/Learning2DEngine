@@ -198,9 +198,10 @@ inline unsigned int GetParticleAmount() const;
 ## ParticleRenderer
 ### Source Code:
 [ParticleRenderer.h](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleRenderer.h)
+[ParticleRenderer.cpp](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleRenderer.cpp)
 
 ### Description:
-It can render the particles.
+It can render the particles.  
 Note: The projection and the view matrix came from Game::mainCamera.
 
 ### Header:
@@ -252,7 +253,7 @@ unsigned int maxObjectSize;
 
 **particleRenderData**
 When the SetData is called, the renderData will be converted to this format.  
-Note: the int is the layer.
+Note: The int is the layer.
 ```cpp
 std::map<int, std::vector<ParticleRenderData*>> particleRenderData;
 ```

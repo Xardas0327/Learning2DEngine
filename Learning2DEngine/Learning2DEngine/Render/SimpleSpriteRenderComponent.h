@@ -20,7 +20,7 @@ namespace Learning2DEngine
 		private:
 			static const std::string id;
 			/// <summary>
-			/// It is counted, that how many SpriteRenderComponent exist.
+			/// It is counted, that how many SimpleSpriteRenderComponent exist.
 			/// </summary>
 			static int refrenceNumber;
 		protected:
