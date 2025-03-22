@@ -1283,7 +1283,7 @@ static const char* const DEFAULT_POSTPROCESS_EFFECT_FRAGMENT_SHADER;
 [SimpleSpriteRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/Render/SimpleSpriteRenderComponent.cpp)
 
 ### Description:
-It can render a sprite with color and texture.  
+It is for render a sprite with color and texture.  
 It uses `SimpleSpriteRenderer` for rendering. It is recommand, when the developer knows,
 the object has just a couple instances in a layer.  
 It uses static variables to count how many GameObject initialized it.
@@ -1431,6 +1431,7 @@ void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) 
 It draws those objects, which was added with SetData and they are on the selected layer.
 ```cpp
 void Draw(int layer) override;
+```
 
 
 ##
@@ -1440,7 +1441,7 @@ void Draw(int layer) override;
 [SpriteRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/Render/SpriteRenderComponent.cpp)
 
 ### Description:
-It can render a sprite with color and texture.  
+It is for render a sprite with color and texture.   
 It uses `MultiSpriteRenderer` for rendering. It is recommand, when the developer knows,
 the object has a lot of instances in a layer.  
 It uses static variables to count how many GameObject initialized it.
