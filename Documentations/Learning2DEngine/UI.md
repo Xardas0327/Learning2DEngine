@@ -196,6 +196,12 @@ GLuint vbo;
 GLuint ebo;
 ```
 
+**textRenderData**
+Note: the int is the layer.
+```cpp
+std::map<int, std::vector<Render::RenderData*>> textRenderData;
+```
+
 ### Functions:
 **Private:**  
 **SpriteRenderer**  
@@ -224,9 +230,16 @@ void Init() override;
 void Destroy() override;
 ```
 
-**Draw**  
+**SetData**  
+Note: the int is the layer.
 ```cpp
-void Draw(std::vector<Render::RenderData*> renderData) override;
+void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+```
+
+**Draw**  
+It draws those objects, which was added with SetData and they are on the selected layer.
+```cpp
+void Draw(int layer) override;
 ```
 
 ##
