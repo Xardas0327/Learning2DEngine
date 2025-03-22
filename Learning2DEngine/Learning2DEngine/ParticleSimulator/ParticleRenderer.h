@@ -37,6 +37,7 @@ namespace Learning2DEngine
 
 			void InitShader();
 			void InitVao();
+			void DestroyObject();
 		public:
 			void Init() override;
 			void Destroy() override;
