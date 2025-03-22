@@ -227,45 +227,45 @@ GLuint vao;
 GLuint ebo;
 ```
 
-**vboBasic**
+**vboBasic**  
 It contains the vertex positions and texture coordinates.
 ```cpp
 GLuint vboBasic;
 ```
 
-**vboModel**
+**vboModel**  
 It contains the uploaded model matrices of the renderable objects.
 ```cpp
 GLuint vboModel;
 ```
 
-**vboColor**
+**vboColor**  
 It contains the uploaded colors of the renderable objects.
 ```cpp
 GLuint vboColor;
 ```
 
-**maxObjectSize**
+**maxObjectSize**  
 The size of the vboModel, vboColor, models and the colors.
 ```cpp
 unsigned int maxObjectSize;
 ```
 
-**particleRenderData**
+**particleRenderData**  
 When the SetData is called, the renderData will be converted to this format.  
 Note: The int is the layer.
 ```cpp
 std::map<int, std::vector<ParticleRenderData*>> particleRenderData;
 ```
 
-**models**
+**models**  
 It is array, which contains the model matrices of the renderable objects, before the upload.
 Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
 ```cpp
 glm::mat4* models;
 ```
 
-**colors**
+**colors**  
 It is array, which contains the colors of the renderable objects, before the upload.
 Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
 ```cpp
