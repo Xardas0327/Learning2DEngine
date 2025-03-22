@@ -196,7 +196,7 @@ GLuint vbo;
 GLuint ebo;
 ```
 
-**textRenderData**
+**textRenderData**  
 Note: the int is the layer.
 ```cpp
 std::map<int, std::vector<Render::RenderData*>> textRenderData;
@@ -204,9 +204,9 @@ std::map<int, std::vector<Render::RenderData*>> textRenderData;
 
 ### Functions:
 **Private:**  
-**SpriteRenderer**  
+**Text2DRenderer**  
 ```cpp
-SpriteRenderer();
+Text2DRenderer();
 ```
 
 **InitShader**  
