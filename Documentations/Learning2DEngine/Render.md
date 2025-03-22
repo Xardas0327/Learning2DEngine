@@ -1387,7 +1387,7 @@ GLuint vbo;
 GLuint ebo;
 ```
 
-**spriteRenderData** 
+**spriteRenderData**  
 Note: The int is the layer.  
 ```cpp
 std::map<int, std::vector<RenderData*>> spriteRenderData;
