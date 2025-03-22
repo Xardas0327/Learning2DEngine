@@ -131,9 +131,16 @@ virtual void Init() = 0;
 virtual void Destroy() = 0;
 ```
 
-**Draw**  
+**SetData**  
+Note: the int is the layer.
 ```cpp
-virtual void Draw(std::vector<RenderData*> renderData) = 0;
+virtual void SetData(const std::map<int, std::vector<RenderData*>>& renderData) = 0;
+```
+
+**Draw**  
+It draws those objects, which was added with SetData and they are on the selected layer.
+```cpp
+virtual void Draw(int layer) = 0;
 ```
 
 ##
@@ -535,10 +542,10 @@ std::map<std::string, IRenderer*> renderers;
 ```
 
 **renderData**  
-The int is the layer.  
-The string is the id.
+The string is the id.  
+The int is the layer.
 ```cpp
-std::map<int, std::map<std::string, std::vector<RenderData*>>> renderData;
+std::map<std::string, std::map<int, std::vector<RenderData*>>> renderData;
 ```
 
 **renderDataMapping**  
@@ -685,14 +692,19 @@ EventSystem::EventHandler<bool> cursorEnterEventHandler;
 EventSystem::EventHandler<double, double> scrollEventHandler;
 ```
 
+**blendFuncFactor**  
+```cpp
+BlendFuncFactor blendFuncFactor;
+```
+
 **isBlendActive**  
 ```cpp
 bool isBlendActive;
 ```
 
-**blendFuncFactor**  
+**maxTextureUnits**  
 ```cpp
-BlendFuncFactor blendFuncFactor;
+GLint maxTextureUnits;
 ```
 
 ### Functions:
@@ -820,7 +832,7 @@ void ClearWindow();
 **GetResolution**  
 It returns the (game) screen resolution.
 ```cpp
-inline Resolution GetResolution();
+inline Resolution GetResolution() const;
 ```
 
 **SetClearColor**  
@@ -832,7 +844,7 @@ void SetClearColor(float r, float g, float b, float a);
 **GetClearColor**  
 It returns the current `clearColor`.
 ```cpp
-inline glm::vec4 GetClearColor();
+inline glm::vec4 GetClearColor() const;
 ```
 
 **EnableBlend**  
@@ -850,7 +862,7 @@ void DisableBlend();
 **IsBlendActive**  
 It returns true if the blend is enabled.
 ```cpp
-inline bool IsBlendActive();
+inline bool IsBlendActive() const;
 ```
 
 **SetBlendFunc**  
@@ -865,7 +877,13 @@ void SetBlendFunc(BlendFuncFactor blendFuncFactor);
 **GetBlendFunc**  
 It returns the current BlendFuncFactor.
 ```cpp
-inline BlendFuncFactor GetBlendFunc();
+inline BlendFuncFactor GetBlendFunc() const;
+```
+
+**GetMaxTextureUnits**  
+It returns how many texture units the GPU can handle at once.
+```cpp
+inline GLint GetMaxTextureUnits() const;
 ```
 
 **AddKeyboardEvent**  
@@ -1098,9 +1116,19 @@ class ShaderConstant final
 
 ### Variables:
 **Public:**  
+**Simple Sprite shader**  
+The simple sprite shader's name (for `ResourceManager`),
+vertex and fragment shaders.
+```cpp
+static const std::string SIMPLE_SPRITE_SHADER_NAME;
+static const char* const SIMPLE_SPRITE_VERTEX_SHADER;
+static const char* const SIMPLE_SPRITE_FRAGMENT_SHADER;
+```
+
 **Sprite shader**  
 The sprite shader's name (for `ResourceManager`),
-vertex and fragment shaders.
+vertex and fragment shaders.  
+It has multi instancing support.
 ```cpp
 static const std::string SPRITE_SHADER_NAME;
 static const char* const SPRITE_VERTEX_SHADER;
@@ -1137,11 +1165,12 @@ It uses static variables to count how many GameObject initialized it.
 That's why it will destroy renderer only
 if the reference number is 0, otherway it will decrease
 the reference number.  
+It supports the multi instance rendering
 Please more info about `RendererComponent`.
 
 ### Header:
 ```cpp
-class SpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, SpriteRenderer>
+class SpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, MultiSpriteRenderer>
 {...}
 ```
 
@@ -1191,7 +1220,7 @@ const std::string& GetId() const override;
 
 **GetRenderer**  
 ```cpp
-SpriteRenderer* GetRenderer() const override;
+MultiSpriteRenderer* GetRenderer() const override;
 ```
 
 ##
@@ -1337,7 +1366,7 @@ class Texture2D
 **Private:**  
 **id**  
 ```cpp
-unsigned int id;
+GLuint id;
 ``` 
 
 **Public:**  
@@ -1387,7 +1416,7 @@ void Bind() const;
 **GetId**  
 It returns the id of the `Texture2D`.
 ```cpp
-inline unsigned int GetId() const;
+inline GLuint GetId() const
 ```
 
 ##
