@@ -163,6 +163,11 @@ namespace Learning2DEngine
 						}
 					}
 
+					activeParticleCount =
+						particleData->GetMinAllocateSize() > activeParticleCount ?
+						particleData->GetMinAllocateSize() :
+						activeParticleCount;
+
 					if (activeParticleCount > 0)
 					{
 						particleRenderData[layerData.first].push_back(particleData);
@@ -181,7 +186,9 @@ namespace Learning2DEngine
 				glBindBuffer(GL_ARRAY_BUFFER, vboColor);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * maxActiveParticleCount, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				maxObjectSize = maxActiveParticleCount;
+
+				//It allocates 20% more space, so that it does not have to allocate again if there are some dynamic renderers. 
+				maxObjectSize = static_cast<float>(maxActiveParticleCount) *1.2f;
 
 				delete[] models;
 				delete[] colors;

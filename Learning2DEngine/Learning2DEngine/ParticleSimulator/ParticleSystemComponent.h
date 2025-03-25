@@ -37,6 +37,7 @@ namespace Learning2DEngine
 				System::GameObject* gameObject,
 				unsigned int particleAmount,
 				ParticleSettings* particleSettings = nullptr,
+				unsigned int minAllocateSize = 0,
 				int renderLayer = 0);
 			ParticleSystemComponent(
 				System::GameObject* gameObject,
@@ -44,6 +45,7 @@ namespace Learning2DEngine
 				const Render::Texture2D& texture,
 				const ParticleSystemSettings& systemSettings,
 				ParticleSettings* particleSettings = nullptr,
+				unsigned int minAllocateSize = 0,
 				int renderLayer = 0);
 
 			void Init() override;
