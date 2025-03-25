@@ -420,6 +420,8 @@ void Destroy() override;
 ```
 
 **SetData**  
+It allocates 20% more space in the buffer, so that it does not have to allocate again 
+if there is some dynamic renderers.  
 Note: the int is the layer.
 ```cpp
 void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
