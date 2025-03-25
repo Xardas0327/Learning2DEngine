@@ -172,7 +172,7 @@ namespace Learning2DEngine
 				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * maxSize, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-				//It allocates 20% more space, so that it does not have to allocate again if there is some dynamic renderers. 
+				//It allocates 20% more space, so that it does not have to allocate again if there are some dynamic renderers. 
 				maxObjectSize = static_cast<float>(maxSize) * 1.2f;
 
 				delete[] models;
