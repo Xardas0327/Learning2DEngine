@@ -163,6 +163,11 @@ namespace Learning2DEngine
 						}
 					}
 
+					activeParticleCount =
+						particleData->GetMinAllocateSize() > activeParticleCount ?
+						particleData->GetMinAllocateSize() :
+						activeParticleCount;
+
 					if (activeParticleCount > 0)
 					{
 						particleRenderData[layerData.first].push_back(particleData);

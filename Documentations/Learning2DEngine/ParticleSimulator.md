@@ -132,6 +132,12 @@ class ParticleRenderData final : public Render::RenderData
 bool isRenderable;
 ```
 
+**minAllocateSize**
+The renderer will allocate minimum this size vbo buffer.
+```cpp
+const unsigned int minAllocateSize;
+```
+
 **particleAmount**
 ```cpp
 const unsigned int particleAmount;
@@ -158,10 +164,10 @@ Render::Texture2D* texture;
 **Public:**  
 **ParticleRenderData**  
 ```cpp
-ParticleRenderData(const System::Component* component, unsigned int particleAmount);
+ParticleRenderData(const System::Component* component, unsigned int particleAmount, unsigned int minAllocateSize = 0);
 ```
 ```cpp
-ParticleRenderData(const System::Component* component, unsigned int particleAmount, const ParticleSystemSettings& systemSettings, const Render::Texture2D& texture)
+ParticleRenderData(const System::Component* component, unsigned int particleAmount, const ParticleSystemSettings& systemSettings, const Render::Texture2D& texture, unsigned int minAllocateSize = 0)
 ```
 
 **~ParticleRenderData**  
@@ -192,6 +198,11 @@ inline const Particle* GetParticles() const;
 **GetParticleAmount**  
 ```cpp
 inline unsigned int GetParticleAmount() const;
+```
+
+**GetMinAllocateSize**  
+```cpp
+inline unsigned int GetMinAllocateSize() const;
 ```
 
 ##
@@ -439,10 +450,10 @@ static std::mutex mutex;
 **Private:**  
 **ParticleSystemComponent**  
 ```cpp
-ParticleSystemComponent(System::GameObject* gameObject, unsigned int particleAmount, ParticleSettings* particleSettings = nullptr, int renderLayer = 0);
+ParticleSystemComponent(System::GameObject* gameObject, unsigned int particleAmount, ParticleSettings* particleSettings = nullptr, unsigned int minAllocateSize = 0, int renderLayer = 0);
 ```
 ```cpp
-ParticleSystemComponent(System::GameObject* gameObject, unsigned int particleAmount, const Render::Texture2D& texture, const ParticleSystemSettings& systemSettings, ParticleSettings* particleSettings = nullptr, int renderLayer = 0);
+ParticleSystemComponent(System::GameObject* gameObject, unsigned int particleAmount, const Render::Texture2D& texture, const ParticleSystemSettings& systemSettings, ParticleSettings* particleSettings = nullptr, unsigned int minAllocateSize = 0, int renderLayer = 0);
 ```
 
 **Init**  
