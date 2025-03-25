@@ -25,7 +25,7 @@ The game has `GameObject`(s), which has a `Transform` and the components. The tr
 contains the position, scale and rotation. The components contains `Component` items,
 which can have data and functions. There are some special components, which can run automatically.  
 If you want to read more, please check the Order of Execution
-or chech the classes documentations under Namespaces.
+or check the classes documentations under Namespaces.
 
 ## Order of Execution
 1. Calculate delta time: It is simple, just the engine asks the time by `glfwGetTime()` and
@@ -62,7 +62,7 @@ Note: The LateRender run after Render. So if a `RendererComponent` has a higher 
 it will be still rendered before the `LateRendererComponent`.
 1. Update Window: The `glfwSwapBuffers` will be called on the window.
 1. Destroy Marked GameObjects: When the `GameObject::Destroy` is called, the gameobject will not be
-destroyed immediately. So, every reference pointer will be fine until end of the frame.
+destroyed immediately. So, every reference pointers will be fine until end of the frame.
 
 ## License
 Learning2DEngine © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
