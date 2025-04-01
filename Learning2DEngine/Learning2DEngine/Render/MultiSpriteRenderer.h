@@ -3,12 +3,12 @@
 #include <vector>
 
 #include <glad/glad.h>
-#include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
 #include "IRenderer.h"
 #include "Shader.h"
 #include "SpriteRenderData.h"
+#include "MultiSpriteDynamicData.h"
 
 namespace Learning2DEngine
 {
@@ -21,16 +21,14 @@ namespace Learning2DEngine
 			Shader shader;
 			GLuint vao;
 			GLuint ebo;
-			GLuint vboBasic;
-			GLuint vboModel;
-			GLuint vboColor;
+			GLuint vboStatic;
+			GLuint vboDynamic;
 			unsigned int maxObjectSize;
 
 			//int is the layer
 			//GLuint is the texture id. 0 means, that these data doesn't have texture.
 			std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
-			glm::mat4* models;
-			glm::vec4* colors;
+			MultiSpriteDynamicData* dynamicData;
 
 			MultiSpriteRenderer();
 

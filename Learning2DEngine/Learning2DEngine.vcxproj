@@ -217,6 +217,7 @@
     <ClInclude Include="Learning2DEngine\Render\MSAA.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\Particle.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemSettings.h" />
+    <ClInclude Include="Learning2DEngine\Render\MultiSpriteDynamicData.h" />
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h" />
     <ClInclude Include="Learning2DEngine\Render\RenderData.h" />
     <ClInclude Include="Learning2DEngine\Render\RendererComponent.h" />

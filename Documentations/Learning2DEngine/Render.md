@@ -5,6 +5,7 @@
 - [IResolutionRefresher](Render.md#iresolutionrefresher)
 - [LateRendererComponent](Render.md#laterenderercomponent)
 - [MSAA](Render.md#msaa)
+- [MultiSpriteDynamicData](Render.md#multispritedynamicdata)
 - [MultiSpriteRenderer](Render.md#multispriterenderer)
 - [PostProcessEffect](Render.md#postprocesseffect)
 - [RenderData](Render.md#renderdata)
@@ -305,6 +306,24 @@ inline unsigned int GetSampleNumber();
 ```
 
 ##
+## MultiSpriteDynamicData
+### Source Code:
+[MultiSpriteDynamicData.h](../../Learning2DEngine/Learning2DEngine/Render/MultiSpriteDynamicData.h)  
+
+### Description:
+It contions the dynamic data of the MultiSpriteRenderer.
+
+### Header:
+```cpp
+struct MultiSpriteDynamicData
+{
+    float modelMatrix[16];
+    float color[4];
+};
+```
+
+
+##
 ## MultiSpriteRenderer
 ### Source Code:
 [MultiSpriteRenderer.h](../../Learning2DEngine/Learning2DEngine/Render/MultiSpriteRenderer.h)  
@@ -339,26 +358,20 @@ GLuint vao;
 GLuint ebo;
 ```
 
-**vboBasic**  
+**vboStatic**  
 It contains the vertex positions and texture coordinates.
 ```cpp
-GLuint vboBasic;
+GLuint vboStatic;
 ```
 
-**vboModel**  
-It contains the uploaded model matrices of the renderable objects.
+**vboDynamic**  
+It contains the uploaded model matrices and colors of the renderable objects.
 ```cpp
-GLuint vboModel;
-```
-
-**vboColor**  
-It contains the uploaded colors of the renderable objects.
-```cpp
-GLuint vboColor;
+GLuint vboDynamic;
 ```
 
 **maxObjectSize**  
-The size of the vboModel, vboColor, models and the colors.
+The size of the vboDynamic, dynamicData.
 ```cpp
 unsigned int maxObjectSize;
 ```
@@ -371,18 +384,11 @@ GLuint is the texture id. 0 means, that these data doesn't have texture.
 std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
 ```
 
-**models**  
-It is array, which contains the model matrices of the renderable objects, before the upload.
+**dynamicData**  
+It is array, which contains the model matrices and colors of the renderable objects, before the upload.
 Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
 ```cpp
-glm::mat4* models;
-```
-
-**colors**  
-It is array, which contains the colors of the renderable objects, before the upload.
-Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
-```cpp
-glm::vec4* colors;
+MultiSpriteDynamicData* dynamicData;
 ```
 
 ### Functions:

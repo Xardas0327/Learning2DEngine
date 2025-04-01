@@ -3,11 +3,11 @@
 #include <vector>
 
 #include <glad/glad.h>
-#include <glm/glm.hpp>
 
 #include "../System/Singleton.h"
 #include "../Render/IRenderer.h"
 #include "../Render/Shader.h"
+#include "../Render/MultiSpriteDynamicData.h"
 
 #include "ParticleRenderData.h"
 
@@ -23,15 +23,13 @@ namespace Learning2DEngine
 			Render::Shader shader;
 			GLuint vao;
 			GLuint ebo;
-			GLuint vboBasic;
-			GLuint vboModel;
-			GLuint vboColor;
+			GLuint vboStatic;
+			GLuint vboDynamic;
 			unsigned int maxObjectSize;
 
 			//int is the layer
 			std::map<int, std::vector<ParticleRenderData*>> particleRenderData;
-			glm::mat4* models;
-			glm::vec4* colors;
+			Render::MultiSpriteDynamicData* dynamicData;
 
 			ParticleRenderer();
 
