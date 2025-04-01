@@ -326,5 +326,8 @@
     <ClInclude Include="Learning2DEngine\Render\SimpleSpriteRenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\MultiSpriteDynamicData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

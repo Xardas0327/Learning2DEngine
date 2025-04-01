@@ -1,5 +1,8 @@
 #include "MultiSpriteRenderer.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
 #include "../System/ComponentManager.h"
@@ -14,8 +17,8 @@ namespace Learning2DEngine
 	{
 
 		MultiSpriteRenderer::MultiSpriteRenderer()
-			: shader(), vao(0), ebo(0), vboBasic(0), vboModel(0), vboColor(0), maxObjectSize(0),
-			spriteRenderData(), models(nullptr), colors(nullptr)
+			: shader(), vao(0), ebo(0), vboStatic(0), vboDynamic(0), maxObjectSize(0),
+			spriteRenderData(), dynamicData(nullptr)
 		{
 
 		}
@@ -49,8 +52,8 @@ namespace Learning2DEngine
 			glGenVertexArrays(1, &vao);
 			glBindVertexArray(vao);
 
-			glGenBuffers(1, &vboBasic);
-			glBindBuffer(GL_ARRAY_BUFFER, vboBasic);
+			glGenBuffers(1, &vboStatic);
+			glBindBuffer(GL_ARRAY_BUFFER, vboStatic);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 			glGenBuffers(1, &ebo);
@@ -62,23 +65,29 @@ namespace Learning2DEngine
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
-			glGenBuffers(1, &vboModel);
-			glBindBuffer(GL_ARRAY_BUFFER, vboModel);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4), NULL, GL_DYNAMIC_DRAW);
+			glGenBuffers(1, &vboDynamic);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(MultiSpriteDynamicData), NULL, GL_DYNAMIC_DRAW);
 			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)offsetof(MultiSpriteDynamicData, modelMatrix));
 			glEnableVertexAttribArray(3);
-			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)(offsetof(MultiSpriteDynamicData, modelMatrix) + sizeof(float) * 4));
 			glEnableVertexAttribArray(4);
-			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)(offsetof(MultiSpriteDynamicData, modelMatrix) + sizeof(float) * 8));
 			glEnableVertexAttribArray(5);
-			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
-
-			glGenBuffers(1, &vboColor);
-			glBindBuffer(GL_ARRAY_BUFFER, vboColor);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4), NULL, GL_DYNAMIC_DRAW);
+			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)(offsetof(MultiSpriteDynamicData, modelMatrix) + sizeof(float) * 12));
 			glEnableVertexAttribArray(6);
-			glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+			glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)offsetof(MultiSpriteDynamicData, color));
 
 			glVertexAttribDivisor(2, 1);
 			glVertexAttribDivisor(3, 1);
@@ -91,8 +100,7 @@ namespace Learning2DEngine
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 			maxObjectSize = 1;
-			models = new glm::mat4[maxObjectSize];
-			colors = new glm::vec4[maxObjectSize];
+			dynamicData = new MultiSpriteDynamicData[maxObjectSize];
 		}
 
 		void MultiSpriteRenderer::Init()
@@ -114,17 +122,14 @@ namespace Learning2DEngine
 		{
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &ebo);
-			glDeleteBuffers(1, &vboBasic);
-			glDeleteBuffers(1, &vboModel);
-			glDeleteBuffers(1, &vboColor);
+			glDeleteBuffers(1, &vboStatic);
+			glDeleteBuffers(1, &vboDynamic);
 
 			spriteRenderData.clear();
 
-			//if the model is not null, the colors is also not null
-			if (models != nullptr)
+			if (dynamicData != nullptr)
 			{
-				delete[] models;
-				delete[] colors;
+				delete[] dynamicData;
 			}
 		}
 
@@ -166,19 +171,16 @@ namespace Learning2DEngine
 			//if the size is not enough or too big, it will be reallocated.
 			if (maxSize > maxObjectSize || maxObjectSize > maxSize * 2)
 			{
-				//It allocates 20% more space, so that it does not have to allocate again if there are some dynamic renderers. 
+				//It allocates 20% more space, so that it does not have to allocate again
+				//if there are some dynamic renderers. 
 				maxObjectSize = static_cast<float>(maxSize) * 1.2f;
 
-				glBindBuffer(GL_ARRAY_BUFFER, vboModel);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
-				glBindBuffer(GL_ARRAY_BUFFER, vboColor);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(MultiSpriteDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-				delete[] models;
-				delete[] colors;
-				models = new glm::mat4[maxObjectSize];
-				colors = new glm::vec4[maxObjectSize];
+				delete[] dynamicData;
+				dynamicData = new MultiSpriteDynamicData[maxObjectSize];
 			}
 		}
 
@@ -204,14 +206,16 @@ namespace Learning2DEngine
 
 				for (size_t i = 0; i < data.second.size(); ++i)
 				{
-					models[i] = data.second[i]->component->gameObject->transform.GetModelMatrix();
-					colors[i] = data.second[i]->color;
+					std::memcpy(dynamicData[i].modelMatrix,
+						glm::value_ptr(data.second[i]->component->gameObject->transform.GetModelMatrix()),
+						sizeof(dynamicData[i].modelMatrix));
+					std::memcpy(dynamicData[i].color,
+						glm::value_ptr(data.second[i]->color),
+						sizeof(dynamicData[i].color));
 				}
 
-				glBindBuffer(GL_ARRAY_BUFFER, vboModel);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4) * data.second.size(), &models[0]);
-				glBindBuffer(GL_ARRAY_BUFFER, vboColor);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::vec4) * data.second.size(), &colors[0]);
+				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData) * data.second.size(), &dynamicData[0]);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, data.second.size());
