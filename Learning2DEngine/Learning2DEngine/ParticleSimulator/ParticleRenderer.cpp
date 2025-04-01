@@ -247,7 +247,7 @@ namespace Learning2DEngine
 				}
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData)* activeParticleCount, &dynamicData[0]);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData)* activeParticleCount, dynamicData);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, activeParticleCount);
