@@ -181,14 +181,14 @@ namespace Learning2DEngine
 			//if the size is not enough or too big, it will be reallocated.
 			if (maxActiveParticleCount > maxObjectSize || maxObjectSize > maxActiveParticleCount * 2)
 			{
-				glBindBuffer(GL_ARRAY_BUFFER, vboModel);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * maxActiveParticleCount, NULL, GL_DYNAMIC_DRAW);
-				glBindBuffer(GL_ARRAY_BUFFER, vboColor);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * maxActiveParticleCount, NULL, GL_DYNAMIC_DRAW);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 				//It allocates 20% more space, so that it does not have to allocate again if there are some dynamic renderers. 
-				maxObjectSize = static_cast<float>(maxActiveParticleCount) *1.2f;
+				maxObjectSize = static_cast<float>(maxActiveParticleCount) * 1.2f;
+
+				glBindBuffer(GL_ARRAY_BUFFER, vboModel);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, vboColor);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 				delete[] models;
 				delete[] colors;
