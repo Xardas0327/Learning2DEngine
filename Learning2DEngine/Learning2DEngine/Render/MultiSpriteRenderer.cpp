@@ -204,7 +204,6 @@ namespace Learning2DEngine
 			{
 				if (data.first != 0)
 				{
-					glActiveTexture(GL_TEXTURE0);
 					data.second[0]->texture->Bind();
 				}
 

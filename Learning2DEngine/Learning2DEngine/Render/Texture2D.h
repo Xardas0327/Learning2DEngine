@@ -23,7 +23,7 @@ namespace Learning2DEngine
             Texture2D(const Texture2DSettings& settings);
             void Create(unsigned int width, unsigned int height, const unsigned char* data);
             void Destroy();
-            void Bind() const;
+            void Bind(int textureUnitNumber = 0) const;
 
             inline GLuint GetId() const
             {

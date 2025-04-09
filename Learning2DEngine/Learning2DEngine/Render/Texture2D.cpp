@@ -37,8 +37,9 @@ namespace Learning2DEngine
             glDeleteTextures(1, &id);
         }
 
-        void Texture2D::Bind() const
+        void Texture2D::Bind(int textureUnitNumber) const
         {
+            glActiveTexture(GL_TEXTURE0 + textureUnitNumber);
             glBindTexture(GL_TEXTURE_2D, id);
         }
     }
