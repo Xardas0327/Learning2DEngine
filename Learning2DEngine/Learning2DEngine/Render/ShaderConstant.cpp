@@ -126,7 +126,7 @@ namespace Learning2DEngine
 
 			out vec2 TextureCoords;
 			out vec4 SpriteColor;
-			out int SpriteTextureId;
+			flat out int SpriteTextureId;
 
 			uniform mat4 view;
 			uniform mat4 projection;
@@ -150,7 +150,7 @@ namespace Learning2DEngine
 			#version 330 core
 			in vec2 TextureCoords;
 			in vec4 SpriteColor;
-			in int SpriteTextureId;
+			flat in int SpriteTextureId;
 
 			out vec4 color;
 

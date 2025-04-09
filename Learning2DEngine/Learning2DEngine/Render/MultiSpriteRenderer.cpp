@@ -30,8 +30,8 @@ namespace Learning2DEngine
 				? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
 				: resourceManager.LoadShader(
 					ShaderConstant::SPRITE_SHADER_NAME,
-					ShaderConstant::GetOldSpriteVertexShader(),
-					ShaderConstant::GetOldSpriteFragmentShader());
+					ShaderConstant::GetSpriteVertexShader(),
+					ShaderConstant::GetSpriteFragmentShader());
 		}
 
 		void MultiSpriteRenderer::InitVao()
@@ -88,12 +88,17 @@ namespace Learning2DEngine
 			glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
 				(void*)offsetof(MultiSpriteDynamicData, color));
+			glEnableVertexAttribArray(7);
+			glVertexAttribPointer(7, 1, GL_INT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)offsetof(MultiSpriteDynamicData, textureId));
 
 			glVertexAttribDivisor(2, 1);
 			glVertexAttribDivisor(3, 1);
 			glVertexAttribDivisor(4, 1);
 			glVertexAttribDivisor(5, 1);
 			glVertexAttribDivisor(6, 1);
+			glVertexAttribDivisor(7, 1);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
@@ -212,6 +217,7 @@ namespace Learning2DEngine
 					std::memcpy(dynamicData[i].color,
 						glm::value_ptr(data.second[i]->color),
 						sizeof(dynamicData[i].color));
+					dynamicData[i].textureId = 0;
 				}
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
