@@ -207,7 +207,6 @@ namespace Learning2DEngine
 					glActiveTexture(GL_TEXTURE0);
 					data.second[0]->texture->Bind();
 				}
-				shader.SetInteger("isUseTexture", data.first != 0);
 
 				for (size_t i = 0; i < data.second.size(); ++i)
 				{
