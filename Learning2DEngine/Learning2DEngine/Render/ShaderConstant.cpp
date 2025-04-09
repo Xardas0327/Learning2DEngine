@@ -122,11 +122,11 @@ namespace Learning2DEngine
 			layout(location = 1) in vec2 textureCoords;
 			layout(location = 2) in mat4 model;
 			layout(location = 6) in vec4 spriteColor;
-			layout(location = 7) in int spriteTextureId;
+			layout(location = 7) in float spriteTextureId;
 
 			out vec2 TextureCoords;
 			out vec4 SpriteColor;
-			flat out int SpriteTextureId;
+			out float SpriteTextureId;
 
 			uniform mat4 view;
 			uniform mat4 projection;
@@ -150,7 +150,7 @@ namespace Learning2DEngine
 			#version 330 core
 			in vec2 TextureCoords;
 			in vec4 SpriteColor;
-			flat in int SpriteTextureId;
+			in float SpriteTextureId;
 
 			out vec4 color;
 
@@ -159,9 +159,11 @@ namespace Learning2DEngine
 			void main()
 			{
 				color = SpriteColor;
-				if (SpriteTextureId>=0 && SpriteTextureId <)" + std::to_string(maxUnitNumber) + R"() 
+
+				int textureId = int(SpriteTextureId);	
+				if (textureId>=0 && textureId <)" + std::to_string(maxUnitNumber) + R"() 
 				{
-					color *= texture(spriteTextures[SpriteTextureId], TextureCoords);
+					color *= texture(spriteTextures[textureId], TextureCoords);
 				}
 			})";
 

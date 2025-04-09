@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <string>
+
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
 #include "../System/ComponentManager.h"
@@ -89,7 +91,7 @@ namespace Learning2DEngine
 				sizeof(MultiSpriteDynamicData),
 				(void*)offsetof(MultiSpriteDynamicData, color));
 			glEnableVertexAttribArray(7);
-			glVertexAttribPointer(7, 1, GL_INT, GL_FALSE,
+			glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
 				(void*)offsetof(MultiSpriteDynamicData, textureId));
 
@@ -153,32 +155,68 @@ namespace Learning2DEngine
 
 		void MultiSpriteRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
 		{
+			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
 			spriteRenderData.clear();
-			int maxSize = 0;
+			int maxDynamicSize = 0;
 			for (auto& layerData : renderData)
 			{
+				spriteRenderData[layerData.first].push_back(
+					std::make_tuple(std::vector<SpriteRenderData*>(), std::map<GLuint, int>())
+				);
+
 				for (auto& data : layerData.second)
 				{
 					auto spriteData = static_cast<SpriteRenderData*>(data);
+
 					if (spriteData->IsUseTexture())
-						spriteRenderData[layerData.first][spriteData->texture->GetId()].push_back(spriteData);
+					{
+						bool isFound = false;
+						for (int i = 0; i < spriteRenderData[layerData.first].size(); ++i)
+						{
+							if (std::get<1>(spriteRenderData[layerData.first][i]).count(spriteData->texture->GetId()) > 0)
+							{
+								std::get<0>(spriteRenderData[layerData.first][i]).push_back(spriteData);
+								isFound = true;
+								break;
+							}
+
+							if (std::get<1>(spriteRenderData[layerData.first][i]).size() < maxTextureUnit)
+							{
+								std::get<1>(spriteRenderData[layerData.first][i])[spriteData->texture->GetId()] = std::get<1>(spriteRenderData[layerData.first][i]).size();
+								std::get<0>(spriteRenderData[layerData.first][i]).push_back(spriteData);
+								isFound = true;
+								break;
+							}
+						}
+
+						if (!isFound)
+						{
+							spriteRenderData[layerData.first].push_back(
+								std::make_tuple(std::vector<SpriteRenderData*>(), std::map<GLuint, int>())
+							);
+							std::get<1>(spriteRenderData[layerData.first].back())[spriteData->texture->GetId()] = 0;
+							std::get<0>(spriteRenderData[layerData.first].back()).push_back(spriteData);
+						}
+					}
 					else
-						spriteRenderData[layerData.first][0].push_back(spriteData);
+					{
+						std::get<0>(spriteRenderData[layerData.first][0]).push_back(spriteData);
+					}
 				}
 
 				for (auto& data : spriteRenderData[layerData.first])
 				{
-					if (data.second.size() > maxSize)
-						maxSize = data.second.size();
+					if (std::get<0>(data).size() > maxDynamicSize)
+						maxDynamicSize = std::get<0>(data).size();
 				}
 			}
 
 			//if the size is not enough or too big, it will be reallocated.
-			if (maxSize > maxObjectSize || maxObjectSize > maxSize * 2)
+			if (maxDynamicSize > maxObjectSize || maxObjectSize > maxDynamicSize * 2)
 			{
 				//It allocates 20% more space, so that it does not have to allocate again
 				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<float>(maxSize) * 1.2f;
+				maxObjectSize = static_cast<float>(maxDynamicSize) * 1.2f;
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(MultiSpriteDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
@@ -195,37 +233,41 @@ namespace Learning2DEngine
 				return;
 
 			shader.Use();
-			shader.SetInteger("spriteTexture", 0);
 			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
 			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
 
 			for (auto& data : spriteRenderData[layer])
 			{
-				if (data.first != 0)
+				for (auto& textureIds : std::get<1>(data))
 				{
-					data.second[0]->texture->Bind();
+					glActiveTexture(GL_TEXTURE0 + textureIds.second);
+					glBindTexture(GL_TEXTURE_2D, textureIds.first);
+					std::string shaderId = "spriteTextures[" + std::to_string(textureIds.second) + "]";
+					shader.SetInteger(shaderId.c_str(), textureIds.second);
 				}
 
-				for (size_t i = 0; i < data.second.size(); ++i)
+				auto& sprites = std::get<0>(data);
+				for (size_t i = 0; i < sprites.size(); ++i)
 				{
 					std::memcpy(dynamicData[i].modelMatrix,
-						glm::value_ptr(data.second[i]->component->gameObject->transform.GetModelMatrix()),
+						glm::value_ptr(sprites[i]->component->gameObject->transform.GetModelMatrix()),
 						sizeof(dynamicData[i].modelMatrix));
+
 					std::memcpy(dynamicData[i].color,
-						glm::value_ptr(data.second[i]->color),
+						glm::value_ptr(sprites[i]->color),
 						sizeof(dynamicData[i].color));
-					dynamicData[i].textureId = 0;
+
+					dynamicData[i].textureId = sprites[i]->IsUseTexture()
+						? std::get<1>(data)[sprites[i]->texture->GetId()]
+						: -1;
 				}
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData) * data.second.size(), dynamicData);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData) * sprites.size(), dynamicData);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, data.second.size());
-
-
-				glBindTexture(GL_TEXTURE_2D, 0);
+				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, sprites.size());
 			}
 
 			glBindVertexArray(0);

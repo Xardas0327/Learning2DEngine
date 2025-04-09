@@ -8,7 +8,7 @@ namespace Learning2DEngine
 		{
 			float modelMatrix[16];
 			float color[4];
-			int textureId;
+			float textureId;
 		};
 	}
 }

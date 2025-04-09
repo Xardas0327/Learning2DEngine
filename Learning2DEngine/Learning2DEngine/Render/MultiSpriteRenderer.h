@@ -9,6 +9,7 @@
 #include "Shader.h"
 #include "SpriteRenderData.h"
 #include "MultiSpriteDynamicData.h"
+#include "Texture2D.h"
 
 namespace Learning2DEngine
 {
@@ -26,8 +27,9 @@ namespace Learning2DEngine
 			unsigned int maxObjectSize;
 
 			//int is the layer
-			//GLuint is the texture id. 0 means, that these data doesn't have texture.
-			std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
+			//The tuple contains the vector of SpriteRenderData* and a map of textures.
+			//GLuint is the texture id and the int is the texture unit id.
+			std::map<int, std::vector<std::tuple<std::vector<SpriteRenderData*>, std::map<GLuint, int>>>> spriteRenderData;
 			MultiSpriteDynamicData* dynamicData;
 
 			MultiSpriteRenderer();
