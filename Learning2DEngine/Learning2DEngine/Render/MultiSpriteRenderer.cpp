@@ -30,8 +30,8 @@ namespace Learning2DEngine
 				? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
 				: resourceManager.LoadShader(
 					ShaderConstant::SPRITE_SHADER_NAME,
-					ShaderConstant::SPRITE_VERTEX_SHADER,
-					ShaderConstant::SPRITE_FRAGMENT_SHADER);
+					ShaderConstant::GetOldSpriteVertexShader(),
+					ShaderConstant::GetOldSpriteFragmentShader());
 		}
 
 		void MultiSpriteRenderer::InitVao()
