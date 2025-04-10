@@ -261,7 +261,7 @@ namespace Learning2DEngine
 
 					dynamicData[i].textureId = sprites[i]->IsUseTexture()
 						? std::get<1>(data)[sprites[i]->texture->GetId()]
-						: -1;
+						: -1.0f;
 				}
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
