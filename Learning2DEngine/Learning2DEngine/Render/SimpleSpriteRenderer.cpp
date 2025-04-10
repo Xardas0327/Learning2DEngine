@@ -27,8 +27,8 @@ namespace Learning2DEngine
 				? resourceManager.GetShader(ShaderConstant::SIMPLE_SPRITE_SHADER_NAME)
 				: resourceManager.LoadShader(
 					ShaderConstant::SIMPLE_SPRITE_SHADER_NAME,
-					ShaderConstant::SIMPLE_SPRITE_VERTEX_SHADER,
-					ShaderConstant::SIMPLE_SPRITE_FRAGMENT_SHADER);
+					ShaderConstant::GetSimpleSpriteVertexShader(),
+					ShaderConstant::GetSimpleSpriteFragmentShader());
 		}
 
 		void SimpleSpriteRenderer::InitVao()

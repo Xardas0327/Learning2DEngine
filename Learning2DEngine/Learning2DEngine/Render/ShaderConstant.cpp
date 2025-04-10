@@ -1,5 +1,9 @@
 #include "ShaderConstant.h"
 
+#include <string>
+
+#include "RenderManager.h"
+
 namespace Learning2DEngine
 {
 	namespace Render
@@ -7,8 +11,11 @@ namespace Learning2DEngine
 		//Simple Sprite
 
 		const std::string ShaderConstant::SIMPLE_SPRITE_SHADER_NAME = "L2DE_SimpleSprite";
-		const char* const ShaderConstant::SIMPLE_SPRITE_VERTEX_SHADER =
-			R"(#version 330 core
+
+		const char* ShaderConstant::GetSimpleSpriteVertexShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
 			layout(location = 0) in vec2 postion;
 			layout(location = 1) in vec2 textureCoords;
 
@@ -23,8 +30,14 @@ namespace Learning2DEngine
 				gl_Position = projection * view * model * vec4(postion, 0.0, 1.0);
 				TextureCoords = textureCoords;
 			})";
-		const char* const ShaderConstant::SIMPLE_SPRITE_FRAGMENT_SHADER =
-			R"(#version 330 core
+
+			return shader;
+		}
+
+		const char* ShaderConstant::GetSimpleSpriteFragmentShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
 			in vec2 TextureCoords;
 
 			out vec4 color;
@@ -42,18 +55,26 @@ namespace Learning2DEngine
 				}
 			})";
 
+			return shader;
+		}
+
 		//Sprite (Multi instancing support)
 
 		const std::string ShaderConstant::SPRITE_SHADER_NAME = "L2DE_Sprite";
-		const char* const ShaderConstant::SPRITE_VERTEX_SHADER =
-			R"(#version 330 core
+
+		const char* ShaderConstant::GetSpriteVertexShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
 			layout(location = 0) in vec2 postion;
 			layout(location = 1) in vec2 textureCoords;
 			layout(location = 2) in mat4 model;
 			layout(location = 6) in vec4 spriteColor;
+			layout(location = 7) in float spriteTextureId;
 
 			out vec2 TextureCoords;
 			out vec4 SpriteColor;
+			out float SpriteTextureId;
 
 			uniform mat4 view;
 			uniform mat4 projection;
@@ -63,31 +84,48 @@ namespace Learning2DEngine
 				gl_Position = projection * view * model * vec4(postion, 0.0, 1.0);
 				TextureCoords = textureCoords;
 				SpriteColor = spriteColor;
+				SpriteTextureId = spriteTextureId;
 			})";
-		const char* const ShaderConstant::SPRITE_FRAGMENT_SHADER =
-			R"(#version 330 core
+
+			return shader;
+		}
+
+		const char* ShaderConstant::GetSpriteFragmentShader()
+		{
+			GLint maxUnitNumber = RenderManager::GetInstance().GetMaxTextureUnits();
+
+			static std::string shader = R"(
+			#version 330 core
 			in vec2 TextureCoords;
 			in vec4 SpriteColor;
+			in float SpriteTextureId;
 
 			out vec4 color;
 
-			uniform bool isUseTexture;
-			uniform sampler2D spriteTexture;
+			uniform sampler2D[)" + std::to_string(maxUnitNumber) + R"(] spriteTextures;
 
 			void main()
 			{
 				color = SpriteColor;
-				if (isUseTexture)
+
+				int textureId = int(SpriteTextureId);	
+				if (textureId>=0 && textureId <)" + std::to_string(maxUnitNumber) + R"() 
 				{
-					color *= texture(spriteTexture, TextureCoords);
+					color *= texture(spriteTextures[textureId], TextureCoords);
 				}
 			})";
+
+			return shader.c_str();
+		}
 
 		//Text2D
 
 		const std::string ShaderConstant::TEXT2D_SHADER_NAME = "L2DE_Text2D";
-		const char* const ShaderConstant::TEXT2D_VERTEX_SHADER =
-			R"(#version 330 core
+
+		const char* ShaderConstant::GetText2DVertexShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
 			layout(location = 0) in vec2 postion;
 			layout(location = 1) in vec2 textureCoords;
 
@@ -100,8 +138,14 @@ namespace Learning2DEngine
 				gl_Position = projection * vec4(postion, 0.0, 1.0);
 				TextureCoords = textureCoords;
 			})";
-		const char* const ShaderConstant::TEXT2D_FRAGMENT_SHADER =
-			R"(#version 330 core
+
+			return shader;
+		}
+
+		const char* ShaderConstant::GetText2DFragmentShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
 			in vec2 TextureCoords;
 
 			out vec4 color;
@@ -115,11 +159,17 @@ namespace Learning2DEngine
 				color = characterColor * sampled;
 			})";
 
+			return shader;
+		}
+
 		//PostProcessEffect
 
 		const std::string ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME = "L2DE_DefaultPostProcessEffect";
-		const char* const ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_VERTEX_SHADER =
-			R"(#version 330 core
+
+		const char* ShaderConstant::GetDefaultPostprocessVertexShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
 			layout(location = 0) in vec2 postion;
 			layout(location = 1) in vec2 textureCoords;
 
@@ -130,8 +180,14 @@ namespace Learning2DEngine
 				gl_Position = vec4(postion, 0.0, 1.0);
 				TextureCoords = textureCoords;
 			})";
-		const char* const ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_FRAGMENT_SHADER =
-			R"(#version 330 core
+
+			return shader;
+		}
+
+		const char* ShaderConstant::GetDefaultPostprocessFragmentShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
 			in vec2 TextureCoords;
 
 			out vec4 color;
@@ -142,5 +198,8 @@ namespace Learning2DEngine
 			{
 				color = texture(scene, TextureCoords);
 			})";
+
+			return shader;
+		}
 	}
 }

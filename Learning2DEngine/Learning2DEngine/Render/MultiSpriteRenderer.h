@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <map>
+#include <tuple>
 
 #include <glad/glad.h>
 
@@ -26,8 +28,9 @@ namespace Learning2DEngine
 			unsigned int maxObjectSize;
 
 			//int is the layer
-			//GLuint is the texture id. 0 means, that these data doesn't have texture.
-			std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
+			//The vector contains the tuples, which renderable at the same time.  
+			//The tuple contains the vector of SpriteRenderData* and the texture ids with texture unit ids.
+			std::map<int, std::vector<std::tuple<std::vector<SpriteRenderData*>, std::map<GLuint, int>>>> spriteRenderData;
 			MultiSpriteDynamicData* dynamicData;
 
 			MultiSpriteRenderer();

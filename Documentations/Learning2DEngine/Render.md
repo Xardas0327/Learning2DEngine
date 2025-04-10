@@ -311,7 +311,8 @@ inline unsigned int GetSampleNumber();
 [MultiSpriteDynamicData.h](../../Learning2DEngine/Learning2DEngine/Render/MultiSpriteDynamicData.h)  
 
 ### Description:
-It contions the dynamic data of the MultiSpriteRenderer.
+It contains the dynamic data of the MultiSpriteRenderer.  
+Note: the textureId is float, because we sent it to vertex shader, but it will be converted to int.
 
 ### Header:
 ```cpp
@@ -319,6 +320,7 @@ struct MultiSpriteDynamicData
 {
     float modelMatrix[16];
     float color[4];
+    float textureId;
 };
 ```
 
@@ -378,10 +380,11 @@ unsigned int maxObjectSize;
 
 **spriteRenderData**  
 When the SetData is called, the renderData will be converted to this format.  
-Note: The int is the layer.  
-GLuint is the texture id. 0 means, that these data doesn't have texture.
+The int is the layer.  
+The vector contains the tuples, which renderable at the same time.  
+The tuple contains the vector of `SpriteRenderData*` and the texture ids with texture unit ids.
 ```cpp
-std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
+std::map<int, std::vector<std::tuple<std::vector<SpriteRenderData*>, std::map<GLuint, int>>>> spriteRenderData;
 ```
 
 **dynamicData**  
@@ -1265,18 +1268,19 @@ The simple sprite shader's name (for `ResourceManager`),
 vertex and fragment shaders.
 ```cpp
 static const std::string SIMPLE_SPRITE_SHADER_NAME;
-static const char* const SIMPLE_SPRITE_VERTEX_SHADER;
-static const char* const SIMPLE_SPRITE_FRAGMENT_SHADER;
+static const char* GetSimpleSpriteVertexShader();
+static const char* GetSimpleSpriteFragmentShader();
 ```
 
 **Sprite shader**  
 The sprite shader's name (for `ResourceManager`),
 vertex and fragment shaders.  
-It has multi instancing support.
+It has multi instancing support.  
+Moreover, it can use multi texture at the same time.  
 ```cpp
 static const std::string SPRITE_SHADER_NAME;
-static const char* const SPRITE_VERTEX_SHADER;
-static const char* const SPRITE_FRAGMENT_SHADER;
+static const char* GetSpriteVertexShader();
+static const char* GetSpriteFragmentShader();
 ```
 
 **Text2D shader**  
@@ -1284,8 +1288,8 @@ The Text2D shader's name (for `ResourceManager`),
 vertex and fragment shaders.
 ```cpp
 static const std::string TEXT2D_SHADER_NAME;
-static const char* const TEXT2D_VERTEX_SHADER;
-static const char* const TEXT2D_FRAGMENT_SHADER;
+static const char* GetText2DVertexShader();
+static const char* GetText2DFragmentShader();
 ```
 
 **Default PostProcessEffect shader**  
@@ -1293,8 +1297,8 @@ The default PostProcessEffect shader's name (for `ResourceManager`),
 vertex and fragment shaders.
 ```cpp
 static const std::string DEFAULT_POSTPROCESS_EFFECT_NAME;
-static const char* const DEFAULT_POSTPROCESS_EFFECT_VERTEX_SHADER;
-static const char* const DEFAULT_POSTPROCESS_EFFECT_FRAGMENT_SHADER;
+static const char* GetDefaultPostprocessVertexShader();
+static const char* GetDefaultPostprocessFragmentShader();
 ```
 
 ##
@@ -1645,15 +1649,15 @@ void Destroy();
 ```
 
 **Bind**  
-It binds the `Texture2D`.
+It binds the `Texture2D` and it activates the texture with glActiveTexture.
 ```cpp
-void Bind() const;
+void Bind(int textureUnitNumber = 0) const;
 ```
 
 **GetId**  
 It returns the id of the `Texture2D`.
 ```cpp
-inline GLuint GetId() const
+inline GLuint GetId() const;
 ```
 
 ##

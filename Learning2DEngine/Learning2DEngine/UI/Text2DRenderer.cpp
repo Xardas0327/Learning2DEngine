@@ -29,8 +29,8 @@ namespace Learning2DEngine
 				? resourceManager.GetShader(ShaderConstant::TEXT2D_SHADER_NAME)
 				: resourceManager.LoadShader(
 					ShaderConstant::TEXT2D_SHADER_NAME,
-					ShaderConstant::TEXT2D_VERTEX_SHADER,
-					ShaderConstant::TEXT2D_FRAGMENT_SHADER);
+					ShaderConstant::GetText2DVertexShader(),
+					ShaderConstant::GetText2DFragmentShader());
 		}
 
 		void Text2DRenderer::InitVao()

@@ -258,9 +258,12 @@ unsigned int maxObjectSize;
 
 **particleRenderData**  
 When the SetData is called, the renderData will be converted to this format.  
-Note: The int is the layer.
+The first int is the layer.  
+The vector contains the tuples, which renderable at the same time.  
+The tuple contains the vector of `SpriteRenderData*`, the texture ids with texture unit ids,
+a bool which means, that it uses blend or not, the blend function factor and the max active particle count.
 ```cpp
-std::map<int, std::vector<ParticleRenderData*>> particleRenderData;
+std::map<int, std::vector<std::tuple<std::vector<ParticleRenderData*>, std::map<GLuint, int>, bool, Render::BlendFuncFactor, int>>> particleRenderData;
 ```
 
 **dynamicData**  
