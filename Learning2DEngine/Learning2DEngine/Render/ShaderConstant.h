@@ -17,12 +17,6 @@ namespace Learning2DEngine
 			static const char* GetSimpleSpriteVertexShader();
 			static const char* GetSimpleSpriteFragmentShader();
 
-			//Old Sprite (Multi instancing support)
-
-			static const std::string OLD_SPRITE_SHADER_NAME;
-			static const char* GetOldSpriteVertexShader();
-			static const char* GetOldSpriteFragmentShader();
-
 			//Sprite (Multi instancing support)
 
 			static const std::string SPRITE_SHADER_NAME;

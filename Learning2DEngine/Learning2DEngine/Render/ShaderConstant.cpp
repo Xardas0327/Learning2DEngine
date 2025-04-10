@@ -58,58 +58,6 @@ namespace Learning2DEngine
 			return shader;
 		}
 
-		//Old Sprite (Multi instancing support)
-		const std::string ShaderConstant::OLD_SPRITE_SHADER_NAME = "L2DE_OldSprite";
-
-		const char* ShaderConstant::GetOldSpriteVertexShader()
-		{
-			static const char* shader = R"(
-			#version 330 core
-			layout(location = 0) in vec2 postion;
-			layout(location = 1) in vec2 textureCoords;
-			layout(location = 2) in mat4 model;
-			layout(location = 6) in vec4 spriteColor;
-
-			out vec2 TextureCoords;
-			out vec4 SpriteColor;
-
-			uniform mat4 view;
-			uniform mat4 projection;
-
-			void main()
-			{
-				gl_Position = projection * view * model * vec4(postion, 0.0, 1.0);
-				TextureCoords = textureCoords;
-				SpriteColor = spriteColor;
-			})";
-
-			return shader;
-		}
-
-		const char* ShaderConstant::GetOldSpriteFragmentShader()
-		{
-			static const char* shader = R"(
-			#version 330 core
-			in vec2 TextureCoords;
-			in vec4 SpriteColor;
-
-			out vec4 color;
-
-			uniform bool isUseTexture;
-			uniform sampler2D spriteTexture;
-
-			void main()
-			{
-				color = SpriteColor;
-				if (isUseTexture)
-				{
-					color *= texture(spriteTexture, TextureCoords);
-				}
-			})";
-
-			return shader;
-		}
-
 		//Sprite (Multi instancing support)
 
 		const std::string ShaderConstant::SPRITE_SHADER_NAME = "L2DE_Sprite";

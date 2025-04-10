@@ -26,12 +26,12 @@ namespace Learning2DEngine
 		void ParticleRenderer::InitShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
-			shader = resourceManager.IsShaderExist(ShaderConstant::OLD_SPRITE_SHADER_NAME)
-				? resourceManager.GetShader(ShaderConstant::OLD_SPRITE_SHADER_NAME)
+			shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
+				? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
 				: resourceManager.LoadShader(
-					ShaderConstant::OLD_SPRITE_SHADER_NAME,
-					ShaderConstant::GetOldSpriteVertexShader(),
-					ShaderConstant::GetOldSpriteFragmentShader());
+					ShaderConstant::SPRITE_SHADER_NAME,
+					ShaderConstant::GetSpriteVertexShader(),
+					ShaderConstant::GetSpriteFragmentShader());
 		}
 
 		void ParticleRenderer::InitVao()
@@ -88,12 +88,17 @@ namespace Learning2DEngine
 			glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
 				(void*)offsetof(MultiSpriteDynamicData, color));
+			glEnableVertexAttribArray(7);
+			glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)offsetof(MultiSpriteDynamicData, textureId));
 
 			glVertexAttribDivisor(2, 1);
 			glVertexAttribDivisor(3, 1);
 			glVertexAttribDivisor(4, 1);
 			glVertexAttribDivisor(5, 1);
 			glVertexAttribDivisor(6, 1);
+			glVertexAttribDivisor(7, 1);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
@@ -205,7 +210,7 @@ namespace Learning2DEngine
 				return;
 
 			shader.Use();
-			shader.SetInteger("spriteTexture", 0);
+			shader.SetInteger("spriteTextures[0]", 0);
 			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
 			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
@@ -224,10 +229,8 @@ namespace Learning2DEngine
 				//Activate Texture
 				if (particleData->IsUseTexture())
 				{
-					glActiveTexture(GL_TEXTURE0);
 					particleData->texture->Bind();
 				}
-				shader.SetInteger("isUseTexture", particleData->IsUseTexture());
 
 				//Collect data
 				auto particles = particleData->GetParticles();
@@ -239,9 +242,13 @@ namespace Learning2DEngine
 						std::memcpy(dynamicData[activeParticleCount].modelMatrix,
 							glm::value_ptr(particles[i].transform.GetModelMatrix()),
 							sizeof(dynamicData[activeParticleCount].modelMatrix));
+
 						std::memcpy(dynamicData[activeParticleCount].color,
 							glm::value_ptr(particles[i].color),
 							sizeof(dynamicData[activeParticleCount].color));
+
+						dynamicData[activeParticleCount].textureId = particleData->IsUseTexture() ? 0.0f : -1.0f;
+
 						++activeParticleCount;
 					}
 				}
