@@ -11,7 +11,6 @@
 #include "Shader.h"
 #include "SpriteRenderData.h"
 #include "MultiSpriteDynamicData.h"
-#include "Texture2D.h"
 
 namespace Learning2DEngine
 {
