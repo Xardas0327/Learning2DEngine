@@ -160,7 +160,8 @@ namespace Learning2DEngine
 			int maxDynamicSize = 0;
 			for (auto& layerData : renderData)
 			{
-				spriteRenderData[layerData.first].push_back(
+				auto& actualLayerData = spriteRenderData[layerData.first];
+				actualLayerData.push_back(
 					std::make_tuple(std::vector<SpriteRenderData*>(), std::map<GLuint, int>())
 				);
 
@@ -171,19 +172,19 @@ namespace Learning2DEngine
 					if (spriteData->IsUseTexture())
 					{
 						bool isFound = false;
-						for (int i = 0; i < spriteRenderData[layerData.first].size(); ++i)
+						for (int i = 0; i < actualLayerData.size(); ++i)
 						{
-							if (std::get<1>(spriteRenderData[layerData.first][i]).count(spriteData->texture->GetId()) > 0)
+							if (std::get<1>(actualLayerData[i]).count(spriteData->texture->GetId()) > 0)
 							{
-								std::get<0>(spriteRenderData[layerData.first][i]).push_back(spriteData);
+								std::get<0>(actualLayerData[i]).push_back(spriteData);
 								isFound = true;
 								break;
 							}
 
-							if (std::get<1>(spriteRenderData[layerData.first][i]).size() < maxTextureUnit)
+							if (std::get<1>(actualLayerData[i]).size() < maxTextureUnit)
 							{
-								std::get<1>(spriteRenderData[layerData.first][i])[spriteData->texture->GetId()] = std::get<1>(spriteRenderData[layerData.first][i]).size();
-								std::get<0>(spriteRenderData[layerData.first][i]).push_back(spriteData);
+								std::get<1>(actualLayerData[i])[spriteData->texture->GetId()] = std::get<1>(actualLayerData[i]).size();
+								std::get<0>(actualLayerData[i]).push_back(spriteData);
 								isFound = true;
 								break;
 							}
@@ -191,16 +192,16 @@ namespace Learning2DEngine
 
 						if (!isFound)
 						{
-							spriteRenderData[layerData.first].push_back(
+							actualLayerData.push_back(
 								std::make_tuple(std::vector<SpriteRenderData*>(), std::map<GLuint, int>())
 							);
-							std::get<1>(spriteRenderData[layerData.first].back())[spriteData->texture->GetId()] = 0;
-							std::get<0>(spriteRenderData[layerData.first].back()).push_back(spriteData);
+							std::get<1>(actualLayerData.back())[spriteData->texture->GetId()] = 0;
+							std::get<0>(actualLayerData.back()).push_back(spriteData);
 						}
 					}
 					else
 					{
-						std::get<0>(spriteRenderData[layerData.first][0]).push_back(spriteData);
+						std::get<0>(actualLayerData[0]).push_back(spriteData);
 					}
 				}
 
