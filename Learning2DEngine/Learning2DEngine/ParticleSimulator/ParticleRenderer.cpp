@@ -26,10 +26,10 @@ namespace Learning2DEngine
 		void ParticleRenderer::InitShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
-			shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
-				? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
+			shader = resourceManager.IsShaderExist(ShaderConstant::OLD_SPRITE_SHADER_NAME)
+				? resourceManager.GetShader(ShaderConstant::OLD_SPRITE_SHADER_NAME)
 				: resourceManager.LoadShader(
-					ShaderConstant::SPRITE_SHADER_NAME,
+					ShaderConstant::OLD_SPRITE_SHADER_NAME,
 					ShaderConstant::GetOldSpriteVertexShader(),
 					ShaderConstant::GetOldSpriteFragmentShader());
 		}
