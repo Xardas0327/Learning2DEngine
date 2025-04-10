@@ -30,11 +30,9 @@ namespace Learning2DEngine
 			unsigned int maxObjectSize;
 
 			//The first int is the layer
-			//The tuple contains the vector of SpriteRenderData* and a map of textures.
-			//GLuint is the texture id and the int is the texture unit id.
-			//bool means, that it use blend or not.
-			//BlendFuncFactor contains the blend function factor.
-			//Last int is the max active particle count.
+			//The vector contains the tuples, which renderable at the same time.  
+			//The tuple contains the vector of SpriteRenderData*, the texture ids with texture unit ids,
+			//a bool which means, that it uses blend or not, the blend function factor and the max active particle count.
 			std::map<int, std::vector<std::tuple<std::vector<ParticleRenderData*>, std::map<GLuint, int>, bool, Render::BlendFuncFactor, int>>> particleRenderData;
 			Render::MultiSpriteDynamicData* dynamicData;
 

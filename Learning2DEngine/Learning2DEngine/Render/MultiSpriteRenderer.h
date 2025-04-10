@@ -29,8 +29,8 @@ namespace Learning2DEngine
 			unsigned int maxObjectSize;
 
 			//int is the layer
-			//The tuple contains the vector of SpriteRenderData* and a map of textures.
-			//GLuint is the texture id and the int is the texture unit id.
+			//The vector contains the tuples, which renderable at the same time.  
+			//The tuple contains the vector of SpriteRenderData* and the texture ids with texture unit ids.
 			std::map<int, std::vector<std::tuple<std::vector<SpriteRenderData*>, std::map<GLuint, int>>>> spriteRenderData;
 			MultiSpriteDynamicData* dynamicData;
 
