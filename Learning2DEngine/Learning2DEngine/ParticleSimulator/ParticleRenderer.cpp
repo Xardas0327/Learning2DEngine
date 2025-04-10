@@ -321,8 +321,6 @@ namespace Learning2DEngine
 
 				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, activeParticleCount);
 
-				glBindTexture(GL_TEXTURE_2D, 0);
-
 
 				if (std::get<2>(particleData))
 				{
