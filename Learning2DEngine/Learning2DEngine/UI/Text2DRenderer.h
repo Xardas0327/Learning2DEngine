@@ -26,7 +26,6 @@ namespace Learning2DEngine
 			GLuint ebo;
 			GLuint vboStatic;
 			GLuint vboDynamic;
-			GLuint vboTemp;
 			unsigned int maxObjectSize;
 
 			//int is the layer

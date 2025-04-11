@@ -16,7 +16,7 @@ namespace Learning2DEngine
 	namespace UI
 	{
 		Text2DRenderer::Text2DRenderer()
-			: shader(), vao(0), ebo(0), vboStatic(0), vboDynamic(0), vboTemp(0), maxObjectSize(0),
+			: shader(), vao(0), ebo(0), vboStatic(0), vboDynamic(0), maxObjectSize(0),
 			textRenderData(), dynamicData(nullptr)
 		{
 
@@ -62,16 +62,13 @@ namespace Learning2DEngine
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
-			glGenBuffers(1, &vboTemp);
-			glBindBuffer(GL_ARRAY_BUFFER, vboTemp);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * 4, NULL, GL_DYNAMIC_DRAW);
-
-			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
 			glGenBuffers(1, &vboDynamic);
 			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData), NULL, GL_DYNAMIC_DRAW);
+
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)offsetof(Text2DDynamicData, vertex));
 			glEnableVertexAttribArray(2);
 			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, color));
 			glEnableVertexAttribArray(3);
@@ -109,7 +106,6 @@ namespace Learning2DEngine
 			glDeleteBuffers(1, &ebo);
 			glDeleteBuffers(1, &vboStatic);
 			glDeleteBuffers(1, &vboDynamic);
-			glDeleteBuffers(1, &vboTemp);
 
 			textRenderData.clear();
 
@@ -233,13 +229,12 @@ namespace Learning2DEngine
 
 					for (auto& character : characterData.second)
 					{
-						auto& vertices = std::get<0>(character);
-						glBindBuffer(GL_ARRAY_BUFFER, vboTemp);
-						glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 2 * 4, vertices.data());
+						std::memcpy(dynamicData[0].vertex,
+							std::get<0>(character).data(),
+							sizeof(dynamicData[0].vertex));
 
-						auto& color = std::get<1>(character);
 						std::memcpy(dynamicData[0].color,
-							color.data(),
+							std::get<1>(character).data(),
 							sizeof(dynamicData[0].color));
 
 						dynamicData[0].textureId = 0.0f;
