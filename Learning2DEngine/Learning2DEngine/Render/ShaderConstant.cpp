@@ -130,11 +130,13 @@ namespace Learning2DEngine
 			layout(location = 1) in vec2 textureCoords;
 
 			out vec2 TextureCoords;
+			out float ii;
 
 			uniform mat4 projection;
 
 			void main()
 			{
+				ii = gl_InstanceID;
 				gl_Position = projection * vec4(postion, 0.0, 1.0);
 				TextureCoords = textureCoords;
 			})";
@@ -147,15 +149,16 @@ namespace Learning2DEngine
 			static const char* shader = R"(
 			#version 330 core
 			in vec2 TextureCoords;
+			in float ii;
 
 			out vec4 color;
 
-			uniform sampler2D characterTexture;
+			uniform sampler2D characterTextures[2];
 			uniform vec4 characterColor;
 
 			void main()
 			{
-				vec4 sampled = vec4(1.0, 1.0, 1.0, texture(characterTexture, TextureCoords).r);
+				vec4 sampled = vec4(1.0, 1.0, 1.0, texture(characterTextures[int(ii)], TextureCoords).r);
 				color = characterColor * sampled;
 			})";
 
