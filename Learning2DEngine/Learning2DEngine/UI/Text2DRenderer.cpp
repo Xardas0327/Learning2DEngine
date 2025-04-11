@@ -134,6 +134,7 @@ namespace Learning2DEngine
 			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
 
 			textRenderData.clear();
+			int maxDynamicSize = 0;
 			for (auto& layerData : renderData)
 			{
 				auto& actualLayerData = textRenderData[layerData.first];
@@ -201,9 +202,35 @@ namespace Learning2DEngine
 									0);
 						}
 					}
+				}
 
+				for (auto& data : actualLayerData)
+				{
+					int actualSize = 0;
+					for (auto& map : data)
+					{
+						actualSize += map.second.size();
+					}
+					if (actualSize > maxDynamicSize)
+						maxDynamicSize = actualSize;
 				}
 			}
+
+			//if the size is not enough or too big, it will be reallocated.
+			if (maxDynamicSize > maxObjectSize || maxObjectSize > maxDynamicSize * 2)
+			{
+				//It allocates 20% more space, so that it does not have to allocate again
+				//if there are some dynamic renderers. 
+				maxObjectSize = static_cast<float>(maxDynamicSize) * 1.2f;
+
+				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+				delete[] dynamicData;
+				dynamicData = new Text2DDynamicData[maxObjectSize];
+			}
+
 		}
 
 		void Text2DRenderer::Draw(int layer)
@@ -249,7 +276,6 @@ namespace Learning2DEngine
 			}
 
 			glBindVertexArray(0);
-			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 	}
 }
