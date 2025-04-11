@@ -18,8 +18,9 @@ namespace Learning2DEngine
 		private:
 			Render::Shader shader;
 			GLuint vao;
-			GLuint vbo;
 			GLuint ebo;
+			GLuint vboStatic;
+			GLuint vboDynamic;
 
 			//int is the layer
 			std::map<int, std::vector<Render::RenderData*>> textRenderData;
