@@ -16,7 +16,8 @@ namespace Learning2DEngine
 	namespace UI
 	{
 		Text2DRenderer::Text2DRenderer()
-			: shader(), vao(0), vboStatic(0), vboDynamic(0), ebo(0), textRenderData()
+			: shader(), vao(0), ebo(0), vboStatic(0), vboDynamic(0),
+			textRenderData(), dynamicData(nullptr)
 		{
 
 		}
@@ -90,11 +91,16 @@ namespace Learning2DEngine
 		void Text2DRenderer::DestroyObject()
 		{
 			glDeleteVertexArrays(1, &vao);
+			glDeleteBuffers(1, &ebo);
 			glDeleteBuffers(1, &vboStatic);
 			glDeleteBuffers(1, &vboDynamic);
-			glDeleteBuffers(1, &ebo);
 
 			textRenderData.clear();
+
+			if (dynamicData != nullptr)
+			{
+				delete[] dynamicData;
+			}
 		}
 
 		void Text2DRenderer::Destroy()
@@ -112,7 +118,80 @@ namespace Learning2DEngine
 
 		void Text2DRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
 		{
-			textRenderData = renderData;
+			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
+			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
+
+			textRenderData.clear();
+			for (auto& layerData : renderData)
+			{
+				auto& actualLayerData = textRenderData[layerData.first];
+
+				for (auto& data : layerData.second)
+				{
+					auto textData = static_cast<Text2DRenderData*>(data);
+					if (textData->text.size() > 0)
+					{
+						textCharacterSet.Load(textData->fontSizePair);
+						CharacterMap& characterMap = textCharacterSet[textData->fontSizePair];
+
+						glm::vec2 startPosition(textData->component->gameObject->transform.position);
+						glm::mat2 rotationMatrix = textData->GetRotationMatrix();
+
+						for (std::string::const_iterator c = textData->text.begin(); c != textData->text.end(); ++c)
+						{
+							const auto& ch = characterMap[*c];
+
+							//Try to find map which contains the character
+							//or the character number is less than the max texture unit.
+							auto it = std::find_if(actualLayerData.begin(),
+								actualLayerData.end(),
+								[maxTextureUnit, &ch](auto& map)
+								{
+									return map.count(ch.textureId) > 0 || map.size() < maxTextureUnit;
+								});
+
+							//If the layer data is not found, it will be created.
+							bool isFound = it != actualLayerData.end();
+							if (!isFound)
+							{
+								actualLayerData.emplace_back();
+							}
+
+							auto& actualMap = !isFound
+								? actualLayerData.back()
+								: *it;
+
+							//Calculcate character position
+							float chPositionX = ch.bearing.x * textData->component->gameObject->transform.scale.x;
+							float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * textData->component->gameObject->transform.scale.y;
+
+							//Calculcate character size
+							float chWidth = ch.size.x * textData->component->gameObject->transform.scale.x;
+							float chHeight = ch.size.y * textData->component->gameObject->transform.scale.y;
+
+							glm::vec2 point1 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY + chHeight)) ;
+							glm::vec2 point2 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY));
+							glm::vec2 point3 = startPosition + (rotationMatrix * glm::vec2(chPositionX, chPositionY));
+							glm::vec2 point4 = startPosition + (rotationMatrix * glm::vec2(chPositionX, chPositionY + chHeight));
+
+							actualMap[ch.textureId].emplace_back(
+								std::make_tuple(
+									std::array<float, 8>{ point1.x, point1.y, point2.x, point2.y, point3.x, point3.y, point4.x, point4.y },
+									std::array<float, 4>{ textData->color.r, textData->color.g, textData->color.b, textData->color.a }
+								)
+							);
+
+							//Calculate next character postion
+							startPosition += rotationMatrix *
+								glm::vec2(
+									// bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
+									(ch.advance >> 6) * textData->component->gameObject->transform.scale.x,
+									0);
+						}
+					}
+
+				}
+			}
 		}
 
 		void Text2DRenderer::Draw(int layer)
@@ -131,53 +210,23 @@ namespace Learning2DEngine
 
 			for (auto& data : textRenderData[layer])
 			{
-				auto textData = static_cast<Text2DRenderData*>(data);
-
-				textCharacterSet.Load(textData->fontSizePair);
-
-				CharacterMap& characterMap = textCharacterSet[textData->fontSizePair];
-
-				shader.SetVector4f("characterColor", textData->color);
-
-				glm::vec2 startPosition(textData->component->gameObject->transform.position);
-				glm::mat2 rotationMatrix = textData->GetRotationMatrix();
-
-				std::string::const_iterator c;
-				for (c = textData->text.begin(); c != textData->text.end(); ++c)
+				for (auto& characterData : data)
 				{
-					const auto& ch = characterMap[*c];
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, characterData.first);
 
-					float chPositionX = ch.bearing.x * textData->component->gameObject->transform.scale.x;
-					float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * textData->component->gameObject->transform.scale.y;
+					for (auto& character : characterData.second)
+					{
+						auto& color = std::get<1>(character);
+						shader.SetVector4f("characterColor", glm::vec4(color[0], color[1], color[2], color[3]));
 
-					float chWidth = ch.size.x * textData->component->gameObject->transform.scale.x;
-					float chHeight = ch.size.y * textData->component->gameObject->transform.scale.y;
+						auto& vertices = std::get<0>(character);
+						glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+						glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 2 * 4, vertices.data());
+						glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-					glm::vec2 a = rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY + chHeight);
-					glm::vec2 b = rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY);
-					glm::vec2 c = rotationMatrix * glm::vec2(chPositionX, chPositionY);
-					glm::vec2 d = rotationMatrix * glm::vec2(chPositionX, chPositionY + chHeight);
-
-					float vertices[4][2] = {
-						{ startPosition.x + a.x, startPosition.y + a.y},
-						{ startPosition.x + b.x, startPosition.y + b.y},
-						{ startPosition.x + c.x, startPosition.y + c.y},
-						{ startPosition.x + d.x, startPosition.y + d.y}
-					};
-
-					glBindTexture(GL_TEXTURE_2D, ch.textureId);
-
-					glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-					startPosition += rotationMatrix *
-						glm::vec2(
-							// bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
-							(ch.advance >> 6) * textData->component->gameObject->transform.scale.x,
-							0);
+						glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+					}
 				}
 			}
 

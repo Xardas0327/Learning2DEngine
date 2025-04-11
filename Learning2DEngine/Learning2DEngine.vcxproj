@@ -264,6 +264,7 @@
     <ClInclude Include="Learning2DEngine\System\UpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\UpdaterComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\UI\FontSizePair.h" />
+    <ClInclude Include="Learning2DEngine\UI\Text2DDynamicData.h" />
     <ClInclude Include="Learning2DEngine\UI\Text2DLateRenderComponent.h" />
     <ClInclude Include="Learning2DEngine\UI\Text2DRenderData.h" />
     <ClInclude Include="Learning2DEngine\UI\Text2DRenderer.h" />
