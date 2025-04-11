@@ -254,24 +254,25 @@ namespace Learning2DEngine
 					glActiveTexture(GL_TEXTURE0);
 					glBindTexture(GL_TEXTURE_2D, characterData.first);
 
+					int actualSize = 0;
 					for (auto& character : characterData.second)
 					{
-						std::memcpy(dynamicData[0].vertex,
+						std::memcpy(dynamicData[actualSize].vertex,
 							std::get<0>(character).data(),
-							sizeof(dynamicData[0].vertex));
+							sizeof(dynamicData[actualSize].vertex));
 
-						std::memcpy(dynamicData[0].color,
+						std::memcpy(dynamicData[actualSize].color,
 							std::get<1>(character).data(),
-							sizeof(dynamicData[0].color));
+							sizeof(dynamicData[actualSize].color));
 
-						dynamicData[0].textureId = 0.0f;
-
-						glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-						glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData), dynamicData);
-						glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-						glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 1);
+						dynamicData[actualSize].textureId = 0.0f;
+						++actualSize;
 					}
+					glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData) * actualSize, dynamicData);
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+					glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, actualSize);
 				}
 			}
 
