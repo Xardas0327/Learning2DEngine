@@ -16,7 +16,7 @@ namespace Learning2DEngine
 	namespace UI
 	{
 		Text2DRenderer::Text2DRenderer()
-			: shader(), vao(0), ebo(0), vboStatic(0), vboDynamic(0),
+			: shader(), vao(0), ebo(0), vboStatic(0), vboDynamic(0), vboTemp(0), maxObjectSize(0),
 			textRenderData(), dynamicData(nullptr)
 		{
 
@@ -62,15 +62,29 @@ namespace Learning2DEngine
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
-			glGenBuffers(1, &vboDynamic);
-			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+			glGenBuffers(1, &vboTemp);
+			glBindBuffer(GL_ARRAY_BUFFER, vboTemp);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * 4, NULL, GL_DYNAMIC_DRAW);
 
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
+			glGenBuffers(1, &vboDynamic);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData), NULL, GL_DYNAMIC_DRAW);
+			glEnableVertexAttribArray(2);
+			glEnableVertexAttribArray(3);
+			glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, textureId));
+
+			glVertexAttribDivisor(2, 1);
+			glVertexAttribDivisor(3, 1);
+
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+			maxObjectSize = 1;
+			dynamicData = new Text2DDynamicData[maxObjectSize];
 		}
 
 		void Text2DRenderer::Init()
@@ -94,6 +108,7 @@ namespace Learning2DEngine
 			glDeleteBuffers(1, &ebo);
 			glDeleteBuffers(1, &vboStatic);
 			glDeleteBuffers(1, &vboDynamic);
+			glDeleteBuffers(1, &vboTemp);
 
 			textRenderData.clear();
 
@@ -202,8 +217,8 @@ namespace Learning2DEngine
 			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
 
 			shader.Use();
-			shader.SetInteger("characterTexture", 0);
 			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+			shader.SetInteger("characterTextures[0]", 0);
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(vao);
@@ -217,15 +232,22 @@ namespace Learning2DEngine
 
 					for (auto& character : characterData.second)
 					{
-						auto& color = std::get<1>(character);
-						shader.SetVector4f("characterColor", glm::vec4(color[0], color[1], color[2], color[3]));
-
 						auto& vertices = std::get<0>(character);
-						glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+						glBindBuffer(GL_ARRAY_BUFFER, vboTemp);
 						glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 2 * 4, vertices.data());
+
+						auto& color = std::get<1>(character);
+						std::memcpy(dynamicData[0].color,
+							color.data(),
+							sizeof(dynamicData[0].color));
+
+						dynamicData[0].textureId = 0.0f;
+
+						glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+						glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData), dynamicData);
 						glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-						glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+						glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, 1);
 					}
 				}
 			}

@@ -128,8 +128,12 @@ namespace Learning2DEngine
 			#version 330 core
 			layout(location = 0) in vec2 textureCoords;
 			layout(location = 1) in vec2 postion;
+			layout(location = 2) in vec4 characterColor;
+			layout(location = 3) in float characterTextureId;
 
 			out vec2 TextureCoords;
+			out vec4 CharacterColor;
+			out float CharacterTextureId;
 
 			uniform mat4 projection;
 
@@ -137,6 +141,8 @@ namespace Learning2DEngine
 			{
 				gl_Position = projection * vec4(postion, 0.0, 1.0);
 				TextureCoords = textureCoords;
+				CharacterColor = characterColor;
+				CharacterTextureId = characterTextureId;
 			})";
 
 			return shader;
@@ -144,22 +150,26 @@ namespace Learning2DEngine
 
 		const char* ShaderConstant::GetText2DFragmentShader()
 		{
-			static const char* shader = R"(
+			GLint maxUnitNumber = RenderManager::GetInstance().GetMaxTextureUnits();
+
+			static std::string shader = R"(
 			#version 330 core
 			in vec2 TextureCoords;
+			in vec4 CharacterColor;
+			in float CharacterTextureId;
 
 			out vec4 color;
 
-			uniform sampler2D characterTexture;
-			uniform vec4 characterColor;
+			uniform sampler2D[)" + std::to_string(maxUnitNumber) + R"(] characterTextures;
 
 			void main()
 			{
-				vec4 sampled = vec4(1.0, 1.0, 1.0, texture(characterTexture, TextureCoords).r);
-				color = characterColor * sampled;
+				int textureId = int(CharacterTextureId);
+				vec4 sampled = vec4(1.0, 1.0, 1.0, texture(characterTextures[textureId], TextureCoords).r);
+				color = CharacterColor * sampled;
 			})";
 
-			return shader;
+			return shader.c_str();
 		}
 
 		//PostProcessEffect
