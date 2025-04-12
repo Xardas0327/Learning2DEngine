@@ -29,8 +29,9 @@ namespace Learning2DEngine
 
 			//int is the layer
 			//The vector contains maps, which renderable at the same time.  
-			//The map key is a GLuint, which a character texture id, and the value is a vector of tuples, which contains the vertex position and color.
-			std::map<int, std::vector<std::map<GLuint, std::vector<std::tuple<std::array<float, 8>, std::array<float, 4>>>>>> textRenderData;
+			//The map key is a GLuint, which a character texture id, and the value is a vector of array,
+			//which contains the position, the texture coordinates and the color.
+			std::map<int, std::vector<std::map<GLuint, std::vector<std::array<float, 32>>>>> textRenderData;
 			Text2DDynamicData* dynamicData;
 
 			MultiText2DRenderer();

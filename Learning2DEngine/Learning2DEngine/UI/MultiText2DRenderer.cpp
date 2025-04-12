@@ -168,10 +168,17 @@ namespace Learning2DEngine
 							glm::vec2 point4 = startPosition + (rotationMatrix * glm::vec2(chPositionX, chPositionY + chHeight));
 
 							actualMap[ch.textureId].emplace_back(
-								std::make_tuple(
-									std::array<float, 8>{ point1.x, point1.y, point2.x, point2.y, point3.x, point3.y, point4.x, point4.y },
-									std::array<float, 4>{ textData->color.r, textData->color.g, textData->color.b, textData->color.a }
-								)
+								std::array<float, 32>{
+									// vertex 1
+									// position		// texture coordinates	// color
+									point1.x, point1.y, 1.0f, 1.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+									// vertex 2
+									point2.x, point2.y, 1.0f, 0.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+									// vertex 3
+									point3.x, point3.y, 0.0f, 0.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+									// vertex 4
+									point4.x, point4.y, 0.0f, 1.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a
+								}
 							);
 
 							//Calculate next character position
@@ -204,9 +211,11 @@ namespace Learning2DEngine
 				maxObjectSize = static_cast<float>(maxDynamicSize) * 1.2f;
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+				//Multiply by 4, because an object has 4 vertices.
 				glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData) * maxObjectSize * 4, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+				//Multiply by 6, because an object (2 triangles) has 6 indices.
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * maxObjectSize * 6, NULL, GL_DYNAMIC_DRAW);
 
 				delete[] dynamicData;
@@ -256,35 +265,27 @@ namespace Learning2DEngine
 
 					for (auto& character : characterData.second)
 					{
-						dynamicData[dynamicSize].position[0] = std::get<0>(character)[0];
-						dynamicData[dynamicSize].position[1] = std::get<0>(character)[1];
-						dynamicData[dynamicSize].textCoord[0] = 1.0f;
-						dynamicData[dynamicSize].textCoord[1] = 1.0f;
-						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
+						std::memcpy(&dynamicData[dynamicSize], 
+							character.data(),
+							sizeof(float) * 8);
 						dynamicData[dynamicSize].textureId = textureUnitId;
 						++dynamicSize;
 
-						dynamicData[dynamicSize].position[0] = std::get<0>(character)[2];
-						dynamicData[dynamicSize].position[1] = std::get<0>(character)[3];
-						dynamicData[dynamicSize].textCoord[0] = 1.0f;
-						dynamicData[dynamicSize].textCoord[1] = 0.0f;
-						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
+						std::memcpy(&dynamicData[dynamicSize],
+							character.data() + 8,
+							sizeof(float) * 8);
 						dynamicData[dynamicSize].textureId = textureUnitId;
 						++dynamicSize;
 
-						dynamicData[dynamicSize].position[0] = std::get<0>(character)[4];
-						dynamicData[dynamicSize].position[1] = std::get<0>(character)[5];
-						dynamicData[dynamicSize].textCoord[0] = 0.0f;
-						dynamicData[dynamicSize].textCoord[1] = 0.0f;
-						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
+						std::memcpy(&dynamicData[dynamicSize],
+							character.data() + 16,
+							sizeof(float) * 8);
 						dynamicData[dynamicSize].textureId = textureUnitId;
 						++dynamicSize;
 
-						dynamicData[dynamicSize].position[0] = std::get<0>(character)[6];
-						dynamicData[dynamicSize].position[1] = std::get<0>(character)[7];
-						dynamicData[dynamicSize].textCoord[0] = 0.0f;
-						dynamicData[dynamicSize].textCoord[1] = 1.0f;
-						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
+						std::memcpy(&dynamicData[dynamicSize],
+							character.data() + 24,
+							sizeof(float) * 8);
 						dynamicData[dynamicSize].textureId = textureUnitId;
 						++dynamicSize;
 						++objectCount;
