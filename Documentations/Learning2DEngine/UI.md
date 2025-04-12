@@ -1,12 +1,12 @@
 # UI
 - [FontSizePair](UI.md#fontsizepair)
 - [FreeTypeCharacter](UI.md#freetypecharacter)
+- [MultiText2DRenderer](UI.md#multitext2drenderer)
 - [SimpleText2DLateRenderComponent](UI.md#simpletext2dlaterendercomponent)
 - [SimpleText2DRenderer](UI.md#simpletext2drenderer)
 - [Text2DLateRenderComponent](UI.md#text2dlaterendercomponent)
 - [Text2DDynamicData](UI.md#text2ddynamicdata)
 - [Text2DRenderData](UI.md#text2drenderdata)
-- [Text2DRenderer](UI.md#text2drenderer)
 - [TextCharacterSet](UI.md#textcharacterset)
 
 ##
@@ -46,6 +46,117 @@ struct FreeTypeCharacter
 };
 ```
 
+
+##
+## MultiText2DRenderer
+### Source Code:
+[MultiText2DRenderer.h](../../Learning2DEngine/Learning2DEngine/UI/MultiText2DRenderer.h)  
+[MultiText2DRenderer.cpp](../../Learning2DEngine/Learning2DEngine/UI/MultiText2DRenderer.cpp)
+
+### Description:
+It can render texts.
+A Text2D renderer, which has multi instancing support.  
+It has better performance, than the `SimpleText2DRenderer`,
+when there are huge texts.  
+Note: The projection came from Game::mainCamera.
+
+### Header:
+```cpp
+class MultiText2DRenderer : public Render::IRenderer, public virtual System::Singleton<MultiText2DRenderer>
+{...}
+```
+
+### Variables:
+**Private:**  
+**shader**  
+```cpp
+Render::Shader shader;
+```
+
+**vao**  
+```cpp
+GLuint vao;
+```
+
+**ebo**  
+```cpp
+GLuint ebo;
+```
+
+**vboDynamic**  
+It contains the uploaded data of the renderable characters.
+```cpp
+GLuint vboDynamic;
+```
+**maxObjectSize**  
+The size of the vboDynamic.
+```cpp
+unsigned int maxObjectSize;
+```
+
+**textRenderData**  
+The first int is the layer.
+The vector contains maps, which renderable at the same time.  
+The map key is a GLuint, which a character texture id, and the value is a vector of tuples,
+which contains the vertex position and color.
+```cpp
+std::map<int, std::vector<std::map<GLuint, std::vector<std::tuple<std::array<float, 8>, std::array<float, 4>>>>>> textRenderData;
+```
+
+**dynamicData**  
+It is array, which contains the characters positions and colors of the renderable objects, before the upload.
+Note: its size is depend on the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
+```cpp
+Text2DDynamicData* dynamicData;
+```
+
+### Functions:
+**Private:**  
+**MultiText2DRenderer**  
+```cpp
+MultiText2DRenderer();
+```
+
+**InitShader**  
+```cpp
+void InitShader();
+```
+
+**InitVao**  
+```cpp
+void InitVao();
+```
+
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+void DestroyObject();
+```
+
+**Public:**  
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**SetData**  
+Note: the int is the layer.
+```cpp
+void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+```
+
+**Draw**  
+It draws those objects, which was added with SetData and they are on the selected layer.
+```cpp
+void Draw(int layer) override;
+```
+
+
 ##
 ## SimpleText2DLateRenderComponent
 ### Source Code:
@@ -53,7 +164,9 @@ struct FreeTypeCharacter
 [SimpleText2DLateRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/UI/SimpleText2DLateRenderComponent.cpp)
 
 ### Description:
-It can render a text with a color.
+It can render a text with a color.  
+It uses `SimpleText2DRenderer` for rendering. It is recommand, when the developer knows,
+there are only little texts.  
 It uses static variables to count how many GameObject initialized it.
 That's why it will destroy renderer only
 if the reference number is 0, otherway it will decrease
@@ -123,6 +236,8 @@ SimpleText2DRenderer* GetRenderer() const override;
 
 ### Description:
 It can render texts.
+It has better performance, than the `MultiText2DRenderer`,
+when there are only little texts. 
 Note: The projection came from Game::mainCamera.
 
 ### Header:
@@ -213,7 +328,9 @@ void Draw(int layer) override;
 [Text2DLateRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DLateRenderComponent.cpp)
 
 ### Description:
-It can render a text with a color.
+It can render a text with a color.  
+It uses `MultiText2DRenderer` for rendering. It is recommand, when the developer knows,
+there are huge texts.  
 It uses static variables to count how many GameObject initialized it.
 That's why it will destroy renderer only
 if the reference number is 0, otherway it will decrease
@@ -222,7 +339,7 @@ Please more info about `LateRendererComponent`.
 
 ### Header:
 ```cpp
-class Text2DLateRenderComponent : public virtual Render::LateRendererComponent<Text2DRenderData, Text2DRenderer>
+class Text2DLateRenderComponent : public virtual Render::LateRendererComponent<Text2DRenderData, MultiText2DRenderer>
 {...}
 ```
 
@@ -271,7 +388,7 @@ const std::string& GetId() const override;
 
 **GetRenderer**  
 ```cpp
-Text2DRenderer* GetRenderer() const override;
+MultiText2DRenderer* GetRenderer() const override;
 ```
 
 ##
@@ -338,96 +455,6 @@ Text2DRenderData(const System::Component* component, const FontSizePair& fontSiz
 **GetRotationMatrix**
 ```cpp
 glm::mat2 GetRotationMatrix();
-```
-
-##
-## Text2DRenderer
-### Source Code:
-[Text2DRenderer.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderer.h)  
-[Text2DRenderer.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderer.cpp)
-
-### Description:
-It can render texts.
-Note: The projection came from Game::mainCamera.
-
-### Header:
-```cpp
-class Text2DRenderer : public Render::IRenderer, public virtual System::Singleton<Text2DRenderer>
-{...}
-```
-
-### Variables:
-**Private:**  
-**shader**  
-```cpp
-Render::Shader shader;
-```
-
-**vao**  
-```cpp
-GLuint vao;
-```
-
-**vbo**  
-```cpp
-GLuint vbo;
-```
-
-**ebo**  
-```cpp
-GLuint ebo;
-```
-
-**textRenderData**  
-Note: the int is the layer.
-```cpp
-std::map<int, std::vector<Render::RenderData*>> textRenderData;
-```
-
-### Functions:
-**Private:**  
-**Text2DRenderer**  
-```cpp
-Text2DRenderer();
-```
-
-**InitShader**  
-```cpp
-void InitShader();
-```
-
-**InitVao**  
-```cpp
-void InitVao();
-```
-
-**DestroyObject**  
-The Destroy() call it with or without mutex.
-```cpp
-void DestroyObject();
-```
-
-**Public:**  
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
-```
-
-**SetData**  
-Note: the int is the layer.
-```cpp
-void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
-```
-
-**Draw**  
-It draws those objects, which was added with SetData and they are on the selected layer.
-```cpp
-void Draw(int layer) override;
 ```
 
 ##
