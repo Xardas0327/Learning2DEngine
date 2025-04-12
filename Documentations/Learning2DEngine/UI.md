@@ -235,9 +235,9 @@ SimpleText2DRenderer* GetRenderer() const override;
 [SimpleText2DRenderer.cpp](../../Learning2DEngine/Learning2DEngine/UI/SimpleText2DRenderer.cpp)
 
 ### Description:
-It can render texts.
+It can render texts.  
 It has better performance, than the `MultiText2DRenderer`,
-when there are only little texts. 
+when there are only little texts.  
 Note: The projection came from Game::mainCamera.
 
 ### Header:
