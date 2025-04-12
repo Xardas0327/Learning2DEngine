@@ -56,17 +56,6 @@ namespace Learning2DEngine
 				13, 14, 15,
 			};*/
 
-			unsigned int indices[600];
-			for (int i = 0; i < 100; i++)
-			{
-				indices[i * 6 + 0] = i * 4 + 0;
-				indices[i * 6 + 1] = i * 4 + 1;
-				indices[i * 6 + 2] = i * 4 + 3;
-				indices[i * 6 + 3] = i * 4 + 1;
-				indices[i * 6 + 4] = i * 4 + 2;
-				indices[i * 6 + 5] = i * 4 + 3;
-			}
-
 			glGenVertexArrays(1, &vao);
 			glBindVertexArray(vao);
 
@@ -76,7 +65,8 @@ namespace Learning2DEngine
 
 			glGenBuffers(1, &ebo);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+			//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 6, NULL, GL_DYNAMIC_DRAW);
 
 			//glEnableVertexAttribArray(1);
 			//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
@@ -98,7 +88,7 @@ namespace Learning2DEngine
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 			maxObjectSize = 1;
 			dynamicData = new Text2DDynamicData[maxObjectSize];
@@ -236,18 +226,21 @@ namespace Learning2DEngine
 			}
 
 			//if the size is not enough or too big, it will be reallocated.
-			if (maxDynamicSize * 4 > maxObjectSize || maxObjectSize > maxDynamicSize * 4 * 2)
+			if (maxDynamicSize > maxObjectSize || maxObjectSize > maxDynamicSize * 2)
 			{
 				//It allocates 20% more space, so that it does not have to allocate again
 				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<float>(maxDynamicSize) * 4 * 1.2f;
+				maxObjectSize = static_cast<float>(maxDynamicSize) * 1.2f;
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData) * maxObjectSize * 4, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * maxObjectSize * 6, NULL, GL_DYNAMIC_DRAW);
+				//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 				delete[] dynamicData;
-				dynamicData = new Text2DDynamicData[maxObjectSize];
+				dynamicData = new Text2DDynamicData[maxObjectSize * 4];
 			}
 
 		}
@@ -264,6 +257,17 @@ namespace Learning2DEngine
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(vao);
+
+			unsigned int indices[600];
+			for (int i = 0; i < 100; i++)
+			{
+				indices[i * 6 + 0] = i * 4 + 0;
+				indices[i * 6 + 1] = i * 4 + 1;
+				indices[i * 6 + 2] = i * 4 + 3;
+				indices[i * 6 + 3] = i * 4 + 1;
+				indices[i * 6 + 4] = i * 4 + 2;
+				indices[i * 6 + 5] = i * 4 + 3;
+			}
 
 			for (auto& data : textRenderData[layer])
 			{
@@ -328,6 +332,9 @@ namespace Learning2DEngine
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData)* actualSize, dynamicData);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+				glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(float) * 6 * count, indices);
 
 				glDrawElements(GL_TRIANGLES, 6 * count, GL_UNSIGNED_INT, 0);
 				//glDrawElementsInstanced(GL_TRIANGLES, 6 * count, GL_UNSIGNED_INT, 0, 1);
