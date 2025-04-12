@@ -2,7 +2,6 @@
 
 #include <map>
 #include <vector>
-#include <tuple>
 #include <array>
 
 #include <glad/glad.h>
