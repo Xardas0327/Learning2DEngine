@@ -1,4 +1,4 @@
-#include "Text2DRenderer.h"
+#include "MultiText2DRenderer.h"
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
@@ -15,14 +15,14 @@ namespace Learning2DEngine
 
 	namespace UI
 	{
-		Text2DRenderer::Text2DRenderer()
+		MultiText2DRenderer::MultiText2DRenderer()
 			: shader(), vao(0), ebo(0), vboDynamic(0), maxObjectSize(0),
 			textRenderData(), dynamicData(nullptr)
 		{
 
 		}
 
-		void Text2DRenderer::InitShader()
+		void MultiText2DRenderer::InitShader()
 		{
 			auto& resourceManager = ResourceManager::GetInstance();
 
@@ -34,7 +34,7 @@ namespace Learning2DEngine
 					ShaderConstant::GetText2DFragmentShader());
 		}
 
-		void Text2DRenderer::InitVao()
+		void MultiText2DRenderer::InitVao()
 		{
 			glGenVertexArrays(1, &vao);
 			glBindVertexArray(vao);
@@ -66,7 +66,7 @@ namespace Learning2DEngine
 			dynamicData = new Text2DDynamicData[maxObjectSize * 4];
 		}
 
-		void Text2DRenderer::Init()
+		void MultiText2DRenderer::Init()
 		{
 			if (ComponentManager::GetInstance().GetThreadSafe())
 			{
@@ -81,7 +81,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void Text2DRenderer::DestroyObject()
+		void MultiText2DRenderer::DestroyObject()
 		{
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &ebo);
@@ -95,7 +95,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void Text2DRenderer::Destroy()
+		void MultiText2DRenderer::Destroy()
 		{
 			if (ComponentManager::GetInstance().GetThreadSafe())
 			{
@@ -108,7 +108,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void Text2DRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
+		void MultiText2DRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
 		{
 			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
 			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
@@ -229,7 +229,7 @@ namespace Learning2DEngine
 
 		}
 
-		void Text2DRenderer::Draw(int layer)
+		void MultiText2DRenderer::Draw(int layer)
 		{
 			if (textRenderData.find(layer) == textRenderData.end())
 				return;

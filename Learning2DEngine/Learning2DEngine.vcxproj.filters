@@ -69,7 +69,7 @@
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\UI\Text2DRenderer.cpp">
+    <ClCompile Include="Learning2DEngine\UI\MultiText2DRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\UI\Text2DLateRenderComponent.cpp">
@@ -308,7 +308,7 @@
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\UI\Text2DRenderer.h">
+    <ClInclude Include="Learning2DEngine\UI\MultiText2DRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\UI\Text2DLateRenderComponent.h">

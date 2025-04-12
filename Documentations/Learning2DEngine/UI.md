@@ -1,7 +1,10 @@
 # UI
 - [FontSizePair](UI.md#fontsizepair)
 - [FreeTypeCharacter](UI.md#freetypecharacter)
+- [SimpleText2DLateRenderComponent](UI.md#simpletext2dlaterendercomponent)
+- [SimpleText2DRenderer](UI.md#simpletext2drenderer)
 - [Text2DLateRenderComponent](UI.md#text2dlaterendercomponent)
+- [Text2DDynamicData](UI.md#text2ddynamicdata)
 - [Text2DRenderData](UI.md#text2drenderdata)
 - [Text2DRenderer](UI.md#text2drenderer)
 - [TextCharacterSet](UI.md#textcharacterset)
@@ -42,6 +45,166 @@ struct FreeTypeCharacter
     unsigned int advance;
 };
 ```
+
+##
+## SimpleText2DLateRenderComponent
+### Source Code:
+[SimpleText2DLateRenderComponent.h](../../Learning2DEngine/Learning2DEngine/UI/SimpleText2DLateRenderComponent.h)  
+[SimpleText2DLateRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/UI/SimpleText2DLateRenderComponent.cpp)
+
+### Description:
+It can render a text with a color.
+It uses static variables to count how many GameObject initialized it.
+That's why it will destroy renderer only
+if the reference number is 0, otherway it will decrease
+the reference number.  
+Please more info about `LateRendererComponent`.
+
+### Header:
+```cpp
+class SimpleText2DLateRenderComponent : public virtual Render::LateRendererComponent<Text2DRenderData, SimpleText2DRenderer>
+{...}
+```
+
+### Variables:
+**Private:**  
+**id**  
+```cpp
+static const std::string id;
+```
+
+**refrenceNumber**  
+It is counted, that how many SpriteRenderComponent exist.
+```cpp
+static int refrenceNumber;
+```
+
+**mutex**  
+```cpp
+static std::mutex mutex;
+```
+
+### Functions:
+**Protected:**  
+**SimpleText2DLateRenderComponent**  
+```cpp
+SimpleText2DLateRenderComponent(System::GameObject* gameObject, const FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+```
+```cpp
+SimpleText2DLateRenderComponent(System::GameObject* gameObject, const FontSizePair& fontSizePair, const std::string& text, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+```
+
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**GetId**  
+```cpp
+const std::string& GetId() const override;
+```
+
+**GetRenderer**  
+```cpp
+SimpleText2DRenderer* GetRenderer() const override;
+```
+
+
+##
+## Text2DRenderer
+### Source Code:
+[Text2DRenderer.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderer.h)  
+[Text2DRenderer.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderer.cpp)
+
+### Description:
+It can render texts.
+Note: The projection came from Game::mainCamera.
+
+### Header:
+```cpp
+class SimpleText2DRenderer : public Render::IRenderer, public virtual System::Singleton<SimpleText2DRenderer>
+{...}
+```
+
+### Variables:
+**Private:**  
+**shader**  
+```cpp
+Render::Shader shader;
+```
+
+**vao**  
+```cpp
+GLuint vao;
+```
+
+**vbo**  
+```cpp
+GLuint vbo;
+```
+
+**ebo**  
+```cpp
+GLuint ebo;
+```
+
+**textRenderData**  
+Note: the int is the layer.
+```cpp
+std::map<int, std::vector<Render::RenderData*>> textRenderData;
+```
+
+### Functions:
+**Private:**  
+**SimpleText2DRenderer**  
+```cpp
+SimpleText2DRenderer();
+```
+
+**InitShader**  
+```cpp
+void InitShader();
+```
+
+**InitVao**  
+```cpp
+void InitVao();
+```
+
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+void DestroyObject();
+```
+
+**Public:**  
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**SetData**  
+Note: the int is the layer.
+```cpp
+void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+```
+
+**Draw**  
+It draws those objects, which was added with SetData and they are on the selected layer.
+```cpp
+void Draw(int layer) override;
+```
+
 
 ##
 ## Text2DLateRenderComponent
@@ -109,6 +272,26 @@ const std::string& GetId() const override;
 **GetRenderer**  
 ```cpp
 Text2DRenderer* GetRenderer() const override;
+```
+
+##
+## Text2DDynamicData
+### Source Code:
+[Text2DDynamicData.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DDynamicData.h)   
+
+### Description:
+It contains the dynamic data of the `MultiText2DRenderer`.  
+Note: the textureId is float, because we sent it to vertex shader, but it will be converted to int.
+
+### Header:
+```cpp
+struct Text2DDynamicData
+{
+	float position[2];
+	float textCoord[2];
+	float color[4];
+	float textureId;
+};
 ```
 
 ##

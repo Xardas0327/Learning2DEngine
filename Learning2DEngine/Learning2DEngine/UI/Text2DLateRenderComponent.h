@@ -8,14 +8,14 @@
 #include "../Render/LateRendererComponent.h"
 
 #include "Text2DRenderData.h"
-#include "Text2DRenderer.h"
+#include "MultiText2DRenderer.h"
 #include "FontSizePair.h"
 
 namespace Learning2DEngine
 {
     namespace UI
     {
-		class Text2DLateRenderComponent : public virtual Render::LateRendererComponent<Text2DRenderData, Text2DRenderer>
+		class Text2DLateRenderComponent : public virtual Render::LateRendererComponent<Text2DRenderData, MultiText2DRenderer>
 		{
 			friend class System::GameObject;
 		private:
@@ -44,7 +44,7 @@ namespace Learning2DEngine
 
 			const std::string& GetId() const override;
 
-			Text2DRenderer* GetRenderer() const override;
+			MultiText2DRenderer* GetRenderer() const override;
 		};
     }
 }
