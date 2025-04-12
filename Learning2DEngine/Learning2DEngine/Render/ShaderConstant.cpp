@@ -126,8 +126,8 @@ namespace Learning2DEngine
 		{
 			static const char* shader = R"(
 			#version 330 core
-			layout(location = 0) in vec2 textureCoords;
-			layout(location = 1) in vec2 postion;
+			layout(location = 0) in vec2 postion;
+			layout(location = 1) in vec2 textureCoords;
 			layout(location = 2) in vec4 characterColor;
 			layout(location = 3) in float characterTextureId;
 

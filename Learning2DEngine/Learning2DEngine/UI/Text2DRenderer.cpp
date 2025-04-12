@@ -43,39 +43,58 @@ namespace Learning2DEngine
 				0.0f, 1.0f,
 			};
 
-			unsigned int indices[] = {
+
+
+			/*unsigned int indices[] = {
 				0, 1, 3,
-				1, 2, 3
-			};
+				1, 2, 3,
+				4, 5, 7,
+				5, 6, 7,
+				8, 9, 11,
+				9, 10, 11,
+				12, 13, 15,
+				13, 14, 15,
+			};*/
+
+			unsigned int indices[600];
+			for (int i = 0; i < 100; i++)
+			{
+				indices[i * 6 + 0] = i * 4 + 0;
+				indices[i * 6 + 1] = i * 4 + 1;
+				indices[i * 6 + 2] = i * 4 + 3;
+				indices[i * 6 + 3] = i * 4 + 1;
+				indices[i * 6 + 4] = i * 4 + 2;
+				indices[i * 6 + 5] = i * 4 + 3;
+			}
 
 			glGenVertexArrays(1, &vao);
 			glBindVertexArray(vao);
 
-			glGenBuffers(1, &vboStatic);
+			/*glGenBuffers(1, &vboStatic);
 			glBindBuffer(GL_ARRAY_BUFFER, vboStatic);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(textureCoordinate), textureCoordinate, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(textureCoordinate), textureCoordinate, GL_STATIC_DRAW);*/
 
 			glGenBuffers(1, &ebo);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+			//glEnableVertexAttribArray(1);
+			//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
 
 			glGenBuffers(1, &vboDynamic);
 			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData), NULL, GL_DYNAMIC_DRAW);
 
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, position));
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)offsetof(Text2DDynamicData, vertex));
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, textCoord));
 			glEnableVertexAttribArray(2);
 			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, color));
 			glEnableVertexAttribArray(3);
 			glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, textureId));
 
-			glVertexAttribDivisor(2, 1);
-			glVertexAttribDivisor(3, 1);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
@@ -221,7 +240,7 @@ namespace Learning2DEngine
 			{
 				//It allocates 20% more space, so that it does not have to allocate again
 				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<float>(maxDynamicSize) * 1.2f;
+				maxObjectSize = static_cast<float>(maxDynamicSize) * 4 * 1.2f;
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
@@ -242,38 +261,76 @@ namespace Learning2DEngine
 
 			shader.Use();
 			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
-			shader.SetInteger("characterTextures[0]", 0);
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(vao);
 
 			for (auto& data : textRenderData[layer])
 			{
+				int actualSize = 0;
+				int count = 0;
+				int textureUnitId = 0;
 				for (auto& characterData : data)
 				{
-					glActiveTexture(GL_TEXTURE0);
+					shader.SetInteger(("characterTextures["+std::to_string(textureUnitId) + "]").c_str(), textureUnitId);
+					glActiveTexture(GL_TEXTURE0 + textureUnitId);
 					glBindTexture(GL_TEXTURE_2D, characterData.first);
 
-					int actualSize = 0;
 					for (auto& character : characterData.second)
 					{
-						std::memcpy(dynamicData[actualSize].vertex,
-							std::get<0>(character).data(),
-							sizeof(dynamicData[actualSize].vertex));
-
-						std::memcpy(dynamicData[actualSize].color,
-							std::get<1>(character).data(),
-							sizeof(dynamicData[actualSize].color));
-
-						dynamicData[actualSize].textureId = 0.0f;
+						dynamicData[actualSize].position[0] = std::get<0>(character)[0];
+						dynamicData[actualSize].position[1] = std::get<0>(character)[1];
+						dynamicData[actualSize].textCoord[0] = 1.0f;
+						dynamicData[actualSize].textCoord[1] = 1.0f;
+						dynamicData[actualSize].color[0] = std::get<1>(character)[0];
+						dynamicData[actualSize].color[1] = std::get<1>(character)[1];
+						dynamicData[actualSize].color[2] = std::get<1>(character)[2];
+						dynamicData[actualSize].color[3] = std::get<1>(character)[3];
+						dynamicData[actualSize].textureId = textureUnitId;
 						++actualSize;
-					}
-					glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData) * actualSize, dynamicData);
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-					glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, actualSize);
+						dynamicData[actualSize].position[0] = std::get<0>(character)[2];
+						dynamicData[actualSize].position[1] = std::get<0>(character)[3];
+						dynamicData[actualSize].textCoord[0] = 1.0f;
+						dynamicData[actualSize].textCoord[1] = 0.0f;
+						dynamicData[actualSize].color[0] = std::get<1>(character)[0];
+						dynamicData[actualSize].color[1] = std::get<1>(character)[1];
+						dynamicData[actualSize].color[2] = std::get<1>(character)[2];
+						dynamicData[actualSize].color[3] = std::get<1>(character)[3];
+						dynamicData[actualSize].textureId = textureUnitId;
+						++actualSize;
+
+						dynamicData[actualSize].position[0] = std::get<0>(character)[4];
+						dynamicData[actualSize].position[1] = std::get<0>(character)[5];
+						dynamicData[actualSize].textCoord[0] = 0.0f;
+						dynamicData[actualSize].textCoord[1] = 0.0f;
+						dynamicData[actualSize].color[0] = std::get<1>(character)[0];
+						dynamicData[actualSize].color[1] = std::get<1>(character)[1];
+						dynamicData[actualSize].color[2] = std::get<1>(character)[2];
+						dynamicData[actualSize].color[3] = std::get<1>(character)[3];
+						dynamicData[actualSize].textureId = textureUnitId;
+						++actualSize;
+
+						dynamicData[actualSize].position[0] = std::get<0>(character)[6];
+						dynamicData[actualSize].position[1] = std::get<0>(character)[7];
+						dynamicData[actualSize].textCoord[0] = 0.0f;
+						dynamicData[actualSize].textCoord[1] = 1.0f;
+						dynamicData[actualSize].color[0] = std::get<1>(character)[0];
+						dynamicData[actualSize].color[1] = std::get<1>(character)[1];
+						dynamicData[actualSize].color[2] = std::get<1>(character)[2];
+						dynamicData[actualSize].color[3] = std::get<1>(character)[3];
+						dynamicData[actualSize].textureId = textureUnitId;
+						++actualSize;
+						++count;
+					}
+					++textureUnitId;
 				}
+				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData)* actualSize, dynamicData);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+				glDrawElements(GL_TRIANGLES, 6 * count, GL_UNSIGNED_INT, 0);
+				//glDrawElementsInstanced(GL_TRIANGLES, 6 * count, GL_UNSIGNED_INT, 0, 1);
 			}
 
 			glBindVertexArray(0);

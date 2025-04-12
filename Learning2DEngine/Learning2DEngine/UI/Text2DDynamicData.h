@@ -6,7 +6,8 @@ namespace Learning2DEngine
 	{
 		struct Text2DDynamicData
 		{
-			float vertex[8];
+			float position[2];
+			float textCoord[2];
 			float color[4];
 			float textureId;
 		};
