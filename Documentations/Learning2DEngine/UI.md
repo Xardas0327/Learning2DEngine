@@ -116,10 +116,10 @@ SimpleText2DRenderer* GetRenderer() const override;
 
 
 ##
-## Text2DRenderer
+## SimpleText2DRenderer
 ### Source Code:
-[Text2DRenderer.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderer.h)  
-[Text2DRenderer.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderer.cpp)
+[SimpleText2DRenderer.h](../../Learning2DEngine/Learning2DEngine/UI/SimpleText2DRenderer.h)  
+[SimpleText2DRenderer.cpp](../../Learning2DEngine/Learning2DEngine/UI/SimpleText2DRenderer.cpp)
 
 ### Description:
 It can render texts.
