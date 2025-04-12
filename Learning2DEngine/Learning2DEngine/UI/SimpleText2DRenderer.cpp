@@ -1,4 +1,4 @@
-#include "Text2DRenderer.h"
+#include "SimpleText2DRenderer.h"
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
@@ -15,25 +15,25 @@ namespace Learning2DEngine
 
 	namespace UI
 	{
-		Text2DRenderer::Text2DRenderer()
+		SimpleText2DRenderer::SimpleText2DRenderer()
 			: shader(), vao(0), vbo(0), ebo(0), textRenderData()
 		{
 
 		}
 
-		void Text2DRenderer::InitShader()
+		void SimpleText2DRenderer::InitShader()
 		{
 			auto& resourceManager = ResourceManager::GetInstance();
 
-			shader = resourceManager.IsShaderExist(ShaderConstant::TEXT2D_SHADER_NAME)
-				? resourceManager.GetShader(ShaderConstant::TEXT2D_SHADER_NAME)
+			shader = resourceManager.IsShaderExist(ShaderConstant::SIMPLE_TEXT2D_SHADER_NAME)
+				? resourceManager.GetShader(ShaderConstant::SIMPLE_TEXT2D_SHADER_NAME)
 				: resourceManager.LoadShader(
-					ShaderConstant::TEXT2D_SHADER_NAME,
-					ShaderConstant::GetText2DVertexShader(),
-					ShaderConstant::GetText2DFragmentShader());
+					ShaderConstant::SIMPLE_TEXT2D_SHADER_NAME,
+					ShaderConstant::GetSimpleText2DVertexShader(),
+					ShaderConstant::GetSimpleText2DFragmentShader());
 		}
 
-		void Text2DRenderer::InitVao()
+		void SimpleText2DRenderer::InitVao()
 		{
 			unsigned int indices[] = {
 				0, 1, 3,
@@ -59,7 +59,7 @@ namespace Learning2DEngine
 			glBindVertexArray(0);
 		}
 
-		void Text2DRenderer::Init()
+		void SimpleText2DRenderer::Init()
 		{
 			if (ComponentManager::GetInstance().GetThreadSafe())
 			{
@@ -74,7 +74,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void Text2DRenderer::DestroyObject()
+		void SimpleText2DRenderer::DestroyObject()
 		{
 			glDeleteVertexArrays(1, &vao);
 			glDeleteBuffers(1, &vbo);
@@ -83,7 +83,7 @@ namespace Learning2DEngine
 			textRenderData.clear();
 		}
 
-		void Text2DRenderer::Destroy()
+		void SimpleText2DRenderer::Destroy()
 		{
 			if (ComponentManager::GetInstance().GetThreadSafe())
 			{
@@ -96,12 +96,12 @@ namespace Learning2DEngine
 			}
 		}
 
-		void Text2DRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
+		void SimpleText2DRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
 		{
 			textRenderData = renderData;
 		}
 
-		void Text2DRenderer::Draw(int layer)
+		void SimpleText2DRenderer::Draw(int layer)
 		{
 			if (textRenderData.find(layer) == textRenderData.end())
 				return;
@@ -133,22 +133,24 @@ namespace Learning2DEngine
 				{
 					const auto& ch = characterMap[*c];
 
+					//Calculcate character position
 					float chPositionX = ch.bearing.x * textData->component->gameObject->transform.scale.x;
 					float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * textData->component->gameObject->transform.scale.y;
 
+					//Calculcate character size
 					float chWidth = ch.size.x * textData->component->gameObject->transform.scale.x;
 					float chHeight = ch.size.y * textData->component->gameObject->transform.scale.y;
 
-					glm::vec2 a = rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY + chHeight);
-					glm::vec2 b = rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY);
-					glm::vec2 c = rotationMatrix * glm::vec2(chPositionX, chPositionY);
-					glm::vec2 d = rotationMatrix * glm::vec2(chPositionX, chPositionY + chHeight);
+					glm::vec2 v1 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY + chHeight));
+					glm::vec2 v2 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY));
+					glm::vec2 v3 = startPosition + (rotationMatrix * glm::vec2(chPositionX, chPositionY));
+					glm::vec2 v4 = startPosition + (rotationMatrix * glm::vec2(chPositionX, chPositionY + chHeight));
 
 					float vertices[4][4] = {
-						{ startPosition.x + a.x, startPosition.y + a.y,   1.0f, 1.0f },
-						{ startPosition.x + b.x, startPosition.y + b.y,   1.0f, 0.0f },
-						{ startPosition.x + c.x, startPosition.y + c.y,   0.0f, 0.0f },
-						{ startPosition.x + d.x, startPosition.y + d.y,   0.0f, 1.0f }
+						{v1.x, v1.y,   1.0f, 1.0f },
+						{ v2.x, v2.y,   1.0f, 0.0f },
+						{ v3.x, v3.y,   0.0f, 0.0f },
+						{ v4.x, v4.y,   0.0f, 1.0f }
 					};
 
 					glBindTexture(GL_TEXTURE_2D, ch.textureId);
@@ -159,6 +161,7 @@ namespace Learning2DEngine
 
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+					// Calculate next character position
 					startPosition += rotationMatrix *
 						glm::vec2(
 							// bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)

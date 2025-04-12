@@ -16,7 +16,7 @@ namespace Learning2DEngine
 		{
 			static const char* shader = R"(
 			#version 330 core
-			layout(location = 0) in vec2 postion;
+			layout(location = 0) in vec2 position;
 			layout(location = 1) in vec2 textureCoords;
 
 			out vec2 TextureCoords;
@@ -27,7 +27,7 @@ namespace Learning2DEngine
 
 			void main()
 			{
-				gl_Position = projection * view * model * vec4(postion, 0.0, 1.0);
+				gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
 				TextureCoords = textureCoords;
 			})";
 
@@ -66,7 +66,7 @@ namespace Learning2DEngine
 		{
 			static const char* shader = R"(
 			#version 330 core
-			layout(location = 0) in vec2 postion;
+			layout(location = 0) in vec2 position;
 			layout(location = 1) in vec2 textureCoords;
 			layout(location = 2) in mat4 model;
 			layout(location = 6) in vec4 spriteColor;
@@ -81,7 +81,7 @@ namespace Learning2DEngine
 
 			void main()
 			{
-				gl_Position = projection * view * model * vec4(postion, 0.0, 1.0);
+				gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
 				TextureCoords = textureCoords;
 				SpriteColor = spriteColor;
 				SpriteTextureId = spriteTextureId;
@@ -118,15 +118,15 @@ namespace Learning2DEngine
 			return shader.c_str();
 		}
 
-		//Text2D
+		//Simple Text2D
 
-		const std::string ShaderConstant::TEXT2D_SHADER_NAME = "L2DE_Text2D";
+		const std::string ShaderConstant::SIMPLE_TEXT2D_SHADER_NAME = "L2DE_SimpleText2D";
 
-		const char* ShaderConstant::GetText2DVertexShader()
+		const char* ShaderConstant::GetSimpleText2DVertexShader()
 		{
 			static const char* shader = R"(
 			#version 330 core
-			layout(location = 0) in vec2 postion;
+			layout(location = 0) in vec2 position;
 			layout(location = 1) in vec2 textureCoords;
 
 			out vec2 TextureCoords;
@@ -135,14 +135,14 @@ namespace Learning2DEngine
 
 			void main()
 			{
-				gl_Position = projection * vec4(postion, 0.0, 1.0);
+				gl_Position = projection * vec4(position, 0.0, 1.0);
 				TextureCoords = textureCoords;
 			})";
 
 			return shader;
 		}
 
-		const char* ShaderConstant::GetText2DFragmentShader()
+		const char* ShaderConstant::GetSimpleText2DFragmentShader()
 		{
 			static const char* shader = R"(
 			#version 330 core
@@ -162,6 +162,60 @@ namespace Learning2DEngine
 			return shader;
 		}
 
+		//Text2D (Multi instancing support)
+
+		const std::string ShaderConstant::TEXT2D_SHADER_NAME = "L2DE_Text2D";
+
+		const char* ShaderConstant::GetText2DVertexShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
+			layout(location = 0) in vec2 position;
+			layout(location = 1) in vec2 textureCoords;
+			layout(location = 2) in vec4 characterColor;
+			layout(location = 3) in float characterTextureId;
+
+			out vec2 TextureCoords;
+			out vec4 CharacterColor;
+			out float CharacterTextureId;
+
+			uniform mat4 projection;
+
+			void main()
+			{
+				gl_Position = projection * vec4(position, 0.0, 1.0);
+				TextureCoords = textureCoords;
+				CharacterColor = characterColor;
+				CharacterTextureId = characterTextureId;
+			})";
+
+			return shader;
+		}
+
+		const char* ShaderConstant::GetText2DFragmentShader()
+		{
+			GLint maxUnitNumber = RenderManager::GetInstance().GetMaxTextureUnits();
+
+			static std::string shader = R"(
+			#version 330 core
+			in vec2 TextureCoords;
+			in vec4 CharacterColor;
+			in float CharacterTextureId;
+
+			out vec4 color;
+
+			uniform sampler2D[)" + std::to_string(maxUnitNumber) + R"(] characterTextures;
+
+			void main()
+			{
+				int textureId = int(CharacterTextureId);
+				vec4 sampled = vec4(1.0, 1.0, 1.0, texture(characterTextures[textureId], TextureCoords).r);
+				color = CharacterColor * sampled;
+			})";
+
+			return shader.c_str();
+		}
+
 		//PostProcessEffect
 
 		const std::string ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME = "L2DE_DefaultPostProcessEffect";
@@ -170,14 +224,14 @@ namespace Learning2DEngine
 		{
 			static const char* shader = R"(
 			#version 330 core
-			layout(location = 0) in vec2 postion;
+			layout(location = 0) in vec2 position;
 			layout(location = 1) in vec2 textureCoords;
 
 			out vec2 TextureCoords;
 
 			void main()
 			{
-				gl_Position = vec4(postion, 0.0, 1.0);
+				gl_Position = vec4(position, 0.0, 1.0);
 				TextureCoords = textureCoords;
 			})";
 

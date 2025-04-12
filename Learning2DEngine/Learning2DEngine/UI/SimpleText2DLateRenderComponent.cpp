@@ -1,22 +1,22 @@
-#include "Text2DLateRenderComponent.h"
+#include "SimpleText2DLateRenderComponent.h"
 
 namespace Learning2DEngine
 {
 	using namespace System;
 
-    namespace UI
-    {
-		const std::string Text2DLateRenderComponent::id = "L2DE_Text2DLateRenderComponent";
-		int Text2DLateRenderComponent::refrenceNumber = 0;
-		std::mutex Text2DLateRenderComponent::mutex;
+	namespace UI
+	{
+		const std::string SimpleText2DLateRenderComponent::id = "L2DE_SimpleText2DLateRenderComponent";
+		int SimpleText2DLateRenderComponent::refrenceNumber = 0;
+		std::mutex SimpleText2DLateRenderComponent::mutex;
 
-		Text2DLateRenderComponent::Text2DLateRenderComponent(GameObject* gameObject, const FontSizePair& fontSizePair, int layer, glm::vec4 color)
+		SimpleText2DLateRenderComponent::SimpleText2DLateRenderComponent(GameObject* gameObject, const FontSizePair& fontSizePair, int layer, glm::vec4 color)
 			: LateRendererComponent(gameObject, layer, fontSizePair, color), BaseRendererComponent(gameObject, layer, fontSizePair, color),
 			Component(gameObject)
 		{
 		}
 
-		Text2DLateRenderComponent::Text2DLateRenderComponent(
+		SimpleText2DLateRenderComponent::SimpleText2DLateRenderComponent(
 			GameObject* gameObject,
 			const FontSizePair& fontSizePair,
 			const std::string& text,
@@ -29,23 +29,23 @@ namespace Learning2DEngine
 
 		}
 
-		void Text2DLateRenderComponent::Init()
+		void SimpleText2DLateRenderComponent::Init()
 		{
 			auto& componentManager = System::ComponentManager::GetInstance();
 			if (componentManager.GetThreadSafe())
 			{
 				std::lock_guard<std::mutex> lock(mutex);
 				LateRendererComponent::Init();
-				++Text2DLateRenderComponent::refrenceNumber;
+				++SimpleText2DLateRenderComponent::refrenceNumber;
 			}
 			else
 			{
 				LateRendererComponent::Init();
-				++Text2DLateRenderComponent::refrenceNumber;
+				++SimpleText2DLateRenderComponent::refrenceNumber;
 			}
 		}
 
-		void Text2DLateRenderComponent::Destroy()
+		void SimpleText2DLateRenderComponent::Destroy()
 		{
 			auto& componentManager = System::ComponentManager::GetInstance();
 			if (componentManager.GetThreadSafe())
@@ -53,9 +53,9 @@ namespace Learning2DEngine
 				std::lock_guard<std::mutex> lock(mutex);
 				LateRendererComponent::Destroy();
 
-				if (!(--Text2DLateRenderComponent::refrenceNumber))
+				if (!(--SimpleText2DLateRenderComponent::refrenceNumber))
 				{
-					MultiText2DRenderer::GetInstance().Destroy();
+					SimpleText2DRenderer::GetInstance().Destroy();
 					componentManager.RemoveRendererFromRender(GetId());
 				}
 			}
@@ -63,25 +63,25 @@ namespace Learning2DEngine
 			{
 				LateRendererComponent::Destroy();
 
-				if (!(--Text2DLateRenderComponent::refrenceNumber))
+				if (!(--SimpleText2DLateRenderComponent::refrenceNumber))
 				{
-					MultiText2DRenderer::GetInstance().Destroy();
+					SimpleText2DRenderer::GetInstance().Destroy();
 					componentManager.RemoveRendererFromRender(GetId());
 				}
 			}
 		}
 
-		const std::string& Text2DLateRenderComponent::GetId() const
+		const std::string& SimpleText2DLateRenderComponent::GetId() const
 		{
-			return Text2DLateRenderComponent::id;
+			return SimpleText2DLateRenderComponent::id;
 		}
 
-		MultiText2DRenderer* Text2DLateRenderComponent::GetRenderer() const
+		SimpleText2DRenderer* SimpleText2DLateRenderComponent::GetRenderer() const
 		{
-			auto& renderer = MultiText2DRenderer::GetInstance();
+			auto& renderer = SimpleText2DRenderer::GetInstance();
 			renderer.Init();
 
 			return &renderer;
 		}
-    }
+	}
 }

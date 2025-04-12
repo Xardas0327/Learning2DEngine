@@ -12,9 +12,9 @@ namespace Learning2DEngine
 {
 	namespace UI
 	{
-		class Text2DRenderer : public Render::IRenderer, public virtual System::Singleton<Text2DRenderer>
+		class SimpleText2DRenderer : public Render::IRenderer, public virtual System::Singleton<SimpleText2DRenderer>
 		{
-			friend class Singleton<Text2DRenderer>;
+			friend class Singleton<SimpleText2DRenderer>;
 		private:
 			Render::Shader shader;
 			GLuint vao;
@@ -24,7 +24,7 @@ namespace Learning2DEngine
 			//int is the layer
 			std::map<int, std::vector<Render::RenderData*>> textRenderData;
 
-			Text2DRenderer();
+			SimpleText2DRenderer();
 
 			void InitShader();
 			void InitVao();

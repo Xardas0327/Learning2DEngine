@@ -8,31 +8,31 @@
 #include "../Render/LateRendererComponent.h"
 
 #include "Text2DRenderData.h"
-#include "MultiText2DRenderer.h"
+#include "SimpleText2DRenderer.h"
 #include "FontSizePair.h"
 
 namespace Learning2DEngine
 {
-    namespace UI
-    {
-		class Text2DLateRenderComponent : public virtual Render::LateRendererComponent<Text2DRenderData, MultiText2DRenderer>
+	namespace UI
+	{
+		class SimpleText2DLateRenderComponent : public virtual Render::LateRendererComponent<Text2DRenderData, SimpleText2DRenderer>
 		{
 			friend class System::GameObject;
 		private:
 			static const std::string id;
 			/// <summary>
-			/// It is counted, that how many Text2DLateRenderComponent exist.
+			/// It is counted, that how many SimpleText2DLateRenderComponent exist.
 			/// </summary>
 			static int refrenceNumber;
 			static std::mutex mutex;
 
 		protected:
-			Text2DLateRenderComponent(
+			SimpleText2DLateRenderComponent(
 				System::GameObject* gameObject,
 				const FontSizePair& fontSizePair,
 				int layer = 0,
 				glm::vec4 color = glm::vec4(1.0f));
-			Text2DLateRenderComponent(
+			SimpleText2DLateRenderComponent(
 				System::GameObject* gameObject,
 				const FontSizePair& fontSizePair,
 				const std::string& text,
@@ -44,7 +44,7 @@ namespace Learning2DEngine
 
 			const std::string& GetId() const override;
 
-			MultiText2DRenderer* GetRenderer() const override;
+			SimpleText2DRenderer* GetRenderer() const override;
 		};
-    }
+	}
 }

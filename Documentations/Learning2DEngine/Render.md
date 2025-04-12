@@ -311,7 +311,7 @@ inline unsigned int GetSampleNumber();
 [MultiSpriteDynamicData.h](../../Learning2DEngine/Learning2DEngine/Render/MultiSpriteDynamicData.h)  
 
 ### Description:
-It contains the dynamic data of the MultiSpriteRenderer.  
+It contains the dynamic data of the `MultiSpriteRenderer`.  
 Note: the textureId is float, because we sent it to vertex shader, but it will be converted to int.
 
 ### Header:
@@ -1276,16 +1276,25 @@ static const char* GetSimpleSpriteFragmentShader();
 The sprite shader's name (for `ResourceManager`),
 vertex and fragment shaders.  
 It has multi instancing support.  
-Moreover, it can use multi texture at the same time.  
 ```cpp
 static const std::string SPRITE_SHADER_NAME;
 static const char* GetSpriteVertexShader();
 static const char* GetSpriteFragmentShader();
 ```
 
+**Simple Text2D shader**  
+The simple Text2D shader's name (for `ResourceManager`),
+vertex and fragment shaders.
+```cpp
+static const std::string SIMPLE_TEXT2D_SHADER_NAME;
+static const char* GetSimpleText2DVertexShader();
+static const char* GetSimpleText2DFragmentShader();
+```
+
 **Text2D shader**  
 The Text2D shader's name (for `ResourceManager`),
 vertex and fragment shaders.
+It has multi instancing support.  
 ```cpp
 static const std::string TEXT2D_SHADER_NAME;
 static const char* GetText2DVertexShader();

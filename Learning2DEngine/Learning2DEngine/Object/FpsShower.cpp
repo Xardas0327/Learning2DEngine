@@ -17,7 +17,7 @@ namespace Learning2DEngine
 			int layer,
 			glm::vec4 color)
 			: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
-			Text2DLateRenderComponent(gameObject, fontSizePair, layer, color),
+			SimpleText2DLateRenderComponent(gameObject, fontSizePair, layer, color),
 			LateRendererComponent(gameObject, layer, fontSizePair, color),
 			BaseRendererComponent(gameObject, layer, fontSizePair, color),
 			previousTime(0.0f), fps(0)
@@ -28,7 +28,7 @@ namespace Learning2DEngine
 		void FpsShower::Init()
 		{
 			UpdaterComponent::Init();
-			Text2DLateRenderComponent::Init();
+			SimpleText2DLateRenderComponent::Init();
 			previousTime = glfwGetTime();
 			data.text = "FPS: " + std::to_string(fps);
 		}
@@ -36,7 +36,7 @@ namespace Learning2DEngine
 		void FpsShower::Destroy()
 		{
 			UpdaterComponent::Destroy();
-			Text2DLateRenderComponent::Destroy();
+			SimpleText2DLateRenderComponent::Destroy();
 		}
 
 		void FpsShower::Update()
