@@ -245,8 +245,8 @@ namespace Learning2DEngine
 
 			for (auto& data : textRenderData[layer])
 			{
-				int actualSize = 0;
-				int count = 0;
+				int dynamicSize = 0;
+				int objectCount = 0;
 				int textureUnitId = 0;
 				for (auto& characterData : data)
 				{
@@ -256,52 +256,51 @@ namespace Learning2DEngine
 
 					for (auto& character : characterData.second)
 					{
-						dynamicData[actualSize].position[0] = std::get<0>(character)[0];
-						dynamicData[actualSize].position[1] = std::get<0>(character)[1];
-						dynamicData[actualSize].textCoord[0] = 1.0f;
-						dynamicData[actualSize].textCoord[1] = 1.0f;
-						std::memcpy(dynamicData[actualSize].color,
+						dynamicData[dynamicSize].position[0] = std::get<0>(character)[0];
+						dynamicData[dynamicSize].position[1] = std::get<0>(character)[1];
+						dynamicData[dynamicSize].textCoord[0] = 1.0f;
+						dynamicData[dynamicSize].textCoord[1] = 1.0f;
+						std::memcpy(dynamicData[dynamicSize].color,
 							std::get<1>(character).data(),
-							sizeof(dynamicData[actualSize].color));
-						dynamicData[actualSize].textureId = textureUnitId;
-						++actualSize;
+							sizeof(dynamicData[dynamicSize].color));
+						dynamicData[dynamicSize].textureId = textureUnitId;
+						++dynamicSize;
 
-						dynamicData[actualSize].position[0] = std::get<0>(character)[2];
-						dynamicData[actualSize].position[1] = std::get<0>(character)[3];
-						dynamicData[actualSize].textCoord[0] = 1.0f;
-						dynamicData[actualSize].textCoord[1] = 0.0f;
-						std::memcpy(dynamicData[actualSize].color,
+						dynamicData[dynamicSize].position[0] = std::get<0>(character)[2];
+						dynamicData[dynamicSize].position[1] = std::get<0>(character)[3];
+						dynamicData[dynamicSize].textCoord[0] = 1.0f;
+						dynamicData[dynamicSize].textCoord[1] = 0.0f;
+						std::memcpy(dynamicData[dynamicSize].color,
 							std::get<1>(character).data(),
-							sizeof(dynamicData[actualSize].color));
-						dynamicData[actualSize].textureId = textureUnitId;
-						++actualSize;
+							sizeof(dynamicData[dynamicSize].color));
+						dynamicData[dynamicSize].textureId = textureUnitId;
+						++dynamicSize;
 
-						dynamicData[actualSize].position[0] = std::get<0>(character)[4];
-						dynamicData[actualSize].position[1] = std::get<0>(character)[5];
-						dynamicData[actualSize].textCoord[0] = 0.0f;
-						dynamicData[actualSize].textCoord[1] = 0.0f;
-						std::memcpy(dynamicData[actualSize].color,
+						dynamicData[dynamicSize].position[0] = std::get<0>(character)[4];
+						dynamicData[dynamicSize].position[1] = std::get<0>(character)[5];
+						dynamicData[dynamicSize].textCoord[0] = 0.0f;
+						dynamicData[dynamicSize].textCoord[1] = 0.0f;
+						std::memcpy(dynamicData[dynamicSize].color,
 							std::get<1>(character).data(),
-							sizeof(dynamicData[actualSize].color));
-						dynamicData[actualSize].textureId = textureUnitId;
-						++actualSize;
+							sizeof(dynamicData[dynamicSize].color));
+						dynamicData[dynamicSize].textureId = textureUnitId;
+						++dynamicSize;
 
-						dynamicData[actualSize].position[0] = std::get<0>(character)[6];
-						dynamicData[actualSize].position[1] = std::get<0>(character)[7];
-						dynamicData[actualSize].textCoord[0] = 0.0f;
-						dynamicData[actualSize].textCoord[1] = 1.0f;
-						dynamicData[actualSize].color[0] = std::get<1>(character)[0];
-						dynamicData[actualSize].color[1] = std::get<1>(character)[1];
-						dynamicData[actualSize].color[2] = std::get<1>(character)[2];
-						dynamicData[actualSize].color[3] = std::get<1>(character)[3];
-						dynamicData[actualSize].textureId = textureUnitId;
-						++actualSize;
-						++count;
+						dynamicData[dynamicSize].position[0] = std::get<0>(character)[6];
+						dynamicData[dynamicSize].position[1] = std::get<0>(character)[7];
+						dynamicData[dynamicSize].textCoord[0] = 0.0f;
+						dynamicData[dynamicSize].textCoord[1] = 1.0f;
+						std::memcpy(dynamicData[dynamicSize].color,
+							std::get<1>(character).data(),
+							sizeof(dynamicData[dynamicSize].color));
+						dynamicData[dynamicSize].textureId = textureUnitId;
+						++dynamicSize;
+						++objectCount;
 					}
 					++textureUnitId;
 				}
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData)* actualSize, dynamicData);
-				glDrawElements(GL_TRIANGLES, 6 * count, GL_UNSIGNED_INT, 0);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData)* dynamicSize, dynamicData);
+				glDrawElements(GL_TRIANGLES, 6 * objectCount, GL_UNSIGNED_INT, 0);
 			}
 
 			glBindVertexArray(0);
