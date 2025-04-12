@@ -260,9 +260,7 @@ namespace Learning2DEngine
 						dynamicData[dynamicSize].position[1] = std::get<0>(character)[1];
 						dynamicData[dynamicSize].textCoord[0] = 1.0f;
 						dynamicData[dynamicSize].textCoord[1] = 1.0f;
-						std::memcpy(dynamicData[dynamicSize].color,
-							std::get<1>(character).data(),
-							sizeof(dynamicData[dynamicSize].color));
+						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
 						dynamicData[dynamicSize].textureId = textureUnitId;
 						++dynamicSize;
 
@@ -270,9 +268,7 @@ namespace Learning2DEngine
 						dynamicData[dynamicSize].position[1] = std::get<0>(character)[3];
 						dynamicData[dynamicSize].textCoord[0] = 1.0f;
 						dynamicData[dynamicSize].textCoord[1] = 0.0f;
-						std::memcpy(dynamicData[dynamicSize].color,
-							std::get<1>(character).data(),
-							sizeof(dynamicData[dynamicSize].color));
+						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
 						dynamicData[dynamicSize].textureId = textureUnitId;
 						++dynamicSize;
 
@@ -280,9 +276,7 @@ namespace Learning2DEngine
 						dynamicData[dynamicSize].position[1] = std::get<0>(character)[5];
 						dynamicData[dynamicSize].textCoord[0] = 0.0f;
 						dynamicData[dynamicSize].textCoord[1] = 0.0f;
-						std::memcpy(dynamicData[dynamicSize].color,
-							std::get<1>(character).data(),
-							sizeof(dynamicData[dynamicSize].color));
+						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
 						dynamicData[dynamicSize].textureId = textureUnitId;
 						++dynamicSize;
 
@@ -290,9 +284,7 @@ namespace Learning2DEngine
 						dynamicData[dynamicSize].position[1] = std::get<0>(character)[7];
 						dynamicData[dynamicSize].textCoord[0] = 0.0f;
 						dynamicData[dynamicSize].textCoord[1] = 1.0f;
-						std::memcpy(dynamicData[dynamicSize].color,
-							std::get<1>(character).data(),
-							sizeof(dynamicData[dynamicSize].color));
+						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
 						dynamicData[dynamicSize].textureId = textureUnitId;
 						++dynamicSize;
 						++objectCount;
