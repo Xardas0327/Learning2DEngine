@@ -84,12 +84,12 @@ GLuint ebo;
 ```
 
 **vboDynamic**  
-It contains the uploaded data of the renderable characters.
+It contains the uploaded data of the renderable characters.  
+Its size is depend on the maxObjectSize.
 ```cpp
 GLuint vboDynamic;
 ```
 **maxObjectSize**  
-The size of the vboDynamic.
 ```cpp
 unsigned int maxObjectSize;
 ```
