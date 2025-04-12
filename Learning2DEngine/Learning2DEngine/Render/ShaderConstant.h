@@ -23,7 +23,13 @@ namespace Learning2DEngine
 			static const char* GetSpriteVertexShader();
 			static const char* GetSpriteFragmentShader();
 
-			//Text2D
+			//Simple Text2D
+
+			static const std::string SIMPLE_TEXT2D_SHADER_NAME;
+			static const char* GetSimpleText2DVertexShader();
+			static const char* GetSimpleText2DFragmentShader();
+
+			//Text2D (Multi instancing support)
 
 			static const std::string TEXT2D_SHADER_NAME;
 			static const char* GetText2DVertexShader();

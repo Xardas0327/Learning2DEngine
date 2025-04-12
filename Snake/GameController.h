@@ -5,7 +5,7 @@
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
 #include <Learning2DEngine/UI/FontSizePair.h>
-#include <Learning2DEngine/UI/Text2DLateRenderComponent.h>
+#include <Learning2DEngine/UI/SimpleText2DLateRenderComponent.h>
 
 #include "FoodController.h"
 #include "PlayerController.h"
@@ -53,8 +53,8 @@ private:
     Direction moveDirection;
     Direction lastMoveDirection;
 
-    Learning2DEngine::UI::Text2DLateRenderComponent* scoreText;
-    Learning2DEngine::UI::Text2DLateRenderComponent* startText;
+    Learning2DEngine::UI::SimpleText2DLateRenderComponent* scoreText;
+    Learning2DEngine::UI::SimpleText2DLateRenderComponent* startText;
 
 
     GameController(Learning2DEngine::System::GameObject* gameObject, const Learning2DEngine::UI::FontSizePair& fontSizePair);

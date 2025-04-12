@@ -118,7 +118,51 @@ namespace Learning2DEngine
 			return shader.c_str();
 		}
 
-		//Text2D
+		//Simple Text2D
+
+		const std::string ShaderConstant::SIMPLE_TEXT2D_SHADER_NAME = "L2DE_SimpleText2D";
+
+		const char* ShaderConstant::GetSimpleText2DVertexShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
+			layout(location = 0) in vec2 postion;
+			layout(location = 1) in vec2 textureCoords;
+
+			out vec2 TextureCoords;
+
+			uniform mat4 projection;
+
+			void main()
+			{
+				gl_Position = projection * vec4(postion, 0.0, 1.0);
+				TextureCoords = textureCoords;
+			})";
+
+			return shader;
+		}
+
+		const char* ShaderConstant::GetSimpleText2DFragmentShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
+			in vec2 TextureCoords;
+
+			out vec4 color;
+
+			uniform sampler2D characterTexture;
+			uniform vec4 characterColor;
+
+			void main()
+			{
+				vec4 sampled = vec4(1.0, 1.0, 1.0, texture(characterTexture, TextureCoords).r);
+				color = characterColor * sampled;
+			})";
+
+			return shader;
+		}
+
+		//Text2D (Multi instancing support)
 
 		const std::string ShaderConstant::TEXT2D_SHADER_NAME = "L2DE_Text2D";
 
