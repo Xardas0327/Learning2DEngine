@@ -26,9 +26,9 @@ protected:
     Learning2DEngine::Render::SimpleSpriteRenderComponent* CreateNewSnakeUnit(glm::vec2 position, glm::vec2 scale);
 public:
     void Regenerate(glm::ivec2 unitSize);
-    void IncreaseSize(glm::vec2 headPostion, glm::ivec2 unitSize);
+    void IncreaseSize(glm::vec2 headPosition, glm::ivec2 unitSize);
     bool IsInSnake(glm::vec2 position);
-    void Move(glm::vec2 headPostion);
+    void Move(glm::vec2 headPosition);
 
     inline unsigned int GetSize()
     {

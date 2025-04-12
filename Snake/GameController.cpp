@@ -172,18 +172,18 @@ void GameController::MoveSnake()
         }
 
         lastMoveDirection = moveDirection;
-        glm::vec2 newPostion = playerController->GetHeadPosition() + glm::vec2(moveVector.x * unitSize.x, moveVector.y * unitSize.y);
+        glm::vec2 newPosition = playerController->GetHeadPosition() + glm::vec2(moveVector.x * unitSize.x, moveVector.y * unitSize.y);
 
-        if (IsOut(newPostion) || playerController->IsInSnake(newPostion))
+        if (IsOut(newPosition) || playerController->IsInSnake(newPosition))
         {
             state = GameState::GAME_MENU;
             startText->gameObject->isActive = true;
         }
         else
         {
-            if (newPostion == foodController->gameObject->transform.position)
+            if (newPosition == foodController->gameObject->transform.position)
             {
-                playerController->IncreaseSize(newPostion, unitSize);
+                playerController->IncreaseSize(newPosition, unitSize);
                 EatFood();
                 moveWaitingTime -= dencreaseTimeAfterEat;
                 if (moveWaitingTime < 0)
@@ -191,7 +191,7 @@ void GameController::MoveSnake()
             }
             else
             {
-                playerController->Move(newPostion);
+                playerController->Move(newPosition);
             }
 
 

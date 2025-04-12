@@ -57,12 +57,12 @@ bool PlayerController::IsInSnake(glm::vec2 position)
     return false;
 }
 
-void PlayerController::IncreaseSize(glm::vec2 headPostion, glm::ivec2 unitSize)
+void PlayerController::IncreaseSize(glm::vec2 headPosition, glm::ivec2 unitSize)
 {
-    snake.push_front(CreateNewSnakeUnit(headPostion, unitSize));
+    snake.push_front(CreateNewSnakeUnit(headPosition, unitSize));
 }
 
-void PlayerController::Move(glm::vec2 headPostion)
+void PlayerController::Move(glm::vec2 headPosition)
 {
     auto end = snake.rbegin();
     auto beforeIt = snake.rbegin();
@@ -73,5 +73,5 @@ void PlayerController::Move(glm::vec2 headPostion)
         ++end;
         ++beforeIt;
     }
-    snake.front()->gameObject->transform.position = headPostion;
+    snake.front()->gameObject->transform.position = headPosition;
 }

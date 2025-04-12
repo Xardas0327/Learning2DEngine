@@ -16,7 +16,7 @@ namespace Learning2DEngine
 		{
 			static const char* shader = R"(
 			#version 330 core
-			layout(location = 0) in vec2 postion;
+			layout(location = 0) in vec2 position;
 			layout(location = 1) in vec2 textureCoords;
 
 			out vec2 TextureCoords;
@@ -27,7 +27,7 @@ namespace Learning2DEngine
 
 			void main()
 			{
-				gl_Position = projection * view * model * vec4(postion, 0.0, 1.0);
+				gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
 				TextureCoords = textureCoords;
 			})";
 
@@ -66,7 +66,7 @@ namespace Learning2DEngine
 		{
 			static const char* shader = R"(
 			#version 330 core
-			layout(location = 0) in vec2 postion;
+			layout(location = 0) in vec2 position;
 			layout(location = 1) in vec2 textureCoords;
 			layout(location = 2) in mat4 model;
 			layout(location = 6) in vec4 spriteColor;
@@ -81,7 +81,7 @@ namespace Learning2DEngine
 
 			void main()
 			{
-				gl_Position = projection * view * model * vec4(postion, 0.0, 1.0);
+				gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
 				TextureCoords = textureCoords;
 				SpriteColor = spriteColor;
 				SpriteTextureId = spriteTextureId;
@@ -126,7 +126,7 @@ namespace Learning2DEngine
 		{
 			static const char* shader = R"(
 			#version 330 core
-			layout(location = 0) in vec2 postion;
+			layout(location = 0) in vec2 position;
 			layout(location = 1) in vec2 textureCoords;
 
 			out vec2 TextureCoords;
@@ -135,7 +135,7 @@ namespace Learning2DEngine
 
 			void main()
 			{
-				gl_Position = projection * vec4(postion, 0.0, 1.0);
+				gl_Position = projection * vec4(position, 0.0, 1.0);
 				TextureCoords = textureCoords;
 			})";
 
@@ -170,7 +170,7 @@ namespace Learning2DEngine
 		{
 			static const char* shader = R"(
 			#version 330 core
-			layout(location = 0) in vec2 postion;
+			layout(location = 0) in vec2 position;
 			layout(location = 1) in vec2 textureCoords;
 			layout(location = 2) in vec4 characterColor;
 			layout(location = 3) in float characterTextureId;
@@ -183,7 +183,7 @@ namespace Learning2DEngine
 
 			void main()
 			{
-				gl_Position = projection * vec4(postion, 0.0, 1.0);
+				gl_Position = projection * vec4(position, 0.0, 1.0);
 				TextureCoords = textureCoords;
 				CharacterColor = characterColor;
 				CharacterTextureId = characterTextureId;
@@ -224,14 +224,14 @@ namespace Learning2DEngine
 		{
 			static const char* shader = R"(
 			#version 330 core
-			layout(location = 0) in vec2 postion;
+			layout(location = 0) in vec2 position;
 			layout(location = 1) in vec2 textureCoords;
 
 			out vec2 TextureCoords;
 
 			void main()
 			{
-				gl_Position = vec4(postion, 0.0, 1.0);
+				gl_Position = vec4(position, 0.0, 1.0);
 				TextureCoords = textureCoords;
 			})";
 

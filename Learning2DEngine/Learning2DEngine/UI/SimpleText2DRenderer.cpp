@@ -133,9 +133,11 @@ namespace Learning2DEngine
 				{
 					const auto& ch = characterMap[*c];
 
+					//Calculcate character position
 					float chPositionX = ch.bearing.x * textData->component->gameObject->transform.scale.x;
 					float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * textData->component->gameObject->transform.scale.y;
 
+					//Calculcate character size
 					float chWidth = ch.size.x * textData->component->gameObject->transform.scale.x;
 					float chHeight = ch.size.y * textData->component->gameObject->transform.scale.y;
 
@@ -159,6 +161,7 @@ namespace Learning2DEngine
 
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+					// Calculate next character position
 					startPosition += rotationMatrix *
 						glm::vec2(
 							// bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)

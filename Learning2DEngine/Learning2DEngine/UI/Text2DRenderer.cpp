@@ -174,7 +174,7 @@ namespace Learning2DEngine
 								)
 							);
 
-							//Calculate next character postion
+							//Calculate next character position
 							startPosition += rotationMatrix *
 								glm::vec2(
 									// bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)

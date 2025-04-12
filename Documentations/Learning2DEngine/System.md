@@ -188,7 +188,7 @@ virtual void Update() = 0;
 ### Description:
 The `Camera` contains the camera settings, which the developer can transform the view of the users.
 The shaders can use its projection and its view matrix.
-The developer can change the Camera's resolution, postion and rotation too.  
+The developer can change the Camera's resolution, position and rotation too.  
 The `Game` class uses it as `mainCamera`.
 
 ### Header:
