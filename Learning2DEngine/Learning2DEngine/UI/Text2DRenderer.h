@@ -24,7 +24,6 @@ namespace Learning2DEngine
 			Render::Shader shader;
 			GLuint vao;
 			GLuint ebo;
-			GLuint vboStatic;
 			GLuint vboDynamic;
 			unsigned int maxObjectSize;
 
