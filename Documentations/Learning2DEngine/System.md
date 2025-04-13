@@ -1639,7 +1639,7 @@ struct Transform
 ```
 
 ### Variables:
-**Public:**  
+**Private:**  
 **position**  
 ```cpp
 glm::vec2 position;
@@ -1655,14 +1655,82 @@ glm::vec2 scale;
 float rotation;
 ```
 
+**isModified**  
+If it is true, the modelMatrix will be recalculated.
+```cpp
+bool isModified;
+```
+
+**modelMatrix**  
+```cpp
+glm::mat4 modelMatrix;
+```
+
 ### Functions:
+**Private:**  
+**CalculateModelMatrix**  
+```cpp
+glm::mat4 CalculateModelMatrix() const;
+```
+
 **Public:**  
 **Transform**  
 ```cpp
 Transform(glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f);
 ```
 
+**GetPosition**  
+```cpp
+inline glm::vec2 GetPosition() const;
+```
+
+**SetPosition**  
+```cpp
+void SetPosition(const glm::vec2& newPosition);
+```
+
+**AddPosition**  
+```cpp
+void AddPosition(const glm::vec2& deltaPosition);
+```
+
+**GetScale**  
+```cpp
+inline glm::vec2 GetScale() const;
+```
+
+**SetScale**  
+```cpp
+void SetScale(const glm::vec2& newScale);
+```
+
+**AddScale**  
+```cpp
+void AddScale(const glm::vec2& deltaScale);
+```
+
+**GetRotation**  
+```cpp
+inline float GetRotation() const;
+```
+
+**SetRotation**  
+```cpp
+void SetRotation(float newRotation);
+```
+
+**AddRotation**  
+```cpp
+void AddRotation(float deltaRotation);
+```
+
 **GetModelMatrix**  
+If the isModified is true, the non const version save the new calculated model matrix,
+that's why it will not recalculate the model matrix again.  
+In same situation the const version will always recalculate the model matrix.
+```cpp
+glm::mat4 GetModelMatrix();
+```
 ```cpp
 glm::mat4 GetModelMatrix() const;
 ```
