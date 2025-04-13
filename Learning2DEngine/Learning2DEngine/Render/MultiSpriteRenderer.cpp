@@ -161,54 +161,40 @@ namespace Learning2DEngine
 			for (auto& layerData : renderData)
 			{
 				auto& actualLayerData = spriteRenderData[layerData.first];
-				actualLayerData.push_back(
-					std::make_tuple(std::vector<SpriteRenderData*>(), std::map<GLuint, int>())
-				);
 
 				for (auto& data : layerData.second)
 				{
 					auto spriteData = static_cast<SpriteRenderData*>(data);
 
 					if (spriteData->IsUseTexture())
-					{
-						bool isFound = false;
-						for (int i = 0; i < actualLayerData.size(); ++i)
-						{
-							if (std::get<1>(actualLayerData[i]).count(spriteData->texture->GetId()) > 0)
-							{
-								std::get<0>(actualLayerData[i]).push_back(spriteData);
-								isFound = true;
-								break;
-							}
-
-							if (std::get<1>(actualLayerData[i]).size() < maxTextureUnit)
-							{
-								std::get<1>(actualLayerData[i])[spriteData->texture->GetId()] = std::get<1>(actualLayerData[i]).size();
-								std::get<0>(actualLayerData[i]).push_back(spriteData);
-								isFound = true;
-								break;
-							}
-						}
-
-						if (!isFound)
-						{
-							actualLayerData.push_back(
-								std::make_tuple(std::vector<SpriteRenderData*>(), std::map<GLuint, int>())
-							);
-							std::get<1>(actualLayerData.back())[spriteData->texture->GetId()] = 0;
-							std::get<0>(actualLayerData.back()).push_back(spriteData);
-						}
-					}
+						actualLayerData[spriteData->texture->GetId()].push_back(spriteData);
 					else
-					{
-						std::get<0>(actualLayerData[0]).push_back(spriteData);
-					}
+						//The 0 is invalid texture id.
+						actualLayerData[0].push_back(spriteData);
 				}
+
+				int textureUnitCount = 0;
+				int itemCount = 0;
+				int actualMaxSize = 0;
 
 				for (auto& data : spriteRenderData[layerData.first])
 				{
-					if (std::get<0>(data).size() > maxDynamicSize)
-						maxDynamicSize = std::get<0>(data).size();
+					actualMaxSize += data.second.size();
+
+					// Don't count the invalid texture id.
+					if (data.first > 0)
+						++textureUnitCount;
+
+					++itemCount;
+					// Check if the texture unit number is arrived to max or this is the last data
+					if (textureUnitCount >= maxTextureUnit || itemCount == spriteRenderData[layerData.first].size())
+					{
+						if (actualMaxSize > maxDynamicSize)
+							maxDynamicSize = actualMaxSize;
+
+						actualMaxSize = 0;
+						textureUnitCount = 0;
+					}
 				}
 			}
 
@@ -233,44 +219,57 @@ namespace Learning2DEngine
 			if (spriteRenderData.find(layer) == spriteRenderData.end())
 				return;
 
+			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
+
 			shader.Use();
 			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
 			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 
+			int textureUnitCount = 0;
+			int dataCount = 0;
+			int dynamicDataCount = 0;
 			for (auto& data : spriteRenderData[layer])
 			{
-				for (auto& textureIds : std::get<1>(data))
+				if (data.first > 0)
 				{
-					glActiveTexture(GL_TEXTURE0 + textureIds.second);
-					glBindTexture(GL_TEXTURE_2D, textureIds.first);
-					std::string shaderId = "spriteTextures[" + std::to_string(textureIds.second) + "]";
-					shader.SetInteger(shaderId.c_str(), textureIds.second);
+					shader.SetInteger(("spriteTextures[" + std::to_string(textureUnitCount) + "]").c_str(), textureUnitCount);
+					glActiveTexture(GL_TEXTURE0 + textureUnitCount);
+					glBindTexture(GL_TEXTURE_2D, data.first);
+					++textureUnitCount;
 				}
 
-				auto& sprites = std::get<0>(data);
-				for (size_t i = 0; i < sprites.size(); ++i)
+				for (size_t i = 0; i < data.second.size(); ++i)
 				{
-					std::memcpy(dynamicData[i].modelMatrix,
-						glm::value_ptr(sprites[i]->component->gameObject->transform.GetModelMatrix()),
-						sizeof(dynamicData[i].modelMatrix));
+					std::memcpy(dynamicData[dynamicDataCount].modelMatrix,
+						glm::value_ptr(data.second[i]->component->gameObject->transform.GetModelMatrix()),
+						sizeof(dynamicData[dynamicDataCount].modelMatrix));
 
-					std::memcpy(dynamicData[i].color,
-						glm::value_ptr(sprites[i]->color),
-						sizeof(dynamicData[i].color));
+					std::memcpy(dynamicData[dynamicDataCount].color,
+						glm::value_ptr(data.second[i]->color),
+						sizeof(dynamicData[dynamicDataCount].color));
 
-					dynamicData[i].textureId = sprites[i]->IsUseTexture()
-						? std::get<1>(data)[sprites[i]->texture->GetId()]
+					dynamicData[dynamicDataCount].textureId = data.second[i]->IsUseTexture()
+						? textureUnitCount - 1 //because it is incremented before
 						: -1.0f;
+
+					++dynamicDataCount;
 				}
+				++dataCount;
 
-				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData) * sprites.size(), dynamicData);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				// Check if the texture unit number is arrived to max or this is the last data
+				if (textureUnitCount >= maxTextureUnit || dataCount == spriteRenderData[layer].size())
+				{
+					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData) * dynamicDataCount, dynamicData);
+					glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, dynamicDataCount);
 
-				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, sprites.size());
+					dynamicDataCount = 0;
+					textureUnitCount = 0;
+				}
 			}
 
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
 		}
 	}
