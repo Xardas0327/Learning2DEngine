@@ -40,9 +40,9 @@ namespace Learning2DEngine
 
             glm::vec2 GetColliderCenter() const
             {
-                glm::vec2 position = gameObject->transform.position;
-                position.x += gameObject->transform.scale.x / 2 + colliderOffset.x;
-                position.y += gameObject->transform.scale.y / 2 + colliderOffset.y;
+                glm::vec2 position = gameObject->transform.GetPosition();
+                position.x += gameObject->transform.GetScale().x / 2 + colliderOffset.x;
+                position.y += gameObject->transform.GetScale().y / 2 + colliderOffset.y;
 
                 return position;
             }

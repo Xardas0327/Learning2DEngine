@@ -45,7 +45,7 @@ namespace Learning2DEngine
 					: randomPositionOffset.first.y;
 
 				particle.transform = System::Transform(
-					particle.transform.position = gameObject.transform.position + fixPositionOffset + glm::vec2(positionRandomX, positionRandomY),
+					gameObject.transform.GetPosition() + fixPositionOffset + glm::vec2(positionRandomX, positionRandomY),
 					scale,
 					rotation
 				);
@@ -57,7 +57,9 @@ namespace Learning2DEngine
 
 			void UpdateParticle(Particle& particle, const System::GameObject& gameObject) override
 			{
-				particle.transform.position += particle.velocity * particle.speed * System::Game::GetDeltaTime();
+				particle.transform.AddPosition(
+					particle.velocity * particle.speed * System::Game::GetDeltaTime()
+				);
 			}
 		};
 	}

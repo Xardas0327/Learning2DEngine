@@ -35,7 +35,9 @@ namespace Learning2DEngine
             {
                 if (!isFrozen)
                 {
-                    gameObject->transform.position += velocity * System::Game::GetDeltaTime();
+                    gameObject->transform.AddPosition(
+                        velocity * System::Game::GetDeltaTime()
+                    );
                 }
             }
         public:

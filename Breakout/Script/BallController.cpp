@@ -37,7 +37,7 @@ void BallController::Init()
         ResourceManager::GetInstance().GetTexture(textureId)
     );
 
-    gameObject->transform.scale = glm::vec2(radius * 2.0f, radius * 2.0f);
+    gameObject->transform.SetScale(glm::vec2(radius * 2.0f, radius * 2.0f));
     Reset();
 
     InitParticleSystem();
@@ -78,28 +78,35 @@ void BallController::Update()
     {
         int width = Game::mainCamera.GetResolution().GetWidth();
 
-        if (gameObject->transform.position.x <= 0.0f)
+        if (gameObject->transform.GetPosition().x <= 0.0f)
         {
             rigidbody->velocity.x = -rigidbody->velocity.x;
-            gameObject->transform.position.x = 0.0f;
+            gameObject->transform.SetPosition(
+                glm::vec2(0.0f, gameObject->transform.GetPosition().y)
+            );
         }
-        else if (gameObject->transform.position.x + gameObject->transform.scale.x >= width)
+        else if (gameObject->transform.GetPosition().x + gameObject->transform.GetScale().x >= width)
         {
             rigidbody->velocity.x = -rigidbody->velocity.x;
-            gameObject->transform.position.x = width - gameObject->transform.scale.x;
+			gameObject->transform.SetPosition(
+				glm::vec2(width - gameObject->transform.GetScale().x, gameObject->transform.GetPosition().y)
+			);
         }
-        if (gameObject->transform.position.y <= 0.0f)
+        if (gameObject->transform.GetPosition().y <= 0.0f)
         {
             rigidbody->velocity.y = -rigidbody->velocity.y;
-            gameObject->transform.position.y = 0.0f;
+			gameObject->transform.SetPosition(
+				glm::vec2(gameObject->transform.GetPosition().x, 0.0f)
+			);
         }
     }
 }
 
 void BallController::Reset()
 {
-    gameObject->transform.position = 
-        playerController->gameObject->transform.position + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f);
+    gameObject->transform.SetPosition(
+        playerController->gameObject->transform.GetPosition() + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f)
+	);
     rigidbody->velocity = INITIAL_BALL_VELOCITY;
     renderer->data.color = glm::vec4(1.0f);
 
@@ -142,9 +149,9 @@ void BallController::OnCollision(Collision collision)
     if (player != nullptr && !isStuck)
     {
         // check where it hit the board, and change velocity based on where it hit the board
-        float centerBoard = collision.collidedObject->transform.position.x + collision.collidedObject->transform.scale.x / 2.0f;
-        float distance = (gameObject->transform.position.x + radius) - centerBoard;
-        float percentage = distance / (collision.collidedObject->transform.scale.x / 2.0f);
+        float centerBoard = collision.collidedObject->transform.GetPosition().x + collision.collidedObject->transform.GetScale().x / 2.0f;
+        float distance = (gameObject->transform.GetPosition().x + radius) - centerBoard;
+        float percentage = distance / (collision.collidedObject->transform.GetScale().x / 2.0f);
 
         // then move accordingly
         float strength = 2.0f;
@@ -174,9 +181,9 @@ void BallController::OnCollision(Collision collision)
 
                 float penetration = radius - std::abs(difference.x);
                 if (direction == Direction::LEFT)
-                    gameObject->transform.position.x += penetration;
+                    gameObject->transform.AddPosition(glm::vec2(penetration, 0.0f));
                 else
-                    gameObject->transform.position.x -= penetration;
+                    gameObject->transform.AddPosition(glm::vec2(-penetration, 0.0f));
             }
             else
             {
@@ -184,9 +191,9 @@ void BallController::OnCollision(Collision collision)
 
                 float penetration = radius - std::abs(difference.y);
                 if (direction == Direction::UP)
-                    gameObject->transform.position.y -= penetration;
+                    gameObject->transform.AddPosition(glm::vec2(0.0f, -penetration));
                 else
-                    gameObject->transform.position.y += penetration;
+                    gameObject->transform.AddPosition(glm::vec2(0.0f, penetration));
             }
         }
 

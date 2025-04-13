@@ -29,7 +29,7 @@ namespace Learning2DEngine
 
             glm::mat2 GetRotationMatrix()
             {
-                float radians = glm::radians(component->gameObject->transform.rotation);
+                float radians = glm::radians(component->gameObject->transform.GetRotation());
 
                 return glm::mat2(
                     glm::cos(radians), -glm::sin(radians),

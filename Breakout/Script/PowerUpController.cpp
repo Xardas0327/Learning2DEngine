@@ -12,7 +12,7 @@ PowerUpController::PowerUpController(GameObject* gameObject, const PowerUpObject
 	rigidbody(nullptr), renderer(nullptr), powerUpObject(powerUpObject), actualDuration(powerUpObject.duration), activated(false),
     activationEventHandler()
 {
-	gameObject->transform.scale = POWERUP_SIZE;
+    gameObject->transform.SetScale(POWERUP_SIZE);
 }
 
 void PowerUpController::Init()

@@ -26,8 +26,10 @@ void BallParticleSettings::SpawnParticle(Particle& particle, const GameObject& g
 {
 	float random = Random::GetNumber(-5, 6);
 	float rColor = Random::GetNumber(0.5f, 0.6f);
-	particle.transform.position = gameObject.transform.position + random + positionOffset;
-	particle.transform.scale = scale;
+	particle.transform.SetPosition(
+		gameObject.transform.GetPosition() + random + positionOffset
+	);
+	particle.transform.SetScale(scale);
 	particle.color = glm::vec4(rColor, rColor, rColor, 1.0f);
 	particle.lifeTime = lifeTime;
 	particle.velocity = rigidbody->velocity;
@@ -36,6 +38,6 @@ void BallParticleSettings::SpawnParticle(Particle& particle, const GameObject& g
 
 void BallParticleSettings::UpdateParticle(Particle& particle, const GameObject& gameObject)
 {
-	particle.transform.position -= particle.velocity * particle.speed * Game::GetDeltaTime();
+	particle.transform.AddPosition(-particle.velocity * particle.speed * Game::GetDeltaTime());
 	particle.color.a -= Game::GetDeltaTime() * 2.5f;
 }

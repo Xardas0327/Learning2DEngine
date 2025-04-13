@@ -27,8 +27,10 @@ void PlayerController::Reset()
 {
 	const Resolution resolution = Game::mainCamera.GetResolution();
 
-	gameObject->transform.scale = PLAYER_SIZE;
-	gameObject->transform.position = glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y);
+	gameObject->transform.SetScale(PLAYER_SIZE);
+	gameObject->transform.SetPosition(
+		glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y)
+	);
 
 	collider->colliderSize = PLAYER_SIZE;
 	renderer->data.color = glm::vec4(1.0f);

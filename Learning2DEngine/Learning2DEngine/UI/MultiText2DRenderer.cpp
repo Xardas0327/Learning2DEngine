@@ -127,7 +127,7 @@ namespace Learning2DEngine
 						textCharacterSet.Load(textData->fontSizePair);
 						CharacterMap& characterMap = textCharacterSet[textData->fontSizePair];
 
-						glm::vec2 startPosition(textData->component->gameObject->transform.position);
+						glm::vec2 startPosition(textData->component->gameObject->transform.GetPosition());
 						glm::mat2 rotationMatrix = textData->GetRotationMatrix();
 
 						for (std::string::const_iterator c = textData->text.begin(); c != textData->text.end(); ++c)
@@ -135,12 +135,12 @@ namespace Learning2DEngine
 							const auto& ch = characterMap[*c];
 
 							//Calculcate character position
-							float chPositionX = ch.bearing.x * textData->component->gameObject->transform.scale.x;
-							float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * textData->component->gameObject->transform.scale.y;
+							float chPositionX = ch.bearing.x * textData->component->gameObject->transform.GetScale().x;
+							float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * textData->component->gameObject->transform.GetScale().y;
 
 							//Calculcate character size
-							float chWidth = ch.size.x * textData->component->gameObject->transform.scale.x;
-							float chHeight = ch.size.y * textData->component->gameObject->transform.scale.y;
+							float chWidth = ch.size.x * textData->component->gameObject->transform.GetScale().x;
+							float chHeight = ch.size.y * textData->component->gameObject->transform.GetScale().y;
 
 							glm::vec2 point1 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY + chHeight)) ;
 							glm::vec2 point2 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY));
@@ -165,7 +165,7 @@ namespace Learning2DEngine
 							startPosition += rotationMatrix *
 								glm::vec2(
 									// bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
-									(ch.advance >> 6) * textData->component->gameObject->transform.scale.x,
+									(ch.advance >> 6) * textData->component->gameObject->transform.GetScale().x,
 									0);
 						}
 					}
