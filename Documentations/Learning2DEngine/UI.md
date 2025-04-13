@@ -95,12 +95,11 @@ unsigned int maxObjectSize;
 ```
 
 **textRenderData**  
-The first int is the layer.
-The vector contains maps, which renderable at the same time.  
+The first int is the layer. 
 The map key is a GLuint, which a character texture id, and the value is a vector of array,
 which contains the position, the texture coordinates and the color..
 ```cpp
-std::map<int, std::vector<std::map<GLuint, std::vector<std::array<float, 32>>>>> textRenderData;
+std::map<int, std::map<GLuint, std::vector<std::array<float, 32>>>> textRenderData;
 ```
 
 **dynamicData**  
