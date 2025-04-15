@@ -185,7 +185,7 @@ namespace Learning2DEngine
 					if (activeParticleCount > 0)
 					{
 						auto& actualLayerData = particleRenderData[layerData.first];
-						
+
 						//Try to find tuple with the same blend function
 						//and if the particle has texture, it has to be in the same, which are in the tuple
 						//or the texture unit is less than the max texture unit.
@@ -222,7 +222,7 @@ namespace Learning2DEngine
 							? actualLayerData.back()
 							: *it;
 
-						if (particleData->IsUseTexture())
+						if (particleData->IsUseTexture() && std::get<1>(actualTuple).count(particleData->texture->GetId()) == 0)
 							std::get<1>(actualTuple)[particleData->texture->GetId()] = std::get<1>(actualTuple).size();
 
 						std::get<0>(actualTuple).push_back(particleData);
@@ -313,10 +313,10 @@ namespace Learning2DEngine
 						}
 					}
 				}
-				
+
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData)* activeParticleCount, dynamicData);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData) * activeParticleCount, dynamicData);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, activeParticleCount);
