@@ -185,7 +185,7 @@ namespace Learning2DEngine
 					if (activeParticleCount > 0)
 					{
 						auto& actualLayerData = particleRenderData[layerData.first];
-						
+
 						//Try to find tuple with the same blend function
 						//and if the particle has texture, it has to be in the same, which are in the tuple
 						//or the texture unit is less than the max texture unit.
@@ -193,15 +193,15 @@ namespace Learning2DEngine
 							actualLayerData.end(),
 							[&particleData, maxTextureUnit](auto& data)
 							{
-								if (std::get<2>(data) != particleData->systemSettings.isUseBlend
-									|| std::get<3>(data) != particleData->systemSettings.blendFuncFactor)
+								if (std::get<1>(data) != particleData->systemSettings.isUseBlend
+									|| std::get<2>(data) != particleData->systemSettings.blendFuncFactor)
 									return false;
 
 								if (!particleData->IsUseTexture()
-									|| std::get<1>(data).count(particleData->texture->GetId()) > 0)
+									|| std::get<0>(data).count(particleData->texture->GetId()) > 0)
 									return true;
 
-								return std::get<1>(data).size() < maxTextureUnit;
+								return std::get<0>(data).size() < maxTextureUnit;
 							});
 
 						//If the layer data is not found, it will be created.
@@ -210,8 +210,7 @@ namespace Learning2DEngine
 						{
 							actualLayerData.push_back(
 								std::make_tuple(
-									std::vector<ParticleRenderData*>(),
-									std::map<GLuint, int>(),
+									std::map<GLuint, std::vector<ParticleRenderData*>>(),
 									particleData->systemSettings.isUseBlend,
 									particleData->systemSettings.blendFuncFactor,
 									0)
@@ -222,13 +221,14 @@ namespace Learning2DEngine
 							? actualLayerData.back()
 							: *it;
 
-						if (particleData->IsUseTexture())
-							std::get<1>(actualTuple)[particleData->texture->GetId()] = std::get<1>(actualTuple).size();
+						GLuint textureId = particleData->IsUseTexture()
+							? particleData->texture->GetId()
+							: 0;
 
-						std::get<0>(actualTuple).push_back(particleData);
+						std::get<0>(actualTuple)[textureId].push_back(particleData);
 
 						//Count the active particles by tuple for maxActiveParticleCount
-						std::get<4>(actualTuple) += activeParticleCount;
+						std::get<3>(actualTuple) += activeParticleCount;
 					}
 				}
 			}
@@ -238,8 +238,8 @@ namespace Learning2DEngine
 			{
 				for (auto& data : layerData.second)
 				{
-					if (std::get<4>(data) > maxActiveParticleCount)
-						maxActiveParticleCount = std::get<4>(data);
+					if (std::get<3>(data) > maxActiveParticleCount)
+						maxActiveParticleCount = std::get<3>(data);
 				}
 			}
 
@@ -268,6 +268,7 @@ namespace Learning2DEngine
 			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
 			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 
 			auto& renderManager = RenderManager::GetInstance();
 			for (auto& particleData : particleRenderData[layer])
@@ -275,59 +276,61 @@ namespace Learning2DEngine
 
 				//Activate Blend
 				BlendFuncFactor previousBlendFuncFactor = renderManager.GetBlendFunc();
-				if (std::get<2>(particleData))
+				if (std::get<1>(particleData))
 				{
-					renderManager.SetBlendFunc(std::get<3>(particleData));
-				}
-
-				for (auto& textureIds : std::get<1>(particleData))
-				{
-					glActiveTexture(GL_TEXTURE0 + textureIds.second);
-					glBindTexture(GL_TEXTURE_2D, textureIds.first);
-					std::string shaderId = "spriteTextures[" + std::to_string(textureIds.second) + "]";
-					shader.SetInteger(shaderId.c_str(), textureIds.second);
+					renderManager.SetBlendFunc(std::get<2>(particleData));
 				}
 
 				//Collect data
 				int activeParticleCount = 0;
-				for (auto& particleRenderData : std::get<0>(particleData))
+				int textureUnitCount = 0;
+				for (auto& data : std::get<0>(particleData))
 				{
-					auto particles = particleRenderData->GetParticles();
-					for (int i = 0; i < particleRenderData->GetParticleAmount(); ++i)
+					if (data.first > 0)
 					{
-						if (particles[i].lifeTime > 0.0f)
+						shader.SetInteger(("spriteTextures[" + std::to_string(textureUnitCount) + "]").c_str(), textureUnitCount);
+						glActiveTexture(GL_TEXTURE0 + textureUnitCount);
+						glBindTexture(GL_TEXTURE_2D, data.first);
+						++textureUnitCount; //it can't be bigger than the max texture unit, because we care with it in SetData
+					}
+
+					for (auto& particleRenderData : data.second)
+					{
+						auto particles = particleRenderData->GetParticles();
+
+						for (int i = 0; i < particleRenderData->GetParticleAmount(); ++i)
 						{
-							std::memcpy(dynamicData[activeParticleCount].modelMatrix,
-								glm::value_ptr(particles[i].transform.GetModelMatrix()),
-								sizeof(dynamicData[activeParticleCount].modelMatrix));
+							if (particles[i].lifeTime > 0.0f)
+							{
+								std::memcpy(dynamicData[activeParticleCount].modelMatrix,
+									glm::value_ptr(particles[i].transform.GetModelMatrix()),
+									sizeof(dynamicData[activeParticleCount].modelMatrix));
 
-							std::memcpy(dynamicData[activeParticleCount].color,
-								glm::value_ptr(particles[i].color),
-								sizeof(dynamicData[activeParticleCount].color));
+								std::memcpy(dynamicData[activeParticleCount].color,
+									glm::value_ptr(particles[i].color),
+									sizeof(dynamicData[activeParticleCount].color));
 
-							dynamicData[activeParticleCount].textureId = particleRenderData->IsUseTexture()
-								? std::get<1>(particleData)[particleRenderData->texture->GetId()]
-								: -1.0f;
+								dynamicData[activeParticleCount].textureId = particleRenderData->IsUseTexture()
+									? textureUnitCount - 1 //because it is incremented before
+									: -1.0f;
 
-							++activeParticleCount;
+								++activeParticleCount;
+							}
 						}
 					}
+
+					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData) * activeParticleCount, dynamicData);
+					glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, activeParticleCount);
+
 				}
-				
 
-				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData)* activeParticleCount, dynamicData);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-				glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, activeParticleCount);
-
-
-				if (std::get<2>(particleData))
+				if (std::get<1>(particleData))
 				{
 					renderManager.SetBlendFunc(previousBlendFuncFactor);
 				}
 			}
 
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
 		}
 	}

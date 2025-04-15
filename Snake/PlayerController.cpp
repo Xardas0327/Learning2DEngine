@@ -49,7 +49,7 @@ SimpleSpriteRenderComponent* PlayerController::CreateNewSnakeUnit(glm::vec2 posi
 bool PlayerController::IsInSnake(glm::vec2 position)
 {
     for (auto it = snake.begin(); it != snake.end(); ++it) {
-        if ((*it)->gameObject->transform.position == position)
+        if ((*it)->gameObject->transform.GetPosition() == position)
         {
             return true;
         }
@@ -69,9 +69,11 @@ void PlayerController::Move(glm::vec2 headPosition)
     ++beforeIt;
     while (beforeIt != snake.rend())
     {
-        (*end)->gameObject->transform.position = (*beforeIt)->gameObject->transform.position;
+        (*end)->gameObject->transform.SetPosition(
+            (*beforeIt)->gameObject->transform.GetPosition()
+        );
         ++end;
         ++beforeIt;
     }
-    snake.front()->gameObject->transform.position = headPosition;
+    snake.front()->gameObject->transform.SetPosition(headPosition);
 }

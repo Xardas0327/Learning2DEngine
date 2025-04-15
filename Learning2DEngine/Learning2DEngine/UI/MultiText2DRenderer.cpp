@@ -127,72 +127,67 @@ namespace Learning2DEngine
 						textCharacterSet.Load(textData->fontSizePair);
 						CharacterMap& characterMap = textCharacterSet[textData->fontSizePair];
 
-						glm::vec2 startPosition(textData->component->gameObject->transform.position);
+						glm::vec2 startPosition(textData->component->gameObject->transform.GetPosition());
 						glm::mat2 rotationMatrix = textData->GetRotationMatrix();
 
 						for (std::string::const_iterator c = textData->text.begin(); c != textData->text.end(); ++c)
 						{
 							const auto& ch = characterMap[*c];
 
-							//Try to find map which contains the character
-							//or the character number is less than the max texture unit.
-							auto it = std::find_if(actualLayerData.begin(),
-								actualLayerData.end(),
-								[maxTextureUnit, &ch](auto& map)
-								{
-									return map.count(ch.textureId) > 0 || map.size() < maxTextureUnit;
-								});
-
-							//If the layer data is not found, it will be created.
-							bool isFound = it != actualLayerData.end();
-							if (!isFound)
-							{
-								actualLayerData.emplace_back();
-							}
-
-							auto& actualMap = !isFound
-								? actualLayerData.back()
-								: *it;
-
 							//Calculcate character position
-							float chPositionX = ch.bearing.x * textData->component->gameObject->transform.scale.x;
-							float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * textData->component->gameObject->transform.scale.y;
+							float chPositionX = ch.bearing.x * textData->component->gameObject->transform.GetScale().x;
+							float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * textData->component->gameObject->transform.GetScale().y;
 
 							//Calculcate character size
-							float chWidth = ch.size.x * textData->component->gameObject->transform.scale.x;
-							float chHeight = ch.size.y * textData->component->gameObject->transform.scale.y;
+							float chWidth = ch.size.x * textData->component->gameObject->transform.GetScale().x;
+							float chHeight = ch.size.y * textData->component->gameObject->transform.GetScale().y;
 
 							glm::vec2 point1 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY + chHeight)) ;
 							glm::vec2 point2 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY));
 							glm::vec2 point3 = startPosition + (rotationMatrix * glm::vec2(chPositionX, chPositionY));
 							glm::vec2 point4 = startPosition + (rotationMatrix * glm::vec2(chPositionX, chPositionY + chHeight));
 
-							actualMap[ch.textureId].emplace_back(
-								std::make_tuple(
-									std::array<float, 8>{ point1.x, point1.y, point2.x, point2.y, point3.x, point3.y, point4.x, point4.y },
-									std::array<float, 4>{ textData->color.r, textData->color.g, textData->color.b, textData->color.a }
-								)
+							actualLayerData[ch.textureId].emplace_back(
+								std::array<float, 32>{
+									// vertex 1
+									// position		// texture coordinates	// color
+									point1.x, point1.y, 1.0f, 1.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+									// vertex 2
+									point2.x, point2.y, 1.0f, 0.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+									// vertex 3
+									point3.x, point3.y, 0.0f, 0.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+									// vertex 4
+									point4.x, point4.y, 0.0f, 1.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a
+								}
 							);
 
 							//Calculate next character position
 							startPosition += rotationMatrix *
 								glm::vec2(
 									// bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
-									(ch.advance >> 6) * textData->component->gameObject->transform.scale.x,
+									(ch.advance >> 6) * textData->component->gameObject->transform.GetScale().x,
 									0);
 						}
 					}
 				}
 
+				//Calculate the maximum size of the dynamic data
+				int textureUnitNumber = 0;
+				int actualSize = 0;
+				int elementCount = 0;
 				for (auto& data : actualLayerData)
 				{
-					int actualSize = 0;
-					for (auto& map : data)
+					actualSize += data.second.size();
+					++textureUnitNumber;
+					++elementCount;
+
+					//Check if the texture unit number is arrived to max or this is the last data
+					if (textureUnitNumber >= maxTextureUnit || elementCount == actualLayerData.size())
 					{
-						actualSize += map.second.size();
+						textureUnitNumber = 0;
+						if (actualSize > maxDynamicSize)
+							maxDynamicSize = actualSize;
 					}
-					if (actualSize > maxDynamicSize)
-						maxDynamicSize = actualSize;
 				}
 			}
 
@@ -204,9 +199,11 @@ namespace Learning2DEngine
 				maxObjectSize = static_cast<float>(maxDynamicSize) * 1.2f;
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+				//Multiply by 4, because an object has 4 vertices.
 				glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData) * maxObjectSize * 4, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+				//Multiply by 6, because an object (2 triangles) has 6 indices.
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * maxObjectSize * 6, NULL, GL_DYNAMIC_DRAW);
 
 				delete[] dynamicData;
@@ -234,6 +231,7 @@ namespace Learning2DEngine
 			if (textRenderData.find(layer) == textRenderData.end())
 				return;
 
+			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
 			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
 
 			shader.Use();
@@ -243,56 +241,55 @@ namespace Learning2DEngine
 			glBindVertexArray(vao);
 			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 
-			for (auto& data : textRenderData[layer])
+			int dynamicSize = 0;
+			int objectCount = 0;
+			int textureUnitId = 0;
+			int elementCount = 0;
+			for (auto& characterData : textRenderData[layer])
 			{
-				int dynamicSize = 0;
-				int objectCount = 0;
-				int textureUnitId = 0;
-				for (auto& characterData : data)
+				shader.SetInteger(("characterTextures[" + std::to_string(textureUnitId) + "]").c_str(), textureUnitId);
+				glActiveTexture(GL_TEXTURE0 + textureUnitId);
+				glBindTexture(GL_TEXTURE_2D, characterData.first);
+
+				for (auto& character : characterData.second)
 				{
-					shader.SetInteger(("characterTextures["+std::to_string(textureUnitId) + "]").c_str(), textureUnitId);
-					glActiveTexture(GL_TEXTURE0 + textureUnitId);
-					glBindTexture(GL_TEXTURE_2D, characterData.first);
+					std::memcpy(&dynamicData[dynamicSize],
+						character.data(),
+						sizeof(float) * 8);
+					dynamicData[dynamicSize].textureId = textureUnitId;
+					++dynamicSize;
 
-					for (auto& character : characterData.second)
-					{
-						dynamicData[dynamicSize].position[0] = std::get<0>(character)[0];
-						dynamicData[dynamicSize].position[1] = std::get<0>(character)[1];
-						dynamicData[dynamicSize].textCoord[0] = 1.0f;
-						dynamicData[dynamicSize].textCoord[1] = 1.0f;
-						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
-						dynamicData[dynamicSize].textureId = textureUnitId;
-						++dynamicSize;
+					std::memcpy(&dynamicData[dynamicSize],
+						character.data() + 8,
+						sizeof(float) * 8);
+					dynamicData[dynamicSize].textureId = textureUnitId;
+					++dynamicSize;
 
-						dynamicData[dynamicSize].position[0] = std::get<0>(character)[2];
-						dynamicData[dynamicSize].position[1] = std::get<0>(character)[3];
-						dynamicData[dynamicSize].textCoord[0] = 1.0f;
-						dynamicData[dynamicSize].textCoord[1] = 0.0f;
-						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
-						dynamicData[dynamicSize].textureId = textureUnitId;
-						++dynamicSize;
+					std::memcpy(&dynamicData[dynamicSize],
+						character.data() + 16,
+						sizeof(float) * 8);
+					dynamicData[dynamicSize].textureId = textureUnitId;
+					++dynamicSize;
 
-						dynamicData[dynamicSize].position[0] = std::get<0>(character)[4];
-						dynamicData[dynamicSize].position[1] = std::get<0>(character)[5];
-						dynamicData[dynamicSize].textCoord[0] = 0.0f;
-						dynamicData[dynamicSize].textCoord[1] = 0.0f;
-						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
-						dynamicData[dynamicSize].textureId = textureUnitId;
-						++dynamicSize;
-
-						dynamicData[dynamicSize].position[0] = std::get<0>(character)[6];
-						dynamicData[dynamicSize].position[1] = std::get<0>(character)[7];
-						dynamicData[dynamicSize].textCoord[0] = 0.0f;
-						dynamicData[dynamicSize].textCoord[1] = 1.0f;
-						std::memcpy(dynamicData[dynamicSize].color, std::get<1>(character).data(), sizeof(dynamicData[dynamicSize].color));
-						dynamicData[dynamicSize].textureId = textureUnitId;
-						++dynamicSize;
-						++objectCount;
-					}
-					++textureUnitId;
+					std::memcpy(&dynamicData[dynamicSize],
+						character.data() + 24,
+						sizeof(float) * 8);
+					dynamicData[dynamicSize].textureId = textureUnitId;
+					++dynamicSize;
+					++objectCount;
 				}
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData)* dynamicSize, dynamicData);
-				glDrawElements(GL_TRIANGLES, 6 * objectCount, GL_UNSIGNED_INT, 0);
+				++textureUnitId;
+				++elementCount;
+
+				//Check if the texture unit number is arrived to max or this is the last data
+				if (textureUnitId >= maxTextureUnit || elementCount == textRenderData[layer].size())
+				{
+					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData) * dynamicSize, dynamicData);
+					glDrawElements(GL_TRIANGLES, 6 * objectCount, GL_UNSIGNED_INT, 0);
+					dynamicSize = 0;
+					objectCount = 0;
+					textureUnitId = 0;
+				}
 			}
 
 			glBindVertexArray(0);

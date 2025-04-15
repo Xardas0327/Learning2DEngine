@@ -181,7 +181,7 @@ void GameController::MoveSnake()
         }
         else
         {
-            if (newPosition == foodController->gameObject->transform.position)
+            if (newPosition == foodController->gameObject->transform.GetPosition())
             {
                 playerController->IncreaseSize(newPosition, unitSize);
                 EatFood();
@@ -223,9 +223,9 @@ void GameController::GenerateNextFood()
     {
         int x = Random::GetNumber(0, levelResolution.x);
         int y = Random::GetNumber(0, levelResolution.y);
-        foodController->gameObject->transform.position = glm::vec2(x * unitSize.x, y * unitSize.y);
+		foodController->gameObject->transform.SetPosition(glm::vec2(x * unitSize.x, y * unitSize.y));
 
-        if (!playerController->IsInSnake(foodController->gameObject->transform.position))
+        if (!playerController->IsInSnake(foodController->gameObject->transform.GetPosition()))
             break;
     }
 }

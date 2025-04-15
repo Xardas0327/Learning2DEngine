@@ -381,10 +381,10 @@ unsigned int maxObjectSize;
 **spriteRenderData**  
 When the SetData is called, the renderData will be converted to this format.  
 The int is the layer.  
-The vector contains the tuples, which renderable at the same time.  
-The tuple contains the vector of `SpriteRenderData*` and the texture ids with texture unit ids.
+The second map's key is the texture id and the value is the `SpriteRenderData` vector, which use that texture.  
+If the sprite doesn't use texture, the key is 0.
 ```cpp
-std::map<int, std::vector<std::tuple<std::vector<SpriteRenderData*>, std::map<GLuint, int>>>> spriteRenderData;
+std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
 ```
 
 **dynamicData**  
