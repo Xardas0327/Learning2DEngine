@@ -22,11 +22,11 @@ namespace Learning2DEngine
             BoxColliderComponent(
                 System::GameObject* gameObject,
                 glm::vec2 size,
-                bool isKinematic = false,
+                ColliderType type = ColliderType::DYNAMIC,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-				: System::Component(gameObject), BaseColliderComponent(gameObject, isKinematic, offset, maskLayer),
-				BaseBoxColliderComponent(gameObject, size, isKinematic, offset, maskLayer)
+				: System::Component(gameObject), BaseColliderComponent(gameObject, type, offset, maskLayer),
+				BaseBoxColliderComponent(gameObject, size, type, offset, maskLayer)
             {
 
             }

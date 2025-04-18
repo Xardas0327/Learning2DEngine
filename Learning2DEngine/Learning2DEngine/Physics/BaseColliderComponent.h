@@ -8,6 +8,7 @@
 #include "../System/GameObject.h"
 
 #include "Collision.h"
+#include "ColliderType.h"
 
 namespace Learning2DEngine
 {
@@ -22,15 +23,15 @@ namespace Learning2DEngine
         class BaseColliderComponent : public virtual System::Component
         {
         private:
-            const bool isKinematic;
+            const ColliderType type;
 
         protected:
             BaseColliderComponent(
                 System::GameObject* gameObject,
-                bool isKinematic = false,
+                ColliderType type = ColliderType::DYNAMIC,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), isKinematic(isKinematic), colliderOffset(offset), maskLayer(maskLayer)
+                : System::Component(gameObject), type(type), colliderOffset(offset), maskLayer(maskLayer)
             {
 
             }
@@ -47,9 +48,9 @@ namespace Learning2DEngine
                 return position;
             }
 
-            inline bool IsKinematic() const
+            inline ColliderType GetType() const
             {
-                return isKinematic;
+                return type;
             }
 
             virtual void OnCollision(Collision collision)
