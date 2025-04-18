@@ -207,6 +207,7 @@
     <ClInclude Include="Learning2DEngine\Physics\CircleColliderComponent.h" />
     <ClInclude Include="Learning2DEngine\Physics\BaseColliderComponent.h" />
     <ClInclude Include="Learning2DEngine\Physics\ColliderComponentHandler.h" />
+    <ClInclude Include="Learning2DEngine\Physics\ColliderType.h" />
     <ClInclude Include="Learning2DEngine\Physics\Collision.h" />
     <ClInclude Include="Learning2DEngine\Physics\CollisionChecker.h" />
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h" />

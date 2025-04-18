@@ -40,10 +40,15 @@ namespace Learning2DEngine
 			{
 				for (auto collider : newBoxColliders)
 				{
-					if (collider->IsKinematic())
-						kinematicBoxColliders.push_back(collider);
-					else
+					switch (collider->GetType())
+					{
+					case ColliderType::DYNAMIC:
 						dynamicBoxColliders.push_back(collider);
+						break;
+					case ColliderType::KINEMATIC:
+						kinematicBoxColliders.push_back(collider);
+						break;
+					}
 				}
 
 				newBoxColliders.clear();
@@ -77,10 +82,15 @@ namespace Learning2DEngine
 			{
 				for (auto collider : newCircleColliders)
 				{
-					if (collider->IsKinematic())
-						kinematicCircleColliders.push_back(collider);
-					else
+					switch (collider->GetType())
+					{
+					case ColliderType::DYNAMIC:
 						dynamicCircleColliders.push_back(collider);
+						break;
+					case ColliderType::KINEMATIC:
+						kinematicCircleColliders.push_back(collider);
+						break;
+					}
 				}
 
 				newCircleColliders.clear();

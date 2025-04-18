@@ -7,6 +7,7 @@ This namespace really simple. It has only some really basic functionality.
 - [BoxColliderComponent](Physics.md#boxcollidercomponent)
 - [CircleColliderComponent](Physics.md#circlecollidercomponent)
 - [ColliderComponentHandler](Physics.md#collidercomponenthandler)
+- [ColliderType](Physics.md#collidertype)
 - [Collision](Physics.md#collision)
 - [CollisionChecker](Physics.md#collisionchecker)
 - [CollisionData](Physics.md#collisiondata)
@@ -41,7 +42,7 @@ glm::vec2 colliderSize;
 **Protected:**  
 **BaseBoxColliderComponent**  
 ```cpp
-BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, bool isKinematic = false, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 ##
@@ -73,7 +74,7 @@ float colliderRadius;
 **Protected:**  
 **BaseCircleColliderComponent**  
 ```cpp
-BaseCircleColliderComponent(System::GameObject* gameObject, float radius, bool isKinematic = false, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseCircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 ##
@@ -97,14 +98,14 @@ class BaseColliderComponent : public virtual System::Component
 
 ### Variables:
 **Private:**  
-**isKinematic**   
+**type**   
 A collider can be dynamic or kinematic. 2 kinematic colliders can't collide with each other, 
 but an dynamic collider can collide with them.  
 For example: there are 3 circles (A, B and C) with 1.0f range. A is dynamic and another two are kinematic.
 If they are on the same position, the A will be triggered twice (one with B and one with C),
 but the B and the C will be triggered with A only.
 ```cpp
-const bool isKinematic;
+const ColliderType type;
 ```
 
 **Public:**  
@@ -125,7 +126,7 @@ int32_t maskLayer;
 **Protected:**  
 **BaseColliderComponent**  
 ```cpp
-BaseColliderComponent(System::GameObject* gameObject, bool isKinematic = false, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseColliderComponent(System::GameObject* gameObject, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Public:**  
@@ -135,9 +136,9 @@ It returns the center of Collider, which is middle of the object by shifted the 
 glm::vec2 GetColliderCenter() const;
 ```
 
-**IsKinematic**  
+**GetType**  
 ```cpp
-inline bool IsKinematic() const;
+inline ColliderType GetType() const
 ```
 
 **OnCollision**  
@@ -169,7 +170,7 @@ class BoxColliderComponent : public virtual BaseBoxColliderComponent
 **Protected:**  
 **BoxColliderComponent**  
 ```cpp
-BoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, bool isKinematic = false, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Init**  
@@ -206,7 +207,7 @@ class CircleColliderComponent : public virtual BaseCircleColliderComponent
 **Protected:**  
 **CircleColliderComponent**  
 ```cpp
-CircleColliderComponent(System::GameObject* gameObject, float radius, bool isKinematic = false, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+CircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Init**  
@@ -430,6 +431,23 @@ inline void SetMaxColliderPerThread(unsigned int value);
 If it is 0, the class will not use threads.
 ```cpp
 inline unsigned int GetMaxColliderPerThread();
+```
+
+##
+## ColliderType
+### Source Code:
+[ColliderType.h](../../Learning2DEngine/Learning2DEngine/Physics/ColliderType.h)
+
+### Description:
+The collider types.
+
+### Header:
+```cpp
+enum ColliderType
+{
+    DYNAMIC,
+    KINEMATIC
+};
 ```
 
 ##

@@ -344,5 +344,8 @@
     <ClInclude Include="Learning2DEngine\UI\SimpleText2DLateRenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\ColliderType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
