@@ -145,7 +145,7 @@ inline ColliderType GetType() const
 If 2 colliders trigger each other, their OnCollision function will be called.  
 It does nothing by default.
 ```cpp
-virtual void OnCollision(Collision collision);
+virtual void OnCollision(const Collision& collision);
 ```
 
 ##

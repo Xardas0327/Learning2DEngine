@@ -143,7 +143,7 @@ void BallController::SetStuck(bool value)
     rigidbody->isFrozen = value;
 }
 
-void BallController::OnCollision(Collision collision)
+void BallController::OnCollision(const Collision& collision)
 {
     auto player = collision.collidedObject->GetComponent<PlayerController>();
     if (player != nullptr && !isStuck)

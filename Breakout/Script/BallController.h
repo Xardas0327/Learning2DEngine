@@ -48,7 +48,7 @@ protected:
     void InitParticleSystem();
     Direction VectorDirection(glm::vec2 target);
 
-    void OnCollision(Learning2DEngine::Physics::Collision collision) override;
+    void OnCollision(const Learning2DEngine::Physics::Collision& collision) override;
     void Update() override;
 public:
     Learning2DEngine::Render::SpriteRenderComponent* renderer;

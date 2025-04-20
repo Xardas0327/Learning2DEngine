@@ -28,7 +28,7 @@ void PowerUpController::Init()
 
 }
 
-void PowerUpController::OnCollision(Collision collision)
+void PowerUpController::OnCollision(const Collision& collision)
 {
     auto player = collision.collidedObject->GetComponent<PlayerController>();
     if (player != nullptr)

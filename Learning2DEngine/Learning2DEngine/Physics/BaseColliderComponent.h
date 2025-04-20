@@ -53,7 +53,7 @@ namespace Learning2DEngine
                 return type;
             }
 
-            virtual void OnCollision(Collision collision)
+            virtual void OnCollision(const Collision& collision)
             {
 
             }
