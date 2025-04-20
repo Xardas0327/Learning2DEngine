@@ -347,5 +347,8 @@
     <ClInclude Include="Learning2DEngine\Physics\ColliderType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\ColliderMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

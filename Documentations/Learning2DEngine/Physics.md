@@ -7,6 +7,7 @@ This namespace really simple. It has only some really basic functionality.
 - [BoxColliderComponent](Physics.md#boxcollidercomponent)
 - [CircleColliderComponent](Physics.md#circlecollidercomponent)
 - [ColliderComponentHandler](Physics.md#collidercomponenthandler)
+- [ColliderMode](Physics.md#collidermode)
 - [ColliderType](Physics.md#collidertype)
 - [Collision](Physics.md#collision)
 - [CollisionChecker](Physics.md#collisionchecker)
@@ -42,7 +43,7 @@ glm::vec2 colliderSize;
 **Protected:**  
 **BaseBoxColliderComponent**  
 ```cpp
-BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 ##
@@ -74,7 +75,7 @@ float colliderRadius;
 **Protected:**  
 **BaseCircleColliderComponent**  
 ```cpp
-BaseCircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseCircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 ##
@@ -107,6 +108,11 @@ but the B and the C will be triggered with A only.
 ```cpp
 const ColliderType type;
 ```
+**mode**   
+It contains, that the collider is trigger or not.
+```cpp
+ColliderMode mode;
+```
 
 **Public:**  
 **colliderOffset**  
@@ -126,7 +132,7 @@ int32_t maskLayer;
 **Protected:**  
 **BaseColliderComponent**  
 ```cpp
-BaseColliderComponent(System::GameObject* gameObject, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseColliderComponent(System::GameObject* gameObject, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Public:**  
@@ -138,7 +144,12 @@ glm::vec2 GetColliderCenter() const;
 
 **GetType**  
 ```cpp
-inline ColliderType GetType() const
+inline ColliderType GetType() const;
+```
+
+**GetMode**  
+```cpp
+inline ColliderMode GetMode() const;
 ```
 
 **OnCollision**  
@@ -170,7 +181,7 @@ class BoxColliderComponent : public virtual BaseBoxColliderComponent
 **Protected:**  
 **BoxColliderComponent**  
 ```cpp
-BoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Init**  
@@ -207,7 +218,7 @@ class CircleColliderComponent : public virtual BaseCircleColliderComponent
 **Protected:**  
 **CircleColliderComponent**  
 ```cpp
-CircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+CircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Init**  
@@ -431,6 +442,23 @@ inline void SetMaxColliderPerThread(unsigned int value);
 If it is 0, the class will not use threads.
 ```cpp
 inline unsigned int GetMaxColliderPerThread();
+```
+
+##
+## ColliderMode
+### Source Code:
+[ColliderMode.h](../../Learning2DEngine/Learning2DEngine/Physics/ColliderMode.h)
+
+### Description:
+The collider types.
+
+### Header:
+```cpp
+enum ColliderMode
+{
+    TRIGGER,
+    COLLIDER
+};
 ```
 
 ##

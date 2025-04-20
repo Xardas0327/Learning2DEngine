@@ -23,10 +23,11 @@ namespace Learning2DEngine
                 System::GameObject* gameObject,
                 float radius,
                 ColliderType type = ColliderType::DYNAMIC,
+                ColliderMode mode = ColliderMode::TRIGGER,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), BaseColliderComponent(gameObject, type, offset, maskLayer),
-				BaseCircleColliderComponent(gameObject, radius, type, offset, maskLayer)
+                : System::Component(gameObject), BaseColliderComponent(gameObject, type, mode, offset, maskLayer),
+				BaseCircleColliderComponent(gameObject, radius, type, mode, offset, maskLayer)
             {
 
             }

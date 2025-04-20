@@ -9,6 +9,7 @@
 
 #include "Collision.h"
 #include "ColliderType.h"
+#include "ColliderMode.h"
 
 namespace Learning2DEngine
 {
@@ -24,14 +25,16 @@ namespace Learning2DEngine
         {
         private:
             const ColliderType type;
+            ColliderMode mode;
 
         protected:
             BaseColliderComponent(
                 System::GameObject* gameObject,
                 ColliderType type = ColliderType::DYNAMIC,
+                ColliderMode mode = ColliderMode::TRIGGER,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), type(type), colliderOffset(offset), maskLayer(maskLayer)
+                : System::Component(gameObject), type(type), mode(mode), colliderOffset(offset), maskLayer(maskLayer)
             {
 
             }
@@ -51,6 +54,11 @@ namespace Learning2DEngine
             inline ColliderType GetType() const
             {
                 return type;
+            }
+
+            inline ColliderMode GetMode() const
+            {
+                return mode;
             }
 
             virtual void OnCollision(const Collision& collision)
