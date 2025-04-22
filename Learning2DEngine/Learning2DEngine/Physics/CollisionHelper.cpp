@@ -19,9 +19,14 @@ namespace Learning2DEngine
             return circleCollider.GetColliderCenter() + edge;
         }
 
-        inline float CollisionHelper::GetLength2(glm::vec2 distance)
+        void CollisionHelper::FixPosition(const BaseBoxColliderComponent& boxCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier)
         {
-            return distance.x * distance.x + distance.y * distance.y;
+
+        }
+
+        void CollisionHelper::FixPosition(const BaseCircleColliderComponent& circleCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier)
+        {
+
         }
 
         CollisionData CollisionHelper::CheckCollision(const BaseBoxColliderComponent& collider1, const BaseBoxColliderComponent& collider2)

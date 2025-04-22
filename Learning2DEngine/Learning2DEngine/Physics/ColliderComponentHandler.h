@@ -58,6 +58,7 @@ namespace Learning2DEngine
 					CollisionData data = CollisionHelper::CheckCollision(*first, *second);
 					if (data.isCollided)
 					{
+						CollisionHelper::FixPosition(*first, data.edge1, *second, data.edge2);
 						first->OnCollision(Collision{ data.edge1, data.edge2, second->gameObject });
 						second->OnCollision(Collision{ data.edge2, data.edge1, first->gameObject });
 					}
