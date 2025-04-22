@@ -1292,7 +1292,8 @@ virtual void RefreshKeyboard(int key, int scancode, int action, int mode) = 0;
 [InputStatus.h](../../Learning2DEngine/Learning2DEngine/System/InputStatus.h)
 
 ### Description:
-It is an enum class, which contains the 3 phase of the buttons.
+It is an enum, which contains the 3 phase of the buttons.  
+It is not enum class, because it can be useful, that the value is true if the input is down or hold in a "if" statement.
 
 ### Header:
 ```cpp

@@ -4,7 +4,7 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
-        enum ColliderType
+        enum class ColliderType
         {
             DYNAMIC,
             KINEMATIC

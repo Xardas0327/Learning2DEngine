@@ -4,7 +4,7 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
-        enum ColliderMode
+        enum class ColliderMode
         {
             TRIGGER,
             COLLIDER

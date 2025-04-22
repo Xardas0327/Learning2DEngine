@@ -1177,7 +1177,7 @@ class Shader
 ### Auxiliary class
 **Private:**  
 ```cpp
-enum ShaderType {VERTEX, FRAGMENT, GEOMETRY};
+enum class ShaderType {VERTEX, FRAGMENT, GEOMETRY};
 ```
 
 ### Variables:

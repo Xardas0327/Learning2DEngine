@@ -454,7 +454,7 @@ The collider types.
 
 ### Header:
 ```cpp
-enum ColliderMode
+enum class ColliderMode
 {
     TRIGGER,
     COLLIDER
@@ -471,7 +471,7 @@ The collider types.
 
 ### Header:
 ```cpp
-enum ColliderType
+enum class ColliderType
 {
     DYNAMIC,
     KINEMATIC
