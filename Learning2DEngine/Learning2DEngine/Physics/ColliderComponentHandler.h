@@ -7,7 +7,7 @@
 #include "../System/IComponentHandler.h"
 #include "BaseBoxColliderComponent.h"
 #include "BaseCircleColliderComponent.h"
-#include "CollisionChecker.h"
+#include "CollisionHelper.h"
 
 namespace Learning2DEngine
 {
@@ -55,7 +55,7 @@ namespace Learning2DEngine
 				if (second->isActive && second->gameObject->isActive
 					&& (first->maskLayer & second->maskLayer))
 				{
-					CollisionData data = CollisionChecker::CheckCollision(*first, *second);
+					CollisionData data = CollisionHelper::CheckCollision(*first, *second);
 					if (data.isCollided)
 					{
 						first->OnCollision(Collision{ data.edge1, data.edge2, second->gameObject });

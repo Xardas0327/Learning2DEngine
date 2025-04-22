@@ -10,8 +10,8 @@ This namespace really simple. It has only some really basic functionality.
 - [ColliderMode](Physics.md#collidermode)
 - [ColliderType](Physics.md#collidertype)
 - [Collision](Physics.md#collision)
-- [CollisionChecker](Physics.md#collisionchecker)
 - [CollisionData](Physics.md#collisiondata)
+- [CollisionHelper](Physics.md#collisionhelper)
 - [Rigidbody](Physics.md#rigidbody)
 
 ##
@@ -511,9 +511,9 @@ struct Collision
 ```
 
 ##
-## CollisionChecker
+## CollisionHelper
 ### Source Code:
-[CollisionChecker.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionChecker.h)
+[CollisionHelper.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionHelper.h)
 
 ### Description:
 It is a static class, which has functions to detect the collisions.  
@@ -521,15 +521,15 @@ The `ColliderComponentHandler` use it to check every collision.
 
 ### Header:
 ```cpp
-class Collision final
+class CollisionHelper final
 {...}
 ```
 
 ### Functions:
 **Private:**  
-**Collision**  
+**CollisionHelper**  
 ```cpp
-Collision();
+CollisionHelper();
 ```
 
 **GetEdge**  
@@ -575,7 +575,7 @@ static CollisionData CheckCollision(const BaseBoxColliderComponent& boxCollider,
 ### Description:
 It contains, that there was a collision or not if yes,
 it has the collider edges, where they are collide.  
-It is used by `CollisionChecker` and the checker will create
+It is used by `CollisionHelper` and the checker will create
 `Collision` for collided objects.
 
 ### Header:

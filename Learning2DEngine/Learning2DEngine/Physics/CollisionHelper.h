@@ -11,10 +11,10 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
-        class CollisionChecker final
+        class CollisionHelper final
         {
         private:
-            CollisionChecker() {}
+            CollisionHelper() {}
 
             static glm::vec2 GetEdge(const BaseBoxColliderComponent& boxCollider, glm::vec2 distanceBetweenCenters);
             static glm::vec2 GetEdge(const BaseCircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters);
