@@ -19,14 +19,75 @@ namespace Learning2DEngine
             return circleCollider.GetColliderCenter() + edge;
         }
 
+        CollisionHelper::MoveDirection CollisionHelper::GetDirection(glm::vec2 vector)
+        {
+            static glm::vec2 directions[] = {
+                glm::vec2(0.0f, 1.0f),	// up
+                glm::vec2(1.0f, 0.0f),	// right
+                glm::vec2(0.0f, -1.0f),	// down
+                glm::vec2(-1.0f, 0.0f)	// left
+            };
+
+            float max = 0.0f;
+            unsigned int bestId = 0;
+            for (unsigned int i = 0; i < 4; i++)
+            {
+                float dotProduct = glm::dot(glm::normalize(vector), directions[i]);
+
+				//if dotProduct > max means, that the vector is closer to the direction (their angel is smaller)
+                if (dotProduct > max)
+                {
+                    max = dotProduct;
+                    bestId = i;
+                }
+            }
+            return (MoveDirection)bestId;
+        }
+
         void CollisionHelper::FixPosition(const BaseBoxColliderComponent& boxCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier)
         {
-
+            glm::vec2 difference = edgeOfCollidedObject - boxCollider.GetColliderCenter();
+            MoveDirection direction = CollisionHelper::GetDirection(difference);
+            if (direction == MoveDirection::LEFT || direction == MoveDirection::RIGHT)
+            {
+				//Maybe it should be only half of the colliderSize.x, but it can be bugged easily
+                float penetration = (boxCollider.colliderSize.x - std::abs(difference.x)) * fixMultiplier;
+                if (direction == MoveDirection::LEFT)
+                    boxCollider.gameObject->transform.AddPosition(glm::vec2(penetration, 0.0f));
+                else
+                    boxCollider.gameObject->transform.AddPosition(glm::vec2(-penetration, 0.0f));
+            }
+            else
+            {
+                //Maybe it should be only half of the colliderSize.y, but it can be bugged easily
+                float penetration = (boxCollider.colliderSize.y - std::abs(difference.y)) * fixMultiplier;
+                if (direction == MoveDirection::UP)
+                    boxCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, -penetration));
+                else
+                    boxCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, penetration));
+            }
         }
 
         void CollisionHelper::FixPosition(const BaseCircleColliderComponent& circleCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier)
         {
-
+            glm::vec2 difference = edgeOfCollidedObject - circleCollider.GetColliderCenter();
+            MoveDirection direction = CollisionHelper::GetDirection(difference);
+            if (direction == MoveDirection::LEFT || direction == MoveDirection::RIGHT)
+            {
+                float penetration = (circleCollider.colliderRadius - std::abs(difference.x)) * fixMultiplier;
+                if (direction == MoveDirection::LEFT)
+                    circleCollider.gameObject->transform.AddPosition(glm::vec2(penetration, 0.0f));
+                else
+                    circleCollider.gameObject->transform.AddPosition(glm::vec2(-penetration, 0.0f));
+            }
+            else
+            {
+                float penetration = (circleCollider.colliderRadius - std::abs(difference.y)) * fixMultiplier;
+                if (direction == MoveDirection::UP)
+                    circleCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, -penetration));
+                else
+                    circleCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, penetration));
+            }
         }
 
         CollisionData CollisionHelper::CheckCollision(const BaseBoxColliderComponent& collider1, const BaseBoxColliderComponent& collider2)

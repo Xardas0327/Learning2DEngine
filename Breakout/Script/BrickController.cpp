@@ -15,7 +15,7 @@ BrickController::BrickController(GameObject* gameObject, int x, int y, bool isSo
 void BrickController::Init()
 {
     collider = gameObject->AddComponent<BoxColliderComponent, glm::vec2, ColliderType, ColliderMode, glm::vec2, int32_t>(
-        gameObject->transform.GetScale(), ColliderType::KINEMATIC, ColliderMode::TRIGGER, glm::vec2(0.0f, 0.0f), 0b1
+        gameObject->transform.GetScale(), ColliderType::KINEMATIC, ColliderMode::COLLIDER, glm::vec2(0.0f, 0.0f), 0b1
     );
     renderer = gameObject->AddComponent<SpriteRenderComponent>();
 }
