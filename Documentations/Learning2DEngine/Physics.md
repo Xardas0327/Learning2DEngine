@@ -7,10 +7,11 @@ This namespace really simple. It has only some really basic functionality.
 - [BoxColliderComponent](Physics.md#boxcollidercomponent)
 - [CircleColliderComponent](Physics.md#circlecollidercomponent)
 - [ColliderComponentHandler](Physics.md#collidercomponenthandler)
+- [ColliderMode](Physics.md#collidermode)
 - [ColliderType](Physics.md#collidertype)
 - [Collision](Physics.md#collision)
-- [CollisionChecker](Physics.md#collisionchecker)
 - [CollisionData](Physics.md#collisiondata)
+- [CollisionHelper](Physics.md#collisionhelper)
 - [Rigidbody](Physics.md#rigidbody)
 
 ##
@@ -42,7 +43,7 @@ glm::vec2 colliderSize;
 **Protected:**  
 **BaseBoxColliderComponent**  
 ```cpp
-BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 ##
@@ -74,7 +75,7 @@ float colliderRadius;
 **Protected:**  
 **BaseCircleColliderComponent**  
 ```cpp
-BaseCircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseCircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 ##
@@ -107,6 +108,11 @@ but the B and the C will be triggered with A only.
 ```cpp
 const ColliderType type;
 ```
+**mode**   
+It contains, that the collider is trigger or not.
+```cpp
+ColliderMode mode;
+```
 
 **Public:**  
 **colliderOffset**  
@@ -126,7 +132,7 @@ int32_t maskLayer;
 **Protected:**  
 **BaseColliderComponent**  
 ```cpp
-BaseColliderComponent(System::GameObject* gameObject, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BaseColliderComponent(System::GameObject* gameObject, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Public:**  
@@ -138,14 +144,19 @@ glm::vec2 GetColliderCenter() const;
 
 **GetType**  
 ```cpp
-inline ColliderType GetType() const
+inline ColliderType GetType() const;
+```
+
+**GetMode**  
+```cpp
+inline ColliderMode GetMode() const;
 ```
 
 **OnCollision**  
 If 2 colliders trigger each other, their OnCollision function will be called.  
 It does nothing by default.
 ```cpp
-virtual void OnCollision(Collision collision);
+virtual void OnCollision(const Collision& collision);
 ```
 
 ##
@@ -170,7 +181,7 @@ class BoxColliderComponent : public virtual BaseBoxColliderComponent
 **Protected:**  
 **BoxColliderComponent**  
 ```cpp
-BoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+BoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Init**  
@@ -207,7 +218,7 @@ class CircleColliderComponent : public virtual BaseCircleColliderComponent
 **Protected:**  
 **CircleColliderComponent**  
 ```cpp
-CircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
+CircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
 **Init**  
@@ -434,6 +445,23 @@ inline unsigned int GetMaxColliderPerThread();
 ```
 
 ##
+## ColliderMode
+### Source Code:
+[ColliderMode.h](../../Learning2DEngine/Learning2DEngine/Physics/ColliderMode.h)
+
+### Description:
+The collider types.
+
+### Header:
+```cpp
+enum class ColliderMode
+{
+    TRIGGER,
+    COLLIDER
+};
+```
+
+##
 ## ColliderType
 ### Source Code:
 [ColliderType.h](../../Learning2DEngine/Learning2DEngine/Physics/ColliderType.h)
@@ -443,7 +471,7 @@ The collider types.
 
 ### Header:
 ```cpp
-enum ColliderType
+enum class ColliderType
 {
     DYNAMIC,
     KINEMATIC
@@ -483,9 +511,9 @@ struct Collision
 ```
 
 ##
-## CollisionChecker
+## CollisionHelper
 ### Source Code:
-[CollisionChecker.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionChecker.h)
+[CollisionHelper.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionHelper.h)
 
 ### Description:
 It is a static class, which has functions to detect the collisions.  
@@ -493,15 +521,21 @@ The `ColliderComponentHandler` use it to check every collision.
 
 ### Header:
 ```cpp
-class Collision final
+class CollisionHelper final
 {...}
+```
+
+### Auxiliary class
+**Private:**  
+```cpp
+enum MoveDirection { UP, RIGHT, DOWN, LEFT };
 ```
 
 ### Functions:
 **Private:**  
-**Collision**  
+**CollisionHelper**  
 ```cpp
-Collision();
+CollisionHelper();
 ```
 
 **GetEdge**  
@@ -512,6 +546,22 @@ static glm::vec2 GetEdge(const BaseBoxColliderComponent& boxCollider, glm::vec2 
 
 ```cpp
 static glm::vec2 GetEdge(const BaseCircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters);
+```
+
+**GetDirection**  
+```cpp
+static MoveDirection GetDirection(glm::vec2 vector);
+```
+
+**FixPosition**  
+It fixed the gameobject's position, which has this collider.  
+The fixMultiplier should be 1.0f if another object is Kinematic or 0.5f if it is Dynamic.
+```cpp
+static void FixPosition(const BaseBoxColliderComponent& boxCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier);
+```
+
+```cpp
+static void FixPosition(const BaseCircleColliderComponent& circleCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier);
 ```
 
 **GetLength2**  
@@ -539,6 +589,15 @@ static CollisionData CheckCollision(const BaseCircleColliderComponent& circleCol
 static CollisionData CheckCollision(const BaseBoxColliderComponent& boxCollider, const BaseCircleColliderComponent& circleCollider);
 ```
 
+**FixPosition**  
+Fix the position of the game objects, if they are dynamic with collider mode
+and another collider has collider mode too.  
+If both colliders are dynamic with collider mode, they will moved only half of the distance.
+```cpp
+template<class T, class U>
+static void FixPosition(T& first, glm::vec2 edge1, U& second, glm::vec2 edge2);
+```
+
 ##
 ## CollisionData
 ### Source Code:
@@ -547,7 +606,7 @@ static CollisionData CheckCollision(const BaseBoxColliderComponent& boxCollider,
 ### Description:
 It contains, that there was a collision or not if yes,
 it has the collider edges, where they are collide.  
-It is used by `CollisionChecker` and the checker will create
+It is used by `CollisionHelper` and the checker will create
 `Collision` for collided objects.
 
 ### Header:

@@ -28,7 +28,7 @@ protected:
     PowerUpController(Learning2DEngine::System::GameObject* gameObject, const PowerUpObject& powerUpObject);
 
     void Init() override;
-    void OnCollision(Learning2DEngine::Physics::Collision collision) override;
+    void OnCollision(const Learning2DEngine::Physics::Collision& collision) override;
 public:
     Learning2DEngine::Render::SpriteRenderComponent* renderer;
     const PowerUpObject powerUpObject;

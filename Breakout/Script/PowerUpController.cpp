@@ -8,7 +8,7 @@ using namespace Learning2DEngine::Physics;
 
 PowerUpController::PowerUpController(GameObject* gameObject, const PowerUpObject& powerUpObject)
 	: BoxColliderComponent(gameObject, POWERUP_SIZE), BaseBoxColliderComponent(gameObject, POWERUP_SIZE),
-	BaseColliderComponent(gameObject, ColliderType::KINEMATIC, glm::vec2(0.0f, 0.0f), 0b100), Component(gameObject),
+	BaseColliderComponent(gameObject, ColliderType::KINEMATIC, ColliderMode::TRIGGER, glm::vec2(0.0f, 0.0f), 0b100), Component(gameObject),
 	rigidbody(nullptr), renderer(nullptr), powerUpObject(powerUpObject), actualDuration(powerUpObject.duration), activated(false),
     activationEventHandler()
 {
@@ -28,7 +28,7 @@ void PowerUpController::Init()
 
 }
 
-void PowerUpController::OnCollision(Collision collision)
+void PowerUpController::OnCollision(const Collision& collision)
 {
     auto player = collision.collidedObject->GetComponent<PlayerController>();
     if (player != nullptr)

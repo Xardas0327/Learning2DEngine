@@ -45,7 +45,7 @@
     <ClCompile Include="Learning2DEngine\Render\PostProcessEffect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Physics\CollisionChecker.cpp">
+    <ClCompile Include="Learning2DEngine\Physics\CollisionHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\System\Camera.cpp">
@@ -167,7 +167,7 @@
     <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Physics\CollisionChecker.h">
+    <ClInclude Include="Learning2DEngine\Physics\CollisionHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h">
@@ -345,6 +345,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Physics\ColliderType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Physics\ColliderMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

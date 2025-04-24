@@ -17,7 +17,7 @@ BallController::BallController(GameObject* gameObject, PlayerController* playerC
     const std::string& textureId, const std::string& particleTextureId,
     BallHitPlayerEventItem& ballHitPlayerEventItem, BallHitBrickEventItem& ballHitBrickEventItem)
     : CircleColliderComponent(gameObject, BALL_RADIUS), BaseCircleColliderComponent(gameObject, BALL_RADIUS),
-    BaseColliderComponent(gameObject, ColliderType::DYNAMIC, glm::vec2(0.0f, 0.0f), 0b11), UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
+    BaseColliderComponent(gameObject, ColliderType::DYNAMIC, ColliderMode::COLLIDER, glm::vec2(0.0f, 0.0f), 0b11), UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
     textureId(textureId), particleTextureId(particleTextureId), playerController(playerController),
     renderer(nullptr), rigidbody(nullptr), particleSystem(nullptr),
     radius(BALL_RADIUS), isStuck(true), sticky(false), passThrough(false),
@@ -143,7 +143,7 @@ void BallController::SetStuck(bool value)
     rigidbody->isFrozen = value;
 }
 
-void BallController::OnCollision(Collision collision)
+void BallController::OnCollision(const Collision& collision)
 {
     auto player = collision.collidedObject->GetComponent<PlayerController>();
     if (player != nullptr && !isStuck)
@@ -178,22 +178,10 @@ void BallController::OnCollision(Collision collision)
             if (direction == Direction::LEFT || direction == Direction::RIGHT)
             {
                 rigidbody->velocity.x = -rigidbody->velocity.x;
-
-                float penetration = radius - std::abs(difference.x);
-                if (direction == Direction::LEFT)
-                    gameObject->transform.AddPosition(glm::vec2(penetration, 0.0f));
-                else
-                    gameObject->transform.AddPosition(glm::vec2(-penetration, 0.0f));
             }
             else
             {
                 rigidbody->velocity.y = -rigidbody->velocity.y;
-
-                float penetration = radius - std::abs(difference.y);
-                if (direction == Direction::UP)
-                    gameObject->transform.AddPosition(glm::vec2(0.0f, -penetration));
-                else
-                    gameObject->transform.AddPosition(glm::vec2(0.0f, penetration));
             }
         }
 
