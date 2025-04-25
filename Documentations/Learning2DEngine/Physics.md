@@ -12,6 +12,7 @@ This namespace really simple. It has only some really basic functionality.
 - [Collision](Physics.md#collision)
 - [CollisionData](Physics.md#collisiondata)
 - [CollisionHelper](Physics.md#collisionhelper)
+- [IRigidbody](Physics.md#irigidbody)
 - [Rigidbody](Physics.md#rigidbody)
 
 ##
@@ -98,6 +99,12 @@ class BaseColliderComponent : public virtual System::Component
 ```
 
 ### Variables:
+**Private:**  
+**rigidbody**   
+```cpp
+IRigidbody* rigidbody;
+```
+
 **Public:**  
 **type**   
 A collider can be dynamic or kinematic. 2 kinematic colliders can't collide with each other, 
@@ -108,6 +115,7 @@ but the B and the C will be triggered with A only.
 ```cpp
 const ColliderType type;
 ```
+
 **mode**   
 It contains, that the collider is trigger or not.
 ```cpp
@@ -146,6 +154,22 @@ If 2 colliders trigger each other, their OnCollision function will be called.
 It does nothing by default.
 ```cpp
 virtual void OnCollision(const Collision& collision);
+```
+
+**InitRigidbody**  
+If the rigidbody is inited, the collider can use it in collision.
+```cpp
+void InitRigidbody();
+```
+
+**ClearRigidbody**  
+```cpp
+inline void ClearRigidbody();
+```
+
+**GetRigidbody**  
+```cpp
+inline IRigidbody* GetRigidbody() const;
 ```
 
 ##
@@ -581,7 +605,8 @@ static CollisionData CheckCollision(const BaseBoxColliderComponent& boxCollider,
 **FixPosition**  
 Fix the position of the game objects, if they are dynamic with collider mode
 and another collider has collider mode too.  
-If both colliders are dynamic with collider mode, they will moved only half of the distance.
+If both colliders are dynamic with collider mode, they will moved only half of the distance.  
+When the function fix the position, it can reset the velocity of the rigidbody if it is inited.
 ```cpp
 template<class T, class U>
 static void FixPosition(T& first, glm::vec2 edge1, U& second, glm::vec2 edge2);
@@ -619,6 +644,20 @@ struct CollisionData
 ```
 
 ##
+## IRigidbody
+### IRigidbody Code:
+[Rigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/IRigidbody.h)
+
+### Description:
+It is an interface, which the colliders can use.
+
+### Header:
+```cpp
+class IRigidbody
+{...}
+```
+
+##
 ## Rigidbody
 ### Source Code:
 [Rigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.h)
@@ -628,8 +667,25 @@ A really basic Rigidbody for moving.
 
 ### Header:
 ```cpp
-class Rigidbody : public virtual System::UpdaterComponent
+class Rigidbody : public virtual System::UpdaterComponent, public IRigidbody
 {...}
+```
+
+### Functions:
+**Public:**  
+**~IRigidbody**  
+```cpp
+virtual ~IRigidbody() = default;
+```
+
+**ResetVelocityX**  
+```cpp
+virtual void ResetVelocityX() = 0;
+```
+
+**ResetVelocityY**  
+```cpp
+virtual void ResetVelocityY() = 0;
 ```
 
 ### Variables:
@@ -661,4 +717,15 @@ If the object is not frozen, the position of gameobject will be updated
 by `velocity` * `Game::GetDeltaTime()`.
 ```cpp
 virtual void Update() override;
+```
+
+**Public:**  
+**ResetVelocityX**  
+```cpp
+virtual void ResetVelocityX() override;
+```
+
+**ResetVelocityY**  
+```cpp
+virtual void ResetVelocityY() override;
 ```

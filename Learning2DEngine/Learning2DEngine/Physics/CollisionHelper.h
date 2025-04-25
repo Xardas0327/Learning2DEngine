@@ -43,6 +43,7 @@ namespace Learning2DEngine
 
             //Fix the position of the game objects, if they are dynamic with collider mode and another collider has collider mode too.
             //If both colliders are dynamic with collider mode, they will moved only half of the distance.
+            //When the function fix the position, it can reset the velocity of the rigidbody if it is inited.
             template<class T, class U>
             static void FixPosition(T& first, glm::vec2 edge1, U& second, glm::vec2 edge2)
             {

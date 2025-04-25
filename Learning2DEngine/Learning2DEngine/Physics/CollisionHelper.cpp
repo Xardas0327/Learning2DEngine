@@ -34,7 +34,7 @@ namespace Learning2DEngine
             {
                 float dotProduct = glm::dot(glm::normalize(vector), directions[i]);
 
-				//if dotProduct > max means, that the vector is closer to the direction (their angel is smaller)
+                //if dotProduct > max means, that the vector is closer to the direction (their angel is smaller)
                 if (dotProduct > max)
                 {
                     max = dotProduct;
@@ -50,7 +50,10 @@ namespace Learning2DEngine
             MoveDirection direction = CollisionHelper::GetDirection(difference);
             if (direction == MoveDirection::LEFT || direction == MoveDirection::RIGHT)
             {
-				//Maybe it should be only half of the colliderSize.x, but it can be bugged easily
+                if (boxCollider.GetRigidbody() != nullptr)
+                    boxCollider.GetRigidbody()->ResetVelocityX();
+
+                //Maybe it should be only half of the colliderSize.x, but it can be bugged easily
                 float penetration = (boxCollider.colliderSize.x - std::abs(difference.x)) * fixMultiplier;
                 if (direction == MoveDirection::LEFT)
                     boxCollider.gameObject->transform.AddPosition(glm::vec2(penetration, 0.0f));
@@ -59,6 +62,9 @@ namespace Learning2DEngine
             }
             else
             {
+                if (boxCollider.GetRigidbody() != nullptr)
+                    boxCollider.GetRigidbody()->ResetVelocityY();
+
                 //Maybe it should be only half of the colliderSize.y, but it can be bugged easily
                 float penetration = (boxCollider.colliderSize.y - std::abs(difference.y)) * fixMultiplier;
                 if (direction == MoveDirection::UP)
@@ -74,6 +80,10 @@ namespace Learning2DEngine
             MoveDirection direction = CollisionHelper::GetDirection(difference);
             if (direction == MoveDirection::LEFT || direction == MoveDirection::RIGHT)
             {
+                if (circleCollider.GetRigidbody() != nullptr)
+                    circleCollider.GetRigidbody()->ResetVelocityX();
+
+                //Maybe it should be only half of the colliderSize.x, but it can be bugged easily
                 float penetration = (circleCollider.colliderRadius - std::abs(difference.x)) * fixMultiplier;
                 if (direction == MoveDirection::LEFT)
                     circleCollider.gameObject->transform.AddPosition(glm::vec2(penetration, 0.0f));
@@ -82,6 +92,10 @@ namespace Learning2DEngine
             }
             else
             {
+                if (circleCollider.GetRigidbody() != nullptr)
+                    circleCollider.GetRigidbody()->ResetVelocityY();
+
+                //Maybe it should be only half of the colliderSize.x, but it can be bugged easily
                 float penetration = (circleCollider.colliderRadius - std::abs(difference.y)) * fixMultiplier;
                 if (direction == MoveDirection::UP)
                     circleCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, -penetration));
@@ -158,9 +172,9 @@ namespace Learning2DEngine
 
             if (data.isCollided)
             {
-				glm::vec2 temp = data.edge1;
-				data.edge1 = data.edge2;
-				data.edge2 = temp;
+                glm::vec2 temp = data.edge1;
+                data.edge1 = data.edge2;
+                data.edge2 = temp;
             }
 
             return data;

@@ -6,11 +6,13 @@
 #include "../System/GameObject.h"
 #include "../System/Game.h"
 
+#include "IRigidbody.h"
+
 namespace Learning2DEngine
 {
     namespace Physics
     {
-        class Rigidbody : public virtual System::UpdaterComponent
+        class Rigidbody : public virtual System::UpdaterComponent, public IRigidbody
         {
             friend class System::GameObject;
         protected:
@@ -43,6 +45,16 @@ namespace Learning2DEngine
         public:
             glm::vec2 velocity;
             bool isFrozen;
+
+            virtual void ResetVelocityX() override
+            {
+                velocity.x = 0.0f;
+            }
+
+            virtual void ResetVelocityY() override
+            {
+                velocity.y = 0.0f;
+            }
         };
     }
 }
