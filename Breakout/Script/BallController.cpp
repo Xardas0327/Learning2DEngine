@@ -32,7 +32,7 @@ void BallController::Init()
     CircleColliderComponent::Init();
     UpdaterComponent::Init();
 
-    rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2, bool>(INITIAL_BALL_VELOCITY, isStuck);
+    rigidbody = gameObject->AddComponent<Rigidbody, glm::vec2, bool, bool>(INITIAL_BALL_VELOCITY, false, isStuck);
     renderer = gameObject->AddComponent<SpriteRenderComponent, const Texture2D&>(
         ResourceManager::GetInstance().GetTexture(textureId)
     );

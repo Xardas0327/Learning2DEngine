@@ -647,7 +647,7 @@ struct CollisionData
 ##
 ## IRigidbody
 ### IRigidbody Code:
-[Rigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/IRigidbody.h)
+[IRigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/IRigidbody.h)
 
 ### Description:
 It is an interface, which the colliders can use.
@@ -655,21 +655,6 @@ It is an interface, which the colliders can use.
 ### Header:
 ```cpp
 class IRigidbody
-{...}
-```
-
-##
-## Rigidbody
-### Source Code:
-[Rigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.h
-[Rigidbody.cpp](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.cpp)
-
-### Description:
-A really basic Rigidbody for moving.
-
-### Header:
-```cpp
-class Rigidbody : public virtual System::UpdaterComponent, public IRigidbody
 {...}
 ```
 
@@ -690,6 +675,25 @@ virtual void ResetVelocityX() = 0;
 virtual void ResetVelocityY() = 0;
 ```
 
+##
+## Rigidbody
+### Source Code:
+[Rigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.h)
+[Rigidbody.cpp](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.cpp)
+
+### Description:
+A really basic Rigidbody for moving.
+
+### Header:
+```cpp
+class Rigidbody : public virtual System::UpdaterComponent, public IRigidbody
+{...}
+```
+
+### Macros:
+**L2DE_DEFAULT_GRAVITY**    
+Its value is glm::vec2(0.0f, 9.81f).
+
 ### Variables:
 **Public:**  
 **velocity**  
@@ -699,16 +703,31 @@ glm::vec2 velocity;
 ```
 
 **isFrozen**  
-The object is frozen or not.
 ```cpp
 bool isFrozen;
+```
+
+**isGravityEnabled**  
+```cpp
+bool isGravityEnabled;
+```
+
+**gravityMultiplier**  
+```cpp
+float gravityMultiplier;
+```
+
+**gravity**  
+It's default value is `L2DE_DEFAULT_GRAVITY`.
+```cpp
+static glm::vec2 gravity;
 ```
 
 ### Functions:
 **Protected:**  
 **Rigidbody**  
 ```cpp
-Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f), bool isFrozen = false);
+Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f), bool isGravityEnabled = false, bool isFrozen = false);
 ```
 ```cpp
 Rigidbody(System::GameObject* gameObject, bool isFrozen);
@@ -722,6 +741,12 @@ virtual void Update() override;
 ```
 
 **Public:**  
+**ResetGravity**  
+It resets the gravity to `L2DE_DEFAULT_GRAVITY`.
+```cpp
+static inline void ResetGravity();
+```
+
 **ResetVelocityX**  
 ```cpp
 virtual void ResetVelocityX() override;

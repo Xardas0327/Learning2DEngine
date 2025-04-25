@@ -12,11 +12,13 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
+#define L2DE_DEFAULT_GRAVITY glm::vec2(0.0f, 9.81f);
+
         class Rigidbody : public virtual System::UpdaterComponent, public IRigidbody
         {
             friend class System::GameObject;
         protected:
-            Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f), bool isFrozen = false);
+            Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f), bool isGravityEnabled = false, bool isFrozen = false);
 
             Rigidbody(System::GameObject* gameObject, bool isFrozen);
 
@@ -27,6 +29,15 @@ namespace Learning2DEngine
         public:
             glm::vec2 velocity;
             bool isFrozen;
+            bool isGravityEnabled;
+            float gravityMultiplier;
+
+            static glm::vec2 gravity;
+
+            static inline void ResetGravity()
+            {
+                gravity = L2DE_DEFAULT_GRAVITY;
+            }
 
             virtual void ResetVelocityX() override;
 
