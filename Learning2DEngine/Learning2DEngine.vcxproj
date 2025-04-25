@@ -168,6 +168,7 @@
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystemComponent.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\ColliderComponentHandler.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\CollisionHelper.cpp" />
+    <ClCompile Include="Learning2DEngine\Physics\Rigidbody.cpp" />
     <ClCompile Include="Learning2DEngine\Render\RendererComponentHandler.cpp" />
     <ClCompile Include="Learning2DEngine\Render\SimpleSpriteRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\Render\SimpleSpriteRenderer.cpp" />

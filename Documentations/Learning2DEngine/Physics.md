@@ -527,6 +527,7 @@ struct Collision
 ## CollisionHelper
 ### Source Code:
 [CollisionHelper.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionHelper.h)
+[CollisionHelper.cpp](../../Learning2DEngine/Learning2DEngine/Physics/CollisionHelper.cpp)
 
 ### Description:
 It is a static class, which has functions to detect the collisions.  
@@ -660,7 +661,8 @@ class IRigidbody
 ##
 ## Rigidbody
 ### Source Code:
-[Rigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.h)
+[Rigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.h
+[Rigidbody.cpp](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.cpp)
 
 ### Description:
 A really basic Rigidbody for moving.

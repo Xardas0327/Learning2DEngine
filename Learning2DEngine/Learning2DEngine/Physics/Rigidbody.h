@@ -16,45 +16,21 @@ namespace Learning2DEngine
         {
             friend class System::GameObject;
         protected:
-            Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f), bool isFrozen = false)
-                : System::UpdaterComponent(gameObject), System::BaseUpdaterComponent(gameObject), System::Component(gameObject),
-                velocity(velocity), isFrozen(isFrozen)
-            {
+            Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f), bool isFrozen = false);
 
-            }
-
-            Rigidbody(System::GameObject* gameObject, bool isFrozen)
-                : System::UpdaterComponent(gameObject), System::BaseUpdaterComponent(gameObject), System::Component(gameObject),
-                velocity(glm::vec2(0.0f, 0.0f)), isFrozen(isFrozen)
-            {
-
-            }
+            Rigidbody(System::GameObject* gameObject, bool isFrozen);
 
             /// <summary>
             /// If it is not frozen, the position of gameobject will be updated.
             /// </summary>
-            virtual void Update() override
-            {
-                if (!isFrozen)
-                {
-                    gameObject->transform.AddPosition(
-                        velocity * System::Game::GetDeltaTime()
-                    );
-                }
-            }
+            virtual void Update() override;
         public:
             glm::vec2 velocity;
             bool isFrozen;
 
-            virtual void ResetVelocityX() override
-            {
-                velocity.x = 0.0f;
-            }
+            virtual void ResetVelocityX() override;
 
-            virtual void ResetVelocityY() override
-            {
-                velocity.y = 0.0f;
-            }
+            virtual void ResetVelocityY() override;
         };
     }
 }
