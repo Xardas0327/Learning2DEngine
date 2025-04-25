@@ -98,7 +98,7 @@ class BaseColliderComponent : public virtual System::Component
 ```
 
 ### Variables:
-**Private:**  
+**Public:**  
 **type**   
 A collider can be dynamic or kinematic. 2 kinematic colliders can't collide with each other, 
 but an dynamic collider can collide with them.  
@@ -113,8 +113,7 @@ It contains, that the collider is trigger or not.
 ```cpp
 ColliderMode mode;
 ```
-
-**Public:**  
+ 
 **colliderOffset**  
 The center point will be shifted by this one.
 ```cpp
@@ -140,16 +139,6 @@ BaseColliderComponent(System::GameObject* gameObject, ColliderType type = Collid
 It returns the center of Collider, which is middle of the object by shifted the offset.
 ```cpp
 glm::vec2 GetColliderCenter() const;
-```
-
-**GetType**  
-```cpp
-inline ColliderType GetType() const;
-```
-
-**GetMode**  
-```cpp
-inline ColliderMode GetMode() const;
 ```
 
 **OnCollision**  
