@@ -4,12 +4,14 @@
 
 #include <glm/glm.hpp>
 
+#include "../DebugTool/Log.h"
 #include "../System/Component.h"
 #include "../System/GameObject.h"
 
 #include "Collision.h"
 #include "ColliderType.h"
 #include "ColliderMode.h"
+#include "IRigidbody.h"
 
 namespace Learning2DEngine
 {
@@ -23,6 +25,8 @@ namespace Learning2DEngine
         /// </summary>
         class BaseColliderComponent : public virtual System::Component
         {
+        private:
+            IRigidbody* rigidbody;
         protected:
             BaseColliderComponent(
                 System::GameObject* gameObject,
@@ -30,7 +34,7 @@ namespace Learning2DEngine
                 ColliderMode mode = ColliderMode::TRIGGER,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), type(type), mode(mode), colliderOffset(offset), maskLayer(maskLayer)
+                : System::Component(gameObject), type(type), mode(mode), colliderOffset(offset), maskLayer(maskLayer), rigidbody(nullptr)
             {
 
             }
@@ -52,6 +56,26 @@ namespace Learning2DEngine
             virtual void OnCollision(const Collision& collision)
             {
 
+            }
+
+            //If the rigidbody is inited, the collider can use it in collision.
+            void InitRigidbody()
+            {
+                rigidbody = gameObject->GetComponent<IRigidbody>();
+                if (rigidbody == nullptr)
+                {
+                    L2DE_LOG_ERROR("COLLIDER: The Rigidbody is not found.");
+                }
+            }
+
+            inline void ClearRigidbody()
+            {
+                rigidbody = nullptr;
+            }
+
+            inline IRigidbody* GetRigidbody() const
+            {
+                return rigidbody;
             }
         };
     }

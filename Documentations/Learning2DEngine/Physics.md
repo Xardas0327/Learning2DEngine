@@ -12,6 +12,7 @@ This namespace really simple. It has only some really basic functionality.
 - [Collision](Physics.md#collision)
 - [CollisionData](Physics.md#collisiondata)
 - [CollisionHelper](Physics.md#collisionhelper)
+- [IRigidbody](Physics.md#irigidbody)
 - [Rigidbody](Physics.md#rigidbody)
 
 ##
@@ -98,6 +99,12 @@ class BaseColliderComponent : public virtual System::Component
 ```
 
 ### Variables:
+**Private:**  
+**rigidbody**   
+```cpp
+IRigidbody* rigidbody;
+```
+
 **Public:**  
 **type**   
 A collider can be dynamic or kinematic. 2 kinematic colliders can't collide with each other, 
@@ -108,6 +115,7 @@ but the B and the C will be triggered with A only.
 ```cpp
 const ColliderType type;
 ```
+
 **mode**   
 It contains, that the collider is trigger or not.
 ```cpp
@@ -146,6 +154,22 @@ If 2 colliders trigger each other, their OnCollision function will be called.
 It does nothing by default.
 ```cpp
 virtual void OnCollision(const Collision& collision);
+```
+
+**InitRigidbody**  
+If the rigidbody is inited, the collider can use it in collision.
+```cpp
+void InitRigidbody();
+```
+
+**ClearRigidbody**  
+```cpp
+inline void ClearRigidbody();
+```
+
+**GetRigidbody**  
+```cpp
+inline IRigidbody* GetRigidbody() const;
 ```
 
 ##
@@ -502,7 +526,8 @@ struct Collision
 ##
 ## CollisionHelper
 ### Source Code:
-[CollisionHelper.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionHelper.h)
+[CollisionHelper.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionHelper.h)  
+[CollisionHelper.cpp](../../Learning2DEngine/Learning2DEngine/Physics/CollisionHelper.cpp)
 
 ### Description:
 It is a static class, which has functions to detect the collisions.  
@@ -581,7 +606,8 @@ static CollisionData CheckCollision(const BaseBoxColliderComponent& boxCollider,
 **FixPosition**  
 Fix the position of the game objects, if they are dynamic with collider mode
 and another collider has collider mode too.  
-If both colliders are dynamic with collider mode, they will moved only half of the distance.
+If both colliders are dynamic with collider mode, they will moved only half of the distance.  
+When the function fix the position, it can reset the velocity of the rigidbody if it is inited.
 ```cpp
 template<class T, class U>
 static void FixPosition(T& first, glm::vec2 edge1, U& second, glm::vec2 edge2);
@@ -619,38 +645,88 @@ struct CollisionData
 ```
 
 ##
+## IRigidbody
+### IRigidbody Code:
+[IRigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/IRigidbody.h)
+
+### Description:
+It is an interface, which the colliders can use.
+
+### Header:
+```cpp
+class IRigidbody
+{...}
+```
+
+### Functions:
+**Public:**  
+**~IRigidbody**  
+```cpp
+virtual ~IRigidbody() = default;
+```
+
+**ResetVelocityX**  
+```cpp
+virtual void ResetVelocityX() = 0;
+```
+
+**ResetVelocityY**  
+```cpp
+virtual void ResetVelocityY() = 0;
+```
+
+##
 ## Rigidbody
 ### Source Code:
-[Rigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.h)
+[Rigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.h)  
+[Rigidbody.cpp](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.cpp)
 
 ### Description:
 A really basic Rigidbody for moving.
 
 ### Header:
 ```cpp
-class Rigidbody : public virtual System::UpdaterComponent
+class Rigidbody : public virtual System::UpdaterComponent, public IRigidbody
 {...}
 ```
+
+### Macros:
+**L2DE_DEFAULT_GRAVITY**    
+Its value is glm::vec2(0.0f, 9.81f).
 
 ### Variables:
 **Public:**  
 **velocity**  
-Velocity of the object.
 ```cpp
 glm::vec2 velocity;
 ```
 
 **isFrozen**  
-The object is frozen or not.
 ```cpp
 bool isFrozen;
+```
+
+**isGravityEnabled**  
+```cpp
+bool isGravityEnabled;
+```
+
+**gravityMultiplier**  
+```cpp
+float gravityMultiplier;
+```
+
+**gravity**  
+It's default value is `L2DE_DEFAULT_GRAVITY`.
+```cpp
+static glm::vec2 gravity;
 ```
 
 ### Functions:
 **Protected:**  
 **Rigidbody**  
 ```cpp
-Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f), bool isFrozen = false);
+Rigidbody(System::GameObject* gameObject, glm::vec2 velocity = glm::vec2(0.0f, 0.0f), bool isGravityEnabled = false, bool isFrozen = false);
 ```
 ```cpp
 Rigidbody(System::GameObject* gameObject, bool isFrozen);
@@ -661,4 +737,21 @@ If the object is not frozen, the position of gameobject will be updated
 by `velocity` * `Game::GetDeltaTime()`.
 ```cpp
 virtual void Update() override;
+```
+
+**Public:**  
+**ResetGravity**  
+It resets the gravity to `L2DE_DEFAULT_GRAVITY`.
+```cpp
+static inline void ResetGravity();
+```
+
+**ResetVelocityX**  
+```cpp
+virtual void ResetVelocityX() override;
+```
+
+**ResetVelocityY**  
+```cpp
+virtual void ResetVelocityY() override;
 ```
