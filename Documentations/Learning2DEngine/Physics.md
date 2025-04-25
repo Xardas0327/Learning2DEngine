@@ -526,7 +526,7 @@ struct Collision
 ##
 ## CollisionHelper
 ### Source Code:
-[CollisionHelper.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionHelper.h)
+[CollisionHelper.h](../../Learning2DEngine/Learning2DEngine/Physics/CollisionHelper.h)  
 [CollisionHelper.cpp](../../Learning2DEngine/Learning2DEngine/Physics/CollisionHelper.cpp)
 
 ### Description:
@@ -697,7 +697,6 @@ Its value is glm::vec2(0.0f, 9.81f).
 ### Variables:
 **Public:**  
 **velocity**  
-Velocity of the object.
 ```cpp
 glm::vec2 velocity;
 ```
