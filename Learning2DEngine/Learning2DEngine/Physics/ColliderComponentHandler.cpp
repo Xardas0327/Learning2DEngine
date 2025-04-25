@@ -40,7 +40,7 @@ namespace Learning2DEngine
 			{
 				for (auto collider : newBoxColliders)
 				{
-					switch (collider->GetType())
+					switch (collider->type)
 					{
 					case ColliderType::DYNAMIC:
 						dynamicBoxColliders.push_back(collider);
@@ -82,7 +82,7 @@ namespace Learning2DEngine
 			{
 				for (auto collider : newCircleColliders)
 				{
-					switch (collider->GetType())
+					switch (collider->type)
 					{
 					case ColliderType::DYNAMIC:
 						dynamicCircleColliders.push_back(collider);

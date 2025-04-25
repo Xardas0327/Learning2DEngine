@@ -23,10 +23,6 @@ namespace Learning2DEngine
         /// </summary>
         class BaseColliderComponent : public virtual System::Component
         {
-        private:
-            const ColliderType type;
-            ColliderMode mode;
-
         protected:
             BaseColliderComponent(
                 System::GameObject* gameObject,
@@ -39,6 +35,8 @@ namespace Learning2DEngine
 
             }
         public:
+            const ColliderType type;
+            ColliderMode mode;
             glm::vec2 colliderOffset;
             int32_t maskLayer;
 
@@ -49,16 +47,6 @@ namespace Learning2DEngine
                 position.y += gameObject->transform.GetScale().y / 2 + colliderOffset.y;
 
                 return position;
-            }
-
-            inline ColliderType GetType() const
-            {
-                return type;
-            }
-
-            inline ColliderMode GetMode() const
-            {
-                return mode;
             }
 
             virtual void OnCollision(const Collision& collision)
