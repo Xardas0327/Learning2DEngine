@@ -255,5 +255,44 @@ namespace Learning2DEngine
 
 			return shader;
 		}
+
+		//Simple Color
+
+		const std::string ShaderConstant::SIMPLE_COLOR_NAME = "L2DE_SimpleColor";
+
+		const char* ShaderConstant::GetSimpleColorVertexShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
+			layout(location = 0) in vec2 position;
+
+			uniform mat4 model;
+			uniform mat4 view;
+			uniform mat4 projection;
+
+			void main()
+			{
+				gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
+			})";
+
+			return shader;
+		}
+
+		const char* ShaderConstant::GetSimpleColorFragmentShader()
+		{
+			static const char* shader = R"(
+			#version 330 core
+
+			out vec4 FragColor;
+
+			uniform vec4 color;
+
+			void main()
+			{
+				FragColor = color;
+			})";
+
+			return shader;
+		}
 	}
 }
