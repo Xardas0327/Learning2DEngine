@@ -116,6 +116,8 @@ namespace Learning2DEngine
 			for (auto data : renderData[layer])
 			{
 				auto colliderData = static_cast<DebugRenderData<BaseBoxColliderComponent>*>(data);
+				if (!colliderData->objectComponent->isActive)
+					continue;
 
 				glm::mat4 model = glm::mat4(1.0f);
 
