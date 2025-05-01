@@ -1,5 +1,6 @@
 # DebugTool
 - [DebugMacro](DebugTool.md#debugmacro)
+- [DebugRenderData](DebugTool.md#debugrenderdata)
 - [Log](DebugTool.md#log)
 
 ##
@@ -22,6 +23,46 @@ But it can be overwritten if it is defined ealier. So it can be used in a Releas
 In debug mode, the base delta time has a max value, because it can be huge if the game
 stop by a breakpoint. Its default value is 0.1f.  
 Note: the maximized delta time will be multiplied by timeScale.
+
+**L2DE_DEBUG_SHOW_COLLIDER**  
+If it is defined, the colliders can be visible in the game.
+
+**L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_VALUE**  
+If it is 1 (or true), the colliders will be visible in the game by default.  
+If is is 0 (or false), the colliders will be invisible in the game by default.  
+But the developer can change them one by one.
+
+**L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER**  
+The colliders are rendered by a renderer (not late renderer), and this macro give their default layer.
+
+**L2DE_DEBUG_SHOW_COLLIDER_COLOR**  
+The default color of the colliders, which use collider mode.
+
+**L2DE_DEBUG_SHOW_COLLIDER_TRIGGER_COLOR**  
+The default color of the triggers. (Colliders with trigger mode)
+
+##
+## DebugRenderData
+### Source Code:
+[DebugRenderData.h](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugRenderData.h)
+
+### Description:
+The debug collider renderers use it.  
+The TComponent has to be a component, which is derived from System::Component.
+
+### Header:
+```cpp
+template<class TComponent>
+struct DebugRenderData : public Render::RenderData
+{
+	const TComponent* const objectComponent;
+
+	DebugRenderData(const System::Component* component, const TComponent* objectComponent)
+		: RenderData(component), objectComponent(objectComponent)
+	{
+	}
+};
+```
 
 ##
 ## Log
