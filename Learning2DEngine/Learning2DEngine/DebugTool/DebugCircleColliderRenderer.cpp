@@ -1,6 +1,7 @@
 #include "DebugCircleColliderRenderer.h"
 
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "DebugRenderData.h"
 #include "DebugMacro.h"
@@ -21,7 +22,8 @@ namespace Learning2DEngine
 	namespace DebugTool
 	{
 		DebugCircleColliderRenderer::DebugCircleColliderRenderer()
-			: shader(), vao(0), vbo(0), renderData()
+			: shader(), vao(0), vboStatic(0), vboDynamic(0), maxObjectSize(0),
+			debugRenderData(), dynamicData(nullptr)
 		{
 
 		}
@@ -47,20 +49,52 @@ namespace Learning2DEngine
 				vertices[i * 2 + 1] = glm::sin(theta);
 			}
 
-
 			glGenVertexArrays(1, &vao);
-			glGenBuffers(1, &vbo);
+			glGenBuffers(1, &vboStatic);
 
 			glBindVertexArray(vao);
 
-			glBindBuffer(GL_ARRAY_BUFFER, vbo);
-			glBufferData(GL_ARRAY_BUFFER, L2DE_DEBUG_CIRCLE_SEGMENT * 2 * sizeof(float), vertices, GL_STATIC_DRAW);
+			glBindBuffer(GL_ARRAY_BUFFER, vboStatic);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
+			glGenBuffers(1, &vboDynamic);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(BaseColorDynamicData), NULL, GL_DYNAMIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE,
+				sizeof(BaseColorDynamicData),
+				(void*)offsetof(BaseColorDynamicData, modelMatrix));
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE,
+				sizeof(BaseColorDynamicData),
+				(void*)(offsetof(BaseColorDynamicData, modelMatrix) + sizeof(float) * 4));
+			glEnableVertexAttribArray(3);
+			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE,
+				sizeof(BaseColorDynamicData),
+				(void*)(offsetof(BaseColorDynamicData, modelMatrix) + sizeof(float) * 8));
+			glEnableVertexAttribArray(4);
+			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE,
+				sizeof(BaseColorDynamicData),
+				(void*)(offsetof(BaseColorDynamicData, modelMatrix) + sizeof(float) * 12));
+			glEnableVertexAttribArray(5);
+			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE,
+				sizeof(BaseColorDynamicData),
+				(void*)offsetof(BaseColorDynamicData, color));
+
+			glVertexAttribDivisor(1, 1);
+			glVertexAttribDivisor(2, 1);
+			glVertexAttribDivisor(3, 1);
+			glVertexAttribDivisor(4, 1);
+			glVertexAttribDivisor(5, 1);
+
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
+
+			maxObjectSize = 1;
+			dynamicData = new BaseColorDynamicData[maxObjectSize];
 		}
 
 		void DebugCircleColliderRenderer::Init()
@@ -81,9 +115,15 @@ namespace Learning2DEngine
 		void DebugCircleColliderRenderer::DestroyObject()
 		{
 			glDeleteVertexArrays(1, &vao);
-			glDeleteBuffers(1, &vbo);
+			glDeleteBuffers(1, &vboStatic);
+			glDeleteBuffers(1, &vboDynamic);
 
-			renderData.clear();
+			debugRenderData.clear();
+
+			if (dynamicData != nullptr)
+			{
+				delete[] dynamicData;
+			}
 		}
 
 		void DebugCircleColliderRenderer::Destroy()
@@ -101,12 +141,44 @@ namespace Learning2DEngine
 
 		void DebugCircleColliderRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
 		{
-			this->renderData = renderData;
+			debugRenderData.clear();
+			int maxDynamicSize = 0;
+			for (auto& layerData : renderData)
+			{
+				auto& actualLayerData = debugRenderData[layerData.first];
+
+				for (auto& data : layerData.second)
+				{
+					auto colliderData = static_cast<DebugRenderData<BaseCircleColliderComponent>*>(data);
+					if (!colliderData->objectComponent->isActive)
+						continue;
+
+					actualLayerData.push_back(colliderData);
+				}
+
+				if (maxDynamicSize < actualLayerData.size())
+					maxDynamicSize = actualLayerData.size();
+			}
+
+			//if the size is not enough or too big, it will be reallocated.
+			if (maxDynamicSize > maxObjectSize || maxObjectSize > maxDynamicSize * 2)
+			{
+				//It allocates 20% more space, so that it does not have to allocate again
+				//if there are some dynamic renderers. 
+				maxObjectSize = static_cast<float>(maxDynamicSize) * 1.2f;
+
+				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(BaseColorDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+				delete[] dynamicData;
+				dynamicData = new BaseColorDynamicData[maxObjectSize];
+			}
 		}
 
 		void DebugCircleColliderRenderer::Draw(int layer)
 		{
-			if (renderData.find(layer) == renderData.end())
+			if (debugRenderData.find(layer) == debugRenderData.end())
 				return;
 
 			shader.Use();
@@ -114,30 +186,36 @@ namespace Learning2DEngine
 			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 
 			glBindVertexArray(vao);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 
-			for (auto data : renderData[layer])
+			for (int i = 0; i < debugRenderData[layer].size(); ++i)
 			{
-				auto colliderData = static_cast<DebugRenderData<BaseCircleColliderComponent>*>(data);
-				if (!colliderData->objectComponent->isActive)
-					continue;
+				auto colliderData = debugRenderData[layer][i];
 
 				glm::mat4 model = glm::mat4(1.0f);
-
 				model = glm::translate(model,
 					glm::vec3(colliderData->objectComponent->GetColliderCenter() + colliderData->objectComponent->colliderOffset, 0.0f)
 				);
 				model = glm::scale(model, glm::vec3(colliderData->objectComponent->colliderRadius, colliderData->objectComponent->colliderRadius, 1.0f));
 
-				shader.SetMatrix4("model", model);
-				shader.SetVector4f("color",
-					colliderData->objectComponent->mode == ColliderMode::TRIGGER
-					? L2DE_DEBUG_SHOW_COLLIDER_TRIGGER_COLOR
-					: L2DE_DEBUG_SHOW_COLLIDER_COLOR
-				);
+				std::memcpy(dynamicData[i].modelMatrix,
+					glm::value_ptr(model),
+					sizeof(dynamicData[i].modelMatrix));
 
-				glDrawArrays(GL_LINE_LOOP, 0, L2DE_DEBUG_CIRCLE_SEGMENT);
+				if (colliderData->objectComponent->mode == ColliderMode::TRIGGER)
+					std::memcpy(dynamicData[i].color,
+						glm::value_ptr(L2DE_DEBUG_SHOW_COLLIDER_TRIGGER_COLOR),
+						sizeof(dynamicData[i].color));
+				else
+					std::memcpy(dynamicData[i].color,
+						glm::value_ptr(L2DE_DEBUG_SHOW_COLLIDER_COLOR),
+						sizeof(dynamicData[i].color));
 			}
 
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(BaseColorDynamicData) * debugRenderData[layer].size(), dynamicData);
+			glDrawArraysInstanced(GL_LINE_LOOP, 0, L2DE_DEBUG_CIRCLE_SEGMENT, debugRenderData[layer].size());
+
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
 		}
 	}
