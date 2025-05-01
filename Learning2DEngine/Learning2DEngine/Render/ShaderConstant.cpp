@@ -256,11 +256,11 @@ namespace Learning2DEngine
 			return shader;
 		}
 
-		//Simple Color
+		//Base Color
 
-		const std::string ShaderConstant::SIMPLE_COLOR_NAME = "L2DE_SimpleColor";
+		const std::string ShaderConstant::BASE_COLOR_NAME = "L2DE_BaseColor";
 
-		const char* ShaderConstant::GetSimpleColorVertexShader()
+		const char* ShaderConstant::GetBaseColorVertexShader()
 		{
 			static const char* shader = R"(
 			#version 330 core
@@ -278,7 +278,7 @@ namespace Learning2DEngine
 			return shader;
 		}
 
-		const char* ShaderConstant::GetSimpleColorFragmentShader()
+		const char* ShaderConstant::GetBaseColorFragmentShader()
 		{
 			static const char* shader = R"(
 			#version 330 core

@@ -29,12 +29,12 @@ namespace Learning2DEngine
 		void DebugBoxColliderRenderer::InitShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
-			shader = resourceManager.IsShaderExist(ShaderConstant::SIMPLE_COLOR_NAME)
-				? resourceManager.GetShader(ShaderConstant::SIMPLE_COLOR_NAME)
+			shader = resourceManager.IsShaderExist(ShaderConstant::BASE_COLOR_NAME)
+				? resourceManager.GetShader(ShaderConstant::BASE_COLOR_NAME)
 				: resourceManager.LoadShader(
-					ShaderConstant::SIMPLE_COLOR_NAME,
-					ShaderConstant::GetSimpleColorVertexShader(),
-					ShaderConstant::GetSimpleColorFragmentShader());
+					ShaderConstant::BASE_COLOR_NAME,
+					ShaderConstant::GetBaseColorVertexShader(),
+					ShaderConstant::GetBaseColorFragmentShader());
 		}
 
 		void DebugBoxColliderRenderer::InitVao()
