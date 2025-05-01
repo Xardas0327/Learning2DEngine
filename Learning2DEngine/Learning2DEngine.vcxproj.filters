@@ -383,5 +383,8 @@
     <ClInclude Include="Learning2DEngine\DebugTool\DebugCircleColliderRenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\BaseColorDynamicData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

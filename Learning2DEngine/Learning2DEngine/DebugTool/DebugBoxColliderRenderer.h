@@ -9,6 +9,10 @@
 #include "../Render/IRenderer.h"
 #include "../Render/Shader.h"
 #include "../Render/RenderData.h"
+#include "../Render/BaseColorDynamicData.h"
+#include "../Physics/BaseBoxColliderComponent.h"
+
+#include "DebugRenderData.h"
 
 namespace Learning2DEngine
 {
@@ -20,8 +24,12 @@ namespace Learning2DEngine
 		private:
 			Render::Shader shader;
 			GLuint vao;
-			GLuint vbo;
-			std::map<int, std::vector<Render::RenderData*>> renderData;
+			GLuint vboStatic;
+			GLuint vboDynamic;
+			unsigned int maxObjectSize;
+
+			std::map<int, std::vector<DebugRenderData<Physics::BaseBoxColliderComponent>*>> debugRenderData;
+			Render::BaseColorDynamicData* dynamicData;
 
 			DebugBoxColliderRenderer();
 
