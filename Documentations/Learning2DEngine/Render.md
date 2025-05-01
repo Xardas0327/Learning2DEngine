@@ -1,4 +1,5 @@
 # Render
+- [BaseColorDynamicData](Render.md#basecolordynamicdata)
 - [BaseRendererComponent](Render.md#baserenderercomponent)
 - [BlendFuncFactor](Render.md#blendfuncfactor)
 - [IRenderer](Render.md#irenderer)
@@ -21,6 +22,23 @@
 - [SpriteRenderData](Render.md#spriterenderdata)
 - [Texture2D](Render.md#texture2d)
 - [Texture2DSettings](Render.md#texture2dsettings)
+
+##
+## BaseColorDynamicData
+### Source Code:
+[BaseColorDynamicData.h](../../Learning2DEngine/Learning2DEngine/Render/BaseColorDynamicData.h)  
+
+### Description:
+It contains the dynamic data of the Debug colliders.
+
+### Header:
+```cpp
+struct BaseColorDynamicData
+{
+	float modelMatrix[16];
+	float color[4];
+};
+```
 
 ##
 ## BaseRendererComponent
@@ -316,14 +334,11 @@ Note: the textureId is float, because we sent it to vertex shader, but it will b
 
 ### Header:
 ```cpp
-struct MultiSpriteDynamicData
+struct MultiSpriteDynamicData : public BaseColorDynamicData
 {
-    float modelMatrix[16];
-    float color[4];
     float textureId;
 };
 ```
-
 
 ##
 ## MultiSpriteRenderer
@@ -1308,6 +1323,15 @@ vertex and fragment shaders.
 static const std::string DEFAULT_POSTPROCESS_EFFECT_NAME;
 static const char* GetDefaultPostprocessVertexShader();
 static const char* GetDefaultPostprocessFragmentShader();
+```
+
+**Base Color shader**  
+The base color shader's name (for `ResourceManager`),
+vertex and fragment shaders.
+```cpp
+static const std::string BASE_COLOR_NAME;
+static const char* GetBaseColorVertexShader();
+static const char* GetBaseColorFragmentShader();
 ```
 
 ##
