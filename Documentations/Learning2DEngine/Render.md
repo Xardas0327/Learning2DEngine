@@ -382,7 +382,7 @@ GLuint vboStatic;
 ```
 
 **vboDynamic**  
-It contains the uploaded model matrices and colors of the renderable objects.
+It contains the uploaded model matrices, colors and texture id of the renderable objects.
 ```cpp
 GLuint vboDynamic;
 ```
@@ -403,7 +403,7 @@ std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData
 ```
 
 **dynamicData**  
-It is array, which contains the model matrices and colors of the renderable objects, before the upload.
+It is array, which contains the model matrices, colors and texture ids of the renderable objects, before the upload.  
 Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
 ```cpp
 MultiSpriteDynamicData* dynamicData;
