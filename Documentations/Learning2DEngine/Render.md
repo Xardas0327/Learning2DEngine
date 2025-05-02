@@ -810,7 +810,8 @@ GLFWwindow* window;
 **resolution**  
 Note: the `Render::RenderManager`'s resolution and the `System::Camera`'s resolution are not same.  
 The `Render::RenderManager`'s resolution is the real resolution, how the code render the game.  
-The `System::Camera`'s resolution is like a coordinate system, which you can use where you want to put the gameobjects.  
+The `System::Camera`'s resolution is like a coordinate system,
+which the developer can use where they want to put the gameobjects.  
 ```cpp
 Resolution resolution;
 ```
