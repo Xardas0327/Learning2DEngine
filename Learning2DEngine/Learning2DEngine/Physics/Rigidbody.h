@@ -12,7 +12,7 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
-#define L2DE_DEFAULT_GRAVITY glm::vec2(0.0f, 9.81f);
+#define L2DE_DEFAULT_GRAVITY glm::vec2(0.0f, 9.81f)
 
         class Rigidbody : public virtual System::UpdaterComponent, public IRigidbody
         {

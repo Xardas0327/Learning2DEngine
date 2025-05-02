@@ -2,6 +2,10 @@
 
 #include <glm/glm.hpp>
 
+#include "../DebugTool/DebugMacro.h"
+#if L2DE_DEBUG_SHOW_COLLIDER
+#include "../DebugTool/DebugCircleColliderRenderComponent.h"
+#endif
 #include "../System/GameObject.h"
 #include "../System/ComponentManager.h"
 #include "BaseCircleColliderComponent.h"
@@ -28,6 +32,9 @@ namespace Learning2DEngine
                 int32_t maskLayer = ~0)
                 : System::Component(gameObject), BaseColliderComponent(gameObject, type, mode, offset, maskLayer),
 				BaseCircleColliderComponent(gameObject, radius, type, mode, offset, maskLayer)
+#if L2DE_DEBUG_SHOW_COLLIDER
+                , debugTool(nullptr)
+#endif
             {
 
             }
@@ -38,6 +45,10 @@ namespace Learning2DEngine
             virtual void Init() override
             {
 				System::ComponentManager::GetInstance().AddToCollider(this);
+#if L2DE_DEBUG_SHOW_COLLIDER
+                debugTool = gameObject->AddComponent<DebugTool::DebugCircleColliderRenderComponent>(this);
+                debugTool->isActive = L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_VALUE;
+#endif
             }
 
             /// <summary>
@@ -47,6 +58,10 @@ namespace Learning2DEngine
             {
 				System::ComponentManager::GetInstance().RemoveFromCollider(this);
             }
+        public:
+#if L2DE_DEBUG_SHOW_COLLIDER
+            DebugTool::DebugCircleColliderRenderComponent* debugTool;
+#endif
         };
     }
 }

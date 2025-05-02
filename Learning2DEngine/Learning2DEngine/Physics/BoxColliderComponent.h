@@ -2,6 +2,10 @@
 
 #include <glm/glm.hpp>
 
+#include "../DebugTool/DebugMacro.h"
+#if L2DE_DEBUG_SHOW_COLLIDER
+    #include "../DebugTool/DebugBoxColliderRenderComponent.h"
+#endif
 #include "../System/GameObject.h"
 #include "../System/ComponentManager.h"
 #include "BaseBoxColliderComponent.h"
@@ -13,7 +17,7 @@ namespace Learning2DEngine
         /// <summary>
         /// The BoxColliderComponent is really basic.
         /// It doesn't rotate, scale with the gameobject.
-		/// Please check for more information in the BaseColliderComponent and BaseBoxColliderComponent.
+        /// Please check for more information in the BaseColliderComponent and BaseBoxColliderComponent.
         /// </summary>
         class BoxColliderComponent : public virtual BaseBoxColliderComponent
         {
@@ -26,10 +30,12 @@ namespace Learning2DEngine
                 ColliderMode mode = ColliderMode::TRIGGER,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-				: System::Component(gameObject), BaseColliderComponent(gameObject, type, mode, offset, maskLayer),
-				BaseBoxColliderComponent(gameObject, size, type, mode, offset, maskLayer)
+                : System::Component(gameObject), BaseColliderComponent(gameObject, type, mode, offset, maskLayer),
+                BaseBoxColliderComponent(gameObject, size, type, mode, offset, maskLayer)
+#if L2DE_DEBUG_SHOW_COLLIDER
+                , debugTool(nullptr)
+#endif
             {
-
             }
 
             /// <summary>
@@ -38,6 +44,10 @@ namespace Learning2DEngine
             virtual void Init() override
             {
                 System::ComponentManager::GetInstance().AddToCollider(this);
+#if L2DE_DEBUG_SHOW_COLLIDER
+                debugTool = gameObject->AddComponent<DebugTool::DebugBoxColliderRenderComponent>(this);
+                debugTool->isActive = L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_VALUE;
+#endif
             }
 
             /// <summary>
@@ -47,6 +57,10 @@ namespace Learning2DEngine
             {
                 System::ComponentManager::GetInstance().RemoveFromCollider(this);
             }
+        public:
+#if L2DE_DEBUG_SHOW_COLLIDER
+            DebugTool::DebugBoxColliderRenderComponent* debugTool;
+#endif
         };
     }
 }

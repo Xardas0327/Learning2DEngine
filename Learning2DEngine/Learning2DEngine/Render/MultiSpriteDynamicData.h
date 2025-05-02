@@ -1,13 +1,13 @@
 #pragma once
 
+#include "BaseColorDynamicData.h"
+
 namespace Learning2DEngine
 {
 	namespace Render
 	{
-		struct MultiSpriteDynamicData
+		struct MultiSpriteDynamicData : public BaseColorDynamicData
 		{
-			float modelMatrix[16];
-			float color[4];
 			float textureId;
 		};
 	}

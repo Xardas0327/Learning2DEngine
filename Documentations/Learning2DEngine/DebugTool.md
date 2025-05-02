@@ -1,6 +1,352 @@
 # DebugTool
+- [DebugBoxColliderRenderComponent](DebugTool.md#debugboxcolliderrendercomponent)
+- [DebugBoxColliderRenderer](DebugTool.md#debugboxcolliderrenderer)
+- [DebugCircleColliderRenderComponent](DebugTool.md#debugcirclecolliderrendercomponent)
+- [DebugCircleColliderRenderer](DebugTool.md#debugcirclecolliderrenderer)
 - [DebugMacro](DebugTool.md#debugmacro)
+- [DebugRenderData](DebugTool.md#debugrenderdata)
 - [Log](DebugTool.md#log)
+
+
+##
+## DebugBoxColliderRenderComponent
+### Source Code:
+[DebugBoxColliderRenderComponent.h](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugBoxColliderRenderComponent.h)  
+[DebugBoxColliderRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugBoxColliderRenderComponent.cpp)
+
+### Description:
+A component, which is used to render the box colliders.
+
+### Header:
+```cpp
+class DebugBoxColliderRenderComponent : public virtual Render::RendererComponent<DebugRenderData<Physics::BaseBoxColliderComponent>, DebugBoxColliderRenderer>
+{...}
+```
+
+### Variables:
+**Private:**  
+**id**  
+```cpp
+static const std::string id;
+```
+
+**refrenceNumber**  
+It is counted, that how many DebugBoxColliderRenderComponent exist.
+```cpp
+static int refrenceNumber;
+```
+
+**mutex**  
+```cpp
+static std::mutex mutex;
+```
+
+### Functions:
+**Protected:**  
+**DebugBoxColliderRenderComponent**  
+```cpp
+DebugBoxColliderRenderComponent(System::GameObject* gameObject, Physics::BaseBoxColliderComponent* collider);
+```
+
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**GetId**  
+```cpp
+const std::string& GetId() const override;
+```
+
+**GetRenderer**  
+```cpp
+MultiSpriteRenderer* GetRenderer() const override;
+```
+
+##
+## DebugBoxColliderRenderer
+### Source Code:
+[DebugBoxColliderRenderer.h](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugBoxColliderRenderer.h)  
+[DebugBoxColliderRenderer.cpp](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugBoxColliderRenderer.cpp)
+
+### Description:
+This renderer is used by `DebugBoxColliderRenderComponent`, that it can render the box colliders.
+
+### Header:
+```cpp
+class DebugBoxColliderRenderer : public Render::IRenderer, public virtual System::Singleton<DebugBoxColliderRenderer>
+{...}
+```
+
+### Variables:
+**Private:**  
+**shader**
+```cpp
+Render::Shader shader;
+```
+
+**vao**
+```cpp
+GLuint vao;
+```
+
+**vboStatic**  
+It contains the vertex positions coordinates.
+```cpp
+GLuint vboStatic;
+```
+
+**vboDynamic**  
+It contains the uploaded model matrices and colors of the renderable objects.
+```cpp
+GLuint vboDynamic;
+```
+
+**maxObjectSize**  
+The size of the vboDynamic, dynamicData.
+```cpp
+unsigned int maxObjectSize;
+```
+
+**debugRenderData**  
+When the SetData is called, the renderData will be converted to this format.  
+The int is the layer.
+```cpp
+std::map<int, std::vector<DebugRenderData<Physics::BaseBoxColliderComponent>*>> debugRenderData;
+```
+
+**dynamicData**  
+It is array, which contains the model matrices and colors of the renderable objects, before the upload.  
+Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
+```cpp
+Render::BaseColorDynamicData* dynamicData;
+```
+
+### Functions:
+**Private:**  
+**DebugBoxColliderRenderer**  
+```cpp
+DebugBoxColliderRenderer();
+```
+
+**InitShader**  
+```cpp
+void InitShader();
+```
+
+**InitVao**  
+```cpp
+void InitVao();
+```
+
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+void DestroyObject();
+```
+
+**Public:**  
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**SetData**  
+It allocates 20% more space in the buffer, so that it does not have to allocate again 
+if there are some dynamic renderers.  
+Note: the int is the layer.
+```cpp
+void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+```
+
+**Draw**  
+It draws those objects, which was added with SetData and they are on the selected layer.
+```cpp
+void Draw(int layer) override;
+```
+
+##
+## DebugCircleColliderRenderComponent
+### Source Code:
+[DebugCircleColliderRenderComponent.h](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugCircleColliderRenderComponent.h)  
+[DebugCircleColliderRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugCircleColliderRenderComponent.cpp)
+
+### Description:
+A component, which is used to render the circle colliders.
+
+### Header:
+```cpp
+class DebugCircleColliderRenderComponent : public virtual Render::RendererComponent<DebugRenderData<Physics::BaseCircleColliderComponent>, DebugCircleColliderRenderer>
+{...}
+```
+
+### Variables:
+**Private:**  
+**id**  
+```cpp
+static const std::string id;
+```
+
+**refrenceNumber**  
+It is counted, that how many DebugCircleColliderRenderComponent exist.
+```cpp
+static int refrenceNumber;
+```
+
+**mutex**  
+```cpp
+static std::mutex mutex;
+```
+
+### Functions:
+**Protected:**  
+**DebugCircleColliderRenderComponent**  
+```cpp
+DebugCircleColliderRenderComponent(System::GameObject* gameObject, Physics::BaseCircleColliderComponent* collider);
+```
+
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**GetId**  
+```cpp
+const std::string& GetId() const override;
+```
+
+**GetRenderer**  
+```cpp
+MultiSpriteRenderer* GetRenderer() const override;
+```
+
+##
+## DebugCircleColliderRenderer
+### Source Code:
+[DebugCircleColliderRenderer.h](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugCircleColliderRenderer.h)  
+[DebugCircleColliderRenderer.cpp](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugCircleColliderRenderer.cpp)
+
+### Description:
+This renderer is used by `DebugCircleColliderRenderComponent`, that it can render the circle colliders.
+
+### Header:
+```cpp
+class DebugCircleColliderRenderer : public Render::IRenderer, public virtual System::Singleton<DebugCircleColliderRenderer>
+{...}
+```
+
+### Macros:
+**L2DE_DEBUG_CIRCLE_SEGMENT**  
+It is a segment of the circle.  
+If it is bigger, a circle will be smoother.  
+It's value is 50.
+
+### Variables:
+**Private:**  
+**shader**
+```cpp
+Render::Shader shader;
+```
+
+**vao**
+```cpp
+GLuint vao;
+```
+
+**vboStatic**  
+It contains the vertex positions coordinates.
+```cpp
+GLuint vboStatic;
+```
+
+**vboDynamic**  
+It contains the uploaded model matrices and colors of the renderable objects.
+```cpp
+GLuint vboDynamic;
+```
+
+**maxObjectSize**  
+The size of the vboDynamic, dynamicData.
+```cpp
+unsigned int maxObjectSize;
+```
+
+**debugRenderData**  
+When the SetData is called, the renderData will be converted to this format.  
+The int is the layer.
+```cpp
+std::map<int, std::vector<DebugRenderData<Physics::BaseCircleColliderComponent>*>> debugRenderData;
+```
+
+**dynamicData**  
+It is array, which contains the model matrices and colors of the renderable objects, before the upload.  
+Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
+```cpp
+Render::BaseColorDynamicData* dynamicData;
+```
+
+### Functions:
+**Private:**  
+**DebugCircleColliderRenderer**  
+```cpp
+DebugCircleColliderRenderer();
+```
+
+**InitShader**  
+```cpp
+void InitShader();
+```
+
+**InitVao**  
+```cpp
+void InitVao();
+```
+
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+void DestroyObject();
+```
+
+**Public:**  
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**SetData**  
+It allocates 20% more space in the buffer, so that it does not have to allocate again 
+if there are some dynamic renderers.  
+Note: the int is the layer.
+```cpp
+void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+```
+
+**Draw**  
+It draws those objects, which was added with SetData and they are on the selected layer.
+```cpp
+void Draw(int layer) override;
+```
 
 ##
 ## DebugMacro
@@ -22,6 +368,46 @@ But it can be overwritten if it is defined ealier. So it can be used in a Releas
 In debug mode, the base delta time has a max value, because it can be huge if the game
 stop by a breakpoint. Its default value is 0.1f.  
 Note: the maximized delta time will be multiplied by timeScale.
+
+**L2DE_DEBUG_SHOW_COLLIDER**  
+If it is defined, the colliders can be visible in the game.
+
+**L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_VALUE**  
+If it is 1 (or true), the colliders will be visible in the game by default.  
+If is is 0 (or false), the colliders will be invisible in the game by default.  
+But the developer can change them one by one.
+
+**L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER**  
+The colliders are rendered by a renderer (not late renderer), and this macro give their default layer.
+
+**L2DE_DEBUG_SHOW_COLLIDER_COLOR**  
+The default color of the colliders, which use collider mode.
+
+**L2DE_DEBUG_SHOW_COLLIDER_TRIGGER_COLOR**  
+The default color of the triggers. (Colliders with trigger mode)
+
+##
+## DebugRenderData
+### Source Code:
+[DebugRenderData.h](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugRenderData.h)
+
+### Description:
+The debug collider renderers use it.  
+The TComponent has to be a component, which is derived from System::Component.
+
+### Header:
+```cpp
+template<class TComponent>
+struct DebugRenderData : public Render::RenderData
+{
+	const TComponent* const objectComponent;
+
+	DebugRenderData(const System::Component* component, const TComponent* objectComponent)
+		: RenderData(component), objectComponent(objectComponent)
+	{
+	}
+};
+```
 
 ##
 ## Log

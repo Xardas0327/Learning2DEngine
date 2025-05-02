@@ -40,6 +40,12 @@ namespace Learning2DEngine
 			static const std::string DEFAULT_POSTPROCESS_EFFECT_NAME;
 			static const char* GetDefaultPostprocessVertexShader();
 			static const char* GetDefaultPostprocessFragmentShader();
+
+			//Base Color
+
+			static const std::string BASE_COLOR_NAME;
+			static const char* GetBaseColorVertexShader();
+			static const char* GetBaseColorFragmentShader();
 		};
 	}
 }

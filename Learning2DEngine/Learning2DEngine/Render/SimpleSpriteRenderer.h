@@ -1,12 +1,14 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
 #include <glad/glad.h>
 
 #include "../System/Singleton.h"
 #include "IRenderer.h"
 #include "Shader.h"
+#include "RenderData.h"
 
 namespace Learning2DEngine
 {

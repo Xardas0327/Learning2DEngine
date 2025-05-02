@@ -190,6 +190,15 @@ class BoxColliderComponent : public virtual BaseBoxColliderComponent
 {...}
 ```
 
+### Variables:
+**Public:**  
+**debugTool**   
+It is available only, when the `L2DE_DEBUG_SHOW_COLLIDER` macro is defined.  
+It can show/hide the collider in the game.
+```cpp
+DebugTool::DebugBoxColliderRenderComponent* debugTool;
+```
+
 ### Functions:
 **Protected:**  
 **BoxColliderComponent**  
@@ -225,6 +234,15 @@ Please check for more info about `BaseCircleColliderComponent` and `BaseCollider
 ```cpp
 class CircleColliderComponent : public virtual BaseCircleColliderComponent
 {...}
+```
+
+### Variables:
+**Public:**  
+**debugTool**   
+It is available only, when the `L2DE_DEBUG_SHOW_COLLIDER` macro is defined.  
+It can show/hide the collider in the game.
+```cpp
+DebugTool::DebugCircleColliderRenderComponent* debugTool;
 ```
 
 ### Functions:

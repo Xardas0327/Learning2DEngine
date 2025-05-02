@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm/glm.hpp>
 
 #ifndef L2DE_DEBUG
 	#define L2DE_DEBUG (_DEBUG || 0)
@@ -7,4 +8,25 @@
 
 #if L2DE_DEBUG && !defined(L2DE_DEBUG_MAX_BASE_DELTATIME)
 	#define L2DE_DEBUG_MAX_BASE_DELTATIME 0.1f
+#endif
+
+//Colliders
+#if L2DE_DEBUG && !defined(L2DE_DEBUG_SHOW_COLLIDER)
+	#define L2DE_DEBUG_SHOW_COLLIDER 1
+#endif
+
+#ifndef L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_VALUE
+	#define L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_VALUE 1
+#endif
+
+#ifndef L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER
+	#define L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER 99999
+#endif
+
+#ifndef L2DE_DEBUG_SHOW_COLLIDER_COLOR
+	#define L2DE_DEBUG_SHOW_COLLIDER_COLOR glm::vec4(0.6f, 1.0f, 0.5f, 0.9f)
+#endif
+
+#ifndef L2DE_DEBUG_SHOW_COLLIDER_TRIGGER_COLOR
+	#define L2DE_DEBUG_SHOW_COLLIDER_TRIGGER_COLOR glm::vec4(0.2f, 0.6f, 1.0f, 0.9f)
 #endif

@@ -1,4 +1,5 @@
 # Render
+- [BaseColorDynamicData](Render.md#basecolordynamicdata)
 - [BaseRendererComponent](Render.md#baserenderercomponent)
 - [BlendFuncFactor](Render.md#blendfuncfactor)
 - [IRenderer](Render.md#irenderer)
@@ -21,6 +22,23 @@
 - [SpriteRenderData](Render.md#spriterenderdata)
 - [Texture2D](Render.md#texture2d)
 - [Texture2DSettings](Render.md#texture2dsettings)
+
+##
+## BaseColorDynamicData
+### Source Code:
+[BaseColorDynamicData.h](../../Learning2DEngine/Learning2DEngine/Render/BaseColorDynamicData.h)  
+
+### Description:
+It contains the dynamic data of the Debug colliders.
+
+### Header:
+```cpp
+struct BaseColorDynamicData
+{
+	float modelMatrix[16];
+	float color[4];
+};
+```
 
 ##
 ## BaseRendererComponent
@@ -316,14 +334,11 @@ Note: the textureId is float, because we sent it to vertex shader, but it will b
 
 ### Header:
 ```cpp
-struct MultiSpriteDynamicData
+struct MultiSpriteDynamicData : public BaseColorDynamicData
 {
-    float modelMatrix[16];
-    float color[4];
     float textureId;
 };
 ```
-
 
 ##
 ## MultiSpriteRenderer
@@ -367,7 +382,7 @@ GLuint vboStatic;
 ```
 
 **vboDynamic**  
-It contains the uploaded model matrices and colors of the renderable objects.
+It contains the uploaded model matrices, colors and texture id of the renderable objects.
 ```cpp
 GLuint vboDynamic;
 ```
@@ -388,7 +403,7 @@ std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData
 ```
 
 **dynamicData**  
-It is array, which contains the model matrices and colors of the renderable objects, before the upload.
+It is array, which contains the model matrices, colors and texture ids of the renderable objects, before the upload.  
 Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
 ```cpp
 MultiSpriteDynamicData* dynamicData;
@@ -793,6 +808,10 @@ GLFWwindow* window;
 ```
 
 **resolution**  
+Note: the `Render::RenderManager`'s resolution and the `System::Camera`'s resolution are not same.  
+The `Render::RenderManager`'s resolution is the real resolution, how the code render the game.  
+The `System::Camera`'s resolution is like a coordinate system,
+which the developer can use where they want to put the gameobjects.  
 ```cpp
 Resolution resolution;
 ```
@@ -1308,6 +1327,15 @@ vertex and fragment shaders.
 static const std::string DEFAULT_POSTPROCESS_EFFECT_NAME;
 static const char* GetDefaultPostprocessVertexShader();
 static const char* GetDefaultPostprocessFragmentShader();
+```
+
+**Base Color shader**  
+The base color shader's name (for `ResourceManager`),
+vertex and fragment shaders.
+```cpp
+static const std::string BASE_COLOR_NAME;
+static const char* GetBaseColorVertexShader();
+static const char* GetBaseColorFragmentShader();
 ```
 
 ##
