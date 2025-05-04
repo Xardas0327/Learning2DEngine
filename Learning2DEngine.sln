@@ -42,6 +42,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{33829A
 		Documentations\Images\snake.png = Documentations\Images\snake.png
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheCollector", "TheCollector\TheCollector.vcxproj", "{EF496A81-97CB-4CCB-994F-C2FA0515BFCB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ADAB7EDA-73C6-4E6D-8900-5B0B4CE68529} = {ADAB7EDA-73C6-4E6D-8900-5B0B4CE68529}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -60,6 +65,10 @@ Global
 		{B0D106B9-8339-4747-AAE3-209D092DF18A}.Debug|x64.Build.0 = Debug|x64
 		{B0D106B9-8339-4747-AAE3-209D092DF18A}.Release|x64.ActiveCfg = Release|x64
 		{B0D106B9-8339-4747-AAE3-209D092DF18A}.Release|x64.Build.0 = Release|x64
+		{EF496A81-97CB-4CCB-994F-C2FA0515BFCB}.Debug|x64.ActiveCfg = Debug|x64
+		{EF496A81-97CB-4CCB-994F-C2FA0515BFCB}.Debug|x64.Build.0 = Debug|x64
+		{EF496A81-97CB-4CCB-994F-C2FA0515BFCB}.Release|x64.ActiveCfg = Release|x64
+		{EF496A81-97CB-4CCB-994F-C2FA0515BFCB}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
