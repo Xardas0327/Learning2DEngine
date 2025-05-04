@@ -7,7 +7,10 @@ class PlayerController : public virtual Learning2DEngine::System::LateUpdaterCom
 {
     friend class Learning2DEngine::System::GameObject;
 protected:
+	float cameraDistanceX;
+
     PlayerController(Learning2DEngine::System::GameObject* gameObject);
 
+    void Init() override;
     void LateUpdate() override;
 };

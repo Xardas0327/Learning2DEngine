@@ -16,11 +16,14 @@ void TheCollector::Init()
 {
 	Game::Init();
 
+	auto& renderManager = RenderManager::GetInstance();
+    renderManager.SetClearColor(0.0f, 0.6f, 0.9f, 1.0f);
+
     // MSAA
     ActivateMSAA(4);
 
     // Camera
-    Game::mainCamera.SetResolution(RenderManager::GetInstance().GetResolution());
+    Game::mainCamera.SetResolution(renderManager.GetResolution());
 
     //TEST ONLY
     //Floor
