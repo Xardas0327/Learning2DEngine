@@ -53,8 +53,7 @@ namespace Learning2DEngine
                 if (boxCollider.GetRigidbody() != nullptr)
                     boxCollider.GetRigidbody()->ResetVelocityX();
 
-                //Maybe it should be only half of the colliderSize.x, but it can be bugged easily
-                float penetration = (boxCollider.colliderSize.x - std::abs(difference.x)) * fixMultiplier;
+                float penetration = (boxCollider.colliderSize.x / 2.0f - std::abs(difference.x)) * fixMultiplier;
                 if (direction == MoveDirection::LEFT)
                     boxCollider.gameObject->transform.AddPosition(glm::vec2(penetration, 0.0f));
                 else
@@ -65,8 +64,7 @@ namespace Learning2DEngine
                 if (boxCollider.GetRigidbody() != nullptr)
                     boxCollider.GetRigidbody()->ResetVelocityY();
 
-                //Maybe it should be only half of the colliderSize.y, but it can be bugged easily
-                float penetration = (boxCollider.colliderSize.y - std::abs(difference.y)) * fixMultiplier;
+                float penetration = (boxCollider.colliderSize.y / 2.0f - std::abs(difference.y)) * fixMultiplier;
                 if (direction == MoveDirection::UP)
                     boxCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, -penetration));
                 else
