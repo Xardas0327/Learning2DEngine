@@ -26,7 +26,7 @@ namespace Learning2DEngine
             {
                 if (isGravityEnabled)
                 {
-                    velocity += gravity * gravityMultiplier;
+                    velocity += gravity * gravityMultiplier * System::Game::GetDeltaTime();
                 }
 
                 gameObject->transform.AddPosition(
