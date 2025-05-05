@@ -3,7 +3,6 @@
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
-#include <Learning2DEngine/Physics/Rigidbody.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 
 #include "PlayerController.h"
@@ -37,11 +36,6 @@ void TheCollector::Init()
     auto player = GameObject::Create(
         Transform(glm::vec2(615.0f, 400.0f), glm::vec2(50.0f, 50.0f))
     );
-    player->AddComponent<SpriteRenderComponent>(0, glm::vec4(1.0f));
-    auto playerRigidbody = player->AddComponent<Rigidbody>(glm::vec2(0.0f, 0.0f), true);
-    playerRigidbody->gravityMultiplier = 50.0f;
-    auto playerCollider = player->AddComponent<BoxColliderComponent>(player->transform.GetScale(), ColliderType::DYNAMIC, ColliderMode::COLLIDER);
-    playerCollider->InitRigidbody();
     player->AddComponent<PlayerController>();
 
 }
