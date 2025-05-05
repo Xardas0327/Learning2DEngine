@@ -12,7 +12,7 @@ namespace Learning2DEngine
         /// <summary>
         /// The BaseBoxColliderComponent is really basic.
         /// It doesn't rotate, scale with the gameobject.
-		/// Please use BoxColliderComponent instead of this.
+        /// Please use BoxColliderComponent instead of this.
         /// </summary>
         class BaseBoxColliderComponent : public virtual BaseColliderComponent
         {
@@ -31,6 +31,15 @@ namespace Learning2DEngine
             }
         public:
             glm::vec2 colliderSize;
+
+            glm::vec2 GetColliderCenter() const override
+            {
+                glm::vec2 position = gameObject->transform.GetPosition() + colliderOffset;
+                position.x += colliderSize.x / 2;
+                position.y += colliderSize.y / 2;
+
+                return position;
+            }
         };
     }
 }

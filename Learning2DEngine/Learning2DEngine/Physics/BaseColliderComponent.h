@@ -44,14 +44,7 @@ namespace Learning2DEngine
             glm::vec2 colliderOffset;
             int32_t maskLayer;
 
-            glm::vec2 GetColliderCenter() const
-            {
-                glm::vec2 position = gameObject->transform.GetPosition();
-                position.x += gameObject->transform.GetScale().x / 2 + colliderOffset.x;
-                position.y += gameObject->transform.GetScale().y / 2 + colliderOffset.y;
-
-                return position;
-            }
+            virtual glm::vec2 GetColliderCenter() const = 0;
 
             virtual void OnCollision(const Collision& collision)
             {
