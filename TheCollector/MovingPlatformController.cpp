@@ -2,8 +2,6 @@
 
 #include <Learning2DEngine/System/Game.h>
 
-#include "PlatformController.h"
-
 using namespace Learning2DEngine::System;
 
 
@@ -11,6 +9,8 @@ MovingPlatformController::MovingPlatformController(GameObject* gameObject, glm::
 	: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
 	startPosition(gameObject->transform.GetPosition()), endPosition(endPosition),
 	directionVector(glm::normalize(endPosition - gameObject->transform.GetPosition())),
+	minVector(startPosition.x > endPosition.x ? endPosition.x : startPosition.x, startPosition.y > endPosition.y ? endPosition.y : startPosition.y),
+	maxVector(startPosition.x < endPosition.x ? endPosition.x : startPosition.x, startPosition.y < endPosition.y ? endPosition.y : startPosition.y),
 	speed(speed), movingToEnd(true)
 {
 
@@ -18,31 +18,21 @@ MovingPlatformController::MovingPlatformController(GameObject* gameObject, glm::
 
 void MovingPlatformController::Update()
 {
-	if (movingToEnd)
+	glm::vec2 newPosition = gameObject->transform.GetPosition() + (movingToEnd ? 1.0f : -1.0f) * directionVector * speed * Game::GetDeltaTime();
+
+	gameObject->transform.SetPosition(
+		glm::clamp(newPosition, minVector, maxVector)
+	);
+
+	if (glm::distance(gameObject->transform.GetPosition(), movingToEnd ? endPosition : startPosition) < 0.00001f)
 	{
-		gameObject->transform.SetPosition(
-			gameObject->transform.GetPosition() + directionVector * speed * Game::GetDeltaTime()
-		);
-		if (glm::distance(gameObject->transform.GetPosition(), endPosition) < 1.0f)
-		{
-			movingToEnd = false;
-		}
-	}
-	else
-	{
-		gameObject->transform.SetPosition(
-			gameObject->transform.GetPosition() - directionVector * speed * Game::GetDeltaTime()
-		);
-		if (glm::distance(gameObject->transform.GetPosition(), startPosition) < 1.0f)
-		{
-			movingToEnd = true;
-		}
+		movingToEnd = !movingToEnd;
 	}
 }
 
-MovingPlatformController* MovingPlatformController::Create(glm::vec2 startPosition, glm::vec2 endPosition, float speed)
+MovingPlatformController* MovingPlatformController::Create(glm::vec2 startPosition, glm::vec2 endPosition, float speed, glm::vec2 size)
 {
-	auto platform = PlatformController::Create(startPosition);
+	auto platform = PlatformController::Create(startPosition, size);
 
 	return platform->gameObject->AddComponent<MovingPlatformController>(endPosition, speed);
 }

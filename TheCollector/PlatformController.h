@@ -29,10 +29,10 @@ protected:
 	}
 
 public:
-	static PlatformController* Create(glm::vec2 position)
+	static PlatformController* Create(glm::vec2 position, glm::vec2 size = PLATFORM_SIZE)
 	{
 		auto platform = Learning2DEngine::System::GameObject::Create(
-			Learning2DEngine::System::Transform(position, PLATFORM_SIZE)
+			Learning2DEngine::System::Transform(position, size)
 		);
 		return platform->AddComponent<PlatformController>();
 	}

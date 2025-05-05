@@ -48,7 +48,6 @@ void TheCollector::Init()
         glm::vec2(550.0f, -550.0f)
     );
 
-    //Wall 2
     auto wall2 = GameObject::Create(
         Transform(glm::vec2(890.0f, 100.0f), glm::vec2(1200.0f, 100.0f), 90)
     );
@@ -60,14 +59,54 @@ void TheCollector::Init()
         glm::vec2(550.0f, -550.0f)
     );
 
-    //Platform 1
+    //Platform
     PlatformController::Create(glm::vec2(200.0f, 500.0f));
 
-    //Platform 2
-    PlatformController::Create(glm::vec2(000.0f, 150.0f));
+    PlatformController::Create(glm::vec2(0.0f, 150.0f));
 
-    //Moving Platform 1
-    MovingPlatformController::Create(glm::vec2(500.0f, 100.0f), glm::vec2(500.0f, 500.0f));
+    PlatformController::Create(glm::vec2(850.0f, 500.0f), glm::vec2(PLATFORM_SIZE.x / 4, PLATFORM_SIZE.y));
+
+    PlatformController::Create(glm::vec2(900.0f, 450.0f), glm::vec2(PLATFORM_SIZE.x / 4, PLATFORM_SIZE.y));
+
+    PlatformController::Create(glm::vec2(1340.0f, 300.0f), glm::vec2(PLATFORM_SIZE.x / 2, PLATFORM_SIZE.y));
+
+    PlatformController::Create(glm::vec2(1100.0f, 150.0f), glm::vec2(PLATFORM_SIZE.x / 2, PLATFORM_SIZE.y));
+
+    //Moving Platform
+    MovingPlatformController::Create(glm::vec2(500.0f, 150.0f), glm::vec2(500.0f, 500.0f));
+
+    MovingPlatformController::Create(glm::vec2(950.0f, 450.0f), glm::vec2(1150.0f, 450.0f));
+
+    //Coin
+    auto coin1 = GameObject::Create(
+        Transform(glm::vec2(50.0f, 100.0f), glm::vec2(25.0f, 25.0f))
+    );
+    coin1->AddComponent<SpriteRenderComponent>(0, glm::vec4(1.0f, 0.95f, 0.0f, 1.0f));
+    coin1->AddComponent<BoxColliderComponent>(coin1->transform.GetScale(), ColliderType::KINEMATIC);
+
+    auto coin2 = GameObject::Create(
+        Transform(glm::vec2(25.0f, 550.0f), glm::vec2(25.0f, 25.0f))
+    );
+    coin2->AddComponent<SpriteRenderComponent>(0, glm::vec4(1.0f, 0.95f, 0.0f, 1.0f));
+    coin2->AddComponent<BoxColliderComponent>(coin2->transform.GetScale(), ColliderType::KINEMATIC);
+
+    auto coin3 = GameObject::Create(
+        Transform(glm::vec2(912.5f, 512.5f), glm::vec2(25.0f, 25.0f))
+    );
+    coin3->AddComponent<SpriteRenderComponent>(0, glm::vec4(1.0f, 0.95f, 0.0f, 1.0f));
+    coin3->AddComponent<BoxColliderComponent>(coin3->transform.GetScale(), ColliderType::KINEMATIC);
+
+    auto coin4 = GameObject::Create(
+        Transform(glm::vec2(1400.0f, 362.5f), glm::vec2(25.0f, 25.0f))
+    );
+    coin4->AddComponent<SpriteRenderComponent>(0, glm::vec4(1.0f, 0.95f, 0.0f, 1.0f));
+    coin4->AddComponent<BoxColliderComponent>(coin4->transform.GetScale(), ColliderType::KINEMATIC);
+
+    auto coin5 = GameObject::Create(
+        Transform(glm::vec2(1137.5f, 100.0f), glm::vec2(25.0f, 25.0f))
+    );
+    coin5->AddComponent<SpriteRenderComponent>(0, glm::vec4(1.0f, 0.95f, 0.0f, 1.0f));
+    coin5->AddComponent<BoxColliderComponent>(coin5->transform.GetScale(), ColliderType::KINEMATIC);
 
     //Player
     auto player = GameObject::Create(Transform(glm::vec2(200.0f, 400.0f)));
