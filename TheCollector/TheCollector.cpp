@@ -6,6 +6,8 @@
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 
 #include "PlayerController.h"
+#include "PlatformController.h"
+#include "MovingPlatformController.h"
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
@@ -34,7 +36,7 @@ void TheCollector::Init()
     floor->AddComponent<SpriteRenderComponent>(0, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
     floor->AddComponent<BoxColliderComponent>(floor->transform.GetScale(), ColliderType::KINEMATIC, ColliderMode::COLLIDER);
 
-	//Wall 1
+    //Wall 1
     auto wall1 = GameObject::Create(
         Transform(glm::vec2(-650.0f, 100.0f), glm::vec2(1200.0f, 100.0f), 90)
     );
@@ -59,18 +61,13 @@ void TheCollector::Init()
     );
 
     //Platform 1
-    auto platform1 = GameObject::Create(
-        Transform(glm::vec2(200.0f, 500.0f), glm::vec2(200.0f, 50.0f))
-    );
-    platform1->AddComponent<SpriteRenderComponent>(0, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
-    platform1->AddComponent<BoxColliderComponent>(platform1->transform.GetScale(), ColliderType::KINEMATIC, ColliderMode::COLLIDER);
+    PlatformController::Create(glm::vec2(200.0f, 500.0f));
 
     //Platform 2
-    auto platform2 = GameObject::Create(
-        Transform(glm::vec2(500.0f, 350.0f), glm::vec2(200.0f, 50.0f))
-    );
-    platform2->AddComponent<SpriteRenderComponent>(0, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
-    platform2->AddComponent<BoxColliderComponent>(platform1->transform.GetScale(), ColliderType::KINEMATIC, ColliderMode::COLLIDER);
+    PlatformController::Create(glm::vec2(000.0f, 150.0f));
+
+    //Moving Platform 1
+    MovingPlatformController::Create(glm::vec2(500.0f, 100.0f), glm::vec2(500.0f, 500.0f));
 
     //Player
     auto player = GameObject::Create(Transform(glm::vec2(200.0f, 400.0f)));
