@@ -25,7 +25,7 @@ void PlayerController::Init()
 
     gameObject->transform.SetScale(PLAYER_SIZE);
 
-    cameraDistanceX = Game::mainCamera.GetPosition().x - gameObject->transform.GetPosition().x;
+    cameraDistanceX = -615.0f;
     gameObject->AddComponent<SpriteRenderComponent>();
     rigidbody = gameObject->AddComponent<Rigidbody>(glm::vec2(0.0f, 0.0f), true);
     rigidbody->gravityMultiplier = 50.0f;

@@ -29,13 +29,51 @@ void TheCollector::Init()
     //TEST ONLY
     //Floor
     auto floor = GameObject::Create(
-        Transform(glm::vec2(320.0f, 600.0f), glm::vec2(600.0f, 100.0f))
+        Transform(glm::vec2(0.0f, 650.0f), glm::vec2(1440.0f, 100.0f))
     );
     floor->AddComponent<SpriteRenderComponent>(0, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
     floor->AddComponent<BoxColliderComponent>(floor->transform.GetScale(), ColliderType::KINEMATIC, ColliderMode::COLLIDER);
 
+	//Wall 1
+    auto wall1 = GameObject::Create(
+        Transform(glm::vec2(-650.0f, 100.0f), glm::vec2(1200.0f, 100.0f), 90)
+    );
+    wall1->AddComponent<SpriteRenderComponent>(0, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
+    wall1->AddComponent<BoxColliderComponent>(
+        glm::vec2(wall1->transform.GetScale().y, wall1->transform.GetScale().x),
+        ColliderType::KINEMATIC,
+        ColliderMode::COLLIDER,
+        glm::vec2(550.0f, -550.0f)
+    );
+
+    //Wall 2
+    auto wall2 = GameObject::Create(
+        Transform(glm::vec2(890.0f, 100.0f), glm::vec2(1200.0f, 100.0f), 90)
+    );
+    wall2->AddComponent<SpriteRenderComponent>(0, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
+    wall2->AddComponent<BoxColliderComponent>(
+        glm::vec2(wall2->transform.GetScale().y, wall2->transform.GetScale().x),
+        ColliderType::KINEMATIC,
+        ColliderMode::COLLIDER,
+        glm::vec2(550.0f, -550.0f)
+    );
+
+    //Platform 1
+    auto platform1 = GameObject::Create(
+        Transform(glm::vec2(200.0f, 500.0f), glm::vec2(200.0f, 50.0f))
+    );
+    platform1->AddComponent<SpriteRenderComponent>(0, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
+    platform1->AddComponent<BoxColliderComponent>(platform1->transform.GetScale(), ColliderType::KINEMATIC, ColliderMode::COLLIDER);
+
+    //Platform 2
+    auto platform2 = GameObject::Create(
+        Transform(glm::vec2(500.0f, 350.0f), glm::vec2(200.0f, 50.0f))
+    );
+    platform2->AddComponent<SpriteRenderComponent>(0, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
+    platform2->AddComponent<BoxColliderComponent>(platform1->transform.GetScale(), ColliderType::KINEMATIC, ColliderMode::COLLIDER);
+
     //Player
-    auto player = GameObject::Create(Transform(glm::vec2(615.0f, 400.0f)));
+    auto player = GameObject::Create(Transform(glm::vec2(200.0f, 400.0f)));
     player->AddComponent<PlayerController>();
 
 }
