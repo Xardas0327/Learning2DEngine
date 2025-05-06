@@ -30,9 +30,14 @@ void MovingPlatformController::Update()
 	}
 }
 
-MovingPlatformController* MovingPlatformController::Create(glm::vec2 startPosition, glm::vec2 endPosition, float speed, glm::vec2 size)
+MovingPlatformController* MovingPlatformController::Create(
+	glm::vec2 startPosition,
+	glm::vec2 endPosition,
+	const std::string& textureId,
+	float speed,
+	glm::vec2 size)
 {
-	auto platform = PlatformController::Create(startPosition, size);
+	auto platform = PlatformController::Create(startPosition, textureId, size);
 
 	return platform->gameObject->AddComponent<MovingPlatformController>(endPosition, speed);
 }

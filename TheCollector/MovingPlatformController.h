@@ -25,5 +25,10 @@ protected:
 
 	void Update() override;
 public:
-	static MovingPlatformController* Create(glm::vec2 startPosition, glm::vec2 endPosition, float speed = 100.0f, glm::vec2 size = PLATFORM_SIZE);
+	static MovingPlatformController* Create(
+		glm::vec2 startPosition,
+		glm::vec2 endPosition,
+		const std::string& textureId,
+		float speed = 100.0f,
+		glm::vec2 size = PLATFORM_SIZE);
 };

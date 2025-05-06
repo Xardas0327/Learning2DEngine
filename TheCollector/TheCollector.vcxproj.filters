@@ -44,5 +44,19 @@
     <ClInclude Include="CameraController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CoinController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Images\LargePlatform.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\SmallPlatform.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coin.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

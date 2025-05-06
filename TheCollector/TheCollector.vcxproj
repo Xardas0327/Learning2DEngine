@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraController.h" />
+    <ClInclude Include="CoinController.h" />
     <ClInclude Include="MovingPlatformController.h" />
     <ClInclude Include="PlatformController.h" />
     <ClInclude Include="PlayerController.h" />
@@ -147,6 +148,11 @@
     <ProjectReference Include="..\Learning2DEngine\Learning2DEngine.vcxproj">
       <Project>{adab7eda-73c6-4e6d-8900-5b0b4ce68529}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Images\Coin.png" />
+    <Image Include="Assets\Images\LargePlatform.png" />
+    <Image Include="Assets\Images\SmallPlatform.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
