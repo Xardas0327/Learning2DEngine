@@ -137,6 +137,7 @@
     <ClCompile Include="TheCollector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CameraController.h" />
     <ClInclude Include="MovingPlatformController.h" />
     <ClInclude Include="PlatformController.h" />
     <ClInclude Include="PlayerController.h" />

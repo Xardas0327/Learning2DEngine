@@ -5,9 +5,10 @@
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 
-#include "PlayerController.h"
-#include "PlatformController.h"
+#include "CameraController.h"
 #include "MovingPlatformController.h"
+#include "PlatformController.h"
+#include "PlayerController.h"
 
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
@@ -25,9 +26,6 @@ void TheCollector::Init()
     // MSAA
     ActivateMSAA(4);
 
-    // Camera
-    Game::mainCamera.SetResolution(renderManager.GetResolution());
-
     //TEST ONLY
     //Floor
     auto floor = GameObject::Create(
@@ -40,7 +38,7 @@ void TheCollector::Init()
     auto wall1 = GameObject::Create(
         Transform(glm::vec2(-650.0f, 100.0f), glm::vec2(1200.0f, 100.0f), 90)
     );
-    wall1->AddComponent<SpriteRenderComponent>(0, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
+    wall1->AddComponent<SpriteRenderComponent>(1, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
     wall1->AddComponent<BoxColliderComponent>(
         glm::vec2(wall1->transform.GetScale().y, wall1->transform.GetScale().x),
         ColliderType::KINEMATIC,
@@ -51,7 +49,7 @@ void TheCollector::Init()
     auto wall2 = GameObject::Create(
         Transform(glm::vec2(890.0f, 100.0f), glm::vec2(1200.0f, 100.0f), 90)
     );
-    wall2->AddComponent<SpriteRenderComponent>(0, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
+    wall2->AddComponent<SpriteRenderComponent>(1, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
     wall2->AddComponent<BoxColliderComponent>(
         glm::vec2(wall2->transform.GetScale().y, wall2->transform.GetScale().x),
         ColliderType::KINEMATIC,
@@ -110,6 +108,11 @@ void TheCollector::Init()
 
     //Player
     auto player = GameObject::Create(Transform(glm::vec2(200.0f, 400.0f)));
-    player->AddComponent<PlayerController>();
+    auto playerController = player->AddComponent<PlayerController>();
+
+    // Camera
+    Game::mainCamera.SetResolution(renderManager.GetResolution());
+    auto cameraController = GameObject::Create();
+    cameraController->AddComponent<CameraController>(playerController);
 
 }
