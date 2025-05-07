@@ -28,10 +28,14 @@ void TheCollector::Init()
     Texture2DSettings alphaSettings;
     alphaSettings.internalFormat = GL_RGBA;
     alphaSettings.imageFormat = GL_RGBA;
+    alphaSettings.wrapS = GL_CLAMP_TO_EDGE;
+    alphaSettings.wrapT = GL_CLAMP_TO_EDGE;
 
     resourceManager.LoadTextureFromFile("SmallPlatform", "Assets/Images/SmallPlatform.png", alphaSettings);
     resourceManager.LoadTextureFromFile("LargePlatform", "Assets/Images/LargePlatform.png", alphaSettings);
     resourceManager.LoadTextureFromFile("Coin", "Assets/Images/Coin.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("KnightRight", "Assets/Images/KnightRight.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("KnightLeft", "Assets/Images/KnightLeft.png", alphaSettings);
 
     //Background color
     renderManager.SetClearColor(0.0f, 0.6f, 0.9f, 1.0f);
@@ -89,15 +93,15 @@ void TheCollector::Init()
     MovingPlatformController::Create(glm::vec2(950.0f, 450.0f), glm::vec2(1150.0f, 450.0f), "LargePlatform");
 
     //Coin
-    CoinController::Create(glm::vec2(50.0f, 75.0f), "Coin");
+    CoinController::Create(glm::vec2(50.0f, 75.0f));
 
-    CoinController::Create(glm::vec2(25.0f, 525.0f), "Coin");
+    CoinController::Create(glm::vec2(25.0f, 525.0f));
 
-    CoinController::Create(glm::vec2(900.0f, 500.0f), "Coin");
+    CoinController::Create(glm::vec2(900.0f, 500.0f));
 
-    CoinController::Create(glm::vec2(1387.5f, 350.0f), "Coin");
+    CoinController::Create(glm::vec2(1387.5f, 350.0f));
 
-    CoinController::Create(glm::vec2(1125.0f, 75.0f), "Coin");
+    CoinController::Create(glm::vec2(1125.0f, 75.0f));
 
     //Player
     auto player = GameObject::Create(Transform(glm::vec2(200.0f, 400.0f)));

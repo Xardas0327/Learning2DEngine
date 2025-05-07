@@ -150,7 +150,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\Images\Bush1.png" />
+    <Image Include="Assets\Images\Bush2.png" />
+    <Image Include="Assets\Images\Bush3.png" />
+    <Image Include="Assets\Images\Bush4.png" />
     <Image Include="Assets\Images\Coin.png" />
+    <Image Include="Assets\Images\Ground1.png" />
+    <Image Include="Assets\Images\Ground2.png" />
+    <Image Include="Assets\Images\KnightIdle1.png" />
+    <Image Include="Assets\Images\KnightLeft.png" />
     <Image Include="Assets\Images\LargePlatform.png" />
     <Image Include="Assets\Images\SmallPlatform.png" />
   </ItemGroup>
