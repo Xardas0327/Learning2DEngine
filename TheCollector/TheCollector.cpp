@@ -25,17 +25,19 @@ void TheCollector::Init()
     auto& resourceManager = ResourceManager::GetInstance();
 
     // Textures
-    Texture2DSettings alphaSettings;
-    alphaSettings.internalFormat = GL_RGBA;
-    alphaSettings.imageFormat = GL_RGBA;
-    alphaSettings.wrapS = GL_CLAMP_TO_EDGE;
-    alphaSettings.wrapT = GL_CLAMP_TO_EDGE;
+    Texture2DSettings basicSettings;
+    basicSettings.internalFormat = GL_RGBA;
+    basicSettings.imageFormat = GL_RGBA;
+    basicSettings.wrapS = GL_CLAMP_TO_EDGE;
+    basicSettings.wrapT = GL_CLAMP_TO_EDGE;
 
-    resourceManager.LoadTextureFromFile("SmallPlatform", "Assets/Images/SmallPlatform.png", alphaSettings);
-    resourceManager.LoadTextureFromFile("LargePlatform", "Assets/Images/LargePlatform.png", alphaSettings);
-    resourceManager.LoadTextureFromFile("Coin", "Assets/Images/Coin.png", alphaSettings);
-    resourceManager.LoadTextureFromFile("KnightRight", "Assets/Images/KnightRight.png", alphaSettings);
-    resourceManager.LoadTextureFromFile("KnightLeft", "Assets/Images/KnightLeft.png", alphaSettings);
+    resourceManager.LoadTextureFromFile("SmallPlatform", "Assets/Images/SmallPlatform.png", basicSettings);
+    resourceManager.LoadTextureFromFile("LargePlatform", "Assets/Images/LargePlatform.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Coin", "Assets/Images/Coin.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRight", "Assets/Images/KnightRight.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeft", "Assets/Images/KnightLeft.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Ground1", "Assets/Images/Ground1.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Ground2", "Assets/Images/Ground2.png", basicSettings);
 
     //Background color
     renderManager.SetClearColor(0.0f, 0.6f, 0.9f, 1.0f);
@@ -45,34 +47,52 @@ void TheCollector::Init()
 
     //TEST ONLY
     //Floor
-    auto floor = GameObject::Create(
-        Transform(glm::vec2(0.0f, 650.0f), glm::vec2(1440.0f, 100.0f))
-    );
-    floor->AddComponent<SpriteRenderComponent>(0, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
-    floor->AddComponent<BoxColliderComponent>(floor->transform.GetScale(), ColliderType::KINEMATIC, ColliderMode::COLLIDER);
+    PlatformController::Create(glm::vec2(0.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(100.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(200.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(300.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(400.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(500.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(600.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(700.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(800.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(900.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(1000.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(1100.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(1200.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(1300.0f, 650.0f), "Ground1", EDGE_SIZE);
+    PlatformController::Create(glm::vec2(1400.0f, 650.0f), "Ground1", EDGE_SIZE);
 
     //Wall 1
-    auto wall1 = GameObject::Create(
-        Transform(glm::vec2(-650.0f, 100.0f), glm::vec2(1200.0f, 100.0f), 90)
-    );
-    wall1->AddComponent<SpriteRenderComponent>(1, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
-    wall1->AddComponent<BoxColliderComponent>(
-        glm::vec2(wall1->transform.GetScale().y, wall1->transform.GetScale().x),
-        ColliderType::KINEMATIC,
-        ColliderMode::COLLIDER,
-        glm::vec2(550.0f, -550.0f)
-    );
+    PlatformController::Create(glm::vec2(-100.0f, 650.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, 550.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, 450.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, 350.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, 250.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, 150.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, 50.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, -50.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, -150.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, -250.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, -350.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, -450.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, -550.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(-100.0f, -650.0f), "Ground2", EDGE_SIZE, 1);
 
-    auto wall2 = GameObject::Create(
-        Transform(glm::vec2(890.0f, 100.0f), glm::vec2(1200.0f, 100.0f), 90)
-    );
-    wall2->AddComponent<SpriteRenderComponent>(1, glm::vec4(0.72f, 0.48f, 0.34f, 1.0f));
-    wall2->AddComponent<BoxColliderComponent>(
-        glm::vec2(wall2->transform.GetScale().y, wall2->transform.GetScale().x),
-        ColliderType::KINEMATIC,
-        ColliderMode::COLLIDER,
-        glm::vec2(550.0f, -550.0f)
-    );
+    PlatformController::Create(glm::vec2(1437.5f, 650.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, 550.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, 450.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, 350.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, 250.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, 150.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, 50.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, -50.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, -150.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, -250.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, -350.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, -450.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, -550.0f), "Ground2", EDGE_SIZE, 1);
+    PlatformController::Create(glm::vec2(1437.5f, -650.0f), "Ground2", EDGE_SIZE, 1);
 
     //Platform
     PlatformController::Create(glm::vec2(200.0f, 500.0f), "LargePlatform");

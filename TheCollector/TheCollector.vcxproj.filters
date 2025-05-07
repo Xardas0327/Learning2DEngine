@@ -82,5 +82,8 @@
     <Image Include="Assets\Images\KnightLeft.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Images\KnightRight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

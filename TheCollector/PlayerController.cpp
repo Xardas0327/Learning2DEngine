@@ -27,7 +27,8 @@ void PlayerController::Init()
 
     gameObject->transform.SetScale(PLAYER_SIZE);
 
-    render = gameObject->AddComponent<SpriteRenderComponent>(rightSide);
+    render = gameObject->AddComponent<SpriteRenderComponent>();
+    render->data.texture = &rightSide;
     rigidbody = gameObject->AddComponent<Rigidbody>(glm::vec2(0.0f, 0.0f), true);
     rigidbody->gravityMultiplier = 50.0f;
 
@@ -45,6 +46,8 @@ void PlayerController::Destroy()
 {
     UpdaterComponent::Destroy();
     BoxColliderComponent::Destroy();
+
+    render->data.ClearTexture();
 }
 
 void PlayerController::Update()

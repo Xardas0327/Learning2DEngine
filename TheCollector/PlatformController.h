@@ -9,22 +9,24 @@
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
 
 const glm::vec2 PLATFORM_SIZE(200.0f, 50.0f);
+const glm::vec2 EDGE_SIZE(100.0f, 100.0f);
 
 class PlatformController : public virtual Learning2DEngine::System::Component
 {
     friend class Learning2DEngine::System::GameObject;
 protected:
 	std::string textureId;
+	int layer;
 
-    PlatformController(Learning2DEngine::System::GameObject* gameObject, const std::string& textureId)
-		: Learning2DEngine::System::Component(gameObject), textureId(textureId)
+	PlatformController(Learning2DEngine::System::GameObject* gameObject, const std::string& textureId, int layer = 0)
+		: Learning2DEngine::System::Component(gameObject), textureId(textureId), layer(layer)
 	{
 	}
 
 	void Init() override
 	{
 		gameObject->AddComponent<Learning2DEngine::Render::SpriteRenderComponent>(
-			Learning2DEngine::System::ResourceManager::GetInstance().GetTexture(textureId)
+			Learning2DEngine::System::ResourceManager::GetInstance().GetTexture(textureId), layer
 		);
 		gameObject->AddComponent<Learning2DEngine::Physics::BoxColliderComponent>(
 			gameObject->transform.GetScale(),
@@ -34,11 +36,11 @@ protected:
 	}
 
 public:
-	static PlatformController* Create(glm::vec2 position, const std::string& textureId, glm::vec2 size = PLATFORM_SIZE)
+	static PlatformController* Create(glm::vec2 position, const std::string& textureId, glm::vec2 size = PLATFORM_SIZE, int layer = 0)
 	{
 		auto platform = Learning2DEngine::System::GameObject::Create(
 			Learning2DEngine::System::Transform(position, size)
 		);
-		return platform->AddComponent<PlatformController>(textureId);
+		return platform->AddComponent<PlatformController>(textureId, layer);
 	}
 };
