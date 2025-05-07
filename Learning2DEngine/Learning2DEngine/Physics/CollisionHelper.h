@@ -15,14 +15,14 @@ namespace Learning2DEngine
     {
         class CollisionHelper final
         {
-            enum MoveDirection { UP, RIGHT, DOWN, LEFT };
+            enum HitDirection { UP, RIGHT, DOWN, LEFT };
         private:
             CollisionHelper() {}
 
             static glm::vec2 GetEdge(const BaseBoxColliderComponent& boxCollider, glm::vec2 distanceBetweenCenters);
             static glm::vec2 GetEdge(const BaseCircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters);
 
-            static MoveDirection GetDirection(glm::vec2 vector);
+            static HitDirection GetDirection(glm::vec2 vector);
 
             //The fixMultiplier should be 1.0f if another object is Kinematic or 0.5f if it is Dynamic.
             static void FixPosition(const BaseBoxColliderComponent& boxCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier);

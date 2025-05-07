@@ -19,7 +19,7 @@ namespace Learning2DEngine
             return circleCollider.GetColliderCenter() + edge;
         }
 
-        CollisionHelper::MoveDirection CollisionHelper::GetDirection(glm::vec2 vector)
+        CollisionHelper::HitDirection CollisionHelper::GetDirection(glm::vec2 vector)
         {
             static glm::vec2 directions[] = {
                 glm::vec2(0.0f, 1.0f),	// up
@@ -41,62 +41,82 @@ namespace Learning2DEngine
                     bestId = i;
                 }
             }
-            return (MoveDirection)bestId;
+            return (HitDirection)bestId;
         }
 
         void CollisionHelper::FixPosition(const BaseBoxColliderComponent& boxCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier)
         {
             glm::vec2 difference = edgeOfCollidedObject - boxCollider.GetColliderCenter();
-            MoveDirection direction = CollisionHelper::GetDirection(difference);
-            if (direction == MoveDirection::LEFT || direction == MoveDirection::RIGHT)
+            HitDirection direction = CollisionHelper::GetDirection(difference);
+            if (direction == HitDirection::LEFT || direction == HitDirection::RIGHT)
             {
-                if (boxCollider.GetRigidbody() != nullptr)
-                    boxCollider.GetRigidbody()->ResetVelocityX();
-
                 float penetration = (boxCollider.colliderSize.x / 2.0f - std::abs(difference.x)) * fixMultiplier;
-                if (direction == MoveDirection::LEFT)
+                if (direction == HitDirection::LEFT)
+                {
                     boxCollider.gameObject->transform.AddPosition(glm::vec2(penetration, 0.0f));
+                    if (boxCollider.GetRigidbody()->velocity.x < 0.0f)
+                        boxCollider.GetRigidbody()->velocity.x = 0.0f;
+                }
                 else
+                {
                     boxCollider.gameObject->transform.AddPosition(glm::vec2(-penetration, 0.0f));
+                    if (boxCollider.GetRigidbody()->velocity.x > 0.0f)
+                        boxCollider.GetRigidbody()->velocity.x = 0.0f;
+                }
             }
             else
             {
-                if (boxCollider.GetRigidbody() != nullptr)
-                    boxCollider.GetRigidbody()->ResetVelocityY();
-
                 float penetration = (boxCollider.colliderSize.y / 2.0f - std::abs(difference.y)) * fixMultiplier;
-                if (direction == MoveDirection::UP)
+                if (direction == HitDirection::UP)
+                {
                     boxCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, -penetration));
+                    if (boxCollider.GetRigidbody()->velocity.y > 0.0f)
+                        boxCollider.GetRigidbody()->velocity.y = 0.0f;
+                }
                 else
+                {
                     boxCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, penetration));
+                    if (boxCollider.GetRigidbody()->velocity.y < 0.0f)
+                        boxCollider.GetRigidbody()->velocity.y = 0.0f;
+                }
             }
         }
 
         void CollisionHelper::FixPosition(const BaseCircleColliderComponent& circleCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier)
         {
             glm::vec2 difference = edgeOfCollidedObject - circleCollider.GetColliderCenter();
-            MoveDirection direction = CollisionHelper::GetDirection(difference);
-            if (direction == MoveDirection::LEFT || direction == MoveDirection::RIGHT)
+            HitDirection direction = CollisionHelper::GetDirection(difference);
+            if (direction == HitDirection::LEFT || direction == HitDirection::RIGHT)
             {
-                if (circleCollider.GetRigidbody() != nullptr)
-                    circleCollider.GetRigidbody()->ResetVelocityX();
-
                 float penetration = (circleCollider.colliderRadius - std::abs(difference.x)) * fixMultiplier;
-                if (direction == MoveDirection::LEFT)
+                if (direction == HitDirection::LEFT)
+                {
                     circleCollider.gameObject->transform.AddPosition(glm::vec2(penetration, 0.0f));
+                    if (circleCollider.GetRigidbody()->velocity.x < 0.0f)
+                        circleCollider.GetRigidbody()->velocity.x = 0.0f;
+                }
                 else
+                {
                     circleCollider.gameObject->transform.AddPosition(glm::vec2(-penetration, 0.0f));
+                    if (circleCollider.GetRigidbody()->velocity.x > 0.0f)
+                        circleCollider.GetRigidbody()->velocity.x = 0.0f;
+                }
             }
             else
             {
-                if (circleCollider.GetRigidbody() != nullptr)
-                    circleCollider.GetRigidbody()->ResetVelocityY();
-
                 float penetration = (circleCollider.colliderRadius - std::abs(difference.y)) * fixMultiplier;
-                if (direction == MoveDirection::UP)
+                if (direction == HitDirection::UP)
+                {
                     circleCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, -penetration));
+                    if (circleCollider.GetRigidbody()->velocity.y > 0.0f)
+                        circleCollider.GetRigidbody()->velocity.y = 0.0f;
+                }
                 else
+                {
                     circleCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, penetration));
+                    if (circleCollider.GetRigidbody()->velocity.y < 0.0f)
+                        circleCollider.GetRigidbody()->velocity.y = 0.0f;
+                }
             }
         }
 

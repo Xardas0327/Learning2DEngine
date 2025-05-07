@@ -365,7 +365,7 @@
     <ClInclude Include="Learning2DEngine\Physics\ColliderMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Physics\IRigidbody.h">
+    <ClInclude Include="Learning2DEngine\Physics\BaseRigidbody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\DebugTool\DebugRenderData.h">
