@@ -115,10 +115,10 @@ void GameController::CreateEnvironment()
     //Coin
     coins.reserve(5);
     coins.push_back(CoinController::Create(glm::vec2(50.0f, 75.0f)));
-    //coins.push_back(CoinController::Create(glm::vec2(25.0f, 525.0f)));
-    //coins.push_back(CoinController::Create(glm::vec2(900.0f, 500.0f)));
-    //coins.push_back(CoinController::Create(glm::vec2(1387.5f, 350.0f)));
-    //coins.push_back(CoinController::Create(glm::vec2(1125.0f, 75.0f)));
+    coins.push_back(CoinController::Create(glm::vec2(25.0f, 525.0f)));
+    coins.push_back(CoinController::Create(glm::vec2(900.0f, 500.0f)));
+    coins.push_back(CoinController::Create(glm::vec2(1387.5f, 350.0f)));
+    coins.push_back(CoinController::Create(glm::vec2(1125.0f, 75.0f)));
 
 }
 

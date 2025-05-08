@@ -13,9 +13,12 @@ using namespace Learning2DEngine::Physics;
 
 PlayerController::PlayerController(GameObject* gameObject)
     : UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
-    BoxColliderComponent(gameObject, glm::vec2(30.0f, 5.0f), ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(10.0f, 45.0f), 0b01),
+    /*BoxColliderComponent(gameObject, glm::vec2(30.0f, 5.0f), ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(10.0f, 45.0f), 0b01),
     BaseBoxColliderComponent(gameObject, glm::vec2(30.0f, 5.0f), ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(10.0f, 45.0f), 0b01),
-    BaseColliderComponent(gameObject, ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(10.0f, 45.0f), 0b1),
+    BaseColliderComponent(gameObject, ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(10.0f, 45.0f), 0b1),*/
+    BoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER, glm::vec2(0.0f, 0.0f), 0b10),
+    BaseBoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER, glm::vec2(0.0f, 0.0f), 0b10),
+    BaseColliderComponent(gameObject, ColliderType::DYNAMIC, ColliderMode::COLLIDER, glm::vec2(0.0f, 0.0f), 0b10),
     onGround(true), rigidbody(nullptr), render(nullptr), coinNumber(0),
     rightSide(ResourceManager::GetInstance().GetTexture(PLAYER_RIGHT_TEXTURE_ID)),
     leftSide(ResourceManager::GetInstance().GetTexture(PLAYER_LEFT_TEXTURE_ID))
@@ -33,15 +36,16 @@ void PlayerController::Init()
     render->data.texture = &rightSide;
     rigidbody = gameObject->AddComponent<Rigidbody>(glm::vec2(0.0f, 0.0f), true);
     rigidbody->gravityMultiplier = 50.0f;
+    InitRigidbody();
 
-    auto collider = gameObject->AddComponent<BoxColliderComponent>(
+    /*auto collider = gameObject->AddComponent<BoxColliderComponent>(
         gameObject->transform.GetScale(),
         ColliderType::DYNAMIC,
         ColliderMode::COLLIDER,
         glm::vec2(0.0f, 0.0f),
         0b10
     );
-    collider->InitRigidbody();
+    collider->InitRigidbody();*/
 }
 
 void PlayerController::Destroy()

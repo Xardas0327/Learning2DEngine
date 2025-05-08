@@ -54,13 +54,13 @@ namespace Learning2DEngine
                 if (direction == HitDirection::LEFT)
                 {
                     boxCollider.gameObject->transform.AddPosition(glm::vec2(penetration, 0.0f));
-                    if (boxCollider.GetRigidbody()->velocity.x < 0.0f)
+                    if (boxCollider.GetRigidbody() != nullptr && boxCollider.GetRigidbody()->velocity.x < 0.0f)
                         boxCollider.GetRigidbody()->velocity.x = 0.0f;
                 }
                 else
                 {
                     boxCollider.gameObject->transform.AddPosition(glm::vec2(-penetration, 0.0f));
-                    if (boxCollider.GetRigidbody()->velocity.x > 0.0f)
+                    if (boxCollider.GetRigidbody() != nullptr && boxCollider.GetRigidbody()->velocity.x > 0.0f)
                         boxCollider.GetRigidbody()->velocity.x = 0.0f;
                 }
             }
@@ -70,13 +70,13 @@ namespace Learning2DEngine
                 if (direction == HitDirection::UP)
                 {
                     boxCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, -penetration));
-                    if (boxCollider.GetRigidbody()->velocity.y > 0.0f)
+                    if (boxCollider.GetRigidbody() != nullptr && boxCollider.GetRigidbody()->velocity.y > 0.0f)
                         boxCollider.GetRigidbody()->velocity.y = 0.0f;
                 }
                 else
                 {
                     boxCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, penetration));
-                    if (boxCollider.GetRigidbody()->velocity.y < 0.0f)
+                    if (boxCollider.GetRigidbody() != nullptr && boxCollider.GetRigidbody()->velocity.y < 0.0f)
                         boxCollider.GetRigidbody()->velocity.y = 0.0f;
                 }
             }
@@ -92,13 +92,13 @@ namespace Learning2DEngine
                 if (direction == HitDirection::LEFT)
                 {
                     circleCollider.gameObject->transform.AddPosition(glm::vec2(penetration, 0.0f));
-                    if (circleCollider.GetRigidbody()->velocity.x < 0.0f)
+                    if (circleCollider.GetRigidbody() != nullptr && circleCollider.GetRigidbody()->velocity.x < 0.0f)
                         circleCollider.GetRigidbody()->velocity.x = 0.0f;
                 }
                 else
                 {
                     circleCollider.gameObject->transform.AddPosition(glm::vec2(-penetration, 0.0f));
-                    if (circleCollider.GetRigidbody()->velocity.x > 0.0f)
+                    if (circleCollider.GetRigidbody() != nullptr && circleCollider.GetRigidbody()->velocity.x > 0.0f)
                         circleCollider.GetRigidbody()->velocity.x = 0.0f;
                 }
             }
@@ -108,13 +108,13 @@ namespace Learning2DEngine
                 if (direction == HitDirection::UP)
                 {
                     circleCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, -penetration));
-                    if (circleCollider.GetRigidbody()->velocity.y > 0.0f)
+                    if (circleCollider.GetRigidbody() != nullptr && circleCollider.GetRigidbody()->velocity.y > 0.0f)
                         circleCollider.GetRigidbody()->velocity.y = 0.0f;
                 }
                 else
                 {
                     circleCollider.gameObject->transform.AddPosition(glm::vec2(0.0f, penetration));
-                    if (circleCollider.GetRigidbody()->velocity.y < 0.0f)
+                    if (circleCollider.GetRigidbody() != nullptr && circleCollider.GetRigidbody()->velocity.y < 0.0f)
                         circleCollider.GetRigidbody()->velocity.y = 0.0f;
                 }
             }
