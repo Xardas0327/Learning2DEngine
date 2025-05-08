@@ -13,13 +13,10 @@ using namespace Learning2DEngine::Physics;
 
 PlayerController::PlayerController(GameObject* gameObject)
     : UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
-    /*BoxColliderComponent(gameObject, glm::vec2(30.0f, 5.0f), ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(10.0f, 45.0f), 0b01),
-    BaseBoxColliderComponent(gameObject, glm::vec2(30.0f, 5.0f), ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(10.0f, 45.0f), 0b01),
-    BaseColliderComponent(gameObject, ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(10.0f, 45.0f), 0b1),*/
-    BoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER, glm::vec2(0.0f, 0.0f), 0b10),
-    BaseBoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER, glm::vec2(0.0f, 0.0f), 0b10),
-    BaseColliderComponent(gameObject, ColliderType::DYNAMIC, ColliderMode::COLLIDER, glm::vec2(0.0f, 0.0f), 0b10),
-    onGround(true), rigidbody(nullptr), render(nullptr), coinNumber(0),
+    BoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
+    BaseBoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
+    BaseColliderComponent(gameObject, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
+    onGround(true), rigidbody(nullptr), render(nullptr), coinNumber(0), detector(nullptr), eventItem(this),
     rightSide(ResourceManager::GetInstance().GetTexture(PLAYER_RIGHT_TEXTURE_ID)),
     leftSide(ResourceManager::GetInstance().GetTexture(PLAYER_LEFT_TEXTURE_ID))
 {
@@ -38,14 +35,8 @@ void PlayerController::Init()
     rigidbody->gravityMultiplier = 50.0f;
     InitRigidbody();
 
-    /*auto collider = gameObject->AddComponent<BoxColliderComponent>(
-        gameObject->transform.GetScale(),
-        ColliderType::DYNAMIC,
-        ColliderMode::COLLIDER,
-        glm::vec2(0.0f, 0.0f),
-        0b10
-    );
-    collider->InitRigidbody();*/
+    detector = gameObject->AddComponent<PlatformDetectorController>(glm::vec2(30.0f, 5.0f), glm::vec2(10.0f, 45.0f));
+    detector->eventhandler.Add(&eventItem);
 }
 
 void PlayerController::Destroy()
@@ -54,6 +45,7 @@ void PlayerController::Destroy()
     BoxColliderComponent::Destroy();
 
     render->data.ClearTexture();
+    detector->eventhandler.Remove(&eventItem);
 }
 
 void PlayerController::Update()
@@ -88,6 +80,9 @@ void PlayerController::OnCollision(const Collision& collision)
         ++coinNumber;
         coin->gameObject->isActive = false;
     }
-    else
-        onGround = true;
+}
+
+void  PlayerController::Inform()
+{
+    onGround = true;
 }

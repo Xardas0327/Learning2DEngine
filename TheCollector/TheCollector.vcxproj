@@ -134,6 +134,7 @@
     <ClCompile Include="GameController.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MovingPlatformController.cpp" />
+    <ClCompile Include="PlatformDetectorController.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="TheCollector.cpp" />
   </ItemGroup>
@@ -141,11 +142,14 @@
     <ClInclude Include="BushController.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="CoinController.h" />
+    <ClInclude Include="IDetectorCustomer.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="MovingPlatformController.h" />
     <ClInclude Include="PlatformController.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="TheCollector.h" />
+    <ClInclude Include="DetectorEventItem.h" />
+    <ClInclude Include="PlatformDetectorController.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Learning2DEngine\Learning2DEngine.vcxproj">

@@ -30,6 +30,9 @@
     <ClCompile Include="GameController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlatformDetectorController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TheCollector.h">
@@ -54,6 +57,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformDetectorController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DetectorEventItem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IDetectorCustomer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
