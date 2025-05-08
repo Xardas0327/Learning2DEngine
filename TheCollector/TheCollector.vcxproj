@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameController.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MovingPlatformController.cpp" />
     <ClCompile Include="PlayerController.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="BushController.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="CoinController.h" />
+    <ClInclude Include="GameController.h" />
     <ClInclude Include="MovingPlatformController.h" />
     <ClInclude Include="PlatformController.h" />
     <ClInclude Include="PlayerController.h" />

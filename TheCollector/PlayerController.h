@@ -20,7 +20,6 @@ class PlayerController : public virtual Learning2DEngine::System::UpdaterCompone
     friend class Learning2DEngine::System::GameObject;
 protected:
     bool onGround;
-    Learning2DEngine::Physics::Rigidbody* rigidbody;
     Learning2DEngine::Render::SpriteRenderComponent* render;
     Learning2DEngine::Render::Texture2D rightSide;
     Learning2DEngine::Render::Texture2D leftSide;
@@ -31,4 +30,8 @@ protected:
     void Destroy() override;
     void Update() override;
     void OnCollision(const Learning2DEngine::Physics::Collision& collision) override;
+
+public:
+    Learning2DEngine::Physics::Rigidbody* rigidbody;
+    int coinNumber;
 };

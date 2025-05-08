@@ -5,6 +5,8 @@
 #include <Learning2DEngine/System/InputStatus.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 
+#include "CoinController.h"
+
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::Physics;
@@ -14,7 +16,7 @@ PlayerController::PlayerController(GameObject* gameObject)
     BoxColliderComponent(gameObject, glm::vec2(30.0f, 5.0f), ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(10.0f, 45.0f), 0b01),
     BaseBoxColliderComponent(gameObject, glm::vec2(30.0f, 5.0f), ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(10.0f, 45.0f), 0b01),
     BaseColliderComponent(gameObject, ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(10.0f, 45.0f), 0b1),
-    onGround(true), rigidbody(nullptr), render(nullptr),
+    onGround(true), rigidbody(nullptr), render(nullptr), coinNumber(0),
     rightSide(ResourceManager::GetInstance().GetTexture(PLAYER_RIGHT_TEXTURE_ID)),
     leftSide(ResourceManager::GetInstance().GetTexture(PLAYER_LEFT_TEXTURE_ID))
 {
@@ -76,5 +78,12 @@ void PlayerController::Update()
 
 void PlayerController::OnCollision(const Collision& collision)
 {
-    onGround = true;
+    auto coin = collision.collidedObject->GetComponent<CoinController>();
+    if (coin != nullptr)
+    {
+        ++coinNumber;
+        coin->gameObject->isActive = false;
+    }
+    else
+        onGround = true;
 }
