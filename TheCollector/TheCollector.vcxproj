@@ -170,6 +170,9 @@
     <Image Include="Assets\Images\LargePlatform.png" />
     <Image Include="Assets\Images\SmallPlatform.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="Assets\Fonts\PixelOperator8.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

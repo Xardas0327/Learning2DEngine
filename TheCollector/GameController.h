@@ -5,6 +5,7 @@
 
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
+#include <Learning2DEngine/UI/SimpleText2DLateRenderComponent.h>
 
 #include "CoinController.h"
 #include "PlayerController.h"
@@ -18,6 +19,7 @@ protected:
     std::vector<CoinController*> coins;
     PlayerController* playerController;
     GameStatus gameStatus;
+    const Learning2DEngine::UI::FontSizePair fontSizePair;
 
     GameController(Learning2DEngine::System::GameObject* gameObject);
 

@@ -107,4 +107,7 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="Assets\Fonts\PixelOperator8.ttf" />
+  </ItemGroup>
 </Project>

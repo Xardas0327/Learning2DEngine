@@ -1,6 +1,8 @@
 #include "GameController.h"
 
+#include <Learning2DEngine/DebugTool/DebugMacro.h>
 #include <Learning2DEngine/Render/RenderManager.h>
+#include <Learning2DEngine/Object/FpsShower.h>
 
 #include "MovingPlatformController.h"
 #include "PlatformController.h"
@@ -9,10 +11,11 @@
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
+using namespace Learning2DEngine::Object;
 
 GameController::GameController(Learning2DEngine::System::GameObject* gameObject)
     : UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
-    coins(), playerController(nullptr), gameStatus(GameStatus::Menu)
+    coins(), playerController(nullptr), gameStatus(GameStatus::Menu), fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24)
 {
 
 }
@@ -30,6 +33,15 @@ void GameController::Init()
     // Camera
     auto cameraController = GameObject::Create();
     cameraController->AddComponent<CameraController>(playerController);
+
+#if L2DE_DEBUG
+    FpsShower::CreateFpsShowerObject(
+        Transform(
+            glm::vec2(5.0f, RenderManager::GetInstance().GetResolution().GetHeight() - 30)
+        ),
+        fontSizePair,
+        99);
+#endif
 
     StartPlay();
 }
