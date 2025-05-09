@@ -6,7 +6,6 @@
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Object/FpsShower.h>
 
-#include "MovingPlatformController.h"
 #include "PlatformController.h"
 #include "BushController.h"
 #include "CameraController.h"
@@ -18,8 +17,10 @@ using namespace Learning2DEngine::UI;
 
 GameController::GameController(Learning2DEngine::System::GameObject* gameObject)
     : UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
-    coins(), playerController(nullptr), gameStatus(GameStatus::Menu), fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24),
-    scoreText(nullptr), playTimeText(nullptr), playerCoinEventItem(this), currentPlayTime(0)
+    coins(), movingPlatforms(), playerController(nullptr), gameStatus(GameStatus::Menu),
+    fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24), playerCoinEventItem(this), currentPlayTime(0),
+    scoreText(nullptr), playTimeText(nullptr), description1Text(nullptr), description2Text(nullptr),
+    startText(nullptr), winText(nullptr), loseText(nullptr), endText(nullptr)
 {
 
 }
@@ -28,42 +29,20 @@ void GameController::Init()
 {
     UpdaterComponent::Init();
 
-	CreateEnvironment();
+    InitEnvironment();
+    InitTexts();
 
     //Player
     auto player = GameObject::Create(Transform(glm::vec2(200.0f, 400.0f)));
     playerController = player->AddComponent<PlayerController>();
     playerController->coinCollected.Add(&playerCoinEventItem);
+    playerController->rigidbody->isFrozen = true;
 
     // Camera
     auto cameraController = GameObject::Create();
     cameraController->AddComponent<CameraController>(playerController);
 
-    // Text
-    auto scoreGameObject = GameObject::Create(
-        Transform(
-            glm::vec2(5.0f, 5.0f)
-        )
-    );
-    scoreText = scoreGameObject->AddComponent<SimpleText2DLateRenderComponent>(fontSizePair);
-
-    auto playTimeGameObject = GameObject::Create(
-        Transform(
-            glm::vec2(200.0f, 5.0f)
-        )
-    );
-    playTimeText = playTimeGameObject->AddComponent<SimpleText2DLateRenderComponent>(fontSizePair);
-
-#if L2DE_DEBUG
-    auto fpsShower = FpsShower::CreateFpsShowerObject(
-        Transform(
-            glm::vec2(5.0f, RenderManager::GetInstance().GetResolution().GetHeight() - 30)
-        ),
-        fontSizePair,
-        99);
-#endif
-
-    StartPlay();
+    ShowMenu();
 }
 
 void GameController::Destroy()
@@ -72,7 +51,7 @@ void GameController::Destroy()
     UpdaterComponent::Destroy();
 }
 
-void GameController::CreateEnvironment()
+void GameController::InitEnvironment()
 {
     //Floor
     PlatformController::Create(glm::vec2(0.0f, 650.0f), "Ground1", EDGE_SIZE);
@@ -136,17 +115,29 @@ void GameController::CreateEnvironment()
     PlatformController::Create(glm::vec2(1100.0f, 150.0f), "SmallPlatform", glm::vec2(PLATFORM_SIZE.x / 2, PLATFORM_SIZE.y));
 
     //Moving Platform
-    MovingPlatformController::Create(glm::vec2(500.0f, 150.0f), glm::vec2(500.0f, 500.0f), "LargePlatform");
-
-    MovingPlatformController::Create(glm::vec2(950.0f, 450.0f), glm::vec2(1150.0f, 450.0f), "LargePlatform");
+    movingPlatforms.reserve(2);
+    movingPlatforms.push_back(MovingPlatformController::Create(glm::vec2(500.0f, 150.0f), glm::vec2(500.0f, 500.0f), "LargePlatform"));
+    movingPlatforms.push_back(MovingPlatformController::Create(glm::vec2(950.0f, 450.0f), glm::vec2(1150.0f, 450.0f), "LargePlatform"));
 
     //Bush
-    BushController::Create(glm::vec2(500.0f, 600.0f), "Bush2", BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(550.0f, 600.0f), "Bush1", BUSH_SIZE, 1);
-    BushController::Create(glm::vec2(600.0f, 600.0f), "Bush2", BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(650.0f, 600.0f), "Bush1", BUSH_SIZE, 1);
-    BushController::Create(glm::vec2(700.0f, 600.0f), "Bush2", BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(750.0f, 600.0f), "Bush1", BUSH_SIZE, 1);
+    BushController::Create(glm::vec2(0.0f, 600.0f), "Bush2", BUSH_SIZE, -1);
+    BushController::Create(glm::vec2(50.0f, 600.0f), "Bush1", BUSH_SIZE, 1);
+    BushController::Create(glm::vec2(200.0f, 600.0f), "Bush2", BUSH_SIZE, -1);
+    BushController::Create(glm::vec2(250.0f, 600.0f), "Bush1", BUSH_SIZE, 1);
+    BushController::Create(glm::vec2(100.0f, 600.0f), "Bush2", BUSH_SIZE, -1);
+    BushController::Create(glm::vec2(150.0f, 600.0f), "Bush1", BUSH_SIZE, 1);
+    BushController::Create(glm::vec2(200.0f, 600.0f), "Bush2", BUSH_SIZE, -1);
+    BushController::Create(glm::vec2(250.0f, 600.0f), "Bush1", BUSH_SIZE, 1);
+
+    BushController::Create(glm::vec2(1100.0f, 600.0f), "Bush2", BUSH_SIZE, -1);
+    BushController::Create(glm::vec2(1150.0f, 600.0f), "Bush1", BUSH_SIZE, 1);
+    BushController::Create(glm::vec2(1200.0f, 600.0f), "Bush2", BUSH_SIZE, -1);
+    BushController::Create(glm::vec2(1250.0f, 600.0f), "Bush1", BUSH_SIZE, 1);
+    BushController::Create(glm::vec2(1300.0f, 600.0f), "Bush2", BUSH_SIZE, -1);
+    BushController::Create(glm::vec2(1350.0f, 600.0f), "Bush1", BUSH_SIZE, 1);
+
+    BushController::Create(glm::vec2(100.0f, 100.0f), "Bush4", BUSH_SIZE, 1);
+    BushController::Create(glm::vec2(300.0f, 450.0f), "Bush3", BUSH_SIZE, -1);
     BushController::Create(glm::vec2(1362.5f, 250.0f), "Bush3", BUSH_SIZE, -1);
     BushController::Create(glm::vec2(1125.0f, 100.0f), "Bush4", BUSH_SIZE, 1);
 
@@ -160,19 +151,135 @@ void GameController::CreateEnvironment()
 
 }
 
+void GameController::InitTexts()
+{
+    auto resolution = RenderManager::GetInstance().GetResolution();
+
+    auto scoreGameObject = GameObject::Create(
+        Transform(
+            glm::vec2(5.0f, 5.0f)
+        )
+    );
+    scoreText = scoreGameObject->AddComponent<SimpleText2DLateRenderComponent>(fontSizePair);
+
+    auto playTimeGameObject = GameObject::Create(
+        Transform(
+            glm::vec2(200.0f, 5.0f)
+        )
+    );
+    playTimeText = playTimeGameObject->AddComponent<SimpleText2DLateRenderComponent>(fontSizePair);
+
+    auto description1GameObject = GameObject::Create(
+        Transform(
+            glm::vec2(200.0f, 300.0f)
+        )
+    );
+    description1Text = description1GameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        fontSizePair,
+        "Collect the coins in time."
+    );
+
+    auto description2GameObject = GameObject::Create(
+        Transform(
+            glm::vec2(200.0f, 350.0f)
+        )
+    );
+    description2Text = description2GameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        fontSizePair,
+        "You can move with A and D and jump with SPACE."
+    );
+
+    auto startGameObject = GameObject::Create(
+        Transform(
+            glm::vec2(resolution.GetWidth() / 2 -150, 400.0f),
+            glm::vec2(0.75f, 0.75f)
+        )
+    );
+    startText = startGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        fontSizePair,
+        "Press ENTER for start."
+    );
+
+    auto winGameObject = GameObject::Create(
+        Transform(
+            glm::vec2(resolution.GetWidth() / 2 - 150, 300.0f),
+            glm::vec2(2.0f, 2.0f)
+        )
+    );
+    winText = winGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        fontSizePair,
+        "YOU WIN!",
+        0,
+        glm::vec4(0.08f, 0.43f, 0.185f, 1.0f)
+    );
+
+    auto loseGameObject = GameObject::Create(
+        Transform(
+            glm::vec2(resolution.GetWidth() / 2 - 150, 300.0f),
+            glm::vec2(2.0f, 2.0f)
+        )
+    );
+    loseText = loseGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        fontSizePair,
+        "YOU LOSE!",
+        0,
+        glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)
+    );
+
+    auto endGameObject = GameObject::Create(
+        Transform(
+            glm::vec2(resolution.GetWidth() / 2 - 175, 375.0f),
+            glm::vec2(0.75f, 0.75f)
+        )
+    );
+    endText = endGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        fontSizePair,
+        "Press ENTER for home screen."
+    );
+
+#if L2DE_DEBUG
+    FpsShower::CreateFpsShowerObject(
+        Transform(
+            glm::vec2(5.0f, resolution.GetHeight() - 30)
+        ),
+        fontSizePair,
+        99);
+#endif
+}
+
+void GameController::ShowMenu()
+{
+    description1Text->gameObject->isActive = true;
+    description2Text->gameObject->isActive = true;
+    startText->gameObject->isActive = true;
+
+    winText->gameObject->isActive = false;
+    loseText->gameObject->isActive = false;
+    endText->gameObject->isActive = false;
+    gameStatus = GameStatus::Menu;
+}
+
 void GameController::StartPlay()
 {
     for (auto& coin : coins)
     {
         coin->gameObject->isActive = true;
     }
+    for (auto& platform : movingPlatforms)
+    {
+        platform->Reset();
+    }
 
     playerController->gameObject->transform.SetPosition(glm::vec2(200.0f, 400.0f));
     playerController->rigidbody->isFrozen = false;
     playerController->coinNumber = 0;
     currentPlayTime = PLAY_TIME;
+
     RefreshScoreText();
     RefreshPlayTimeText();
+    description1Text->gameObject->isActive = false;
+    description2Text->gameObject->isActive = false;
+    startText->gameObject->isActive = false;
 
     gameStatus = GameStatus::Play;
 }
@@ -180,6 +287,12 @@ void GameController::StartPlay()
 void GameController::EndPlay()
 {
     playerController->rigidbody->isFrozen = true;
+    endText->gameObject->isActive = true;
+
+    if (playerController->coinNumber == coins.size())
+        winText->gameObject->isActive = true;
+    else
+        loseText->gameObject->isActive = true;
 
     gameStatus = GameStatus::Ended;
 }
@@ -192,8 +305,15 @@ void GameController::Update()
         return;
     }
 
-    if (gameStatus == GameStatus::Play)
+    switch (gameStatus)
     {
+    case GameStatus::Menu:
+        if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
+        {
+            StartPlay();
+        }
+        break;
+    case GameStatus::Play:
         // If the player collected all coins
         if (playerController->coinNumber == coins.size())
             EndPlay();
@@ -205,6 +325,15 @@ void GameController::Update()
             EndPlay();
         }
         RefreshPlayTimeText();
+        break;
+    case GameStatus::Ended:
+        if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
+        {
+            ShowMenu();
+        }
+        break;
+    default:
+        break;
     }
 }
 

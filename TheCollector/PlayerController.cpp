@@ -16,7 +16,7 @@ PlayerController::PlayerController(GameObject* gameObject)
     BoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
     BaseBoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
     BaseColliderComponent(gameObject, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
-    onGround(true), rigidbody(nullptr), render(nullptr), coinNumber(0), detector(nullptr), eventItem(this),
+    onGround(false), rigidbody(nullptr), render(nullptr), coinNumber(0), detector(nullptr), eventItem(this),
     rightSide(ResourceManager::GetInstance().GetTexture(PLAYER_RIGHT_TEXTURE_ID)),
     leftSide(ResourceManager::GetInstance().GetTexture(PLAYER_LEFT_TEXTURE_ID)),
     coinCollected()

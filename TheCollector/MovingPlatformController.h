@@ -25,6 +25,8 @@ protected:
 
 	void Update() override;
 public:
+	void Reset();
+
 	static MovingPlatformController* Create(
 		glm::vec2 startPosition,
 		glm::vec2 endPosition,

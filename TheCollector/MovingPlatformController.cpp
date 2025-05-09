@@ -24,10 +24,16 @@ void MovingPlatformController::Update()
 		glm::clamp(newPosition, minVector, maxVector)
 	);
 
-	if (glm::distance(gameObject->transform.GetPosition(), movingToEnd ? endPosition : startPosition) < 0.00001f)
+	if (glm::distance(gameObject->transform.GetPosition(), movingToEnd ? endPosition : startPosition) < 0.01f)
 	{
 		movingToEnd = !movingToEnd;
 	}
+}
+
+void MovingPlatformController::Reset()
+{
+	gameObject->transform.SetPosition(startPosition);
+	movingToEnd = true;
 }
 
 MovingPlatformController* MovingPlatformController::Create(
