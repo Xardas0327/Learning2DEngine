@@ -8,6 +8,7 @@
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 #include <Learning2DEngine/Render/Texture2D.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
+#include <Learning2DEngine/EventSystem/EventHandler.h>
 
 #include "PlatformDetectorController.h"
 #include "DetectorEventItem.h"
@@ -18,7 +19,7 @@ const std::string PLAYER_LEFT_TEXTURE_ID = "KnightLeft";
 
 class PlayerController : public virtual Learning2DEngine::System::UpdaterComponent,
                         public virtual Learning2DEngine::Physics::BoxColliderComponent,
-                        IDetectorCustomer
+                        public IDetectorCustomer
 {
     friend class Learning2DEngine::System::GameObject;
 protected:
@@ -27,7 +28,7 @@ protected:
     Learning2DEngine::Render::Texture2D rightSide;
     Learning2DEngine::Render::Texture2D leftSide;
     PlatformDetectorController* detector;
-    DetectorEventItem eventItem;
+    DetectorEventItem eventItem; 
 
     PlayerController(Learning2DEngine::System::GameObject* gameObject);
 
@@ -40,4 +41,5 @@ protected:
 public:
     Learning2DEngine::Physics::Rigidbody* rigidbody;
     int coinNumber;
+    Learning2DEngine::EventSystem::EventHandler<> coinCollected;
 };

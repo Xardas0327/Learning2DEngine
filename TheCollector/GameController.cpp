@@ -1,5 +1,7 @@
 #include "GameController.h"
 
+#include <format>
+
 #include <Learning2DEngine/DebugTool/DebugMacro.h>
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Object/FpsShower.h>
@@ -12,10 +14,12 @@
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::Object;
+using namespace Learning2DEngine::UI;
 
 GameController::GameController(Learning2DEngine::System::GameObject* gameObject)
     : UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
-    coins(), playerController(nullptr), gameStatus(GameStatus::Menu), fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24)
+    coins(), playerController(nullptr), gameStatus(GameStatus::Menu), fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24),
+    scoreText(nullptr), playTimeText(nullptr), playerCoinEventItem(this), currentPlayTime(0)
 {
 
 }
@@ -29,13 +33,29 @@ void GameController::Init()
     //Player
     auto player = GameObject::Create(Transform(glm::vec2(200.0f, 400.0f)));
     playerController = player->AddComponent<PlayerController>();
+    playerController->coinCollected.Add(&playerCoinEventItem);
 
     // Camera
     auto cameraController = GameObject::Create();
     cameraController->AddComponent<CameraController>(playerController);
 
+    // Text
+    auto scoreGameObject = GameObject::Create(
+        Transform(
+            glm::vec2(5.0f, 5.0f)
+        )
+    );
+    scoreText = scoreGameObject->AddComponent<SimpleText2DLateRenderComponent>(fontSizePair);
+
+    auto playTimeGameObject = GameObject::Create(
+        Transform(
+            glm::vec2(200.0f, 5.0f)
+        )
+    );
+    playTimeText = playTimeGameObject->AddComponent<SimpleText2DLateRenderComponent>(fontSizePair);
+
 #if L2DE_DEBUG
-    FpsShower::CreateFpsShowerObject(
+    auto fpsShower = FpsShower::CreateFpsShowerObject(
         Transform(
             glm::vec2(5.0f, RenderManager::GetInstance().GetResolution().GetHeight() - 30)
         ),
@@ -44,6 +64,12 @@ void GameController::Init()
 #endif
 
     StartPlay();
+}
+
+void GameController::Destroy()
+{
+    playerController->coinCollected.Remove(&playerCoinEventItem);
+    UpdaterComponent::Destroy();
 }
 
 void GameController::CreateEnvironment()
@@ -144,6 +170,9 @@ void GameController::StartPlay()
     playerController->gameObject->transform.SetPosition(glm::vec2(200.0f, 400.0f));
     playerController->rigidbody->isFrozen = false;
     playerController->coinNumber = 0;
+    currentPlayTime = PLAY_TIME;
+    RefreshScoreText();
+    RefreshPlayTimeText();
 
     gameStatus = GameStatus::Play;
 }
@@ -163,7 +192,34 @@ void GameController::Update()
         return;
     }
 
-    // If the player collected all coins
-    if (gameStatus == GameStatus::Play && playerController->coinNumber == coins.size())
-        EndPlay();
+    if (gameStatus == GameStatus::Play)
+    {
+        // If the player collected all coins
+        if (playerController->coinNumber == coins.size())
+            EndPlay();
+
+        currentPlayTime -= Game::GetDeltaTime();
+        if (currentPlayTime <= 0.0f)
+        {
+            currentPlayTime = 0;
+            EndPlay();
+        }
+        RefreshPlayTimeText();
+    }
+}
+
+void GameController::RefreshScoreText()
+{
+    scoreText->data.text = "Coin: " + std::to_string(playerController->coinNumber);
+}
+
+void GameController::RefreshPlayTimeText()
+{
+    std::string time = std::to_string(currentPlayTime);
+    playTimeText->data.text = "Time: " + time.substr(0, time.find(".") + 3);
+}
+
+void GameController::Inform()
+{
+    RefreshScoreText();
 }
