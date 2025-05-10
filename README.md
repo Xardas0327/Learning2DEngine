@@ -31,7 +31,7 @@ Moreover, if I create a new version, maybe it won't be compatible with the older
 - With "Desktop development with C++" Module
 
 ## Used Libraries:
-The most project can't really be started from zero, so I also use some library,
+The most project can't really be started from zero, so I also use some librarys,
 but I tried to keep them minimum.
 - GLAD for OpenGL [License](https://github.com/Dav1dde/glad?tab=License-1-ov-file)
 - GLFW for OpenGL [License](https://www.glfw.org/license.html)
