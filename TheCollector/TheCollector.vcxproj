@@ -95,6 +95,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" /Y &amp; mkdir "$(OutDir)Assets" &amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -113,6 +116,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" /Y &amp; mkdir "$(OutDir)Assets" &amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -127,6 +133,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" /Y &amp; mkdir "$(OutDir)Assets" &amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -145,6 +154,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Plugins\Game\dll\irrKlang\*" "$(OutDir)" /Y &amp; mkdir "$(OutDir)Assets" &amp; xcopy "$(ProjectDir)Assets" "$(OutDir)Assets\" /e /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameController.cpp" />
