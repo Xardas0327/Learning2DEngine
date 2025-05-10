@@ -4,6 +4,7 @@ This namespace really simple. It has only some really basic functionality.
 - [BaseBoxColliderComponent](Physics.md#baseboxcollidercomponent)
 - [BaseCircleColliderComponent](Physics.md#basecirclecollidercomponent)
 - [BaseColliderComponent](Physics.md#basecollidercomponent)
+- [BaseRigidbody](Physics.md#baserigidbody)
 - [BoxColliderComponent](Physics.md#boxcollidercomponent)
 - [CircleColliderComponent](Physics.md#circlecollidercomponent)
 - [ColliderComponentHandler](Physics.md#collidercomponenthandler)
@@ -12,7 +13,6 @@ This namespace really simple. It has only some really basic functionality.
 - [Collision](Physics.md#collision)
 - [CollisionData](Physics.md#collisiondata)
 - [CollisionHelper](Physics.md#collisionhelper)
-- [IRigidbody](Physics.md#irigidbody)
 - [Rigidbody](Physics.md#rigidbody)
 
 ##
@@ -47,6 +47,12 @@ glm::vec2 colliderSize;
 BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
+**Public:**  
+**GetColliderCenter**  
+```cpp
+glm::vec2 GetColliderCenter() const override;
+```
+
 ##
 ## BaseCircleColliderComponent
 ### Source Code:
@@ -79,6 +85,12 @@ float colliderRadius;
 BaseCircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
 ```
 
+**Public:**  
+**GetColliderCenter**  
+```cpp
+glm::vec2 GetColliderCenter() const override;
+```
+
 ##
 ## BaseColliderComponent
 ### Source Code:
@@ -102,7 +114,7 @@ class BaseColliderComponent : public virtual System::Component
 **Private:**  
 **rigidbody**   
 ```cpp
-IRigidbody* rigidbody;
+BaseRigidbody* rigidbody;
 ```
 
 **Public:**  
@@ -146,7 +158,7 @@ BaseColliderComponent(System::GameObject* gameObject, ColliderType type = Collid
 **GetColliderCenter**  
 It returns the center of Collider, which is middle of the object by shifted the offset.
 ```cpp
-glm::vec2 GetColliderCenter() const;
+virtual glm::vec2 GetColliderCenter() const = 0;
 ```
 
 **OnCollision**  
@@ -169,7 +181,40 @@ inline void ClearRigidbody();
 
 **GetRigidbody**  
 ```cpp
-inline IRigidbody* GetRigidbody() const;
+inline BaseRigidbody* GetRigidbody() const;
+```
+
+##
+## BaseRigidbody
+### Source Code:
+[BaseRigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseRigidbody.h)
+
+### Description:
+It is an base class, which the colliders can use.
+
+### Header:
+```cpp
+class BaseRigidbody
+{...}
+```
+
+### Variables:
+**Public:**  
+**velocity**   
+```cpp
+glm::vec2 velocity;
+```
+
+### Functions:
+**Public:**  
+**BaseRigidbody**  
+```cpp
+BaseRigidbody(glm::vec2 velocity);
+```
+
+**~IRigidbody**  
+```cpp
+virtual ~BaseRigidbody() = default;
 ```
 
 ##
@@ -560,7 +605,7 @@ class CollisionHelper final
 ### Auxiliary class
 **Private:**  
 ```cpp
-enum MoveDirection { UP, RIGHT, DOWN, LEFT };
+enum HitDirection { UP, RIGHT, DOWN, LEFT };
 ```
 
 ### Functions:
@@ -582,7 +627,7 @@ static glm::vec2 GetEdge(const BaseCircleColliderComponent& circleCollider, glm:
 
 **GetDirection**  
 ```cpp
-static MoveDirection GetDirection(glm::vec2 vector);
+static HitDirection GetDirection(glm::vec2 vector);
 ```
 
 **FixPosition**  
@@ -663,37 +708,6 @@ struct CollisionData
 ```
 
 ##
-## IRigidbody
-### IRigidbody Code:
-[IRigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/IRigidbody.h)
-
-### Description:
-It is an interface, which the colliders can use.
-
-### Header:
-```cpp
-class IRigidbody
-{...}
-```
-
-### Functions:
-**Public:**  
-**~IRigidbody**  
-```cpp
-virtual ~IRigidbody() = default;
-```
-
-**ResetVelocityX**  
-```cpp
-virtual void ResetVelocityX() = 0;
-```
-
-**ResetVelocityY**  
-```cpp
-virtual void ResetVelocityY() = 0;
-```
-
-##
 ## Rigidbody
 ### Source Code:
 [Rigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.h)  
@@ -704,7 +718,7 @@ A really basic Rigidbody for moving.
 
 ### Header:
 ```cpp
-class Rigidbody : public virtual System::UpdaterComponent, public IRigidbody
+class Rigidbody : public virtual System::UpdaterComponent, public BaseRigidbody
 {...}
 ```
 
@@ -714,11 +728,6 @@ Its value is glm::vec2(0.0f, 9.81f).
 
 ### Variables:
 **Public:**  
-**velocity**  
-```cpp
-glm::vec2 velocity;
-```
-
 **isFrozen**  
 ```cpp
 bool isFrozen;
@@ -762,14 +771,4 @@ virtual void Update() override;
 It resets the gravity to `L2DE_DEFAULT_GRAVITY`.
 ```cpp
 static inline void ResetGravity();
-```
-
-**ResetVelocityX**  
-```cpp
-virtual void ResetVelocityX() override;
-```
-
-**ResetVelocityY**  
-```cpp
-virtual void ResetVelocityY() override;
 ```

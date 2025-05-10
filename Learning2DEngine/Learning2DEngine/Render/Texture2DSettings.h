@@ -19,12 +19,12 @@ namespace Learning2DEngine
             // Filtering mode if texture pixels < window pixels
             unsigned int filterMin;
             // Filtering mode if texture pixels > window pixels
-            unsigned int filterMax;
+            unsigned int filterMag;
 
             Texture2DSettings()
                 : internalFormat(GL_RGB), imageFormat(GL_RGB),
                     wrapS(GL_REPEAT), wrapT(GL_REPEAT),
-                    filterMin(GL_LINEAR), filterMax(GL_LINEAR)
+                    filterMin(GL_LINEAR), filterMag(GL_LINEAR)
             {
 
             }

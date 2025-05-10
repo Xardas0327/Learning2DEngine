@@ -46,3 +46,4 @@ It is recommended to use the documentation links in the released branches.
 ### Games
 - [Breakout](Documentations/Breakout.md)
 - [Snake](Documentations/Snake.md)
+- [The Collector](Documentations/TheCollector.md)

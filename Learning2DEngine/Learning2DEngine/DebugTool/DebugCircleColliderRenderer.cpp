@@ -194,7 +194,7 @@ namespace Learning2DEngine
 
 				glm::mat4 model = glm::mat4(1.0f);
 				model = glm::translate(model,
-					glm::vec3(colliderData->objectComponent->GetColliderCenter() + colliderData->objectComponent->colliderOffset, 0.0f)
+					glm::vec3(colliderData->objectComponent->GetColliderCenter(), 0.0f)
 				);
 				model = glm::scale(model, glm::vec3(colliderData->objectComponent->colliderRadius, colliderData->objectComponent->colliderRadius, 1.0f));
 

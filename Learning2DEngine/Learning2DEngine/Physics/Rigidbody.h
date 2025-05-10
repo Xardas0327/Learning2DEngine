@@ -6,7 +6,7 @@
 #include "../System/GameObject.h"
 #include "../System/Game.h"
 
-#include "IRigidbody.h"
+#include "BaseRigidbody.h"
 
 namespace Learning2DEngine
 {
@@ -14,7 +14,7 @@ namespace Learning2DEngine
     {
 #define L2DE_DEFAULT_GRAVITY glm::vec2(0.0f, 9.81f)
 
-        class Rigidbody : public virtual System::UpdaterComponent, public IRigidbody
+        class Rigidbody : public virtual System::UpdaterComponent, public BaseRigidbody
         {
             friend class System::GameObject;
         protected:
@@ -27,7 +27,6 @@ namespace Learning2DEngine
             /// </summary>
             virtual void Update() override;
         public:
-            glm::vec2 velocity;
             bool isFrozen;
             bool isGravityEnabled;
             float gravityMultiplier;
@@ -38,10 +37,6 @@ namespace Learning2DEngine
             {
                 gravity = L2DE_DEFAULT_GRAVITY;
             }
-
-            virtual void ResetVelocityX() override;
-
-            virtual void ResetVelocityY() override;
         };
     }
 }
