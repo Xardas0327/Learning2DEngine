@@ -110,4 +110,12 @@
   <ItemGroup>
     <Font Include="Assets\Fonts\PixelOperator8.ttf" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\Sounds\coin.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="Assets\Sounds\jump.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+  </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <irrklang/irrKlang.h>
 
 #include <Learning2DEngine/Physics/Rigidbody.h>
 #include <Learning2DEngine/System/GameObject.h>
@@ -28,9 +29,10 @@ protected:
     Learning2DEngine::Render::Texture2D rightSide;
     Learning2DEngine::Render::Texture2D leftSide;
     PlatformDetectorController* detector;
-    DetectorEventItem eventItem; 
+    DetectorEventItem eventItem;
+    irrklang::ISoundEngine* soundEngine;
 
-    PlayerController(Learning2DEngine::System::GameObject* gameObject);
+    PlayerController(Learning2DEngine::System::GameObject* gameObject, irrklang::ISoundEngine* soundEngine);
 
     void Init() override;
     void Destroy() override;
