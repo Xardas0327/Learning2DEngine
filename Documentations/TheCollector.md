@@ -1,7 +1,7 @@
 # The Collector:
 
 ## Introduction:
-You can play with the collector and get the chance to collect all coins.
+You can play with the collector and get the chance to collect all coins in time.
 
 ![The Collector Game](Images/thecollector.png)
 
