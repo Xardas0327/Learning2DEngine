@@ -728,11 +728,6 @@ Its value is glm::vec2(0.0f, 9.81f).
 
 ### Variables:
 **Public:**  
-**velocity**  
-```cpp
-glm::vec2 velocity;
-```
-
 **isFrozen**  
 ```cpp
 bool isFrozen;
