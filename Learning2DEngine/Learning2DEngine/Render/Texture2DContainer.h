@@ -11,12 +11,29 @@ namespace Learning2DEngine
         private:
             Texture2D* texture;
         public:
-            Texture2DContainer() = default;
-            virtual ~Texture2DContainer() = default;
-
-            inline void SetTexture2D(Texture2D* texture)
+            Texture2DContainer()
+                : texture(nullptr)
             {
-                this->texture = texture;
+
+            }
+
+            Texture2DContainer(const Texture2D& texture)
+                : texture(new Texture2D(texture))
+            {
+
+            }
+
+            virtual ~Texture2DContainer()
+            {
+                if (IsUseTexture())
+                {
+                    delete texture;
+                }
+            }
+
+            inline void SetTexture2D(const Texture2D& texture)
+            {
+                this->texture = new Texture2D(texture);
             }
 
             inline Texture2D* GetTexture()
@@ -26,6 +43,7 @@ namespace Learning2DEngine
 
             inline void ClearTexture()
             {
+                delete texture;
                 texture = nullptr;
             }
 
