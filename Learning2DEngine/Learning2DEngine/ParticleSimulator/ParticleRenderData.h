@@ -60,6 +60,7 @@ namespace Learning2DEngine
 
 			inline void ClearTexture()
 			{
+				delete texture;
 				texture = nullptr;
 			}
 
