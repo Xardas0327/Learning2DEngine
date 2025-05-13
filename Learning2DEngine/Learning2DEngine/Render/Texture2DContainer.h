@@ -24,9 +24,14 @@ namespace Learning2DEngine
                 return texture;
             }
 
-            inline void Clear()
+            inline void ClearTexture()
             {
                 texture = nullptr;
+            }
+
+            inline bool IsUseTexture() const
+            {
+                return texture != nullptr;
             }
         };
     }
