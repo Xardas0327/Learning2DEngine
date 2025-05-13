@@ -163,6 +163,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Learning2DEngine\Animator\Animation.cpp" />
     <ClCompile Include="Learning2DEngine\DebugTool\DebugBoxColliderRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\DebugTool\DebugBoxColliderRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\DebugTool\DebugCircleColliderRenderComponent.cpp" />
@@ -196,6 +197,7 @@
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Learning2DEngine\Animator\Animation.h" />
     <ClInclude Include="Learning2DEngine\Animator\AnimationFrame.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugBoxColliderRenderComponent.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugBoxColliderRenderer.h" />
@@ -246,6 +248,7 @@
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderData.h" />
     <ClInclude Include="Learning2DEngine\Render\MultiSpriteRenderer.h" />
+    <ClInclude Include="Learning2DEngine\Render\Texture2DContainer.h" />
     <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\BaseGameObject.h" />
     <ClInclude Include="Learning2DEngine\System\BaseLateUpdaterComponent.h" />
