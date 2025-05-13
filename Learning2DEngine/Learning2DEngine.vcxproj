@@ -196,6 +196,7 @@
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Learning2DEngine\Animator\AnimationFrame.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugBoxColliderRenderComponent.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugBoxColliderRenderer.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugCircleColliderRenderComponent.h" />

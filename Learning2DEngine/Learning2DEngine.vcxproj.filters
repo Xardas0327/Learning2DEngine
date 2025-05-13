@@ -386,5 +386,8 @@
     <ClInclude Include="Learning2DEngine\Render\BaseColorDynamicData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Animator\AnimationFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
