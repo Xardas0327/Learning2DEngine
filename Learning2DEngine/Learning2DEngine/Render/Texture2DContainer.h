@@ -31,12 +31,20 @@ namespace Learning2DEngine
                 }
             }
 
-            inline void SetTexture2D(const Texture2D& texture)
+            void SetTexture(const Texture2D& texture)
             {
+                if(this->texture != nullptr)
+                    delete this->texture;
+
                 this->texture = new Texture2D(texture);
             }
 
             inline Texture2D* GetTexture()
+            {
+                return texture;
+            }
+
+            inline const Texture2D* GetTexture() const
             {
                 return texture;
             }

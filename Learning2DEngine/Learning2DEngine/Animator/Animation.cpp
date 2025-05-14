@@ -71,7 +71,7 @@ namespace Learning2DEngine
 			}
 
 			currentTime = frames[currentIndex].time;
-			textureContainer->SetTexture2D(frames[currentIndex].texture);
+			textureContainer->SetTexture(*frames[currentIndex].texture);
 		}
 
 		void Animation::Play(bool reset)
@@ -80,7 +80,7 @@ namespace Learning2DEngine
 				currentIndex = 0;
 
 			currentTime = frames[currentIndex].time;
-			textureContainer->SetTexture2D(frames[currentIndex].texture);
+			textureContainer->SetTexture(*frames[currentIndex].texture);
 			isPlaying = true;
 		}
 

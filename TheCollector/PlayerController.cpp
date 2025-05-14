@@ -31,8 +31,7 @@ void PlayerController::Init()
 
     gameObject->transform.SetScale(PLAYER_SIZE);
 
-    render = gameObject->AddComponent<SpriteRenderComponent>();
-    render->data.texture = new Texture2D(rightSide);
+    render = gameObject->AddComponent<SpriteRenderComponent>(rightSide);
     rigidbody = gameObject->AddComponent<Rigidbody>(glm::vec2(0.0f, 0.0f), true);
     rigidbody->gravityMultiplier = 50.0f;
     InitRigidbody();
@@ -63,14 +62,14 @@ void PlayerController::Update()
         rigidbody->velocity.x = -200.0f;
 
         render->data.ClearTexture();
-        render->data.texture = new Texture2D(leftSide);
+        render->data.SetTexture(leftSide);
     }
     else if (Game::GetKeyboardButtonStatus(GLFW_KEY_D) == InputStatus::KEY_HOLD)
     {
         rigidbody->velocity.x = 200.0f;
 
         render->data.ClearTexture();
-        render->data.texture = new Texture2D(rightSide);
+        render->data.SetTexture(rightSide);
     }
     else
     {

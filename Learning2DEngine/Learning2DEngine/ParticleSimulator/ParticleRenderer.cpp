@@ -198,7 +198,7 @@ namespace Learning2DEngine
 									return false;
 
 								if (!particleData->IsUseTexture()
-									|| std::get<0>(data).count(particleData->texture->GetId()) > 0)
+									|| std::get<0>(data).count(particleData->GetTexture()->GetId()) > 0)
 									return true;
 
 								return std::get<0>(data).size() < maxTextureUnit;
@@ -222,7 +222,7 @@ namespace Learning2DEngine
 							: *it;
 
 						GLuint textureId = particleData->IsUseTexture()
-							? particleData->texture->GetId()
+							? particleData->GetTexture()->GetId()
 							: 0;
 
 						std::get<0>(actualTuple)[textureId].push_back(particleData);
