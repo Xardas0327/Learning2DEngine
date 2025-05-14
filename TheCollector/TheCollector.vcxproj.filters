@@ -33,6 +33,9 @@
     <ClCompile Include="PlatformDetectorController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CoinController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TheCollector.h">
@@ -124,7 +127,7 @@
     <Image Include="Assets\Images\Platforms\SmallPlatform.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Assets\Images\Coins\Coin.png">
+    <Image Include="Assets\Images\Coins\Coin1.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Assets\Images\Grounds\Ground1.png">
@@ -137,6 +140,39 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Assets\Images\Knights\KnightRight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coins\Coin2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coins\Coin3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coins\Coin4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coins\Coin5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coins\Coin6.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coins\Coin7.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coins\Coin8.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coins\Coin9.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coins\Coin10.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coins\Coin11.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Coins\Coin12.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -41,8 +41,8 @@ namespace Learning2DEngine
             bool IsShaderExist(const std::string& name);
             void DestroyShader(const std::string& name);
 
-            Render::Texture2D LoadTextureFromFile(const std::string& name, const char* filePath, const Render::Texture2DSettings& settings);
-            Render::Texture2D GetTexture(const std::string& name);
+            Render::Texture2D& LoadTextureFromFile(const std::string& name, const char* filePath, const Render::Texture2DSettings& settings);
+            Render::Texture2D& GetTexture(const std::string& name);
             bool IsTextureExist(const std::string& name);
             void DestroyTexture2D(const std::string& name);
             void Clear();

@@ -119,13 +119,13 @@ namespace Learning2DEngine
             return texture;
         }
 
-        Texture2D ResourceManager::LoadTextureFromFile(const std::string& name, const char* filePath, const Texture2DSettings& settings)
+        Texture2D& ResourceManager::LoadTextureFromFile(const std::string& name, const char* filePath, const Texture2DSettings& settings)
         {
             textures[name] = LoadTextureFromFile(filePath, settings);
             return textures[name];
         }
 
-        Texture2D ResourceManager::GetTexture(const std::string& name)
+        Texture2D& ResourceManager::GetTexture(const std::string& name)
         {
             return textures[name];
         }

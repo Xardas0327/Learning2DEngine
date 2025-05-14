@@ -8,8 +8,8 @@ namespace Learning2DEngine
 	{
 		struct AnimationFrame
 		{
-			float time;
 			Render::Texture2D* texture;
+			float time;
 		};
 	}
 }

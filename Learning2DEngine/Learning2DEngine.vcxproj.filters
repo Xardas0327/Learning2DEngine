@@ -108,7 +108,7 @@
     <ClCompile Include="Learning2DEngine\DebugTool\DebugCircleColliderRenderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\Animator\Animation.cpp">
+    <ClCompile Include="Learning2DEngine\Animator\AnimationController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -392,7 +392,7 @@
     <ClInclude Include="Learning2DEngine\Animator\AnimationFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Animator\Animation.h">
+    <ClInclude Include="Learning2DEngine\Animator\AnimationController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\Texture2DContainer.h">

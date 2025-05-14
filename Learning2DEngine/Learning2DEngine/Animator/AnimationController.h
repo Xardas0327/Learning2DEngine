@@ -4,28 +4,31 @@
 
 #include "AnimationFrame.h"
 #include "../Render/Texture2DContainer.h"
+#include "../System/LateUpdaterComponent.h"
+#include "../System/GameObject.h"
 
 namespace Learning2DEngine
 {
 	namespace Animator
 	{
-		class Animation
+		class AnimationController : public virtual Learning2DEngine::System::LateUpdaterComponent
 		{
-		private:
+			friend class Learning2DEngine::System::GameObject;
+		protected:
 			Render::Texture2DContainer* textureContainer;
 			std::vector<AnimationFrame> frames;
 			size_t currentIndex;
 			float currentTime;
 			bool isPlaying;
+
+			AnimationController(System::GameObject* gameObject, Render::Texture2DContainer* textureContainer, bool isLoop = false);
+			AnimationController(System::GameObject* gameObject, Render::Texture2DContainer* textureContainer, size_t minFrameSize, bool isLoop = false);
+
+			void LateUpdate() override;
 		public:
 			float speed;
 			bool isLoop;
 
-			Animation(Render::Texture2DContainer* textureContainer, bool isLoop = false);
-			Animation(Render::Texture2DContainer* textureContainer, size_t minFrameSize, bool isLoop = false);
-			~Animation() = default;
-
-			void Update();
 			void Play(bool reset = false);
 			void Stop();
 			void Add(const AnimationFrame& frame);
