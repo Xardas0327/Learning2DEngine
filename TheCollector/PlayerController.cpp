@@ -20,8 +20,8 @@ PlayerController::PlayerController(GameObject* gameObject, ISoundEngine* soundEn
     BaseBoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
     BaseColliderComponent(gameObject, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
     onGround(false), detector(nullptr), soundEngine(soundEngine), eventItem(this),
-    rightIdleAnimation(nullptr), leftIdleAnimation(nullptr), currentState(PlayerAnimatioState::IDLE_RIGHT),
-    rigidbody(nullptr), coinNumber(0), coinCollected()
+    rightIdleAnimation(nullptr), leftIdleAnimation(nullptr), rightRunAnimation(nullptr), leftRunAnimation(nullptr),
+    currentState(PlayerAnimatioState::RIGHT_IDLE), rigidbody(nullptr), coinNumber(0), coinCollected()
 {
 }
 
@@ -60,6 +60,24 @@ void PlayerController::Init()
             0.5f
             }));
     }
+
+    rightRunAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_RIGHT_RUN_TEXTURE_IDS.size(), true);
+    for (auto& textureId : PLAYER_RIGHT_RUN_TEXTURE_IDS)
+    {
+        rightRunAnimation->Add(std::move(AnimationFrame{
+            &ResourceManager::GetInstance().GetTexture(textureId),
+            0.25f
+            }));
+    }
+
+    leftRunAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_LEFT_RUN_TEXTURE_IDS.size(), true);
+    for (auto& textureId : PLAYER_LEFT_RUN_TEXTURE_IDS)
+    {
+        leftRunAnimation->Add(std::move(AnimationFrame{
+            &ResourceManager::GetInstance().GetTexture(textureId),
+            0.25f
+            }));
+    }
 }
 
 void PlayerController::Destroy()
@@ -82,15 +100,27 @@ void PlayerController::Update()
     if (Game::GetKeyboardButtonStatus(GLFW_KEY_A) == InputStatus::KEY_HOLD)
     {
         rigidbody->velocity.x = -200.0f;
-        RefreshAnimation(PlayerAnimatioState::IDLE_LEFT);
+        RefreshAnimation(PlayerAnimatioState::LEFT_RUN);
     }
     else if (Game::GetKeyboardButtonStatus(GLFW_KEY_D) == InputStatus::KEY_HOLD)
     {
         rigidbody->velocity.x = 200.0f;
-        RefreshAnimation(PlayerAnimatioState::IDLE_RIGHT);
+        RefreshAnimation(PlayerAnimatioState::RIGHT_RUN);
     }
     else
     {
+        switch (currentState)
+        {
+        case PlayerAnimatioState::LEFT_RUN:
+            RefreshAnimation(PlayerAnimatioState::LEFT_IDLE);
+            break;
+        case PlayerAnimatioState::RIGHT_RUN:
+            RefreshAnimation(PlayerAnimatioState::RIGHT_IDLE);
+            break;
+        case PlayerAnimatioState::LEFT_IDLE:
+        case PlayerAnimatioState::RIGHT_IDLE:
+            break;
+        }
         rigidbody->velocity.x = 0;
     }
 }
@@ -119,12 +149,44 @@ void PlayerController::RefreshAnimation(PlayerAnimatioState newState)
 
     switch (newState)
     {
-    case PlayerAnimatioState::IDLE_LEFT:
+    case PlayerAnimatioState::LEFT_RUN:
         rightIdleAnimation->Stop();
+        leftIdleAnimation->Stop();
+        rightRunAnimation->Stop();
+        leftRunAnimation->Play(true);
+        //It will use its mirror image with the same time
+        if (currentState == PlayerAnimatioState::RIGHT_RUN)
+        {
+            leftRunAnimation->JumpToFrame(
+                rightRunAnimation->GetCurrentIndex(),
+                rightRunAnimation->GetCurrentTime()
+            );
+        }
+        break;
+    case PlayerAnimatioState::RIGHT_RUN:
+        rightIdleAnimation->Stop();
+        leftIdleAnimation->Stop();
+        leftRunAnimation->Stop();
+        rightRunAnimation->Play(true);
+        //It will use its mirror image with the same time
+        if (currentState == PlayerAnimatioState::LEFT_RUN)
+        {
+            rightRunAnimation->JumpToFrame(
+                leftRunAnimation->GetCurrentIndex(),
+                leftRunAnimation->GetCurrentTime()
+            );
+        }
+        break;
+    case PlayerAnimatioState::LEFT_IDLE:
+        rightIdleAnimation->Stop();
+        rightRunAnimation->Stop();
+        leftRunAnimation->Stop();
         leftIdleAnimation->Play(true);
         break;
-    case PlayerAnimatioState::IDLE_RIGHT:
+    case PlayerAnimatioState::RIGHT_IDLE:
         leftIdleAnimation->Stop();
+        rightRunAnimation->Stop();
+        leftRunAnimation->Stop();
         rightIdleAnimation->Play(true);
         break;
     }

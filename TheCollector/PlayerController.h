@@ -23,6 +23,18 @@ const std::vector<std::string> PLAYER_RIGHT_IDLE_TEXTURE_IDS = {
 const std::vector<std::string> PLAYER_LEFT_IDLE_TEXTURE_IDS = {
     "KnightLeftIdle1", "KnightLeftIdle2", "KnightLeftIdle3", "KnightLeftIdle4"
 };
+const std::vector<std::string> PLAYER_RIGHT_RUN_TEXTURE_IDS = {
+    "KnightRightRun1", "KnightRightRun2", "KnightRightRun3", "KnightRightRun4",
+    "KnightRightRun5", "KnightRightRun6", "KnightRightRun7", "KnightRightRun8",
+    "KnightRightRun9", "KnightRightRun10", "KnightRightRun11", "KnightRightRun12",
+    "KnightRightRun13", "KnightRightRun14", "KnightRightRun15", "KnightRightRun16"
+};
+const std::vector<std::string> PLAYER_LEFT_RUN_TEXTURE_IDS = {
+    "KnightLeftRun1", "KnightLeftRun2", "KnightLeftRun3", "KnightLeftRun4",
+    "KnightLeftRun5", "KnightLeftRun6", "KnightLeftRun7", "KnightLeftRun8",
+    "KnightLeftRun9", "KnightLeftRun10", "KnightLeftRun11", "KnightLeftRun12",
+    "KnightLeftRun13", "KnightLeftRun14", "KnightLeftRun15", "KnightLeftRun16"
+};
 
 class PlayerController : public virtual Learning2DEngine::System::UpdaterComponent,
                         public virtual Learning2DEngine::Physics::BoxColliderComponent,
@@ -31,8 +43,10 @@ class PlayerController : public virtual Learning2DEngine::System::UpdaterCompone
     friend class Learning2DEngine::System::GameObject;
 protected:
     enum class PlayerAnimatioState {
-        IDLE_LEFT,
-        IDLE_RIGHT
+        LEFT_IDLE,
+        RIGHT_IDLE,
+        LEFT_RUN,
+        RIGHT_RUN
     };
 
     bool onGround;
@@ -41,6 +55,8 @@ protected:
     DetectorEventItem eventItem;
     Learning2DEngine::Animator::AnimationController* rightIdleAnimation;
     Learning2DEngine::Animator::AnimationController* leftIdleAnimation;
+    Learning2DEngine::Animator::AnimationController* rightRunAnimation;
+    Learning2DEngine::Animator::AnimationController* leftRunAnimation;
     PlayerAnimatioState currentState;
 
     PlayerController(Learning2DEngine::System::GameObject* gameObject, irrklang::ISoundEngine* soundEngine);

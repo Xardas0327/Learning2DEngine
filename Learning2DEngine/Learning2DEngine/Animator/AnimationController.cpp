@@ -130,10 +130,5 @@ namespace Learning2DEngine
 			currentTime = time < 0.0f ? frames[currentIndex].time : time;
 			textureContainer->SetTexture(*frames[currentIndex].texture);
 		}
-
-		const AnimationFrame& AnimationController::GetCurrentFrame() const
-		{
-			return frames[currentIndex];
-		}
 	}
 }

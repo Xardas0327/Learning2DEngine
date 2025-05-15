@@ -58,6 +58,40 @@ void TheCollector::Init()
     resourceManager.LoadTextureFromFile("KnightLeftIdle3", "Assets/Images/Knights/KnightLeftIdle3.png", basicSettings);
     resourceManager.LoadTextureFromFile("KnightLeftIdle4", "Assets/Images/Knights/KnightLeftIdle4.png", basicSettings);
 
+    resourceManager.LoadTextureFromFile("KnightRightRun1", "Assets/Images/Knights/KnightRightRun1.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun2", "Assets/Images/Knights/KnightRightRun2.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun3", "Assets/Images/Knights/KnightRightRun3.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun4", "Assets/Images/Knights/KnightRightRun4.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun5", "Assets/Images/Knights/KnightRightRun5.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun6", "Assets/Images/Knights/KnightRightRun6.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun7", "Assets/Images/Knights/KnightRightRun7.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun8", "Assets/Images/Knights/KnightRightRun8.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun9", "Assets/Images/Knights/KnightRightRun9.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun10", "Assets/Images/Knights/KnightRightRun10.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun11", "Assets/Images/Knights/KnightRightRun11.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun12", "Assets/Images/Knights/KnightRightRun12.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun13", "Assets/Images/Knights/KnightRightRun13.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun14", "Assets/Images/Knights/KnightRightRun14.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun15", "Assets/Images/Knights/KnightRightRun15.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightRun16", "Assets/Images/Knights/KnightRightRun16.png", basicSettings);
+
+    resourceManager.LoadTextureFromFile("KnightLeftRun1", "Assets/Images/Knights/KnightLeftRun1.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun2", "Assets/Images/Knights/KnightLeftRun2.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun3", "Assets/Images/Knights/KnightLeftRun3.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun4", "Assets/Images/Knights/KnightLeftRun4.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun5", "Assets/Images/Knights/KnightLeftRun5.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun6", "Assets/Images/Knights/KnightLeftRun6.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun7", "Assets/Images/Knights/KnightLeftRun7.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun8", "Assets/Images/Knights/KnightLeftRun8.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun9", "Assets/Images/Knights/KnightLeftRun9.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun10", "Assets/Images/Knights/KnightLeftRun10.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun11", "Assets/Images/Knights/KnightLeftRun11.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun12", "Assets/Images/Knights/KnightLeftRun12.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun13", "Assets/Images/Knights/KnightLeftRun13.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun14", "Assets/Images/Knights/KnightLeftRun14.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun15", "Assets/Images/Knights/KnightLeftRun15.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftRun16", "Assets/Images/Knights/KnightLeftRun16.png", basicSettings);
+
     //Background color
     renderManager.SetClearColor(0.0f, 0.6f, 0.9f, 1.0f);
 

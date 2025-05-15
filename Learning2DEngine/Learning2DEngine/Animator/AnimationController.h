@@ -40,7 +40,21 @@ namespace Learning2DEngine
 
 			//If the time is less then 0.0f, it will use the index frame time.
 			void JumpToFrame(size_t index, float time = -1.0f);
-			const AnimationFrame& GetCurrentFrame() const;
+
+			const inline AnimationFrame& GetCurrentFrame() const
+			{
+				return frames[currentIndex];
+			}
+
+			inline size_t GetCurrentIndex() const
+			{
+				return currentIndex;
+			}
+
+			inline float GetCurrentTime() const
+			{
+				return currentTime;
+			}
 
 		};
 	}
