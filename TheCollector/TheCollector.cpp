@@ -35,8 +35,6 @@ void TheCollector::Init()
     resourceManager.LoadTextureFromFile("Bush2", "Assets/Images/Bushes/Bush2.png", basicSettings);
     resourceManager.LoadTextureFromFile("Bush3", "Assets/Images/Bushes/Bush3.png", basicSettings);
     resourceManager.LoadTextureFromFile("Bush4", "Assets/Images/Bushes/Bush4.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRight", "Assets/Images/Knights/KnightRight.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeft", "Assets/Images/Knights/KnightLeft.png", basicSettings);
 
     resourceManager.LoadTextureFromFile("Coin1", "Assets/Images/Coins/Coin1.png", basicSettings);
     resourceManager.LoadTextureFromFile("Coin2", "Assets/Images/Coins/Coin2.png", basicSettings);
@@ -50,6 +48,15 @@ void TheCollector::Init()
     resourceManager.LoadTextureFromFile("Coin10", "Assets/Images/Coins/Coin10.png", basicSettings);
     resourceManager.LoadTextureFromFile("Coin11", "Assets/Images/Coins/Coin11.png", basicSettings);
     resourceManager.LoadTextureFromFile("Coin12", "Assets/Images/Coins/Coin12.png", basicSettings);
+
+    resourceManager.LoadTextureFromFile("KnightRightIdle1", "Assets/Images/Knights/KnightRightIdle1.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightIdle2", "Assets/Images/Knights/KnightRightIdle2.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightIdle3", "Assets/Images/Knights/KnightRightIdle3.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightRightIdle4", "Assets/Images/Knights/KnightRightIdle4.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftIdle1", "Assets/Images/Knights/KnightLeftIdle1.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftIdle2", "Assets/Images/Knights/KnightLeftIdle2.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftIdle3", "Assets/Images/Knights/KnightLeftIdle3.png", basicSettings);
+    resourceManager.LoadTextureFromFile("KnightLeftIdle4", "Assets/Images/Knights/KnightLeftIdle4.png", basicSettings);
 
     //Background color
     renderManager.SetClearColor(0.0f, 0.6f, 0.9f, 1.0f);

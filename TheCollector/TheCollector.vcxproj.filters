@@ -175,6 +175,30 @@
     <Image Include="Assets\Images\Coins\Coin12.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Images\Knights\KnightLeftIdle1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Knights\KnightLeftIdle2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Knights\KnightLeftIdle3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Knights\KnightLeftIdle4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Knights\KnightRightIdle1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Knights\KnightRightIdle2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Knights\KnightRightIdle3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\Knights\KnightRightIdle4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\PixelOperator8.ttf" />
