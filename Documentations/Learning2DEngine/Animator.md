@@ -1,6 +1,6 @@
 # Animator
-- [AnimationController](Render.md#animationcontroller)
-- [AnimationFrame](Render.md#animationframe)
+- [AnimationController](Animator.md#animationcontroller)
+- [AnimationFrame](Animator.md#animationframe)
 
 ##
 ## AnimationController
