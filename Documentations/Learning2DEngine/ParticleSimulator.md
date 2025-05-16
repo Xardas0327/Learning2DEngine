@@ -121,7 +121,7 @@ It contains the data, which is important to render the particles.
 
 ### Header:
 ```cpp
-class ParticleRenderData final : public Render::RenderData
+class ParticleRenderData final : public Render::RenderData, public Render::Texture2DContainer
 {...}
 ```
 
@@ -155,11 +155,6 @@ Particle* particles;
 ParticleSystemSettings systemSettings;
 ```
 
-**texture**
-```cpp
-Render::Texture2D* texture;
-```
-
 ### Functions:
 **Public:**  
 **ParticleRenderData**  
@@ -173,16 +168,6 @@ ParticleRenderData(const System::Component* component, unsigned int particleAmou
 **~ParticleRenderData**  
 ```cpp
 ~ParticleRenderData() override;
-```
-
-**IsUseTexture**  
-```cpp
-inline bool IsUseTexture() const;
-```
-
-**ClearTexture**  
-```cpp
-inline void ClearTexture();
 ```
 
 **IsRenderable**  
