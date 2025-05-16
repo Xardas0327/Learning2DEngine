@@ -6,6 +6,7 @@
 ## AnimationController
 ### Source Code:
 [AnimationController.h](../../Learning2DEngine/Learning2DEngine/Animator/AnimationController.h)  
+[AnimationController.cpp](../../Learning2DEngine/Learning2DEngine/Animator/AnimationController.cpp)  
 
 ### Description:
 It can control an animation.  
