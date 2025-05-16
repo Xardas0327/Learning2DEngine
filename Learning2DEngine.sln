@@ -27,6 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentations", "Documenta
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Learning2DEngine", "Learning2DEngine", "{0CC89BBB-1730-4365-AE78-CA6FF717F7EC}"
 	ProjectSection(SolutionItems) = preProject
+		Documentations\Learning2DEngine\Animator.md = Documentations\Learning2DEngine\Animator.md
 		Documentations\Learning2DEngine\DebugTool.md = Documentations\Learning2DEngine\DebugTool.md
 		Documentations\Learning2DEngine\EventSystem.md = Documentations\Learning2DEngine\EventSystem.md
 		Documentations\Learning2DEngine\Object.md = Documentations\Learning2DEngine\Object.md
