@@ -87,6 +87,7 @@ what they are.
 
 ### Namespaces
 - Learning2DEngine
+  - [Animator](Learning2DEngine/Animator.md)
   - [DebugTool](Learning2DEngine/DebugTool.md)
   - [EventSystem](Learning2DEngine/EventSystem.md)
   - [Object](Learning2DEngine/Object.md)
