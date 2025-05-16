@@ -1502,7 +1502,7 @@ void DestroyShader(const std::string& name);
 **LoadTextureFromFile**  
 It creates a `Texture2D` from files.
 ```cpp
-Render::Texture2D LoadTextureFromFile(const std::string& name, const char* filePath, const Render::Texture2DSettings& settings);
+Render::Texture2D& LoadTextureFromFile(const std::string& name, const char* filePath, const Render::Texture2DSettings& settings);
 ```
 
 **GetTexture**  
@@ -1510,7 +1510,7 @@ It returns a `Texture2D`. If the texture does not exist,
 it will return an uninitialized `Texture2D`.
 It is recommended to use the `IsTextureExist()`.
 ```cpp
-Render::Texture2D GetTexture(const std::string& name);
+Render::Texture2D& GetTexture(const std::string& name);
 ```
 
 **IsTextureExist**  

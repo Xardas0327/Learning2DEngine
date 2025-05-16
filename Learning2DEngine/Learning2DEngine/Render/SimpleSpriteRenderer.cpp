@@ -130,7 +130,7 @@ namespace Learning2DEngine
 				if (spriteData->IsUseTexture())
 				{
 					glActiveTexture(GL_TEXTURE0);
-					spriteData->texture->Bind();
+					spriteData->GetTexture()->Bind();
 				}
 
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

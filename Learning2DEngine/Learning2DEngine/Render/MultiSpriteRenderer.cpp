@@ -167,7 +167,7 @@ namespace Learning2DEngine
 					auto spriteData = static_cast<SpriteRenderData*>(data);
 
 					if (spriteData->IsUseTexture())
-						actualLayerData[spriteData->texture->GetId()].push_back(spriteData);
+						actualLayerData[spriteData->GetTexture()->GetId()].push_back(spriteData);
 					else
 						//The 0 is invalid texture id.
 						actualLayerData[0].push_back(spriteData);

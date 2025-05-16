@@ -41,7 +41,7 @@ void GameController::Init()
     if (sound) sound->stop();
 
     //Player
-    auto player = GameObject::Create(Transform(glm::vec2(200.0f, 400.0f)));
+    auto player = GameObject::Create(Transform(PLAYER_START_POSITION));
     playerController = player->AddComponent<PlayerController>(soundEngine);
     playerController->coinCollected.Add(&playerCoinEventItem);
     playerController->rigidbody->isFrozen = true;
@@ -279,7 +279,7 @@ void GameController::StartPlay()
         platform->Reset();
     }
 
-    playerController->gameObject->transform.SetPosition(glm::vec2(200.0f, 400.0f));
+    playerController->gameObject->transform.SetPosition(PLAYER_START_POSITION);
     playerController->rigidbody->isFrozen = false;
     playerController->coinNumber = 0;
     currentPlayTime = PLAY_TIME;

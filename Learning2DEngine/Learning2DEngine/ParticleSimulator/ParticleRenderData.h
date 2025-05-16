@@ -2,6 +2,7 @@
 
 #include "../Render/RenderData.h"
 #include "../Render/Texture2D.h"
+#include "../Render/Texture2DContainer.h"
 #include "Particle.h"
 
 #include "ParticleSystemSettings.h"
@@ -12,7 +13,7 @@ namespace Learning2DEngine
 	{
 		class ParticleSystemComponent;
 
-		class ParticleRenderData final : public Render::RenderData
+		class ParticleRenderData final : public Render::RenderData, public Render::Texture2DContainer
 		{
 			friend class ParticleSystemComponent;
 		private:
@@ -23,11 +24,10 @@ namespace Learning2DEngine
 
 		public:
 			ParticleSystemSettings systemSettings;
-			Render::Texture2D* texture;
 
 			ParticleRenderData(const System::Component* component, unsigned int particleAmount, unsigned int minAllocateSize = 0)
 				: RenderData(component), minAllocateSize(minAllocateSize), particleAmount(particleAmount), isRenderable(false),
-				particles(nullptr), systemSettings(), texture(nullptr)
+				particles(nullptr), systemSettings(), Texture2DContainer()
 			{
 				particles = new Particle[particleAmount];
 			}
@@ -39,28 +39,14 @@ namespace Learning2DEngine
 				const Render::Texture2D& texture,
 				unsigned int minAllocateSize = 0)
 				: RenderData(component), minAllocateSize(minAllocateSize), particleAmount(particleAmount), isRenderable(false),
-				particles(nullptr), systemSettings(systemSettings), texture(new Render::Texture2D(texture))
+				particles(nullptr), systemSettings(systemSettings), Texture2DContainer(texture)
 			{
 				particles = new Particle[particleAmount];
 			}
 
 			~ParticleRenderData() override
 			{
-				if (IsUseTexture())
-				{
-					delete texture;
-				}
 				delete[] particles;
-			}
-
-			inline bool IsUseTexture() const
-			{
-				return texture != nullptr;
-			}
-
-			inline void ClearTexture()
-			{
-				texture = nullptr;
 			}
 
 			inline bool IsRenderable() const

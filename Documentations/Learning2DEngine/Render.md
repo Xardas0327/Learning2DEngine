@@ -21,6 +21,7 @@
 - [SpriteRenderComponent](Render.md#spriterendercomponent)
 - [SpriteRenderData](Render.md#spriterenderdata)
 - [Texture2D](Render.md#texture2d)
+- [Texture2DContainer](Render.md#texture2dcontainer)
 - [Texture2DSettings](Render.md#texture2dsettings)
 
 ##
@@ -1582,17 +1583,12 @@ It contains the data, which is important to render the sprite.
 
 ### Header:
 ```cpp
-struct SpriteRenderData : public RenderData
+class SpriteRenderData : public RenderData, public Texture2DContainer
 {...}
 ```
 
 ### Variables:
 **Public:**  
-**texture**
-```cpp
-Render::Texture2D* texture;
-```
-
 **color**
 ```cpp
 glm::vec4 color;
@@ -1606,21 +1602,6 @@ SpriteRenderData(const System::Component* component, glm::vec4 color = glm::vec4
 ```
 ```cpp
 SpriteRenderData(const System::Component* component, const Texture2D& texture, glm::vec4 color = glm::vec4(1.0f));
-```
-
-**~SpriteRenderData**
-```cpp
-~SpriteRenderData() override;
-```
-
-**IsUseTexture**
-```cpp
-inline bool IsUseTexture() const;
-```
-
-**ClearTexture**
-```cpp
-inline void ClearTexture();
 ```
 
 ##
@@ -1695,6 +1676,67 @@ void Bind(int textureUnitNumber = 0) const;
 It returns the id of the `Texture2D`.
 ```cpp
 inline GLuint GetId() const;
+```
+
+##
+## Texture2DContainer
+### Source Code:
+[Texture2DContainer.h](../../Learning2DEngine/Learning2DEngine/Render/Texture2DContainer.h) 
+
+### Description:
+It is a simple class, which can contain an texture.  
+If a class is inherited from this, it will has a texture with some useful functions.  
+Moreover, the `AnimationController` contains a reference from this for working.
+
+### Header:
+```cpp
+class Texture2DContainer
+{...}
+```
+
+### Variables:
+**Private:**  
+**texture**  
+```cpp
+Texture2D* texture;
+``` 
+
+### Functions:
+**Public:**  
+**Texture2DContainer**  
+```cpp
+Texture2DContainer();
+```
+```cpp
+Texture2DContainer(const Texture2D& texture);
+```
+
+**~Texture2DContainer**  
+```cpp
+virtual ~Texture2DContainer();
+```
+
+**SetTexture**  
+```cpp
+void SetTexture(const Texture2D& texture);
+```
+
+**GetTexture**  
+```cpp
+inline Texture2D* GetTexture();
+``` 
+```cpp
+inline const Texture2D* GetTexture() const;
+```
+
+**ClearTexture**  
+```cpp
+inline void ClearTexture();
+```
+
+**IsUseTexture**  
+```cpp
+inline bool IsUseTexture() const;
 ```
 
 ##
