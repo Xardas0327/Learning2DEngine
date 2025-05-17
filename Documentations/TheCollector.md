@@ -8,6 +8,9 @@ You can play with the collector and get the chance to collect all coins in time.
 ## License:
 The Collector © 2025 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
 
+For sounds, there is the irrKlang, which I use it with
+its non pro licence, which is [here](https://www.ambiera.com/irrklang/license.html).
+
 ## Control
 - Start: Press Enter
 - Close Window: Press Esc or use your mouse.
