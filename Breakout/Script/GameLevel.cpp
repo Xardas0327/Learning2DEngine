@@ -27,12 +27,12 @@ void GameLevel::Load(bool areBricksActive)
     if (fstream)
     {
         std::string line;
-        std::vector<std::vector<unsigned int>> brickData;
+        std::vector<std::vector<size_t>> brickData;
 
         while (std::getline(fstream, line))
         {
-            unsigned int brickCode;
-            std::vector<unsigned int> row;
+            size_t brickCode;
+            std::vector<size_t> row;
             std::istringstream sstream(line);
 
             while (sstream >> brickCode)
@@ -57,7 +57,7 @@ bool GameLevel::IsCompleted()
     return true;
 }
 
-void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bool areBricksActive)
+void GameLevel::Init(const std::vector<std::vector<size_t>>& brickData, bool areBricksActive)
 {
     levelHeight = brickData.size();
     levelWidth = brickData[0].size();
@@ -66,9 +66,9 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bo
     Texture2D solidBlockTexture = resourceManager.GetTexture("block_solid");
     Texture2D blockTexture = resourceManager.GetTexture("block");
 
-    for (unsigned int y = 0; y < levelHeight; ++y)
+    for (size_t y = 0; y < levelHeight; ++y)
     {
-        for (unsigned int x = 0; x < levelWidth; ++x)
+        for (size_t x = 0; x < levelWidth; ++x)
         {
             if (brickData[y][x] == 0)
                 continue;
@@ -87,7 +87,7 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bo
                 color = glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
 
             GameObject* brick = GameObject::Create(areBricksActive);
-            auto brickController = brick->AddComponent<BrickController, int, int, bool>(x, y, brickData[y][x] == 1);
+            auto brickController = brick->AddComponent<BrickController>(x, y, brickData[y][x] == 1);
             brickController->renderer->data.SetTexture(
                 brickData[y][x] == 1
                 ? solidBlockTexture
