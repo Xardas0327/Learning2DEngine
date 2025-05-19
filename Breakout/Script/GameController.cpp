@@ -35,7 +35,7 @@ void GameController::Init()
 
     // Background
     auto background = GameObject::Create();
-    backgroundController = background->AddComponent<BackgroundController, const std::string&, const Resolution&>("background", resolution);
+    backgroundController = background->AddComponent<BackgroundController>("background", resolution);
 
     // Levels
     levels.reserve(4);
@@ -51,17 +51,11 @@ void GameController::Init()
 
     // Player
     auto player = GameObject::Create();
-    playerController = player->AddComponent<PlayerController, const std::string&>("paddle");
+    playerController = player->AddComponent<PlayerController>("paddle");
 
     // Ball
     auto ball = GameObject::Create();
-    ballController = ball->AddComponent<
-        BallController,
-        PlayerController*,
-        const std::string&,
-        const std::string&,
-        BallHitPlayerEventItem&,
-        BallHitBrickEventItem&>(
+    ballController = ball->AddComponent<BallController>(
             playerController,
             "face",
             "particle",
@@ -75,7 +69,7 @@ void GameController::Init()
             glm::vec2(5.0f, 5.0f)
         )
     );
-    lifeText = liveGameObject->AddComponent<SimpleText2DLateRenderComponent, const FontSizePair&, std::string>(
+    lifeText = liveGameObject->AddComponent<SimpleText2DLateRenderComponent>(
         fontSizePair,
         "Lifes: " + std::to_string(lifes)
     );
@@ -85,7 +79,7 @@ void GameController::Init()
             glm::vec2(250.0f, static_cast<float>(middleHeight))
         )
     );
-    startText = startGameObject->AddComponent<SimpleText2DLateRenderComponent, const FontSizePair&, std::string>(
+    startText = startGameObject->AddComponent<SimpleText2DLateRenderComponent>(
         fontSizePair,
         "Press ENTER to start"
     );
@@ -96,7 +90,7 @@ void GameController::Init()
             glm::vec2(0.75f, 0.75f)
         )
     );
-    levelSelectorText = levelSelectorGameObject->AddComponent<SimpleText2DLateRenderComponent, const FontSizePair&, std::string>(
+    levelSelectorText = levelSelectorGameObject->AddComponent<SimpleText2DLateRenderComponent>(
         fontSizePair,
         "Press W or S to select level"
     );
@@ -107,7 +101,7 @@ void GameController::Init()
         ),
         false
     );
-    winText = winGameObject->AddComponent<SimpleText2DLateRenderComponent, const FontSizePair&, std::string, int, glm::vec4>(
+    winText = winGameObject->AddComponent<SimpleText2DLateRenderComponent>(
         fontSizePair,
         "You WON!!!",
         0,
@@ -120,7 +114,7 @@ void GameController::Init()
         ),
         false
     );
-    retryText = retryGameObject->AddComponent<SimpleText2DLateRenderComponent, const FontSizePair&, std::string, int, glm::vec4>(
+    retryText = retryGameObject->AddComponent<SimpleText2DLateRenderComponent>(
         fontSizePair,
         "Press ENTER to retry or ESC to quit",
         0,
