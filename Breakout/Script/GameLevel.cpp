@@ -57,7 +57,7 @@ bool GameLevel::IsCompleted()
     return true;
 }
 
-void GameLevel::Init(const std::vector<std::vector<size_t>>& brickData, bool areBricksActive)
+void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bool areBricksActive)
 {
     levelHeight = brickData.size();
     levelWidth = brickData[0].size();
