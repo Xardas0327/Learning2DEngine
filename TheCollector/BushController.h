@@ -23,7 +23,7 @@ protected:
 
 	void Init() override
 	{
-		gameObject->AddComponent<Learning2DEngine::Render::SpriteRenderComponent, const Texture2D&, int>(
+		gameObject->AddComponent<Learning2DEngine::Render::SpriteRenderComponent, const Learning2DEngine::Render::Texture2D&, int>(
 			Learning2DEngine::System::ResourceManager::GetInstance().GetTexture(textureId),
 			layer
 		);
