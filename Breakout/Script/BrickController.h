@@ -13,11 +13,11 @@ class BrickController : public virtual Learning2DEngine::System::Component
 protected:
     const bool isSolid;
 
-    BrickController(Learning2DEngine::System::GameObject* gameObject, int x, int y, bool isSolid = false);
+    BrickController(Learning2DEngine::System::GameObject* gameObject, size_t x, size_t y, bool isSolid = false);
     void Init() override;
 public:
-    int mapCoorX;
-    int mapCoorY;
+    size_t mapCoorX;
+    size_t mapCoorY;
     Learning2DEngine::Physics::BoxColliderComponent* collider;
     Learning2DEngine::Render::SpriteRenderComponent* renderer;
 

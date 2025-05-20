@@ -27,12 +27,12 @@ void GameLevel::Load(bool areBricksActive)
     if (fstream)
     {
         std::string line;
-        std::vector<std::vector<size_t>> brickData;
+        std::vector<std::vector<unsigned int>> brickData;
 
         while (std::getline(fstream, line))
         {
-            size_t brickCode;
-            std::vector<size_t> row;
+            unsigned int brickCode;
+            std::vector<unsigned int> row;
             std::istringstream sstream(line);
 
             while (sstream >> brickCode)
@@ -57,7 +57,7 @@ bool GameLevel::IsCompleted()
     return true;
 }
 
-void GameLevel::Init(const std::vector<std::vector<size_t>>& brickData, bool areBricksActive)
+void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bool areBricksActive)
 {
     levelHeight = brickData.size();
     levelWidth = brickData[0].size();
@@ -87,7 +87,7 @@ void GameLevel::Init(const std::vector<std::vector<size_t>>& brickData, bool are
                 color = glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
 
             GameObject* brick = GameObject::Create(areBricksActive);
-            auto brickController = brick->AddComponent<BrickController>(x, y, brickData[y][x] == 1);
+            auto brickController = brick->AddComponent<BrickController, size_t, size_t, bool>(x, y, brickData[y][x] == 1);
             brickController->renderer->data.SetTexture(
                 brickData[y][x] == 1
                 ? solidBlockTexture

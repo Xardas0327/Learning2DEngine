@@ -14,7 +14,7 @@ private:
     size_t levelHeight;
     size_t levelWidth;
 
-    void Init(const std::vector<std::vector<size_t>>& brickData, bool areBricksActive);
+    void Init(const std::vector<std::vector<unsigned int>>& brickData, bool areBricksActive);
     void CalcBrickSize(const Learning2DEngine::Render::Resolution& resolution);
 public:
     std::vector<BrickController*> bricks;

@@ -23,7 +23,7 @@ void CoinController::Init()
 		ColliderType::KINEMATIC
 	);
 
-	auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
+	auto renderer = gameObject->AddComponent<SpriteRenderComponent, const Texture2D&>(
 		ResourceManager::GetInstance().GetTexture(COIN_TEXTURE_IDS[0])
 	);
 

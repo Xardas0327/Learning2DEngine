@@ -6,7 +6,7 @@ using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Physics;
 
-BrickController::BrickController(GameObject* gameObject, int x, int y, bool isSolid)
+BrickController::BrickController(GameObject* gameObject, size_t x, size_t y, bool isSolid)
     : Component(gameObject), mapCoorX(x), mapCoorY(y), isSolid(isSolid), collider(nullptr), renderer(nullptr)
 {
 

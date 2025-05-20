@@ -66,7 +66,11 @@ void Breakout::Init()
 
     // GameController
     auto gameControllerObject = GameObject::Create();
-    gameController = gameControllerObject->AddComponent<GameController>(fontSizePair, postProcessData);
+    gameController = gameControllerObject->AddComponent<
+        GameController,
+        const FontSizePair&,
+        PostProcessData*
+    >(fontSizePair, postProcessData);
 }
 
 void Breakout::Terminate()

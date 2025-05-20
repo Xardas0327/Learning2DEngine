@@ -20,7 +20,7 @@ void PowerUpController::Init()
     BoxColliderComponent::Init();
 
     rigidbody = gameObject->AddComponent<Rigidbody>(VELOCITY);
-    renderer = gameObject->AddComponent<SpriteRenderComponent>(
+    renderer = gameObject->AddComponent<SpriteRenderComponent, const Texture2D&, int, glm::vec4>(
         ResourceManager::GetInstance().GetTexture(powerUpObject.textureId),
         1,
         powerUpObject.color
@@ -48,7 +48,7 @@ PowerUpController* PowerUpController::CreatePowerUp(
         Learning2DEngine::System::Transform(position)
     );
 
-    PowerUpController* controller = powerUp->AddComponent<PowerUpController>(powerUpObject);
+    PowerUpController* controller = powerUp->AddComponent<PowerUpController, const PowerUpObject&>(powerUpObject);
     controller->activationEventHandler.Add(&eventItem);
 
     return controller;
