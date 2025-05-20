@@ -23,8 +23,9 @@ protected:
 
 	void Init() override
 	{
-		gameObject->AddComponent<Learning2DEngine::Render::SpriteRenderComponent>(
-			Learning2DEngine::System::ResourceManager::GetInstance().GetTexture(textureId), layer
+		gameObject->AddComponent<Learning2DEngine::Render::SpriteRenderComponent, const Texture2D&, int>(
+			Learning2DEngine::System::ResourceManager::GetInstance().GetTexture(textureId),
+			layer
 		);
 	}
 
@@ -34,6 +35,6 @@ public:
 		auto platform = Learning2DEngine::System::GameObject::Create(
 			Learning2DEngine::System::Transform(position, size)
 		);
-		return platform->AddComponent<BushController>(textureId, layer);
+		return platform->AddComponent<BushController, const std::string&, int>(textureId, layer);
 	}
 };
