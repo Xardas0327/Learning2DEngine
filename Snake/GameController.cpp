@@ -33,7 +33,7 @@ void GameController::Init()
 
     //Player
     auto player = GameObject::Create();
-    playerController = player->AddComponent<PlayerController>("Unit");
+    playerController = player->AddComponent<PlayerController, const std::string&>("Unit");
 
     //Food
     auto food = GameObject::Create(
@@ -42,7 +42,7 @@ void GameController::Init()
             unitSize
         )
     );
-    foodController = food->AddComponent<FoodController>("Unit");
+    foodController = food->AddComponent<FoodController, const std::string&>("Unit");
 
 
     // Text
@@ -51,7 +51,7 @@ void GameController::Init()
             glm::vec2(5.0f, 5.0f)
         )
     );
-    scoreText = scoreGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+    scoreText = scoreGameObject->AddComponent<SimpleText2DLateRenderComponent, const FontSizePair&, std::string>(
         fontSizePair,
         "Score: " + std::to_string(score)
     );
@@ -61,7 +61,7 @@ void GameController::Init()
             glm::vec2(175.0f, static_cast<float>(resolution.GetHeight() / 2))
         )
     );
-    startText = startGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+    startText = startGameObject->AddComponent<SimpleText2DLateRenderComponent, const FontSizePair&, std::string>(
         fontSizePair,
         "Press ENTER to start"
     );

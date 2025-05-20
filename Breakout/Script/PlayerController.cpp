@@ -15,10 +15,10 @@ PlayerController::PlayerController(Learning2DEngine::System::GameObject* gameObj
 
 void PlayerController::Init()
 {
-	renderer = gameObject->AddComponent<SpriteRenderComponent>(
+	renderer = gameObject->AddComponent<SpriteRenderComponent, const Texture2D&>(
 		ResourceManager::GetInstance().GetTexture(textureId)
 	);
-	collider = gameObject->AddComponent<BoxColliderComponent>(
+	collider = gameObject->AddComponent<BoxColliderComponent, glm::vec2, ColliderType, ColliderMode, glm::vec2, int32_t>(
 		glm::vec2(0.0f, 0.0f), ColliderType::DYNAMIC, ColliderMode::TRIGGER, glm::vec2(0.0f, 0.0f), 0b110
 	);
 
