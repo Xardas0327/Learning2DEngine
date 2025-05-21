@@ -62,7 +62,7 @@ Note: The projection came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class MultiText2DRenderer : public Render::IRenderer, public virtual System::Singleton<MultiText2DRenderer>
+class MultiText2DRenderer : public Render::IRenderer, public System::Singleton<MultiText2DRenderer>
 {...}
 ```
 
@@ -241,7 +241,7 @@ Note: The projection came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class SimpleText2DRenderer : public Render::IRenderer, public virtual System::Singleton<SimpleText2DRenderer>
+class SimpleText2DRenderer : public Render::IRenderer, public System::Singleton<SimpleText2DRenderer>
 {...}
 ```
 
@@ -467,7 +467,7 @@ This is a singleton class, which can load/unload the fonts into Engine.
 
 ### Header:
 ```cpp
-class TextCharacterSet : public virtual System::Singleton<TextCharacterSet>
+class TextCharacterSet : public System::Singleton<TextCharacterSet>
 {...}
 ```
 

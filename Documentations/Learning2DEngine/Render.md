@@ -355,7 +355,7 @@ Note: The projection and the view matrix came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class MultiSpriteRenderer : public IRenderer, public virtual System::Singleton<MultiSpriteRenderer>
+class MultiSpriteRenderer : public IRenderer, public System::Singleton<MultiSpriteRenderer>
 {...}
 ```
 
@@ -797,7 +797,7 @@ The developer can initialize the OpenGL and set or change its variables.
 
 ### Header:
 ```cpp
-class RenderManager : public virtual System::Singleton<RenderManager>
+class RenderManager : public System::Singleton<RenderManager>
 {...}
 ```
 
@@ -1423,7 +1423,7 @@ Note: The projection and the view matrix came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class SimpleSpriteRenderer : public IRenderer, public virtual System::Singleton<SimpleSpriteRenderer>
+class SimpleSpriteRenderer : public IRenderer, public System::Singleton<SimpleSpriteRenderer>
 {...}
 ```
 

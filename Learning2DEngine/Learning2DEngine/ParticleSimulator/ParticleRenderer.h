@@ -18,7 +18,7 @@ namespace Learning2DEngine
 {
 	namespace ParticleSimulator
 	{
-		class ParticleRenderer : public Render::IRenderer, public virtual System::Singleton<ParticleRenderer>
+		class ParticleRenderer : public Render::IRenderer, public System::Singleton<ParticleRenderer>
 		{
 			friend class Singleton<ParticleRenderer>;
 		private:

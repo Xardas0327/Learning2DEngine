@@ -11,7 +11,7 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-		class GameObjectManager final : public virtual Singleton<GameObjectManager>
+		class GameObjectManager final : public Singleton<GameObjectManager>
 		{
 			friend class Singleton<GameObjectManager>;
 		private:

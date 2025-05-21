@@ -10,7 +10,7 @@ namespace Learning2DEngine
 {
 	namespace DebugTool
 	{
-		class DebugBoxColliderRenderComponent : public virtual Render::RendererComponent<DebugRenderData<Physics::BaseBoxColliderComponent>, DebugBoxColliderRenderer>
+		class DebugBoxColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BaseBoxColliderComponent>, DebugBoxColliderRenderer>
 		{
 			friend class System::GameObject;
 		private:

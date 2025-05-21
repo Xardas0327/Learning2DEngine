@@ -11,7 +11,7 @@ namespace Learning2DEngine
 {
 	namespace Animator
 	{
-		class AnimationController : public virtual Learning2DEngine::System::LateUpdaterComponent
+		class AnimationController : public Learning2DEngine::System::LateUpdaterComponent
 		{
 			friend class Learning2DEngine::System::GameObject;
 		protected:

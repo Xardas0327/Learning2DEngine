@@ -15,7 +15,7 @@ It has to get a `Texture2DContainer` in its contructor, because it will change t
 
 ### Header:
 ```cpp
-class AnimationController : public virtual Learning2DEngine::System::LateUpdaterComponent
+class AnimationController : public Learning2DEngine::System::LateUpdaterComponent
 {...}
 ```
 

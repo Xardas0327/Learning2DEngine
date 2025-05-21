@@ -16,7 +16,7 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
-		class RenderManager : public virtual System::Singleton<RenderManager>
+		class RenderManager : public System::Singleton<RenderManager>
 		{
 			friend class System::Singleton<RenderManager>;
 		private:

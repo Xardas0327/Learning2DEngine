@@ -20,7 +20,7 @@ namespace Learning2DEngine
 
     namespace System
     {
-        class ComponentManager final : public virtual Singleton<ComponentManager>
+        class ComponentManager final : public Singleton<ComponentManager>
         {
             friend class Singleton<ComponentManager>;
         private:

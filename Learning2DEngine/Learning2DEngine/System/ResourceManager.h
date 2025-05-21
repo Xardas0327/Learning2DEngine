@@ -14,7 +14,7 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-        class ResourceManager : public virtual Singleton<ResourceManager>
+        class ResourceManager : public Singleton<ResourceManager>
         {
             friend class Singleton<ResourceManager>;
         private:

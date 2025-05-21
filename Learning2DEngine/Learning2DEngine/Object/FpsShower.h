@@ -11,8 +11,8 @@ namespace Learning2DEngine
 {
 	namespace Object
 	{
-		class FpsShower : public virtual System::UpdaterComponent,
-							public virtual UI::SimpleText2DLateRenderComponent
+		class FpsShower : public System::UpdaterComponent,
+							public UI::SimpleText2DLateRenderComponent
 		{
 			friend class System::GameObject;
 		protected:

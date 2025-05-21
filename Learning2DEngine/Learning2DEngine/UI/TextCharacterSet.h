@@ -14,7 +14,7 @@ namespace Learning2DEngine
 
         typedef std::map<char, FreeTypeCharacter> CharacterMap;
 
-        class TextCharacterSet : public virtual System::Singleton<TextCharacterSet>
+        class TextCharacterSet : public System::Singleton<TextCharacterSet>
         {
             friend class System::Singleton<TextCharacterSet>;
         private:

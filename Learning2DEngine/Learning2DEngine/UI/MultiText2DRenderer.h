@@ -16,7 +16,7 @@ namespace Learning2DEngine
 {
 	namespace UI
 	{
-		class MultiText2DRenderer : public Render::IRenderer, public virtual System::Singleton<MultiText2DRenderer>
+		class MultiText2DRenderer : public Render::IRenderer, public System::Singleton<MultiText2DRenderer>
 		{
 			friend class Singleton<MultiText2DRenderer>;
 		private:

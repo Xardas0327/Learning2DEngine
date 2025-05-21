@@ -399,7 +399,7 @@ and LateRender() functions in every frame.
 
 ### Header:
 ```cpp
-class ComponentManager final : public virtual Singleton<ComponentManager>
+class ComponentManager final : public Singleton<ComponentManager>
 {...}
 ```
 
@@ -1121,7 +1121,7 @@ when we close the window.
 
 ### Header:
 ```cpp
-class GameObjectManager : public virtual Singleton<GameObjectManager>
+class GameObjectManager : public Singleton<GameObjectManager>
 {...}
 ```
 
@@ -1420,7 +1420,7 @@ It use one-one *std::map* for shaders and textures, where the id is their name.
 
 ### Header:
 ```cpp
-class ResourceManager : public virtual Singleton<ResourceManager>
+class ResourceManager : public Singleton<ResourceManager>
 {...}
 ```
 
