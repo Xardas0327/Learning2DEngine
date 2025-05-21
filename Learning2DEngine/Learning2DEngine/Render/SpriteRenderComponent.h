@@ -15,7 +15,7 @@ namespace Learning2DEngine
 	namespace Render
 	{
 		//It supports the multi instance rendering
-		class SpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, MultiSpriteRenderer>
+		class SpriteRenderComponent : public RendererComponent<SpriteRenderData, MultiSpriteRenderer>
 		{
 			friend class System::GameObject;
 		private:

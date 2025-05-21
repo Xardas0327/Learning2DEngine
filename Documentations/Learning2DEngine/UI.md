@@ -338,7 +338,7 @@ Please more info about `LateRendererComponent`.
 
 ### Header:
 ```cpp
-class Text2DLateRenderComponent : public virtual Render::LateRendererComponent<Text2DRenderData, MultiText2DRenderer>
+class Text2DLateRenderComponent : public Render::LateRendererComponent<Text2DRenderData, MultiText2DRenderer>
 {...}
 ```
 

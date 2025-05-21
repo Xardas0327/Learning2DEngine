@@ -1357,7 +1357,7 @@ Please more info about `RendererComponent`.
 
 ### Header:
 ```cpp
-class SimpleSpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, SimpleSpriteRenderer>
+class SimpleSpriteRenderComponent : public RendererComponent<SpriteRenderData, SimpleSpriteRenderer>
 {...}
 ```
 
@@ -1521,7 +1521,7 @@ Please more info about `RendererComponent`.
 
 ### Header:
 ```cpp
-class SpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, MultiSpriteRenderer>
+class SpriteRenderComponent : public RendererComponent<SpriteRenderData, MultiSpriteRenderer>
 {...}
 ```
 

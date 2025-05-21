@@ -14,7 +14,7 @@ namespace Learning2DEngine
     {
 #define L2DE_DEFAULT_GRAVITY glm::vec2(0.0f, 9.81f)
 
-        class Rigidbody : public virtual System::UpdaterComponent, public BaseRigidbody
+        class Rigidbody : public System::UpdaterComponent, public BaseRigidbody
         {
             friend class System::GameObject;
         protected:

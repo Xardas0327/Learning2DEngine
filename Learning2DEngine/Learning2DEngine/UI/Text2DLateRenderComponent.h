@@ -15,7 +15,7 @@ namespace Learning2DEngine
 {
     namespace UI
     {
-		class Text2DLateRenderComponent : public virtual Render::LateRendererComponent<Text2DRenderData, MultiText2DRenderer>
+		class Text2DLateRenderComponent : public Render::LateRendererComponent<Text2DRenderData, MultiText2DRenderer>
 		{
 			friend class System::GameObject;
 		private:

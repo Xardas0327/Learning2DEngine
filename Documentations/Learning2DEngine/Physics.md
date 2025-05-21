@@ -718,7 +718,7 @@ A really basic Rigidbody for moving.
 
 ### Header:
 ```cpp
-class Rigidbody : public virtual System::UpdaterComponent, public BaseRigidbody
+class Rigidbody : public System::UpdaterComponent, public BaseRigidbody
 {...}
 ```
 
