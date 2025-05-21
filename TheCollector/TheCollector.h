@@ -4,7 +4,7 @@
 
 #include <Learning2DEngine/System/Game.h>
 
-class TheCollector : public virtual Learning2DEngine::System::Game
+class TheCollector : public Learning2DEngine::System::Game
 {
 public:
     TheCollector() = default;

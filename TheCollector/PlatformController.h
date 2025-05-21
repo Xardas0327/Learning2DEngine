@@ -11,7 +11,7 @@
 const glm::vec2 PLATFORM_SIZE(200.0f, 50.0f);
 const glm::vec2 EDGE_SIZE(100.0f, 100.0f);
 
-class PlatformController : public virtual Learning2DEngine::System::Component
+class PlatformController : public Learning2DEngine::System::Component
 {
     friend class Learning2DEngine::System::GameObject;
 protected:

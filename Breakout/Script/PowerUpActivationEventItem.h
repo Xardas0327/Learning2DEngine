@@ -4,7 +4,7 @@
 
 #include "IPowerUpActivation.h"
 
-class PowerUpActivationEventItem final : public virtual Learning2DEngine::EventSystem::EventItem<PowerUpType>
+class PowerUpActivationEventItem final : public Learning2DEngine::EventSystem::EventItem<PowerUpType>
 {
 private:
 	IPowerUpActivation* powerUpActivation;

@@ -7,7 +7,7 @@
 
 #include "GameController.h"
 
-class Snake : public virtual Learning2DEngine::System::Game
+class Snake : public Learning2DEngine::System::Game
 {
 private:
     const Learning2DEngine::UI::FontSizePair fontSizePair;

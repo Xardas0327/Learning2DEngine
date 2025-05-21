@@ -8,7 +8,7 @@
 #include "Script/GameController.h"
 #include "Script/PostProcessData.h"
 
-class Breakout : public virtual Learning2DEngine::System::Game
+class Breakout : public Learning2DEngine::System::Game
 {
 private:
     const Learning2DEngine::UI::FontSizePair fontSizePair;

@@ -5,7 +5,7 @@
 #include <Learning2DEngine/ParticleSimulator/ParticleSettings.h>
 #include <Learning2DEngine/Physics/Rigidbody.h>
 
-class BallParticleSettings : public virtual Learning2DEngine::ParticleSimulator::ParticleSettings
+class BallParticleSettings : public Learning2DEngine::ParticleSimulator::ParticleSettings
 {
 private:
 	const Learning2DEngine::Physics::Rigidbody* rigidbody;

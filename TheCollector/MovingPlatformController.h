@@ -9,7 +9,7 @@
 
 #include "PlatformController.h"
 
-class MovingPlatformController : public virtual Learning2DEngine::System::UpdaterComponent
+class MovingPlatformController : public Learning2DEngine::System::UpdaterComponent
 {
 	friend class Learning2DEngine::System::GameObject;
 protected:

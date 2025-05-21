@@ -7,7 +7,7 @@
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
 
-class BrickController : public virtual Learning2DEngine::System::Component
+class BrickController : public Learning2DEngine::System::Component
 {
 	friend class Learning2DEngine::System::GameObject;
 protected:

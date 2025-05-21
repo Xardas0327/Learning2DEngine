@@ -4,7 +4,7 @@
 
 #include "IBallHitPlayerAction.h"
 
-class BallHitPlayerEventItem final : public virtual Learning2DEngine::EventSystem::EventItem<>
+class BallHitPlayerEventItem final : public Learning2DEngine::EventSystem::EventItem<>
 {
 private:
 	IBallHitPlayerAction* item;
