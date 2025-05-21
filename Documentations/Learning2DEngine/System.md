@@ -1323,6 +1323,11 @@ The developer have to inherit from this class, if they want to do something
 in LateUpdate section, after the collision checking.    
 Please check for more info about `System::Component` and `BaseLateUpdaterComponent`.
 
+### Header:
+```cpp
+class LateUpdaterComponentHandler : public virtual ThreadComponentHandler<BaseLateUpdaterComponent>
+{...}
+```
 ### Functions:
 **Protected:**  
 **LateUpdaterComponent**  
