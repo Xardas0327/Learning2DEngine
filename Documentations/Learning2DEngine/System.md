@@ -1360,7 +1360,7 @@ The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class LateUpdaterComponentHandler : public virtual ThreadComponentHandler<BaseLateUpdaterComponent>
+class LateUpdaterComponentHandler : public ThreadComponentHandler<BaseLateUpdaterComponent>
 {...}
 ```
 
@@ -1577,7 +1577,7 @@ It is a component handler, which can use threads.
 ### Header:
 ```cpp
 template<class T>
-class ThreadComponentHandler : public virtual BaseComponentHandler<T>
+class ThreadComponentHandler : public BaseComponentHandler<T>
 {...}
 ```
 
@@ -1794,7 +1794,7 @@ The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class UpdaterComponentHandler : public virtual ThreadComponentHandler<BaseUpdaterComponent>
+class UpdaterComponentHandler : public ThreadComponentHandler<BaseUpdaterComponent>
 {...}
 ```
 

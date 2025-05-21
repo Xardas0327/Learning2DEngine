@@ -8,7 +8,7 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-		class LateUpdaterComponentHandler : public virtual ThreadComponentHandler<BaseLateUpdaterComponent>
+		class LateUpdaterComponentHandler : public ThreadComponentHandler<BaseLateUpdaterComponent>
 		{
 		protected:
 			/// <param name="startIndex">Inclusive</param>
@@ -24,7 +24,7 @@ namespace Learning2DEngine
 			}
 		public:
 			LateUpdaterComponentHandler()
-				: ThreadComponentHandler<BaseLateUpdaterComponent>(), BaseComponentHandler<BaseLateUpdaterComponent>()
+				: ThreadComponentHandler<BaseLateUpdaterComponent>()
 			{
 			}
 		};
