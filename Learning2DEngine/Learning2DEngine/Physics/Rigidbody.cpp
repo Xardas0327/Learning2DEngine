@@ -7,14 +7,14 @@ namespace Learning2DEngine
         glm::vec2 Rigidbody::gravity = L2DE_DEFAULT_GRAVITY;
 
         Rigidbody::Rigidbody(System::GameObject* gameObject, glm::vec2 velocity, bool isGravityEnabled, bool isFrozen)
-            : System::UpdaterComponent(gameObject), System::BaseUpdaterComponent(gameObject), System::Component(gameObject),
+            : System::UpdaterComponent(gameObject), System::Component(gameObject),
             BaseRigidbody(velocity), isFrozen(isFrozen), isGravityEnabled(isGravityEnabled), gravityMultiplier(1.0f)
         {
 
         }
 
         Rigidbody::Rigidbody(System::GameObject* gameObject, bool isFrozen)
-            : System::UpdaterComponent(gameObject), System::BaseUpdaterComponent(gameObject), System::Component(gameObject),
+            : System::UpdaterComponent(gameObject), System::Component(gameObject),
             BaseRigidbody(glm::vec2(0.0f, 0.0f)), isFrozen(isFrozen), isGravityEnabled(false), gravityMultiplier(1.0f)
         {
 

@@ -20,7 +20,7 @@ namespace Learning2DEngine
 			unsigned int minAllocateSize,
 			int renderLayer)
 			: RendererComponent(gameObject, renderLayer, particleAmount, minAllocateSize),
-			BaseUpdaterComponent(gameObject), UpdaterComponent(gameObject), Component(gameObject),
+			UpdaterComponent(gameObject), Component(gameObject),
 			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
 			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
 		{
@@ -35,7 +35,7 @@ namespace Learning2DEngine
 			unsigned int minAllocateSize,
 			int renderLayer)
 			: RendererComponent(gameObject, renderLayer, particleAmount, systemSettings, texture, minAllocateSize),
-			BaseUpdaterComponent(gameObject), UpdaterComponent(gameObject), Component(gameObject),
+			UpdaterComponent(gameObject), Component(gameObject),
 			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
 			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
 		{

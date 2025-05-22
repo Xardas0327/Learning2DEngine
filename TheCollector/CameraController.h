@@ -19,7 +19,7 @@ protected:
 	const PlayerController* playerController;
 
     CameraController(Learning2DEngine::System::GameObject* gameObject, PlayerController* playerController)
-        : LateUpdaterComponent(gameObject), BaseLateUpdaterComponent(gameObject), Component(gameObject),
+        : LateUpdaterComponent(gameObject), Component(gameObject),
 		playerController(playerController)
     {
 

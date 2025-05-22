@@ -12,7 +12,7 @@ namespace Learning2DEngine
 	namespace Animator
 	{
 		AnimationController::AnimationController(GameObject* gameObject, Texture2DContainer* textureContainer, bool isLoop)
-			: LateUpdaterComponent(gameObject), BaseLateUpdaterComponent(gameObject), Component(gameObject),
+			: LateUpdaterComponent(gameObject), Component(gameObject),
 			textureContainer(textureContainer), frames(), currentIndex(0), currentTime(0.0f), isPlaying(false),
 			speed(1.0f), isLoop(isLoop)
 		{
@@ -21,7 +21,7 @@ namespace Learning2DEngine
 		}
 
 		AnimationController::AnimationController(GameObject* gameObject, Texture2DContainer* textureContainer, size_t minFrameSize, bool isLoop)
-			: LateUpdaterComponent(gameObject), BaseLateUpdaterComponent(gameObject), Component(gameObject),
+			: LateUpdaterComponent(gameObject), Component(gameObject),
 			textureContainer(textureContainer), frames(), currentIndex(0), currentTime(0.0f), isPlaying(false),
 			speed(1.0f), isLoop(isLoop)
 		{

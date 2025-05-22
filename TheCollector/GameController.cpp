@@ -17,7 +17,7 @@ using namespace Learning2DEngine::UI;
 using namespace irrklang;
 
 GameController::GameController(Learning2DEngine::System::GameObject* gameObject)
-    : UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
+    : UpdaterComponent(gameObject), Component(gameObject),
     coins(), movingPlatforms(), playerController(nullptr), gameStatus(GameStatus::Menu),
     fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24), playerCoinEventItem(this), currentPlayTime(0),
     scoreText(nullptr), playTimeText(nullptr), description1Text(nullptr), description2Text(nullptr),

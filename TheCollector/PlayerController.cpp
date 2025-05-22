@@ -15,7 +15,7 @@ using namespace Learning2DEngine::Animator;
 using namespace irrklang;
 
 PlayerController::PlayerController(GameObject* gameObject, ISoundEngine* soundEngine)
-    : UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
+    : UpdaterComponent(gameObject), Component(gameObject),
     BoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
     onGround(false), detector(nullptr), soundEngine(soundEngine), eventItem(this),
     rightIdleAnimation(nullptr), leftIdleAnimation(nullptr), rightRunAnimation(nullptr), leftRunAnimation(nullptr),

@@ -1325,7 +1325,7 @@ Please check for more info about `System::Component` and `BaseLateUpdaterCompone
 
 ### Header:
 ```cpp
-class LateUpdaterComponentHandler : public virtual ThreadComponentHandler<BaseLateUpdaterComponent>
+class LateUpdaterComponent : public BaseLateUpdaterComponent
 {...}
 ```
 ### Functions:
@@ -1758,7 +1758,7 @@ Please check for more info about `System::Component` and `BaseUpdaterComponent`.
 
 ### Header:
 ```cpp
-class UpdaterComponent : public virtual BaseUpdaterComponent
+class UpdaterComponent : public BaseUpdaterComponent
 {...}
 ```
 

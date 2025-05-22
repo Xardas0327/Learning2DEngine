@@ -17,7 +17,7 @@ BallController::BallController(GameObject* gameObject, PlayerController* playerC
     const std::string& textureId, const std::string& particleTextureId,
     BallHitPlayerEventItem& ballHitPlayerEventItem, BallHitBrickEventItem& ballHitBrickEventItem)
     : CircleColliderComponent(gameObject, BALL_RADIUS, ColliderType::DYNAMIC, ColliderMode::COLLIDER, glm::vec2(0.0f, 0.0f), 0b11),
-    UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
+    UpdaterComponent(gameObject), Component(gameObject),
     textureId(textureId), particleTextureId(particleTextureId), playerController(playerController),
     renderer(nullptr), rigidbody(nullptr), particleSystem(nullptr),
     radius(BALL_RADIUS), isStuck(true), sticky(false), passThrough(false),
