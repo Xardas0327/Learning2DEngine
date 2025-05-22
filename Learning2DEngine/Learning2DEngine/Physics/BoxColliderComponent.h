@@ -19,7 +19,7 @@ namespace Learning2DEngine
         /// It doesn't rotate, scale with the gameobject.
         /// Please check for more information in the BaseColliderComponent and BaseBoxColliderComponent.
         /// </summary>
-        class BoxColliderComponent : public virtual BaseBoxColliderComponent
+        class BoxColliderComponent : public BaseBoxColliderComponent
         {
             friend class System::GameObject;
         protected:
@@ -30,8 +30,7 @@ namespace Learning2DEngine
                 ColliderMode mode = ColliderMode::TRIGGER,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), BaseColliderComponent(gameObject, type, mode, offset, maskLayer),
-                BaseBoxColliderComponent(gameObject, size, type, mode, offset, maskLayer)
+                : System::Component(gameObject), BaseBoxColliderComponent(gameObject, size, type, mode, offset, maskLayer)
 #if L2DE_DEBUG_SHOW_COLLIDER
                 , debugTool(nullptr)
 #endif

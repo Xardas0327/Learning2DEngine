@@ -19,7 +19,7 @@ namespace Learning2DEngine
         /// It doesn't rotate, scale with the gameobject.
 		/// Please check for more information in the BaseColliderComponent and BaseCircleColliderComponent.
         /// </summary>
-        class CircleColliderComponent : public virtual BaseCircleColliderComponent
+        class CircleColliderComponent : public BaseCircleColliderComponent
         {
             friend class System::GameObject;
         protected:
@@ -30,8 +30,7 @@ namespace Learning2DEngine
                 ColliderMode mode = ColliderMode::TRIGGER,
                 glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                 int32_t maskLayer = ~0)
-                : System::Component(gameObject), BaseColliderComponent(gameObject, type, mode, offset, maskLayer),
-				BaseCircleColliderComponent(gameObject, radius, type, mode, offset, maskLayer)
+                : System::Component(gameObject), BaseCircleColliderComponent(gameObject, radius, type, mode, offset, maskLayer)
 #if L2DE_DEBUG_SHOW_COLLIDER
                 , debugTool(nullptr)
 #endif
