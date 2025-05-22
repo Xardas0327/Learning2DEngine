@@ -174,7 +174,7 @@ Please more info about `LateRendererComponent`.
 
 ### Header:
 ```cpp
-class SimpleText2DLateRenderComponent : public virtual Render::LateRendererComponent<Text2DRenderData, SimpleText2DRenderer>
+class SimpleText2DLateRenderComponent : public Render::LateRendererComponent<Text2DRenderData, SimpleText2DRenderer>
 {...}
 ```
 

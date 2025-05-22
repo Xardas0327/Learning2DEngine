@@ -22,7 +22,7 @@ namespace Learning2DEngine
 			static std::mutex mutex;
 
 		protected:
-			DebugCircleColliderRenderComponent(System::GameObject* gameObject, Physics::BaseCircleColliderComponent* collider);
+			DebugCircleColliderRenderComponent(System::GameObject* gameObject, const Physics::BaseCircleColliderComponent* collider);
 
 			void Init() override;
 			void Destroy() override;

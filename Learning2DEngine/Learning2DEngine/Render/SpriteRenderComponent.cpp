@@ -11,12 +11,12 @@ namespace Learning2DEngine
 		std::mutex SpriteRenderComponent::mutex;
 
 		SpriteRenderComponent::SpriteRenderComponent(GameObject* gameObject, int layer, glm::vec4 color)
-			: RendererComponent(gameObject, layer, color), BaseRendererComponent(gameObject, layer, color), Component(gameObject)
+			: RendererComponent(gameObject, layer, color), Component(gameObject)
 		{
 		}
 
 		SpriteRenderComponent::SpriteRenderComponent(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec4 color)
-			: RendererComponent(gameObject, layer, texture, color), BaseRendererComponent(gameObject, layer, texture, color), Component(gameObject)
+			: RendererComponent(gameObject, layer, texture, color), Component(gameObject)
 		{
 		}
 

@@ -14,9 +14,8 @@ namespace Learning2DEngine
 		int DebugBoxColliderRenderComponent::refrenceNumber = 0;
 		std::mutex DebugBoxColliderRenderComponent::mutex;
 
-		DebugBoxColliderRenderComponent::DebugBoxColliderRenderComponent(GameObject* gameObject, BaseBoxColliderComponent* collider)
-			: RendererComponent(gameObject, L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER, collider),
-			BaseRendererComponent(gameObject, L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER, collider), Component(gameObject)
+		DebugBoxColliderRenderComponent::DebugBoxColliderRenderComponent(GameObject* gameObject, const BaseBoxColliderComponent* collider)
+			: RendererComponent(gameObject, L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER, collider), Component(gameObject)
 		{
 		}
 

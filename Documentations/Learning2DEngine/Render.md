@@ -199,7 +199,7 @@ virtual void RefreshResolution(const Resolution& resolution) = 0;
 ### Header:
 ```cpp
 template<class TRenderData, class TRenderer>
-class LateRendererComponent : public virtual BaseRendererComponent<TRenderData, TRenderer>
+class LateRendererComponent : public BaseRendererComponent<TRenderData, TRenderer>
 {...}
 ```
 
@@ -642,7 +642,7 @@ Please check for more info about `System::Component` and `BaseRendererComponent`
 ### Header:
 ```cpp
 template<class TRenderData, class TRenderer>
-class RendererComponent : public virtual BaseRendererComponent<TRenderData, TRenderer>
+class RendererComponent : public BaseRendererComponent<TRenderData, TRenderer>
 {...}
 ```
 
