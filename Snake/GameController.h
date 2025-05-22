@@ -31,7 +31,7 @@ const glm::ivec2 MAP_SIZE(10, 10);
 const float START_MOVE_WAITING_TIME = 0.5f;
 const float TIME_DECREASE = 0.005f;
 
-class GameController final : public virtual Learning2DEngine::System::UpdaterComponent
+class GameController final : public Learning2DEngine::System::UpdaterComponent
 {
     friend class Learning2DEngine::System::GameObject;
 private:

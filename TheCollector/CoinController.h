@@ -12,7 +12,7 @@ const std::vector<std::string> COIN_TEXTURE_IDS = {
 	"Coin7", "Coin8", "Coin9", "Coin10", "Coin11", "Coin12",
 };
 
-class CoinController : public virtual Learning2DEngine::System::Component
+class CoinController : public Learning2DEngine::System::Component
 {
 	friend class Learning2DEngine::System::GameObject;
 protected:

@@ -9,7 +9,7 @@
 
 const glm::vec2 BUSH_SIZE(50.0f, 50.0f);
 
-class BushController : public virtual Learning2DEngine::System::Component
+class BushController : public Learning2DEngine::System::Component
 {
 	friend class Learning2DEngine::System::GameObject;
 protected:

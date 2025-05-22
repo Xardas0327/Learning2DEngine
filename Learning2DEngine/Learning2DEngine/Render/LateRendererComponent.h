@@ -15,7 +15,7 @@ namespace Learning2DEngine
 		/// Please check for more info about `System::Component` and `BaseRendererComponent`.
 		/// </summary>
 		template<class TRenderData, class TRenderer>
-		class LateRendererComponent : public virtual BaseRendererComponent<TRenderData, TRenderer>
+		class LateRendererComponent : public BaseRendererComponent<TRenderData, TRenderer>
 		{
 		protected:
 			template <class ...TRenderDataParams>

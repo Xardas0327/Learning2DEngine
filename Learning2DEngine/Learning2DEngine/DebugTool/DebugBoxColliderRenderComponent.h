@@ -10,7 +10,7 @@ namespace Learning2DEngine
 {
 	namespace DebugTool
 	{
-		class DebugBoxColliderRenderComponent : public virtual Render::RendererComponent<DebugRenderData<Physics::BaseBoxColliderComponent>, DebugBoxColliderRenderer>
+		class DebugBoxColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BaseBoxColliderComponent>, DebugBoxColliderRenderer>
 		{
 			friend class System::GameObject;
 		private:
@@ -22,7 +22,7 @@ namespace Learning2DEngine
 			static std::mutex mutex;
 
 		protected:
-			DebugBoxColliderRenderComponent(System::GameObject* gameObject, Physics::BaseBoxColliderComponent* collider);
+			DebugBoxColliderRenderComponent(System::GameObject* gameObject, const Physics::BaseBoxColliderComponent* collider);
 
 			void Init() override;
 			void Destroy() override;

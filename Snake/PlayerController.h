@@ -12,7 +12,7 @@
 const unsigned int INIT_SNAKE_LENGTH = 3;
 const glm::vec4 PLAYER_COLOR = glm::vec4(0.0f, 0.75f, 0.0f, 1.0f);
 
-class PlayerController : public virtual Learning2DEngine::System::Component
+class PlayerController : public Learning2DEngine::System::Component
 {
     friend class Learning2DEngine::System::GameObject;
 protected:

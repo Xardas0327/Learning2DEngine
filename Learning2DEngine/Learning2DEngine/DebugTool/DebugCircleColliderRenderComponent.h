@@ -10,7 +10,7 @@ namespace Learning2DEngine
 {
 	namespace DebugTool
 	{
-		class DebugCircleColliderRenderComponent : public virtual Render::RendererComponent<DebugRenderData<Physics::BaseCircleColliderComponent>, DebugCircleColliderRenderer>
+		class DebugCircleColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BaseCircleColliderComponent>, DebugCircleColliderRenderer>
 		{
 			friend class System::GameObject;
 		private:
@@ -22,7 +22,7 @@ namespace Learning2DEngine
 			static std::mutex mutex;
 
 		protected:
-			DebugCircleColliderRenderComponent(System::GameObject* gameObject, Physics::BaseCircleColliderComponent* collider);
+			DebugCircleColliderRenderComponent(System::GameObject* gameObject, const Physics::BaseCircleColliderComponent* collider);
 
 			void Init() override;
 			void Destroy() override;

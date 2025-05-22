@@ -8,7 +8,7 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-		class UpdaterComponentHandler : public virtual ThreadComponentHandler<BaseUpdaterComponent>
+		class UpdaterComponentHandler : public ThreadComponentHandler<BaseUpdaterComponent>
 		{
 		private:
 			/// <param name="startIndex">Inclusive</param>
@@ -24,7 +24,7 @@ namespace Learning2DEngine
 			}
 		public:
 			UpdaterComponentHandler()
-				: ThreadComponentHandler<BaseUpdaterComponent>(), BaseComponentHandler<BaseUpdaterComponent>()
+				: ThreadComponentHandler<BaseUpdaterComponent>()
 			{
 
 			}

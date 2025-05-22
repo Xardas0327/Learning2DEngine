@@ -17,7 +17,7 @@ enum class GameStatus {Menu, Play, Ended};
 
 #define PLAY_TIME 45.0f
 
-class GameController : public virtual Learning2DEngine::System::UpdaterComponent,
+class GameController : public Learning2DEngine::System::UpdaterComponent,
                         public IDetectorCustomer
 {
     friend class Learning2DEngine::System::GameObject;

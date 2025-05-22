@@ -399,7 +399,7 @@ and LateRender() functions in every frame.
 
 ### Header:
 ```cpp
-class ComponentManager final : public virtual Singleton<ComponentManager>
+class ComponentManager final : public Singleton<ComponentManager>
 {...}
 ```
 
@@ -1121,7 +1121,7 @@ when we close the window.
 
 ### Header:
 ```cpp
-class GameObjectManager : public virtual Singleton<GameObjectManager>
+class GameObjectManager : public Singleton<GameObjectManager>
 {...}
 ```
 
@@ -1323,6 +1323,11 @@ The developer have to inherit from this class, if they want to do something
 in LateUpdate section, after the collision checking.    
 Please check for more info about `System::Component` and `BaseLateUpdaterComponent`.
 
+### Header:
+```cpp
+class LateUpdaterComponent : public BaseLateUpdaterComponent
+{...}
+```
 ### Functions:
 **Protected:**  
 **LateUpdaterComponent**  
@@ -1355,7 +1360,7 @@ The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class LateUpdaterComponentHandler : public virtual ThreadComponentHandler<BaseLateUpdaterComponent>
+class LateUpdaterComponentHandler : public ThreadComponentHandler<BaseLateUpdaterComponent>
 {...}
 ```
 
@@ -1420,7 +1425,7 @@ It use one-one *std::map* for shaders and textures, where the id is their name.
 
 ### Header:
 ```cpp
-class ResourceManager : public virtual Singleton<ResourceManager>
+class ResourceManager : public Singleton<ResourceManager>
 {...}
 ```
 
@@ -1572,7 +1577,7 @@ It is a component handler, which can use threads.
 ### Header:
 ```cpp
 template<class T>
-class ThreadComponentHandler : public virtual BaseComponentHandler<T>
+class ThreadComponentHandler : public BaseComponentHandler<T>
 {...}
 ```
 
@@ -1753,7 +1758,7 @@ Please check for more info about `System::Component` and `BaseUpdaterComponent`.
 
 ### Header:
 ```cpp
-class UpdaterComponent : public virtual BaseUpdaterComponent
+class UpdaterComponent : public BaseUpdaterComponent
 {...}
 ```
 
@@ -1789,7 +1794,7 @@ The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class UpdaterComponentHandler : public virtual ThreadComponentHandler<BaseUpdaterComponent>
+class UpdaterComponentHandler : public ThreadComponentHandler<BaseUpdaterComponent>
 {...}
 ```
 

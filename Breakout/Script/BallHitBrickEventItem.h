@@ -4,7 +4,7 @@
 
 #include "IBallHitBrickAction.h"
 
-class BallHitBrickEventItem final : public virtual Learning2DEngine::EventSystem::EventItem<BrickController*>
+class BallHitBrickEventItem final : public Learning2DEngine::EventSystem::EventItem<BrickController*>
 {
 private:
 	IBallHitBrickAction* item;

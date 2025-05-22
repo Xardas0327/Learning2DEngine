@@ -11,7 +11,7 @@ namespace Learning2DEngine
 		std::mutex Text2DLateRenderComponent::mutex;
 
 		Text2DLateRenderComponent::Text2DLateRenderComponent(GameObject* gameObject, const FontSizePair& fontSizePair, int layer, glm::vec4 color)
-			: LateRendererComponent(gameObject, layer, fontSizePair, color), BaseRendererComponent(gameObject, layer, fontSizePair, color),
+			: LateRendererComponent(gameObject, layer, fontSizePair, color),
 			Component(gameObject)
 		{
 		}
@@ -23,7 +23,6 @@ namespace Learning2DEngine
 			int layer,
 			glm::vec4 color
 		) : LateRendererComponent(gameObject, layer, fontSizePair, text, color),
-			BaseRendererComponent(gameObject, layer, fontSizePair, text, color),
 			Component(gameObject)
 		{
 

@@ -19,7 +19,7 @@ Please check the `ParticleSettings` too.
 
 ### Header:
 ```cpp
-struct BasicParticleSettings : public virtual ParticleSettings
+struct BasicParticleSettings : public ParticleSettings
 {...}
 ```
 
@@ -202,7 +202,7 @@ Note: The projection and the view matrix came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class ParticleRenderer : public Render::IRenderer, public virtual System::Singleton<ParticleRenderer>
+class ParticleRenderer : public Render::IRenderer, public System::Singleton<ParticleRenderer>
 {...}
 ```
 
@@ -373,7 +373,7 @@ Please check the `Render::RendererComponent` and `System::UpdaterComponent` docu
 
 ### Header:
 ```cpp
-class ParticleSystemComponent final : public virtual Render::RendererComponent<ParticleRenderData, ParticleRenderer>, public virtual System::UpdaterComponent
+class ParticleSystemComponent final : public Render::RendererComponent<ParticleRenderData, ParticleRenderer>, public System::UpdaterComponent
 {...}
 ```
 

@@ -9,7 +9,7 @@ namespace Learning2DEngine
 	namespace System
 	{
 		template<class T>
-		class ThreadComponentHandler : public virtual BaseComponentHandler<T>
+		class ThreadComponentHandler : public BaseComponentHandler<T>
 		{
 		protected:
 			//If it is 0, the class will not use threads

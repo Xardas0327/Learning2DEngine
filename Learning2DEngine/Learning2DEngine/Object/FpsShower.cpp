@@ -16,10 +16,8 @@ namespace Learning2DEngine
 			const FontSizePair& fontSizePair,
 			int layer,
 			glm::vec4 color)
-			: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
+			: UpdaterComponent(gameObject), Component(gameObject),
 			SimpleText2DLateRenderComponent(gameObject, fontSizePair, layer, color),
-			LateRendererComponent(gameObject, layer, fontSizePair, color),
-			BaseRendererComponent(gameObject, layer, fontSizePair, color),
 			previousTime(0.0f), fps(0)
 		{
 

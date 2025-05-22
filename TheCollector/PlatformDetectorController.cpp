@@ -7,9 +7,7 @@ using namespace Learning2DEngine::Physics;
 
 PlatformDetectorController::PlatformDetectorController(GameObject* gameObject, glm::vec2 size, glm::vec2 offset)
 	: BoxColliderComponent(gameObject, size, ColliderType::DYNAMIC, ColliderMode::TRIGGER, offset),
-    BaseBoxColliderComponent(gameObject, size, ColliderType::DYNAMIC, ColliderMode::TRIGGER, offset),
-    BaseColliderComponent(gameObject, ColliderType::DYNAMIC, ColliderMode::TRIGGER, offset), Component(gameObject),
-    eventhandler()
+    Component(gameObject), eventhandler()
 {
 
 }

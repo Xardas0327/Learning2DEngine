@@ -27,8 +27,8 @@ enum Direction {
     LEFT
 };
 
-class BallController : public virtual Learning2DEngine::Physics::CircleColliderComponent,
-                        public virtual Learning2DEngine::System::UpdaterComponent
+class BallController : public Learning2DEngine::Physics::CircleColliderComponent,
+                        public Learning2DEngine::System::UpdaterComponent
 {
     friend class Learning2DEngine::System::GameObject;
 protected:

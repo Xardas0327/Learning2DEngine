@@ -14,8 +14,7 @@ using namespace Learning2DEngine::Object;
 using namespace irrklang;
 
 GameController::GameController(GameObject* gameObject, const FontSizePair& fontSizePair, PostProcessData* postProcessData)
-	: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject),
-    LateUpdaterComponent(gameObject), BaseLateUpdaterComponent(gameObject), Component(gameObject),
+	: UpdaterComponent(gameObject), LateUpdaterComponent(gameObject), Component(gameObject),
     fontSizePair(fontSizePair), postProcessData(postProcessData), soundEngine(nullptr),
     state(GameState::GAME_MENU), powerUps(), levels(), selectedLevel(0), lifes(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),

@@ -13,7 +13,7 @@ using namespace Learning2DEngine::UI;
 using namespace Learning2DEngine::Object;
 
 GameController::GameController(GameObject* gameObject, const FontSizePair& fontSizePair)
-	: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
+	: UpdaterComponent(gameObject), Component(gameObject),
 	levelResolution(MAP_SIZE), fontSizePair(fontSizePair), startMoveWaitingTime(START_MOVE_WAITING_TIME),
 	dencreaseTimeAfterEat(TIME_DECREASE), baseSnakeLength(3),
 	state(GameState::GAME_MENU), score(0), unitSize(0), foodController(nullptr), playerController(nullptr),

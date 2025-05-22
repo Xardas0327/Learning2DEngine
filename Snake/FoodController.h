@@ -10,7 +10,7 @@
 
 const glm::vec4 FOOD_COLOR = glm::vec4(0.75f, 0.0f, 0.0f, 1.0f);
 
-class FoodController : public virtual Learning2DEngine::System::Component
+class FoodController : public Learning2DEngine::System::Component
 {
     friend class Learning2DEngine::System::GameObject;
 protected:

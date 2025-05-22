@@ -14,7 +14,7 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
-		class SimpleSpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, SimpleSpriteRenderer>
+		class SimpleSpriteRenderComponent : public RendererComponent<SpriteRenderData, SimpleSpriteRenderer>
 		{
 			friend class System::GameObject;
 		private:

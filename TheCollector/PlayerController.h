@@ -36,8 +36,8 @@ const std::vector<std::string> PLAYER_LEFT_RUN_TEXTURE_IDS = {
     "KnightLeftRun13", "KnightLeftRun14", "KnightLeftRun15", "KnightLeftRun16"
 };
 
-class PlayerController : public virtual Learning2DEngine::System::UpdaterComponent,
-                        public virtual Learning2DEngine::Physics::BoxColliderComponent,
+class PlayerController : public Learning2DEngine::System::UpdaterComponent,
+                        public Learning2DEngine::Physics::BoxColliderComponent,
                         public IDetectorCustomer
 {
     friend class Learning2DEngine::System::GameObject;

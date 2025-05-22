@@ -12,7 +12,7 @@ namespace Learning2DEngine
 		/// have to have a constructor, which first parameter is GameObject* for gameObject member.
 		/// Please check for more info about `Component` and `BaseUpdaterComponent`.
 		/// </summary>
-		class UpdaterComponent : public virtual BaseUpdaterComponent
+		class UpdaterComponent : public BaseUpdaterComponent
 		{
 			friend class GameObject;
 		protected:

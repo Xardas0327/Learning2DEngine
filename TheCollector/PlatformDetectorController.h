@@ -6,7 +6,7 @@
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 #include <Learning2DEngine/EventSystem/EventHandler.h>
 
-class PlatformDetectorController : public virtual Learning2DEngine::Physics::BoxColliderComponent
+class PlatformDetectorController : public Learning2DEngine::Physics::BoxColliderComponent
 {
     friend class Learning2DEngine::System::GameObject;
 protected:

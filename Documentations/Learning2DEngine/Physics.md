@@ -29,7 +29,7 @@ Please check for more info about `BoxColliderComponent` and `BaseColliderCompone
 
 ### Header:
 ```cpp
-class BaseBoxColliderComponent : public virtual BaseColliderComponent
+class BaseBoxColliderComponent : public BaseColliderComponent
 {...}
 ```
 
@@ -67,7 +67,7 @@ Please check for more info about `CircleColliderComponent` and `BaseColliderComp
 
 ### Header:
 ```cpp
-class BaseCircleColliderComponent : public virtual BaseColliderComponent
+class BaseCircleColliderComponent : public BaseColliderComponent
 {...}
 ```
 
@@ -231,7 +231,7 @@ Please check for more info about `BaseBoxColliderComponent` and `BaseColliderCom
 
 ### Header:
 ```cpp
-class BoxColliderComponent : public virtual BaseBoxColliderComponent
+class BoxColliderComponent : public BaseBoxColliderComponent
 {...}
 ```
 
@@ -277,7 +277,7 @@ Please check for more info about `BaseCircleColliderComponent` and `BaseCollider
 
 ### Header:
 ```cpp
-class CircleColliderComponent : public virtual BaseCircleColliderComponent
+class CircleColliderComponent : public BaseCircleColliderComponent
 {...}
 ```
 
@@ -718,7 +718,7 @@ A really basic Rigidbody for moving.
 
 ### Header:
 ```cpp
-class Rigidbody : public virtual System::UpdaterComponent, public BaseRigidbody
+class Rigidbody : public System::UpdaterComponent, public BaseRigidbody
 {...}
 ```
 

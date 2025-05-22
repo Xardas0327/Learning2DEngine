@@ -30,8 +30,8 @@ enum GameState {
     GAME_WIN
 };
 
-class GameController final : public virtual Learning2DEngine::System::UpdaterComponent,
-                            public virtual Learning2DEngine::System::LateUpdaterComponent,
+class GameController final : public Learning2DEngine::System::UpdaterComponent,
+                            public Learning2DEngine::System::LateUpdaterComponent,
                             public IPowerUpActivation,
                             public IBallHitPlayerAction,
                             public IBallHitBrickAction

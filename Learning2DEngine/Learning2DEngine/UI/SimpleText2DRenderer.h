@@ -13,7 +13,7 @@ namespace Learning2DEngine
 {
 	namespace UI
 	{
-		class SimpleText2DRenderer : public Render::IRenderer, public virtual System::Singleton<SimpleText2DRenderer>
+		class SimpleText2DRenderer : public Render::IRenderer, public System::Singleton<SimpleText2DRenderer>
 		{
 			friend class Singleton<SimpleText2DRenderer>;
 		private:

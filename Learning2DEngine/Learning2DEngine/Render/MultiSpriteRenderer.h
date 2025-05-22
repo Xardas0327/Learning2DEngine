@@ -15,7 +15,7 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
-		class MultiSpriteRenderer : public IRenderer, public virtual System::Singleton<MultiSpriteRenderer>
+		class MultiSpriteRenderer : public IRenderer, public System::Singleton<MultiSpriteRenderer>
 		{
 			friend class Singleton<MultiSpriteRenderer>;
 		private:

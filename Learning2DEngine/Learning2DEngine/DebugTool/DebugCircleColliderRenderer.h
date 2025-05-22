@@ -20,7 +20,7 @@ namespace Learning2DEngine
 	{
 #define L2DE_DEBUG_CIRCLE_SEGMENT 50
 
-		class DebugCircleColliderRenderer : public Render::IRenderer, public virtual System::Singleton<DebugCircleColliderRenderer>
+		class DebugCircleColliderRenderer : public Render::IRenderer, public System::Singleton<DebugCircleColliderRenderer>
 		{
 			friend class Singleton<DebugCircleColliderRenderer>;
 		private:

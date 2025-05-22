@@ -11,7 +11,7 @@ namespace Learning2DEngine
 {
 	namespace ParticleSimulator
 	{
-		struct BasicParticleSettings : public virtual ParticleSettings
+		struct BasicParticleSettings : public ParticleSettings
 		{
 			glm::vec2 fixPositionOffset;
 			/// <summary>

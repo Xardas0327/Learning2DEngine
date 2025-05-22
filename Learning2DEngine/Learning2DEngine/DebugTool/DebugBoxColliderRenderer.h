@@ -18,7 +18,7 @@ namespace Learning2DEngine
 {
 	namespace DebugTool
 	{
-		class DebugBoxColliderRenderer : public Render::IRenderer, public virtual System::Singleton<DebugBoxColliderRenderer>
+		class DebugBoxColliderRenderer : public Render::IRenderer, public System::Singleton<DebugBoxColliderRenderer>
 		{
 			friend class Singleton<DebugBoxColliderRenderer>;
 		private:

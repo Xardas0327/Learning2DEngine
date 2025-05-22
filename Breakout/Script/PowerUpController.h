@@ -18,7 +18,7 @@
 const glm::vec2 POWERUP_SIZE(60.0f, 20.0f);
 const glm::vec2 VELOCITY(0.0f, 150.0f);
 
-class PowerUpController : public virtual Learning2DEngine::Physics::BoxColliderComponent
+class PowerUpController : public Learning2DEngine::Physics::BoxColliderComponent
 {
     friend class Learning2DEngine::System::GameObject;
 protected:

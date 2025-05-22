@@ -199,7 +199,7 @@ virtual void RefreshResolution(const Resolution& resolution) = 0;
 ### Header:
 ```cpp
 template<class TRenderData, class TRenderer>
-class LateRendererComponent : public virtual BaseRendererComponent<TRenderData, TRenderer>
+class LateRendererComponent : public BaseRendererComponent<TRenderData, TRenderer>
 {...}
 ```
 
@@ -355,7 +355,7 @@ Note: The projection and the view matrix came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class MultiSpriteRenderer : public IRenderer, public virtual System::Singleton<MultiSpriteRenderer>
+class MultiSpriteRenderer : public IRenderer, public System::Singleton<MultiSpriteRenderer>
 {...}
 ```
 
@@ -642,7 +642,7 @@ Please check for more info about `System::Component` and `BaseRendererComponent`
 ### Header:
 ```cpp
 template<class TRenderData, class TRenderer>
-class RendererComponent : public virtual BaseRendererComponent<TRenderData, TRenderer>
+class RendererComponent : public BaseRendererComponent<TRenderData, TRenderer>
 {...}
 ```
 
@@ -797,7 +797,7 @@ The developer can initialize the OpenGL and set or change its variables.
 
 ### Header:
 ```cpp
-class RenderManager : public virtual System::Singleton<RenderManager>
+class RenderManager : public System::Singleton<RenderManager>
 {...}
 ```
 
@@ -1357,7 +1357,7 @@ Please more info about `RendererComponent`.
 
 ### Header:
 ```cpp
-class SimpleSpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, SimpleSpriteRenderer>
+class SimpleSpriteRenderComponent : public RendererComponent<SpriteRenderData, SimpleSpriteRenderer>
 {...}
 ```
 
@@ -1423,7 +1423,7 @@ Note: The projection and the view matrix came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class SimpleSpriteRenderer : public IRenderer, public virtual System::Singleton<SimpleSpriteRenderer>
+class SimpleSpriteRenderer : public IRenderer, public System::Singleton<SimpleSpriteRenderer>
 {...}
 ```
 
@@ -1521,7 +1521,7 @@ Please more info about `RendererComponent`.
 
 ### Header:
 ```cpp
-class SpriteRenderComponent : public virtual RendererComponent<SpriteRenderData, MultiSpriteRenderer>
+class SpriteRenderComponent : public RendererComponent<SpriteRenderData, MultiSpriteRenderer>
 {...}
 ```
 

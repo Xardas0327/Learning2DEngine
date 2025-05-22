@@ -19,7 +19,7 @@ A component, which is used to render the box colliders.
 
 ### Header:
 ```cpp
-class DebugBoxColliderRenderComponent : public virtual Render::RendererComponent<DebugRenderData<Physics::BaseBoxColliderComponent>, DebugBoxColliderRenderer>
+class DebugBoxColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BaseBoxColliderComponent>, DebugBoxColliderRenderer>
 {...}
 ```
 
@@ -79,7 +79,7 @@ This renderer is used by `DebugBoxColliderRenderComponent`, that it can render t
 
 ### Header:
 ```cpp
-class DebugBoxColliderRenderer : public Render::IRenderer, public virtual System::Singleton<DebugBoxColliderRenderer>
+class DebugBoxColliderRenderer : public Render::IRenderer, public System::Singleton<DebugBoxColliderRenderer>
 {...}
 ```
 
@@ -186,7 +186,7 @@ A component, which is used to render the circle colliders.
 
 ### Header:
 ```cpp
-class DebugCircleColliderRenderComponent : public virtual Render::RendererComponent<DebugRenderData<Physics::BaseCircleColliderComponent>, DebugCircleColliderRenderer>
+class DebugCircleColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BaseCircleColliderComponent>, DebugCircleColliderRenderer>
 {...}
 ```
 
@@ -246,7 +246,7 @@ This renderer is used by `DebugCircleColliderRenderComponent`, that it can rende
 
 ### Header:
 ```cpp
-class DebugCircleColliderRenderer : public Render::IRenderer, public virtual System::Singleton<DebugCircleColliderRenderer>
+class DebugCircleColliderRenderer : public Render::IRenderer, public System::Singleton<DebugCircleColliderRenderer>
 {...}
 ```
 

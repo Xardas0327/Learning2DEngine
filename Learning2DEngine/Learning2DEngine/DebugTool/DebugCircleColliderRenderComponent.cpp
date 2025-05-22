@@ -14,9 +14,8 @@ namespace Learning2DEngine
 		int DebugCircleColliderRenderComponent::refrenceNumber = 0;
 		std::mutex DebugCircleColliderRenderComponent::mutex;
 
-		DebugCircleColliderRenderComponent::DebugCircleColliderRenderComponent(GameObject* gameObject, BaseCircleColliderComponent* collider)
-			: RendererComponent(gameObject, L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER, collider),
-			BaseRendererComponent(gameObject, L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER, collider), Component(gameObject)
+		DebugCircleColliderRenderComponent::DebugCircleColliderRenderComponent(GameObject* gameObject, const BaseCircleColliderComponent* collider)
+			: RendererComponent(gameObject, L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER, collider), Component(gameObject)
 		{
 		}
 

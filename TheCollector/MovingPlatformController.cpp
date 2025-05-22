@@ -6,7 +6,7 @@ using namespace Learning2DEngine::System;
 
 
 MovingPlatformController::MovingPlatformController(GameObject* gameObject, glm::vec2 endPosition, float speed)
-	: UpdaterComponent(gameObject), BaseUpdaterComponent(gameObject), Component(gameObject),
+	: UpdaterComponent(gameObject), Component(gameObject),
 	startPosition(gameObject->transform.GetPosition()), endPosition(endPosition),
 	directionVector(glm::normalize(endPosition - gameObject->transform.GetPosition())),
 	minVector(startPosition.x > endPosition.x ? endPosition.x : startPosition.x, startPosition.y > endPosition.y ? endPosition.y : startPosition.y),
