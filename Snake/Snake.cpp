@@ -43,7 +43,7 @@ void Snake::Init()
 
     //GameController
     auto gameControllerObject = GameObject::Create();
-    gameController = gameControllerObject->AddComponent<GameController, const FontSizePair&>(fontSizePair);
+    gameController = gameControllerObject->AddComponent<GameController>(fontSizePair);
 }
 
 void Snake::Terminate()
