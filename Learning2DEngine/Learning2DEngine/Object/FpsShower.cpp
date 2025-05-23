@@ -57,11 +57,7 @@ namespace Learning2DEngine
 			glm::vec4 color)
 		{
 			auto gameObject = GameObject::Create(transform);
-			return gameObject->AddComponent<FpsShower, const FontSizePair&, int, glm::vec4>(
-				fontSizePair,
-				layer,
-				color
-			);
+			return gameObject->AddComponent<FpsShower>(fontSizePair, layer, color);
 		}
 	}
 }

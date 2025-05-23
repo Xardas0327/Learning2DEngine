@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <utility>
 
 #include "../System/Component.h"
 
@@ -23,8 +24,8 @@ namespace Learning2DEngine
 
 		protected:
 			template <class ...TRenderDataParams>
-			BaseRendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams... renderDataParams)
-				: System::Component(gameObject), layer(layer), data(this, renderDataParams...)
+			BaseRendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams&&... renderDataParams)
+				: System::Component(gameObject), layer(layer), data(this, std::forward<TRenderDataParams>(renderDataParams)...)
 			{
 
 			}

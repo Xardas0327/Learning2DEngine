@@ -33,7 +33,7 @@ void BallController::Init()
     UpdaterComponent::Init();
 
     rigidbody = gameObject->AddComponent<Rigidbody>(INITIAL_BALL_VELOCITY, false, isStuck);
-    renderer = gameObject->AddComponent<SpriteRenderComponent, const Texture2D&>(
+    renderer = gameObject->AddComponent<SpriteRenderComponent>(
         ResourceManager::GetInstance().GetTexture(textureId)
     );
 
@@ -53,10 +53,8 @@ void BallController::InitParticleSystem()
         0.0f
     );
 
-    particleSystem = gameObject->AddComponent<
-        ParticleSystemComponent, unsigned int, const Texture2D&, const ParticleSystemSettings&, ParticleSettings*, unsigned int, int
-    >(
-        500,
+    particleSystem = gameObject->AddComponent<ParticleSystemComponent>(
+        500u,
         ResourceManager::GetInstance().GetTexture(particleTextureId),
         ballParticleSystemSettings,
         new BallParticleSettings(glm::vec2(radius / 2.0f), glm::vec2(10.0f, 10.0f), 0.3f, 0.1f),

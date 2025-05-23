@@ -15,7 +15,7 @@ PlayerController::PlayerController(Learning2DEngine::System::GameObject* gameObj
 
 void PlayerController::Init()
 {
-	renderer = gameObject->AddComponent<SpriteRenderComponent, const Texture2D&>(
+	renderer = gameObject->AddComponent<SpriteRenderComponent>(
 		ResourceManager::GetInstance().GetTexture(textureId)
 	);
 	collider = gameObject->AddComponent<BoxColliderComponent>(

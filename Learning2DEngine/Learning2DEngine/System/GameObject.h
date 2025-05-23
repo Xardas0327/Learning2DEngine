@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <utility>
 
 #include "BaseGameObject.h"
 #include "Transform.h"
@@ -42,9 +43,9 @@ namespace Learning2DEngine
 			}
 
 			template <class TComponent, class ...Params>
-			TComponent* AddComponent(Params... params)
+			TComponent* AddComponent(Params&&... params)
 			{
-				TComponent* component = new TComponent(this, params...);
+				TComponent* component = new TComponent(this, std::forward<Params>(params)...);
 				components.push_back(component);
 				component->Init();
 

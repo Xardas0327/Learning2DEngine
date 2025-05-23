@@ -14,7 +14,7 @@ BackgroundController::BackgroundController(GameObject* gameObject, const std::st
 
 void BackgroundController::Init()
 {
-    renderer = gameObject->AddComponent<SimpleSpriteRenderComponent, const Texture2D&, int>(
+    renderer = gameObject->AddComponent<SimpleSpriteRenderComponent>(
         ResourceManager::GetInstance().GetTexture(textureId),
         -2
     );

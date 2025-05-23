@@ -87,7 +87,7 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bo
                 color = glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
 
             GameObject* brick = GameObject::Create(areBricksActive);
-            auto brickController = brick->AddComponent<BrickController, size_t, size_t, bool>(x, y, brickData[y][x] == 1);
+            auto brickController = brick->AddComponent<BrickController>(x, y, brickData[y][x] == 1);
             brickController->renderer->data.SetTexture(
                 brickData[y][x] == 1
                 ? solidBlockTexture

@@ -19,8 +19,9 @@ namespace Learning2DEngine
 		{
 		protected:
 			template <class ...TRenderDataParams>
-			LateRendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams... renderDataParams)
-				: BaseRendererComponent<TRenderData, TRenderer>(gameObject, layer, renderDataParams...), System::Component(gameObject)
+			LateRendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams&&... renderDataParams)
+				: BaseRendererComponent<TRenderData, TRenderer>(gameObject, layer, std::forward<TRenderDataParams>(renderDataParams)...),
+				System::Component(gameObject)
 			{
 
 			}

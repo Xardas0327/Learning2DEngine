@@ -1060,11 +1060,11 @@ PlayerController(GameObject* gameObject, const std::string& textureId);
 The textureId can be added by this format:
 ```cpp
 GameObject* player = new GameObject();
-playerController = player->AddComponent<PlayerController, const std::string&>("paddle");
+playerController = player->AddComponent<PlayerController>("paddle");
 ```
 ```cpp
 template <class TComponent, class ...Params>
-TComponent* AddComponent(Params... params);
+TComponent* AddComponent(Params&&... params);
 ```
 
 **GetComponent**  
