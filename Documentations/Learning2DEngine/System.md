@@ -1064,7 +1064,7 @@ playerController = player->AddComponent<PlayerController>("paddle");
 ```
 ```cpp
 template <class TComponent, class ...Params>
-TComponent* AddComponent(Params... params);
+TComponent* AddComponent(Params&&... params);
 ```
 
 **GetComponent**  
