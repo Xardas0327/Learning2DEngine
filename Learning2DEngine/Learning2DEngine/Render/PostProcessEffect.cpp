@@ -1,7 +1,5 @@
 #include "PostProcessEffect.h"
 
-#include <glad/glad.h>
-
 #include "../DebugTool/Log.h"
 #include "../System/ResourceManager.h"
 #include "RenderManager.h"

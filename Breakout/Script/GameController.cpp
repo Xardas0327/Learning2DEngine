@@ -4,7 +4,9 @@
 
 #include <Learning2DEngine/DebugTool/DebugMacro.h>
 #include <Learning2DEngine/Render/RenderManager.h>
+#include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/Random.h>
+#include <Learning2DEngine/System/Time.h>
 #include <Learning2DEngine/Object/FpsShower.h>
 
 using namespace Learning2DEngine::System;
@@ -207,7 +209,7 @@ void GameController::ProcessInput()
         }
         break;
     case GameState::GAME_ACTIVE:
-        float velocity = PLAYER_VELOCITY * Game::GetDeltaTime();
+        float velocity = PLAYER_VELOCITY * Time::GetDeltaTime();
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_A))
         {
             if (playerController->gameObject->transform.GetPosition().x >= 0.0f)
@@ -237,7 +239,7 @@ void GameController::ShakeScreen()
 {
     if (shakeTime > 0.0f)
     {
-        shakeTime -= Game::GetDeltaTime();
+        shakeTime -= Time::GetDeltaTime();
         if (shakeTime <= 0.0f)
             postProcessData->shake = false;
     }
@@ -358,7 +360,7 @@ void GameController::UpdatePowerUps()
 
         if (powerUp->activated)
         {
-            powerUp->actualDuration -= Game::GetDeltaTime();
+            powerUp->actualDuration -= Time::GetDeltaTime();
 
             if (powerUp->actualDuration <= 0.0f)
             {

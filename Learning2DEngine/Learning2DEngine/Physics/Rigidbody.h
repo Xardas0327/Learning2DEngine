@@ -4,7 +4,7 @@
 
 #include "../System/UpdaterComponent.h"
 #include "../System/GameObject.h"
-#include "../System/Game.h"
+#include "../System/Time.h"
 
 #include "BaseRigidbody.h"
 

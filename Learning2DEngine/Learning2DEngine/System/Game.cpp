@@ -9,6 +9,7 @@
 #include "ResourceManager.h"
 #include "ComponentManager.h"
 #include "GameObjectManager.h"
+#include "Time.h"
 
 namespace Learning2DEngine
 {
@@ -16,14 +17,12 @@ namespace Learning2DEngine
 
     namespace System
     {
-        float Game::deltaTime = 0.0f;
         Camera Game::mainCamera = Camera();
         InputStatus Game::keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER] = { InputStatus::KEY_UP };
         Cursor Game::cursor = Cursor();
 
         Game::Game()
-            : timeScale(L2DE_TIME_SCALE_DEFAULT), isMsaaActive(false),
-            isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
+            : isMsaaActive(false), isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
             ppeRender(), keyboardEventItem(this), resolutionEventItem(this),
             mouseButtonEventItem(this), cursorPositionEventItem(this), cursorEnterEventItem(this), scrollEventItem(this)
         {
@@ -80,20 +79,9 @@ namespace Learning2DEngine
                 auto& renderManager = RenderManager::GetInstance();
                 auto& gameObjectManager = GameObjectManager::GetInstance();
 				auto& componentManager = ComponentManager::GetInstance();
-                float lastTime = glfwGetTime();
                 while (!renderManager.IsWindowClosed())
                 {
-                    // Calc deltaTime
-                    float currentTime = glfwGetTime();
-                    Game::deltaTime = (currentTime - lastTime);
-                    lastTime = currentTime;
-
-#if L2DE_DEBUG
-                    // It is useful if the game stop by a breakpoint
-                    if (Game::deltaTime > L2DE_DEBUG_MAX_BASE_DELTATIME)
-                        Game::deltaTime = L2DE_DEBUG_MAX_BASE_DELTATIME;
-#endif
-                    Game::deltaTime *= timeScale;
+                    Time::CalcDeltaTime();
 
                     UpdateEvents();
 

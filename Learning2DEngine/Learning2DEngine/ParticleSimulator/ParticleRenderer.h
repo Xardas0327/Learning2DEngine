@@ -1,10 +1,9 @@
 #pragma once
 
+#include <glad/glad.h>
 #include <map>
 #include <vector>
 #include <tuple>
-
-#include <glad/glad.h>
 
 #include "../System/Singleton.h"
 #include "../Render/IRenderer.h"

@@ -2,6 +2,8 @@
 
 #include "BasicParticleSettings.h"
 
+#include "../System/Time.h"
+
 namespace Learning2DEngine
 {
 	using namespace System;
@@ -125,7 +127,7 @@ namespace Learning2DEngine
 
 			if (delayTime > 0.0f)
 			{
-				delayTime -= Game::GetDeltaTime();
+				delayTime -= Time::GetDeltaTime();
 				return;
 			}
 
@@ -152,7 +154,7 @@ namespace Learning2DEngine
 		{
 			for (int i = 0; i < data.GetParticleAmount(); ++i)
 			{
-				data.particles[i].lifeTime -= Game::GetDeltaTime();
+				data.particles[i].lifeTime -= Time::GetDeltaTime();
 				if (data.particles[i].lifeTime > 0.0f)
 				{
 					particleSettings->UpdateParticle(data.particles[i], *gameObject);
@@ -162,7 +164,7 @@ namespace Learning2DEngine
 
 		void ParticleSystemComponent::TryToSpawnNewParticles()
 		{
-			nextSpawnTime -= Game::GetDeltaTime();
+			nextSpawnTime -= Time::GetDeltaTime();
 
 			float spawnTime = data.systemSettings.spawnTime < 0.0f ? 0.0f : data.systemSettings.spawnTime;
 

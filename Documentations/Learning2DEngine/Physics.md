@@ -760,8 +760,7 @@ Rigidbody(System::GameObject* gameObject, bool isFrozen);
 ```
 
 **Update()**  
-If the object is not frozen, the position of gameobject will be updated
-by `velocity` * `Game::GetDeltaTime()`.
+If the object is not frozen, the position of gameobject will be updated.
 ```cpp
 virtual void Update() override;
 ```

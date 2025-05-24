@@ -11,7 +11,7 @@ It contains the predefined components and game objects.
 
 ### Description:
 It shows the FPS (frame per second).  
-It uses glfwGetTime(), the Game::deltaTime is not good here, because it is multiplided with Game::timeScale.
+It uses glfwGetTime(), the Time::deltaTime is not good here, because it is multiplided with Time::timeScale.
 
 ### Header:
 ```cpp

@@ -5,7 +5,7 @@
 #include "ParticleSettings.h"
 #include "../System/Transform.h"
 #include "../System/Random.h"
-#include "../System/Game.h"
+#include "../System/Time.h"
 
 namespace Learning2DEngine
 {
@@ -58,7 +58,7 @@ namespace Learning2DEngine
 			void UpdateParticle(Particle& particle, const System::GameObject& gameObject) override
 			{
 				particle.transform.AddPosition(
-					particle.velocity * particle.speed * System::Game::GetDeltaTime()
+					particle.velocity * particle.speed * System::Time::GetDeltaTime()
 				);
 			}
 		};
