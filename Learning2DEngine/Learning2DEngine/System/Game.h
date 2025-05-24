@@ -25,7 +25,6 @@ namespace Learning2DEngine
     namespace System
     {
 #define L2DE_KEYBOARD_BUTTON_NUMBER 512
-#define L2DE_TIME_SCALE_DEFAULT 1.0f
 
         /*
             The Function order in the Run() (in a frame):
@@ -45,7 +44,6 @@ namespace Learning2DEngine
                     protected Render::IResolutionRefresher
         {
         private:
-            float timeScale;
             bool isMsaaActive;
             bool isPostProcessEffectActive;
             bool isPostProcessEffectUsed;
@@ -60,12 +58,6 @@ namespace Learning2DEngine
 
             static InputStatus keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER];
             static Cursor cursor;
-
-            /// <summary>
-            /// It is multiplied by timeScale.
-            /// Before the first frame, it is 0.0f.
-            /// </summary>
-            static float deltaTime;
 
             void UpdateEvents();
             /// <summary>
@@ -121,21 +113,6 @@ namespace Learning2DEngine
                 return isPostProcessEffectUsed;
             }
 
-            inline void ResetTimeScale()
-            {
-                timeScale = L2DE_TIME_SCALE_DEFAULT;
-            }
-
-            inline void SetTimeScale(float value)
-            {
-                timeScale = value;
-            }
-
-            inline float GetTimeScale()
-            {
-                return timeScale;
-            }
-
             /// <summary>
             /// If this function is override, it must call the Game::RefreshResolution(const Resolution& resolution) in the first line.
             /// </summary>
@@ -166,11 +143,6 @@ namespace Learning2DEngine
             /// </summary>
             virtual void Terminate();
             void Run();
-
-            static float GetDeltaTime()
-            {
-                return deltaTime;
-            }
 
             static InputStatus GetKeyboardButtonStatus(int key)
             {

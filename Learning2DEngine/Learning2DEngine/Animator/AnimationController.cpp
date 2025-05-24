@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-#include "../System/Game.h"
+#include "../System/Time.h"
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
@@ -36,7 +36,7 @@ namespace Learning2DEngine
 			bool isForward = speed >= 0.0f;
 			float currentSpeed = fabs(speed);
 
-			currentTime -= currentSpeed * Game::GetDeltaTime();
+			currentTime -= currentSpeed * Time::GetDeltaTime();
 
 			if (currentTime > 0.0f)
 				return;

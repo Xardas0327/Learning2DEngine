@@ -1,8 +1,8 @@
 #include "GameController.h"
 
-#include <format>
-
 #include <Learning2DEngine/DebugTool/DebugMacro.h>
+#include <Learning2DEngine/System/Game.h>
+#include <Learning2DEngine/System/Time.h>
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Object/FpsShower.h>
 
@@ -327,7 +327,7 @@ void GameController::Update()
         if (playerController->coinNumber == coins.size())
             EndPlay();
 
-        currentPlayTime -= Game::GetDeltaTime();
+        currentPlayTime -= Time::GetDeltaTime();
         if (currentPlayTime <= 0.0f)
         {
             currentPlayTime = 0;

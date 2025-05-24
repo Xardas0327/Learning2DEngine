@@ -4,6 +4,7 @@
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/InputStatus.h>
 #include <Learning2DEngine/System/Random.h>
+#include <Learning2DEngine/System/Time.h>
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Object/FpsShower.h>
 
@@ -151,7 +152,7 @@ void GameController::MoveSnake()
     if (state != GameState::GAME_ACTIVE)
         return;
 
-    actualWaitingTime -= Game::GetDeltaTime();
+    actualWaitingTime -= Time::GetDeltaTime();
     if (actualWaitingTime < 0)
     {
         glm::vec2 moveVector = glm::vec2(0.0f);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glad/glad.h>
+
 #include "Resolution.h"
 #include "Texture2D.h"
 #include "Shader.h"

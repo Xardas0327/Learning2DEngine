@@ -1,6 +1,5 @@
 #include "MSAA.h"
 
-#include <glad/glad.h>
 #include "RenderManager.h"
 #include "../DebugTool/Log.h"
 

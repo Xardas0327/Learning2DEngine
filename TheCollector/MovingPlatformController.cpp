@@ -1,6 +1,6 @@
 #include "MovingPlatformController.h"
 
-#include <Learning2DEngine/System/Game.h>
+#include <Learning2DEngine/System/Time.h>
 
 using namespace Learning2DEngine::System;
 
@@ -18,7 +18,7 @@ MovingPlatformController::MovingPlatformController(GameObject* gameObject, glm::
 
 void MovingPlatformController::Update()
 {
-	glm::vec2 newPosition = gameObject->transform.GetPosition() + (movingToEnd ? 1.0f : -1.0f) * directionVector * speed * Game::GetDeltaTime();
+	glm::vec2 newPosition = gameObject->transform.GetPosition() + (movingToEnd ? 1.0f : -1.0f) * directionVector * speed * Time::GetDeltaTime();
 
 	gameObject->transform.SetPosition(
 		glm::clamp(newPosition, minVector, maxVector)

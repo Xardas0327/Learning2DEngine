@@ -40,7 +40,7 @@ namespace Learning2DEngine
 		void FpsShower::Update()
 		{
 			++fps;
-			// The Game::deltaTime is not good here, because it is multiplided with Game::timeScale
+			// The Time::deltaTime is not good here, because it is multiplided with Time::timeScale
 			float currentTime = glfwGetTime();
 			if (currentTime - previousTime > 1.0f)
 			{

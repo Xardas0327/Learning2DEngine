@@ -1,6 +1,6 @@
 #include "BallParticleSettings.h"
 
-#include <Learning2DEngine/System/Game.h>
+#include <Learning2DEngine/System/Time.h>
 #include <Learning2DEngine/DebugTool/Log.h>
 #include <Learning2DEngine/System/Random.h>
 
@@ -38,6 +38,6 @@ void BallParticleSettings::SpawnParticle(Particle& particle, const GameObject& g
 
 void BallParticleSettings::UpdateParticle(Particle& particle, const GameObject& gameObject)
 {
-	particle.transform.AddPosition(-particle.velocity * particle.speed * Game::GetDeltaTime());
-	particle.color.a -= Game::GetDeltaTime() * 2.5f;
+	particle.transform.AddPosition(-particle.velocity * particle.speed * Time::GetDeltaTime());
+	particle.color.a -= Time::GetDeltaTime() * 2.5f;
 }

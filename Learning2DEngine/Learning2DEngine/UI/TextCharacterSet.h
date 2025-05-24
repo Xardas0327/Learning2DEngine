@@ -2,6 +2,8 @@
 
 #include <map>
 
+#include <glad/glad.h>
+
 #include "../System/Singleton.h"
 #include "FreeTypeCharacter.h"
 #include "FontSizePair.h"

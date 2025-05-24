@@ -180,6 +180,7 @@
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\Render\MultiSpriteRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
+    <ClCompile Include="Learning2DEngine\System\Time.cpp" />
     <ClCompile Include="Learning2DEngine\UI\SimpleText2DLateRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\UI\SimpleText2DRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\UI\Text2DLateRenderComponent.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="Learning2DEngine\System\Singleton.h" />
     <ClInclude Include="Learning2DEngine\Render\Texture2DSettings.h" />
     <ClInclude Include="Learning2DEngine\System\ThreadComponentHandler.h" />
+    <ClInclude Include="Learning2DEngine\System\Time.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
     <ClInclude Include="Learning2DEngine\System\UpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\UpdaterComponentHandler.h" />

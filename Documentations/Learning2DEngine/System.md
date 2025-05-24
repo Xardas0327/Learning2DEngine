@@ -20,6 +20,7 @@
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
 - [ThreadComponentHandler](System.md#threadcomponenthandler)
+- [Time](System.md#time)
 - [Transform](System.md#transform)
 - [UpdaterComponent](System.md#updatercomponent)
 - [UpdaterComponentHandler](System.md#updatercomponenthandler)
@@ -662,17 +663,8 @@ class Game : private IKeyboardRefresher, private ICursorRefresher, public protec
 The number of keyboard buttons.
 Its value is 512.
 
-**L2DE_TIME_SCALE_DEFAULT**  
-The default value of the `timeScale`.
-Its value is 1.0f.
-
 ### Variables:
 **Private:**  
-**timeScale**  
-```cpp
-float timeScale;
-```
-
 **isMsaaActive**  
 ```cpp
 bool isMsaaActive;
@@ -740,13 +732,6 @@ static InputStatus keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER];
 **cursor**  
 ```cpp
 static Cursor cursor;
-```
-
-**deltaTime**  
-It is multiplied by `timeScale`.  
-Before the first frame, it is 0.0f.
-```cpp
-static float deltaTime;
 ```
 
 **Public:**  
@@ -892,24 +877,6 @@ It returns true, if the effect shader is used.
 inline bool IsPostProcessEffectUsed();
 ``` 
 
-**ResetTimeScale**  
-It resets the `timeScale` by `TIME_SCALE_DEFAULT`.
-```cpp
-inline void ResetTimeScale();
-``` 
-
-**SetTimeScale**  
-It sets the `timeScale`.
-```cpp
-inline void SetTimeScale(float value);
-``` 
-
-**GetTimeScale**  
-It returns the `timeScale`.
-```cpp
-inline float GetTimeScale();
-``` 
-
 **RefreshResolution**  
 If this function is override, it must call the Game::RefreshResolution(const Resolution& resolution)
 in the first line.  
@@ -957,13 +924,6 @@ Please check the Game's Description for the function order.
 ```cpp
 void Run();
 ```
-
-**GetDeltaTime**  
-It returns the deltaTime.  
-Please check for more info about deltaTime.
-```cpp
-static float GetDeltaTime();
-``` 
 
 **GetKeyboardButtonStatus**  
 It returns the status of a keyboard button.  
@@ -1632,6 +1592,87 @@ If it is 0, the class will not use threads.
 inline unsigned int GetMaxComponentPerThread();
 ```
 
+##
+## Time
+### Source Code:
+[Time.h](../../Learning2DEngine/Learning2DEngine/System/Time.h)  
+[Time.cpp](../../Learning2DEngine/Learning2DEngine/System/Time.cpp)  
+
+### Description: 
+It contains the time functions.
+
+### Header:
+```cpp
+class Time
+{...}
+```
+
+### Macros:
+**L2DE_TIME_SCALE_DEFAULT**  
+The default value of the timeScale.
+Its value is 1.0f.
+
+### Variables:
+**Private:**  
+**deltaTime**  
+It is multiplied by timeScale.  
+Before the first frame, it is 0.0f.
+```cpp
+static float deltaTime;
+```
+
+**timeScale**  
+```cpp
+static float timeScale;
+```
+
+**lastTime**  
+```cpp
+static float lastTime;
+```
+
+**isInited**  
+```cpp
+static bool isInited;
+```
+
+### Functions:
+**Private:**  
+**Time**  
+```cpp
+Time() = default;
+```
+
+**~Time**  
+```cpp
+~Time() = default;
+```
+
+**CalcDeltaTime**  
+```cpp
+static void CalcDeltaTime();
+```
+
+**Public:**  
+**ResetTimeScale**  
+```cpp
+static inline void ResetTimeScale();
+```
+
+**SetTimeScale**  
+```cpp
+static inline void SetTimeScale(float value);
+```
+
+**GetTimeScale**  
+```cpp
+static inline float GetTimeScale();
+```
+
+**GetDeltaTime**  
+```cpp
+static inline float GetDeltaTime();
+```
 
 ##
 ## Transform
