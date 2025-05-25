@@ -135,12 +135,12 @@ bool isRenderable;
 **minAllocateSize**
 The renderer will allocate minimum this size vbo buffer.
 ```cpp
-const unsigned int minAllocateSize;
+const size_t minAllocateSize;
 ```
 
 **particleAmount**
 ```cpp
-const unsigned int particleAmount;
+const size_t particleAmount;
 ```
 
 **particles**  
@@ -159,10 +159,10 @@ ParticleSystemSettings systemSettings;
 **Public:**  
 **ParticleRenderData**  
 ```cpp
-ParticleRenderData(const System::Component* component, unsigned int particleAmount, unsigned int minAllocateSize = 0);
+ParticleRenderData(const System::Component* component, size_t particleAmount, size_t minAllocateSize = 0);
 ```
 ```cpp
-ParticleRenderData(const System::Component* component, unsigned int particleAmount, const ParticleSystemSettings& systemSettings, const Render::Texture2D& texture, unsigned int minAllocateSize = 0)
+ParticleRenderData(const System::Component* component, size_t particleAmount, const ParticleSystemSettings& systemSettings, const Render::Texture2D& texture, size_t minAllocateSize = 0)
 ```
 
 **~ParticleRenderData**  
@@ -238,7 +238,7 @@ GLuint vboDynamic;
 **maxObjectSize**  
 The size of the vboDynamic, dynamicData.
 ```cpp
-unsigned int maxObjectSize;
+size_t maxObjectSize;
 ```
 
 **particleRenderData**  
@@ -248,7 +248,7 @@ The vector contains the tuples, which renderable at the same time.
 The tuple contains a map, whose keys are the texture ids and values the vector of `SpriteRenderData*`,
 a bool which means, that it uses blend or not, the blend function factor and the max active particle count.
 ```cpp
-std::map<int, std::vector<std::tuple<std::map<GLuint, std::vector<ParticleRenderData*>>, bool, Render::BlendFuncFactor, int>>> particleRenderData;
+std::map<int, std::vector<std::tuple<std::map<GLuint, std::vector<ParticleRenderData*>>, bool, Render::BlendFuncFactor, size_t>>> particleRenderData;
 ```
 
 **dynamicData**  

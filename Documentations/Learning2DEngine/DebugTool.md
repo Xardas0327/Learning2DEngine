@@ -110,7 +110,7 @@ GLuint vboDynamic;
 **maxObjectSize**  
 The size of the vboDynamic, dynamicData.
 ```cpp
-unsigned int maxObjectSize;
+size_t maxObjectSize;
 ```
 
 **debugRenderData**  
@@ -283,7 +283,7 @@ GLuint vboDynamic;
 **maxObjectSize**  
 The size of the vboDynamic, dynamicData.
 ```cpp
-unsigned int maxObjectSize;
+size_t maxObjectSize;
 ```
 
 **debugRenderData**  
