@@ -45,7 +45,7 @@ private:
     GameState state;
     std::vector<PowerUpController*> powerUps;
     std::vector<GameLevel> levels;
-    unsigned int selectedLevel;
+    size_t selectedLevel;
     unsigned int lifes;
     BackgroundController* backgroundController;
     PlayerController* playerController;

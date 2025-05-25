@@ -152,7 +152,7 @@ void GameController::Update()
 
 void GameController::LateUpdate()
 {
-    postProcessData->RefreshShader(glfwGetTime());
+    postProcessData->RefreshShader(static_cast<float>(glfwGetTime()));
     IsLifeLost();
     IsLevelCompleted();
 }
@@ -179,7 +179,7 @@ void GameController::ProcessInput()
 
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_W) == InputStatus::KEY_DOWN)
         {
-            int oldLevel = selectedLevel;
+            size_t oldLevel = selectedLevel;
             selectedLevel = (selectedLevel + 1) % levels.size();
 
             levels[oldLevel].SetBricksActive(false);
@@ -187,7 +187,7 @@ void GameController::ProcessInput()
         }
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_S) == InputStatus::KEY_DOWN)
         {
-            int oldLevel = selectedLevel;
+            size_t oldLevel = selectedLevel;
             if (selectedLevel > 0)
                 --selectedLevel;
             else

@@ -24,7 +24,7 @@ void BallParticleSettings::Init(const GameObject& gameObject)
 }
 void BallParticleSettings::SpawnParticle(Particle& particle, const GameObject& gameObject)
 {
-	float random = Random::GetNumber(-5, 6);
+	float random = static_cast<float>(Random::GetNumber(-5, 6));
 	float rColor = Random::GetNumber(0.5f, 0.6f);
 	particle.transform.SetPosition(
 		gameObject.transform.GetPosition() + random + positionOffset
