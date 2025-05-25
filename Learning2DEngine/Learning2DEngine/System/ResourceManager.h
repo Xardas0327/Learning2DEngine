@@ -32,7 +32,6 @@ namespace Learning2DEngine
             bool LoadShaderFile(const char* filePath, std::string& outSource);
             Render::Shader LoadShaderFromFile(const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath = nullptr);
             Render::Shader LoadShader(const char* vertexText, const char* fragmentText, const char* geometryText = nullptr);
-            Render::Texture2D LoadTextureFromFile(const char* filePath, const Render::Texture2DSettings& settings);
         public:
             Render::Shader LoadShaderFromFile(
                 const std::string& name, const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath = nullptr);
@@ -41,10 +40,11 @@ namespace Learning2DEngine
             bool IsShaderExist(const std::string& name);
             void DestroyShader(const std::string& name);
 
-            Render::Texture2D& LoadTextureFromFile(const std::string& name, const char* filePath, const Render::Texture2DSettings& settings);
-            Render::Texture2D& GetTexture(const std::string& name);
-            bool IsTextureExist(const std::string& name);
-            void DestroyTexture2D(const std::string& name);
+            // If the id is used, it will return the old one.
+            Render::Texture2D& LoadTextureFromFile(const std::string& id, const char* filePath, const Render::Texture2DSettings& settings);
+            Render::Texture2D& GetTexture(const std::string& id);
+            bool IsTextureExist(const std::string& id);
+            void DestroyTexture(const std::string& id);
             void Clear();
         };
 	}

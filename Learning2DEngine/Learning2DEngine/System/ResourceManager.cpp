@@ -108,37 +108,38 @@ namespace Learning2DEngine
             shaders.erase(name);
         }
 
-        Texture2D ResourceManager::LoadTextureFromFile(const char* filePath, const Texture2DSettings& settings)
+        Texture2D& ResourceManager::LoadTextureFromFile(const std::string& id, const char* filePath, const Texture2DSettings& settings)
         {
-            Texture2D texture(settings);
+            auto response = textures.emplace(id, settings);
+            if (!response.second)
+            {
+                L2DE_LOG_WARNING(std::string("TEXTURE: this id was already used: ") + id);
+                return response.first->second;
+            }
 
-            int width, height, nrChannels;
+            int width;
+            int height;
+            int nrChannels;
             unsigned char* data = stbi_load(filePath, &width, &height, &nrChannels, 0);
-            texture.Create(width, height, data);
-            stbi_image_free(data);
-            return texture;
+            response.first->second.Create(width, height, data);
+
+            return response.first->second;
         }
 
-        Texture2D& ResourceManager::LoadTextureFromFile(const std::string& name, const char* filePath, const Texture2DSettings& settings)
+        Texture2D& ResourceManager::GetTexture(const std::string& id)
         {
-            textures[name] = LoadTextureFromFile(filePath, settings);
-            return textures[name];
+            return textures[id];
         }
 
-        Texture2D& ResourceManager::GetTexture(const std::string& name)
+        bool ResourceManager::IsTextureExist(const std::string& id)
         {
-            return textures[name];
+            return textures.count(id);
         }
 
-        bool ResourceManager::IsTextureExist(const std::string& name)
+        void ResourceManager::DestroyTexture(const std::string& id)
         {
-            return textures.count(name);
-        }
-
-        void ResourceManager::DestroyTexture2D(const std::string& name)
-        {
-            textures[name].Destroy();
-            textures.erase(name);
+            textures[id].Destroy();
+            textures.erase(id);
         }
 
         void ResourceManager::Clear()

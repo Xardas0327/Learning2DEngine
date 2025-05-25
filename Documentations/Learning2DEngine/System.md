@@ -1426,11 +1426,6 @@ Render::Shader LoadShaderFromFile(const char* vertexFilePath, const char* fragme
 Render::Shader LoadShader(const char* vertexText, const char* fragmentText, const char* geometryText = nullptr);
 ```
 
-**LoadTextureFromFile**  
-```cpp
-Render::Texture2D LoadTextureFromFile(const char* filePath, const Render::Texture2DSettings& settings);
-```
-
 **Public:**  
 **LoadShaderFromFile**  
 It creates a `Shader` from files.
@@ -1465,9 +1460,10 @@ void DestroyShader(const std::string& name);
 ```
 
 **LoadTextureFromFile**  
-It creates a `Texture2D` from files.
+It creates a `Texture2D` from files.  
+If the id is used, it will return the old one.
 ```cpp
-Render::Texture2D& LoadTextureFromFile(const std::string& name, const char* filePath, const Render::Texture2DSettings& settings);
+Render::Texture2D& LoadTextureFromFile(const std::string& id, const char* filePath, const Render::Texture2DSettings& settings);
 ```
 
 **GetTexture**  
@@ -1475,19 +1471,19 @@ It returns a `Texture2D`. If the texture does not exist,
 it will return an uninitialized `Texture2D`.
 It is recommended to use the `IsTextureExist()`.
 ```cpp
-Render::Texture2D& GetTexture(const std::string& name);
+Render::Texture2D& GetTexture(const std::string& id);
 ```
 
 **IsTextureExist**  
 It returns true if the `Texture2D` exist.
 ```cpp
-bool IsTextureExist(const std::string& name);
+bool IsTextureExist(const std::string& id);
 ```
 
-**DestroyTexture2D**  
+**DestroyTexture**  
 It destroys the `Texture2D`.
 ```cpp
-void DestroyTexture2D(const std::string& name);
+void DestroyTexture2D(const std::string& id);
 ```
 
 **Clear**  
