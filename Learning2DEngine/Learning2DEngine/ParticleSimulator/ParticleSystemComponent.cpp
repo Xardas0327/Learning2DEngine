@@ -186,7 +186,7 @@ namespace Learning2DEngine
 
 		void ParticleSystemComponent::SpawnNewParticles()
 		{
-			for (int i = 0; i < data.systemSettings.newParticlesPerSpawn; ++i)
+			for (unsigned int i = 0; i < data.systemSettings.newParticlesPerSpawn; ++i)
 			{
 				unsigned int index = GetUnusedParticleIndex();
 				particleSettings->SpawnParticle(data.particles[index], *gameObject);

@@ -43,7 +43,7 @@ namespace Learning2DEngine
 			std::mt19937 gen(rd());
 			std::uniform_real_distribution<> dis(minInclusive, std::nextafter(maxInclusive, DBL_MAX));
 
-			return dis(gen);
+			return static_cast<float>(dis(gen));
 		}
 	}
 }

@@ -1,8 +1,5 @@
 #include "TextCharacterSet.h"
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
 #include "../DebugTool/Log.h"
 
 namespace Learning2DEngine

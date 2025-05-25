@@ -24,7 +24,7 @@ namespace Learning2DEngine
 			GLuint vao;
 			GLuint ebo;
 			GLuint vboDynamic;
-			unsigned int maxObjectSize;
+			size_t maxObjectSize;
 
 			//The int is the layer  
 			//The map key is a GLuint, which a character texture id, and the value is a vector of array,

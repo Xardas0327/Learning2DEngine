@@ -167,8 +167,8 @@ namespace Learning2DEngine
 						continue;
 
 					auto particles = particleData->GetParticles();
-					int activeParticleCount = 0;
-					for (int i = 0; i < particleData->GetParticleAmount(); ++i)
+					size_t activeParticleCount = 0;
+					for (size_t i = 0; i < particleData->GetParticleAmount(); ++i)
 					{
 						if (particles[i].lifeTime > 0.0f)
 						{
@@ -233,7 +233,7 @@ namespace Learning2DEngine
 				}
 			}
 
-			int maxActiveParticleCount = 0;
+			size_t maxActiveParticleCount = 0;
 			for (auto& layerData : particleRenderData)
 			{
 				for (auto& data : layerData.second)
@@ -248,7 +248,9 @@ namespace Learning2DEngine
 			{
 				//It allocates 20% more space, so that it does not have to allocate again
 				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<float>(maxActiveParticleCount) * 1.2f;
+				maxObjectSize = static_cast<size_t>(
+					static_cast<float>(maxActiveParticleCount) * 1.2f
+				);
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(MultiSpriteDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);

@@ -157,7 +157,7 @@ namespace Learning2DEngine
 		{
 			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
 			spriteRenderData.clear();
-			int maxDynamicSize = 0;
+			size_t maxDynamicSize = 0;
 			for (auto& layerData : renderData)
 			{
 				auto& actualLayerData = spriteRenderData[layerData.first];
@@ -175,7 +175,7 @@ namespace Learning2DEngine
 
 				int textureUnitCount = 0;
 				int itemCount = 0;
-				int actualMaxSize = 0;
+				size_t actualMaxSize = 0;
 
 				for (auto& data : spriteRenderData[layerData.first])
 				{
@@ -203,7 +203,9 @@ namespace Learning2DEngine
 			{
 				//It allocates 20% more space, so that it does not have to allocate again
 				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<float>(maxDynamicSize) * 1.2f;
+				maxObjectSize = static_cast<size_t>(
+					static_cast<float>(maxDynamicSize) * 1.2f
+				);
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(MultiSpriteDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
