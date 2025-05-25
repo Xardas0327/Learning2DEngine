@@ -17,7 +17,7 @@ class PlayerController : public Learning2DEngine::System::Component
     friend class Learning2DEngine::System::GameObject;
 protected:
     const std::string textureId;
-    const int initSize;
+    const unsigned int initSize;
     const glm::vec4 color;
     std::list<Learning2DEngine::Render::SimpleSpriteRenderComponent*> snake;
 
@@ -30,7 +30,7 @@ public:
     bool IsInSnake(glm::vec2 position);
     void Move(glm::vec2 headPosition);
 
-    inline unsigned int GetSize()
+    inline size_t GetSize()
     {
         return snake.size();
     }
