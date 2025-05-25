@@ -27,7 +27,7 @@ namespace Learning2DEngine
 			GLuint vao;
 			GLuint vboStatic;
 			GLuint vboDynamic;
-			unsigned int maxObjectSize;
+			size_t maxObjectSize;
 
 			std::map<int, std::vector<DebugRenderData<Physics::BaseCircleColliderComponent>*>> debugRenderData;
 			Render::BaseColorDynamicData* dynamicData;

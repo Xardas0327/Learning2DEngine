@@ -27,7 +27,7 @@ namespace Learning2DEngine
 		{
 			UpdaterComponent::Init();
 			SimpleText2DLateRenderComponent::Init();
-			previousTime = glfwGetTime();
+			previousTime = static_cast<float>(glfwGetTime());
 			data.text = "FPS: " + std::to_string(fps);
 		}
 
@@ -41,7 +41,7 @@ namespace Learning2DEngine
 		{
 			++fps;
 			// The Time::deltaTime is not good here, because it is multiplided with Time::timeScale
-			float currentTime = glfwGetTime();
+			float currentTime = static_cast<float>(glfwGetTime());
 			if (currentTime - previousTime > 1.0f)
 			{
 				data.text = "FPS: " + std::to_string(fps);

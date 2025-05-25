@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "DebugRenderData.h"
 #include "DebugMacro.h"
 
 #include "../System/Game.h"
@@ -11,7 +10,6 @@
 #include "../System/ComponentManager.h"
 #include "../Render/RenderManager.h"
 #include "../Render/ShaderConstant.h"
-#include "../Physics/BaseCircleColliderComponent.h"
 
 namespace Learning2DEngine
 {
@@ -142,7 +140,7 @@ namespace Learning2DEngine
 		void DebugCircleColliderRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
 		{
 			debugRenderData.clear();
-			int maxDynamicSize = 0;
+			size_t maxDynamicSize = 0;
 			for (auto& layerData : renderData)
 			{
 				auto& actualLayerData = debugRenderData[layerData.first];
@@ -165,7 +163,9 @@ namespace Learning2DEngine
 			{
 				//It allocates 20% more space, so that it does not have to allocate again
 				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<float>(maxDynamicSize) * 1.2f;
+				maxObjectSize = static_cast<size_t>(
+					static_cast<float>(maxDynamicSize) * 1.2f
+				);
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 				glBufferData(GL_ARRAY_BUFFER, sizeof(BaseColorDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
@@ -213,7 +213,7 @@ namespace Learning2DEngine
 			}
 
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(BaseColorDynamicData) * debugRenderData[layer].size(), dynamicData);
-			glDrawArraysInstanced(GL_LINE_LOOP, 0, L2DE_DEBUG_CIRCLE_SEGMENT, debugRenderData[layer].size());
+			glDrawArraysInstanced(GL_LINE_LOOP, 0, L2DE_DEBUG_CIRCLE_SEGMENT, static_cast<GLsizei>(debugRenderData[layer].size()));
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
