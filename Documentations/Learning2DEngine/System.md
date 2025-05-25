@@ -1483,7 +1483,7 @@ bool IsTextureExist(const std::string& id);
 **DestroyTexture**  
 It destroys the `Texture2D`.
 ```cpp
-void DestroyTexture2D(const std::string& id);
+void DestroyTexture(const std::string& id);
 ```
 
 **Clear**  
