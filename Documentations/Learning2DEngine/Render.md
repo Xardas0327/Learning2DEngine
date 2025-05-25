@@ -1611,9 +1611,7 @@ SpriteRenderData(const System::Component* component, const Texture2D& texture, g
 [Texture2D.cpp](../../Learning2DEngine/Learning2DEngine/Render/Texture2D.cpp)
 
 ### Description:
-The OpenGL Texture2D representation in the Engine.
-If the developer changes any variables in it,
-it will be used only after `Create` function.
+The OpenGL Texture2D representation in the Engine.  
 
 ### Header:
 ```cpp
@@ -1626,15 +1624,16 @@ class Texture2D
 **id**  
 ```cpp
 GLuint id;
-``` 
+```  
 
-**Public:**  
 **width**  
+Width of the loaded image in pixels.
 ```cpp
 unsigned int width;
 ``` 
 
 **height**  
+Height of the loaded image in pixels
 ```cpp
 unsigned int height;
 ``` 
@@ -1676,6 +1675,21 @@ void Bind(int textureUnitNumber = 0) const;
 It returns the id of the `Texture2D`.
 ```cpp
 inline GLuint GetId() const;
+```
+
+**GetWidth**  
+```cpp
+inline unsigned int GetWidth() const;
+```
+
+**GetHeight**  
+```cpp
+inline unsigned int GetHeight() const;
+```
+
+**Texture2DSettings**  
+```cpp
+inline const Texture2DSettings& GetSettings() const;
 ```
 
 ##
