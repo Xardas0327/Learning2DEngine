@@ -42,7 +42,7 @@ struct FreeTypeCharacter
     unsigned int textureId;
     glm::ivec2   size;
     glm::ivec2   bearing;
-    unsigned int advance;
+    FT_Pos advance;
 };
 ```
 
@@ -91,7 +91,7 @@ GLuint vboDynamic;
 ```
 **maxObjectSize**  
 ```cpp
-unsigned int maxObjectSize;
+size_t maxObjectSize;
 ```
 
 **textRenderData**  
