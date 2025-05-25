@@ -9,7 +9,7 @@ namespace Learning2DEngine
         class Texture2DContainer
         {
         private:
-            Texture2D* texture;
+            const Texture2D* texture;
         public:
             Texture2DContainer()
                 : texture(nullptr)
@@ -17,31 +17,19 @@ namespace Learning2DEngine
 
             }
 
+            // It will not copy the texture, it will use texture reference.
             Texture2DContainer(const Texture2D& texture)
-                : texture(new Texture2D(texture))
+                : texture(&texture)
             {
 
             }
 
-            virtual ~Texture2DContainer()
-            {
-                if (IsUseTexture())
-                {
-                    delete texture;
-                }
-            }
+            virtual ~Texture2DContainer() = default;
 
+            // It will not copy the texture, it will use texture reference.
             void SetTexture(const Texture2D& texture)
             {
-                if(this->texture != nullptr)
-                    delete this->texture;
-
-                this->texture = new Texture2D(texture);
-            }
-
-            inline Texture2D* GetTexture()
-            {
-                return texture;
+                this->texture = &texture;
             }
 
             inline const Texture2D* GetTexture() const
@@ -51,7 +39,6 @@ namespace Learning2DEngine
 
             inline void ClearTexture()
             {
-                delete texture;
                 texture = nullptr;
             }
 

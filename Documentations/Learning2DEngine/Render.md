@@ -1698,12 +1698,13 @@ class Texture2DContainer
 **Private:**  
 **texture**  
 ```cpp
-Texture2D* texture;
+const Texture2D* texture;
 ``` 
 
 ### Functions:
 **Public:**  
 **Texture2DContainer**  
+It will not copy the texture, it will use texture reference.  
 ```cpp
 Texture2DContainer();
 ```
@@ -1713,18 +1714,16 @@ Texture2DContainer(const Texture2D& texture);
 
 **~Texture2DContainer**  
 ```cpp
-virtual ~Texture2DContainer();
+virtual ~Texture2DContainer() = default;
 ```
 
 **SetTexture**  
+It will not copy the texture, it will use texture reference.  
 ```cpp
 void SetTexture(const Texture2D& texture);
 ```
 
 **GetTexture**  
-```cpp
-inline Texture2D* GetTexture();
-``` 
 ```cpp
 inline const Texture2D* GetTexture() const;
 ```
