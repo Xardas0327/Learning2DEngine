@@ -63,8 +63,8 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bo
     levelWidth = brickData[0].size();
     auto& resourceManager = ResourceManager::GetInstance();
 
-    Texture2D solidBlockTexture = resourceManager.GetTexture("block_solid");
-    Texture2D blockTexture = resourceManager.GetTexture("block");
+    Texture2D& solidBlockTexture = resourceManager.GetTexture("block_solid");
+    Texture2D& blockTexture = resourceManager.GetTexture("block");
 
     for (size_t y = 0; y < levelHeight; ++y)
     {

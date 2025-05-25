@@ -1611,9 +1611,7 @@ SpriteRenderData(const System::Component* component, const Texture2D& texture, g
 [Texture2D.cpp](../../Learning2DEngine/Learning2DEngine/Render/Texture2D.cpp)
 
 ### Description:
-The OpenGL Texture2D representation in the Engine.
-If the developer changes any variables in it,
-it will be used only after `Create` function.
+The OpenGL Texture2D representation in the Engine.  
 
 ### Header:
 ```cpp
@@ -1626,15 +1624,16 @@ class Texture2D
 **id**  
 ```cpp
 GLuint id;
-``` 
+```  
 
-**Public:**  
 **width**  
+Width of the loaded image in pixels.
 ```cpp
 unsigned int width;
 ``` 
 
 **height**  
+Height of the loaded image in pixels
 ```cpp
 unsigned int height;
 ``` 
@@ -1678,6 +1677,21 @@ It returns the id of the `Texture2D`.
 inline GLuint GetId() const;
 ```
 
+**GetWidth**  
+```cpp
+inline unsigned int GetWidth() const;
+```
+
+**GetHeight**  
+```cpp
+inline unsigned int GetHeight() const;
+```
+
+**Texture2DSettings**  
+```cpp
+inline const Texture2DSettings& GetSettings() const;
+```
+
 ##
 ## Texture2DContainer
 ### Source Code:
@@ -1698,12 +1712,13 @@ class Texture2DContainer
 **Private:**  
 **texture**  
 ```cpp
-Texture2D* texture;
+const Texture2D* texture;
 ``` 
 
 ### Functions:
 **Public:**  
 **Texture2DContainer**  
+It will not copy the texture, it will use texture reference.  
 ```cpp
 Texture2DContainer();
 ```
@@ -1713,18 +1728,16 @@ Texture2DContainer(const Texture2D& texture);
 
 **~Texture2DContainer**  
 ```cpp
-virtual ~Texture2DContainer();
+virtual ~Texture2DContainer() = default;
 ```
 
 **SetTexture**  
+It will not copy the texture, it will use texture reference.  
 ```cpp
 void SetTexture(const Texture2D& texture);
 ```
 
 **GetTexture**  
-```cpp
-inline Texture2D* GetTexture();
-``` 
 ```cpp
 inline const Texture2D* GetTexture() const;
 ```
