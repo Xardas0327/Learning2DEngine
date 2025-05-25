@@ -2,6 +2,9 @@
 
 #include <glm/glm.hpp>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 namespace Learning2DEngine
 {
     namespace UI
@@ -12,7 +15,7 @@ namespace Learning2DEngine
             unsigned int textureId;
             glm::ivec2   size;
             glm::ivec2   bearing;
-            unsigned int advance;
+            FT_Pos advance;
         };
     }
 }
