@@ -19,11 +19,11 @@ namespace Learning2DEngine
             if (!Time::isInited)
             {
                 Time::isInited = true;
-                lastTime = glfwGetTime();
+                lastTime = static_cast<float>(glfwGetTime());
             }
 
             // Calc deltaTime
-            float currentTime = glfwGetTime();
+            float currentTime = static_cast<float>(glfwGetTime());
             Time::deltaTime = (currentTime - lastTime);
             lastTime = currentTime;
 

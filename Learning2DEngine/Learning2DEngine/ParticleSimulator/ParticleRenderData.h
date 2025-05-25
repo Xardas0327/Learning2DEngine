@@ -18,14 +18,14 @@ namespace Learning2DEngine
 			friend class ParticleSystemComponent;
 		private:
 			bool isRenderable;
-			const unsigned int minAllocateSize;
-			const unsigned int particleAmount;
+			const size_t minAllocateSize;
+			const size_t particleAmount;
 			Particle* particles;
 
 		public:
 			ParticleSystemSettings systemSettings;
 
-			ParticleRenderData(const System::Component* component, unsigned int particleAmount, unsigned int minAllocateSize = 0)
+			ParticleRenderData(const System::Component* component, size_t particleAmount, size_t minAllocateSize = 0)
 				: RenderData(component), minAllocateSize(minAllocateSize), particleAmount(particleAmount), isRenderable(false),
 				particles(nullptr), systemSettings(), Texture2DContainer()
 			{
@@ -34,10 +34,10 @@ namespace Learning2DEngine
 
 			ParticleRenderData(
 				const System::Component* component,
-				unsigned int particleAmount,
+				size_t particleAmount,
 				const ParticleSystemSettings& systemSettings,
 				const Render::Texture2D& texture,
-				unsigned int minAllocateSize = 0)
+				size_t minAllocateSize = 0)
 				: RenderData(component), minAllocateSize(minAllocateSize), particleAmount(particleAmount), isRenderable(false),
 				particles(nullptr), systemSettings(systemSettings), Texture2DContainer(texture)
 			{
@@ -59,12 +59,12 @@ namespace Learning2DEngine
 				return particles;
 			}
 
-			inline unsigned int GetParticleAmount() const
+			inline size_t GetParticleAmount() const
 			{
 				return particleAmount;
 			}
 
-			inline unsigned int GetMinAllocateSize() const
+			inline size_t GetMinAllocateSize() const
 			{
 				return minAllocateSize;
 			}
