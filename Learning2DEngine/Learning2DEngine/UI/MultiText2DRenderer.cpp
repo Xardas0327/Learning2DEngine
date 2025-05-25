@@ -114,7 +114,7 @@ namespace Learning2DEngine
 			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
 
 			textRenderData.clear();
-			int maxDynamicSize = 0;
+			size_t maxDynamicSize = 0;
 			for (auto& layerData : renderData)
 			{
 				auto& actualLayerData = textRenderData[layerData.first];
@@ -173,7 +173,7 @@ namespace Learning2DEngine
 
 				//Calculate the maximum size of the dynamic data
 				int textureUnitNumber = 0;
-				int actualSize = 0;
+				size_t actualSize = 0;
 				int elementCount = 0;
 				for (auto& data : actualLayerData)
 				{
@@ -196,7 +196,9 @@ namespace Learning2DEngine
 			{
 				//It allocates 20% more space, so that it does not have to allocate again
 				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<float>(maxDynamicSize) * 1.2f;
+				maxObjectSize = static_cast<size_t>(
+					static_cast<float>(maxDynamicSize) * 1.2f
+				);
 
 				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 				//Multiply by 4, because an object has 4 vertices.
@@ -243,8 +245,8 @@ namespace Learning2DEngine
 
 			int dynamicSize = 0;
 			int objectCount = 0;
-			int textureUnitId = 0;
-			int elementCount = 0;
+			GLint textureUnitId = 0;
+			size_t elementCount = 0;
 			for (auto& characterData : textRenderData[layer])
 			{
 				shader.SetInteger(("characterTextures[" + std::to_string(textureUnitId) + "]").c_str(), textureUnitId);
@@ -253,28 +255,30 @@ namespace Learning2DEngine
 
 				for (auto& character : characterData.second)
 				{
+					float tUnitId = static_cast<float>(textureUnitId);;
+
 					std::memcpy(&dynamicData[dynamicSize],
 						character.data(),
 						sizeof(float) * 8);
-					dynamicData[dynamicSize].textureId = textureUnitId;
+					dynamicData[dynamicSize].textureId = tUnitId;
 					++dynamicSize;
 
 					std::memcpy(&dynamicData[dynamicSize],
 						character.data() + 8,
 						sizeof(float) * 8);
-					dynamicData[dynamicSize].textureId = textureUnitId;
+					dynamicData[dynamicSize].textureId = tUnitId;
 					++dynamicSize;
 
 					std::memcpy(&dynamicData[dynamicSize],
 						character.data() + 16,
 						sizeof(float) * 8);
-					dynamicData[dynamicSize].textureId = textureUnitId;
+					dynamicData[dynamicSize].textureId = tUnitId;
 					++dynamicSize;
 
 					std::memcpy(&dynamicData[dynamicSize],
 						character.data() + 24,
 						sizeof(float) * 8);
-					dynamicData[dynamicSize].textureId = textureUnitId;
+					dynamicData[dynamicSize].textureId = tUnitId;
 					++dynamicSize;
 					++objectCount;
 				}

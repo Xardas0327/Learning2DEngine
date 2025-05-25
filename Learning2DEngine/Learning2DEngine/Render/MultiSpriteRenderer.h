@@ -24,7 +24,7 @@ namespace Learning2DEngine
 			GLuint ebo;
 			GLuint vboStatic;
 			GLuint vboDynamic;
-			unsigned int maxObjectSize;
+			size_t maxObjectSize;
 
 			//The int is the layer
 			//The second map's key is the texture id and the value is the SpriteRenderData vector, which use that texture.
