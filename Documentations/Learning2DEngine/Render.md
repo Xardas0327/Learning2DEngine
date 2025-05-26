@@ -1204,7 +1204,7 @@ enum class ShaderType {VERTEX, FRAGMENT, GEOMETRY};
 **Private:**  
 **id**  
 ```cpp
-unsigned int id;
+GLuint id;
 ```
 
 ### Functions:
@@ -1225,6 +1225,11 @@ void CheckProgramErrors(unsigned int programId);
 ```
 
 **Public:**  
+**Shader**  
+```cpp
+Shader();
+```
+
 **Create**  
 It creates the shader.
 ```cpp
@@ -1246,7 +1251,7 @@ void Use() const;
 **GetId**  
 It returns the id of shader.
 ```cpp
-inline unsigned int GetId();
+inline GLuint GetId();
 ```
 
 **Functions to update the shader parameters** 

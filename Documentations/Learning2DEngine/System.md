@@ -1416,27 +1416,17 @@ Otherwise, it returns true.
 bool LoadShaderFile(const char* filePath, std::string& outSource);
 ```
 
-**LoadShaderFromFile**  
-```cpp
-Render::Shader LoadShaderFromFile(const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath = nullptr);
-```
-
-**LoadShader**  
-```cpp
-Render::Shader LoadShader(const char* vertexText, const char* fragmentText, const char* geometryText = nullptr);
-```
-
 **Public:**  
 **LoadShaderFromFile**  
 It creates a `Shader` from files.
 ```cpp
- Render::Shader LoadShaderFromFile(const std::string& name, const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath = nullptr);
+ Render::Shader& LoadShaderFromFile(const std::string& id, const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath = nullptr);
 ```
 
 **LoadShader**  
 It creates a `Shader` from strings.
 ```cpp
-Render::Shader LoadShader(const std::string& name, const char* vertexText, const char* fragmentText, const char* geometryText = nullptr);
+Render::Shader& LoadShader(const std::string& id, const char* vertexText, const char* fragmentText, const char* geometryText = nullptr);
 ```
 
 **GetShader**  
@@ -1444,19 +1434,19 @@ It returns a `Shader`. If the shader does not exist,
 it will return an uninitialized `Shader`.  
 It is recommended to use the `IsShaderExist()`.
 ```cpp
-Render::Shader GetShader(const std::string& name);
+Render::Shader& GetShader(const std::string& id);
 ```
 
 **IsShaderExist**  
 It returns true if the `Shader` exist.
 ```cpp
-bool IsShaderExist(const std::string& name);
+bool IsShaderExist(const std::string& id);
 ```
 
 **DestroyShader**  
 It destroys the `Shader`.
 ```cpp
-void DestroyShader(const std::string& name);
+void DestroyShader(const std::string& id);
 ```
 
 **LoadTextureFromFile**  
