@@ -281,6 +281,7 @@ void GameController::StartPlay()
 
     playerController->gameObject->transform.SetPosition(PLAYER_START_POSITION);
     playerController->rigidbody->isFrozen = false;
+    playerController->rigidbody->velocity = glm::vec2(0.0f);
     playerController->coinNumber = 0;
     currentPlayTime = PLAY_TIME;
 
