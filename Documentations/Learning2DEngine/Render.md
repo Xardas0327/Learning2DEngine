@@ -363,7 +363,7 @@ class MultiSpriteRenderer : public IRenderer, public System::Singleton<MultiSpri
 **Private:**  
 **shader**
 ```cpp
-Render::Shader shader;
+Render::Shader* shader;
 ```
 
 **vao**
@@ -479,12 +479,12 @@ class PostProcessEffect
 It is a simple shader,
 which just render the image without any effects.
 ```cpp
-Shader defaultShader;
+Shader* defaultShader;
 ```
 
 **effectShader**  
 ```cpp
-Shader effectShader;
+const Shader* effectShader;
 ```
 
 **texture**  
@@ -512,11 +512,6 @@ unsigned int ebo;
 **fbo**  
 ```cpp
 unsigned int fbo;
-```
-
-**isEffectUsed**  
-```cpp
-bool isEffectUsed;
 ```
 
 ### Functions:
@@ -1204,7 +1199,7 @@ enum class ShaderType {VERTEX, FRAGMENT, GEOMETRY};
 **Private:**  
 **id**  
 ```cpp
-unsigned int id;
+GLuint id;
 ```
 
 ### Functions:
@@ -1225,6 +1220,11 @@ void CheckProgramErrors(unsigned int programId);
 ```
 
 **Public:**  
+**Shader**  
+```cpp
+Shader();
+```
+
 **Create**  
 It creates the shader.
 ```cpp
@@ -1246,7 +1246,7 @@ void Use() const;
 **GetId**  
 It returns the id of shader.
 ```cpp
-inline unsigned int GetId();
+inline GLuint GetId();
 ```
 
 **Functions to update the shader parameters** 
@@ -1431,7 +1431,7 @@ class SimpleSpriteRenderer : public IRenderer, public System::Singleton<SimpleSp
 **Private:**  
 **shader**  
 ```cpp
-Shader shader;
+Shader* shader;
 ```
 
 **vao**  

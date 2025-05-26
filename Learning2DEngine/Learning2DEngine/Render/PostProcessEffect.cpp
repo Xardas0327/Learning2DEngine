@@ -12,8 +12,8 @@ namespace Learning2DEngine
 	namespace Render
 	{
 		PostProcessEffect::PostProcessEffect()
-			: defaultShader(), effectShader(), texture(),
-			vao(0), vbo(0), ebo(0), fbo(0), isEffectUsed(false)
+			: defaultShader(nullptr), effectShader(nullptr), texture(),
+			vao(0), vbo(0), ebo(0), fbo(0)
 		{
 
 		}
@@ -76,15 +76,16 @@ namespace Learning2DEngine
 		void PostProcessEffect::InitDefaultShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
+
 			defaultShader = resourceManager.IsShaderExist(ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME)
-				? resourceManager.GetShader(ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME)
-				: resourceManager.LoadShader(
+				? &resourceManager.GetShader(ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME)
+				: &resourceManager.LoadShader(
 					ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME,
 					ShaderConstant::GetDefaultPostprocessVertexShader(),
 					ShaderConstant::GetDefaultPostprocessFragmentShader());
 
-			defaultShader.Use();
-			defaultShader.SetInteger("scene", 0);
+			defaultShader->Use();
+			defaultShader->SetInteger("scene", 0);
 		}
 
 		void PostProcessEffect::Destroy()
@@ -110,10 +111,10 @@ namespace Learning2DEngine
 
 		void PostProcessEffect::Render()
 		{
-			if (isEffectUsed)
-				effectShader.Use();
+			if (effectShader != nullptr)
+				effectShader->Use();
 			else
-				defaultShader.Use();
+				defaultShader->Use();
 
 			glActiveTexture(GL_TEXTURE0);
 			texture.Bind();
@@ -125,13 +126,12 @@ namespace Learning2DEngine
 
 		void PostProcessEffect::SetShader(const Shader& shader)
 		{
-			isEffectUsed = true;
-			effectShader = shader;
+			effectShader = &shader;
 		}
 
 		void PostProcessEffect::ClearShader()
 		{
-			isEffectUsed = false;
+			effectShader = nullptr;
 		}
 	}
 }

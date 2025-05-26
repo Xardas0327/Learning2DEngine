@@ -20,31 +20,6 @@ namespace Learning2DEngine
         {
         }
 
-        Shader ResourceManager::LoadShaderFromFile(const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath)
-        {
-            Shader shader;
-
-            std::string vertexSource;
-            std::string fragmentSource;
-            std::string geometrySource;
-
-            //It can show all file errors.
-            bool isFine = true;
-            isFine = LoadShaderFile(vertexFilePath, vertexSource) && isFine;
-            isFine = LoadShaderFile(fragmentFilePath, fragmentSource) && isFine;
-            if (geometryFilePath != nullptr)
-            {
-                isFine = LoadShaderFile(geometryFilePath, geometrySource) && isFine;
-            }
-
-            if (isFine)
-            {
-                shader.Create(vertexSource.c_str(), fragmentSource.c_str(), geometryFilePath != nullptr ? geometrySource.c_str() : nullptr);
-            }
-
-            return shader;
-        }
-
         bool ResourceManager::LoadShaderFile(const char* filePath, std::string& outSource)
         {
             std::ifstream shaderFile;
@@ -70,42 +45,67 @@ namespace Learning2DEngine
             return true;
         }
 
-        Shader ResourceManager::LoadShaderFromFile(
-            const std::string& name, const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath)
+        Shader& ResourceManager::LoadShaderFromFile(
+            const std::string& id, const char* vertexFilePath, const char* fragmentFilePath, const char* geometryFilePath)
         {
-            shaders[name] = LoadShaderFromFile(vertexFilePath, fragmentFilePath, geometryFilePath);
-            return shaders[name];
-        }
+            Shader& shader = shaders[id];
+            //it was inited before
+            if (shader.GetId() > 0)
+            {
+                L2DE_LOG_WARNING(std::string("TEXTURE: this id was already used: ") + id);
+                return shader;
+            }
 
-        Shader ResourceManager::LoadShader(const char* vertexText, const char* fragmentText, const char* geometryText)
-        {
-            Shader shader;
-            shader.Create(vertexText, fragmentText, geometryText != nullptr ? geometryText : nullptr);
+            std::string vertexSource;
+            std::string fragmentSource;
+            std::string geometrySource;
+
+            //It can show all files' errors.
+            bool isFine = true;
+            isFine = LoadShaderFile(vertexFilePath, vertexSource) && isFine;
+            isFine = LoadShaderFile(fragmentFilePath, fragmentSource) && isFine;
+            if (geometryFilePath != nullptr)
+            {
+                isFine = LoadShaderFile(geometryFilePath, geometrySource) && isFine;
+            }
+
+            if (isFine)
+            {
+                shader.Create(vertexSource.c_str(), fragmentSource.c_str(), geometryFilePath != nullptr ? geometrySource.c_str() : nullptr);
+            }
 
             return shader;
         }
 
-        Shader ResourceManager::LoadShader(
-            const std::string& name, const char* vertexText, const char* fragmentText, const char* geometryText)
+        Shader& ResourceManager::LoadShader(
+            const std::string& id, const char* vertexText, const char* fragmentText, const char* geometryText)
         {
-            shaders[name] = LoadShader(vertexText, fragmentText, geometryText);
-            return shaders[name];
+            Shader& shader = shaders[id];
+            //it was inited before
+            if (shader.GetId() > 0)
+            {
+                L2DE_LOG_WARNING(std::string("TEXTURE: this id was already used: ") + id);
+                return shader;
+            }
+
+            shader.Create(vertexText, fragmentText, geometryText != nullptr ? geometryText : nullptr);
+            return shader;
         }
 
-        Shader ResourceManager::GetShader(const std::string& name)
+        Shader& ResourceManager::GetShader(const std::string& id)
         {
-            return shaders[name];
+            return shaders[id];
         }
 
-        bool ResourceManager::IsShaderExist(const std::string& name)
+        bool ResourceManager::IsShaderExist(const std::string& id)
         {
-            return shaders.count(name);
+            return shaders.count(id);
         }
 
-        void ResourceManager::DestroyShader(const std::string& name)
+        void ResourceManager::DestroyShader(const std::string& id)
         {
-            shaders[name].Destroy();
-            shaders.erase(name);
+            shaders[id].Destroy();
+            shaders.erase(id);
         }
 
         Texture2D& ResourceManager::LoadTextureFromFile(const std::string& id, const char* filePath, const Texture2DSettings& settings)
@@ -153,7 +153,7 @@ namespace Learning2DEngine
             if (textures.size() > 0)
             {
                 unsigned int* textureIds = new unsigned int[textures.size()];
-                unsigned int index = 0;
+                size_t index = 0;
                 for (auto i = textures.begin(); i != textures.end(); ++i)
                 {
                     textureIds[index] = i->second.GetId();

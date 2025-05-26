@@ -18,7 +18,7 @@ namespace Learning2DEngine
 		{
 			friend class Singleton<SimpleSpriteRenderer>;
 		private:
-			Shader shader;
+			Shader* shader;
 			GLuint vao;
 			GLuint vbo;
 			GLuint ebo;

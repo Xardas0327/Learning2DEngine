@@ -70,7 +70,7 @@ class MultiText2DRenderer : public Render::IRenderer, public System::Singleton<M
 **Private:**  
 **shader**  
 ```cpp
-Render::Shader shader;
+Render::Shader* shader;
 ```
 
 **vao**  
@@ -249,7 +249,7 @@ class SimpleText2DRenderer : public Render::IRenderer, public System::Singleton<
 **Private:**  
 **shader**  
 ```cpp
-Render::Shader shader;
+Render::Shader* shader;
 ```
 
 **vao**  

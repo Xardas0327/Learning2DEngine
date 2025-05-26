@@ -8,6 +8,12 @@ namespace Learning2DEngine
 {
     namespace Render
     {
+        Shader::Shader()
+            : id(0)
+        {
+
+        }
+
         void Shader::Create(const char* vertexSource, const char* fragmentSource, const char* geometrySource)
         {
             unsigned int vertexId, fragmentId, geometryId;

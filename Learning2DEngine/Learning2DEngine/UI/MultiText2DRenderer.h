@@ -20,7 +20,7 @@ namespace Learning2DEngine
 		{
 			friend class Singleton<MultiText2DRenderer>;
 		private:
-			Render::Shader shader;
+			Render::Shader* shader;
 			GLuint vao;
 			GLuint ebo;
 			GLuint vboDynamic;

@@ -23,7 +23,7 @@ namespace Learning2DEngine
 		{
 			friend class Singleton<DebugCircleColliderRenderer>;
 		private:
-			Render::Shader shader;
+			Render::Shader* shader;
 			GLuint vao;
 			GLuint vboStatic;
 			GLuint vboDynamic;
