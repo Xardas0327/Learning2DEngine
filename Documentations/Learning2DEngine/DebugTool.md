@@ -87,7 +87,7 @@ class DebugBoxColliderRenderer : public Render::IRenderer, public System::Single
 **Private:**  
 **shader**
 ```cpp
-Render::Shader shader;
+Render::Shader* shader;
 ```
 
 **vao**
@@ -260,7 +260,7 @@ It's value is 50.
 **Private:**  
 **shader**
 ```cpp
-Render::Shader shader;
+Render::Shader* shader;
 ```
 
 **vao**

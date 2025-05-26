@@ -363,7 +363,7 @@ class MultiSpriteRenderer : public IRenderer, public System::Singleton<MultiSpri
 **Private:**  
 **shader**
 ```cpp
-Render::Shader shader;
+Render::Shader* shader;
 ```
 
 **vao**
@@ -479,12 +479,12 @@ class PostProcessEffect
 It is a simple shader,
 which just render the image without any effects.
 ```cpp
-Shader defaultShader;
+Shader* defaultShader;
 ```
 
 **effectShader**  
 ```cpp
-Shader effectShader;
+const Shader* effectShader;
 ```
 
 **texture**  
@@ -512,11 +512,6 @@ unsigned int ebo;
 **fbo**  
 ```cpp
 unsigned int fbo;
-```
-
-**isEffectUsed**  
-```cpp
-bool isEffectUsed;
 ```
 
 ### Functions:
@@ -1436,7 +1431,7 @@ class SimpleSpriteRenderer : public IRenderer, public System::Singleton<SimpleSp
 **Private:**  
 **shader**  
 ```cpp
-Shader shader;
+Shader* shader;
 ```
 
 **vao**  

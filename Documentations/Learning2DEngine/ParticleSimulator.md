@@ -210,7 +210,7 @@ class ParticleRenderer : public Render::IRenderer, public System::Singleton<Part
 **Private:**  
 **shader**
 ```cpp
-Render::Shader shader;
+Render::Shader* shader;
 ```
 
 **vao**
