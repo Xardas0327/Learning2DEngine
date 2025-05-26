@@ -13,14 +13,13 @@ namespace Learning2DEngine
 		class PostProcessEffect
 		{
 		private:
-			Shader defaultShader;
-			Shader effectShader;
+			Shader* defaultShader;
+			const Shader* effectShader;
 			Texture2D texture;
 			unsigned int vao;
 			unsigned int vbo;
 			unsigned int ebo;
 			unsigned int fbo;
-			bool isEffectUsed;
 
 			void InitVao();
 			void InitDefaultShader();
