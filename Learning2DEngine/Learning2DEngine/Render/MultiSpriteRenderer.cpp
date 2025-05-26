@@ -19,7 +19,7 @@ namespace Learning2DEngine
 	{
 
 		MultiSpriteRenderer::MultiSpriteRenderer()
-			: shader(), vao(0), ebo(0), vboStatic(0), vboDynamic(0), maxObjectSize(0),
+			: shader(nullptr), vao(0), ebo(0), vboStatic(0), vboDynamic(0), maxObjectSize(0),
 			spriteRenderData(), dynamicData(nullptr)
 		{
 
@@ -29,8 +29,8 @@ namespace Learning2DEngine
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
 			shader = resourceManager.IsShaderExist(ShaderConstant::SPRITE_SHADER_NAME)
-				? resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
-				: resourceManager.LoadShader(
+				? &resourceManager.GetShader(ShaderConstant::SPRITE_SHADER_NAME)
+				: &resourceManager.LoadShader(
 					ShaderConstant::SPRITE_SHADER_NAME,
 					ShaderConstant::GetSpriteVertexShader(),
 					ShaderConstant::GetSpriteFragmentShader());
@@ -223,9 +223,9 @@ namespace Learning2DEngine
 
 			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
 
-			shader.Use();
-			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
-			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
+			shader->Use();
+			shader->SetMatrix4("projection", Game::mainCamera.GetProjection());
+			shader->SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
 			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 
@@ -236,7 +236,7 @@ namespace Learning2DEngine
 			{
 				if (data.first > 0)
 				{
-					shader.SetInteger(("spriteTextures[" + std::to_string(textureUnitCount) + "]").c_str(), textureUnitCount);
+					shader->SetInteger(("spriteTextures[" + std::to_string(textureUnitCount) + "]").c_str(), textureUnitCount);
 					glActiveTexture(GL_TEXTURE0 + textureUnitCount);
 					glBindTexture(GL_TEXTURE_2D, data.first);
 					++textureUnitCount;

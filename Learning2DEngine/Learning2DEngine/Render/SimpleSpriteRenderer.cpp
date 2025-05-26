@@ -15,7 +15,7 @@ namespace Learning2DEngine
 	{
 
 		SimpleSpriteRenderer::SimpleSpriteRenderer()
-			: shader(), vao(0), vbo(0), ebo(0), spriteRenderData()
+			: shader(nullptr), vao(0), vbo(0), ebo(0), spriteRenderData()
 		{
 
 		}
@@ -24,8 +24,8 @@ namespace Learning2DEngine
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
 			shader = resourceManager.IsShaderExist(ShaderConstant::SIMPLE_SPRITE_SHADER_NAME)
-				? resourceManager.GetShader(ShaderConstant::SIMPLE_SPRITE_SHADER_NAME)
-				: resourceManager.LoadShader(
+				? &resourceManager.GetShader(ShaderConstant::SIMPLE_SPRITE_SHADER_NAME)
+				: &resourceManager.LoadShader(
 					ShaderConstant::SIMPLE_SPRITE_SHADER_NAME,
 					ShaderConstant::GetSimpleSpriteVertexShader(),
 					ShaderConstant::GetSimpleSpriteFragmentShader());
@@ -113,19 +113,19 @@ namespace Learning2DEngine
 			if (spriteRenderData.find(layer) == spriteRenderData.end())
 				return;
 
-			shader.Use();
-			shader.SetInteger("spriteTexture", 0);
-			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
-			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
+			shader->Use();
+			shader->SetInteger("spriteTexture", 0);
+			shader->SetMatrix4("projection", Game::mainCamera.GetProjection());
+			shader->SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
 
 			for (auto data : spriteRenderData[layer])
 			{
 				auto spriteData = static_cast<SpriteRenderData*>(data);
 
-				shader.SetMatrix4("model", spriteData->component->gameObject->transform.GetModelMatrix());
-				shader.SetVector4f("spriteColor", spriteData->color);
-				shader.SetInteger("isUseTexture", spriteData->IsUseTexture());
+				shader->SetMatrix4("model", spriteData->component->gameObject->transform.GetModelMatrix());
+				shader->SetVector4f("spriteColor", spriteData->color);
+				shader->SetInteger("isUseTexture", spriteData->IsUseTexture());
 
 				if (spriteData->IsUseTexture())
 				{

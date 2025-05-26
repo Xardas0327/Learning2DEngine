@@ -21,7 +21,7 @@ namespace Learning2DEngine
 		{
 			friend class Singleton<ParticleRenderer>;
 		private:
-			Render::Shader shader;
+			Render::Shader* shader;
 			GLuint vao;
 			GLuint ebo;
 			GLuint vboStatic;

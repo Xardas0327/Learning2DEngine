@@ -16,7 +16,7 @@ namespace Learning2DEngine
 	namespace UI
 	{
 		SimpleText2DRenderer::SimpleText2DRenderer()
-			: shader(), vao(0), vbo(0), ebo(0), textRenderData()
+			: shader(nullptr), vao(0), vbo(0), ebo(0), textRenderData()
 		{
 
 		}
@@ -26,8 +26,8 @@ namespace Learning2DEngine
 			auto& resourceManager = ResourceManager::GetInstance();
 
 			shader = resourceManager.IsShaderExist(ShaderConstant::SIMPLE_TEXT2D_SHADER_NAME)
-				? resourceManager.GetShader(ShaderConstant::SIMPLE_TEXT2D_SHADER_NAME)
-				: resourceManager.LoadShader(
+				? &resourceManager.GetShader(ShaderConstant::SIMPLE_TEXT2D_SHADER_NAME)
+				: &resourceManager.LoadShader(
 					ShaderConstant::SIMPLE_TEXT2D_SHADER_NAME,
 					ShaderConstant::GetSimpleText2DVertexShader(),
 					ShaderConstant::GetSimpleText2DFragmentShader());
@@ -108,9 +108,9 @@ namespace Learning2DEngine
 
 			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
 
-			shader.Use();
-			shader.SetInteger("characterTexture", 0);
-			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+			shader->Use();
+			shader->SetInteger("characterTexture", 0);
+			shader->SetMatrix4("projection", Game::mainCamera.GetProjection());
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(vao);
@@ -123,7 +123,7 @@ namespace Learning2DEngine
 
 				CharacterMap& characterMap = textCharacterSet[textData->fontSizePair];
 
-				shader.SetVector4f("characterColor", textData->color);
+				shader->SetVector4f("characterColor", textData->color);
 
 				glm::vec2 startPosition(textData->component->gameObject->transform.GetPosition());
 				glm::mat2 rotationMatrix = textData->GetRotationMatrix();

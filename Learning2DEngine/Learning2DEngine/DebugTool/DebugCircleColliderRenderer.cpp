@@ -20,7 +20,7 @@ namespace Learning2DEngine
 	namespace DebugTool
 	{
 		DebugCircleColliderRenderer::DebugCircleColliderRenderer()
-			: shader(), vao(0), vboStatic(0), vboDynamic(0), maxObjectSize(0),
+			: shader(nullptr), vao(0), vboStatic(0), vboDynamic(0), maxObjectSize(0),
 			debugRenderData(), dynamicData(nullptr)
 		{
 
@@ -30,8 +30,8 @@ namespace Learning2DEngine
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
 			shader = resourceManager.IsShaderExist(ShaderConstant::BASE_COLOR_NAME)
-				? resourceManager.GetShader(ShaderConstant::BASE_COLOR_NAME)
-				: resourceManager.LoadShader(
+				? &resourceManager.GetShader(ShaderConstant::BASE_COLOR_NAME)
+				: &resourceManager.LoadShader(
 					ShaderConstant::BASE_COLOR_NAME,
 					ShaderConstant::GetBaseColorVertexShader(),
 					ShaderConstant::GetBaseColorFragmentShader());
@@ -181,9 +181,9 @@ namespace Learning2DEngine
 			if (debugRenderData.find(layer) == debugRenderData.end())
 				return;
 
-			shader.Use();
-			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
-			shader.SetMatrix4("view", Game::mainCamera.GetViewMatrix());
+			shader->Use();
+			shader->SetMatrix4("projection", Game::mainCamera.GetProjection());
+			shader->SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 
 			glBindVertexArray(vao);
 			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);

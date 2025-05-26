@@ -16,7 +16,7 @@ namespace Learning2DEngine
 	namespace UI
 	{
 		MultiText2DRenderer::MultiText2DRenderer()
-			: shader(), vao(0), ebo(0), vboDynamic(0), maxObjectSize(0),
+			: shader(nullptr), vao(0), ebo(0), vboDynamic(0), maxObjectSize(0),
 			textRenderData(), dynamicData(nullptr)
 		{
 
@@ -27,8 +27,8 @@ namespace Learning2DEngine
 			auto& resourceManager = ResourceManager::GetInstance();
 
 			shader = resourceManager.IsShaderExist(ShaderConstant::TEXT2D_SHADER_NAME)
-				? resourceManager.GetShader(ShaderConstant::TEXT2D_SHADER_NAME)
-				: resourceManager.LoadShader(
+				? &resourceManager.GetShader(ShaderConstant::TEXT2D_SHADER_NAME)
+				: &resourceManager.LoadShader(
 					ShaderConstant::TEXT2D_SHADER_NAME,
 					ShaderConstant::GetText2DVertexShader(),
 					ShaderConstant::GetText2DFragmentShader());
@@ -236,8 +236,8 @@ namespace Learning2DEngine
 			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
 			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
 
-			shader.Use();
-			shader.SetMatrix4("projection", Game::mainCamera.GetProjection());
+			shader->Use();
+			shader->SetMatrix4("projection", Game::mainCamera.GetProjection());
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(vao);
@@ -249,7 +249,7 @@ namespace Learning2DEngine
 			size_t elementCount = 0;
 			for (auto& characterData : textRenderData[layer])
 			{
-				shader.SetInteger(("characterTextures[" + std::to_string(textureUnitId) + "]").c_str(), textureUnitId);
+				shader->SetInteger(("characterTextures[" + std::to_string(textureUnitId) + "]").c_str(), textureUnitId);
 				glActiveTexture(GL_TEXTURE0 + textureUnitId);
 				glBindTexture(GL_TEXTURE_2D, characterData.first);
 

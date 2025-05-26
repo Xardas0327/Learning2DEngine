@@ -76,6 +76,7 @@ namespace Learning2DEngine
 		void PostProcessEffect::InitDefaultShader()
 		{
 			auto& resourceManager = System::ResourceManager::GetInstance();
+
 			defaultShader = resourceManager.IsShaderExist(ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME)
 				? resourceManager.GetShader(ShaderConstant::DEFAULT_POSTPROCESS_EFFECT_NAME)
 				: resourceManager.LoadShader(
