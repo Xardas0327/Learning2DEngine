@@ -242,7 +242,6 @@ void DestroyObject() override;
 ```
 
 **Public:**  
-**Init**  
 **SetData**  
 This function converts the renderData to particleRenderData.
 ```cpp
