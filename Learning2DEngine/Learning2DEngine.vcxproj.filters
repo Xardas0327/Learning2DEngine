@@ -404,5 +404,14 @@
     <ClInclude Include="Learning2DEngine\System\Time.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\BaseRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\Render\BaseMultiRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\DebugTool\DebugColliderRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

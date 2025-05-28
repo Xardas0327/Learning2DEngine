@@ -204,6 +204,7 @@
     <ClInclude Include="Learning2DEngine\DebugTool\DebugBoxColliderRenderer.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugCircleColliderRenderComponent.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugCircleColliderRenderer.h" />
+    <ClInclude Include="Learning2DEngine\DebugTool\DebugColliderRenderer.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugMacro.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugRenderData.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\CursorEnterEventItem.h" />
@@ -229,6 +230,8 @@
     <ClInclude Include="Learning2DEngine\Physics\BaseRigidbody.h" />
     <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h" />
     <ClInclude Include="Learning2DEngine\Render\BaseColorDynamicData.h" />
+    <ClInclude Include="Learning2DEngine\Render\BaseMultiRenderer.h" />
+    <ClInclude Include="Learning2DEngine\Render\BaseRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\BaseRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\IRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\LateRendererComponent.h" />

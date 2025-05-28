@@ -6,32 +6,27 @@
 #include <glad/glad.h>
 
 #include "../System/Singleton.h"
-#include "IRenderer.h"
-#include "Shader.h"
+#include "BaseRenderer.h"
 #include "RenderData.h"
 
 namespace Learning2DEngine
 {
 	namespace Render
 	{
-		class SimpleSpriteRenderer : public IRenderer, public System::Singleton<SimpleSpriteRenderer>
+		class SimpleSpriteRenderer : public BaseRenderer, public System::Singleton<SimpleSpriteRenderer>
 		{
 			friend class Singleton<SimpleSpriteRenderer>;
 		private:
-			Shader* shader;
-			GLuint vao;
-			GLuint vbo;
-			GLuint ebo;
+			//int is the layer
 			std::map<int, std::vector<RenderData*>> spriteRenderData;
 
 			SimpleSpriteRenderer();
 
-			void InitShader();
-			void InitVao();
-			void DestroyObject();
+			void InitShader() override;
+			void InitVao() override;
+			void DestroyObject() override;
 		public:
-			void Init() override;
-			void Destroy() override;
+			//int is the layer
 			void SetData(const std::map<int, std::vector<RenderData*>>& renderData) override;
 			void Draw(int layer) override;
 		};
