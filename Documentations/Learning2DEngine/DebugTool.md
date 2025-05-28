@@ -3,6 +3,7 @@
 - [DebugBoxColliderRenderer](DebugTool.md#debugboxcolliderrenderer)
 - [DebugCircleColliderRenderComponent](DebugTool.md#debugcirclecolliderrendercomponent)
 - [DebugCircleColliderRenderer](DebugTool.md#debugcirclecolliderrenderer)
+- [DebugColliderRenderer](DebugTool.md#debugcolliderrenderer)
 - [DebugMacro](DebugTool.md#debugmacro)
 - [DebugRenderData](DebugTool.md#debugrenderdata)
 - [Log](DebugTool.md#log)
@@ -79,52 +80,8 @@ This renderer is used by `DebugBoxColliderRenderComponent`, that it can render t
 
 ### Header:
 ```cpp
-class DebugBoxColliderRenderer : public Render::IRenderer, public System::Singleton<DebugBoxColliderRenderer>
+class DebugBoxColliderRenderer : public DebugColliderRenderer<Physics::BaseBoxColliderComponent>, public System::Singleton<DebugBoxColliderRenderer>
 {...}
-```
-
-### Variables:
-**Private:**  
-**shader**
-```cpp
-Render::Shader* shader;
-```
-
-**vao**
-```cpp
-GLuint vao;
-```
-
-**vboStatic**  
-It contains the vertex positions coordinates.
-```cpp
-GLuint vboStatic;
-```
-
-**vboDynamic**  
-It contains the uploaded model matrices and colors of the renderable objects.
-```cpp
-GLuint vboDynamic;
-```
-
-**maxObjectSize**  
-The size of the vboDynamic, dynamicData.
-```cpp
-size_t maxObjectSize;
-```
-
-**debugRenderData**  
-When the SetData is called, the renderData will be converted to this format.  
-The int is the layer.
-```cpp
-std::map<int, std::vector<DebugRenderData<Physics::BaseBoxColliderComponent>*>> debugRenderData;
-```
-
-**dynamicData**  
-It is array, which contains the model matrices and colors of the renderable objects, before the upload.  
-Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
-```cpp
-Render::BaseColorDynamicData* dynamicData;
 ```
 
 ### Functions:
@@ -134,41 +91,12 @@ Render::BaseColorDynamicData* dynamicData;
 DebugBoxColliderRenderer();
 ```
 
-**InitShader**  
-```cpp
-void InitShader();
-```
-
 **InitVao**  
 ```cpp
 void InitVao();
 ```
 
-**DestroyObject**  
-The Destroy() call it with or without mutex.
-```cpp
-void DestroyObject();
-```
-
 **Public:**  
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
-```
-
-**SetData**  
-It allocates 20% more space in the buffer, so that it does not have to allocate again 
-if there are some dynamic renderers.  
-Note: the int is the layer.
-```cpp
-void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
-```
-
 **Draw**  
 It draws those objects, which was added with SetData and they are on the selected layer.
 ```cpp
@@ -246,7 +174,7 @@ This renderer is used by `DebugCircleColliderRenderComponent`, that it can rende
 
 ### Header:
 ```cpp
-class DebugCircleColliderRenderer : public Render::IRenderer, public System::Singleton<DebugCircleColliderRenderer>
+class DebugCircleColliderRenderer : public DebugColliderRenderer<Physics::BaseCircleColliderComponent>, public System::Singleton<DebugCircleColliderRenderer>
 {...}
 ```
 
@@ -256,50 +184,6 @@ It is a segment of the circle.
 If it is bigger, a circle will be smoother.  
 It's value is 50.
 
-### Variables:
-**Private:**  
-**shader**
-```cpp
-Render::Shader* shader;
-```
-
-**vao**
-```cpp
-GLuint vao;
-```
-
-**vboStatic**  
-It contains the vertex positions coordinates.
-```cpp
-GLuint vboStatic;
-```
-
-**vboDynamic**  
-It contains the uploaded model matrices and colors of the renderable objects.
-```cpp
-GLuint vboDynamic;
-```
-
-**maxObjectSize**  
-The size of the vboDynamic, dynamicData.
-```cpp
-size_t maxObjectSize;
-```
-
-**debugRenderData**  
-When the SetData is called, the renderData will be converted to this format.  
-The int is the layer.
-```cpp
-std::map<int, std::vector<DebugRenderData<Physics::BaseCircleColliderComponent>*>> debugRenderData;
-```
-
-**dynamicData**  
-It is array, which contains the model matrices and colors of the renderable objects, before the upload.  
-Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
-```cpp
-Render::BaseColorDynamicData* dynamicData;
-```
-
 ### Functions:
 **Private:**  
 **DebugCircleColliderRenderer**  
@@ -307,45 +191,65 @@ Render::BaseColorDynamicData* dynamicData;
 DebugCircleColliderRenderer();
 ```
 
-**InitShader**  
-```cpp
-void InitShader();
-```
-
 **InitVao**  
 ```cpp
 void InitVao();
 ```
 
-**DestroyObject**  
-The Destroy() call it with or without mutex.
-```cpp
-void DestroyObject();
-```
-
 **Public:**  
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
-```
-
-**SetData**  
-It allocates 20% more space in the buffer, so that it does not have to allocate again 
-if there are some dynamic renderers.  
-Note: the int is the layer.
-```cpp
-void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
-```
-
 **Draw**  
 It draws those objects, which was added with SetData and they are on the selected layer.
 ```cpp
 void Draw(int layer) override;
+```
+
+##
+## DebugColliderRenderer
+### Source Code:
+[DebugColliderRenderer.h](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugColliderRenderer.h)  
+
+### Description:
+The parent class for debug collider renderers.
+
+### Header:
+```cpp
+template<class TColliderComponent>
+class DebugColliderRenderer : public Render::BaseMultiRenderer<Render::BaseColorDynamicData>
+{...}
+```
+
+### Variables:
+**Protected:**  
+**debugRenderData**  
+When the SetData is called, the renderData will be converted to this format.  
+The int is the layer.
+```cpp
+std::map<int, std::vector<DebugRenderData<TColliderComponent>*>> debugRenderData;
+```
+
+### Functions:
+**Protected:**  
+**DebugColliderRenderer**  
+```cpp
+DebugColliderRenderer();
+```
+
+**InitShader**  
+```cpp
+void InitShader() override;
+```
+
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+void DestroyObject() override;
+```
+
+**Public:**
+**SetData**  
+This function converts the renderData to debugRenderData.
+```cpp
+void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
 ```
 
 ##

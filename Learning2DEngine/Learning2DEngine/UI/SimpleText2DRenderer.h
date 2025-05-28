@@ -6,33 +6,25 @@
 #include <glad/glad.h>
 
 #include "../System/Singleton.h"
-#include "../Render/IRenderer.h"
-#include "../Render/Shader.h"
+#include "../Render/BaseRenderer.h"
 
 namespace Learning2DEngine
 {
 	namespace UI
 	{
-		class SimpleText2DRenderer : public Render::IRenderer, public System::Singleton<SimpleText2DRenderer>
+		class SimpleText2DRenderer : public Render::BaseRenderer, public System::Singleton<SimpleText2DRenderer>
 		{
 			friend class Singleton<SimpleText2DRenderer>;
 		private:
-			Render::Shader* shader;
-			GLuint vao;
-			GLuint vbo;
-			GLuint ebo;
-
 			//int is the layer
 			std::map<int, std::vector<Render::RenderData*>> textRenderData;
 
 			SimpleText2DRenderer();
 
-			void InitShader();
-			void InitVao();
-			void DestroyObject();
+			void InitShader() override;
+			void InitVao() override;
+			void DestroyObject() override;
 		public:
-			void Init() override;
-			void Destroy() override;
 			//int is the layer
 			void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
 			void Draw(int layer) override;

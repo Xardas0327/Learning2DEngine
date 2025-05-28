@@ -1,5 +1,7 @@
 # Render
 - [BaseColorDynamicData](Render.md#basecolordynamicdata)
+- [BaseMultiRenderer](Render.md#basemultirenderer)
+- [BaseRenderer](Render.md#baserenderer)
 - [BaseRendererComponent](Render.md#baserenderercomponent)
 - [BlendFuncFactor](Render.md#blendfuncfactor)
 - [IRenderer](Render.md#irenderer)
@@ -42,10 +44,148 @@ struct BaseColorDynamicData
 ```
 
 ##
+## BaseMultiRenderer
+### Source Code:
+[BaseMultiRenderer.h](../../Learning2DEngine/Learning2DEngine/Render/BaseMultiRenderer.h)  
+
+### Description:
+It expands the `BaseRenderer` with multi renderer variables, functions.
+
+### Header:
+```cpp
+template<class TDynamicData>
+class BaseMultiRenderer : public BaseRenderer
+{...}
+```
+
+### Variables:
+**Protected:**  
+**vboDynamic**  
+It contains the uploaded model matrices, colors and similar data of the renderable objects.
+```cpp
+GLuint vboDynamic;
+```
+
+**maxObjectSize**  
+The size of the vboDynamic, dynamicData.
+```cpp
+size_t maxObjectSize;
+```
+
+**dynamicData**  
+It is array, which contains the model matrices, colors and similar data of the renderable objects, before the upload.  
+Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
+```cpp
+TDynamicData* dynamicData;
+```
+
+### Functions:
+**Protected:**  
+**BaseMultiRenderer**  
+```cpp
+BaseMultiRenderer();
+```
+
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+virtual void DestroyObject();
+```
+
+**CalcDynamicDataSize**  
+If the current buffers size is not enough or it is bigger twice than the maxDynamicSize,
+it will reallocate the buffers.  
+It allocates 20% more space in the buffer, so that it does not have to allocate again 
+if there are some dynamic renderers.
+```cpp
+virtual void CalcDynamicDataSize(size_t maxDynamicSize);
+```
+
+##
+## BaseRenderer
+### Source Code:
+[BaseRenderer.h](../../Learning2DEngine/Learning2DEngine/Render/BaseRenderer.h)  
+
+### Description:
+It contains some basic funcitions and variable for the renderers.
+
+### Header:
+```cpp
+class BaseRenderer : public IRenderer
+{...}
+```
+
+### Variables:
+**Protected:**  
+**shader**  
+```cpp
+Shader* shader;
+```
+
+**vao**  
+```cpp
+GLuint vao;
+```
+
+**ebo**  
+```cpp
+GLuint ebo;
+```
+
+**vbo**  
+```cpp
+GLuint vbo;
+```
+
+### Functions:
+**Protected:**  
+**BaseRenderer**  
+```cpp
+BaseRenderer();
+```
+
+**InitShader**  
+```cpp
+virtual void InitShader() = 0;
+```
+
+**InitVao**  
+```cpp
+virtual void InitVao() = 0;
+```
+
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+virtual void DestroyObject();
+```
+
+**Public:**  
+**Init**  
+If the `ComponentManager` is in thread save mode, it will call the `RenderManager`'s mutex,
+before InitShader and InitVao functions.
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+If the `ComponentManager` is in thread save mode, it will call the `RenderManager`'s mutex,
+before DestroyObject function.
+```cpp
+void Destroy() override;
+```
+
+##
 ## BaseRendererComponent
 ### Source Code:
 [BaseRendererComponent.h](../../Learning2DEngine/Learning2DEngine/Render/BaseRendererComponent.h)
 
+### Header:
+```cpp
+template<class TRenderData, class TRenderer>
+class BaseRendererComponent : public virtual System::Component
+{...}
+```
 ### Description:
 It has some basic funcionality, which is essential for rendering, but this is a support
 class only, please use `RendererComponent` and `LateRendererComponent` instead of this.  
@@ -53,7 +193,6 @@ The TRenderData should be a class, which is inhereted from IRenderData.
 The TRenderer should be a class, which is inhereted from IRenderer.  
 Please check for more info about `RendererComponent`, `LateRendererComponent`
 and `System::Component`.
-
 
 ### Header:
 ```cpp
@@ -355,45 +494,12 @@ Note: The projection and the view matrix came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class MultiSpriteRenderer : public IRenderer, public System::Singleton<MultiSpriteRenderer>
+class MultiSpriteRenderer : public BaseMultiRenderer<MultiSpriteDynamicData>, public System::Singleton<MultiSpriteRenderer>
 {...}
 ```
 
 ### Variables:
 **Private:**  
-**shader**
-```cpp
-Render::Shader* shader;
-```
-
-**vao**
-```cpp
-GLuint vao;
-```
-
-**ebo**
-```cpp
-GLuint ebo;
-```
-
-**vboStatic**  
-It contains the vertex positions and texture coordinates.
-```cpp
-GLuint vboStatic;
-```
-
-**vboDynamic**  
-It contains the uploaded model matrices, colors and texture id of the renderable objects.
-```cpp
-GLuint vboDynamic;
-```
-
-**maxObjectSize**  
-The size of the vboDynamic, dynamicData.
-```cpp
-size_t maxObjectSize;
-```
-
 **spriteRenderData**  
 When the SetData is called, the renderData will be converted to this format.  
 The int is the layer.  
@@ -401,13 +507,6 @@ The second map's key is the texture id and the value is the `SpriteRenderData` v
 If the sprite doesn't use texture, the key is 0.
 ```cpp
 std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
-```
-
-**dynamicData**  
-It is array, which contains the model matrices, colors and texture ids of the renderable objects, before the upload.  
-Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
-```cpp
-MultiSpriteDynamicData* dynamicData;
 ```
 
 ### Functions:
@@ -419,31 +518,21 @@ MultiSpriteRenderer();
 
 **InitShader**  
 ```cpp
-void InitShader();
+void InitShader() override;
 ```
 
 **InitVao**  
 ```cpp
-void InitVao();
+void InitVao() override;
 ```
 
 **DestroyObject**  
 The Destroy() call it with or without mutex.
 ```cpp
-void DestroyObject();
+void DestroyObject() override;
 ```
 
 **Public:**  
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
-```
-
 **SetData**  
 It allocates 20% more space in the buffer, so that it does not have to allocate again 
 if there are some dynamic renderers.  
@@ -1423,32 +1512,13 @@ Note: The projection and the view matrix came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class SimpleSpriteRenderer : public IRenderer, public System::Singleton<SimpleSpriteRenderer>
+class SimpleSpriteRenderer : public BaseRenderer, public System::Singleton<SimpleSpriteRenderer>
 {...}
 ```
 
 ### Variables:
 **Private:**  
 **shader**  
-```cpp
-Shader* shader;
-```
-
-**vao**  
-```cpp
-GLuint vao;
-```
-
-**vbo**  
-```cpp
-GLuint vbo;
-```
-
-**ebo**  
-```cpp
-GLuint ebo;
-```
-
 **spriteRenderData**  
 Note: The int is the layer.  
 ```cpp
@@ -1464,31 +1534,21 @@ SimpleSpriteRenderer();
 
 **InitShader**  
 ```cpp
-void InitShader();
+void InitShader() override;
 ```
 
 **InitVao**  
 ```cpp
-void InitVao();
+void InitVao() override;
 ```
 
 **DestroyObject**  
 The Destroy() call it with or without mutex.
 ```cpp
-void DestroyObject();
+void DestroyObject() override;
 ```
 
 **Public:**  
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
-```
-
 **SetData**  
 Note: the int is the layer.
 ```cpp

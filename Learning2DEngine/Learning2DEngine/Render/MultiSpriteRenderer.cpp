@@ -7,7 +7,6 @@
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
-#include "../System/ComponentManager.h"
 #include "ShaderConstant.h"
 #include "RenderManager.h"
 
@@ -19,8 +18,7 @@ namespace Learning2DEngine
 	{
 
 		MultiSpriteRenderer::MultiSpriteRenderer()
-			: shader(nullptr), vao(0), ebo(0), vboStatic(0), vboDynamic(0), maxObjectSize(0),
-			spriteRenderData(), dynamicData(nullptr)
+			: BaseMultiRenderer(), spriteRenderData()
 		{
 
 		}
@@ -54,8 +52,8 @@ namespace Learning2DEngine
 			glGenVertexArrays(1, &vao);
 			glBindVertexArray(vao);
 
-			glGenBuffers(1, &vboStatic);
-			glBindBuffer(GL_ARRAY_BUFFER, vboStatic);
+			glGenBuffers(1, &vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 			glGenBuffers(1, &ebo);
@@ -110,47 +108,11 @@ namespace Learning2DEngine
 			dynamicData = new MultiSpriteDynamicData[maxObjectSize];
 		}
 
-		void MultiSpriteRenderer::Init()
-		{
-			if (ComponentManager::GetInstance().GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
-				InitShader();
-				InitVao();
-			}
-			else
-			{
-				InitShader();
-				InitVao();
-			}
-		}
-
 		void MultiSpriteRenderer::DestroyObject()
 		{
-			glDeleteVertexArrays(1, &vao);
-			glDeleteBuffers(1, &ebo);
-			glDeleteBuffers(1, &vboStatic);
-			glDeleteBuffers(1, &vboDynamic);
+			BaseMultiRenderer::DestroyObject();
 
 			spriteRenderData.clear();
-
-			if (dynamicData != nullptr)
-			{
-				delete[] dynamicData;
-			}
-		}
-
-		void MultiSpriteRenderer::Destroy()
-		{
-			if (ComponentManager::GetInstance().GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
-				DestroyObject();
-			}
-			else
-			{
-				DestroyObject();
-			}
 		}
 
 		void MultiSpriteRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
@@ -198,22 +160,7 @@ namespace Learning2DEngine
 				}
 			}
 
-			//if the size is not enough or too big, it will be reallocated.
-			if (maxDynamicSize > maxObjectSize || maxObjectSize > maxDynamicSize * 2)
-			{
-				//It allocates 20% more space, so that it does not have to allocate again
-				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<size_t>(
-					static_cast<float>(maxDynamicSize) * 1.2f
-				);
-
-				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(MultiSpriteDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-				delete[] dynamicData;
-				dynamicData = new MultiSpriteDynamicData[maxObjectSize];
-			}
+			CalcDynamicDataSize(maxDynamicSize);
 		}
 
 		void MultiSpriteRenderer::Draw(int layer)

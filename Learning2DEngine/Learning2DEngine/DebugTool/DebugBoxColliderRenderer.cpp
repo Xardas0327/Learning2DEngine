@@ -20,22 +20,9 @@ namespace Learning2DEngine
 	namespace DebugTool
 	{
 		DebugBoxColliderRenderer::DebugBoxColliderRenderer()
-			: shader(nullptr), vao(0), vboStatic(0), vboDynamic(0), maxObjectSize(0),
-			debugRenderData(), dynamicData(nullptr)
+			: DebugColliderRenderer()
 		{
 
-		}
-
-		void DebugBoxColliderRenderer::InitShader()
-		{
-			auto& resourceManager = System::ResourceManager::GetInstance();
-
-			shader = resourceManager.IsShaderExist(ShaderConstant::BASE_COLOR_NAME)
-				? &resourceManager.GetShader(ShaderConstant::BASE_COLOR_NAME)
-				: &resourceManager.LoadShader(
-					ShaderConstant::BASE_COLOR_NAME,
-					ShaderConstant::GetBaseColorVertexShader(),
-					ShaderConstant::GetBaseColorFragmentShader());
 		}
 
 		void DebugBoxColliderRenderer::InitVao()
@@ -48,11 +35,11 @@ namespace Learning2DEngine
 				0.0f, 1.0f,
 			};
 			glGenVertexArrays(1, &vao);
-			glGenBuffers(1, &vboStatic);
+			glGenBuffers(1, &vbo);
 
 			glBindVertexArray(vao);
 
-			glBindBuffer(GL_ARRAY_BUFFER, vboStatic);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 			glEnableVertexAttribArray(0);
@@ -93,87 +80,6 @@ namespace Learning2DEngine
 
 			maxObjectSize = 1;
 			dynamicData = new BaseColorDynamicData[maxObjectSize];
-		}
-
-		void DebugBoxColliderRenderer::Init()
-		{
-			if (ComponentManager::GetInstance().GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
-				InitShader();
-				InitVao();
-			}
-			else
-			{
-				InitShader();
-				InitVao();
-			}
-		}
-
-		void DebugBoxColliderRenderer::DestroyObject()
-		{
-			glDeleteVertexArrays(1, &vao);
-			glDeleteBuffers(1, &vboStatic);
-			glDeleteBuffers(1, &vboDynamic);
-
-			debugRenderData.clear();
-
-			if (dynamicData != nullptr)
-			{
-				delete[] dynamicData;
-			}
-		}
-
-		void DebugBoxColliderRenderer::Destroy()
-		{
-			if (ComponentManager::GetInstance().GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
-				DestroyObject();
-			}
-			else
-			{
-				DestroyObject();
-			}
-		}
-
-		void DebugBoxColliderRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
-		{
-			debugRenderData.clear();
-			size_t maxDynamicSize = 0;
-			for (auto& layerData : renderData)
-			{
-				auto& actualLayerData = debugRenderData[layerData.first];
-
-				for (auto& data : layerData.second)
-				{
-					auto colliderData = static_cast<DebugRenderData<BaseBoxColliderComponent>*>(data);
-					if (!colliderData->objectComponent->isActive)
-						continue;
-
-					actualLayerData.push_back(colliderData);
-				}
-
-				if (maxDynamicSize < actualLayerData.size())
-					maxDynamicSize = actualLayerData.size();
-			}
-
-			//if the size is not enough or too big, it will be reallocated.
-			if (maxDynamicSize > maxObjectSize || maxObjectSize > maxDynamicSize * 2)
-			{
-				//It allocates 20% more space, so that it does not have to allocate again
-				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<size_t>(
-					static_cast<float>(maxDynamicSize) * 1.2f
-				);
-
-				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(BaseColorDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-				delete[] dynamicData;
-				dynamicData = new BaseColorDynamicData[maxObjectSize];
-			}
 		}
 
 		void DebugBoxColliderRenderer::Draw(int layer)

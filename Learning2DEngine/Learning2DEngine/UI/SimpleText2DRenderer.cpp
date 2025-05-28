@@ -2,7 +2,6 @@
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
-#include "../System/ComponentManager.h"
 #include "../Render/ShaderConstant.h"
 #include "../Render/RenderManager.h"
 #include "Text2DRenderData.h"
@@ -16,7 +15,7 @@ namespace Learning2DEngine
 	namespace UI
 	{
 		SimpleText2DRenderer::SimpleText2DRenderer()
-			: shader(nullptr), vao(0), vbo(0), ebo(0), textRenderData()
+			: BaseRenderer(), textRenderData()
 		{
 
 		}
@@ -59,41 +58,11 @@ namespace Learning2DEngine
 			glBindVertexArray(0);
 		}
 
-		void SimpleText2DRenderer::Init()
-		{
-			if (ComponentManager::GetInstance().GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
-				InitShader();
-				InitVao();
-			}
-			else
-			{
-				InitShader();
-				InitVao();
-			}
-		}
-
 		void SimpleText2DRenderer::DestroyObject()
 		{
-			glDeleteVertexArrays(1, &vao);
-			glDeleteBuffers(1, &vbo);
-			glDeleteBuffers(1, &ebo);
+			BaseRenderer::DestroyObject();
 
 			textRenderData.clear();
-		}
-
-		void SimpleText2DRenderer::Destroy()
-		{
-			if (ComponentManager::GetInstance().GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
-				DestroyObject();
-			}
-			else
-			{
-				DestroyObject();
-			}
 		}
 
 		void SimpleText2DRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)

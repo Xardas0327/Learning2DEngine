@@ -7,7 +7,6 @@
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
-#include "../System/ComponentManager.h"
 #include "../Render/RenderManager.h"
 #include "../Render/ShaderConstant.h"
 
@@ -19,8 +18,7 @@ namespace Learning2DEngine
 	namespace ParticleSimulator
 	{
 		ParticleRenderer::ParticleRenderer()
-			: shader(nullptr), vao(0), ebo(0), vboStatic(0), vboDynamic(0), maxObjectSize(0),
-			particleRenderData(), dynamicData(nullptr)
+			: BaseMultiRenderer(), particleRenderData()
 		{
 
 		}
@@ -54,8 +52,8 @@ namespace Learning2DEngine
 			glGenVertexArrays(1, &vao);
 			glBindVertexArray(vao);
 
-			glGenBuffers(1, &vboStatic);
-			glBindBuffer(GL_ARRAY_BUFFER, vboStatic);
+			glGenBuffers(1, &vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 			glGenBuffers(1, &ebo);
@@ -110,47 +108,11 @@ namespace Learning2DEngine
 			dynamicData = new MultiSpriteDynamicData[maxObjectSize];
 		}
 
-		void ParticleRenderer::Init()
-		{
-			if (ComponentManager::GetInstance().GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
-				InitShader();
-				InitVao();
-			}
-			else
-			{
-				InitShader();
-				InitVao();
-			}
-		}
-
 		void ParticleRenderer::DestroyObject()
 		{
-			glDeleteVertexArrays(1, &vao);
-			glDeleteBuffers(1, &ebo);
-			glDeleteBuffers(1, &vboStatic);
-			glDeleteBuffers(1, &vboDynamic);
+			BaseMultiRenderer::DestroyObject();
 
 			particleRenderData.clear();
-
-			if (dynamicData != nullptr)
-			{
-				delete[] dynamicData;
-			}
-		}
-
-		void ParticleRenderer::Destroy()
-		{
-			if (ComponentManager::GetInstance().GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
-				DestroyObject();
-			}
-			else
-			{
-				DestroyObject();
-			}
 		}
 
 		void ParticleRenderer::SetData(const std::map<int, std::vector<RenderData*>>& renderData)
@@ -243,22 +205,7 @@ namespace Learning2DEngine
 				}
 			}
 
-			//if the size is not enough or too big, it will be reallocated.
-			if (maxActiveParticleCount > maxObjectSize || maxObjectSize > maxActiveParticleCount * 2)
-			{
-				//It allocates 20% more space, so that it does not have to allocate again
-				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<size_t>(
-					static_cast<float>(maxActiveParticleCount) * 1.2f
-				);
-
-				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(MultiSpriteDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-				delete[] dynamicData;
-				dynamicData = new MultiSpriteDynamicData[maxObjectSize];
-			}
+			CalcDynamicDataSize(maxActiveParticleCount);
 		}
 
 		void ParticleRenderer::Draw(int layer)

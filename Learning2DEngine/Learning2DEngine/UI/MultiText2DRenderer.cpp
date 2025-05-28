@@ -2,7 +2,6 @@
 
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
-#include "../System/ComponentManager.h"
 #include "../Render/ShaderConstant.h"
 #include "../Render/RenderManager.h"
 #include "Text2DRenderData.h"
@@ -16,8 +15,7 @@ namespace Learning2DEngine
 	namespace UI
 	{
 		MultiText2DRenderer::MultiText2DRenderer()
-			: shader(nullptr), vao(0), ebo(0), vboDynamic(0), maxObjectSize(0),
-			textRenderData(), dynamicData(nullptr)
+			: BaseMultiRenderer(), textRenderData()
 		{
 
 		}
@@ -66,45 +64,48 @@ namespace Learning2DEngine
 			dynamicData = new Text2DDynamicData[maxObjectSize * 4];
 		}
 
-		void MultiText2DRenderer::Init()
-		{
-			if (ComponentManager::GetInstance().GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
-				InitShader();
-				InitVao();
-			}
-			else
-			{
-				InitShader();
-				InitVao();
-			}
-		}
-
 		void MultiText2DRenderer::DestroyObject()
 		{
-			glDeleteVertexArrays(1, &vao);
-			glDeleteBuffers(1, &ebo);
-			glDeleteBuffers(1, &vboDynamic);
+			BaseMultiRenderer::DestroyObject();
 
 			textRenderData.clear();
-
-			if (dynamicData != nullptr)
-			{
-				delete[] dynamicData;
-			}
 		}
 
-		void MultiText2DRenderer::Destroy()
+		void MultiText2DRenderer::CalcDynamicDataSize(size_t maxDynamicSize)
 		{
-			if (ComponentManager::GetInstance().GetThreadSafe())
+			//if the size is not enough or too big, it will be reallocated.
+			if (maxDynamicSize > maxObjectSize || maxObjectSize > maxDynamicSize * 2)
 			{
-				std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
-				DestroyObject();
-			}
-			else
-			{
-				DestroyObject();
+				//It allocates 20% more space, so that it does not have to allocate again
+				//if there are some dynamic renderers. 
+				maxObjectSize = static_cast<size_t>(
+					static_cast<float>(maxDynamicSize) * 1.2f
+					);
+
+				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+				//Multiply by 4, because an object has 4 vertices.
+				glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData) * maxObjectSize * 4, NULL, GL_DYNAMIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+				//Multiply by 6, because an object (2 triangles) has 6 indices.
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * maxObjectSize * 6, NULL, GL_DYNAMIC_DRAW);
+
+				delete[] dynamicData;
+				dynamicData = new Text2DDynamicData[maxObjectSize * 4];
+				unsigned int* dynamicIndices = new unsigned int[maxObjectSize * 6];
+
+				for (int i = 0; i < maxObjectSize; i++)
+				{
+					dynamicIndices[i * 6 + 0] = i * 4 + 0;
+					dynamicIndices[i * 6 + 1] = i * 4 + 1;
+					dynamicIndices[i * 6 + 2] = i * 4 + 3;
+					dynamicIndices[i * 6 + 3] = i * 4 + 1;
+					dynamicIndices[i * 6 + 4] = i * 4 + 2;
+					dynamicIndices[i * 6 + 5] = i * 4 + 3;
+				}
+				glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(float) * 6 * maxObjectSize, dynamicIndices);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+				delete[] dynamicIndices;
 			}
 		}
 
@@ -191,41 +192,7 @@ namespace Learning2DEngine
 				}
 			}
 
-			//if the size is not enough or too big, it will be reallocated.
-			if (maxDynamicSize > maxObjectSize || maxObjectSize > maxDynamicSize * 2)
-			{
-				//It allocates 20% more space, so that it does not have to allocate again
-				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<size_t>(
-					static_cast<float>(maxDynamicSize) * 1.2f
-				);
-
-				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
-				//Multiply by 4, because an object has 4 vertices.
-				glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData) * maxObjectSize * 4, NULL, GL_DYNAMIC_DRAW);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-				//Multiply by 6, because an object (2 triangles) has 6 indices.
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * maxObjectSize * 6, NULL, GL_DYNAMIC_DRAW);
-
-				delete[] dynamicData;
-				dynamicData = new Text2DDynamicData[maxObjectSize * 4];
-				unsigned int* dynamicIndices = new unsigned int[maxObjectSize * 6];
-
-				for (int i = 0; i < maxObjectSize; i++)
-				{
-					dynamicIndices[i * 6 + 0] = i * 4 + 0;
-					dynamicIndices[i * 6 + 1] = i * 4 + 1;
-					dynamicIndices[i * 6 + 2] = i * 4 + 3;
-					dynamicIndices[i * 6 + 3] = i * 4 + 1;
-					dynamicIndices[i * 6 + 4] = i * 4 + 2;
-					dynamicIndices[i * 6 + 5] = i * 4 + 3;
-				}
-				glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(float) * 6 * maxObjectSize, dynamicIndices);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-				delete[] dynamicIndices;
-			}
-
+			CalcDynamicDataSize(maxDynamicSize);
 		}
 
 		void MultiText2DRenderer::Draw(int layer)

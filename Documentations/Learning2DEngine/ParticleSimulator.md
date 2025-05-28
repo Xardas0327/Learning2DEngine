@@ -193,7 +193,7 @@ inline unsigned int GetMinAllocateSize() const;
 ##
 ## ParticleRenderer
 ### Source Code:
-[ParticleRenderer.h](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleRenderer.h)
+[ParticleRenderer.h](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleRenderer.h)  
 [ParticleRenderer.cpp](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleRenderer.cpp)
 
 ### Description:
@@ -202,45 +202,12 @@ Note: The projection and the view matrix came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class ParticleRenderer : public Render::IRenderer, public System::Singleton<ParticleRenderer>
+class ParticleRenderer : public Render::BaseMultiRenderer<Render::MultiSpriteDynamicData>, public System::Singleton<ParticleRenderer>
 {...}
 ```
 
 ### Variables:
 **Private:**  
-**shader**
-```cpp
-Render::Shader* shader;
-```
-
-**vao**
-```cpp
-GLuint vao;
-```
-
-**ebo**
-```cpp
-GLuint ebo;
-```
-
-**vboStatic**  
-It contains the vertex positions and texture coordinates.
-```cpp
-GLuint vboStatic;
-```
-
-**vboDynamic**  
-It contains the uploaded model matrices, colors and texture id of the renderable objects.
-```cpp
-GLuint vboDynamic;
-```
-
-**maxObjectSize**  
-The size of the vboDynamic, dynamicData.
-```cpp
-size_t maxObjectSize;
-```
-
 **particleRenderData**  
 When the SetData is called, the renderData will be converted to this format.  
 The first int is the layer.  
@@ -249,13 +216,6 @@ The tuple contains a map, whose keys are the texture ids and values the vector o
 a bool which means, that it uses blend or not, the blend function factor and the max active particle count.
 ```cpp
 std::map<int, std::vector<std::tuple<std::map<GLuint, std::vector<ParticleRenderData*>>, bool, Render::BlendFuncFactor, size_t>>> particleRenderData;
-```
-
-**dynamicData**  
-It is array, which contains the model matrices, colors and texture ids of the renderable objects, before the upload.  
-Note: its size is the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
-```cpp
-Render::MultiSpriteDynamicData* dynamicData;
 ```
 
 ### Functions:
@@ -267,35 +227,23 @@ ParticleRenderer();
 
 **InitShader**  
 ```cpp
-void InitShader();
+void InitShader() override;
 ```
 
 **InitVao**  
 ```cpp
-void InitVao();
+void InitVao() override;
 ```
 
 **DestroyObject**  
 The Destroy() call it with or without mutex.
 ```cpp
-void DestroyObject();
+void DestroyObject() override;
 ```
 
 **Public:**  
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
-```
-
 **SetData**  
-It allocates 20% more space in the buffer, so that it does not have to allocate again 
-if there are some dynamic renderers.  
-Note: the int is the layer.
+This function converts the renderData to particleRenderData.
 ```cpp
 void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
 ```

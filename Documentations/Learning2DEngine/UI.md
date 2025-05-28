@@ -62,51 +62,18 @@ Note: The projection came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class MultiText2DRenderer : public Render::IRenderer, public System::Singleton<MultiText2DRenderer>
+class MultiText2DRenderer : public Render::BaseMultiRenderer<Text2DDynamicData>, public System::Singleton<MultiText2DRenderer>
 {...}
 ```
 
 ### Variables:
 **Private:**  
-**shader**  
-```cpp
-Render::Shader* shader;
-```
-
-**vao**  
-```cpp
-GLuint vao;
-```
-
-**ebo**  
-```cpp
-GLuint ebo;
-```
-
-**vboDynamic**  
-It contains the uploaded data of the renderable characters.  
-Its size is depend on the maxObjectSize.
-```cpp
-GLuint vboDynamic;
-```
-**maxObjectSize**  
-```cpp
-size_t maxObjectSize;
-```
-
 **textRenderData**  
 The first int is the layer. 
 The map key is a GLuint, which a character texture id, and the value is a vector of array,
 which contains the position, the texture coordinates and the color..
 ```cpp
 std::map<int, std::map<GLuint, std::vector<std::array<float, 32>>>> textRenderData;
-```
-
-**dynamicData**  
-It is array, which contains the characters positions and colors of the renderable objects, before the upload.
-Note: its size is depend on the maxObjectSize, so it will be reallocated only, when the maxObjectSize is changed.
-```cpp
-Text2DDynamicData* dynamicData;
 ```
 
 ### Functions:
@@ -118,31 +85,30 @@ MultiText2DRenderer();
 
 **InitShader**  
 ```cpp
-void InitShader();
+void InitShader() override;
 ```
 
 **InitVao**  
 ```cpp
-void InitVao();
+void InitVao() override;
 ```
 
 **DestroyObject**  
 The Destroy() call it with or without mutex.
 ```cpp
-void DestroyObject();
+void DestroyObject() override;
+```
+
+**CalcDynamicDataSize**  
+If the current buffers' size is not enough or it is bigger twice than the maxDynamicSize,
+it will reallocate the buffers.  
+It allocates 20% more space in the buffer, so that it does not have to allocate again 
+if there are some dynamic renderers.
+```cpp
+void CalcDynamicDataSize(size_t maxDynamicSize) override;
 ```
 
 **Public:**  
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
-```
-
 **SetData**  
 Note: the int is the layer.
 ```cpp
@@ -241,32 +207,12 @@ Note: The projection came from Game::mainCamera.
 
 ### Header:
 ```cpp
-class SimpleText2DRenderer : public Render::IRenderer, public System::Singleton<SimpleText2DRenderer>
+class SimpleText2DRenderer : public Render::BaseRenderer, public System::Singleton<SimpleText2DRenderer>
 {...}
 ```
 
 ### Variables:
 **Private:**  
-**shader**  
-```cpp
-Render::Shader* shader;
-```
-
-**vao**  
-```cpp
-GLuint vao;
-```
-
-**vbo**  
-```cpp
-GLuint vbo;
-```
-
-**ebo**  
-```cpp
-GLuint ebo;
-```
-
 **textRenderData**  
 Note: the int is the layer.
 ```cpp
@@ -282,31 +228,21 @@ SimpleText2DRenderer();
 
 **InitShader**  
 ```cpp
-void InitShader();
+void InitShader() override;
 ```
 
 **InitVao**  
 ```cpp
-void InitVao();
+void InitVao() override;
 ```
 
 **DestroyObject**  
 The Destroy() call it with or without mutex.
 ```cpp
-void DestroyObject();
+void DestroyObject() override;
 ```
 
 **Public:**  
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
-```
-
 **SetData**  
 Note: the int is the layer.
 ```cpp
