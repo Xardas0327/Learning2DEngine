@@ -207,7 +207,6 @@ void Draw(int layer) override;
 ## DebugColliderRenderer
 ### Source Code:
 [DebugColliderRenderer.h](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugColliderRenderer.h)  
-[DebugColliderRenderer.cpp](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugColliderRenderer.cpp)
 
 ### Description:
 The parent class for debug collider renderers.
