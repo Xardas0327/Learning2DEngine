@@ -1,7 +1,7 @@
 # Render
 - [BaseColorDynamicData](Render.md#basecolordynamicdata)
 - [BaseMultiRenderer](Render.md#basemultirenderer)
-- [BaseRenderer](Render.md#basemultirenderer)
+- [BaseRenderer](Render.md#baserenderer)
 - [BaseRendererComponent](Render.md#baserenderercomponent)
 - [BlendFuncFactor](Render.md#blendfuncfactor)
 - [IRenderer](Render.md#irenderer)
