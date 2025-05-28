@@ -99,6 +99,15 @@ The Destroy() call it with or without mutex.
 void DestroyObject() override;
 ```
 
+**CalcDynamicDataSize**  
+If the current buffers' size is not enough or it is bigger twice than the maxDynamicSize,
+it will reallocate the buffers.  
+It allocates 20% more space in the buffer, so that it does not have to allocate again 
+if there are some dynamic renderers.
+```cpp
+void CalcDynamicDataSize(size_t maxDynamicSize) override;
+```
+
 **Public:**  
 **SetData**  
 Note: the int is the layer.

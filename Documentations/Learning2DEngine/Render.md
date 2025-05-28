@@ -93,7 +93,7 @@ virtual void DestroyObject();
 ```
 
 **CalcDynamicDataSize**  
-If the currently size is not enough or it is bigger twice than the maxDynamicSize,
+If the current buffers size is not enough or it is bigger twice than the maxDynamicSize,
 it will reallocate the buffers.  
 It allocates 20% more space in the buffer, so that it does not have to allocate again 
 if there are some dynamic renderers.
