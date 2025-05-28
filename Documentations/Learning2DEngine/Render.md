@@ -49,7 +49,7 @@ struct BaseColorDynamicData
 [BaseMultiRenderer.h](../../Learning2DEngine/Learning2DEngine/Render/BaseMultiRenderer.h)  
 
 ### Description:
-It adds to the Multi renderer variables, functions to `BaseRenderer`.
+It expands the `BaseRenderer` with multi renderer variables, functions.
 
 ### Header:
 ```cpp
