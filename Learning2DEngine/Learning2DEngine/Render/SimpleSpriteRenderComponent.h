@@ -5,7 +5,7 @@
 #include <mutex>
 
 #include "../System/GameObject.h"
-#include "RendererComponent.h"
+#include "OldRendererComponent.h"
 #include "SimpleSpriteRenderer.h"
 #include "SpriteRenderData.h"
 #include "Texture2D.h"
@@ -14,7 +14,7 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
-		class SimpleSpriteRenderComponent : public RendererComponent<SpriteRenderData, SimpleSpriteRenderer>
+		class SimpleSpriteRenderComponent : public OldRendererComponent<SpriteRenderData, SimpleSpriteRenderer>
 		{
 			friend class System::GameObject;
 		private:

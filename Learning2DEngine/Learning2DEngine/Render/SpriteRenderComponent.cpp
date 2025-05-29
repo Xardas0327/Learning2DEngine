@@ -11,12 +11,12 @@ namespace Learning2DEngine
 		std::mutex SpriteRenderComponent::mutex;
 
 		SpriteRenderComponent::SpriteRenderComponent(GameObject* gameObject, int layer, glm::vec4 color)
-			: RendererComponent(gameObject, layer, color), Component(gameObject)
+			: OldRendererComponent(gameObject, layer, color), Component(gameObject)
 		{
 		}
 
 		SpriteRenderComponent::SpriteRenderComponent(GameObject* gameObject, const Texture2D& texture, int layer, glm::vec4 color)
-			: RendererComponent(gameObject, layer, texture, color), Component(gameObject)
+			: OldRendererComponent(gameObject, layer, texture, color), Component(gameObject)
 		{
 		}
 
@@ -26,12 +26,12 @@ namespace Learning2DEngine
 			if (componentManager.GetThreadSafe())
 			{
 				std::lock_guard<std::mutex> lock(mutex);
-				RendererComponent::Init();
+				OldRendererComponent::Init();
 				++SpriteRenderComponent::refrenceNumber;
 			}
 			else
 			{
-				RendererComponent::Init();
+				OldRendererComponent::Init();
 				++SpriteRenderComponent::refrenceNumber;
 			}
 		}
@@ -42,7 +42,7 @@ namespace Learning2DEngine
 			if (componentManager.GetThreadSafe())
 			{
 				std::lock_guard<std::mutex> lock(mutex);
-				RendererComponent::Destroy();
+				OldRendererComponent::Destroy();
 
 				if (!(--SpriteRenderComponent::refrenceNumber))
 				{
@@ -52,7 +52,7 @@ namespace Learning2DEngine
 			}
 			else
 			{
-				RendererComponent::Destroy();
+				OldRendererComponent::Destroy();
 
 				if (!(--SpriteRenderComponent::refrenceNumber))
 				{

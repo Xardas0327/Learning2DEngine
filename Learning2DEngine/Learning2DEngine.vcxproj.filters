@@ -308,7 +308,7 @@
     <ClInclude Include="Learning2DEngine\Render\IRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Render\RendererComponent.h">
+    <ClInclude Include="Learning2DEngine\Render\OldRendererComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\LateRendererComponent.h">

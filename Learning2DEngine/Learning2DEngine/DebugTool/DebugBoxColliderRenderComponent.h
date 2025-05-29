@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Physics/BaseBoxColliderComponent.h"
-#include "../Render/RendererComponent.h"
+#include "../Render/OldRendererComponent.h"
 
 #include "DebugRenderData.h"
 #include "DebugBoxColliderRenderer.h"
@@ -10,7 +10,7 @@ namespace Learning2DEngine
 {
 	namespace DebugTool
 	{
-		class DebugBoxColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BaseBoxColliderComponent>, DebugBoxColliderRenderer>
+		class DebugBoxColliderRenderComponent : public Render::OldRendererComponent<DebugRenderData<Physics::BaseBoxColliderComponent>, DebugBoxColliderRenderer>
 		{
 			friend class System::GameObject;
 		private:

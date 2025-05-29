@@ -15,7 +15,7 @@ namespace Learning2DEngine
 		std::mutex DebugCircleColliderRenderComponent::mutex;
 
 		DebugCircleColliderRenderComponent::DebugCircleColliderRenderComponent(GameObject* gameObject, const BaseCircleColliderComponent* collider)
-			: RendererComponent(gameObject, L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER, collider), Component(gameObject)
+			: OldRendererComponent(gameObject, L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER, collider), Component(gameObject)
 		{
 		}
 
@@ -25,12 +25,12 @@ namespace Learning2DEngine
 			if (componentManager.GetThreadSafe())
 			{
 				std::lock_guard<std::mutex> lock(mutex);
-				RendererComponent::Init();
+				OldRendererComponent::Init();
 				++DebugCircleColliderRenderComponent::refrenceNumber;
 			}
 			else
 			{
-				RendererComponent::Init();
+				OldRendererComponent::Init();
 				++DebugCircleColliderRenderComponent::refrenceNumber;
 			}
 		}
@@ -41,7 +41,7 @@ namespace Learning2DEngine
 			if (componentManager.GetThreadSafe())
 			{
 				std::lock_guard<std::mutex> lock(mutex);
-				RendererComponent::Destroy();
+				OldRendererComponent::Destroy();
 
 				if (!(--DebugCircleColliderRenderComponent::refrenceNumber))
 				{
@@ -51,7 +51,7 @@ namespace Learning2DEngine
 			}
 			else
 			{
-				RendererComponent::Destroy();
+				OldRendererComponent::Destroy();
 
 				if (!(--DebugCircleColliderRenderComponent::refrenceNumber))
 				{

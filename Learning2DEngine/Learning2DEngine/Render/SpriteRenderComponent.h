@@ -5,7 +5,7 @@
 #include <mutex>
 
 #include "../System/GameObject.h"
-#include "RendererComponent.h"
+#include "OldRendererComponent.h"
 #include "MultiSpriteRenderer.h"
 #include "SpriteRenderData.h"
 #include "Texture2D.h"
@@ -15,7 +15,7 @@ namespace Learning2DEngine
 	namespace Render
 	{
 		//It supports the multi instance rendering
-		class SpriteRenderComponent : public RendererComponent<SpriteRenderData, MultiSpriteRenderer>
+		class SpriteRenderComponent : public OldRendererComponent<SpriteRenderData, MultiSpriteRenderer>
 		{
 			friend class System::GameObject;
 		private:
