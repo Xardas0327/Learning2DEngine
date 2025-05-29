@@ -2,6 +2,7 @@
 
 #include "BaseRendererComponent.h"
 #include "../System/ComponentManager.h"
+#include "RendererMode.h"
 
 namespace Learning2DEngine
 {
@@ -32,12 +33,12 @@ namespace Learning2DEngine
 			virtual void Init() override
 			{
 				auto& componentManager = System::ComponentManager::GetInstance();
-				if (!componentManager.IsRendererExistInLateRender(this->GetId()))
+				if (!componentManager.IsRendererExist(RendererMode::LATERENDER, this->GetId()))
 				{
-					componentManager.AddRendererToLateRender(this->GetId(), this->GetRenderer());
+					componentManager.AddRenderer(RendererMode::LATERENDER, this->GetId(), this->GetRenderer());
 				}
 
-				componentManager.AddDataToLateRender(this->GetId(), &this->data, this->GetLayer());
+				componentManager.AddRenderData(RendererMode::LATERENDER, this->GetId(), &this->data, this->GetLayer());
 			}
 
 			/// <summary>
@@ -46,14 +47,14 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Destroy() override
 			{
-				System::ComponentManager::GetInstance().RemoveDataFromLateRender(&this->data);
+				System::ComponentManager::GetInstance().RemoveRenderData(RendererMode::LATERENDER, &this->data);
 			}
 
 		public:
 			virtual void SetLayer(int value) override
 			{
 				BaseRendererComponent<TRenderData, TRenderer>::SetLayer(value);
-				System::ComponentManager::GetInstance().ChangeLayerInLateRender(&this->data, this->GetLayer());
+				System::ComponentManager::GetInstance().ChangeRenderLayer(RendererMode::LATERENDER, &this->data, this->GetLayer());
 			}
 		};
 	}

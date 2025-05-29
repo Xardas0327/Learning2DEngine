@@ -3,7 +3,7 @@
 #include <mutex>
 #include <string>
 
-#include "../Render/RendererComponent.h"
+#include "../Render/OldRendererComponent.h"
 #include "../System/GameObject.h"
 #include "../System/UpdaterComponent.h"
 #include "ParticleRenderer.h"
@@ -14,7 +14,7 @@ namespace Learning2DEngine
 {
 	namespace ParticleSimulator
 	{
-		class ParticleSystemComponent final : public Render::RendererComponent<ParticleRenderData, ParticleRenderer>,
+		class ParticleSystemComponent final : public Render::OldRendererComponent<ParticleRenderData, ParticleRenderer>,
 											public System::UpdaterComponent
 		{
 			friend class System::GameObject;

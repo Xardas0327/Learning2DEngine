@@ -2,6 +2,7 @@
 
 #include "BaseRendererComponent.h"
 #include "../System/ComponentManager.h"
+#include "RendererMode.h"
 
 namespace Learning2DEngine
 {
@@ -32,12 +33,12 @@ namespace Learning2DEngine
 			virtual void Init() override
 			{
 				auto& componentManager = System::ComponentManager::GetInstance();
-				if (!componentManager.IsRendererExistInRender(this->GetId()))
+				if (!componentManager.IsRendererExist(RendererMode::RENDER, this->GetId()))
 				{
-					componentManager.AddRendererToRender(this->GetId(), this->GetRenderer());
+					componentManager.AddRenderer(RendererMode::RENDER, this->GetId(), this->GetRenderer());
 				}
 
-				componentManager.AddDataToRender(this->GetId(), &this->data, this->GetLayer());
+				componentManager.AddRenderData(RendererMode::RENDER, this->GetId(), &this->data, this->GetLayer());
 			}
 
 			/// <summary>
@@ -46,14 +47,14 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Destroy() override
 			{
-				System::ComponentManager::GetInstance().RemoveDataFromRender(&this->data);
+				System::ComponentManager::GetInstance().RemoveRenderData(RendererMode::RENDER, &this->data);
 			}
 
 		public:
 			virtual void SetLayer(int value) override
 			{
 				BaseRendererComponent<TRenderData, TRenderer>::SetLayer(value);
-				System::ComponentManager::GetInstance().ChangeLayerInRender(&this->data, this->GetLayer());
+				System::ComponentManager::GetInstance().ChangeRenderLayer(RendererMode::RENDER, &this->data, this->GetLayer());
 			}
 		};
 	}

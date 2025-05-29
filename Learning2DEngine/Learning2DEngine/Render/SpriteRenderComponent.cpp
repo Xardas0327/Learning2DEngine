@@ -47,7 +47,7 @@ namespace Learning2DEngine
 				if (!(--SpriteRenderComponent::refrenceNumber))
 				{
 					MultiSpriteRenderer::GetInstance().Destroy();
-					componentManager.RemoveRendererFromRender(GetId());
+					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
 			else
@@ -57,7 +57,7 @@ namespace Learning2DEngine
 				if (!(--SpriteRenderComponent::refrenceNumber))
 				{
 					MultiSpriteRenderer::GetInstance().Destroy();
-					componentManager.RemoveRendererFromRender(GetId());
+					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
 		}

@@ -11,6 +11,7 @@
 #include "../Render/IRenderer.h"
 #include "../Render/RenderData.h"
 #include "../Render/RendererComponentHandler.h"
+#include "../Render/RendererMode.h"
 #include "../Physics/ColliderComponentHandler.h"
 #include "../Physics/BaseBoxColliderComponent.h"
 #include "../Physics/BaseCircleColliderComponent.h"
@@ -132,71 +133,90 @@ namespace Learning2DEngine
 
             //Render
 
-            inline bool IsRendererExistInRender(const std::string& id)
+            bool IsRendererExist(const Render::RendererMode mode, const std::string& id)
             {
-                return rendererComponentHandler.IsRendererExist(id, isThreadSafe);
+                switch (mode)
+                {
+                case Render::RendererMode::RENDER:
+                    return rendererComponentHandler.IsRendererExist(id, isThreadSafe);
+                    break;
+                case Render::RendererMode::LATERENDER:
+                    return lateRendererComponentHandler.IsRendererExist(id, isThreadSafe);
+                    break;
+                }
+
+                // this one never should happen
+                return false;
             }
 
-            inline void AddRendererToRender(const std::string& id, Render::IRenderer* renderer)
+            void AddRenderer(const Render::RendererMode mode, const std::string& id, Render::IRenderer* renderer)
             {
-                rendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
+                switch (mode)
+                {
+                case Render::RendererMode::RENDER:
+                    rendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
+                    break;
+                case Render::RendererMode::LATERENDER:
+                    lateRendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
+                    break;
+                }
             }
 
-            inline void RemoveRendererFromRender(const std::string& id)
+            void RemoveRenderer(const Render::RendererMode mode, const std::string& id)
             {
-                rendererComponentHandler.RemoveRenderer(id, isThreadSafe);
+                switch (mode)
+                {
+                case Render::RendererMode::RENDER:
+                    rendererComponentHandler.RemoveRenderer(id, isThreadSafe);
+                    break;
+                case Render::RendererMode::LATERENDER:
+                    lateRendererComponentHandler.RemoveRenderer(id, isThreadSafe);
+                    break;
+                }
             }
 
-            inline void AddDataToRender(const std::string& id, Render::RenderData* data, int layer)
+            void AddRenderData(const Render::RendererMode mode, const std::string& id, Render::RenderData* data, int layer)
             {
-                rendererComponentHandler.AddData(id, data, layer, isThreadSafe);
+                switch (mode)
+                {
+                case Render::RendererMode::RENDER:
+                    rendererComponentHandler.AddData(id, data, layer, isThreadSafe);
+                    break;
+                case Render::RendererMode::LATERENDER:
+                    lateRendererComponentHandler.AddData(id, data, layer, isThreadSafe);
+                    break;
+                }
             }
 
-            inline void ChangeLayerInRender(Render::RenderData* data, int newLayer)
+            void ChangeRenderLayer(const Render::RendererMode mode, Render::RenderData* data, int newLayer)
             {
-                rendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
+                switch (mode)
+                {
+                case Render::RendererMode::RENDER:
+                    rendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
+                    break;
+                case Render::RendererMode::LATERENDER:
+                    lateRendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
+                    break;
+                }
             }
 
-            inline void RemoveDataFromRender(Render::RenderData* data)
+            void RemoveRenderData(const Render::RendererMode mode, Render::RenderData* data)
             {
-                rendererComponentHandler.RemoveData(data, isThreadSafe);
+                switch (mode)
+                {
+                case Render::RendererMode::RENDER:
+                    rendererComponentHandler.RemoveData(data, isThreadSafe);
+                    break;
+                case Render::RendererMode::LATERENDER:
+                    lateRendererComponentHandler.RemoveData(data, isThreadSafe);
+                    break;
+                }
             }
 
             inline void Render()
             {
                 rendererComponentHandler.Run();
-            }
-
-            //LateRender
-
-            inline bool IsRendererExistInLateRender(const std::string& id)
-            {
-                return lateRendererComponentHandler.IsRendererExist(id, isThreadSafe);
-            }
-
-            inline void AddRendererToLateRender(const std::string& id, Render::IRenderer* renderer)
-            {
-                lateRendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
-            }
-
-            inline void RemoveRendererFromLateRender(const std::string& id)
-            {
-                lateRendererComponentHandler.RemoveRenderer(id, isThreadSafe);
-            }
-
-            inline void AddDataToLateRender(const std::string& id, Render::RenderData* data, int layer)
-            {
-                lateRendererComponentHandler.AddData(id, data, layer, isThreadSafe);
-            }
-
-            inline void ChangeLayerInLateRender(Render::RenderData* data, int newLayer)
-            {
-                lateRendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
-            }
-
-            inline void RemoveDataFromLateRender(Render::RenderData* data)
-            {
-                lateRendererComponentHandler.RemoveData(data, isThreadSafe);
             }
 
             inline void LateRender()

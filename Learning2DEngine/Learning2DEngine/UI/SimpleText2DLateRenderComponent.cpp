@@ -3,6 +3,7 @@
 namespace Learning2DEngine
 {
 	using namespace System;
+	using namespace Render;
 
 	namespace UI
 	{
@@ -55,7 +56,7 @@ namespace Learning2DEngine
 				if (!(--SimpleText2DLateRenderComponent::refrenceNumber))
 				{
 					SimpleText2DRenderer::GetInstance().Destroy();
-					componentManager.RemoveRendererFromRender(GetId());
+					componentManager.RemoveRenderer(RendererMode::LATERENDER, GetId());
 				}
 			}
 			else
@@ -65,7 +66,7 @@ namespace Learning2DEngine
 				if (!(--SimpleText2DLateRenderComponent::refrenceNumber))
 				{
 					SimpleText2DRenderer::GetInstance().Destroy();
-					componentManager.RemoveRendererFromRender(GetId());
+					componentManager.RemoveRenderer(RendererMode::LATERENDER, GetId());
 				}
 			}
 		}

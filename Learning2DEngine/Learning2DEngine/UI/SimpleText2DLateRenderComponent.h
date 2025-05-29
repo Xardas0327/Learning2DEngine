@@ -6,6 +6,7 @@
 
 #include "../System/GameObject.h"
 #include "../Render/LateRendererComponent.h"
+#include "../Render/RendererMode.h"
 
 #include "Text2DRenderData.h"
 #include "SimpleText2DRenderer.h"

@@ -21,7 +21,7 @@ namespace Learning2DEngine
 			ParticleSettings* particleSettings,
 			unsigned int minAllocateSize,
 			int renderLayer)
-			: RendererComponent(gameObject, renderLayer, particleAmount, minAllocateSize),
+			: OldRendererComponent(gameObject, renderLayer, particleAmount, minAllocateSize),
 			UpdaterComponent(gameObject), Component(gameObject),
 			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
 			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
@@ -36,7 +36,7 @@ namespace Learning2DEngine
 			ParticleSettings* particleSettings,
 			unsigned int minAllocateSize,
 			int renderLayer)
-			: RendererComponent(gameObject, renderLayer, particleAmount, systemSettings, texture, minAllocateSize),
+			: OldRendererComponent(gameObject, renderLayer, particleAmount, systemSettings, texture, minAllocateSize),
 			UpdaterComponent(gameObject), Component(gameObject),
 			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
 			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
@@ -62,13 +62,13 @@ namespace Learning2DEngine
 			if (componentManager.GetThreadSafe())
 			{
 				std::lock_guard<std::mutex> lock(mutex);
-				RendererComponent::Init();
+				OldRendererComponent::Init();
 				UpdaterComponent::Init();
 				++ParticleSystemComponent::refrenceNumber;
 			}
 			else
 			{
-				RendererComponent::Init();
+				OldRendererComponent::Init();
 				UpdaterComponent::Init();
 				++ParticleSystemComponent::refrenceNumber;
 			}
@@ -85,22 +85,22 @@ namespace Learning2DEngine
 			if (componentManager.GetThreadSafe())
 			{
 				std::lock_guard<std::mutex> lock(mutex);
-				RendererComponent::Destroy();
+				OldRendererComponent::Destroy();
 				UpdaterComponent::Destroy();
 				if (!(--ParticleSystemComponent::refrenceNumber))
 				{
 					ParticleRenderer::GetInstance().Destroy();
-					ComponentManager::GetInstance().RemoveRendererFromRender(GetId());
+					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
 			else
 			{
-				RendererComponent::Destroy();
+				OldRendererComponent::Destroy();
 				UpdaterComponent::Destroy();
 				if (!(--ParticleSystemComponent::refrenceNumber))
 				{
 					ParticleRenderer::GetInstance().Destroy();
-					ComponentManager::GetInstance().RemoveRendererFromRender(GetId());
+					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
 

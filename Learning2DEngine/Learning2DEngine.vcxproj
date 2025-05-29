@@ -244,7 +244,9 @@
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h" />
     <ClInclude Include="Learning2DEngine\Render\RenderData.h" />
     <ClInclude Include="Learning2DEngine\Render\OldRendererComponent.h" />
+    <ClInclude Include="Learning2DEngine\Render\RendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\RendererComponentHandler.h" />
+    <ClInclude Include="Learning2DEngine\Render\RendererMode.h" />
     <ClInclude Include="Learning2DEngine\Render\Resolution.h" />
     <ClInclude Include="Learning2DEngine\Render\ShaderConstant.h" />
     <ClInclude Include="Learning2DEngine\Render\SimpleSpriteRenderComponent.h" />

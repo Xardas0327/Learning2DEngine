@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BaseRendererComponent.h"
-#include "../System/ComponentManager.h"
+#include "RendererMode.h"
 
 namespace Learning2DEngine
 {
@@ -19,42 +19,15 @@ namespace Learning2DEngine
 		{
 		protected:
 			template <class ...TRenderDataParams>
-			RendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams&&... renderDataParams)
+			RendererComponent(System::GameObject* gameObject, RendererMode mode, int layer = 0, TRenderDataParams&&... renderDataParams)
 				: BaseRendererComponent<TRenderData, TRenderer>(gameObject, layer, std::forward<TRenderDataParams>(renderDataParams)...),
-				System::Component(gameObject)
+				System::Component(gameObject), mode(mode)
 			{
 
-			}
-
-			/// <summary>
-			/// If this function is override, it should care, that the renderer and renderdata will be added to the ComponentManager's Render.
-			/// </summary>
-			virtual void Init() override
-			{
-				auto& componentManager = System::ComponentManager::GetInstance();
-				if (!componentManager.IsRendererExistInRender(this->GetId()))
-				{
-					componentManager.AddRendererToRender(this->GetId(), this->GetRenderer());
-				}
-
-				componentManager.AddDataToRender(this->GetId(), &this->data, this->GetLayer());
-			}
-
-			/// <summary>
-			/// If this function is override, it should care, that the renderdata will be removed from the ComponentManager's Render.
-			/// By default the renderer will not be removed automatically.
-			/// </summary>
-			virtual void Destroy() override
-			{
-				System::ComponentManager::GetInstance().RemoveDataFromRender(&this->data);
 			}
 
 		public:
-			virtual void SetLayer(int value) override
-			{
-				BaseRendererComponent<TRenderData, TRenderer>::SetLayer(value);
-				System::ComponentManager::GetInstance().ChangeLayerInRender(&this->data, this->GetLayer());
-			}
+			const RendererMode mode;
 		};
 	}
 }
