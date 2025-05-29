@@ -70,8 +70,8 @@ namespace Learning2DEngine
 
 				if (!(--RendererComponent::refrenceNumber))
 				{
-					DestroyRenderer();
-					componentManager.RemoveRenderer(mode, GetId());
+					this->DestroyRenderer();
+					componentManager.RemoveRenderer(mode, this->GetId());
 				}
 			}
 
