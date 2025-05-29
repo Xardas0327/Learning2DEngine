@@ -1,15 +1,15 @@
-#include "Text2DLateRenderComponent.h"
+#include "SimpleText2DRenderComponent.h"
 
 namespace Learning2DEngine
 {
 	using namespace System;
 	using namespace Render;
 
-    namespace UI
-    {
-		const std::string Text2DLateRenderComponent::id = "L2DE_Text2DLateRenderComponent";
+	namespace UI
+	{
+		const std::string SimpleText2DRenderComponent::id = "L2DE_SimpleText2DRenderComponent";
 
-		Text2DLateRenderComponent::Text2DLateRenderComponent(
+		SimpleText2DRenderComponent::SimpleText2DRenderComponent(
 			GameObject* gameObject,
 			RendererMode mode,
 			const FontSizePair& fontSizePair,
@@ -20,7 +20,7 @@ namespace Learning2DEngine
 		{
 		}
 
-		Text2DLateRenderComponent::Text2DLateRenderComponent(
+		SimpleText2DRenderComponent::SimpleText2DRenderComponent(
 			GameObject* gameObject,
 			RendererMode mode,
 			const FontSizePair& fontSizePair,
@@ -33,22 +33,22 @@ namespace Learning2DEngine
 
 		}
 
-		const std::string& Text2DLateRenderComponent::GetId() const
+		const std::string& SimpleText2DRenderComponent::GetId() const
 		{
-			return Text2DLateRenderComponent::id;
+			return SimpleText2DRenderComponent::id;
 		}
 
-		MultiText2DRenderer* Text2DLateRenderComponent::GetInitedRenderer()
+		SimpleText2DRenderer* SimpleText2DRenderComponent::GetInitedRenderer()
 		{
-			auto& renderer = MultiText2DRenderer::GetInstance();
+			auto& renderer = SimpleText2DRenderer::GetInstance();
 			renderer.Init();
 
 			return &renderer;
 		}
 
-		void Text2DLateRenderComponent::DestroyRenderer()
+		void SimpleText2DRenderComponent::DestroyRenderer()
 		{
-			MultiText2DRenderer::GetInstance().Destroy();
+			SimpleText2DRenderer::GetInstance().Destroy();
 		}
-    }
+	}
 }

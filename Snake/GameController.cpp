@@ -52,7 +52,7 @@ void GameController::Init()
             glm::vec2(5.0f, 5.0f)
         )
     );
-    scoreText = scoreGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+    scoreText = scoreGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
         "Score: " + std::to_string(score)
@@ -63,7 +63,7 @@ void GameController::Init()
             glm::vec2(175.0f, static_cast<float>(resolution.GetHeight() / 2))
         )
     );
-    startText = startGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+    startText = startGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
         "Press ENTER to start"

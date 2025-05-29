@@ -16,21 +16,21 @@ namespace Learning2DEngine
 {
 	namespace UI
 	{
-		class SimpleText2DLateRenderComponent : public Render::RendererComponent<Text2DRenderData, SimpleText2DRenderer>
+		class SimpleText2DRenderComponent : public Render::RendererComponent<Text2DRenderData, SimpleText2DRenderer>
 		{
 			friend class System::GameObject;
 		private:
 			static const std::string id;
 
 		protected:
-			SimpleText2DLateRenderComponent(
+			SimpleText2DRenderComponent(
 				System::GameObject* gameObject,
 				Render::RendererMode mode,
 				const FontSizePair& fontSizePair,
 				int layer = 0,
 				glm::vec4 color = glm::vec4(1.0f));
 
-			SimpleText2DLateRenderComponent(
+			SimpleText2DRenderComponent(
 				System::GameObject* gameObject,
 				Render::RendererMode mode,
 				const FontSizePair& fontSizePair,

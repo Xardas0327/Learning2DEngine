@@ -6,7 +6,7 @@
 
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
-#include <Learning2DEngine/UI/SimpleText2DLateRenderComponent.h>
+#include <Learning2DEngine/UI/SimpleText2DRenderComponent.h>
 
 #include "CoinController.h"
 #include "PlayerController.h"
@@ -29,14 +29,14 @@ protected:
     const Learning2DEngine::UI::FontSizePair fontSizePair;
     DetectorEventItem playerCoinEventItem;
     float currentPlayTime;
-    Learning2DEngine::UI::SimpleText2DLateRenderComponent* scoreText;
-    Learning2DEngine::UI::SimpleText2DLateRenderComponent* playTimeText;
-    Learning2DEngine::UI::SimpleText2DLateRenderComponent* description1Text;
-    Learning2DEngine::UI::SimpleText2DLateRenderComponent* description2Text;
-    Learning2DEngine::UI::SimpleText2DLateRenderComponent* startText;
-    Learning2DEngine::UI::SimpleText2DLateRenderComponent* winText;
-    Learning2DEngine::UI::SimpleText2DLateRenderComponent* loseText;
-    Learning2DEngine::UI::SimpleText2DLateRenderComponent* endText;
+    Learning2DEngine::UI::SimpleText2DRenderComponent* scoreText;
+    Learning2DEngine::UI::SimpleText2DRenderComponent* playTimeText;
+    Learning2DEngine::UI::SimpleText2DRenderComponent* description1Text;
+    Learning2DEngine::UI::SimpleText2DRenderComponent* description2Text;
+    Learning2DEngine::UI::SimpleText2DRenderComponent* startText;
+    Learning2DEngine::UI::SimpleText2DRenderComponent* winText;
+    Learning2DEngine::UI::SimpleText2DRenderComponent* loseText;
+    Learning2DEngine::UI::SimpleText2DRenderComponent* endText;
     irrklang::ISoundEngine* soundEngine;
 
     GameController(Learning2DEngine::System::GameObject* gameObject);

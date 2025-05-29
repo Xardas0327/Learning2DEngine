@@ -181,9 +181,9 @@
     <ClCompile Include="Learning2DEngine\Render\MultiSpriteRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
     <ClCompile Include="Learning2DEngine\System\Time.cpp" />
-    <ClCompile Include="Learning2DEngine\UI\SimpleText2DLateRenderComponent.cpp" />
+    <ClCompile Include="Learning2DEngine\UI\SimpleText2DRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\UI\SimpleText2DRenderer.cpp" />
-    <ClCompile Include="Learning2DEngine\UI\Text2DLateRenderComponent.cpp" />
+    <ClCompile Include="Learning2DEngine\UI\Text2DRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\UI\MultiText2DRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\UI\TextCharacterSet.cpp" />
     <ClCompile Include="Plugins\glad.c" />
@@ -289,10 +289,10 @@
     <ClInclude Include="Learning2DEngine\System\UpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\UpdaterComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\UI\FontSizePair.h" />
-    <ClInclude Include="Learning2DEngine\UI\SimpleText2DLateRenderComponent.h" />
+    <ClInclude Include="Learning2DEngine\UI\SimpleText2DRenderComponent.h" />
     <ClInclude Include="Learning2DEngine\UI\SimpleText2DRenderer.h" />
     <ClInclude Include="Learning2DEngine\UI\Text2DDynamicData.h" />
-    <ClInclude Include="Learning2DEngine\UI\Text2DLateRenderComponent.h" />
+    <ClInclude Include="Learning2DEngine\UI\Text2DRenderComponent.h" />
     <ClInclude Include="Learning2DEngine\UI\Text2DRenderData.h" />
     <ClInclude Include="Learning2DEngine\UI\MultiText2DRenderer.h" />
     <ClInclude Include="Learning2DEngine\UI\TextCharacterSet.h" />

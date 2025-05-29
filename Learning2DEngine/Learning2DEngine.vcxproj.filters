@@ -72,7 +72,7 @@
     <ClCompile Include="Learning2DEngine\UI\MultiText2DRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\UI\Text2DLateRenderComponent.cpp">
+    <ClCompile Include="Learning2DEngine\UI\Text2DRenderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleRenderer.cpp">
@@ -90,7 +90,7 @@
     <ClCompile Include="Learning2DEngine\UI\SimpleText2DRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Learning2DEngine\UI\SimpleText2DLateRenderComponent.cpp">
+    <ClCompile Include="Learning2DEngine\UI\SimpleText2DRenderComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Learning2DEngine\Physics\Rigidbody.cpp">
@@ -326,7 +326,7 @@
     <ClInclude Include="Learning2DEngine\UI\MultiText2DRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\UI\Text2DLateRenderComponent.h">
+    <ClInclude Include="Learning2DEngine\UI\Text2DRenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleRenderData.h">
@@ -356,7 +356,7 @@
     <ClInclude Include="Learning2DEngine\UI\SimpleText2DRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\UI\SimpleText2DLateRenderComponent.h">
+    <ClInclude Include="Learning2DEngine\UI\SimpleText2DRenderComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Physics\ColliderType.h">

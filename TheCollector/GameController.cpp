@@ -169,21 +169,21 @@ void GameController::InitTexts()
             glm::vec2(5.0f, 5.0f)
         )
     );
-    scoreText = scoreGameObject->AddComponent<SimpleText2DLateRenderComponent>(RendererMode::LATERENDER, fontSizePair);
+    scoreText = scoreGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
 
     auto playTimeGameObject = GameObject::Create(
         Transform(
             glm::vec2(200.0f, 5.0f)
         )
     );
-    playTimeText = playTimeGameObject->AddComponent<SimpleText2DLateRenderComponent>(RendererMode::LATERENDER, fontSizePair);
+    playTimeText = playTimeGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
 
     auto description1GameObject = GameObject::Create(
         Transform(
             glm::vec2(200.0f, 300.0f)
         )
     );
-    description1Text = description1GameObject->AddComponent<SimpleText2DLateRenderComponent>(
+    description1Text = description1GameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
         "Collect the coins in time."
@@ -194,7 +194,7 @@ void GameController::InitTexts()
             glm::vec2(200.0f, 350.0f)
         )
     );
-    description2Text = description2GameObject->AddComponent<SimpleText2DLateRenderComponent>(
+    description2Text = description2GameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
         "You can move with A and D and jump with SPACE."
@@ -206,7 +206,7 @@ void GameController::InitTexts()
             glm::vec2(0.75f, 0.75f)
         )
     );
-    startText = startGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+    startText = startGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
         "Press ENTER for start."
@@ -218,7 +218,7 @@ void GameController::InitTexts()
             glm::vec2(2.0f, 2.0f)
         )
     );
-    winText = winGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+    winText = winGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
         "YOU WIN!",
@@ -232,7 +232,7 @@ void GameController::InitTexts()
             glm::vec2(2.0f, 2.0f)
         )
     );
-    loseText = loseGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+    loseText = loseGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
         "YOU LOSE!",
@@ -246,7 +246,7 @@ void GameController::InitTexts()
             glm::vec2(0.75f, 0.75f)
         )
     );
-    endText = endGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+    endText = endGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
         "Press ENTER for home screen."
