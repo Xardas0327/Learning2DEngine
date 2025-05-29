@@ -40,6 +40,7 @@ SimpleSpriteRenderComponent* PlayerController::CreateNewSnakeUnit(glm::vec2 posi
         )
     );
     return playerUnit->AddComponent<SimpleSpriteRenderComponent>(
+        RendererMode::RENDER,
         ResourceManager::GetInstance().GetTexture(textureId),
         0,
         color

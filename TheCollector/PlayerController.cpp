@@ -31,6 +31,7 @@ void PlayerController::Init()
     gameObject->transform.SetScale(PLAYER_SIZE);
 
     auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
+        RendererMode::RENDER,
         ResourceManager::GetInstance().GetTexture(PLAYER_RIGHT_IDLE_TEXTURE_IDS[0])
     );
     rigidbody = gameObject->AddComponent<Rigidbody>(glm::vec2(0.0f, 0.0f), true);

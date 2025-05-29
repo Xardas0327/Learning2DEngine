@@ -71,6 +71,7 @@ void GameController::Init()
         )
     );
     lifeText = liveGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        RendererMode::LATERENDER,
         fontSizePair,
         "Lifes: " + std::to_string(lifes)
     );
@@ -81,6 +82,7 @@ void GameController::Init()
         )
     );
     startText = startGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        RendererMode::LATERENDER,
         fontSizePair,
         "Press ENTER to start"
     );
@@ -92,6 +94,7 @@ void GameController::Init()
         )
     );
     levelSelectorText = levelSelectorGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        RendererMode::LATERENDER,
         fontSizePair,
         "Press W or S to select level"
     );
@@ -103,6 +106,7 @@ void GameController::Init()
         false
     );
     winText = winGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        RendererMode::LATERENDER,
         fontSizePair,
         "You WON!!!",
         0,
@@ -116,6 +120,7 @@ void GameController::Init()
         false
     );
     retryText = retryGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        RendererMode::LATERENDER,
         fontSizePair,
         "Press ENTER to retry or ESC to quit",
         0,

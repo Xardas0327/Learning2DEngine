@@ -14,6 +14,7 @@ FoodController::FoodController(GameObject* gameObject, const std::string& textur
 void FoodController::Init()
 {
     renderer = gameObject->AddComponent<SimpleSpriteRenderComponent>(
+        RendererMode::RENDER,
         ResourceManager::GetInstance().GetTexture(textureId),
         0,
         color

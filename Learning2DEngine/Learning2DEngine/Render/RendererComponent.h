@@ -35,7 +35,7 @@ namespace Learning2DEngine
 
 			}
 
-			virtual void InitObject()
+			void InitObject()
 			{
 				auto& componentManager = System::ComponentManager::GetInstance();
 				if (!componentManager.IsRendererExist(mode, this->GetId()))
@@ -45,6 +45,18 @@ namespace Learning2DEngine
 
 				componentManager.AddRenderData(mode, this->GetId(), &this->data, this->GetLayer());
 				++RendererComponent::refrenceNumber;
+			}
+
+			void DestroyObject()
+			{
+				auto& componentManager = System::ComponentManager::GetInstance();
+				componentManager.RemoveRenderData(mode, &this->data);
+
+				if (!(--RendererComponent::refrenceNumber))
+				{
+					this->DestroyRenderer();
+					componentManager.RemoveRenderer(mode, this->GetId());
+				}
 			}
 
 			/// <summary>
@@ -60,18 +72,6 @@ namespace Learning2DEngine
 				else
 				{
 					InitObject();
-				}
-			}
-
-			virtual void DestroyObject()
-			{
-				auto& componentManager = System::ComponentManager::GetInstance();
-				componentManager.RemoveRenderData(mode, &this->data);
-
-				if (!(--RendererComponent::refrenceNumber))
-				{
-					this->DestroyRenderer();
-					componentManager.RemoveRenderer(mode, this->GetId());
 				}
 			}
 

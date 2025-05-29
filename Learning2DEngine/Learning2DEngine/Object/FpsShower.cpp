@@ -17,7 +17,7 @@ namespace Learning2DEngine
 			int layer,
 			glm::vec4 color)
 			: UpdaterComponent(gameObject), Component(gameObject),
-			SimpleText2DLateRenderComponent(gameObject, fontSizePair, layer, color),
+			SimpleText2DLateRenderComponent(gameObject, RendererMode::LATERENDER, fontSizePair, layer, color),
 			previousTime(0.0f), fps(0)
 		{
 

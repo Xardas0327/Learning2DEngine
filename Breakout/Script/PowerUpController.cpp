@@ -21,6 +21,7 @@ void PowerUpController::Init()
 
     rigidbody = gameObject->AddComponent<Rigidbody>(VELOCITY);
     renderer = gameObject->AddComponent<SpriteRenderComponent>(
+        RendererMode::RENDER,
         ResourceManager::GetInstance().GetTexture(powerUpObject.textureId),
         1,
         powerUpObject.color

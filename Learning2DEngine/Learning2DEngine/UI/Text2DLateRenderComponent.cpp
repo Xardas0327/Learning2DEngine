@@ -8,67 +8,29 @@ namespace Learning2DEngine
     namespace UI
     {
 		const std::string Text2DLateRenderComponent::id = "L2DE_Text2DLateRenderComponent";
-		int Text2DLateRenderComponent::refrenceNumber = 0;
-		std::mutex Text2DLateRenderComponent::mutex;
 
-		Text2DLateRenderComponent::Text2DLateRenderComponent(GameObject* gameObject, const FontSizePair& fontSizePair, int layer, glm::vec4 color)
-			: LateRendererComponent(gameObject, layer, fontSizePair, color),
+		Text2DLateRenderComponent::Text2DLateRenderComponent(
+			GameObject* gameObject,
+			RendererMode mode,
+			const FontSizePair& fontSizePair,
+			int layer,
+			glm::vec4 color)
+			: RendererComponent(gameObject, mode, layer, fontSizePair, color),
 			Component(gameObject)
 		{
 		}
 
 		Text2DLateRenderComponent::Text2DLateRenderComponent(
 			GameObject* gameObject,
+			RendererMode mode,
 			const FontSizePair& fontSizePair,
 			const std::string& text,
 			int layer,
 			glm::vec4 color
-		) : LateRendererComponent(gameObject, layer, fontSizePair, text, color),
+		) : RendererComponent(gameObject, mode, layer, fontSizePair, text, color),
 			Component(gameObject)
 		{
 
-		}
-
-		void Text2DLateRenderComponent::Init()
-		{
-			auto& componentManager = System::ComponentManager::GetInstance();
-			if (componentManager.GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(mutex);
-				LateRendererComponent::Init();
-				++Text2DLateRenderComponent::refrenceNumber;
-			}
-			else
-			{
-				LateRendererComponent::Init();
-				++Text2DLateRenderComponent::refrenceNumber;
-			}
-		}
-
-		void Text2DLateRenderComponent::Destroy()
-		{
-			auto& componentManager = System::ComponentManager::GetInstance();
-			if (componentManager.GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(mutex);
-				LateRendererComponent::Destroy();
-
-				if (!(--Text2DLateRenderComponent::refrenceNumber))
-				{
-					DestroyRenderer();
-					componentManager.RemoveRenderer(RendererMode::LATERENDER, GetId());
-				}
-			}
-			else
-			{
-				LateRendererComponent::Destroy();
-
-				if (!(--Text2DLateRenderComponent::refrenceNumber))
-				{
-					DestroyRenderer();
-					componentManager.RemoveRenderer(RendererMode::LATERENDER, GetId());
-				}
-			}
 		}
 
 		const std::string& Text2DLateRenderComponent::GetId() const

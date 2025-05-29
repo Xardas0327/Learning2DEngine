@@ -1,7 +1,6 @@
 #include "TheCollector.h"
 
 #include <Learning2DEngine/Render/RenderManager.h>
-#include <Learning2DEngine/Render/SpriteRenderComponent.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>

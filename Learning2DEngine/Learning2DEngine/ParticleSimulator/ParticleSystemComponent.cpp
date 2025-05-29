@@ -12,16 +12,15 @@ namespace Learning2DEngine
 	namespace ParticleSimulator
 	{
 		const std::string ParticleSystemComponent::id = "L2DE_ParticleSystemComponent";
-		int ParticleSystemComponent::refrenceNumber = 0;
-		std::mutex ParticleSystemComponent::mutex;
 
 		ParticleSystemComponent::ParticleSystemComponent(
 			GameObject* gameObject,
+			RendererMode mode,
 			unsigned int particleAmount,
 			ParticleSettings* particleSettings,
 			unsigned int minAllocateSize,
 			int renderLayer)
-			: OldRendererComponent(gameObject, renderLayer, particleAmount, minAllocateSize),
+			: RendererComponent(gameObject, mode, renderLayer, particleAmount, minAllocateSize),
 			UpdaterComponent(gameObject), Component(gameObject),
 			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
 			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
@@ -29,14 +28,15 @@ namespace Learning2DEngine
 		}
 
 		ParticleSystemComponent::ParticleSystemComponent(
-			System::GameObject* gameObject,
+			GameObject* gameObject,
+			RendererMode mode,
 			unsigned int particleAmount,
-			const Render::Texture2D& texture,
+			const Texture2D& texture,
 			const ParticleSystemSettings& systemSettings,
 			ParticleSettings* particleSettings,
 			unsigned int minAllocateSize,
 			int renderLayer)
-			: OldRendererComponent(gameObject, renderLayer, particleAmount, systemSettings, texture, minAllocateSize),
+			: RendererComponent(gameObject, mode, renderLayer, particleAmount, systemSettings, texture, minAllocateSize),
 			UpdaterComponent(gameObject), Component(gameObject),
 			isRunning(false), delayTime(0.0f), nextSpawnTime(0.0f), lastUsedParticleIndex(0),
 			particleSettings(particleSettings == nullptr ? new BasicParticleSettings() : particleSettings)
@@ -58,50 +58,20 @@ namespace Learning2DEngine
 
 		void ParticleSystemComponent::Init()
 		{
-			auto& componentManager = System::ComponentManager::GetInstance();
-			if (componentManager.GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(mutex);
-				OldRendererComponent::Init();
-				UpdaterComponent::Init();
-				++ParticleSystemComponent::refrenceNumber;
-			}
-			else
-			{
-				OldRendererComponent::Init();
-				UpdaterComponent::Init();
-				++ParticleSystemComponent::refrenceNumber;
-			}
+			RendererComponent::Init();
+			UpdaterComponent::Init();
 		}
 
-		void ParticleSystemComponent::DestroyObject()
+		void ParticleSystemComponent::Destroy()
 		{
 			if (IsRunning())
 			{
 				Stop();
 			}
 
-			OldRendererComponent::Destroy();
+			RendererComponent::Destroy();
 			UpdaterComponent::Destroy();
-			if (!(--ParticleSystemComponent::refrenceNumber))
-			{
-				DestroyRenderer();
-				System::ComponentManager::GetInstance().RemoveRenderer(RendererMode::RENDER, GetId());
-			}
 
-		}
-
-		void ParticleSystemComponent::Destroy()
-		{
-			if (ComponentManager::GetInstance().GetThreadSafe())
-			{
-				std::lock_guard<std::mutex> lock(mutex);
-				DestroyObject();
-			}
-			else
-			{
-				DestroyObject();
-			}
 		}
 
 		void ParticleSystemComponent::Update()

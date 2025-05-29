@@ -24,6 +24,7 @@ void CoinController::Init()
 	);
 
 	auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
+		RendererMode::RENDER,
 		ResourceManager::GetInstance().GetTexture(COIN_TEXTURE_IDS[0])
 	);
 

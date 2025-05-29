@@ -26,6 +26,7 @@ protected:
 	void Init() override
 	{
 		gameObject->AddComponent<Learning2DEngine::Render::SpriteRenderComponent>(
+			Learning2DEngine::Render::RendererMode::RENDER,
 			Learning2DEngine::System::ResourceManager::GetInstance().GetTexture(textureId), layer
 		);
 		gameObject->AddComponent<Learning2DEngine::Physics::BoxColliderComponent>(

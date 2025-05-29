@@ -53,6 +53,7 @@ void GameController::Init()
         )
     );
     scoreText = scoreGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        RendererMode::LATERENDER,
         fontSizePair,
         "Score: " + std::to_string(score)
     );
@@ -63,6 +64,7 @@ void GameController::Init()
         )
     );
     startText = startGameObject->AddComponent<SimpleText2DLateRenderComponent>(
+        RendererMode::LATERENDER,
         fontSizePair,
         "Press ENTER to start"
     );

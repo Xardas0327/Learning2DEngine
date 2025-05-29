@@ -234,7 +234,6 @@
     <ClInclude Include="Learning2DEngine\Render\BaseRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\BaseRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\IRenderer.h" />
-    <ClInclude Include="Learning2DEngine\Render\LateRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\Blend.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSettings.h" />
     <ClInclude Include="Learning2DEngine\Render\MSAA.h" />
@@ -243,7 +242,6 @@
     <ClInclude Include="Learning2DEngine\Render\MultiSpriteDynamicData.h" />
     <ClInclude Include="Learning2DEngine\Render\PostProcessEffect.h" />
     <ClInclude Include="Learning2DEngine\Render\RenderData.h" />
-    <ClInclude Include="Learning2DEngine\Render\OldRendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\RendererComponent.h" />
     <ClInclude Include="Learning2DEngine\Render\RendererComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\Render\RendererMode.h" />

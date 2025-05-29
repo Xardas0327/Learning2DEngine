@@ -3,7 +3,7 @@
 #include <mutex>
 #include <string>
 
-#include "../Render/OldRendererComponent.h"
+#include "../Render/RendererComponent.h"
 #include "../System/GameObject.h"
 #include "../System/UpdaterComponent.h"
 #include "ParticleRenderer.h"
@@ -14,7 +14,7 @@ namespace Learning2DEngine
 {
 	namespace ParticleSimulator
 	{
-		class ParticleSystemComponent final : public Render::OldRendererComponent<ParticleRenderData, ParticleRenderer>,
+		class ParticleSystemComponent final : public Render::RendererComponent<ParticleRenderData, ParticleRenderer>,
 											public System::UpdaterComponent
 		{
 			friend class System::GameObject;
@@ -27,20 +27,17 @@ namespace Learning2DEngine
 			ParticleSettings* particleSettings;
 
 			static const std::string id;
-			/// <summary>
-			/// It is counted, that how many ParticleSystem exist.
-			/// </summary>
-			static int refrenceNumber;
-			static std::mutex mutex;
 
 			ParticleSystemComponent(
 				System::GameObject* gameObject,
+				Render::RendererMode mode,
 				unsigned int particleAmount,
 				ParticleSettings* particleSettings = nullptr,
 				unsigned int minAllocateSize = 0,
 				int renderLayer = 0);
 			ParticleSystemComponent(
 				System::GameObject* gameObject,
+				Render::RendererMode mode,
 				unsigned int particleAmount,
 				const Render::Texture2D& texture,
 				const ParticleSystemSettings& systemSettings,
@@ -48,14 +45,13 @@ namespace Learning2DEngine
 				unsigned int minAllocateSize = 0,
 				int renderLayer = 0);
 
-			void Init() override;
-			void Destroy() override;
 			void Update() override;
 			const std::string& GetId() const override;
 			ParticleRenderer* GetInitedRenderer() override;
 			void DestroyRenderer() override;
 
-			void DestroyObject();
+			void Init() override;
+			void Destroy() override;
 			void UpdateActiveParticles();
 			void TryToSpawnNewParticles();
 			void SpawnNewParticles();
