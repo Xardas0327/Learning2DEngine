@@ -35,7 +35,7 @@ namespace Learning2DEngine
 				auto& componentManager = System::ComponentManager::GetInstance();
 				if (!componentManager.IsRendererExist(RendererMode::LATERENDER, this->GetId()))
 				{
-					componentManager.AddRenderer(RendererMode::LATERENDER, this->GetId(), this->GetRenderer());
+					componentManager.AddRenderer(RendererMode::LATERENDER, this->GetId(), this->GetInitedRenderer());
 				}
 
 				componentManager.AddRenderData(RendererMode::LATERENDER, this->GetId(), &this->data, this->GetLayer());

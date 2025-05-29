@@ -45,7 +45,8 @@ namespace Learning2DEngine
 
 			const std::string& GetId() const override;
 
-			MultiText2DRenderer* GetRenderer() const override;
+			MultiText2DRenderer* GetInitedRenderer() override;
+			void DestroyRenderer() override;
 		};
     }
 }

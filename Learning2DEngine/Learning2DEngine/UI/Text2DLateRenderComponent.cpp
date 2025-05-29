@@ -55,7 +55,7 @@ namespace Learning2DEngine
 
 				if (!(--Text2DLateRenderComponent::refrenceNumber))
 				{
-					MultiText2DRenderer::GetInstance().Destroy();
+					DestroyRenderer();
 					componentManager.RemoveRenderer(RendererMode::LATERENDER, GetId());
 				}
 			}
@@ -65,7 +65,7 @@ namespace Learning2DEngine
 
 				if (!(--Text2DLateRenderComponent::refrenceNumber))
 				{
-					MultiText2DRenderer::GetInstance().Destroy();
+					DestroyRenderer();
 					componentManager.RemoveRenderer(RendererMode::LATERENDER, GetId());
 				}
 			}
@@ -76,12 +76,17 @@ namespace Learning2DEngine
 			return Text2DLateRenderComponent::id;
 		}
 
-		MultiText2DRenderer* Text2DLateRenderComponent::GetRenderer() const
+		MultiText2DRenderer* Text2DLateRenderComponent::GetInitedRenderer()
 		{
 			auto& renderer = MultiText2DRenderer::GetInstance();
 			renderer.Init();
 
 			return &renderer;
+		}
+
+		void Text2DLateRenderComponent::DestroyRenderer()
+		{
+			MultiText2DRenderer::GetInstance().Destroy();
 		}
     }
 }

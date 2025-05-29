@@ -45,7 +45,7 @@ namespace Learning2DEngine
 
 				if (!(--DebugBoxColliderRenderComponent::refrenceNumber))
 				{
-					DebugBoxColliderRenderer::GetInstance().Destroy();
+					DestroyRenderer();
 					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
@@ -55,7 +55,7 @@ namespace Learning2DEngine
 
 				if (!(--DebugBoxColliderRenderComponent::refrenceNumber))
 				{
-					DebugBoxColliderRenderer::GetInstance().Destroy();
+					DestroyRenderer();
 					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
@@ -66,12 +66,17 @@ namespace Learning2DEngine
 			return DebugBoxColliderRenderComponent::id;
 		}
 
-		DebugBoxColliderRenderer* DebugBoxColliderRenderComponent::GetRenderer() const
+		DebugBoxColliderRenderer* DebugBoxColliderRenderComponent::GetInitedRenderer()
 		{
 			auto& renderer = DebugBoxColliderRenderer::GetInstance();
 			renderer.Init();
 
 			return &renderer;
+		}
+
+		void DebugBoxColliderRenderComponent::DestroyRenderer()
+		{
+			DebugBoxColliderRenderer::GetInstance().Destroy();
 		}
 	}
 }

@@ -29,7 +29,8 @@ namespace Learning2DEngine
 
 			const std::string& GetId() const override;
 
-			DebugBoxColliderRenderer* GetRenderer() const override;
+			DebugBoxColliderRenderer* GetInitedRenderer() override;
+			void DestroyRenderer() override;
 		};
 	}
 }

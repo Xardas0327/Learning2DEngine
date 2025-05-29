@@ -46,7 +46,7 @@ namespace Learning2DEngine
 
 				if (!(--SpriteRenderComponent::refrenceNumber))
 				{
-					MultiSpriteRenderer::GetInstance().Destroy();
+					DestroyRenderer();
 					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
@@ -56,7 +56,7 @@ namespace Learning2DEngine
 
 				if (!(--SpriteRenderComponent::refrenceNumber))
 				{
-					MultiSpriteRenderer::GetInstance().Destroy();
+					DestroyRenderer();
 					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
@@ -67,12 +67,17 @@ namespace Learning2DEngine
 			return SpriteRenderComponent::id;
 		}
 
-		MultiSpriteRenderer* SpriteRenderComponent::GetRenderer() const
+		MultiSpriteRenderer* SpriteRenderComponent::GetInitedRenderer()
 		{
 			auto& renderer = MultiSpriteRenderer::GetInstance();
 			renderer.Init();
 
 			return &renderer;
+		}
+
+		void SpriteRenderComponent::DestroyRenderer()
+		{
+			MultiSpriteRenderer::GetInstance().Destroy();
 		}
 	}
 }

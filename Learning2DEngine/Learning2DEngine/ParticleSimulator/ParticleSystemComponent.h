@@ -52,7 +52,8 @@ namespace Learning2DEngine
 			void Destroy() override;
 			void Update() override;
 			const std::string& GetId() const override;
-			ParticleRenderer* GetRenderer() const override;
+			ParticleRenderer* GetInitedRenderer() override;
+			void DestroyRenderer() override;
 
 			void DestroyObject();
 			void UpdateActiveParticles();

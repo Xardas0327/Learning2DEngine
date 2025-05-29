@@ -81,27 +81,12 @@ namespace Learning2DEngine
 				Stop();
 			}
 
-			auto& componentManager = System::ComponentManager::GetInstance();
-			if (componentManager.GetThreadSafe())
+			OldRendererComponent::Destroy();
+			UpdaterComponent::Destroy();
+			if (!(--ParticleSystemComponent::refrenceNumber))
 			{
-				std::lock_guard<std::mutex> lock(mutex);
-				OldRendererComponent::Destroy();
-				UpdaterComponent::Destroy();
-				if (!(--ParticleSystemComponent::refrenceNumber))
-				{
-					ParticleRenderer::GetInstance().Destroy();
-					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
-				}
-			}
-			else
-			{
-				OldRendererComponent::Destroy();
-				UpdaterComponent::Destroy();
-				if (!(--ParticleSystemComponent::refrenceNumber))
-				{
-					ParticleRenderer::GetInstance().Destroy();
-					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
-				}
+				DestroyRenderer();
+				System::ComponentManager::GetInstance().RemoveRenderer(RendererMode::RENDER, GetId());
 			}
 
 		}
@@ -142,12 +127,17 @@ namespace Learning2DEngine
 			return ParticleSystemComponent::id;
 		}
 
-		ParticleRenderer* ParticleSystemComponent::GetRenderer() const
+		ParticleRenderer* ParticleSystemComponent::GetInitedRenderer()
 		{
 			auto& renderer = ParticleRenderer::GetInstance();
 			renderer.Init();
 
 			return &renderer;
+		}
+
+		void ParticleSystemComponent::DestroyRenderer()
+		{
+			ParticleRenderer::GetInstance().Destroy();
 		}
 
 		void ParticleSystemComponent::UpdateActiveParticles()

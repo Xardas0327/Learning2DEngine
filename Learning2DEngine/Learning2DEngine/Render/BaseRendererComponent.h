@@ -32,7 +32,8 @@ namespace Learning2DEngine
 
 			virtual const std::string& GetId() const = 0;
 
-			virtual TRenderer* GetRenderer() const = 0;
+			virtual TRenderer* GetInitedRenderer() = 0;
+			virtual void DestroyRenderer() = 0;
 		public:
 			TRenderData data;
 

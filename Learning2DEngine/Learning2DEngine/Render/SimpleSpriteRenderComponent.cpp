@@ -46,7 +46,7 @@ namespace Learning2DEngine
 
 				if (!(--SimpleSpriteRenderComponent::refrenceNumber))
 				{
-					SimpleSpriteRenderer::GetInstance().Destroy();
+					DestroyRenderer();
 					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
@@ -56,7 +56,7 @@ namespace Learning2DEngine
 
 				if (!(--SimpleSpriteRenderComponent::refrenceNumber))
 				{
-					SimpleSpriteRenderer::GetInstance().Destroy();
+					DestroyRenderer();
 					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
@@ -67,12 +67,17 @@ namespace Learning2DEngine
 			return SimpleSpriteRenderComponent::id;
 		}
 
-		SimpleSpriteRenderer* SimpleSpriteRenderComponent::GetRenderer() const
+		SimpleSpriteRenderer* SimpleSpriteRenderComponent::GetInitedRenderer()
 		{
 			auto& renderer = SimpleSpriteRenderer::GetInstance();
 			renderer.Init();
 
 			return &renderer;
+		}
+
+		void SimpleSpriteRenderComponent::DestroyRenderer()
+		{
+			SimpleSpriteRenderer::GetInstance().Destroy();
 		}
 	}
 }

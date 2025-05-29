@@ -45,7 +45,7 @@ namespace Learning2DEngine
 
 				if (!(--DebugCircleColliderRenderComponent::refrenceNumber))
 				{
-					DebugCircleColliderRenderer::GetInstance().Destroy();
+					DestroyRenderer();
 					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
@@ -55,7 +55,7 @@ namespace Learning2DEngine
 
 				if (!(--DebugCircleColliderRenderComponent::refrenceNumber))
 				{
-					DebugCircleColliderRenderer::GetInstance().Destroy();
+					DestroyRenderer();
 					componentManager.RemoveRenderer(RendererMode::RENDER, GetId());
 				}
 			}
@@ -66,12 +66,17 @@ namespace Learning2DEngine
 			return DebugCircleColliderRenderComponent::id;
 		}
 
-		DebugCircleColliderRenderer* DebugCircleColliderRenderComponent::GetRenderer() const
+		DebugCircleColliderRenderer* DebugCircleColliderRenderComponent::GetInitedRenderer()
 		{
 			auto& renderer = DebugCircleColliderRenderer::GetInstance();
 			renderer.Init();
 
 			return &renderer;
+		}
+
+		void DebugCircleColliderRenderComponent::DestroyRenderer()
+		{
+			DebugCircleColliderRenderer::GetInstance().Destroy();
 		}
 	}
 }

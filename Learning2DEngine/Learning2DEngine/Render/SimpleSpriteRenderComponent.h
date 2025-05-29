@@ -34,7 +34,8 @@ namespace Learning2DEngine
 
 			const std::string& GetId() const override;
 
-			SimpleSpriteRenderer* GetRenderer() const override;
+			SimpleSpriteRenderer* GetInitedRenderer() override;
+			void DestroyRenderer() override;
 		};
 	}
 }
