@@ -51,15 +51,16 @@ Furthermore, it supports the multithreading.
 `LateUpdaterComponent` and they run after the collision checking and not before.  
 Furthermore, it also supports the multithreading.
 1. Clear Window to default color: the screen buffer will be cleared.
-1. Render: Those components will be rendered, which are inherited from `RendererComponent`.
-They are ordered by layer and those object, which use the same renderer and same layer, they can be
-rendered at the same time. If an object has layer with lower number, it will be rendered earlier
+1. Render: Those components will be rendered, which are inherited from `RendererComponent`
+and their mode is RenderMode::RENDER. They are ordered by layer and those object, which use
+the same renderer and same layer, they can be rendered at the same time.
+If an object has layer with lower number, it will be rendered earlier
 and in the image, they will be further back.  
 Furthermore, the engine can do the Render with MSAA and/or post process effects.
 1. LateRender: It is almost same as the Render, just it does not have MSAA and post process effects
-and they are inherited from `LateRendererComponent`. It is recommand for UI.  
-Note: The LateRender run after Render. So if a `RendererComponent` has a higher layer number,
-it will be still rendered before the `LateRendererComponent`.
+and their mode is RenderMode::LATERENDER. It is recommand for UI.  
+Note: The LateRender run after Render. So if a Render component has a higher layer number,
+it will be still rendered before the LateRender component.
 1. Update Window: The `glfwSwapBuffers` will be called on the window.
 1. Destroy Marked GameObjects: When the `GameObject::Destroy` is called, the gameobject will not be
 destroyed immediately. So, every reference pointers will be fine until end of the frame.
