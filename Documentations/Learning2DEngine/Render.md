@@ -6,7 +6,6 @@
 - [BlendFuncFactor](Render.md#blendfuncfactor)
 - [IRenderer](Render.md#irenderer)
 - [IResolutionRefresher](Render.md#iresolutionrefresher)
-- [LateRendererComponent](Render.md#laterenderercomponent)
 - [MSAA](Render.md#msaa)
 - [MultiSpriteDynamicData](Render.md#multispritedynamicdata)
 - [MultiSpriteRenderer](Render.md#multispriterenderer)
@@ -14,6 +13,7 @@
 - [RenderData](Render.md#renderdata)
 - [RendererComponent](Render.md#renderercomponent)
 - [RendererComponentHandler](Render.md#renderercomponenthandler)
+- [RendererMode](Render.md#renderermode)
 - [RenderManager](Render.md#rendermanager)
 - [Resolution](Render.md#resolution)
 - [Shader](Render.md#shader)
@@ -230,9 +230,14 @@ It returns the id, which is used to find the data and renderer pairs by the `Ren
 virtual const std::string& GetId() const = 0;
 ```
 
-**GetRenderer**  
+**GetInitedRenderer**  
 ```cpp
-virtual TRenderer* GetRenderer() const = 0;
+virtual TRenderer* GetInitedRenderer() = 0;
+```
+
+**DestroyRenderer**  
+```cpp
+virtual void DestroyRenderer() = 0;
 ```
 
 **Public:**  
@@ -328,54 +333,6 @@ virtual ~IResolutionRefresher();
 **RefreshResolution**  
 ```cpp
 virtual void RefreshResolution(const Resolution& resolution) = 0;
-```
-
-##
-## LateRendererComponent
-### Source Code:
-[LateRendererComponent.h](../../Learning2DEngine/Learning2DEngine/Render/LateRendererComponent.h)
-
-### Header:
-```cpp
-template<class TRenderData, class TRenderer>
-class LateRendererComponent : public BaseRendererComponent<TRenderData, TRenderer>
-{...}
-```
-
-### Description:
-It is a class, which is inherited from `BaseRendererComponent`.  
-The developer have to inherit from this class, if they want to render something in LateRender.  
-The LateRender is after the Render, it doesn't have anti-aliasing or post process effects.
-It is recommended to use it for the UI.  
-Note: The layer of the `LateRendererComponent` is the order in the LateRender only.
-So if a `RendererComponent` has a higher layer number, it will be still rendered before the `LateRendererComponent`.   
-Please check for more info about `System::Component` and `BaseRendererComponent`.
-
-### Functions:
-**Protected:**  
-**LateRendererComponent**  
-```cpp
-template <class ...TRenderDataParams>
-LateRendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams&&... renderDataParams);
-```
-
-**Init**  
-If this function is override, it should care, that the renderer and renderdata will be added to the ComponentManager's LateRender.
-```cpp
-virtual void Init() override;
-```
-
-**Destroy**  
-If this function is override, it should care, that the renderdata will be removed from the ComponentManager's LateRender.  
-By default the renderer will not be removed automatically.
-```cpp
-virtual void Destroy() override;
-```
-
-**Public:**  
-**SetLayer**  
-```cpp
-virtual void SetLayer(int value) override;
 ```
 
 ##
@@ -717,10 +674,15 @@ virtual ~RenderData() = default;
 
 ### Description:
 It is a class, which is inherited from `BaseRendererComponent`.  
-The developer have to inherit from this class, if they want to render something in Render.  
-The Render is before the LateRender, it can have anti-aliasing and/or post process effects.   
-Note: The layer of the `RendererComponent` is the order in the Render only.
-So if a `LateRendererComponent` has a lower layer number, it will be still rendered after the `RendererComponent`.   
+The developer have to inherit from this class, if they want to render something.  
+It has 2 modes, RendererMode::Render and RendererMode::LateRender.  
+It uses static variables to count how many GameObject initialized it.
+That's why it will destroy renderer only if the reference number is 0,
+otherway it will decrease the reference number.  
+The Render is before the LateRender and the Render can have anti-aliasing
+and/or post process effects. 
+Note: The layer of the Render is the order in the Render only.
+So if a LateRender has a lower layer number, it will be still rendered after the Render.   
 Please check for more info about `System::Component` and `BaseRendererComponent`.
 
 ### Header:
@@ -730,23 +692,53 @@ class RendererComponent : public BaseRendererComponent<TRenderData, TRenderer>
 {...}
 ```
 
+### Variables:
+**Protected:**  
+**refrenceNumber**  
+It is counted, that how many RendererComponent<TRenderData, TRenderer> exist.
+```cpp
+static int refrenceNumber;
+```
+
+**mutex**  
+```cpp
+static std::mutex mutex;
+```
+
+**Public:**  
+**mode**  
+```cpp
+const RendererMode mode;
+```
+
 ### Functions:
 **Protected:**  
 **RendererComponent**  
 ```cpp
 template <class ...TRenderDataParams>
-RendererComponent(System::GameObject* gameObject, int layer = 0, TRenderDataParams&&... renderDataParams);
+RendererComponent(System::GameObject* gameObject, RendererMode mode, int layer = 0, TRenderDataParams&&... renderDataParams);
+```
+
+**InitObject**  
+The Init() call it with or without mutex.
+```cpp
+void InitObject();
+```
+
+**DestroyObject**  
+The Destroy() call it with or without mutex.
+```cpp
+void DestroyObject();
 ```
 
 **Init**  
-If this function is override, it should care, that the renderer and renderdata will be added to the ComponentManager's Render.
+If this function is override, it must call the RendererComponent::Init() in the first line.
 ```cpp
 virtual void Init() override;
 ```
 
 **Destroy**  
-If this function is override, it should care, that the renderdata will be removed from the ComponentManager's Render.  
-By default the renderer will not be removed automatically.
+If this function is override, it must call the RendererComponent::Destroy() in the first line.
 ```cpp
 virtual void Destroy() override;
 ```
@@ -867,6 +859,23 @@ void Run() override;
 **Clear**  
 ```cpp
 void Clear() override;
+```
+
+##
+## RendererMode
+### Source Code:
+[RendererMode.h](../../Learning2DEngine/Learning2DEngine/Render/RendererMode.h)  
+
+### Description:
+The modes of the RendererComponent.
+
+### Header:
+```cpp
+enum class RendererMode
+{
+    RENDER,
+    LATERENDER
+};
 ```
 
 ##
@@ -1438,10 +1447,6 @@ static const char* GetBaseColorFragmentShader();
 It is for render a sprite with color and texture.  
 It uses `SimpleSpriteRenderer` for rendering. It is recommand, when the developer knows,
 the object has just a couple instances in a layer.  
-It uses static variables to count how many GameObject initialized it.
-That's why it will destroy renderer only
-if the reference number is 0, otherway it will decrease
-the reference number.  
 Please more info about `RendererComponent`.
 
 ### Header:
@@ -1457,35 +1462,14 @@ class SimpleSpriteRenderComponent : public RendererComponent<SpriteRenderData, S
 static const std::string id;
 ```
 
-**refrenceNumber**  
-It is counted, that how many SimpleSpriteRenderComponent exist.
-```cpp
-static int refrenceNumber;
-```
- 
-**mutex**  
-```cpp
-static std::mutex mutex;
-```
-
 ### Functions:
 **Protected:**  
 **SimpleSpriteRenderComponent**  
 ```cpp
-SimpleSpriteRenderComponent(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+SimpleSpriteRenderComponent(System::GameObject* gameObject, RendererMode mode, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 ```cpp
-SimpleSpriteRenderComponent(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
-```
-
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
+SimpleSpriteRenderComponent(System::GameObject* gameObject, RendererMode mode, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 **GetId**  
@@ -1493,9 +1477,14 @@ void Destroy() override;
 const std::string& GetId() const override;
 ```
 
-**GetRenderer**  
+**GetInitedRenderer**  
 ```cpp
-SimpleSpriteRenderer* GetRenderer() const override;
+SimpleSpriteRenderer* GetInitedRenderer() override;
+```
+
+**DestroyRenderer**  
+```cpp
+void DestroyRenderer() override;
 ```
 
 ##
@@ -1571,11 +1560,7 @@ void Draw(int layer) override;
 ### Description:
 It is for render a sprite with color and texture.   
 It uses `MultiSpriteRenderer` for rendering. It is recommand, when the developer knows,
-the object has a lot of instances in a layer.  
-It uses static variables to count how many GameObject initialized it.
-That's why it will destroy renderer only
-if the reference number is 0, otherway it will decrease
-the reference number.  
+the object has a lot of instances in a layer.   
 It supports the multi instance rendering.  
 Please more info about `RendererComponent`.
 
@@ -1592,35 +1577,14 @@ class SpriteRenderComponent : public RendererComponent<SpriteRenderData, MultiSp
 static const std::string id;
 ```
 
-**refrenceNumber**  
-It is counted, that how many SpriteRenderComponent exist.
-```cpp
-static int refrenceNumber;
-```
-
-**mutex**  
-```cpp
-static std::mutex mutex;
-```
-
 ### Functions:
 **Protected:**  
 **SpriteRenderComponent**  
 ```cpp
-SpriteRenderComponent(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+SpriteRenderComponent(System::GameObject* gameObject, RendererMode mode,int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 ```cpp
-SpriteRenderComponent(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
-```
-
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
+SpriteRenderComponent(System::GameObject* gameObject, RendererMode mode,const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 **GetId**  
@@ -1628,9 +1592,14 @@ void Destroy() override;
 const std::string& GetId() const override;
 ```
 
-**GetRenderer**  
+**GetInitedRenderer**  
 ```cpp
-MultiSpriteRenderer* GetRenderer() const override;
+MultiSpriteRenderer* GetInitedRenderer() override;
+```
+
+**DestroyRenderer**  
+```cpp
+void DestroyRenderer() override;
 ```
 
 ##

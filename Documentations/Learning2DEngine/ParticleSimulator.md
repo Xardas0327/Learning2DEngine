@@ -358,25 +358,14 @@ It is used by the `Render::RendererComponentHandler`.
 static const std::string id;
 ```
 
-**refrenceNumber**  
-It is counted, that how many ParticleSystem exist.
-```cpp
-static int refrenceNumber;
-```
-
-**mutex**  
-```cpp
-static std::mutex mutex;
-```
-
 ### Functions:
 **Private:**  
 **ParticleSystemComponent**  
 ```cpp
-ParticleSystemComponent(System::GameObject* gameObject, unsigned int particleAmount, ParticleSettings* particleSettings = nullptr, unsigned int minAllocateSize = 0, int renderLayer = 0);
+ParticleSystemComponent(System::GameObject* gameObject, Render::RendererMode mode, unsigned int particleAmount, ParticleSettings* particleSettings = nullptr, unsigned int minAllocateSize = 0, int renderLayer = 0);
 ```
 ```cpp
-ParticleSystemComponent(System::GameObject* gameObject, unsigned int particleAmount, const Render::Texture2D& texture, const ParticleSystemSettings& systemSettings, ParticleSettings* particleSettings = nullptr, unsigned int minAllocateSize = 0, int renderLayer = 0);
+ParticleSystemComponent(System::GameObject* gameObject, Render::RendererMode mode, unsigned int particleAmount, const Render::Texture2D& texture, const ParticleSystemSettings& systemSettings, ParticleSettings* particleSettings = nullptr, unsigned int minAllocateSize = 0, int renderLayer = 0);
 ```
 
 **Init**  
@@ -401,15 +390,14 @@ void Update() override;
 const std::string& GetId() const override;
 ```
 
-**GetRenderer**  
+**GetInitedRenderer**  
 ```cpp
-ParticleRenderer* GetRenderer() const override;
+ParticleRenderer* GetInitedRenderer() override;
 ```
 
-**DestroyObject**  
-The Destroy() call it with or without mutex.
+**DestroyRenderer**  
 ```cpp
-void DestroyObject();
+void DestroyRenderer() override;
 ```
 
 **UpdateActiveParticles**  

@@ -132,10 +132,6 @@ void Draw(int layer) override;
 It can render a text with a color.  
 It uses `SimpleText2DRenderer` for rendering. It is recommand, when the developer knows,
 there are only little texts.  
-It uses static variables to count how many GameObject initialized it.
-That's why it will destroy renderer only
-if the reference number is 0, otherway it will decrease
-the reference number.  
 Please more info about `LateRendererComponent`.
 
 ### Header:
@@ -266,10 +262,6 @@ void Draw(int layer) override;
 It can render a text with a color.  
 It uses `MultiText2DRenderer` for rendering. It is recommand, when the developer knows,
 there are huge texts.  
-It uses static variables to count how many GameObject initialized it.
-That's why it will destroy renderer only
-if the reference number is 0, otherway it will decrease
-the reference number.  
 Please more info about `LateRendererComponent`.
 
 ### Header:

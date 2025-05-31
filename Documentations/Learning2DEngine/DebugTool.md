@@ -126,7 +126,7 @@ const std::string& GetId() const override;
 DebugCircleColliderRenderer* GetInitedRenderer() override;
 ```
 
-**GetRenderer**  
+**DestroyRenderer**  
 ```cpp
 void DestroyRenderer() override;
 ```
