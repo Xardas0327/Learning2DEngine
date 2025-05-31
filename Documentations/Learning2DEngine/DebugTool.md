@@ -31,17 +31,6 @@ class DebugBoxColliderRenderComponent : public Render::RendererComponent<DebugRe
 static const std::string id;
 ```
 
-**refrenceNumber**  
-It is counted, that how many DebugBoxColliderRenderComponent exist.
-```cpp
-static int refrenceNumber;
-```
-
-**mutex**  
-```cpp
-static std::mutex mutex;
-```
-
 ### Functions:
 **Protected:**  
 **DebugBoxColliderRenderComponent**  
@@ -49,24 +38,19 @@ static std::mutex mutex;
 DebugBoxColliderRenderComponent(System::GameObject* gameObject, Physics::BaseBoxColliderComponent* collider);
 ```
 
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
-```
-
 **GetId**  
 ```cpp
 const std::string& GetId() const override;
 ```
 
-**GetRenderer**  
+**GetInitedRenderer**  
 ```cpp
-MultiSpriteRenderer* GetRenderer() const override;
+DebugBoxColliderRenderer* GetInitedRenderer() override;
+```
+
+**DestroyRenderer**  
+```cpp
+void DestroyRenderer() override;
 ```
 
 ##
@@ -125,17 +109,6 @@ class DebugCircleColliderRenderComponent : public Render::RendererComponent<Debu
 static const std::string id;
 ```
 
-**refrenceNumber**  
-It is counted, that how many DebugCircleColliderRenderComponent exist.
-```cpp
-static int refrenceNumber;
-```
-
-**mutex**  
-```cpp
-static std::mutex mutex;
-```
-
 ### Functions:
 **Protected:**  
 **DebugCircleColliderRenderComponent**  
@@ -143,24 +116,19 @@ static std::mutex mutex;
 DebugCircleColliderRenderComponent(System::GameObject* gameObject, Physics::BaseCircleColliderComponent* collider);
 ```
 
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
-```
-
 **GetId**  
 ```cpp
 const std::string& GetId() const override;
 ```
 
+**GetInitedRenderer**  
+```cpp
+DebugCircleColliderRenderer* GetInitedRenderer() override;
+```
+
 **GetRenderer**  
 ```cpp
-MultiSpriteRenderer* GetRenderer() const override;
+void DestroyRenderer() override;
 ```
 
 ##
