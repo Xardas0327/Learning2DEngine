@@ -45,13 +45,13 @@ namespace Learning2DEngine
 				unsigned int minAllocateSize = 0,
 				int renderLayer = 0);
 
+			void Init() override;
+			void Destroy() override;
 			void Update() override;
 			const std::string& GetId() const override;
 			ParticleRenderer* GetInitedRenderer() override;
 			void DestroyRenderer() override;
 
-			void Init() override;
-			void Destroy() override;
 			void UpdateActiveParticles();
 			void TryToSpawnNewParticles();
 			void SpawnNewParticles();
