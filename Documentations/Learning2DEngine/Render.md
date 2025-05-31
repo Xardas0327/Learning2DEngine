@@ -188,11 +188,10 @@ class BaseRendererComponent : public virtual System::Component
 ```
 ### Description:
 It has some basic funcionality, which is essential for rendering, but this is a support
-class only, please use `RendererComponent` and `LateRendererComponent` instead of this.  
+class only, please use `RendererComponent` instead of this.  
 The TRenderData should be a class, which is inhereted from IRenderData.  
 The TRenderer should be a class, which is inhereted from IRenderer.  
-Please check for more info about `RendererComponent`, `LateRendererComponent`
-and `System::Component`.
+Please check for more info about `RendererComponent` and `System::Component`.
 
 ### Header:
 ```cpp
@@ -758,7 +757,8 @@ virtual void SetLayer(int value) override;
 ### Description:
 It can handle the `IRenderer` and the `RenderData` objects.  
 The `ComponentManager` has 2 from it.
-One for `RendererComponentHandler` and one for `LateRendererComponentHandler`.
+One for those RenderComponents, which has RenderMode::RENDER
+and one for those ones, which has RenderMode::LATERENDER.
 
 ### Header:
 ```cpp
