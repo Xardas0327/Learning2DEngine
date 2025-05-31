@@ -680,7 +680,7 @@ It uses static variables to count how many GameObject initialized it.
 That's why it will destroy renderer only if the reference number is 0,
 otherway it will decrease the reference number.  
 The Render is before the LateRender and the Render can have anti-aliasing
-and/or post process effects. 
+and/or post process effects.  
 Note: The layer of the Render is the order in the Render only.
 So if a LateRender has a lower layer number, it will be still rendered after the Render.   
 Please check for more info about `System::Component` and `BaseRendererComponent`.
