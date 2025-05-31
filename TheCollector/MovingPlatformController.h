@@ -4,8 +4,6 @@
 
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
-#include <Learning2DEngine/Physics/BoxColliderComponent.h>
-#include <Learning2DEngine/Render/SpriteRenderComponent.h>
 
 #include "PlatformController.h"
 

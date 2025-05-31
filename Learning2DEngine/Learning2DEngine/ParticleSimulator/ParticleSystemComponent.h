@@ -27,20 +27,17 @@ namespace Learning2DEngine
 			ParticleSettings* particleSettings;
 
 			static const std::string id;
-			/// <summary>
-			/// It is counted, that how many ParticleSystem exist.
-			/// </summary>
-			static int refrenceNumber;
-			static std::mutex mutex;
 
 			ParticleSystemComponent(
 				System::GameObject* gameObject,
+				Render::RendererMode mode,
 				unsigned int particleAmount,
 				ParticleSettings* particleSettings = nullptr,
 				unsigned int minAllocateSize = 0,
 				int renderLayer = 0);
 			ParticleSystemComponent(
 				System::GameObject* gameObject,
+				Render::RendererMode mode,
 				unsigned int particleAmount,
 				const Render::Texture2D& texture,
 				const ParticleSystemSettings& systemSettings,
@@ -52,9 +49,9 @@ namespace Learning2DEngine
 			void Destroy() override;
 			void Update() override;
 			const std::string& GetId() const override;
-			ParticleRenderer* GetRenderer() const override;
+			ParticleRenderer* GetInitedRenderer() override;
+			void DestroyRenderer() override;
 
-			void DestroyObject();
 			void UpdateActiveParticles();
 			void TryToSpawnNewParticles();
 			void SpawnNewParticles();

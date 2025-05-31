@@ -5,46 +5,43 @@
 #include <mutex>
 
 #include "../System/GameObject.h"
-#include "../Render/LateRendererComponent.h"
+#include "../Render/RendererComponent.h"
+#include "../Render/RendererMode.h"
 
 #include "Text2DRenderData.h"
-#include "SimpleText2DRenderer.h"
+#include "MultiText2DRenderer.h"
 #include "FontSizePair.h"
 
 namespace Learning2DEngine
 {
-	namespace UI
-	{
-		class SimpleText2DLateRenderComponent : public Render::LateRendererComponent<Text2DRenderData, SimpleText2DRenderer>
+    namespace UI
+    {
+		class Text2DRenderComponent : public Render::RendererComponent<Text2DRenderData, MultiText2DRenderer>
 		{
 			friend class System::GameObject;
 		private:
 			static const std::string id;
-			/// <summary>
-			/// It is counted, that how many SimpleText2DLateRenderComponent exist.
-			/// </summary>
-			static int refrenceNumber;
-			static std::mutex mutex;
 
 		protected:
-			SimpleText2DLateRenderComponent(
+			Text2DRenderComponent(
 				System::GameObject* gameObject,
+				Render::RendererMode mode,
 				const FontSizePair& fontSizePair,
 				int layer = 0,
 				glm::vec4 color = glm::vec4(1.0f));
-			SimpleText2DLateRenderComponent(
+
+			Text2DRenderComponent(
 				System::GameObject* gameObject,
+				Render::RendererMode mode,
 				const FontSizePair& fontSizePair,
 				const std::string& text,
 				int layer = 0,
 				glm::vec4 color = glm::vec4(1.0f));
 
-			void Init() override;
-			void Destroy() override;
-
 			const std::string& GetId() const override;
 
-			SimpleText2DRenderer* GetRenderer() const override;
+			MultiText2DRenderer* GetInitedRenderer() override;
+			void DestroyRenderer() override;
 		};
-	}
+    }
 }

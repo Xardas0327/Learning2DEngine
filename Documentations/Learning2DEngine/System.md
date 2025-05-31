@@ -324,8 +324,7 @@ which can run automatically:
 - `System::LateUpdaterComponent`
 - `Physics::BoxColliderComponent`
 - `Physics::CircleColliderComponent`
-- `Render::RendererComponent`
-- `Render::LateRendererComponent`  
+- `Render::RendererComponent`  
 
 But the developer can use this `Component` class like a data container too.  
 Fistly, it looks a bad structure, because there is a cross reference.
@@ -519,69 +518,39 @@ Note: `GameObjectManager` will not be thread safe automatically.
 void SetMaxColliderPerThread(unsigned int value);
 ```
 
-**IsRendererExistInRender**  
+**IsRendererExist**  
 ```cpp
-inline bool IsRendererExistInRender(const std::string& id);
+bool IsRendererExist(const Render::RendererMode mode, const std::string& id);
 ```
 
-**AddRendererToRender**  
+**AddRenderer**  
 ```cpp
-inline void AddRendererToRender(const std::string& id, Render::IRenderer* renderer);
+void AddRenderer(const Render::RendererMode mode, const std::string& id, Render::IRenderer* renderer);
 ```
 
-**RemoveRendererFromRender**  
+**RemoveRenderer**  
 ```cpp
-inline void RemoveRendererFromRender(const std::string& id);
+void RemoveRenderer(const Render::RendererMode mode, const std::string& id);
 ```
 
-**AddDataToRender**  
+**AddRenderData**  
 ```cpp
-inline void AddDataToRender(const std::string& id, Render::RenderData* data, int layer);
+void AddRenderData(const Render::RendererMode mode, const std::string& id, Render::RenderData* data, int layer);
 ```
 
-**ChangeLayerInRender**  
+**ChangeRenderLayer**  
 ```cpp
-inline void ChangeLayerInRender(Render::RenderData* data, int newLayer);
+void ChangeRenderLayer(const Render::RendererMode mode, Render::RenderData* data, int newLayer);
 ```
 
-**RemoveDataFromRender**  
+**RemoveRenderData**  
 ```cpp
-inline void RemoveDataFromRender(Render::RenderData* data);
+void RemoveRenderData(const Render::RendererMode mode, Render::RenderData* data);
 ```
 
 **Render**  
 ```cpp
 inline void Render();
-```
-
-**IsRendererExistInLateRender**  
-```cpp
-inline bool IsRendererExistInLateRender(const std::string& id);
-```
-
-**AddRendererToLateRender**  
-```cpp
-inline void AddRendererToLateRender(const std::string& id, Render::IRenderer* renderer;
-```
-
-**RemoveRendererFromLateRender**  
-```cpp
-inline void RemoveRendererFromLateRender(const std::string& id);
-```
-
-**AddDataToLateRender**  
-```cpp
-nline void AddDataToLateRender(const std::string& id, Render::RenderData* data, int layer);
-```
-
-**ChangeLayerInLateRender**  
-```cpp
-inline void ChangeLayerInLateRender(Render::RenderData* data, int newLayer);
-```
-
-**RemoveDataFromLateRender**  
-```cpp
-inline void RemoveDataFromLateRender(Render::RenderData* data);
 ```
 
 **LateRender**  

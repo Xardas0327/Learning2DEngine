@@ -34,6 +34,7 @@ void BallController::Init()
 
     rigidbody = gameObject->AddComponent<Rigidbody>(INITIAL_BALL_VELOCITY, false, isStuck);
     renderer = gameObject->AddComponent<SpriteRenderComponent>(
+        RendererMode::RENDER,
         ResourceManager::GetInstance().GetTexture(textureId)
     );
 
@@ -54,6 +55,7 @@ void BallController::InitParticleSystem()
     );
 
     particleSystem = gameObject->AddComponent<ParticleSystemComponent>(
+        RendererMode::RENDER,
         500u,
         ResourceManager::GetInstance().GetTexture(particleTextureId),
         ballParticleSystemSettings,

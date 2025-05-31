@@ -20,22 +20,14 @@ namespace Learning2DEngine
 			friend class System::GameObject;
 		private:
 			static const std::string id;
-			/// <summary>
-			/// It is counted, that how many SpriteRenderComponent exist.
-			/// </summary>
-			static int refrenceNumber;
-			static std::mutex mutex;
 
 		protected:
-			SpriteRenderComponent(System::GameObject* gameObject, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
-			SpriteRenderComponent(System::GameObject* gameObject, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
-
-			void Init() override;
-			void Destroy() override;
+			SpriteRenderComponent(System::GameObject* gameObject, RendererMode mode, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+			SpriteRenderComponent(System::GameObject* gameObject, RendererMode mode, const Texture2D& texture, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 
 			const std::string& GetId() const override;
-
-			MultiSpriteRenderer* GetRenderer() const override;
+			MultiSpriteRenderer* GetInitedRenderer() override;
+			void DestroyRenderer() override;
 		};
 	}
 }
