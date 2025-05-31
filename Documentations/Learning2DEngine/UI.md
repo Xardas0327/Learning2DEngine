@@ -2,9 +2,9 @@
 - [FontSizePair](UI.md#fontsizepair)
 - [FreeTypeCharacter](UI.md#freetypecharacter)
 - [MultiText2DRenderer](UI.md#multitext2drenderer)
-- [SimpleText2DLateRenderComponent](UI.md#simpletext2dlaterendercomponent)
+- [SimpleText2DRenderComponent](UI.md#simpletext2drendercomponent)
 - [SimpleText2DRenderer](UI.md#simpletext2drenderer)
-- [Text2DLateRenderComponent](UI.md#text2dlaterendercomponent)
+- [Text2DRenderComponent](UI.md#text2drendercomponent)
 - [Text2DDynamicData](UI.md#text2ddynamicdata)
 - [Text2DRenderData](UI.md#text2drenderdata)
 - [TextCharacterSet](UI.md#textcharacterset)
@@ -123,20 +123,20 @@ void Draw(int layer) override;
 
 
 ##
-## SimpleText2DLateRenderComponent
+## SimpleText2DRenderComponent
 ### Source Code:
-[SimpleText2DLateRenderComponent.h](../../Learning2DEngine/Learning2DEngine/UI/SimpleText2DLateRenderComponent.h)  
-[SimpleText2DLateRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/UI/SimpleText2DLateRenderComponent.cpp)
+[SimpleText2DRenderComponent.h](../../Learning2DEngine/Learning2DEngine/UI/SimpleText2DRenderComponent.h)  
+[SimpleText2DRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/UI/SimpleText2DRenderComponent.cpp)
 
 ### Description:
 It can render a text with a color.  
 It uses `SimpleText2DRenderer` for rendering. It is recommand, when the developer knows,
 there are only little texts.  
-Please more info about `LateRendererComponent`.
+Please more info about `RendererComponent`.
 
 ### Header:
 ```cpp
-class SimpleText2DLateRenderComponent : public Render::LateRendererComponent<Text2DRenderData, SimpleText2DRenderer>
+class SimpleText2DRenderComponent : public Render::RendererComponent<Text2DRenderData, SimpleText2DRenderer>
 {...}
 ```
 
@@ -147,35 +147,14 @@ class SimpleText2DLateRenderComponent : public Render::LateRendererComponent<Tex
 static const std::string id;
 ```
 
-**refrenceNumber**  
-It is counted, that how many SpriteRenderComponent exist.
-```cpp
-static int refrenceNumber;
-```
-
-**mutex**  
-```cpp
-static std::mutex mutex;
-```
-
 ### Functions:
 **Protected:**  
-**SimpleText2DLateRenderComponent**  
+**SimpleText2DRenderComponent**  
 ```cpp
-SimpleText2DLateRenderComponent(System::GameObject* gameObject, const FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+SimpleText2DRenderComponent(System::GameObject* gameObject, Render::RendererMode mode, const FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 ```cpp
-SimpleText2DLateRenderComponent(System::GameObject* gameObject, const FontSizePair& fontSizePair, const std::string& text, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
-```
-
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
+SimpleText2DRenderComponent(System::GameObject* gameObject, Render::RendererMode mode, const FontSizePair& fontSizePair, const std::string& text, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 **GetId**  
@@ -183,11 +162,15 @@ void Destroy() override;
 const std::string& GetId() const override;
 ```
 
-**GetRenderer**  
+**GetInitedRenderer**  
 ```cpp
-SimpleText2DRenderer* GetRenderer() const override;
+SimpleText2DRenderer* GetInitedRenderer() override;
 ```
 
+**DestroyRenderer**  
+```cpp
+void DestroyRenderer() override;
+```
 
 ##
 ## SimpleText2DRenderer
@@ -253,20 +236,20 @@ void Draw(int layer) override;
 
 
 ##
-## Text2DLateRenderComponent
+## Text2DRenderComponent
 ### Source Code:
-[Text2DLateRenderComponent.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DLateRenderComponent.h)  
-[Text2DLateRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DLateRenderComponent.cpp)
+[Text2DRenderComponent.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderComponent.h)  
+[Text2DRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderComponent.cpp)
 
 ### Description:
 It can render a text with a color.  
 It uses `MultiText2DRenderer` for rendering. It is recommand, when the developer knows,
 there are huge texts.  
-Please more info about `LateRendererComponent`.
+Please more info about `RendererComponent`.
 
 ### Header:
 ```cpp
-class Text2DLateRenderComponent : public Render::LateRendererComponent<Text2DRenderData, MultiText2DRenderer>
+class Text2DRenderComponent : public Render::RendererComponent<Text2DRenderData, MultiText2DRenderer>
 {...}
 ```
 
@@ -277,35 +260,14 @@ class Text2DLateRenderComponent : public Render::LateRendererComponent<Text2DRen
 static const std::string id;
 ```
 
-**refrenceNumber**  
-It is counted, that how many SpriteRenderComponent exist.
-```cpp
-static int refrenceNumber;
-```
-
-**mutex**  
-```cpp
-static std::mutex mutex;
-```
-
 ### Functions:
 **Protected:**  
 **Text2DLateRenderComponent**  
 ```cpp
-Text2DLateRenderComponent(System::GameObject* gameObject, const FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+Text2DRenderComponent(System::GameObject* gameObject, Render::RendererMode mode, const FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 ```cpp
-Text2DLateRenderComponent(System::GameObject* gameObject, const FontSizePair& fontSizePair, const std::string& text, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
-```
-
-**Init**  
-```cpp
-void Init() override;
-```
-
-**Destroy**  
-```cpp
-void Destroy() override;
+Text2DRenderComponent(System::GameObject* gameObject, Render::RendererMode mode, const FontSizePair& fontSizePair, const std::string& text, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 **GetId**  
@@ -313,9 +275,14 @@ void Destroy() override;
 const std::string& GetId() const override;
 ```
 
-**GetRenderer**  
+**GetInitedRenderer**  
 ```cpp
-MultiText2DRenderer* GetRenderer() const override;
+MultiText2DRenderer* GetInitedRenderer() override;
+```
+
+**DestroyRenderer**  
+```cpp
+void DestroyRenderer() override;
 ```
 
 ##
