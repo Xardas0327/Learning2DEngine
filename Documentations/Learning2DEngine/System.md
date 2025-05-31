@@ -324,8 +324,7 @@ which can run automatically:
 - `System::LateUpdaterComponent`
 - `Physics::BoxColliderComponent`
 - `Physics::CircleColliderComponent`
-- `Render::RendererComponent`
-- `Render::LateRendererComponent`  
+- `Render::RendererComponent`  
 
 But the developer can use this `Component` class like a data container too.  
 Fistly, it looks a bad structure, because there is a cross reference.
