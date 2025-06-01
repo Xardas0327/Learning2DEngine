@@ -33,6 +33,9 @@ namespace Learning2DEngine
 
 			~GameObject() = default;
 
+			GameObject(const GameObject&) = delete;
+			GameObject& operator=(const GameObject&) = delete;
+
 			void Destroy()
 			{
 				for (Component* component : components)
