@@ -5,6 +5,7 @@
 #include <Learning2DEngine/DebugTool/DebugMacro.h>
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/System/Game.h>
+#include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/System/Time.h>
 #include <Learning2DEngine/Object/FpsShower.h>
@@ -34,8 +35,10 @@ void GameController::Init()
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
     const int middleHeight = resolution.GetHeight() / 2;
 
+    auto& gameObjectManager = GameObjectManager::GetInstance();
+
     // Background
-    auto background = GameObject::Create();
+    auto background = gameObjectManager.CreateGameObject();
     backgroundController = background->AddComponent<BackgroundController>("background", resolution);
 
     // Levels
@@ -51,11 +54,11 @@ void GameController::Init()
     selectedLevel = 0;
 
     // Player
-    auto player = GameObject::Create();
+    auto player = gameObjectManager.CreateGameObject();
     playerController = player->AddComponent<PlayerController>("paddle");
 
     // Ball
-    auto ball = GameObject::Create();
+    auto ball = gameObjectManager.CreateGameObject();
     ballController = ball->AddComponent<BallController>(
             playerController,
             "face",
@@ -65,7 +68,7 @@ void GameController::Init()
         );
 
     // Text
-    auto liveGameObject = GameObject::Create(
+    auto liveGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(5.0f, 5.0f)
         )
@@ -76,7 +79,7 @@ void GameController::Init()
         "Lifes: " + std::to_string(lifes)
     );
 
-    auto startGameObject = GameObject::Create(
+    auto startGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(250.0f, static_cast<float>(middleHeight))
         )
@@ -87,7 +90,7 @@ void GameController::Init()
         "Press ENTER to start"
     );
 
-    auto levelSelectorGameObject = GameObject::Create(
+    auto levelSelectorGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(245.0f, static_cast<float>(middleHeight) + 20.0f),
             glm::vec2(0.75f, 0.75f)
@@ -99,7 +102,7 @@ void GameController::Init()
         "Press W or S to select level"
     );
 
-    auto winGameObject = GameObject::Create(
+    auto winGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(320.0f, static_cast<float>(middleHeight) - 20.0f)
         ),
@@ -113,7 +116,7 @@ void GameController::Init()
         glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)
     );
 
-    auto retryGameObject = GameObject::Create(
+    auto retryGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(130.0f, static_cast<float>(middleHeight))
         ),
@@ -405,13 +408,14 @@ void GameController::UpdatePowerUps()
         }
     }
 
+    auto& gameObjectManager = GameObjectManager::GetInstance();
     powerUps.erase(std::remove_if(powerUps.begin(), powerUps.end(),
-        [](PowerUpController* powerUp)
+        [&gameObjectManager](PowerUpController* powerUp)
         {
             bool isDeletable = !powerUp->gameObject->isActive && !powerUp->activated;
             if (isDeletable)
             {
-                GameObject::Destroy(powerUp);
+                gameObjectManager.DestroyGameObject(powerUp);
             }
 
             return isDeletable;
@@ -421,9 +425,10 @@ void GameController::UpdatePowerUps()
 
 void GameController::ClearPowerUps()
 {
+    auto& gameObjectManager = GameObjectManager::GetInstance();
     for (PowerUpController* powerUp : powerUps)
     {
-        GameObject::Destroy(powerUp);
+        gameObjectManager.DestroyGameObject(powerUp);
     }
     powerUps.clear();
 }

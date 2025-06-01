@@ -153,7 +153,7 @@ namespace Learning2DEngine
             if (textures.size() > 0)
             {
                 unsigned int* textureIds = new unsigned int[textures.size()];
-                size_t index = 0;
+                GLsizei index = 0;
                 for (auto i = textures.begin(); i != textures.end(); ++i)
                 {
                     textureIds[index] = i->second.GetId();

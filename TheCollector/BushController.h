@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include <Learning2DEngine/System/GameObject.h>
+#include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
@@ -33,7 +34,7 @@ protected:
 public:
 	static BushController* Create(glm::vec2 position, const std::string& textureId, glm::vec2 size = BUSH_SIZE, int layer = 0)
 	{
-		auto platform = Learning2DEngine::System::GameObject::Create(
+		auto platform = Learning2DEngine::System::GameObjectManager::GetInstance().CreateGameObject(
 			Learning2DEngine::System::Transform(position, size)
 		);
 		return platform->AddComponent<BushController>(textureId, layer);

@@ -5,6 +5,7 @@
 
 #include <glm/glm.hpp>
 
+#include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/Game.h>
@@ -62,6 +63,7 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bo
     levelHeight = brickData.size();
     levelWidth = brickData[0].size();
     auto& resourceManager = ResourceManager::GetInstance();
+    auto& gameObjectManager = GameObjectManager::GetInstance();
 
     Texture2D& solidBlockTexture = resourceManager.GetTexture("block_solid");
     Texture2D& blockTexture = resourceManager.GetTexture("block");
@@ -86,7 +88,7 @@ void GameLevel::Init(const std::vector<std::vector<unsigned int>>& brickData, bo
             else if (brickData[y][x] == 5)
                 color = glm::vec4(1.0f, 0.5f, 0.0f, 1.0f);
 
-            GameObject* brick = GameObject::Create(areBricksActive);
+            GameObject* brick = gameObjectManager.CreateGameObject(areBricksActive);
             auto brickController = brick->AddComponent<BrickController>(x, y, brickData[y][x] == 1);
             brickController->renderer->data.SetTexture(
                 brickData[y][x] == 1
@@ -117,9 +119,10 @@ void GameLevel::CalcBrickSize(const Resolution& resolution)
 
 void GameLevel::ClearBricks()
 {
+    auto& gameObjectManager = GameObjectManager::GetInstance();
     for (BrickController* brick : bricks)
     {
-        GameObject::Destroy(brick);
+        gameObjectManager.DestroyGameObject(brick);
     }
     bricks.clear();
 }

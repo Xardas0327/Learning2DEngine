@@ -2,6 +2,7 @@
 
 #include <Learning2DEngine/DebugTool/DebugMacro.h>
 #include <Learning2DEngine/System/Game.h>
+#include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/InputStatus.h>
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/System/Time.h>
@@ -29,15 +30,17 @@ void GameController::Init()
 
     const Resolution resolution = RenderManager::GetInstance().GetResolution();
 
+    auto& gameObjectManager = GameObjectManager::GetInstance();
+
     // Unit
     unitSize = glm::ivec2(resolution.GetWidth() / levelResolution.x, resolution.GetHeight() / levelResolution.y);
 
     //Player
-    auto player = GameObject::Create();
+    auto player = gameObjectManager.CreateGameObject();
     playerController = player->AddComponent<PlayerController>("Unit");
 
     //Food
-    auto food = GameObject::Create(
+    auto food = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(0.0f, 0.0f),
             unitSize
@@ -47,7 +50,7 @@ void GameController::Init()
 
 
     // Text
-    auto scoreGameObject = GameObject::Create(
+    auto scoreGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(5.0f, 5.0f)
         )
@@ -58,7 +61,7 @@ void GameController::Init()
         "Score: " + std::to_string(score)
     );
 
-    auto startGameObject = GameObject::Create(
+    auto startGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(175.0f, static_cast<float>(resolution.GetHeight() / 2))
         )

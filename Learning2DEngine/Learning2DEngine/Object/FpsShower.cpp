@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 #include <string>
 
+#include "../System/GameObjectManager.h"
+
 namespace Learning2DEngine
 {
 	using namespace Render;
@@ -56,7 +58,7 @@ namespace Learning2DEngine
 			int layer,
 			glm::vec4 color)
 		{
-			auto gameObject = GameObject::Create(transform);
+			auto gameObject = GameObjectManager::GetInstance().CreateGameObject(transform);
 			return gameObject->AddComponent<FpsShower>(fontSizePair, layer, color);
 		}
 	}
