@@ -2,6 +2,7 @@
 
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/System/GameObject.h>
+#include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 #include <Learning2DEngine/Physics/CircleColliderComponent.h>
@@ -101,6 +102,6 @@ void TheCollector::Init()
     Game::mainCamera.SetResolution(renderManager.GetResolution());
 
     //GameController
-    auto gameController = GameObject::Create();
+    auto gameController = GameObjectManager::GetInstance().CreateGameObject();
     gameController->AddComponent<GameController>();
 }

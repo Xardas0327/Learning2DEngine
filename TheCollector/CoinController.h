@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <vector>
+#include <string>
 
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/Component.h>
