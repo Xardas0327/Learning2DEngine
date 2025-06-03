@@ -537,12 +537,12 @@ inline void LateRender();
 ```
 
 **SetThreadSafe**  
+It set the thread safe mode the `ComponentManager` and the `GameObjectManager` too.
 ```cpp
 inline void SetThreadSafe(bool value);
 ```
 
 **GetThreadSafe**  
-It set the thread safe mode the `ComponentManager` and the `GameObjectManager` too.
 ```cpp
 inline bool GetThreadSafe();
 ```
