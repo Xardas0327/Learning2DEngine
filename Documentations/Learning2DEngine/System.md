@@ -1082,11 +1082,16 @@ void DestroyGameObject(Component* component);
 ```
 
 **DestroyMarkedGameObjects**  
+It destroys those `GameObjects` immediately, which was marked with
+DestroyGameObject function.  
+The `Game` calls this function end of the frame.  
 ```cpp
 void DestroyMarkedGameObjects();
 ```
 
 **DestroyAllGameObjects**  
+It destroys all `GameObjects` immediately.  
+The `Game` calls this function in its Terminate function. 
 ```cpp
 void DestroyAllGameObjects();
 ```
