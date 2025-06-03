@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Singleton.h"
+#include "GameObjectManager.h"
 #include "UpdaterComponentHandler.h"
 #include "LateUpdaterComponentHandler.h"
 #include "BaseUpdaterComponent.h"
@@ -57,7 +58,7 @@ namespace Learning2DEngine
                 updaterComponentHandler.Run();
             }
 
-            // If it is bigger then 0, than every component handler will be thread safe.
+            // If it is bigger then 0, than every component handlers and the GameObjectManager will be thread safe.
             // But if it is 0, the thread safe will not be turn off automatically.
             void SetUpdateMaxComponentPerThread(unsigned int value)
             {
@@ -84,7 +85,7 @@ namespace Learning2DEngine
                 lateUpdaterComponentHandler.Run();
             }
 
-            // If it is bigger then 0, than every component handler will be thread safe.
+            // If it is bigger then 0, than every component handlers and the GameObjectManager will be thread safe.
             // But if it is 0, the thread safe will not be turn off automatically.
             void SetLateUpdateMaxComponentPerThread(unsigned int value)
             {
@@ -121,7 +122,7 @@ namespace Learning2DEngine
                 colliderComponentHandler.Run();
             }
 
-            // If it is bigger then 0, than every component handler will be thread safe.
+            // If it is bigger then 0, than every component handlers and the GameObjectManager will be thread safe.
             // But if it is 0, the thread safe will not be turn off automatically.
             void SetMaxColliderPerThread(unsigned int value)
             {
@@ -226,9 +227,11 @@ namespace Learning2DEngine
 
             //All
 
+            //It set the thread safe mode the ComponentManager and the GameObjectManager too.
             inline void SetThreadSafe(bool value)
             {
                 isThreadSafe = value;
+                GameObjectManager::GetInstance().SetThreadSafe(value);
 #if L2DE_DEBUG
                 if (!isThreadSafe && (
                     updaterComponentHandler.GetMaxComponentPerThread() > 0

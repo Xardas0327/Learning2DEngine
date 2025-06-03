@@ -1,5 +1,6 @@
 #include "CoinController.h"
 
+#include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/Physics/CircleColliderComponent.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
@@ -42,6 +43,6 @@ void CoinController::Init()
 
 CoinController* CoinController::Create(glm::vec2 position, float speed)
 {
-	auto coin = GameObject::Create(Transform(position, COIN_SIZE));
+	auto coin = GameObjectManager::GetInstance().CreateGameObject(Transform(position, COIN_SIZE));
 	return coin->AddComponent<CoinController>(speed);
 }

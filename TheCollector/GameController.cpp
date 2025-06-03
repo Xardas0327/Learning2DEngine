@@ -2,6 +2,7 @@
 
 #include <Learning2DEngine/DebugTool/DebugMacro.h>
 #include <Learning2DEngine/System/Game.h>
+#include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/Time.h>
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Object/FpsShower.h>
@@ -30,6 +31,9 @@ void GameController::Init()
 {
     UpdaterComponent::Init();
 
+    auto& gameObjectManager = GameObjectManager::GetInstance();
+    gameObjectManager.Reserve(100);
+
     InitEnvironment();
     InitTexts();
 
@@ -41,13 +45,13 @@ void GameController::Init()
     if (sound) sound->stop();
 
     //Player
-    auto player = GameObject::Create(Transform(PLAYER_START_POSITION));
+    auto player = gameObjectManager.CreateGameObject(Transform(PLAYER_START_POSITION));
     playerController = player->AddComponent<PlayerController>(soundEngine);
     playerController->coinCollected.Add(&playerCoinEventItem);
     playerController->rigidbody->isFrozen = true;
 
     // Camera
-    auto cameraController = GameObject::Create();
+    auto cameraController = gameObjectManager.CreateGameObject();
     cameraController->AddComponent<CameraController>(playerController);
 
     ShowMenu();
@@ -163,22 +167,23 @@ void GameController::InitEnvironment()
 void GameController::InitTexts()
 {
     auto resolution = RenderManager::GetInstance().GetResolution();
+    auto& gameObjectManager = GameObjectManager::GetInstance();
 
-    auto scoreGameObject = GameObject::Create(
+    auto scoreGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(5.0f, 5.0f)
         )
     );
     scoreText = scoreGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
 
-    auto playTimeGameObject = GameObject::Create(
+    auto playTimeGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(200.0f, 5.0f)
         )
     );
     playTimeText = playTimeGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
 
-    auto description1GameObject = GameObject::Create(
+    auto description1GameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(200.0f, 300.0f)
         )
@@ -189,7 +194,7 @@ void GameController::InitTexts()
         "Collect the coins in time."
     );
 
-    auto description2GameObject = GameObject::Create(
+    auto description2GameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(200.0f, 350.0f)
         )
@@ -200,7 +205,7 @@ void GameController::InitTexts()
         "You can move with A and D and jump with SPACE."
     );
 
-    auto startGameObject = GameObject::Create(
+    auto startGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(resolution.GetWidth() / 2 -150, 400.0f),
             glm::vec2(0.75f, 0.75f)
@@ -212,7 +217,7 @@ void GameController::InitTexts()
         "Press ENTER for start."
     );
 
-    auto winGameObject = GameObject::Create(
+    auto winGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(resolution.GetWidth() / 2 - 150, 300.0f),
             glm::vec2(2.0f, 2.0f)
@@ -226,7 +231,7 @@ void GameController::InitTexts()
         glm::vec4(0.08f, 0.43f, 0.185f, 1.0f)
     );
 
-    auto loseGameObject = GameObject::Create(
+    auto loseGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(resolution.GetWidth() / 2 - 150, 300.0f),
             glm::vec2(2.0f, 2.0f)
@@ -240,7 +245,7 @@ void GameController::InitTexts()
         glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)
     );
 
-    auto endGameObject = GameObject::Create(
+    auto endGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(resolution.GetWidth() / 2 - 175, 375.0f),
             glm::vec2(0.75f, 0.75f)

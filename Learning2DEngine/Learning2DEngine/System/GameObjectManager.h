@@ -5,7 +5,7 @@
 #include <mutex>
 
 #include "Singleton.h"
-#include "BaseGameObject.h"
+#include "GameObject.h"
 
 namespace Learning2DEngine
 {
@@ -15,72 +15,44 @@ namespace Learning2DEngine
 		{
 			friend class Singleton<GameObjectManager>;
 		private:
-			std::vector<BaseGameObject*> gameObjects;
-			std::vector<BaseGameObject*> removableGameObjects;
+			std::vector<GameObject*> gameObjects;
+			std::vector<GameObject*> removableGameObjects;
 			std::mutex addMutex;
 			std::mutex removeMutex;
 
 			bool isThreadSafe;
 
-			GameObjectManager()
-				: gameObjects(), removableGameObjects(), addMutex(), removeMutex(), isThreadSafe(false)
-			{
-			}
+			GameObjectManager();
 		public:
 
-			void Add(BaseGameObject* gameobject)
+			GameObject* CreateGameObject(bool isActive = true);
+			GameObject* CreateGameObject(const Transform& transform, bool isActive = true);
+
+			/// <summary>
+			/// The gameObject and its components will be destroyed.
+			/// It will be inactive immediately, but it will be destroyed just end of the frame only.
+			/// </summary>
+			void DestroyGameObject(GameObject* gameObject);
+
+			/// <summary>
+			/// The gameObject of component and its components will be destroyed.
+			/// It will be inactive immediately, but it will be destroyed just end of the frame only.
+			/// </summary>
+			void DestroyGameObject(Component* component);
+
+			void DestroyMarkedGameObjects();
+
+			void DestroyAllGameObjects();
+
+			inline void Reserve(size_t value)
 			{
-				if (isThreadSafe)
-				{
-					std::lock_guard<std::mutex> lock(addMutex);
-					gameObjects.push_back(gameobject);
-				}
-				else
-					gameObjects.push_back(gameobject);
+				gameObjects.reserve(value);
 			}
 
-			void MarkForDestroy(BaseGameObject* gameobject)
+			// It can the reserve() with current size + value
+			inline void AddReserve(size_t value)
 			{
-				if (isThreadSafe)
-				{
-					std::lock_guard<std::mutex> lock(removeMutex);
-					removableGameObjects.push_back(gameobject);
-				}
-				else
-					removableGameObjects.push_back(gameobject);
-			}
-
-			void DestroyMarkedGameObjects()
-			{
-				if (removableGameObjects.size() > 0)
-				{
-					auto newEnd = remove_if(gameObjects.begin(), gameObjects.end(),
-						[this](BaseGameObject* gameObject)
-						{
-							auto it = std::find(removableGameObjects.begin(), removableGameObjects.end(), gameObject);
-							if (it != removableGameObjects.end())
-							{
-								delete gameObject;
-								return true;
-							}
-
-							return false;
-						});
-					gameObjects.erase(newEnd, gameObjects.end());
-
-					removableGameObjects.clear();
-				}
-			}
-
-			void DestroyAllGameObjects()
-			{
-				for(BaseGameObject* gameObject : gameObjects)
-				{
-					delete gameObject;
-				}
-
-				gameObjects.clear();
-				removableGameObjects.clear();
+				gameObjects.reserve(gameObjects.size() + value);
 			}
 
 			inline void SetThreadSafe(bool value)

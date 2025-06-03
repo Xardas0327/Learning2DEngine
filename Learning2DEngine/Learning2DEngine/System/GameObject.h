@@ -3,34 +3,40 @@
 #include <vector>
 #include <utility>
 
-#include "BaseGameObject.h"
 #include "Transform.h"
 #include "Component.h"
-#include "GameObjectManager.h"
 
 namespace Learning2DEngine
 {
 	namespace System
 	{
-		class GameObject final : private BaseGameObject
+		class GameObjectManager;
+
+		class GameObject final
 		{
+			friend class GameObjectManager;
 		private:
 			std::vector<Component*> components;
 
 			GameObject(bool isActive = true)
-				: BaseGameObject(), isActive(isActive), transform(), components()
+				: isActive(isActive), transform(), components()
 			{
 			}
 
 			GameObject(const Transform& transform, bool isActive = true)
-				:BaseGameObject(), isActive(isActive), transform(transform), components()
+				:isActive(isActive), transform(transform), components()
 			{
 			}
 		public:
 			bool isActive;
 			Transform transform;
 
-			~GameObject() override
+			~GameObject() = default;
+
+			GameObject(const GameObject&) = delete;
+			GameObject& operator=(const GameObject&) = delete;
+
+			void Destroy()
 			{
 				for (Component* component : components)
 				{
@@ -97,42 +103,6 @@ namespace Learning2DEngine
 				}
 
 				return selectedComponents;
-			}
-
-			static GameObject* Create(bool isActive = true)
-			{
-				auto gameObject = new GameObject(isActive);
-				GameObjectManager::GetInstance().Add(gameObject);
-				return gameObject;
-			}
-
-			static GameObject* Create(const Transform& transform, bool isActive = true)
-			{
-				auto gameObject = new GameObject(transform, isActive);
-				GameObjectManager::GetInstance().Add(gameObject);
-				return gameObject;
-			}
-
-			/// <summary>
-			/// The gameObject and its components will be destroyed.
-			/// It will be inactive immediately, but it will be destroyed just end of the frame only.
-			/// </summary>
-			/// <param name="gameObject"></param>
-			static void Destroy(GameObject* gameObject)
-			{
-				gameObject->isActive = false;
-				GameObjectManager::GetInstance().MarkForDestroy(gameObject);
-			}
-
-			/// <summary>
-			/// The gameObject of component and its components will be destroyed.
-			/// It will be inactive immediately, but it will be destroyed just end of the frame only.
-			/// </summary>
-			/// <param name="gameObject"></param>
-			static void Destroy(Component* component)
-			{
-				component->gameObject->isActive = false;
-				GameObjectManager::GetInstance().MarkForDestroy(component->gameObject);
 			}
 		};
 	}

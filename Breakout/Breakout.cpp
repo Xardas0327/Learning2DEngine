@@ -3,6 +3,7 @@
 #include <string>
 
 #include <Learning2DEngine/Render/RenderManager.h>
+#include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/UI/TextCharacterSet.h>
@@ -65,7 +66,7 @@ void Breakout::Init()
     mainCamera.SetResolution(RenderManager::GetInstance().GetResolution());
 
     // GameController
-    auto gameControllerObject = GameObject::Create();
+    auto gameControllerObject = GameObjectManager::GetInstance().CreateGameObject();
     gameController = gameControllerObject->AddComponent<GameController>(fontSizePair, postProcessData);
 }
 

@@ -1,6 +1,8 @@
 #include "PowerUpController.h"
 #include "PlayerController.h"
 
+#include <Learning2DEngine/System/GameObjectManager.h>
+
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::Physics;
@@ -45,8 +47,8 @@ PowerUpController* PowerUpController::CreatePowerUp(
     glm::vec2 position, 
     PowerUpActivationEventItem& eventItem)
 {
-    auto powerUp = Learning2DEngine::System::GameObject::Create(
-        Learning2DEngine::System::Transform(position)
+    auto powerUp = GameObjectManager::GetInstance().CreateGameObject(
+        Transform(position)
     );
 
     PowerUpController* controller = powerUp->AddComponent<PowerUpController>(powerUpObject);

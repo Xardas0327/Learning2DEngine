@@ -1,5 +1,6 @@
 #include "PlayerController.h"
 
+#include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 
 using namespace Learning2DEngine::Render;
@@ -13,16 +14,18 @@ PlayerController::PlayerController(GameObject* gameObject, const std::string& te
 
 void PlayerController::Destroy()
 {
+    auto& gameObjectManager = GameObjectManager::GetInstance();
     for (auto it = snake.begin(); it != snake.end(); ++it) {
-        GameObject::Destroy(*it);
+        gameObjectManager.DestroyGameObject(*it);
     }
     snake.clear();
 }
 
 void PlayerController::Regenerate(glm::ivec2 unitSize)
 {
+    auto& gameObjectManager = GameObjectManager::GetInstance();
     for (auto it = snake.begin(); it != snake.end(); ++it) {
-        GameObject::Destroy(*it);
+        gameObjectManager.DestroyGameObject(*it);
     }
     snake.clear();
     for (unsigned int i = 0; i < initSize; ++i)
@@ -33,7 +36,7 @@ void PlayerController::Regenerate(glm::ivec2 unitSize)
 
 SimpleSpriteRenderComponent* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm::vec2 scale)
 {
-    auto playerUnit = GameObject::Create(
+    auto playerUnit = GameObjectManager::GetInstance().CreateGameObject(
         Transform(
             position,
             scale
