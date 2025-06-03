@@ -44,6 +44,17 @@ namespace Learning2DEngine
 
 			void DestroyAllGameObjects();
 
+			inline void Reserve(size_t value)
+			{
+				gameObjects.reserve(value);
+			}
+
+			// It can the reserve() with current size + value
+			inline void AddReserve(size_t value)
+			{
+				gameObjects.reserve(gameObjects.size() + value);
+			}
+
 			inline void SetThreadSafe(bool value)
 			{
 				isThreadSafe = value;

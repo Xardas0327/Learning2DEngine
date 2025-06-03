@@ -28,9 +28,10 @@ void GameController::Init()
 {
     UpdaterComponent::Init();
 
-    const Resolution resolution = RenderManager::GetInstance().GetResolution();
-
     auto& gameObjectManager = GameObjectManager::GetInstance();
+    gameObjectManager.Reserve(10);
+
+    const Resolution resolution = RenderManager::GetInstance().GetResolution();
 
     // Unit
     unitSize = glm::ivec2(resolution.GetWidth() / levelResolution.x, resolution.GetHeight() / levelResolution.y);

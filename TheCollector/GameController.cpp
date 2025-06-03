@@ -31,6 +31,9 @@ void GameController::Init()
 {
     UpdaterComponent::Init();
 
+    auto& gameObjectManager = GameObjectManager::GetInstance();
+    gameObjectManager.Reserve(100);
+
     InitEnvironment();
     InitTexts();
 
@@ -40,8 +43,6 @@ void GameController::Init()
     // I have to load a sound, because it gets stuck a bit on the first sound.
     ISound* sound = soundEngine->play2D("Assets/Sounds/jump.wav", false, false, true);
     if (sound) sound->stop();
-
-    auto& gameObjectManager = GameObjectManager::GetInstance();
 
     //Player
     auto player = gameObjectManager.CreateGameObject(Transform(PLAYER_START_POSITION));

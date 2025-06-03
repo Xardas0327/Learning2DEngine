@@ -36,6 +36,8 @@ void GameController::Init()
     const int middleHeight = resolution.GetHeight() / 2;
 
     auto& gameObjectManager = GameObjectManager::GetInstance();
+    //Maybe it is not enough, but it will reduce the useless reallocation.
+    gameObjectManager.Reserve(200);
 
     // Background
     auto background = gameObjectManager.CreateGameObject();
