@@ -1,6 +1,5 @@
 # System
 - [BaseComponentHandler](System.md#basecomponenthandler)
-- [BaseGameObject](System.md#basegameobject)
 - [BaseLateUpdaterComponent](System.md#baselateupdatercomponent)
 - [BaseUpdaterComponent](System.md#baseupdatercomponent)
 - [Camera](System.md#camera)
@@ -99,27 +98,6 @@ virtual void Remove(T* component, bool isThreadSafe);
 **Clear**  
 ```cpp
 virtual void Clear() override;
-```
-
-##
-## BaseGameObject
-### Source Code:
-[BaseGameObject.h](../../Learning2DEngine/Learning2DEngine/System/BaseGameObject.h)  
-
-### Description:
-It exists only for `GameObjectManager`.  
-Do not use it.  
-Please check for more info about `GameObject` and `GameObjectManager`.
-
-### Header:
-```cpp
-class BaseGameObject
-{
-protected:
-	BaseGameObject() {};
-public:
-	virtual ~BaseGameObject() {};
-};
 ```
 
 ##
@@ -459,9 +437,9 @@ inline void Update();
 ```
 
 **SetUpdateMaxComponentPerThread**  
-If it is bigger then 0, than every component handler will be thread safe.  
+If it is bigger then 0, than every component handlers and the `GameObjectManager`
+will be thread safe.  
 But if it is 0, the thread safe will not be turn off automatically.  
-Note: `GameObjectManager` will not be thread safe automatically.
 ```cpp
 void SetUpdateMaxComponentPerThread(unsigned int value);
 ```
@@ -482,9 +460,9 @@ inline void LateUpdate();
 ```
 
 **SetLateUpdateMaxComponentPerThread**  
-If it is bigger then 0, than every component handler will be thread safe.  
+If it is bigger then 0, than every component handlers and the `GameObjectManager`
+will be thread safe.  
 But if it is 0, the thread safe will not be turn off automatically.  
-Note: `GameObjectManager` will not be thread safe automatically.
 ```cpp
 void SetLateUpdateMaxComponentPerThread(unsigned int value);
 ```
@@ -511,9 +489,9 @@ inline void CheckCollision();
 ```
 
 **SetMaxColliderPerThread**  
-If it is bigger then 0, than every component handler will be thread safe.  
+If it is bigger then 0, than every component handlers and the `GameObjectManager`
+will be thread safe.  
 But if it is 0, the thread safe will not be turn off automatically.  
-Note: `GameObjectManager` will not be thread safe automatically.
 ```cpp
 void SetMaxColliderPerThread(unsigned int value);
 ```
@@ -564,6 +542,7 @@ inline void SetThreadSafe(bool value);
 ```
 
 **GetThreadSafe**  
+It set the thread safe mode the `ComponentManager` and the `GameObjectManager` too.
 ```cpp
 inline bool GetThreadSafe();
 ```
@@ -936,7 +915,7 @@ Please check the `Component` too.
 
 ### Header:
 ```cpp
-class GameObject final : private BaseGameObject
+class GameObject final
 {...}
 ```
 
@@ -972,10 +951,15 @@ GameObject(const Transform& transform, bool isActive = true);
 
 **Public:**  
 **~GameObject()**  
-It calls `Destroy()` function of the current gameobject's components
+```cpp
+~GameObject() = default;
+```
+
+**Destroy()**  
+It calls Destroy() function of the current gameobject's components
 and delete them.
 ```cpp
-~GameObject() override;
+void Destroy();
 ```
 
 **AddComponent**  
@@ -1017,31 +1001,19 @@ template <class TComponent>
 std::vector<TComponent*> GetComponents();
 ```
 
-**Create**  
-It creates a `GameObject` and returns its pointer.
+**Deleted:**  
 ```cpp
-static GameObject* Create(bool isActive = true);
+GameObject(const GameObject&) = delete;
 ```
 ```cpp
-static GameObject* Create(const Transform& transform, bool isActive = true);
-```
-
-**Destroy**  
-The `GameObject` and its components will be destroyed.  
-If the developer give a `Component`, it will destroy the `GameObject` of the `Component`.  
-That's why all other `Components`,which the `GameObject` has, will be destroyed.  
-`GameObject` will be inactive immediately, but it will be destroyed just at end of the frame only.
-```cpp
-static void Destroy(GameObject* gameObject);
-```
-```cpp
-static void Destroy(Component* component);
+GameObject& operator=(const GameObject&) = delete;
 ```
 
 ##
 ## GameObjectManager
 ### Source Code:
-[GameObjectManager.h](../../Learning2DEngine/Learning2DEngine/System/GameObjectManager.h)
+[GameObjectManager.h](../../Learning2DEngine/Learning2DEngine/System/GameObjectManager.h)  
+[GameObjectManager.cpp](../../Learning2DEngine/Learning2DEngine/System/GameObjectManager.cpp)
 
 ### Description:
 The `GameObjectManager` manages the `GameObjects` in the Engine.  
@@ -1058,12 +1030,12 @@ class GameObjectManager : public Singleton<GameObjectManager>
 **Private:**  
 **gameObjects**  
 ```cpp
-std::vector<BaseGameObject*> gameObjects;
+std::vector<GameObject*> gameObjects;
 ```
 
 **removableGameObjects**  
 ```cpp
-std::vector<BaseGameObject*> removableGameObjects;
+std::vector<GameObject*> removableGameObjects;
 ```
 
 **addMutex**  
@@ -1089,14 +1061,24 @@ GameObjectManager();
 ```
 
 **Public:**  
-**Add**  
+**CreateGameObject**  
 ```cpp
-void Add(BaseGameObject* gameobject);
+GameObject* CreateGameObject(bool isActive = true);
+```
+```cpp
+GameObject* CreateGameObject(const Transform& transform, bool isActive = true);
 ```
 
-**MarkForDestroy**  
+**DestroyGameObject**  
+The `GameObject` and its components will be destroyed.  
+If the developer give a `Component`, it will destroy the `GameObject` of the `Component`.  
+That's why all other `Components`,which the `GameObject` has, will be destroyed.  
+`GameObject` will be inactive immediately, but it will be destroyed just at end of the frame only.
 ```cpp
-void MarkForDestroy(BaseGameObject* gameobject);
+void DestroyGameObject(GameObject* gameObject);
+```
+```cpp
+void DestroyGameObject(Component* component);
 ```
 
 **DestroyMarkedGameObjects**  
