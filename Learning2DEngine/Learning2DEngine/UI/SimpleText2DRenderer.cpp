@@ -98,7 +98,7 @@ namespace Learning2DEngine
 				glm::mat2 rotationMatrix = textData->GetRotationMatrix();
 
 				std::string::const_iterator c;
-				for (c = textData->text.begin(); c != textData->text.end(); ++c)
+				for (c = textData->GetText().begin(); c != textData->GetText().end(); ++c)
 				{
 					const auto& ch = characterMap[*c];
 

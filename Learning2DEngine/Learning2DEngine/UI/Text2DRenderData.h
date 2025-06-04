@@ -3,7 +3,6 @@
 #include <string>
 
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include "../Render/RenderData.h"
 #include "FontSizePair.h"
@@ -12,29 +11,38 @@ namespace Learning2DEngine
 {
     namespace UI
     {
-        struct Text2DRenderData : public Render::RenderData
+        class Text2DRenderData : public Render::RenderData
         {
-            FontSizePair fontSizePair;
+        protected:
             std::string text;
+
+        public:
+            FontSizePair fontSizePair;
             glm::vec4 color;
-            Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, glm::vec4 color = glm::vec4(1.0f))
-                : RenderData(component), fontSizePair(fontSizePair), text(""), color(color)
+
+            Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, glm::vec4 color = glm::vec4(1.0f));
+
+            Text2DRenderData(
+                const System::Component* component,
+                const FontSizePair& fontSizePair,
+                const std::string& text,
+                glm::vec4 color = glm::vec4(1.0f));
+
+            glm::mat2 GetRotationMatrix();
+
+            inline const std::string& GetText() const
             {
+                return text;
             }
 
-            Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, const std::string& text, glm::vec4 color = glm::vec4(1.0f))
-                : RenderData(component), fontSizePair(fontSizePair), text(text), color(color)
+            inline void SetText(const std::string& text)
             {
+                this->text = text;
             }
 
-            glm::mat2 GetRotationMatrix()
+            inline void SetText(std::string&& text)
             {
-                float radians = glm::radians(component->gameObject->transform.GetRotation());
-
-                return glm::mat2(
-                    glm::cos(radians), -glm::sin(radians),
-                    glm::sin(radians), glm::cos(radians)
-                );
+                this->text = std::move(text);
             }
         };
     }

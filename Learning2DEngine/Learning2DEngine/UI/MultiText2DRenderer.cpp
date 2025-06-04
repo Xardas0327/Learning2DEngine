@@ -123,7 +123,7 @@ namespace Learning2DEngine
 				for (auto& data : layerData.second)
 				{
 					auto textData = static_cast<Text2DRenderData*>(data);
-					if (textData->text.size() > 0)
+					if (textData->GetText().size() > 0)
 					{
 						textCharacterSet.Load(textData->fontSizePair);
 						CharacterMap& characterMap = textCharacterSet[textData->fontSizePair];
@@ -131,7 +131,7 @@ namespace Learning2DEngine
 						glm::vec2 startPosition(textData->component->gameObject->transform.GetPosition());
 						glm::mat2 rotationMatrix = textData->GetRotationMatrix();
 
-						for (std::string::const_iterator c = textData->text.begin(); c != textData->text.end(); ++c)
+						for (std::string::const_iterator c = textData->GetText().begin(); c != textData->GetText().end(); ++c)
 						{
 							const auto& ch = characterMap[*c];
 

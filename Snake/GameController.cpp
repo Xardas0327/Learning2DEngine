@@ -246,5 +246,5 @@ void GameController::EatFood()
 
 void GameController::RefreshScore()
 {
-	scoreText->data.text = "Score: " + std::to_string(score);
+	scoreText->data.SetText("Score: " + std::to_string(score));
 }
