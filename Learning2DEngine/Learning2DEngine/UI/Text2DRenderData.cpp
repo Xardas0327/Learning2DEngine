@@ -100,9 +100,11 @@ namespace Learning2DEngine
 
         const std::map<char, std::vector<glm::mat4>>& Text2DRenderData::GetCharacterVertices()
         {
-            if (isModified)
+            auto& actualModelMatrix = component->gameObject->transform.GetModelMatrix();
+            if (isModified || previousModelMatrix != actualModelMatrix)
             {
                 characterVertices = CalculateCharacterVertices();
+                previousModelMatrix = actualModelMatrix;
                 isModified = false;
             }
 
@@ -111,7 +113,8 @@ namespace Learning2DEngine
 
         std::map<char, std::vector<glm::mat4>> Text2DRenderData::GetCharacterVertices() const
         {
-            if (isModified)
+            auto& actualModelMatrix = component->gameObject->transform.GetModelMatrix();
+            if (isModified || previousModelMatrix != actualModelMatrix)
                 return CalculateCharacterVertices();
 
             return characterVertices;

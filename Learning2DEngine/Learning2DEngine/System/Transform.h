@@ -90,7 +90,7 @@ namespace Learning2DEngine
 				isModified = true;
 			}
 
-			glm::mat4 GetModelMatrix()
+			const glm::mat4& GetModelMatrix()
 			{
 				if (isModified)
 				{
