@@ -186,6 +186,7 @@
     <ClCompile Include="Learning2DEngine\UI\SimpleText2DRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\UI\Text2DRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\UI\MultiText2DRenderer.cpp" />
+    <ClCompile Include="Learning2DEngine\UI\Text2DRenderData.cpp" />
     <ClCompile Include="Learning2DEngine\UI\TextCharacterSet.cpp" />
     <ClCompile Include="Plugins\glad.c" />
     <ClCompile Include="Learning2DEngine\Render\MSAA.cpp" />

@@ -30,7 +30,7 @@ namespace Learning2DEngine
 			UpdaterComponent::Init();
 			SimpleText2DRenderComponent::Init();
 			previousTime = static_cast<float>(glfwGetTime());
-			data.text = "FPS: " + std::to_string(fps);
+			data.SetText("FPS: " + std::to_string(fps));
 		}
 
 		void FpsShower::Destroy()
@@ -46,7 +46,7 @@ namespace Learning2DEngine
 			float currentTime = static_cast<float>(glfwGetTime());
 			if (currentTime - previousTime > 1.0f)
 			{
-				data.text = "FPS: " + std::to_string(fps);
+				data.SetText("FPS: " + std::to_string(fps));
 				fps = 0;
 				previousTime = currentTime;
 			}

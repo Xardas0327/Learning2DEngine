@@ -1,9 +1,10 @@
 #pragma once
 
 #include <string>
+#include <map>
+#include <vector>
 
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include "../Render/RenderData.h"
 #include "FontSizePair.h"
@@ -12,30 +13,46 @@ namespace Learning2DEngine
 {
     namespace UI
     {
-        struct Text2DRenderData : public Render::RenderData
+        class Text2DRenderData : public Render::RenderData
         {
+        protected:
             FontSizePair fontSizePair;
             std::string text;
+            bool isModified;
+            glm::mat4 previousModelMatrix;
+            std::map<char, std::vector<glm::mat4>> characterVertices;
+
+            std::map<char, std::vector<glm::mat4>> CalculateCharacterVertices() const;
+        public:
             glm::vec4 color;
-            Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, glm::vec4 color = glm::vec4(1.0f))
-                : RenderData(component), fontSizePair(fontSizePair), text(""), color(color)
+
+            Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, glm::vec4 color = glm::vec4(1.0f));
+
+            Text2DRenderData(
+                const System::Component* component,
+                const FontSizePair& fontSizePair,
+                const std::string& text,
+                glm::vec4 color = glm::vec4(1.0f));
+
+            glm::mat2 GetRotationMatrix() const;
+
+            inline const std::string& GetText() const
             {
+                return text;
             }
 
-            Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, const std::string& text, glm::vec4 color = glm::vec4(1.0f))
-                : RenderData(component), fontSizePair(fontSizePair), text(text), color(color)
+            void SetText(const std::string& text);
+            void SetText(std::string&& text);
+
+            inline const FontSizePair& GetFontSizePair() const
             {
+                return fontSizePair;
             }
 
-            glm::mat2 GetRotationMatrix()
-            {
-                float radians = glm::radians(component->gameObject->transform.GetRotation());
+            void SetFontSizePair(const FontSizePair& fontSizePair);
 
-                return glm::mat2(
-                    glm::cos(radians), -glm::sin(radians),
-                    glm::sin(radians), glm::cos(radians)
-                );
-            }
+            const std::map<char, std::vector<glm::mat4>>& GetCharacterVertices();
+            std::map<char, std::vector<glm::mat4>> GetCharacterVertices() const;
         };
     }
 }

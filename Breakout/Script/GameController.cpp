@@ -271,7 +271,7 @@ void GameController::IsLifeLost()
         }
         else
         {
-            lifeText->data.text = "Lifes: " + std::to_string(lifes);
+            lifeText->data.SetText("Lifes: " + std::to_string(lifes));
         }
         ResetPlayer();
         ClearPowerUps();
@@ -298,7 +298,7 @@ void GameController::ResetLevel()
 {
     levels[selectedLevel].Load(true);
     lifes = 3;
-    lifeText->data.text = "Lifes: " + std::to_string(lifes);
+    lifeText->data.SetText("Lifes: " + std::to_string(lifes));
 }
 
 void GameController::ResetPlayer()

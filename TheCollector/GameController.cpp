@@ -360,13 +360,13 @@ void GameController::Update()
 
 void GameController::RefreshScoreText()
 {
-    scoreText->data.text = "Coin: " + std::to_string(playerController->coinNumber);
+    scoreText->data.SetText("Coin: " + std::to_string(playerController->coinNumber));
 }
 
 void GameController::RefreshPlayTimeText()
 {
     std::string time = std::to_string(currentPlayTime);
-    playTimeText->data.text = "Time: " + time.substr(0, time.find(".") + 3);
+    playTimeText->data.SetText("Time: " + time.substr(0, time.find(".") + 3));
 }
 
 void GameController::Inform()
