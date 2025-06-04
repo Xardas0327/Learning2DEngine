@@ -125,8 +125,8 @@ namespace Learning2DEngine
 					auto textData = static_cast<Text2DRenderData*>(data);
 					if (textData->GetText().size() > 0)
 					{
-						textCharacterSet.Load(textData->fontSizePair);
-						CharacterMap& characterMap = textCharacterSet[textData->fontSizePair];
+						textCharacterSet.Load(textData->GetFontSizePair());
+						CharacterMap& characterMap = textCharacterSet[textData->GetFontSizePair()];
 
 						glm::vec2 startPosition(textData->component->gameObject->transform.GetPosition());
 						glm::mat2 rotationMatrix = textData->GetRotationMatrix();

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <map>
+#include <vector>
 
 #include <glm/glm.hpp>
 
@@ -14,10 +16,14 @@ namespace Learning2DEngine
         class Text2DRenderData : public Render::RenderData
         {
         protected:
-            std::string text;
-
-        public:
             FontSizePair fontSizePair;
+            std::string text;
+            bool isModified;
+            glm::mat4 previousModelMatrix;
+            std::map<char, std::vector<glm::mat4>> characterVertices;
+
+            std::map<char, std::vector<glm::mat4>> CalculateCharacterVertices() const;
+        public:
             glm::vec4 color;
 
             Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, glm::vec4 color = glm::vec4(1.0f));
@@ -28,22 +34,25 @@ namespace Learning2DEngine
                 const std::string& text,
                 glm::vec4 color = glm::vec4(1.0f));
 
-            glm::mat2 GetRotationMatrix();
+            glm::mat2 GetRotationMatrix() const;
 
             inline const std::string& GetText() const
             {
                 return text;
             }
 
-            inline void SetText(const std::string& text)
+            void SetText(const std::string& text);
+            void SetText(std::string&& text);
+
+            inline const FontSizePair& GetFontSizePair() const
             {
-                this->text = text;
+                return fontSizePair;
             }
 
-            inline void SetText(std::string&& text)
-            {
-                this->text = std::move(text);
-            }
+            void SetFontSizePair(const FontSizePair& fontSizePair);
+
+            const std::map<char, std::vector<glm::mat4>>& GetCharacterVertices();
+            std::map<char, std::vector<glm::mat4>> GetCharacterVertices() const;
         };
     }
 }
