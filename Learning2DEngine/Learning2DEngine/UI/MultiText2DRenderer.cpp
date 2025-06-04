@@ -128,46 +128,26 @@ namespace Learning2DEngine
 						textCharacterSet.Load(textData->GetFontSizePair());
 						CharacterMap& characterMap = textCharacterSet[textData->GetFontSizePair()];
 
-						glm::vec2 startPosition(textData->component->gameObject->transform.GetPosition());
-						glm::mat2 rotationMatrix = textData->GetRotationMatrix();
-
-						for (std::string::const_iterator c = textData->GetText().begin(); c != textData->GetText().end(); ++c)
+						auto& textMap = textData->GetCharacterVertices();
+						for (auto& chPair : textMap)
 						{
-							const auto& ch = characterMap[*c];
-
-							//Calculcate character position
-							float chPositionX = ch.bearing.x * textData->component->gameObject->transform.GetScale().x;
-							float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * textData->component->gameObject->transform.GetScale().y;
-
-							//Calculcate character size
-							float chWidth = ch.size.x * textData->component->gameObject->transform.GetScale().x;
-							float chHeight = ch.size.y * textData->component->gameObject->transform.GetScale().y;
-
-							glm::vec2 point1 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY + chHeight)) ;
-							glm::vec2 point2 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY));
-							glm::vec2 point3 = startPosition + (rotationMatrix * glm::vec2(chPositionX, chPositionY));
-							glm::vec2 point4 = startPosition + (rotationMatrix * glm::vec2(chPositionX, chPositionY + chHeight));
-
-							actualLayerData[ch.textureId].emplace_back(
-								std::array<float, 32>{
+							const auto& ch = characterMap[chPair.first];
+							for (auto& vertices : chPair.second)
+							{
+								actualLayerData[ch.textureId].emplace_back(
+									std::array<float, 32>{
 									// vertex 1
-									// position		// texture coordinates	// color
-									point1.x, point1.y, 1.0f, 1.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+									// position						// texture coordinates			// color
+									vertices[0][0], vertices[0][1], vertices[0][2], vertices[0][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
 									// vertex 2
-									point2.x, point2.y, 1.0f, 0.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+									vertices[1][0], vertices[1][1], vertices[1][2], vertices[1][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
 									// vertex 3
-									point3.x, point3.y, 0.0f, 0.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+									vertices[2][0], vertices[2][1], vertices[2][2], vertices[2][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
 									// vertex 4
-									point4.x, point4.y, 0.0f, 1.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a
+									vertices[3][0], vertices[3][1], vertices[3][2], vertices[3][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a
 								}
-							);
-
-							//Calculate next character position
-							startPosition += rotationMatrix *
-								glm::vec2(
-									// bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
-									(ch.advance >> 6) * textData->component->gameObject->transform.GetScale().x,
-									0);
+								);
+							}
 						}
 					}
 				}
