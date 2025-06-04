@@ -1722,7 +1722,7 @@ If the isModified is true, the non const version save the new calculated model m
 that's why it will not recalculate the model matrix again.  
 In same situation the const version will always recalculate the model matrix.
 ```cpp
-glm::mat4 GetModelMatrix();
+const glm::mat4& GetModelMatrix();
 ```
 ```cpp
 glm::mat4 GetModelMatrix() const;

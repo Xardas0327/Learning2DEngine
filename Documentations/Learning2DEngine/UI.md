@@ -309,18 +309,19 @@ struct Text2DDynamicData
 ## Text2DRenderData
 ### Source Code:
 [Text2DRenderData.h](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderData.h)  
+[Text2DRenderData.cpp](../../Learning2DEngine/Learning2DEngine/UI/Text2DRenderData.cpp)  
 
 ### Description:
 It contains the data, which is important to render a text.
 
 ### Header:
 ```cpp
-struct Text2DRenderData : public Render::RenderData
+class Text2DRenderData : public Render::RenderData
 {...}
 ```
 
 ### Variables:
-**Public:**  
+**Protected:**  
 **fontSizePair**
 ```cpp
 FontSizePair fontSizePair;
@@ -331,6 +332,22 @@ FontSizePair fontSizePair;
 std::string text;
 ```
 
+**isModified**
+```cpp
+bool isModified;
+```
+
+**previousModelMatrix**
+```cpp
+glm::mat4 previousModelMatrix;
+```
+
+**characterVertices**
+```cpp
+std::map<char, std::vector<glm::mat4>> characterVertices;
+```
+
+**Public:**  
 **color**
 ```cpp
 glm::vec4 color;
@@ -348,7 +365,43 @@ Text2DRenderData(const System::Component* component, const FontSizePair& fontSiz
 
 **GetRotationMatrix**
 ```cpp
-glm::mat2 GetRotationMatrix();
+glm::mat2 GetRotationMatrix() const;
+```
+
+**GetText**
+```cpp
+inline const std::string& GetText() const;
+```
+
+**SetText**
+```cpp
+void SetText(const std::string& text);
+```
+```cpp
+void SetText(std::string&& text);
+```
+
+**GetFontSizePair**
+```cpp
+inline const FontSizePair& GetFontSizePair() const;
+```
+
+**SetFontSizePair**
+```cpp
+void SetFontSizePair(const FontSizePair& fontSizePair);
+```
+
+**GetCharacterVertices**  
+If the isModified is true or the previousModelMatrix is not the same as the current modelMatrix,
+the non const version save the new calculated character vertices,
+that's why it will not recalculate the character vertices again.  
+In same situation the const version will always recalculate the character vertices.  
+Note: The previous model matrix is used to track the gameobject's transform has changed or not.
+```cpp
+const std::map<char, std::vector<glm::mat4>>& GetCharacterVertices();
+```
+```cpp
+std::map<char, std::vector<glm::mat4>> GetCharacterVertices() const;
 ```
 
 ##
