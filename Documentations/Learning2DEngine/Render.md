@@ -380,7 +380,7 @@ MSAA();
 
 **~MSAA**  
 ```cpp
-~MSAA();
+~MSAA() = default;
 ```
 
 **Init**  

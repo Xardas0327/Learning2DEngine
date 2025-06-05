@@ -257,6 +257,9 @@ namespace Learning2DEngine
 
         void Game::RefreshResolution(const Resolution& resolution)
         {
+            if(resolution.GetWidth() <= 0 || resolution.GetHeight() <= 0)
+                return;
+
             if(isMsaaActive)
             {
                 unsigned int sampleNumber = msaaRender.GetSampleNumber();
