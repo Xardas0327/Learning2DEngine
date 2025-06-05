@@ -16,7 +16,7 @@ namespace Learning2DEngine
 			Resolution resolution;
 		public:
 			MSAA();
-			~MSAA();
+			~MSAA() = default;
 			void Init(unsigned int sampleNumber, Resolution resolution);
 			void Destroy();
 			void StartRender(bool useClear = true);

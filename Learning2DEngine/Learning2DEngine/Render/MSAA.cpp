@@ -13,11 +13,6 @@ namespace Learning2DEngine
 
 		}
 
-		MSAA::~MSAA()
-		{
-
-		}
-
 		void MSAA::Init(unsigned int sampleNumber, Resolution resolution)
 		{
 			this->sampleNumber = sampleNumber;
