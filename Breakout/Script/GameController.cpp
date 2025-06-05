@@ -271,7 +271,7 @@ void GameController::IsLifeLost()
         }
         else
         {
-            lifeText->data.SetText("Lifes: " + std::to_string(lifes));
+            RefreshLife();
         }
         ResetPlayer();
         ClearPowerUps();
@@ -296,9 +296,9 @@ void GameController::IsLevelCompleted()
 
 void GameController::ResetLevel()
 {
-    levels[selectedLevel].Load(true);
+    levels[selectedLevel].SetBricksActive(true);
     lifes = 3;
-    lifeText->data.SetText("Lifes: " + std::to_string(lifes));
+    RefreshLife();
 }
 
 void GameController::ResetPlayer()
@@ -308,6 +308,11 @@ void GameController::ResetPlayer()
 
     postProcessData->chaos = false;
     postProcessData->confuse = false;
+}
+
+void GameController::RefreshLife()
+{
+    lifeText->data.SetText("Lifes: " + std::to_string(lifes));
 }
 
 void GameController::SpawnPowerUps(glm::vec2 position)

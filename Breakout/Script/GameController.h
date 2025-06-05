@@ -72,6 +72,7 @@ private:
 
     void ResetLevel();
     void ResetPlayer();
+    void RefreshLife();
 
     void SpawnPowerUps(glm::vec2 position);
     bool IsPowerUpActive(const PowerUpType& type);
