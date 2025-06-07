@@ -1,8 +1,12 @@
 #pragma once
 
+#include "Macro.h"
+
 #include <glm/glm.hpp>
 #include <vector>
+#if USE_IRRKLANG_SOUND_ENGINE
 #include <irrklang/irrKlang.h>
+#endif
 
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
@@ -37,7 +41,9 @@ protected:
     Learning2DEngine::UI::SimpleText2DRenderComponent* winText;
     Learning2DEngine::UI::SimpleText2DRenderComponent* loseText;
     Learning2DEngine::UI::SimpleText2DRenderComponent* endText;
+#if USE_IRRKLANG_SOUND_ENGINE
     irrklang::ISoundEngine* soundEngine;
+#endif
 
     GameController(Learning2DEngine::System::GameObject* gameObject);
 

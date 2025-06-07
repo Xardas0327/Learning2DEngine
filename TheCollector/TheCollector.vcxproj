@@ -173,6 +173,7 @@
     <ClInclude Include="CoinController.h" />
     <ClInclude Include="IDetectorCustomer.h" />
     <ClInclude Include="GameController.h" />
+    <ClInclude Include="Macro.h" />
     <ClInclude Include="MovingPlatformController.h" />
     <ClInclude Include="PlatformController.h" />
     <ClInclude Include="PlayerController.h" />
