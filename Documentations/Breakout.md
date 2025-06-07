@@ -12,7 +12,7 @@ Breakout © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https://creativ
 _Note: In the past, it was under the CC BY-NC 4.0, but it has changed from v1.7.0._
 
 For sounds, there is the irrKlang, which I use it with
-its non pro licence, which is [here](https://www.ambiera.com/irrklang/license.html).  
+its non pro license, which is [here](https://www.ambiera.com/irrklang/license.html).  
 _Note: It is removeable from the code, if the USE_IRRKLANG_SOUND_ENGINE macro define as 0 and not 1._  
 _But the irrKlang references have to be removed manually from the VC++ Directories, Linker and Post-Build Event._
 
