@@ -6,7 +6,7 @@ Maybe today, there is not any code line, but this Engine was created
 from a [Breakout Tutorial](https://learnopengl.com/In-Practice/2D-Game/Breakout).  
 The code owner is Joey de Vries, who has the
 [learnopengl.com](https://learnopengl.com/) webpage too.
-Its [License](https://learnopengl.com/About).
+Its [License](https://learnopengl.com/code_viewer_gh.php?code=src/7.in_practice/3.2d_game/0.full_source/progress/2.program.cpp).
 
 ## Concept
 The concept was, that the Engine will be generic for making any 2D games.
@@ -66,7 +66,8 @@ it will be still rendered before the LateRender component.
 destroyed immediately. So, every reference pointers will be fine until end of the frame.
 
 ## License
-Learning2DEngine © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
+Learning2DEngine © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  
+_Note: In the past, it was under the CC BY-NC 4.0, but it has changed from v1.7.0._
 
 ## Properties
 - Configuration Type:  

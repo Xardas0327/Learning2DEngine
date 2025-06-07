@@ -15,14 +15,19 @@ using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::Object;
 using namespace Learning2DEngine::UI;
+#if USE_IRRKLANG_SOUND_ENGINE
 using namespace irrklang;
+#endif
 
 GameController::GameController(Learning2DEngine::System::GameObject* gameObject)
     : UpdaterComponent(gameObject), Component(gameObject),
     coins(), movingPlatforms(), playerController(nullptr), gameStatus(GameStatus::Menu),
     fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24), playerCoinEventItem(this), currentPlayTime(0),
     scoreText(nullptr), playTimeText(nullptr), description1Text(nullptr), description2Text(nullptr),
-    startText(nullptr), winText(nullptr), loseText(nullptr), endText(nullptr), soundEngine(nullptr)
+    startText(nullptr), winText(nullptr), loseText(nullptr), endText(nullptr)
+#if USE_IRRKLANG_SOUND_ENGINE
+    , soundEngine(nullptr)
+#endif
 {
 
 }
@@ -37,16 +42,22 @@ void GameController::Init()
     InitEnvironment();
     InitTexts();
 
+#if USE_IRRKLANG_SOUND_ENGINE
     // Sounds
     soundEngine = createIrrKlangDevice();
 
     // I have to load a sound, because it gets stuck a bit on the first sound.
     ISound* sound = soundEngine->play2D("Assets/Sounds/jump.wav", false, false, true);
     if (sound) sound->stop();
+#endif
 
     //Player
     auto player = gameObjectManager.CreateGameObject(Transform(PLAYER_START_POSITION));
-    playerController = player->AddComponent<PlayerController>(soundEngine);
+    playerController = player->AddComponent<PlayerController>(
+#if USE_IRRKLANG_SOUND_ENGINE
+        soundEngine
+#endif
+    );
     playerController->coinCollected.Add(&playerCoinEventItem);
     playerController->rigidbody->isFrozen = true;
 
@@ -60,7 +71,9 @@ void GameController::Init()
 void GameController::Destroy()
 {
     playerController->coinCollected.Remove(&playerCoinEventItem);
+#if USE_IRRKLANG_SOUND_ENGINE
     soundEngine->drop();
+#endif
     UpdaterComponent::Destroy();
 }
 

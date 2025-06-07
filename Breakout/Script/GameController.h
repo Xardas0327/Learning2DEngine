@@ -1,7 +1,11 @@
 #pragma once
 
+#include "Macro.h"
+
 #include <glm/glm.hpp>
+#if USE_IRRKLANG_SOUND_ENGINE
 #include <irrklang/irrKlang.h>
+#endif
 
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
@@ -40,7 +44,9 @@ class GameController final : public Learning2DEngine::System::UpdaterComponent,
 private:
     const Learning2DEngine::UI::FontSizePair fontSizePair;
     PostProcessData* postProcessData;
+#if USE_IRRKLANG_SOUND_ENGINE
     irrklang::ISoundEngine* soundEngine;
+#endif
 
     GameState state;
     std::vector<PowerUpController*> powerUps;

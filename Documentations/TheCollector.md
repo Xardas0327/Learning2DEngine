@@ -6,10 +6,13 @@ You can play with the collector and get the chance to collect all coins in time.
 ![The Collector Game](Images/thecollector.png)
 
 ## License:
-The Collector © 2025 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
+The Collector © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  
+_Note: In the past, it was under the CC BY-NC 4.0, but it has changed from v1.7.0._
 
 For sounds, there is the irrKlang, which I use it with
-its non pro licence, which is [here](https://www.ambiera.com/irrklang/license.html).
+its non pro licence, which is [here](https://www.ambiera.com/irrklang/license.html).  
+_Note: It is removeable from the code, if the USE_IRRKLANG_SOUND_ENGINE macro define as 0 and not 1._  
+_But we have to remove manually the irrKlang.lib from the linker._
 
 ## Control
 - Start: Press Enter
