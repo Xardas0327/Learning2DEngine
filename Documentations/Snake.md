@@ -16,7 +16,7 @@ _Note: In the past, it was under the CC BY-NC 4.0, but it has changed from v1.7.
 - Character control: WASD or Arrows
 
 ## Assets:
-- arial.ttf: It came from the Windows.  You can also find it in your Windows OS.
+- arial.ttf: It came from the Windows. You can also find it in your Windows OS.
 - Unit.png: it is a simple image, which I created with Paint.
 
 ## Properties:

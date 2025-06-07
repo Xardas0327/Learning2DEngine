@@ -12,7 +12,7 @@ _Note: In the past, it was under the CC BY-NC 4.0, but it has changed from v1.7.
 For sounds, there is the irrKlang, which I use it with
 its non pro licence, which is [here](https://www.ambiera.com/irrklang/license.html).  
 _Note: It is removeable from the code, if the USE_IRRKLANG_SOUND_ENGINE macro define as 0 and not 1._  
-_But we have to remove manually the irrKlang.lib from the linker._
+_But the irrKlang references have to be removed manually from the VC++ Directories, Linker and Post-Build Event._
 
 ## Control
 - Start: Press Enter
