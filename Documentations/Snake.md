@@ -7,7 +7,8 @@ It is just a simple snake game, where the edge of the screen also kill your snak
 ![Snake Game](Images/snake.png)
 
 ## License:
-Snake © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
+Snake © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  
+_Note: In the past, it was under the CC BY-NC 4.0, but it has changed from version 1.7._
 
 ## Control
 - Start: Press Enter

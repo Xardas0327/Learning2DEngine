@@ -6,7 +6,8 @@ You can play with the collector and get the chance to collect all coins in time.
 ![The Collector Game](Images/thecollector.png)
 
 ## License:
-The Collector © 2025 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
+The Collector © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  
+_Note: In the past, it was under the CC BY-NC 4.0, but it has changed from version 1.7._
 
 For sounds, there is the irrKlang, which I use it with
 its non pro licence, which is [here](https://www.ambiera.com/irrklang/license.html).

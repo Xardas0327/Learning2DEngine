@@ -20,13 +20,14 @@ Maybe today, there is not any code line, which came from that project.
 But everything was started from [here](https://learnopengl.com/In-Practice/2D-Game/Breakout).  
 The code owner is Joey de Vries, who has the
 [learnopengl.com](https://learnopengl.com/) webpage too.
-Its [License](https://learnopengl.com/About).
+Its [License](https://learnopengl.com/code_viewer_gh.php?code=src/7.in_practice/3.2d_game/0.full_source/progress/2.program.cpp).
 
 So, if you want to try Learning2DEngine, you can do it.
 But you should check the licenses first. Their licences are in their own documentation.  
 Moreover, if I create a new version, maybe it won't be compatible with the older versions.
 
 ## Requirements:
+- Windows 64-bit (It is tested on Windows 11 only)
 - Visual Studio 2022
 - With "Desktop development with C++" Module
 

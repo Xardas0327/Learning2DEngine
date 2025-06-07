@@ -2,13 +2,14 @@
 
 ## Introduction:
 This is a Breakout game, which Joey de Vries implemented and its tutorial is [here](https://learnopengl.com/In-Practice/2D-Game/Breakout).  
-Its [license](https://learnopengl.com/About).  
+Its [license](https://learnopengl.com/code_viewer_gh.php?code=src/7.in_practice/3.2d_game/0.full_source/progress/2.program.cpp).  
 But I recreated it with my own Engine.  
 
 ![Breakout Game](Images/breakout.png)
 
 ## License:
-Breakout © 2024 by Zsolt Sziráczki is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/?ref=chooser-v1)
+Breakout © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  
+_Note: In the past, it was under the CC BY-NC 4.0, but it has changed from version 1.7._
 
 For sounds, there is the irrKlang, which I use it with
 its non pro licence, which is [here](https://www.ambiera.com/irrklang/license.html).
