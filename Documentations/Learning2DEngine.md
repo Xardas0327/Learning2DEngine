@@ -67,7 +67,7 @@ destroyed immediately. So, every reference pointers will be fine until end of th
 
 ## License
 Learning2DEngine © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  
-_Note: In the past, it was under the CC BY-NC 4.0, but it has changed from version 1.7._
+_Note: In the past, it was under the CC BY-NC 4.0, but it has changed from v1.7.0._
 
 ## Properties
 - Configuration Type:  
