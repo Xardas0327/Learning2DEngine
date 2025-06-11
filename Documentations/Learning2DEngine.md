@@ -1,7 +1,7 @@
 # Learning2DEngine
 
 ## Introduction
-This is a 2D Game Engine/Library, which I created for game development and learning.
+This is a 2D Game Engine, which I created for game development and learning.
 Maybe today, there is not any code line, but this Engine was created
 from a [Breakout Tutorial](https://learnopengl.com/In-Practice/2D-Game/Breakout).  
 The code owner is Joey de Vries, who has the
