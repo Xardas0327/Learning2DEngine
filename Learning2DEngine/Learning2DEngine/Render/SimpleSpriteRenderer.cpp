@@ -93,6 +93,7 @@ namespace Learning2DEngine
 				auto spriteData = static_cast<SpriteRenderData*>(data);
 
 				shader->SetMatrix4("model", spriteData->component->gameObject->transform.GetModelMatrix());
+				shader->SetInteger("useView", spriteData->isUseCameraView ? GL_TRUE : GL_FALSE);
 				shader->SetVector4f("spriteColor", spriteData->color);
 				shader->SetInteger("isUseTexture", spriteData->IsUseTexture());
 

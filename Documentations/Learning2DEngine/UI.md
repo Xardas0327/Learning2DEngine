@@ -353,7 +353,7 @@ std::map<char, std::vector<glm::mat4>> characterVertices;
 glm::vec4 color;
 ```
 
-**isUseCameraView**
+**isUseCameraView**  
 It shows, that the text should be rendered with camera view matrix or not.
 ```cpp
 bool isUseCameraView;
