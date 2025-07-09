@@ -81,7 +81,6 @@ namespace Learning2DEngine
 			shader->SetInteger("characterTexture", 0);
 			shader->SetMatrix4("projection", Game::mainCamera.GetProjection());
 			shader->SetMatrix4("cameraView", Game::mainCamera.GetViewMatrix());
-			shader->SetMatrix4("screenView", glm::mat4(1.0f));
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(vao);

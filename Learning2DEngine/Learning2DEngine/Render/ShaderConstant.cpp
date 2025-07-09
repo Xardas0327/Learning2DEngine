@@ -132,7 +132,6 @@ namespace Learning2DEngine
 			out vec2 TextureCoords;
 
 			uniform mat4 cameraView;
-			uniform mat4 screenView;
 			uniform mat4 projection;
 			uniform bool useCamera;
 
@@ -144,7 +143,7 @@ namespace Learning2DEngine
 				}
 				else
 				{
-					gl_Position = projection * screenView * vec4(position, 0.0, 1.0);
+					gl_Position = projection * vec4(position, 0.0, 1.0);
 				}
 				TextureCoords = textureCoords;
 			})";
