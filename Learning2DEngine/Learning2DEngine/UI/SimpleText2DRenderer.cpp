@@ -80,7 +80,7 @@ namespace Learning2DEngine
 			shader->Use();
 			shader->SetInteger("characterTexture", 0);
 			shader->SetMatrix4("projection", Game::mainCamera.GetProjection());
-			shader->SetMatrix4("cameraView", Game::mainCamera.GetViewMatrix());
+			shader->SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(vao);
@@ -90,7 +90,7 @@ namespace Learning2DEngine
 				auto textData = static_cast<Text2DRenderData*>(data);
 
 				shader->SetVector4f("characterColor", textData->color);
-				shader->SetInteger("useCamera", textData->isUseCameraView ? GL_TRUE : GL_FALSE);
+				shader->SetInteger("useView", textData->isUseCameraView ? GL_TRUE : GL_FALSE);
 
 				textCharacterSet.Load(textData->GetFontSizePair());
 				CharacterMap& characterMap = textCharacterSet[textData->GetFontSizePair()];
