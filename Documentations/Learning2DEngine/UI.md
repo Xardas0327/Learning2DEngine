@@ -353,6 +353,12 @@ std::map<char, std::vector<glm::mat4>> characterVertices;
 glm::vec4 color;
 ```
 
+**isUseCameraView**
+It shows, that the text should be rendered with camera view matrix or not.
+```cpp
+bool isUseCameraView;
+```
+
 ### Functions:
 **Public:**  
 **Text2DRenderData**
@@ -361,6 +367,9 @@ Text2DRenderData(const System::Component* component, const FontSizePair& fontSiz
 ```
 ```cpp
 Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, const std::string& text, glm::vec4 color = glm::vec4(1.0f));
+```
+```cpp
+Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, const std::string& text, bool isUseCameraView, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 **GetRotationMatrix**
