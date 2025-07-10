@@ -24,10 +24,11 @@ namespace Learning2DEngine
 
 		public:
 			ParticleSystemSettings systemSettings;
+			bool isUseCameraView;
 
-			ParticleRenderData(const System::Component* component, size_t particleAmount, size_t minAllocateSize = 0)
+			ParticleRenderData(const System::Component* component, size_t particleAmount, bool isUseCameraView = true, size_t minAllocateSize = 0)
 				: RenderData(component), minAllocateSize(minAllocateSize), particleAmount(particleAmount), isRenderable(false),
-				particles(nullptr), systemSettings(), Texture2DContainer()
+				particles(nullptr), systemSettings(), isUseCameraView(isUseCameraView), Texture2DContainer()
 			{
 				particles = new Particle[particleAmount];
 			}
@@ -37,9 +38,10 @@ namespace Learning2DEngine
 				size_t particleAmount,
 				const ParticleSystemSettings& systemSettings,
 				const Render::Texture2D& texture,
+				bool isUseCameraView = true,
 				size_t minAllocateSize = 0)
 				: RenderData(component), minAllocateSize(minAllocateSize), particleAmount(particleAmount), isRenderable(false),
-				particles(nullptr), systemSettings(systemSettings), Texture2DContainer(texture)
+				particles(nullptr), systemSettings(systemSettings), isUseCameraView(isUseCameraView), Texture2DContainer(texture)
 			{
 				particles = new Particle[particleAmount];
 			}

@@ -60,6 +60,7 @@ void BallController::InitParticleSystem()
         ResourceManager::GetInstance().GetTexture(particleTextureId),
         ballParticleSystemSettings,
         new BallParticleSettings(glm::vec2(radius / 2.0f), glm::vec2(10.0f, 10.0f), 0.3f, 0.1f),
+        true,
         300,
         -1
     );

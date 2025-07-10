@@ -354,7 +354,8 @@ glm::vec4 color;
 ```
 
 **isUseCameraView**  
-It shows, that the text should be rendered with camera view matrix or not.
+It shows, that the text should be rendered with camera view matrix or not.  
+Note: default value is false.
 ```cpp
 bool isUseCameraView;
 ```

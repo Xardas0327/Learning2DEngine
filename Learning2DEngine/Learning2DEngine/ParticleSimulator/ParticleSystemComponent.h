@@ -33,6 +33,7 @@ namespace Learning2DEngine
 				Render::RendererMode mode,
 				unsigned int particleAmount,
 				ParticleSettings* particleSettings = nullptr,
+				bool isUseCameraView = true,
 				unsigned int minAllocateSize = 0,
 				int renderLayer = 0);
 			ParticleSystemComponent(
@@ -42,6 +43,7 @@ namespace Learning2DEngine
 				const Render::Texture2D& texture,
 				const ParticleSystemSettings& systemSettings,
 				ParticleSettings* particleSettings = nullptr,
+				bool isUseCameraView = true,
 				unsigned int minAllocateSize = 0,
 				int renderLayer = 0);
 

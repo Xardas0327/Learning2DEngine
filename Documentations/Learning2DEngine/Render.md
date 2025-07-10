@@ -1626,7 +1626,8 @@ glm::vec4 color;
 ```
 
 **isUseCameraView**  
-It shows, that the sprite should be rendered with camera view matrix or not.
+It shows, that the sprite should be rendered with camera view matrix or not.  
+Note: default value is true.
 ```cpp
 bool isUseCameraView;
 ```
