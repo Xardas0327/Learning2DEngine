@@ -71,9 +71,9 @@ class MultiText2DRenderer : public Render::BaseMultiRenderer<Text2DDynamicData>,
 **textRenderData**  
 The first int is the layer. 
 The map key is a GLuint, which a character texture id, and the value is a vector of array,
-which contains the position, the texture coordinates and the color..
+which contains the position, the texture coordinates, the color and isUseCameraView.
 ```cpp
-std::map<int, std::map<GLuint, std::vector<std::array<float, 32>>>> textRenderData;
+std::map<int, std::map<GLuint, std::vector<std::array<float, 33>>>> textRenderData;
 ```
 
 ### Functions:
@@ -292,7 +292,8 @@ void DestroyRenderer() override;
 
 ### Description:
 It contains the dynamic data of the `MultiText2DRenderer`.  
-Note: the textureId is float, because we sent it to vertex shader, but it will be converted to int.
+Note: the textureId and the isUseCameraView are float, because we sent it to vertex shader,
+but textureId will be converted to int and the isUseCameraView will be converted to bool.
 
 ### Header:
 ```cpp
@@ -302,6 +303,7 @@ struct Text2DDynamicData
 	float textCoord[2];
 	float color[4];
 	float textureId;
+	float isUseCameraView;
 };
 ```
 
@@ -353,6 +355,13 @@ std::map<char, std::vector<glm::mat4>> characterVertices;
 glm::vec4 color;
 ```
 
+**isUseCameraView**  
+It shows, that the text should be rendered with camera view matrix or not.  
+Note: default value is false.
+```cpp
+bool isUseCameraView;
+```
+
 ### Functions:
 **Public:**  
 **Text2DRenderData**
@@ -361,6 +370,9 @@ Text2DRenderData(const System::Component* component, const FontSizePair& fontSiz
 ```
 ```cpp
 Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, const std::string& text, glm::vec4 color = glm::vec4(1.0f));
+```
+```cpp
+Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, const std::string& text, bool isUseCameraView, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 **GetRotationMatrix**

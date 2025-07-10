@@ -10,7 +10,7 @@ namespace Learning2DEngine
     {
         Text2DRenderData::Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, glm::vec4 color)
             : RenderData(component), fontSizePair(fontSizePair), text(""), isModified(true),
-            previousModelMatrix(), characterVertices(), color(color)
+            previousModelMatrix(), characterVertices(), color(color), isUseCameraView(false)
         {
         }
 
@@ -21,9 +21,22 @@ namespace Learning2DEngine
             glm::vec4 color
         )
             : RenderData(component), fontSizePair(fontSizePair), text(text), isModified(true),
-            previousModelMatrix(), characterVertices(), color(color)
+            previousModelMatrix(), characterVertices(), color(color), isUseCameraView(false)
         {
         }
+
+        Text2DRenderData::Text2DRenderData(
+            const System::Component* component,
+            const FontSizePair& fontSizePair,
+            const std::string& text,
+            bool isUseCameraView,
+            glm::vec4 color
+        )
+            : RenderData(component), fontSizePair(fontSizePair), text(text), isModified(true),
+            previousModelMatrix(), characterVertices(), color(color), isUseCameraView(isUseCameraView)
+        {
+        }
+
 
         glm::mat2 Text2DRenderData::GetRotationMatrix() const
         {
@@ -86,7 +99,7 @@ namespace Learning2DEngine
                     v3.x, v3.y, 0.0f, 0.0f,
                     v4.x, v4.y, 0.0f, 1.0f
                 ));
-                
+
                 // Calculate next character position
                 startPosition += rotationMatrix *
                     glm::vec2(

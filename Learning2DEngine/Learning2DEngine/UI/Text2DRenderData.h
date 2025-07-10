@@ -25,6 +25,7 @@ namespace Learning2DEngine
             std::map<char, std::vector<glm::mat4>> CalculateCharacterVertices() const;
         public:
             glm::vec4 color;
+            bool isUseCameraView;
 
             Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, glm::vec4 color = glm::vec4(1.0f));
 
@@ -32,6 +33,13 @@ namespace Learning2DEngine
                 const System::Component* component,
                 const FontSizePair& fontSizePair,
                 const std::string& text,
+                glm::vec4 color = glm::vec4(1.0f));
+
+            Text2DRenderData(
+                const System::Component* component,
+                const FontSizePair& fontSizePair,
+                const std::string& text,
+                bool isUseCameraView,
                 glm::vec4 color = glm::vec4(1.0f));
 
             glm::mat2 GetRotationMatrix() const;

@@ -10,6 +10,7 @@ namespace Learning2DEngine
 			float textCoord[2];
 			float color[4];
 			float textureId;
+			float isUseCameraView;
 		};
 	}
 }

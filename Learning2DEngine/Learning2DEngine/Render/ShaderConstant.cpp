@@ -24,10 +24,18 @@ namespace Learning2DEngine
 			uniform mat4 model;
 			uniform mat4 view;
 			uniform mat4 projection;
+			uniform bool useView;
 
 			void main()
 			{
-				gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
+				if (useView)
+				{
+					gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
+				}
+				else
+				{
+					gl_Position = projection * model * vec4(position, 0.0, 1.0);
+				}
 				TextureCoords = textureCoords;
 			})";
 
@@ -71,6 +79,7 @@ namespace Learning2DEngine
 			layout(location = 2) in mat4 model;
 			layout(location = 6) in vec4 spriteColor;
 			layout(location = 7) in float spriteTextureId;
+			layout(location = 8) in float useView;
 
 			out vec2 TextureCoords;
 			out vec4 SpriteColor;
@@ -81,7 +90,14 @@ namespace Learning2DEngine
 
 			void main()
 			{
-				gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
+				if(bool(useView))
+				{
+					gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
+				}
+				else
+				{
+					gl_Position = projection * model * vec4(position, 0.0, 1.0);
+				}
 				TextureCoords = textureCoords;
 				SpriteColor = spriteColor;
 				SpriteTextureId = spriteTextureId;
@@ -131,11 +147,20 @@ namespace Learning2DEngine
 
 			out vec2 TextureCoords;
 
+			uniform mat4 view;
 			uniform mat4 projection;
+			uniform bool useView;
 
 			void main()
 			{
-				gl_Position = projection * vec4(position, 0.0, 1.0);
+				if (useView)
+				{
+					gl_Position = projection * view * vec4(position, 0.0, 1.0);
+				}
+				else
+				{
+					gl_Position = projection * vec4(position, 0.0, 1.0);
+				}
 				TextureCoords = textureCoords;
 			})";
 
@@ -174,16 +199,25 @@ namespace Learning2DEngine
 			layout(location = 1) in vec2 textureCoords;
 			layout(location = 2) in vec4 characterColor;
 			layout(location = 3) in float characterTextureId;
+			layout(location = 4) in float useView;
 
 			out vec2 TextureCoords;
 			out vec4 CharacterColor;
 			out float CharacterTextureId;
 
+			uniform mat4 view;
 			uniform mat4 projection;
 
 			void main()
 			{
-				gl_Position = projection * vec4(position, 0.0, 1.0);
+				if(bool(useView))
+				{
+					gl_Position = projection * view * vec4(position, 0.0, 1.0);
+				}
+				else
+				{
+					gl_Position = projection * vec4(position, 0.0, 1.0);
+				}
 				TextureCoords = textureCoords;
 				CharacterColor = characterColor;
 				CharacterTextureId = characterTextureId;

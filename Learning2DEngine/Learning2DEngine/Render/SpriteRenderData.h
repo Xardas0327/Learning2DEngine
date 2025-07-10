@@ -14,14 +14,25 @@ namespace Learning2DEngine
 		{
 		public:
 			glm::vec4 color;
+			bool isUseCameraView;
 
 			SpriteRenderData(const System::Component* component, glm::vec4 color = glm::vec4(1.0f))
-				: RenderData(component), color(color), Texture2DContainer()
+				: RenderData(component), color(color), isUseCameraView(true), Texture2DContainer()
+			{
+			}
+
+			SpriteRenderData(const System::Component* component, bool isUseCameraView, glm::vec4 color = glm::vec4(1.0f))
+				: RenderData(component), color(color), isUseCameraView(isUseCameraView), Texture2DContainer()
 			{
 			}
 
 			SpriteRenderData(const System::Component* component, const Texture2D& texture, glm::vec4 color = glm::vec4(1.0f))
-				: RenderData(component), color(color), Texture2DContainer(texture)
+				: RenderData(component), color(color), isUseCameraView(true), Texture2DContainer(texture)
+			{
+			}
+
+			SpriteRenderData(const System::Component* component, const Texture2D& texture, bool isUseCameraView, glm::vec4 color = glm::vec4(1.0f))
+				: RenderData(component), color(color), isUseCameraView(isUseCameraView), Texture2DContainer(texture)
 			{
 			}
 		};

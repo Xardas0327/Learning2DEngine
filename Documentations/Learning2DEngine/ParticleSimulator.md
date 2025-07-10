@@ -155,14 +155,20 @@ Particle* particles;
 ParticleSystemSettings systemSettings;
 ```
 
+**isUseCameraView**  
+It shows, that the sprite should be rendered with camera view matrix or not.
+```cpp
+bool isUseCameraView;
+```
+
 ### Functions:
 **Public:**  
 **ParticleRenderData**  
 ```cpp
-ParticleRenderData(const System::Component* component, size_t particleAmount, size_t minAllocateSize = 0);
+ParticleRenderData(const System::Component* component, size_t particleAmount, bool isUseCameraView = true, size_t minAllocateSize = 0);
 ```
 ```cpp
-ParticleRenderData(const System::Component* component, size_t particleAmount, const ParticleSystemSettings& systemSettings, const Render::Texture2D& texture, size_t minAllocateSize = 0)
+ParticleRenderData(const System::Component* component, size_t particleAmount, const ParticleSystemSettings& systemSettings, const Render::Texture2D& texture, bool isUseCameraView = true, size_t minAllocateSize = 0)
 ```
 
 **~ParticleRenderData**  
@@ -362,10 +368,10 @@ static const std::string id;
 **Private:**  
 **ParticleSystemComponent**  
 ```cpp
-ParticleSystemComponent(System::GameObject* gameObject, Render::RendererMode mode, unsigned int particleAmount, ParticleSettings* particleSettings = nullptr, unsigned int minAllocateSize = 0, int renderLayer = 0);
+ParticleSystemComponent(System::GameObject* gameObject, Render::RendererMode mode, unsigned int particleAmount, ParticleSettings* particleSettings = nullptr, bool isUseCameraView = true, unsigned int minAllocateSize = 0, int renderLayer = 0);
 ```
 ```cpp
-ParticleSystemComponent(System::GameObject* gameObject, Render::RendererMode mode, unsigned int particleAmount, const Render::Texture2D& texture, const ParticleSystemSettings& systemSettings, ParticleSettings* particleSettings = nullptr, unsigned int minAllocateSize = 0, int renderLayer = 0);
+ParticleSystemComponent(System::GameObject* gameObject, Render::RendererMode mode, unsigned int particleAmount, const Render::Texture2D& texture, const ParticleSystemSettings& systemSettings, ParticleSettings* particleSettings = nullptr, bool isUseCameraView = true, unsigned int minAllocateSize = 0, int renderLayer = 0);
 ```
 
 **Init**  

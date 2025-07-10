@@ -426,13 +426,15 @@ inline unsigned int GetSampleNumber();
 
 ### Description:
 It contains the dynamic data of the `MultiSpriteRenderer`.  
-Note: the textureId is float, because we sent it to vertex shader, but it will be converted to int.
+Note: the textureId and the isUseCameraView are float, because we sent it to vertex shader,
+but textureId will be converted to int and the isUseCameraView will be converted to bool.
 
 ### Header:
 ```cpp
 struct MultiSpriteDynamicData : public BaseColorDynamicData
 {
     float textureId;
+    float isUseCameraView;
 };
 ```
 
@@ -1623,6 +1625,13 @@ class SpriteRenderData : public RenderData, public Texture2DContainer
 glm::vec4 color;
 ```
 
+**isUseCameraView**  
+It shows, that the sprite should be rendered with camera view matrix or not.  
+Note: default value is true.
+```cpp
+bool isUseCameraView;
+```
+
 ### Functions:
 **Public:**  
 **SpriteRenderData**
@@ -1630,7 +1639,13 @@ glm::vec4 color;
 SpriteRenderData(const System::Component* component, glm::vec4 color = glm::vec4(1.0f));
 ```
 ```cpp
+SpriteRenderData(const System::Component* component, bool isUseCameraView, glm::vec4 color = glm::vec4(1.0f));
+```
+```cpp
 SpriteRenderData(const System::Component* component, const Texture2D& texture, glm::vec4 color = glm::vec4(1.0f));
+```
+```cpp
+SpriteRenderData(const System::Component* component, const Texture2D& texture, bool isUseCameraView, glm::vec4 color = glm::vec4(1.0f));
 ```
 
 ##
