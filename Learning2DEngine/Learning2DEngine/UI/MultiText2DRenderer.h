@@ -21,8 +21,8 @@ namespace Learning2DEngine
 		private:
 			//The int is the layer  
 			//The map key is a GLuint, which a character texture id, and the value is a vector of array,
-			//which contains the position, the texture coordinates and the color.
-			std::map<int, std::map<GLuint, std::vector<std::array<float, 32>>>> textRenderData;
+			//which contains the position, the texture coordinates, the color and isUseCameraView.
+			std::map<int, std::map<GLuint, std::vector<std::array<float, 33>>>> textRenderData;
 
 			MultiText2DRenderer();
 

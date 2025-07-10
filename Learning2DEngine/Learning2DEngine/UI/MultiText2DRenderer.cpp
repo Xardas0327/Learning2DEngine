@@ -54,6 +54,8 @@ namespace Learning2DEngine
 			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, color));
 			glEnableVertexAttribArray(3);
 			glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, textureId));
+			glEnableVertexAttribArray(4);
+			glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, isUseCameraView));
 
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -135,7 +137,7 @@ namespace Learning2DEngine
 							for (auto& vertices : chPair.second)
 							{
 								actualLayerData[ch.textureId].emplace_back(
-									std::array<float, 32>{
+									std::array<float, 33>{
 									// vertex 1
 									// position						// texture coordinates			// color
 									vertices[0][0], vertices[0][1], vertices[0][2], vertices[0][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
@@ -144,9 +146,17 @@ namespace Learning2DEngine
 									// vertex 3
 									vertices[2][0], vertices[2][1], vertices[2][2], vertices[2][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
 									// vertex 4
-									vertices[3][0], vertices[3][1], vertices[3][2], vertices[3][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a
+									vertices[3][0], vertices[3][1], vertices[3][2], vertices[3][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+									//Use camera view
+									static_cast<float>(textData->isUseCameraView)
 								}
 								);
+
+								if (textData->isUseCameraView)
+								{
+									auto a = static_cast<float>(textData->isUseCameraView);
+									int b = 0;
+								}
 							}
 						}
 					}
@@ -185,6 +195,7 @@ namespace Learning2DEngine
 
 			shader->Use();
 			shader->SetMatrix4("projection", Game::mainCamera.GetProjection());
+			shader->SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(vao);
@@ -202,30 +213,34 @@ namespace Learning2DEngine
 
 				for (auto& character : characterData.second)
 				{
-					float tUnitId = static_cast<float>(textureUnitId);;
+					float tUnitId = static_cast<float>(textureUnitId);
 
 					std::memcpy(&dynamicData[dynamicSize],
 						character.data(),
 						sizeof(float) * 8);
 					dynamicData[dynamicSize].textureId = tUnitId;
+					dynamicData[dynamicSize].isUseCameraView = character[32];
 					++dynamicSize;
 
 					std::memcpy(&dynamicData[dynamicSize],
 						character.data() + 8,
 						sizeof(float) * 8);
 					dynamicData[dynamicSize].textureId = tUnitId;
+					dynamicData[dynamicSize].isUseCameraView = character[32];
 					++dynamicSize;
 
 					std::memcpy(&dynamicData[dynamicSize],
 						character.data() + 16,
 						sizeof(float) * 8);
 					dynamicData[dynamicSize].textureId = tUnitId;
+					dynamicData[dynamicSize].isUseCameraView = character[32];
 					++dynamicSize;
 
 					std::memcpy(&dynamicData[dynamicSize],
 						character.data() + 24,
 						sizeof(float) * 8);
 					dynamicData[dynamicSize].textureId = tUnitId;
+					dynamicData[dynamicSize].isUseCameraView = character[32];
 					++dynamicSize;
 					++objectCount;
 				}
