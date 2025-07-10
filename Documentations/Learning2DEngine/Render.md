@@ -426,13 +426,15 @@ inline unsigned int GetSampleNumber();
 
 ### Description:
 It contains the dynamic data of the `MultiSpriteRenderer`.  
-Note: the textureId is float, because we sent it to vertex shader, but it will be converted to int.
+Note: the textureId and the isUseCameraView are float, because we sent it to vertex shader,
+but textureId will be converted to int and the isUseCameraView will be converted to bool.
 
 ### Header:
 ```cpp
 struct MultiSpriteDynamicData : public BaseColorDynamicData
 {
     float textureId;
+    float isUseCameraView;
 };
 ```
 

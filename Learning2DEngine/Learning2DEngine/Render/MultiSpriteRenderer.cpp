@@ -92,6 +92,10 @@ namespace Learning2DEngine
 			glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
 				(void*)offsetof(MultiSpriteDynamicData, textureId));
+			glEnableVertexAttribArray(8);
+			glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)offsetof(MultiSpriteDynamicData, isUseCameraView));
 
 			glVertexAttribDivisor(2, 1);
 			glVertexAttribDivisor(3, 1);
@@ -202,6 +206,8 @@ namespace Learning2DEngine
 					dynamicData[dynamicDataCount].textureId = data.second[i]->IsUseTexture()
 						? textureUnitCount - 1 //because it is incremented before
 						: -1.0f;
+
+					dynamicData[dynamicDataCount].isUseCameraView = static_cast<float>(data.second[i]->isUseCameraView);
 
 					++dynamicDataCount;
 				}

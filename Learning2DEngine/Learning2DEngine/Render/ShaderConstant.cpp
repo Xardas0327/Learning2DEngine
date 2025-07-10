@@ -79,6 +79,7 @@ namespace Learning2DEngine
 			layout(location = 2) in mat4 model;
 			layout(location = 6) in vec4 spriteColor;
 			layout(location = 7) in float spriteTextureId;
+			layout(location = 8) in float useViewFloat;
 
 			out vec2 TextureCoords;
 			out vec4 SpriteColor;
@@ -89,7 +90,14 @@ namespace Learning2DEngine
 
 			void main()
 			{
-				gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
+				if(bool(useViewFloat))
+				{
+					gl_Position = projection * view * model * vec4(position, 0.0, 1.0);
+				}
+				else
+				{
+					gl_Position = projection * model * vec4(position, 0.0, 1.0);
+				}
 				TextureCoords = textureCoords;
 				SpriteColor = spriteColor;
 				SpriteTextureId = spriteTextureId;
