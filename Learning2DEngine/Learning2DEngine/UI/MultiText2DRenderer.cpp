@@ -149,14 +149,7 @@ namespace Learning2DEngine
 									vertices[3][0], vertices[3][1], vertices[3][2], vertices[3][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
 									//Use camera view
 									static_cast<float>(textData->isUseCameraView)
-								}
-								);
-
-								if (textData->isUseCameraView)
-								{
-									auto a = static_cast<float>(textData->isUseCameraView);
-									int b = 0;
-								}
+								});
 							}
 						}
 					}
