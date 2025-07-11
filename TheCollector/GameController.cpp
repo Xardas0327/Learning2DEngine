@@ -24,7 +24,7 @@ GameController::GameController(Learning2DEngine::System::GameObject* gameObject)
     coins(), movingPlatforms(), playerController(nullptr), gameStatus(GameStatus::Menu),
     fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24), playerCoinEventItem(this), currentPlayTime(0),
     scoreText(nullptr), playTimeText(nullptr), description1Text(nullptr), description2Text(nullptr),
-    startText(nullptr), winText(nullptr), loseText(nullptr), endText(nullptr)
+    startText(nullptr), winText(nullptr), loseText(nullptr), endText(nullptr), descriptionBox(nullptr), endBox(nullptr)
 #if USE_IRRKLANG_SOUND_ENGINE
     , soundEngine(nullptr)
 #endif
@@ -182,6 +182,7 @@ void GameController::InitTexts()
     auto resolution = RenderManager::GetInstance().GetResolution();
     auto& gameObjectManager = GameObjectManager::GetInstance();
 
+    //Score
     auto scoreGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(5.0f, 5.0f)
@@ -189,12 +190,26 @@ void GameController::InitTexts()
     );
     scoreText = scoreGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
 
+    //Play time
     auto playTimeGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(200.0f, 5.0f)
         )
     );
     playTimeText = playTimeGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
+
+    //Description
+    auto descriptionBoxGameObejct = gameObjectManager.CreateGameObject(
+        Transform(
+            glm::vec2(180.0f, 280.0f), glm::vec2(910.0f, 160.0f)
+        )
+    );
+    descriptionBox = descriptionBoxGameObejct->AddComponent<SimpleSpriteRenderComponent>(
+        RendererMode::LATERENDER,
+        -1,
+        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
+    );
+    descriptionBox->data.isUseCameraView = false;
 
     auto description1GameObject = gameObjectManager.CreateGameObject(
         Transform(
@@ -218,9 +233,23 @@ void GameController::InitTexts()
         "You can move with A and D and jump with SPACE."
     );
 
+    // End box
+    auto endBoxGameObejct = gameObjectManager.CreateGameObject(
+        Transform(
+            glm::vec2(425.0f, 280.0f), glm::vec2(435.0f, 160.0f)
+        )
+    );
+    endBox = endBoxGameObejct->AddComponent<SimpleSpriteRenderComponent>(
+        RendererMode::LATERENDER,
+        -1,
+        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
+    );
+    endBox->data.isUseCameraView = false;
+
+    // Start text
     auto startGameObject = gameObjectManager.CreateGameObject(
         Transform(
-            glm::vec2(resolution.GetWidth() / 2 -150, 400.0f),
+            glm::vec2(resolution.GetWidth() / 2 - 150, 400.0f),
             glm::vec2(0.75f, 0.75f)
         )
     );
@@ -230,6 +259,7 @@ void GameController::InitTexts()
         "Press ENTER for start."
     );
 
+    // Win text
     auto winGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(resolution.GetWidth() / 2 - 150, 300.0f),
@@ -244,9 +274,10 @@ void GameController::InitTexts()
         glm::vec4(0.08f, 0.43f, 0.185f, 1.0f)
     );
 
+    // Lose text
     auto loseGameObject = gameObjectManager.CreateGameObject(
         Transform(
-            glm::vec2(resolution.GetWidth() / 2 - 150, 300.0f),
+            glm::vec2(resolution.GetWidth() / 2 - 175, 300.0f),
             glm::vec2(2.0f, 2.0f)
         )
     );
@@ -258,9 +289,10 @@ void GameController::InitTexts()
         glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)
     );
 
+    // End text
     auto endGameObject = gameObjectManager.CreateGameObject(
         Transform(
-            glm::vec2(resolution.GetWidth() / 2 - 175, 375.0f),
+            glm::vec2(resolution.GetWidth() / 2 - 200, 375.0f),
             glm::vec2(0.75f, 0.75f)
         )
     );
@@ -282,10 +314,12 @@ void GameController::InitTexts()
 
 void GameController::ShowMenu()
 {
+    descriptionBox->gameObject->isActive = true;
     description1Text->gameObject->isActive = true;
     description2Text->gameObject->isActive = true;
     startText->gameObject->isActive = true;
 
+    endBox->gameObject->isActive = false;
     winText->gameObject->isActive = false;
     loseText->gameObject->isActive = false;
     endText->gameObject->isActive = false;
@@ -311,6 +345,7 @@ void GameController::StartPlay()
 
     RefreshScoreText();
     RefreshPlayTimeText();
+    descriptionBox->gameObject->isActive = false;
     description1Text->gameObject->isActive = false;
     description2Text->gameObject->isActive = false;
     startText->gameObject->isActive = false;
@@ -321,6 +356,7 @@ void GameController::StartPlay()
 void GameController::EndPlay()
 {
     playerController->rigidbody->isFrozen = true;
+    endBox->gameObject->isActive = true;
     endText->gameObject->isActive = true;
 
     if (playerController->coinNumber == coins.size())
