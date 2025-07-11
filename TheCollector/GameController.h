@@ -11,6 +11,7 @@
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
 #include <Learning2DEngine/UI/SimpleText2DRenderComponent.h>
+#include <Learning2DEngine/Render/SimpleSpriteRenderComponent.h>
 
 #include "CoinController.h"
 #include "PlayerController.h"
@@ -41,6 +42,8 @@ protected:
     Learning2DEngine::UI::SimpleText2DRenderComponent* winText;
     Learning2DEngine::UI::SimpleText2DRenderComponent* loseText;
     Learning2DEngine::UI::SimpleText2DRenderComponent* endText;
+    Learning2DEngine::Render::SimpleSpriteRenderComponent* descriptionBox;
+    Learning2DEngine::Render::SimpleSpriteRenderComponent* endBox;
 #if USE_IRRKLANG_SOUND_ENGINE
     irrklang::ISoundEngine* soundEngine;
 #endif
