@@ -132,5 +132,21 @@ namespace Learning2DEngine
 
             return characterVertices;
         }
+        
+        glm::vec2 Text2DRenderData::GetTextLength() const
+        {
+            TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
+            textCharacterSet.Load(fontSizePair);
+            CharacterMap& characterMap = textCharacterSet[fontSizePair];
+
+			glm::vec2 length(0.0f, characterMap['H'].bearing.y * component->gameObject->transform.GetScale().y);
+            for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
+            {
+                const auto& ch = characterMap[*c];
+                length.x += (ch.advance >> 6) * component->gameObject->transform.GetScale().x;
+            }
+
+            return length;
+        }
     }
 }

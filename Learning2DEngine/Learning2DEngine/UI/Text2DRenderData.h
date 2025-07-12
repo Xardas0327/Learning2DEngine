@@ -61,6 +61,8 @@ namespace Learning2DEngine
 
             const std::map<char, std::vector<glm::mat4>>& GetCharacterVertices();
             std::map<char, std::vector<glm::mat4>> GetCharacterVertices() const;
+
+            glm::vec2 GetTextLength() const;
         };
     }
 }
