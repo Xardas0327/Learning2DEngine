@@ -47,10 +47,17 @@ namespace Learning2DEngine
 
 		void TextBoxComponent::LateUpdate()
 		{
+			auto textLength = textRenderData->GetTextLength();
 			renderComponent->data.isUseCameraView = textRenderData->isUseCameraView;
 			renderComponent->gameObject->transform = Transform(
-				textRenderData->component->gameObject->transform.GetPosition(),
-				textRenderData->GetTextLength()
+				glm::vec2(
+					textRenderData->component->gameObject->transform.GetPosition().x - paddingLeft,
+					textRenderData->component->gameObject->transform.GetPosition().y - paddingTop
+				),
+				glm::vec2(
+					textLength.x + paddingLeft + paddingRight,
+					textLength.y + paddingTop + paddingBottom
+				)
 			);
 		}
     }
