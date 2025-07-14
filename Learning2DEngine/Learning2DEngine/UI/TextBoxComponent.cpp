@@ -51,12 +51,12 @@ namespace Learning2DEngine
 			renderComponent->data.isUseCameraView = textRenderData->isUseCameraView;
 			renderComponent->gameObject->transform = Transform(
 				glm::vec2(
-					textRenderData->component->gameObject->transform.GetPosition().x - paddingLeft,
-					textRenderData->component->gameObject->transform.GetPosition().y - paddingTop
+					textRenderData->component->gameObject->transform.GetPosition().x - paddingLeftRight,
+					textRenderData->component->gameObject->transform.GetPosition().y - paddingTopBottom
 				),
 				glm::vec2(
-					textLength.x + paddingLeft + paddingRight,
-					textLength.y + paddingTop + paddingBottom
+					textLength.x + 2.0f * paddingLeftRight,
+					textLength.y + 2.0f * paddingTopBottom
 				),
 				textRenderData->component->gameObject->transform.GetRotation()
 			);

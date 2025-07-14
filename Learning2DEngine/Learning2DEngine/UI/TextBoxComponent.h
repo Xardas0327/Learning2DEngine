@@ -41,18 +41,14 @@ namespace Learning2DEngine
 			void LateUpdate() override;
 
 		public:
-			float paddingTop = 0.0f;
-			float paddingBottom = 0.0f;
-			float paddingLeft = 0.0f;
-			float paddingRight = 0.0f;
+			float paddingTopBottom = 0.0f;
+			float paddingLeftRight= 0.0f;
 
 			//It set the padding for all sides.
 			void SetPadding(float padding)
 			{
-				paddingTop = padding;
-				paddingBottom = padding;
-				paddingLeft = padding;
-				paddingRight = padding;
+				paddingTopBottom = padding;
+				paddingLeftRight = padding;
 			}
 
 			inline int GetLayer() const
