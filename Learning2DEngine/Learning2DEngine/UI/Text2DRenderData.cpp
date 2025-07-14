@@ -40,7 +40,7 @@ namespace Learning2DEngine
 
         glm::mat2 Text2DRenderData::GetRotationMatrix() const
         {
-            float radians = glm::radians(component->gameObject->transform.GetRotation());
+            float radians = -1.0f * glm::radians(component->gameObject->transform.GetRotation());
 
             return glm::mat2(
                 glm::cos(radians), -glm::sin(radians),
@@ -68,8 +68,11 @@ namespace Learning2DEngine
 
         std::map<char, std::vector<glm::mat4>> Text2DRenderData::CalculateCharacterVertices() const
         {
+            glm::vec2 textLength = GetTextLength();
+
             std::map<char, std::vector<glm::mat4>> textMap;
             glm::vec2 startPosition(component->gameObject->transform.GetPosition());
+            glm::vec2 middlePosition = startPosition + glm::vec2(textLength.x / 2.0f, textLength.y / 2);
             glm::mat2 rotationMatrix = GetRotationMatrix();
 
             TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
@@ -88,10 +91,12 @@ namespace Learning2DEngine
                 float chWidth = ch.size.x * component->gameObject->transform.GetScale().x;
                 float chHeight = ch.size.y * component->gameObject->transform.GetScale().y;
 
-                glm::vec2 v1 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY + chHeight));
-                glm::vec2 v2 = startPosition + (rotationMatrix * glm::vec2(chPositionX + chWidth, chPositionY));
-                glm::vec2 v3 = startPosition + (rotationMatrix * glm::vec2(chPositionX, chPositionY));
-                glm::vec2 v4 = startPosition + (rotationMatrix * glm::vec2(chPositionX, chPositionY + chHeight));
+                glm::vec2 relativePoint = (startPosition - middlePosition) + glm::vec2(chPositionX, chPositionY);
+
+                glm::vec2 v1 = middlePosition + rotationMatrix * (relativePoint + glm::vec2(chWidth, chHeight));
+                glm::vec2 v2 = middlePosition + rotationMatrix * (relativePoint + glm::vec2(chWidth, 0.0f));
+                glm::vec2 v3 = middlePosition + rotationMatrix * relativePoint;
+                glm::vec2 v4 = middlePosition + rotationMatrix * (relativePoint + glm::vec2(0.0f, chHeight));
 
                 textMap[*c].push_back(glm::mat4(
                     v1.x, v1.y, 1.0f, 1.0f,
@@ -101,7 +106,7 @@ namespace Learning2DEngine
                 ));
 
                 // Calculate next character position
-                startPosition += rotationMatrix *
+                startPosition +=
                     glm::vec2(
                         // bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
                         (ch.advance >> 6) * component->gameObject->transform.GetScale().x,
@@ -132,14 +137,14 @@ namespace Learning2DEngine
 
             return characterVertices;
         }
-        
+
         glm::vec2 Text2DRenderData::GetTextLength() const
         {
             TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
             textCharacterSet.Load(fontSizePair);
             CharacterMap& characterMap = textCharacterSet[fontSizePair];
 
-			glm::vec2 length(0.0f, characterMap['H'].bearing.y * component->gameObject->transform.GetScale().y);
+            glm::vec2 length(0.0f, characterMap['H'].bearing.y * component->gameObject->transform.GetScale().y);
             for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
             {
                 const auto& ch = characterMap[*c];

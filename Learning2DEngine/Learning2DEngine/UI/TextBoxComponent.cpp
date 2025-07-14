@@ -57,7 +57,8 @@ namespace Learning2DEngine
 				glm::vec2(
 					textLength.x + paddingLeft + paddingRight,
 					textLength.y + paddingTop + paddingBottom
-				)
+				),
+				textRenderData->component->gameObject->transform.GetRotation()
 			);
 		}
     }
