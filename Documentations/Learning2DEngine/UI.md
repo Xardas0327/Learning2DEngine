@@ -583,9 +583,9 @@ The modes of the `TextBoxComponent`.
 ```cpp
 enum class TextBoxMode
 {
-	// The Textbox wil be rendered by the SimpleSpriteRenderComponent.
+	// The Textbox will be rendered by the SimpleSpriteRenderComponent.
 	SIMPLE,
-	// The Textbox wil be rendered by the SpriteRenderComponent.
+	// The Textbox will be rendered by the SpriteRenderComponent.
 	MULTI
 };
 ```
