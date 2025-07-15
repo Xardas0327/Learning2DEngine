@@ -14,7 +14,7 @@ namespace Learning2DEngine
     {
 		/// <summary>
 		/// The TextBoxComponent will create a new GameObject with a SimpleSpriteRenderComponent or with a SpriteRenderComponent.
-		/// The render component will be updated in a LateUpdate(). So, if the text should be updated in a Update() function(s).
+		/// The render component will be updated in a LateUpdate(). So, the text should be updated in a Update() function(s).
 		/// </summary>
 		class TextBoxComponent : public System::LateUpdaterComponent
 		{
