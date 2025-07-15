@@ -18,11 +18,15 @@ namespace Learning2DEngine
         protected:
             FontSizePair fontSizePair;
             std::string text;
-            bool isModified;
+            bool shouldRecalcSize;
+            bool shouldRecalcVertices;
             glm::mat4 previousModelMatrix;
             std::map<char, std::vector<glm::mat4>> characterVertices;
+            glm::vec2 textSize;
 
+            glm::vec2 CalculateTextSize() const;
             std::map<char, std::vector<glm::mat4>> CalculateCharacterVertices() const;
+            glm::mat2 GetRotationMatrix() const;
         public:
             glm::vec4 color;
             bool isUseCameraView;
@@ -42,8 +46,6 @@ namespace Learning2DEngine
                 bool isUseCameraView,
                 glm::vec4 color = glm::vec4(1.0f));
 
-            glm::mat2 GetRotationMatrix() const;
-
             inline const std::string& GetText() const
             {
                 return text;
@@ -62,7 +64,8 @@ namespace Learning2DEngine
             const std::map<char, std::vector<glm::mat4>>& GetCharacterVertices();
             std::map<char, std::vector<glm::mat4>> GetCharacterVertices() const;
 
-            glm::vec2 GetTextLength() const;
+            glm::vec2 GetTextSize();
+            glm::vec2 GetTextSize() const;
         };
     }
 }

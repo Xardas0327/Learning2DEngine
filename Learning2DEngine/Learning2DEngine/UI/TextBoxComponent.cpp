@@ -47,7 +47,7 @@ namespace Learning2DEngine
 
 		void TextBoxComponent::LateUpdate()
 		{
-			auto textLength = textRenderData->GetTextLength();
+			auto textLength = textRenderData->GetTextSize();
 			renderComponent->data.isUseCameraView = textRenderData->isUseCameraView;
 			renderComponent->gameObject->transform = Transform(
 				glm::vec2(
