@@ -422,5 +422,8 @@
     <ClInclude Include="Learning2DEngine\UI\TextBoxComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\UI\TextBoxMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

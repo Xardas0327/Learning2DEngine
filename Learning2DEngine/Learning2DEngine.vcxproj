@@ -298,6 +298,7 @@
     <ClInclude Include="Learning2DEngine\UI\Text2DRenderData.h" />
     <ClInclude Include="Learning2DEngine\UI\MultiText2DRenderer.h" />
     <ClInclude Include="Learning2DEngine\UI\TextBoxComponent.h" />
+    <ClInclude Include="Learning2DEngine\UI\TextBoxMode.h" />
     <ClInclude Include="Learning2DEngine\UI\TextCharacterSet.h" />
     <ClInclude Include="Learning2DEngine\UI\FreeTypeCharacter.h" />
   </ItemGroup>
