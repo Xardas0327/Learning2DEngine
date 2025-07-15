@@ -120,6 +120,9 @@
     <ClCompile Include="Learning2DEngine\UI\Text2DRenderData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Learning2DEngine\UI\TextBoxComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\Render\RenderManager.h">
@@ -414,6 +417,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\RendererMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\UI\TextBoxComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\UI\TextBoxMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
