@@ -13,8 +13,8 @@ namespace Learning2DEngine
     namespace UI
     {
 		/// <summary>
-		/// The TextBoxComponent will create a new GameObject with a SimpleSpriteRenderComponent.
-		/// The SimpleSpriteRenderComponent will be updated in a LateUpdate(). So, if the text should be updated in a Update() function(s).
+		/// The TextBoxComponent will create a new GameObject with a SimpleSpriteRenderComponent or with a SpriteRenderComponent.
+		/// The render component will be updated in a LateUpdate(). So, if the text should be updated in a Update() function(s).
 		/// </summary>
 		class TextBoxComponent : public System::LateUpdaterComponent
 		{
@@ -51,61 +51,11 @@ namespace Learning2DEngine
 			float paddingLeftRight= 0.0f;
 
 			//It set the padding for all sides.
-			void SetPadding(float padding)
-			{
-				paddingTopBottom = padding;
-				paddingLeftRight = padding;
-			}
-
-			inline int GetLayer() const
-			{
-				switch (textBoxMode)
-					{
-					case TextBoxMode::SIMPLE:
-						return simpleRenderComponent->GetLayer();
-					case TextBoxMode::MULTI:
-						return multiRenderComponent->GetLayer();
-				}
-
-				return 0;
-			}
-
-			inline void SetLayer(int layer)
-			{
-				switch (textBoxMode)
-				{
-					case TextBoxMode::SIMPLE:
-						simpleRenderComponent->SetLayer(layer);
-						break;
-					case TextBoxMode::MULTI:
-						multiRenderComponent->SetLayer(layer);
-						break;
-				}
-			}
-
-			inline glm::vec4 GetColor() const
-			{
-				switch (textBoxMode)
-				{
-				case TextBoxMode::SIMPLE:
-					return simpleRenderComponent->data.color;
-				case TextBoxMode::MULTI:
-					return multiRenderComponent->data.color;
-				}
-
-				return glm::vec4(1.0f);
-			}
-
-			inline void SetColor(const glm::vec4& color)
-			{
-				switch (textBoxMode)
-				{
-				case TextBoxMode::SIMPLE:
-					simpleRenderComponent->data.color = color;
-				case TextBoxMode::MULTI:
-					multiRenderComponent->data.color = color;
-				}
-			}
+			void SetPadding(float padding);
+			int GetLayer() const;
+			void SetLayer(int layer);
+			glm::vec4 GetColor() const;
+			void SetColor(const glm::vec4& color);
 		};
     }
 }

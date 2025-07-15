@@ -7,6 +7,8 @@
 - [Text2DRenderComponent](UI.md#text2drendercomponent)
 - [Text2DDynamicData](UI.md#text2ddynamicdata)
 - [Text2DRenderData](UI.md#text2drenderdata)
+- [TextBoxComponent](UI.md#textboxcomponent)
+- [TextBoxMode](UI.md#textboxmode)
 - [TextCharacterSet](UI.md#textcharacterset)
 
 ##
@@ -334,9 +336,14 @@ FontSizePair fontSizePair;
 std::string text;
 ```
 
-**isModified**
+**shouldRecalcSize**
 ```cpp
-bool isModified;
+bool shouldRecalcSize;
+```
+
+**shouldRecalcVertices**
+```cpp
+bool shouldRecalcVertices;
 ```
 
 **previousModelMatrix**
@@ -347,6 +354,11 @@ glm::mat4 previousModelMatrix;
 **characterVertices**
 ```cpp
 std::map<char, std::vector<glm::mat4>> characterVertices;
+```
+
+**textSize**
+```cpp
+glm::vec2 textSize;
 ```
 
 **Public:**  
@@ -363,6 +375,22 @@ bool isUseCameraView;
 ```
 
 ### Functions:
+**Protected:**  
+**CalculateTextSize**
+```cpp
+glm::vec2 CalculateTextSize() const;
+```
+
+**CalculateCharacterVertices**
+```cpp
+std::map<char, std::vector<glm::mat4>> CalculateCharacterVertices() const;
+```
+
+**GetRotationMatrix**
+```cpp
+glm::mat2 GetRotationMatrix() const;
+```
+
 **Public:**  
 **Text2DRenderData**
 ```cpp
@@ -373,11 +401,6 @@ Text2DRenderData(const System::Component* component, const FontSizePair& fontSiz
 ```
 ```cpp
 Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, const std::string& text, bool isUseCameraView, glm::vec4 color = glm::vec4(1.0f));
-```
-
-**GetRotationMatrix**
-```cpp
-glm::mat2 GetRotationMatrix() const;
 ```
 
 **GetText**
@@ -404,8 +427,8 @@ void SetFontSizePair(const FontSizePair& fontSizePair);
 ```
 
 **GetCharacterVertices**  
-If the isModified is true or the previousModelMatrix is not the same as the current modelMatrix,
-the non const version save the new calculated character vertices,
+If the shouldRecalcVertices is true or the previousModelMatrix is not the same as
+the current modelMatrix, the non const version save the new calculated character vertices,
 that's why it will not recalculate the character vertices again.  
 In same situation the const version will always recalculate the character vertices.  
 Note: The previous model matrix is used to track the gameobject's transform has changed or not.
@@ -414,6 +437,157 @@ const std::map<char, std::vector<glm::mat4>>& GetCharacterVertices();
 ```
 ```cpp
 std::map<char, std::vector<glm::mat4>> GetCharacterVertices() const;
+```
+
+**GetTextSize**  
+If the shouldRecalcSize is true the non const version save the new calculated text size,
+that's why it will not recalculate the text size again.  
+In same situation the const version will always recalculate the text size.
+```cpp
+glm::vec2 GetTextSize();
+```
+```cpp
+glm::vec2 GetTextSize() const;
+```
+
+##
+## TextBoxComponent
+### Source Code:
+[TextBoxComponent.h](../../Learning2DEngine/Learning2DEngine/UI/TextBoxComponent.h)  
+[TextBoxComponent.cpp](../../Learning2DEngine/Learning2DEngine/UI/TextBoxComponent.cpp)
+
+### Description:
+A text box component, which can be used to display a text in a box.  
+The `TextBoxComponent` will create a new GameObject with a `SimpleSpriteRenderComponent`
+or with a `SpriteRenderComponent`.  
+The render component will be updated in a LateUpdate().
+So, if the text should be updated in a Update() function(s).
+
+### Header:
+```cpp
+class TextBoxComponent : public System::LateUpdaterComponent
+{...}
+```
+
+### Variables:
+**Protected:**  
+**textRenderData**  
+```cpp
+Text2DRenderData* const textRenderData;
+```
+
+**simpleRenderComponent**  
+This or the multiRenderComponent will be used to render the box.
+```cpp
+Render::SimpleSpriteRenderComponent* simpleRenderComponent;
+```
+
+**multiRenderComponent**  
+This or the simpleRenderComponent will be used to render the box.
+```cpp
+Render::SpriteRenderComponent* multiRenderComponent;
+```
+
+**initLayer**  
+```cpp
+const int initLayer;
+```
+
+**initColor**  
+```cpp
+const glm::vec4 initColor;
+```
+
+**initRendererMode**  
+```cpp
+const Render::RendererMode initRendererMode;
+```
+
+**textBoxMode**  
+```cpp
+const TextBoxMode textBoxMode;
+```
+
+**Public:**  
+**paddingTopBottom**  
+```cpp
+float paddingTopBottom = 0.0f;
+```
+
+**paddingLeftRight**  
+```cpp
+float paddingLeftRight= 0.0f;
+```
+
+### Functions:
+**Protected:**  
+**TextBoxComponent**  
+```cpp
+TextBoxComponent(System::GameObject* gameObject, SimpleText2DRenderComponent& textComponent, TextBoxMode textBoxMode = TextBoxMode::SIMPLE, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+```
+```cpp
+TextBoxComponent(System::GameObject* gameObject, Text2DRenderComponent& textComponent, TextBoxMode textBoxMode = TextBoxMode::SIMPLE, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+```
+
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**LateUpdate**  
+```cpp
+void LateUpdate() override;
+```
+
+**Public:**  
+**SetPadding**  
+It set the padding for all sides.  
+```cpp
+void SetPadding(float padding);
+```
+
+**GetLayer**  
+```cpp
+int GetLayer() const;
+```
+
+**SetLayer**  
+```cpp
+void SetLayer(int layer);
+```
+
+**GetColor**  
+```cpp
+glm::vec4 GetColor() const;
+```
+
+**SetColor**  
+```cpp
+void SetColor(const glm::vec4& color);
+```
+
+##
+## TextBoxMode
+### Source Code:
+[TextBoxMode.h](../../Learning2DEngine/Learning2DEngine/UI/TextBoxMode.h)  
+
+### Description:
+The modes of the `TextBoxComponent`.
+
+### Header:
+```cpp
+enum class TextBoxMode
+{
+	// The Textbox wil be rendered by the SimpleSpriteRenderComponent.
+	SIMPLE,
+	// The Textbox wil be rendered by the SpriteRenderComponent.
+	MULTI
+};
 ```
 
 ##

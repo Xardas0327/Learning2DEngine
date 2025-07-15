@@ -111,5 +111,61 @@ namespace Learning2DEngine
 					break;
 			}
 		}
+
+		void TextBoxComponent::SetPadding(float padding)
+		{
+			paddingTopBottom = padding;
+			paddingLeftRight = padding;
+		}
+
+		int TextBoxComponent::GetLayer() const
+		{
+			switch (textBoxMode)
+			{
+			case TextBoxMode::SIMPLE:
+				return simpleRenderComponent->GetLayer();
+			case TextBoxMode::MULTI:
+				return multiRenderComponent->GetLayer();
+			}
+
+			return 0;
+		}
+
+		void TextBoxComponent::SetLayer(int layer)
+		{
+			switch (textBoxMode)
+			{
+			case TextBoxMode::SIMPLE:
+				simpleRenderComponent->SetLayer(layer);
+				break;
+			case TextBoxMode::MULTI:
+				multiRenderComponent->SetLayer(layer);
+				break;
+			}
+		}
+
+		glm::vec4 TextBoxComponent::GetColor() const
+		{
+			switch (textBoxMode)
+			{
+			case TextBoxMode::SIMPLE:
+				return simpleRenderComponent->data.color;
+			case TextBoxMode::MULTI:
+				return multiRenderComponent->data.color;
+			}
+
+			return glm::vec4(1.0f);
+		}
+
+		void TextBoxComponent::SetColor(const glm::vec4& color)
+		{
+			switch (textBoxMode)
+			{
+			case TextBoxMode::SIMPLE:
+				simpleRenderComponent->data.color = color;
+			case TextBoxMode::MULTI:
+				multiRenderComponent->data.color = color;
+			}
+		}
     }
 }
