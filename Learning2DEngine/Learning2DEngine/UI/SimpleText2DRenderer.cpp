@@ -65,14 +65,16 @@ namespace Learning2DEngine
 			textRenderData.clear();
 		}
 
-		void SimpleText2DRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
+		void SimpleText2DRenderer::SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData)
 		{
 			textRenderData = renderData;
 		}
 
-		void SimpleText2DRenderer::Draw(int layer)
+		void SimpleText2DRenderer::Draw(RendererMode rendererMode, int layer)
 		{
-			if (textRenderData.find(layer) == textRenderData.end())
+			if (textRenderData.find(rendererMode) == textRenderData.end())
+				return;
+			if (textRenderData[rendererMode].find(layer) == textRenderData[rendererMode].end())
 				return;
 
 			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
@@ -85,7 +87,7 @@ namespace Learning2DEngine
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(vao);
 
-			for (auto& data : textRenderData[layer])
+			for (auto& data : textRenderData[rendererMode][layer])
 			{
 				auto textData = static_cast<Text2DRenderData*>(data);
 

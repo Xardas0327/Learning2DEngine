@@ -52,11 +52,12 @@ namespace Learning2DEngine
 			}
 		public:
 			//int is the layer
-			void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override
+			void SetData(const std::map<Render::RendererMode, std::map<int, std::vector<Render::RenderData*>>>& renderData) override
 			{
 				debugRenderData.clear();
 				size_t maxDynamicSize = 0;
-				for (auto& layerData : renderData)
+				//DebugCollider colliders should be in the RENDER mode only.
+				for (auto& layerData : renderData.at(Render::RendererMode::RENDER))
 				{
 					auto& actualLayerData = debugRenderData[layerData.first];
 

@@ -83,8 +83,11 @@ namespace Learning2DEngine
 			dynamicData = new BaseColorDynamicData[maxObjectSize];
 		}
 
-		void DebugCircleColliderRenderer::Draw(int layer)
+		void DebugCircleColliderRenderer::Draw(RendererMode rendererMode, int layer)
 		{
+			//DebugCollider colliders should be in the RENDER mode only.
+			if(rendererMode != RendererMode::RENDER)
+				return;
 			if (debugRenderData.find(layer) == debugRenderData.end())
 				return;
 

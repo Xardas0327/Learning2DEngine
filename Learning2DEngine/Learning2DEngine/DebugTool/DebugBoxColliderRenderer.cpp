@@ -82,8 +82,11 @@ namespace Learning2DEngine
 			dynamicData = new BaseColorDynamicData[maxObjectSize];
 		}
 
-		void DebugBoxColliderRenderer::Draw(int layer)
+		void DebugBoxColliderRenderer::Draw(RendererMode rendererMode, int layer)
 		{
+			//DebugCollider colliders should be in the RENDER mode only.
+			if (rendererMode != RendererMode::RENDER)
+				return;
 			if (debugRenderData.find(layer) == debugRenderData.end())
 				return;
 

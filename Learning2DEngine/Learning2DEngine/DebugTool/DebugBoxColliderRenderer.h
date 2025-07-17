@@ -21,7 +21,7 @@ namespace Learning2DEngine
 
 			void InitVao() override;
 		public:
-			void Draw(int layer) override;
+			void Draw(Render::RendererMode rendererMode, int layer) override;
 		};
 	}
 }

@@ -24,7 +24,9 @@ namespace Learning2DEngine
 			//The vector contains the tuples, which renderable at the same time.  
 			//The tuple contains a map, whose keys are the texture ids and values the vector of SpriteRenderData*,
 			//a bool which means, that it uses blend or not, the blend function factor and the max active particle count.
-			std::map<int, std::vector<std::tuple<std::map<GLuint, std::vector<ParticleRenderData*>>, bool, Render::BlendFuncFactor, size_t>>> particleRenderData;
+			std::map<Render::RendererMode, 
+				std::map<int, std::vector<std::tuple<std::map<GLuint, std::vector<ParticleRenderData*>>, bool, Render::BlendFuncFactor, size_t>>>
+			> particleRenderData;
 
 			ParticleRenderer();
 
@@ -33,8 +35,8 @@ namespace Learning2DEngine
 			void DestroyObject() override;
 		public:
 			//int is the layer
-			void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
-			void Draw(int layer) override;
+			void SetData(const std::map<Render::RendererMode, std::map<int, std::vector<Render::RenderData*>>>& renderData) override;
+			void Draw(Render::RendererMode rendererMode, int layer) override;
 
 		};
 	}

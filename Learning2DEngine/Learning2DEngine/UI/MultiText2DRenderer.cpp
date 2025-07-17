@@ -111,76 +111,85 @@ namespace Learning2DEngine
 			}
 		}
 
-		void MultiText2DRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
+		void MultiText2DRenderer::SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData)
 		{
 			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
 			TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
 
 			textRenderData.clear();
 			size_t maxDynamicSize = 0;
-			for (auto& layerData : renderData)
+			for (auto& modeData : renderData)
 			{
-				auto& actualLayerData = textRenderData[layerData.first];
-
-				for (auto& data : layerData.second)
+				size_t actualDynamicSize = 0;
+				for (auto& layerData : modeData.second)
 				{
-					auto textData = static_cast<Text2DRenderData*>(data);
-					if (textData->GetText().size() > 0)
-					{
-						textCharacterSet.Load(textData->GetFontSizePair());
-						CharacterMap& characterMap = textCharacterSet[textData->GetFontSizePair()];
+					auto& actualLayerData = textRenderData[modeData.first][layerData.first];
 
-						auto& textMap = textData->GetCharacterVertices();
-						for (auto& chPair : textMap)
+					for (auto& data : layerData.second)
+					{
+						auto textData = static_cast<Text2DRenderData*>(data);
+						if (textData->GetText().size() > 0)
 						{
-							const auto& ch = characterMap[chPair.first];
-							for (auto& vertices : chPair.second)
+							textCharacterSet.Load(textData->GetFontSizePair());
+							CharacterMap& characterMap = textCharacterSet[textData->GetFontSizePair()];
+
+							auto& textMap = textData->GetCharacterVertices();
+							for (auto& chPair : textMap)
 							{
-								actualLayerData[ch.textureId].emplace_back(
-									std::array<float, 33>{
-									// vertex 1
-									// position						// texture coordinates			// color
-									vertices[0][0], vertices[0][1], vertices[0][2], vertices[0][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
-									// vertex 2
-									vertices[1][0], vertices[1][1], vertices[1][2], vertices[1][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
-									// vertex 3
-									vertices[2][0], vertices[2][1], vertices[2][2], vertices[2][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
-									// vertex 4
-									vertices[3][0], vertices[3][1], vertices[3][2], vertices[3][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
-									//Use camera view
-									static_cast<float>(textData->isUseCameraView)
-								});
+								const auto& ch = characterMap[chPair.first];
+								for (auto& vertices : chPair.second)
+								{
+									actualLayerData[ch.textureId].emplace_back(
+										std::array<float, 33>{
+										// vertex 1
+										// position						// texture coordinates			// color
+										vertices[0][0], vertices[0][1], vertices[0][2], vertices[0][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+											// vertex 2
+											vertices[1][0], vertices[1][1], vertices[1][2], vertices[1][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+											// vertex 3
+											vertices[2][0], vertices[2][1], vertices[2][2], vertices[2][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+											// vertex 4
+											vertices[3][0], vertices[3][1], vertices[3][2], vertices[3][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+											//Use camera view
+											static_cast<float>(textData->isUseCameraView)
+									});
+								}
 							}
+						}
+					}
+
+					//Calculate the maximum size of the dynamic data
+					int textureUnitNumber = 0;
+					size_t actualSize = 0;
+					int elementCount = 0;
+					for (auto& data : actualLayerData)
+					{
+						actualSize += data.second.size();
+						++textureUnitNumber;
+						++elementCount;
+
+						//Check if the texture unit number is arrived to max or this is the last data
+						if (textureUnitNumber >= maxTextureUnit || elementCount == actualLayerData.size())
+						{
+							textureUnitNumber = 0;
+							if (actualSize > actualDynamicSize)
+								actualDynamicSize = actualSize;
 						}
 					}
 				}
 
-				//Calculate the maximum size of the dynamic data
-				int textureUnitNumber = 0;
-				size_t actualSize = 0;
-				int elementCount = 0;
-				for (auto& data : actualLayerData)
-				{
-					actualSize += data.second.size();
-					++textureUnitNumber;
-					++elementCount;
-
-					//Check if the texture unit number is arrived to max or this is the last data
-					if (textureUnitNumber >= maxTextureUnit || elementCount == actualLayerData.size())
-					{
-						textureUnitNumber = 0;
-						if (actualSize > maxDynamicSize)
-							maxDynamicSize = actualSize;
-					}
-				}
+				if (maxDynamicSize < actualDynamicSize)
+					maxDynamicSize = actualDynamicSize;
 			}
 
 			CalcDynamicDataSize(maxDynamicSize);
 		}
 
-		void MultiText2DRenderer::Draw(int layer)
+		void MultiText2DRenderer::Draw(RendererMode rendererMode, int layer)
 		{
-			if (textRenderData.find(layer) == textRenderData.end())
+			if (textRenderData.find(rendererMode) == textRenderData.end())
+				return;
+			if (textRenderData[rendererMode].find(layer) == textRenderData[rendererMode].end())
 				return;
 
 			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
@@ -198,7 +207,7 @@ namespace Learning2DEngine
 			int objectCount = 0;
 			GLint textureUnitId = 0;
 			size_t elementCount = 0;
-			for (auto& characterData : textRenderData[layer])
+			for (auto& characterData : textRenderData[rendererMode][layer])
 			{
 				shader->SetInteger(("characterTextures[" + std::to_string(textureUnitId) + "]").c_str(), textureUnitId);
 				glActiveTexture(GL_TEXTURE0 + textureUnitId);
@@ -241,7 +250,7 @@ namespace Learning2DEngine
 				++elementCount;
 
 				//Check if the texture unit number is arrived to max or this is the last data
-				if (textureUnitId >= maxTextureUnit || elementCount == textRenderData[layer].size())
+				if (textureUnitId >= maxTextureUnit || elementCount == textRenderData[rendererMode][layer].size())
 				{
 					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData) * dynamicSize, dynamicData);
 					glDrawElements(GL_TRIANGLES, 6 * objectCount, GL_UNSIGNED_INT, 0);

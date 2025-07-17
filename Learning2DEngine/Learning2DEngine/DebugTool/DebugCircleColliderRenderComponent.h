@@ -10,6 +10,7 @@ namespace Learning2DEngine
 {
 	namespace DebugTool
 	{
+		// It is used in Render Mode only.
 		class DebugCircleColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BaseCircleColliderComponent>, DebugCircleColliderRenderer>
 		{
 			friend class System::GameObject;

@@ -78,7 +78,7 @@ namespace Learning2DEngine
             {
                 auto& renderManager = RenderManager::GetInstance();
                 auto& gameObjectManager = GameObjectManager::GetInstance();
-				auto& componentManager = ComponentManager::GetInstance();
+                auto& componentManager = ComponentManager::GetInstance();
                 while (!renderManager.IsWindowClosed())
                 {
                     Time::CalcDeltaTime();
@@ -90,6 +90,8 @@ namespace Learning2DEngine
                     componentManager.LateUpdate();
 
                     renderManager.ClearWindow();
+
+                    componentManager.SetDataToRenderers();
 
                     bool usePPE = isPostProcessEffectActive && isPostProcessEffectUsed;
 
@@ -119,7 +121,7 @@ namespace Learning2DEngine
 
                     if (usePPE)
                         ppeRender.Render();
-                    
+
                     componentManager.LateRender();
 
                     renderManager.UpdateWindow();
@@ -129,7 +131,7 @@ namespace Learning2DEngine
             }
             catch (std::exception e)
             {
-                L2DE_LOG_ERROR(std::string("GAME: Unhandled Exception: ") +  e.what());
+                L2DE_LOG_ERROR(std::string("GAME: Unhandled Exception: ") + e.what());
             }
             catch (...)
             {
@@ -219,7 +221,7 @@ namespace Learning2DEngine
 
         void Game::RefreshMouseButton(int button, int action, int mods)
         {
-            if (button >= 0  && button < L2DE_MOUSE_BUTTON_NUMBER)
+            if (button >= 0 && button < L2DE_MOUSE_BUTTON_NUMBER)
             {
                 switch (action)
                 {
@@ -257,10 +259,10 @@ namespace Learning2DEngine
 
         void Game::RefreshResolution(const Resolution& resolution)
         {
-            if(resolution.GetWidth() <= 0 || resolution.GetHeight() <= 0)
+            if (resolution.GetWidth() <= 0 || resolution.GetHeight() <= 0)
                 return;
 
-            if(isMsaaActive)
+            if (isMsaaActive)
             {
                 unsigned int sampleNumber = msaaRender.GetSampleNumber();
                 msaaRender.Destroy();
@@ -278,7 +280,7 @@ namespace Learning2DEngine
         {
             for (int i = 0; i < L2DE_KEYBOARD_BUTTON_NUMBER; ++i)
             {
-                if(Game::keyboardButtons[i] == InputStatus::KEY_DOWN)
+                if (Game::keyboardButtons[i] == InputStatus::KEY_DOWN)
                     Game::keyboardButtons[i] = InputStatus::KEY_HOLD;
             }
         }
