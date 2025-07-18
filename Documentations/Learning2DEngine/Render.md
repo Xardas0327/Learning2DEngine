@@ -1524,7 +1524,6 @@ class SimpleSpriteRenderer : public BaseRenderer, public System::Singleton<Simpl
 
 ### Variables:
 **Private:**  
-**shader**  
 **spriteRenderData**  
 Note: The int is the layer.  
 ```cpp
