@@ -75,7 +75,7 @@ The first int is the layer.
 The map key is a GLuint, which a character texture id, and the value is a vector of array,
 which contains the position, the texture coordinates, the color and isUseCameraView.
 ```cpp
-std::map<int, std::map<GLuint, std::vector<std::array<float, 33>>>> textRenderData;
+std::map<Render::RendererMode, std::map<int, std::map<GLuint, std::vector<std::array<float, 33>>>>> textRenderData;
 ```
 
 ### Functions:
@@ -114,13 +114,13 @@ void CalcDynamicDataSize(size_t maxDynamicSize) override;
 **SetData**  
 Note: the int is the layer.
 ```cpp
-void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+void SetData(const std::map<Render::RendererMode, std::map<int, std::vector<Render::RenderData*>>>& renderData) override;
 ```
 
 **Draw**  
-It draws those objects, which was added with SetData and they are on the selected layer.
+It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
-void Draw(int layer) override;
+void Draw(Render::RendererMode rendererMode, int layer) override;
 ```
 
 
@@ -197,7 +197,7 @@ class SimpleText2DRenderer : public Render::BaseRenderer, public System::Singlet
 **textRenderData**  
 Note: the int is the layer.
 ```cpp
-std::map<int, std::vector<Render::RenderData*>> textRenderData;
+std::map<Render::RendererMode, std::map<int, std::vector<Render::RenderData*>>> textRenderData;
 ```
 
 ### Functions:
@@ -227,13 +227,13 @@ void DestroyObject() override;
 **SetData**  
 Note: the int is the layer.
 ```cpp
-void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+void SetData(const std::map<Render::RendererMode, std::map<int, std::vector<Render::RenderData*>>>& renderData) override;
 ```
 
 **Draw**  
-It draws those objects, which was added with SetData and they are on the selected layer.
+It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
-void Draw(int layer) override;
+void Draw(Render::RendererMode rendererMode, int layer) override;
 ```
 
 

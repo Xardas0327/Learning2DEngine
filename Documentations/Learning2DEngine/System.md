@@ -403,11 +403,6 @@ Physics::ColliderComponentHandler colliderComponentHandler;
 Render::RendererComponentHandler rendererComponentHandler;
 ```
 
-**lateRendererComponentHandler**  
-```cpp
-Render::RendererComponentHandler lateRendererComponentHandler;
-```
-
 **isThreadSafe**  
 ```cpp
 bool isThreadSafe;
@@ -498,32 +493,38 @@ void SetMaxColliderPerThread(unsigned int value);
 
 **IsRendererExist**  
 ```cpp
-bool IsRendererExist(const Render::RendererMode mode, const std::string& id);
+inline bool IsRendererExist(const std::string& id);
 ```
 
 **AddRenderer**  
 ```cpp
-void AddRenderer(const Render::RendererMode mode, const std::string& id, Render::IRenderer* renderer);
+inline void AddRenderer(const std::string& id, Render::IRenderer* renderer);
 ```
 
 **RemoveRenderer**  
 ```cpp
-void RemoveRenderer(const Render::RendererMode mode, const std::string& id);
+inline void RemoveRenderer(const std::string& id);
 ```
 
 **AddRenderData**  
 ```cpp
-void AddRenderData(const Render::RendererMode mode, const std::string& id, Render::RenderData* data, int layer);
+inline void AddRenderData(Render::RendererMode mode, const std::string& id, Render::RenderData* data, int layer);
 ```
 
 **ChangeRenderLayer**  
 ```cpp
-void ChangeRenderLayer(const Render::RendererMode mode, Render::RenderData* data, int newLayer);
+inline void ChangeRenderLayer(Render::RenderData* data, int newLayer);
 ```
 
 **RemoveRenderData**  
 ```cpp
-void RemoveRenderData(const Render::RendererMode mode, Render::RenderData* data);
+inline void RemoveRenderData(Render::RenderData* data);
+```
+
+**SetDataToRenderers**  
+It sets the data to the renderers, before the Render() and LateRender() functions are called.
+```cpp
+inline void SetDataToRenderers();
 ```
 
 **Render**  
