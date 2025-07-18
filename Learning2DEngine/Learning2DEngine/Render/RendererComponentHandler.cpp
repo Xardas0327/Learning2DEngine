@@ -1,13 +1,11 @@
 #include "RendererComponentHandler.h"
 
-#include <set>
-
 namespace Learning2DEngine
 {
     namespace Render
     {
 		RendererComponentHandler::RendererComponentHandler()
-			: renderers(), renderData(), renderDataMapping(), rendererMutex(), dataMutex()
+			: renderers(), renderData(), renderDataMapping(), rendererMutex(), dataMutex(), activeRenderersAndLayers()
 		{
 		}
 
@@ -50,22 +48,22 @@ namespace Learning2DEngine
 			}
 		}
 
-		void RendererComponentHandler::AddData(const std::string& id, RenderData* data, int layer)
+		void RendererComponentHandler::AddData(const std::string& id, RendererMode rendererMode, RenderData* data, int layer)
 		{
-			renderData[id][layer].push_back(data);
-			renderDataMapping[data] = std::make_tuple(id, layer);
+			renderData[id][rendererMode][layer].push_back(data);
+			renderDataMapping[data] = std::make_tuple(id, rendererMode, layer);
 		}
 
-		void RendererComponentHandler::AddData(const std::string& id, RenderData* data, int layer, bool isThreadSafe)
+		void RendererComponentHandler::AddData(const std::string& id, RendererMode rendererMode, RenderData* data, int layer, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{
 				std::lock_guard<std::mutex> lock(dataMutex);
-				AddData(id, data, layer);
+				AddData(id, rendererMode, data, layer);
 			}
 			else
 			{
-				AddData(id, data, layer);
+				AddData(id, rendererMode, data, layer);
 			}
 		}
 
@@ -75,14 +73,16 @@ namespace Learning2DEngine
 			if (!isFound)
 				return;
 
-			const int oldLayer = std::get<1>(renderDataMapping[data]);
 			const std::string& id = std::get<0>(renderDataMapping[data]);
+			const RendererMode rendererMode = std::get<1>(renderDataMapping[data]);
+			const int oldLayer = std::get<2>(renderDataMapping[data]);
 
-			renderData[id][oldLayer].erase(
-				std::remove(renderData[id][oldLayer].begin(), renderData[id][oldLayer].end(), data), renderData[id][oldLayer].end()
+			renderData[id][rendererMode][oldLayer].erase(
+				std::remove(renderData[id][rendererMode][oldLayer].begin(), renderData[id][rendererMode][oldLayer].end(), data), 
+				renderData[id][rendererMode][oldLayer].end()
 			);
-			renderData[id][oldLayer].push_back(data);
-			renderDataMapping[data] = std::make_tuple(id, newLayer);
+			renderData[id][rendererMode][oldLayer].push_back(data);
+			renderDataMapping[data] = std::make_tuple(id, rendererMode, newLayer);
 		}
 
 		void RendererComponentHandler::ChangeLayer(RenderData* data, int newLayer, bool isThreadSafe)
@@ -104,18 +104,25 @@ namespace Learning2DEngine
 			if (!isFound)
 				return;
 
-			const int layer = std::get<1>(renderDataMapping[data]);
 			const std::string& id = std::get<0>(renderDataMapping[data]);
+			const RendererMode rendererMode = std::get<1>(renderDataMapping[data]);
+			const int layer = std::get<2>(renderDataMapping[data]);
 
-			renderData[id][layer].erase(
-				std::remove(renderData[id][layer].begin(), renderData[id][layer].end(), data), renderData[id][layer].end()
+			renderData[id][rendererMode][layer].erase(
+				std::remove(renderData[id][rendererMode][layer].begin(), renderData[id][rendererMode][layer].end(), data),
+				renderData[id][rendererMode][layer].end()
 			);
-			if (renderData[id][layer].size() == 0)
+			if (renderData[id][rendererMode][layer].size() == 0)
 			{
-				if(renderData[id].size() == 0)
-					renderData.erase(id);
-				else
-					renderData[id].erase(layer);
+				renderData[id][rendererMode].erase(layer);
+				if (renderData[id][rendererMode].size() == 0)
+				{
+					renderData[id].erase(rendererMode);
+					if (renderData[id].size() == 0)
+					{
+						renderData.erase(id);
+					}
+				}
 
 			}
 
@@ -135,36 +142,37 @@ namespace Learning2DEngine
 			}
 		}
 
-		void RendererComponentHandler::Run()
+		void RendererComponentHandler::SetDataToRenderers()
 		{
-			//Collect active data
-			std::set<int> activeLayers;
-			std::map<int, std::vector<RenderData*>> activeData;
-			std::set<IRenderer*> activeRenderers;
+			activeRenderersAndLayers.clear();
+			std::map<RendererMode, std::map<int, std::vector<RenderData*>>> activeData;
 			for (auto& data : renderData)
 			{
-				for (auto& dataPair : data.second)
+				for (auto& modeData : data.second)
 				{
-					size_t activeDataCount = 0;
-					for (const RenderData* renderData : dataPair.second)
+					for (auto& layerData : modeData.second)
 					{
-						if (renderData->component->isActive && renderData->component->gameObject->isActive)
-							activeDataCount++;
-					}
-
-					if (activeDataCount > 0)
-					{
-						activeLayers.insert(dataPair.first);
-
-						if (activeDataCount == dataPair.second.size())
-							activeData[dataPair.first] = dataPair.second;
-						else
+						size_t activeDataCount = 0;
+						for (const RenderData* renderData : layerData.second)
 						{
-							activeData[dataPair.first].reserve(activeDataCount);
-							for (RenderData* renderData : dataPair.second)
+							if (renderData->component->isActive && renderData->component->gameObject->isActive)
+								activeDataCount++;
+						}
+						if (activeDataCount > 0)
+						{
+							std::get<0>(activeRenderersAndLayers[modeData.first]).insert(renderers[data.first]);
+							std::get<1>(activeRenderersAndLayers[modeData.first]).insert(layerData.first);
+
+							if (activeDataCount == layerData.second.size())
+								activeData[modeData.first][layerData.first] = layerData.second;
+							else
 							{
-								if (renderData->component->isActive && renderData->component->gameObject->isActive)
-									activeData[dataPair.first].push_back(renderData);
+								activeData[modeData.first][layerData.first].reserve(activeDataCount);
+								for (RenderData* renderData : layerData.second)
+								{
+									if (renderData->component->isActive && renderData->component->gameObject->isActive)
+										activeData[modeData.first][layerData.first].push_back(renderData);
+								}
 							}
 						}
 					}
@@ -172,19 +180,20 @@ namespace Learning2DEngine
 
 				if (activeData.size() > 0)
 				{
-					activeRenderers.insert(renderers[data.first]);
-
 					renderers[data.first]->SetData(activeData);
 					activeData.clear();
 				}
 			}
+		}
 
+		void RendererComponentHandler::Run(RendererMode rendererMode)
+		{
 			//Render
-			for (int layer : activeLayers)
+			for (int layer : std::get<1>(activeRenderersAndLayers[rendererMode]))
 			{
-				for (auto renderer : activeRenderers)
+				for (auto renderer : std::get<0>(activeRenderersAndLayers[rendererMode]))
 				{
-					renderer->Draw(layer);
+					renderer->Draw(rendererMode, layer);
 				}
 			}
 
@@ -195,6 +204,7 @@ namespace Learning2DEngine
 			renderers.clear();
 			renderData.clear();
 			renderDataMapping.clear();
+			activeRenderersAndLayers.clear();
 		}
     }
 }

@@ -120,102 +120,110 @@ namespace Learning2DEngine
 			particleRenderData.clear();
 		}
 
-		void ParticleRenderer::SetData(const std::map<int, std::vector<RenderData*>>& renderData)
+		void ParticleRenderer::SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData)
 		{
 			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
 			particleRenderData.clear();
-
-			for (auto& layerData : renderData)
+			size_t maxDynamicSize = 0;
+			for (auto& modeData : renderData)
 			{
-				for (auto& data : layerData.second)
+				for (auto& layerData : modeData.second)
 				{
-					auto particleData = static_cast<ParticleRenderData*>(data);
-					if (!particleData->IsRenderable())
-						continue;
-
-					auto particles = particleData->GetParticles();
-					size_t activeParticleCount = 0;
-					for (size_t i = 0; i < particleData->GetParticleAmount(); ++i)
+					for (auto& data : layerData.second)
 					{
-						if (particles[i].lifeTime > 0.0f)
+						auto particleData = static_cast<ParticleRenderData*>(data);
+						if (!particleData->IsRenderable())
+							continue;
+
+						auto particles = particleData->GetParticles();
+						size_t activeParticleCount = 0;
+						for (size_t i = 0; i < particleData->GetParticleAmount(); ++i)
 						{
-							++activeParticleCount;
-						}
-					}
-
-					activeParticleCount =
-						particleData->GetMinAllocateSize() > activeParticleCount ?
-						particleData->GetMinAllocateSize() :
-						activeParticleCount;
-
-					//If there is minimum 1 active particle, it will be rendered.
-					if (activeParticleCount > 0)
-					{
-						auto& actualLayerData = particleRenderData[layerData.first];
-
-						//Try to find tuple with the same blend function
-						//and if the particle has texture, it has to be in the same, which are in the tuple
-						//or the texture unit is less than the max texture unit.
-						auto it = std::find_if(actualLayerData.begin(),
-							actualLayerData.end(),
-							[&particleData, maxTextureUnit](auto& data)
+							if (particles[i].lifeTime > 0.0f)
 							{
-								if (std::get<1>(data) != particleData->systemSettings.isUseBlend
-									|| std::get<2>(data) != particleData->systemSettings.blendFuncFactor)
-									return false;
-
-								if (!particleData->IsUseTexture()
-									|| std::get<0>(data).count(particleData->GetTexture()->GetId()) > 0)
-									return true;
-
-								return std::get<0>(data).size() < maxTextureUnit;
-							});
-
-						//If the layer data is not found, it will be created.
-						bool isFound = it != actualLayerData.end();
-						if (!isFound)
-						{
-							actualLayerData.push_back(
-								std::make_tuple(
-									std::map<GLuint, std::vector<ParticleRenderData*>>(),
-									particleData->systemSettings.isUseBlend,
-									particleData->systemSettings.blendFuncFactor,
-									0)
-							);
+								++activeParticleCount;
+							}
 						}
 
-						auto& actualTuple = !isFound
-							? actualLayerData.back()
-							: *it;
+						activeParticleCount =
+							particleData->GetMinAllocateSize() > activeParticleCount ?
+							particleData->GetMinAllocateSize() :
+							activeParticleCount;
 
-						GLuint textureId = particleData->IsUseTexture()
-							? particleData->GetTexture()->GetId()
-							: 0;
+						//If there is minimum 1 active particle, it will be rendered.
+						if (activeParticleCount > 0)
+						{
+							auto& actualLayerData = particleRenderData[modeData.first][layerData.first];
 
-						std::get<0>(actualTuple)[textureId].push_back(particleData);
+							//Try to find tuple with the same blend function
+							//and if the particle has texture, it has to be in the same, which are in the tuple
+							//or the texture unit is less than the max texture unit.
+							auto it = std::find_if(actualLayerData.begin(),
+								actualLayerData.end(),
+								[&particleData, maxTextureUnit](auto& data)
+								{
+									if (std::get<1>(data) != particleData->systemSettings.isUseBlend
+										|| std::get<2>(data) != particleData->systemSettings.blendFuncFactor)
+										return false;
 
-						//Count the active particles by tuple for maxActiveParticleCount
-						std::get<3>(actualTuple) += activeParticleCount;
+									if (!particleData->IsUseTexture()
+										|| std::get<0>(data).count(particleData->GetTexture()->GetId()) > 0)
+										return true;
+
+									return std::get<0>(data).size() < maxTextureUnit;
+								});
+
+							//If the layer data is not found, it will be created.
+							bool isFound = it != actualLayerData.end();
+							if (!isFound)
+							{
+								actualLayerData.push_back(
+									std::make_tuple(
+										std::map<GLuint, std::vector<ParticleRenderData*>>(),
+										particleData->systemSettings.isUseBlend,
+										particleData->systemSettings.blendFuncFactor,
+										0)
+								);
+							}
+
+							auto& actualTuple = !isFound
+								? actualLayerData.back()
+								: *it;
+
+							GLuint textureId = particleData->IsUseTexture()
+								? particleData->GetTexture()->GetId()
+								: 0;
+
+							std::get<0>(actualTuple)[textureId].push_back(particleData);
+
+							//Count the active particles by tuple for maxActiveParticleCount
+							std::get<3>(actualTuple) += activeParticleCount;
+						}
 					}
 				}
-			}
 
-			size_t maxActiveParticleCount = 0;
-			for (auto& layerData : particleRenderData)
-			{
-				for (auto& data : layerData.second)
+				size_t actualDynamicSize = 0;
+				for (auto& layerData : particleRenderData[modeData.first])
 				{
-					if (std::get<3>(data) > maxActiveParticleCount)
-						maxActiveParticleCount = std::get<3>(data);
+					for (auto& data : layerData.second)
+					{
+						if (std::get<3>(data) > actualDynamicSize)
+							actualDynamicSize = std::get<3>(data);
+					}
 				}
+
+				if (maxDynamicSize < actualDynamicSize)
+					maxDynamicSize = actualDynamicSize;
 			}
 
-			CalcDynamicDataSize(maxActiveParticleCount);
+			CalcDynamicDataSize(maxDynamicSize);
 		}
 
-		void ParticleRenderer::Draw(int layer)
+		void ParticleRenderer::Draw(RendererMode rendererMode, int layer)
 		{
-			if (particleRenderData.find(layer) == particleRenderData.end())
+			if (particleRenderData.find(rendererMode) == particleRenderData.end())
+				return;
+			if (particleRenderData[rendererMode].find(layer) == particleRenderData[rendererMode].end())
 				return;
 
 			shader->Use();
@@ -225,7 +233,7 @@ namespace Learning2DEngine
 			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 
 			auto& renderManager = RenderManager::GetInstance();
-			for (auto& particleData : particleRenderData[layer])
+			for (auto& particleData : particleRenderData[rendererMode][layer])
 			{
 
 				//Activate Blend

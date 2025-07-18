@@ -19,9 +19,9 @@ namespace Learning2DEngine
 			friend class Singleton<MultiSpriteRenderer>;
 		private:
 			//The int is the layer
-			//The second map's key is the texture id and the value is the SpriteRenderData vector, which use that texture.
+			//The third map's key is the texture id and the value is the SpriteRenderData vector, which use that texture.
 			//If the sprite doesn't use texture, the key is 0.
-			std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
+			std::map <RendererMode, std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>>> spriteRenderData;
 
 			MultiSpriteRenderer();
 
@@ -30,8 +30,8 @@ namespace Learning2DEngine
 			void DestroyObject() override;
 		public:
 			//int is the layer
-			void SetData(const std::map<int, std::vector<RenderData*>>& renderData) override;
-			void Draw(int layer) override;
+			void SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData) override;
+			void Draw(Render::RendererMode rendererMode, int layer) override;
 		};
 	}
 }

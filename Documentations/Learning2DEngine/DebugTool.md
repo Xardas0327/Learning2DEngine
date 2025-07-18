@@ -16,7 +16,8 @@
 [DebugBoxColliderRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugBoxColliderRenderComponent.cpp)
 
 ### Description:
-A component, which is used to render the box colliders.
+A component, which is used to render the box colliders.  
+It is used in Render Mode only.
 
 ### Header:
 ```cpp
@@ -82,9 +83,9 @@ void InitVao();
 
 **Public:**  
 **Draw**  
-It draws those objects, which was added with SetData and they are on the selected layer.
+It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
-void Draw(int layer) override;
+void Draw(Render::RendererMode rendererMode, int layer) override;
 ```
 
 ##
@@ -94,7 +95,8 @@ void Draw(int layer) override;
 [DebugCircleColliderRenderComponent.cpp](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugCircleColliderRenderComponent.cpp)
 
 ### Description:
-A component, which is used to render the circle colliders.
+A component, which is used to render the circle colliders.  
+It is used in Render Mode only.
 
 ### Header:
 ```cpp
@@ -166,9 +168,9 @@ void InitVao();
 
 **Public:**  
 **Draw**  
-It draws those objects, which was added with SetData and they are on the selected layer.
+It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
-void Draw(int layer) override;
+void Draw(Render::RendererMode rendererMode, int layer) override;
 ```
 
 ##
@@ -192,7 +194,7 @@ class DebugColliderRenderer : public Render::BaseMultiRenderer<Render::BaseColor
 When the SetData is called, the renderData will be converted to this format.  
 The int is the layer.
 ```cpp
-std::map<int, std::vector<DebugRenderData<TColliderComponent>*>> debugRenderData;
+std::map<Render::RendererMode, std::map<int, std::vector<DebugRenderData<TColliderComponent>*>>> debugRenderData;
 ```
 
 ### Functions:
@@ -217,7 +219,7 @@ void DestroyObject() override;
 **SetData**  
 This function converts the renderData to debugRenderData.
 ```cpp
-void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+void SetData(const std::map<Render::RendererMode, std::map<int, std::vector<Render::RenderData*>>>& renderData) override;
 ```
 
 ##

@@ -18,7 +18,7 @@ namespace Learning2DEngine
 			friend class Singleton<SimpleSpriteRenderer>;
 		private:
 			//int is the layer
-			std::map<int, std::vector<RenderData*>> spriteRenderData;
+			std::map<RendererMode, std::map<int, std::vector<RenderData*>>> spriteRenderData;
 
 			SimpleSpriteRenderer();
 
@@ -27,8 +27,8 @@ namespace Learning2DEngine
 			void DestroyObject() override;
 		public:
 			//int is the layer
-			void SetData(const std::map<int, std::vector<RenderData*>>& renderData) override;
-			void Draw(int layer) override;
+			void SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData) override;
+			void Draw(RendererMode rendererMode, int layer) override;
 		};
 	}
 }

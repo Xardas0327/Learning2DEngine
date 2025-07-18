@@ -120,57 +120,65 @@ namespace Learning2DEngine
 			spriteRenderData.clear();
 		}
 
-		void MultiSpriteRenderer::SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData)
+		void MultiSpriteRenderer::SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData)
 		{
 			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
 			spriteRenderData.clear();
 			size_t maxDynamicSize = 0;
-			for (auto& layerData : renderData)
+			for(auto& modeData : renderData)
 			{
-				auto& actualLayerData = spriteRenderData[layerData.first];
-
-				for (auto& data : layerData.second)
+				size_t actualDynamicSize = 0;
+				for (auto& layerData : modeData.second)
 				{
-					auto spriteData = static_cast<SpriteRenderData*>(data);
-
-					if (spriteData->IsUseTexture())
-						actualLayerData[spriteData->GetTexture()->GetId()].push_back(spriteData);
-					else
-						//The 0 is invalid texture id.
-						actualLayerData[0].push_back(spriteData);
-				}
-
-				int textureUnitCount = 0;
-				int itemCount = 0;
-				size_t actualMaxSize = 0;
-
-				for (auto& data : spriteRenderData[layerData.first])
-				{
-					actualMaxSize += data.second.size();
-
-					// Don't count the invalid texture id.
-					if (data.first > 0)
-						++textureUnitCount;
-
-					++itemCount;
-					// Check if the texture unit number is arrived to max or this is the last data
-					if (textureUnitCount >= maxTextureUnit || itemCount == spriteRenderData[layerData.first].size())
+					auto& actualLayerData = spriteRenderData[modeData.first][layerData.first];
+					for (auto& data : layerData.second)
 					{
-						if (actualMaxSize > maxDynamicSize)
-							maxDynamicSize = actualMaxSize;
+						auto spriteData = static_cast<SpriteRenderData*>(data);
 
-						actualMaxSize = 0;
-						textureUnitCount = 0;
+						if (spriteData->IsUseTexture())
+							actualLayerData[spriteData->GetTexture()->GetId()].push_back(spriteData);
+						else
+							//The 0 is invalid texture id.
+							actualLayerData[0].push_back(spriteData);
+					}
+
+					int textureUnitCount = 0;
+					int itemCount = 0;
+					size_t actualMaxSize = 0;
+
+					for (auto& data : spriteRenderData[modeData.first][layerData.first])
+					{
+						actualMaxSize += data.second.size();
+
+						// Don't count the invalid texture id.
+						if (data.first > 0)
+							++textureUnitCount;
+
+						++itemCount;
+						// Check if the texture unit number is arrived to max or this is the last data
+						if (textureUnitCount >= maxTextureUnit || itemCount == spriteRenderData[modeData.first][layerData.first].size())
+						{
+							if (actualMaxSize > actualDynamicSize)
+								actualDynamicSize = actualMaxSize;
+
+							actualMaxSize = 0;
+							textureUnitCount = 0;
+						}
 					}
 				}
+
+				if(maxDynamicSize < actualDynamicSize)
+					maxDynamicSize = actualDynamicSize;
 			}
 
 			CalcDynamicDataSize(maxDynamicSize);
 		}
 
-		void MultiSpriteRenderer::Draw(int layer)
+		void MultiSpriteRenderer::Draw(RendererMode rendererMode, int layer)
 		{
-			if (spriteRenderData.find(layer) == spriteRenderData.end())
+			if (spriteRenderData.find(rendererMode) == spriteRenderData.end())
+				return;
+			if (spriteRenderData[rendererMode].find(layer) == spriteRenderData[rendererMode].end())
 				return;
 
 			GLint maxTextureUnit = RenderManager::GetInstance().GetMaxTextureUnits();
@@ -184,7 +192,7 @@ namespace Learning2DEngine
 			int textureUnitCount = 0;
 			int dataCount = 0;
 			int dynamicDataCount = 0;
-			for (auto& data : spriteRenderData[layer])
+			for (auto& data : spriteRenderData[rendererMode][layer])
 			{
 				if (data.first > 0)
 				{
@@ -215,7 +223,7 @@ namespace Learning2DEngine
 				++dataCount;
 
 				// Check if the texture unit number is arrived to max or this is the last data
-				if (textureUnitCount >= maxTextureUnit || dataCount == spriteRenderData[layer].size())
+				if (textureUnitCount >= maxTextureUnit || dataCount == spriteRenderData[rendererMode][layer].size())
 				{
 					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData) * dynamicDataCount, dynamicData);
 					glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, dynamicDataCount);

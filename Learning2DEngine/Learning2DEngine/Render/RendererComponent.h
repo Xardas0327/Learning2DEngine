@@ -38,9 +38,9 @@ namespace Learning2DEngine
 			void InitObject()
 			{
 				auto& componentManager = System::ComponentManager::GetInstance();
-				if (!componentManager.IsRendererExist(mode, this->GetId()))
+				if (!componentManager.IsRendererExist(this->GetId()))
 				{
-					componentManager.AddRenderer(mode, this->GetId(), this->GetInitedRenderer());
+					componentManager.AddRenderer(this->GetId(), this->GetInitedRenderer());
 				}
 
 				componentManager.AddRenderData(mode, this->GetId(), &this->data, this->GetLayer());
@@ -50,12 +50,12 @@ namespace Learning2DEngine
 			void DestroyObject()
 			{
 				auto& componentManager = System::ComponentManager::GetInstance();
-				componentManager.RemoveRenderData(mode, &this->data);
+				componentManager.RemoveRenderData(&this->data);
 
 				if (!(--RendererComponent::refrenceNumber))
 				{
 					this->DestroyRenderer();
-					componentManager.RemoveRenderer(mode, this->GetId());
+					componentManager.RemoveRenderer(this->GetId());
 				}
 			}
 
@@ -97,7 +97,7 @@ namespace Learning2DEngine
 			virtual void SetLayer(int value) override
 			{
 				BaseRendererComponent<TRenderData, TRenderer>::SetLayer(value);
-				System::ComponentManager::GetInstance().ChangeRenderLayer(mode, &this->data, this->GetLayer());
+				System::ComponentManager::GetInstance().ChangeRenderLayer(&this->data, this->GetLayer());
 			}
 		};
 

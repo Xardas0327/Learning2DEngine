@@ -72,14 +72,16 @@ namespace Learning2DEngine
 			spriteRenderData.clear();
 		}
 
-		void SimpleSpriteRenderer::SetData(const std::map<int, std::vector<RenderData*>>& renderData)
+		void SimpleSpriteRenderer::SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData)
 		{
 			spriteRenderData = renderData;
 		}
 
-		void SimpleSpriteRenderer::Draw(int layer)
+		void SimpleSpriteRenderer::Draw(RendererMode rendererMode, int layer)
 		{
-			if (spriteRenderData.find(layer) == spriteRenderData.end())
+			if (spriteRenderData.find(rendererMode) == spriteRenderData.end())
+				return;
+			if (spriteRenderData[rendererMode].find(layer) == spriteRenderData[rendererMode].end())
 				return;
 
 			shader->Use();
@@ -88,7 +90,7 @@ namespace Learning2DEngine
 			shader->SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
 
-			for (auto data : spriteRenderData[layer])
+			for (auto data : spriteRenderData[rendererMode][layer])
 			{
 				auto spriteData = static_cast<SpriteRenderData*>(data);
 

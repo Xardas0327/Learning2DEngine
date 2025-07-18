@@ -30,13 +30,12 @@ namespace Learning2DEngine
             LateUpdaterComponentHandler lateUpdaterComponentHandler;
             Physics::ColliderComponentHandler colliderComponentHandler;
             Render::RendererComponentHandler rendererComponentHandler;
-            Render::RendererComponentHandler lateRendererComponentHandler;
 
             bool isThreadSafe;
 
             ComponentManager()
                 : updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
-                rendererComponentHandler(), lateRendererComponentHandler(), isThreadSafe(false)
+                rendererComponentHandler(), isThreadSafe(false)
             {
 
             }
@@ -134,95 +133,49 @@ namespace Learning2DEngine
 
             //Render
 
-            bool IsRendererExist(const Render::RendererMode mode, const std::string& id)
+            inline bool IsRendererExist(const std::string& id)
             {
-                switch (mode)
-                {
-                case Render::RendererMode::RENDER:
-                    return rendererComponentHandler.IsRendererExist(id, isThreadSafe);
-                    break;
-                case Render::RendererMode::LATERENDER:
-                    return lateRendererComponentHandler.IsRendererExist(id, isThreadSafe);
-                    break;
-                }
-
-                // this one never should happen
-                return false;
+                return rendererComponentHandler.IsRendererExist(id, isThreadSafe);
             }
 
-            void AddRenderer(const Render::RendererMode mode, const std::string& id, Render::IRenderer* renderer)
+            inline void AddRenderer(const std::string& id, Render::IRenderer* renderer)
             {
-                switch (mode)
-                {
-                case Render::RendererMode::RENDER:
-                    rendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
-                    break;
-                case Render::RendererMode::LATERENDER:
-                    lateRendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
-                    break;
-                }
+                rendererComponentHandler.AddRenderer(id, renderer, isThreadSafe);
             }
 
-            void RemoveRenderer(const Render::RendererMode mode, const std::string& id)
+            inline void RemoveRenderer(const std::string& id)
             {
-                switch (mode)
-                {
-                case Render::RendererMode::RENDER:
-                    rendererComponentHandler.RemoveRenderer(id, isThreadSafe);
-                    break;
-                case Render::RendererMode::LATERENDER:
-                    lateRendererComponentHandler.RemoveRenderer(id, isThreadSafe);
-                    break;
-                }
+                rendererComponentHandler.RemoveRenderer(id, isThreadSafe);
             }
 
-            void AddRenderData(const Render::RendererMode mode, const std::string& id, Render::RenderData* data, int layer)
+            inline void AddRenderData(Render::RendererMode mode, const std::string& id, Render::RenderData* data, int layer)
             {
-                switch (mode)
-                {
-                case Render::RendererMode::RENDER:
-                    rendererComponentHandler.AddData(id, data, layer, isThreadSafe);
-                    break;
-                case Render::RendererMode::LATERENDER:
-                    lateRendererComponentHandler.AddData(id, data, layer, isThreadSafe);
-                    break;
-                }
+                rendererComponentHandler.AddData(id, mode, data, layer, isThreadSafe);
             }
 
-            void ChangeRenderLayer(const Render::RendererMode mode, Render::RenderData* data, int newLayer)
+            inline void ChangeRenderLayer(Render::RenderData* data, int newLayer)
             {
-                switch (mode)
-                {
-                case Render::RendererMode::RENDER:
-                    rendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
-                    break;
-                case Render::RendererMode::LATERENDER:
-                    lateRendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
-                    break;
-                }
+                rendererComponentHandler.ChangeLayer(data, newLayer, isThreadSafe);
             }
 
-            void RemoveRenderData(const Render::RendererMode mode, Render::RenderData* data)
+            inline void RemoveRenderData(Render::RenderData* data)
             {
-                switch (mode)
-                {
-                case Render::RendererMode::RENDER:
-                    rendererComponentHandler.RemoveData(data, isThreadSafe);
-                    break;
-                case Render::RendererMode::LATERENDER:
-                    lateRendererComponentHandler.RemoveData(data, isThreadSafe);
-                    break;
-                }
+                rendererComponentHandler.RemoveData(data, isThreadSafe);
+            }
+
+            inline void SetDataToRenderers()
+            {
+                rendererComponentHandler.SetDataToRenderers();
             }
 
             inline void Render()
             {
-                rendererComponentHandler.Run();
+                rendererComponentHandler.Run(Render::RendererMode::RENDER);
             }
 
             inline void LateRender()
             {
-                lateRendererComponentHandler.Run();
+                rendererComponentHandler.Run(Render::RendererMode::LATERENDER);
             }
 
             //All
@@ -255,7 +208,6 @@ namespace Learning2DEngine
                 lateUpdaterComponentHandler.Clear();
                 colliderComponentHandler.Clear();
                 rendererComponentHandler.Clear();
-                lateRendererComponentHandler.Clear();
             }
         };
     }
