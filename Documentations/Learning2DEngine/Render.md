@@ -299,13 +299,13 @@ virtual void Destroy() = 0;
 **SetData**  
 Note: the int is the layer.
 ```cpp
-virtual void SetData(const std::map<int, std::vector<RenderData*>>& renderData) = 0;
+virtual void SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData) = 0;
 ```
 
 **Draw**  
-It draws those objects, which was added with SetData and they are on the selected layer.
+It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
-virtual void Draw(int layer) = 0;
+virtual void Draw(RendererMode rendererMode, int layer) = 0;
 ```
 
 ##
@@ -461,10 +461,10 @@ class MultiSpriteRenderer : public BaseMultiRenderer<MultiSpriteDynamicData>, pu
 **spriteRenderData**  
 When the SetData is called, the renderData will be converted to this format.  
 The int is the layer.  
-The second map's key is the texture id and the value is the `SpriteRenderData` vector, which use that texture.  
+The third map's key is the texture id and the value is the `SpriteRenderData` vector, which use that texture.  
 If the sprite doesn't use texture, the key is 0.
 ```cpp
-std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>> spriteRenderData;
+std::map <RendererMode, std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>>> spriteRenderData;
 ```
 
 ### Functions:
@@ -496,13 +496,13 @@ It allocates 20% more space in the buffer, so that it does not have to allocate 
 if there are some dynamic renderers.  
 Note: the int is the layer.
 ```cpp
-void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+void SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData) override;
 ```
 
 **Draw**  
-It draws those objects, which was added with SetData and they are on the selected layer.
+It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
-void Draw(int layer) override;
+void Draw(Render::RendererMode rendererMode, int layer) override;
 ```
 
 ##
@@ -764,7 +764,7 @@ and one for those ones, which has RenderMode::LATERENDER.
 
 ### Header:
 ```cpp
-class RendererComponentHandler final : public System::IComponentHandler
+class RendererComponentHandler final
 {...}
 ```
 
@@ -776,10 +776,10 @@ std::map<std::string, IRenderer*> renderers;
 ```
 
 **renderData**  
-The string is the id.  
+The string is the render id.  
 The int is the layer.
 ```cpp
-std::map<std::string, std::map<int, std::vector<RenderData*>>> renderData;
+std::map<std::string, std::map<RendererMode, std::map<int, std::vector<RenderData*>>>> renderData;
 ```
 
 **renderDataMapping**  
@@ -798,11 +798,18 @@ std::mutex rendererMutex;
 std::mutex dataMutex;
 ```
 
+**activeRenderersAndLayers**  
+The first set is the active renderers.  
+The second set is the active layers.
+```cpp
+std::map <RendererMode, std::tuple<std::set<IRenderer*>, std::set<int>>> activeRenderersAndLayers;
+```
+
 ### Functions:
 **Private:**  
 **AddData**  
 ```cpp
-void AddData(const std::string& id, RenderData* data, int layer);
+void AddData(const std::string& id, RendererMode rendererMode, RenderData* data, int layer);
 ```
 
 **ChangeLayer**  
@@ -838,7 +845,7 @@ void RemoveRenderer(const std::string& id, bool isThreadSafe);
 
 **AddData**  
 ```cpp
-void AddData(const std::string& id, RenderData* data, int layer, bool isThreadSafe);
+void AddData(const std::string& id, RendererMode rendererMode, RenderData* data, int layer, bool isThreadSafe);
 ```
 
 **ChangeLayer**  
@@ -851,16 +858,24 @@ void ChangeLayer(RenderData* data, int newLayer, bool isThreadSafe);
 void RemoveData(RenderData* data, bool isThreadSafe);
 ```
 
-**Run**  
-It iterates through renderData. Those data, which are on the same layer and use the same id,
-they will be called by the same renderer. The renderer will solve that how it can render them.
+**SetDataToRenderers**  
+It sets the data to the renderers, before the Run() function is called.
 ```cpp
-void Run() override;
+void SetDataToRenderers();
+```
+
+**Run**  
+It iterates through renderData, which use the rendererMode. Those data, which are
+on the same layer and use the same id, they will be called by the same renderer.
+The renderer will solve that how it can render them.  
+It is called twice, once with RendererMode::RENDER and once with RendererMode::LATERENDER.
+```cpp
+void Run(RendererMode rendererMode);
 ```
 
 **Clear**  
 ```cpp
-void Clear() override;
+void Clear();
 ```
 
 ##
@@ -1513,7 +1528,7 @@ class SimpleSpriteRenderer : public BaseRenderer, public System::Singleton<Simpl
 **spriteRenderData**  
 Note: The int is the layer.  
 ```cpp
-std::map<int, std::vector<RenderData*>> spriteRenderData;
+std::map<RendererMode, std::map<int, std::vector<RenderData*>>> spriteRenderData;
 ```
 
 ### Functions:
@@ -1543,13 +1558,13 @@ void DestroyObject() override;
 **SetData**  
 Note: the int is the layer.
 ```cpp
-void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+void SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData) override;
 ```
 
 **Draw**  
-It draws those objects, which was added with SetData and they are on the selected layer.
+It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
-void Draw(int layer) override;
+void Draw(RendererMode rendererMode, int layer) override;
 ```
 
 
