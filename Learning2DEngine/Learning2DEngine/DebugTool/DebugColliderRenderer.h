@@ -24,7 +24,7 @@ namespace Learning2DEngine
 		{
 		protected:
 			//The int is the layer
-			std::map < Render::RendererMode, std::map<int, std::vector<DebugRenderData<TColliderComponent>*>>> debugRenderData;
+			std::map<Render::RendererMode, std::map<int, std::vector<DebugRenderData<TColliderComponent>*>>> debugRenderData;
 
 			DebugColliderRenderer()
 				: BaseMultiRenderer(), debugRenderData()

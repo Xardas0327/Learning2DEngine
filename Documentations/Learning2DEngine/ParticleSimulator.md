@@ -221,7 +221,7 @@ The vector contains the tuples, which renderable at the same time.
 The tuple contains a map, whose keys are the texture ids and values the vector of `SpriteRenderData*`,
 a bool which means, that it uses blend or not, the blend function factor and the max active particle count.
 ```cpp
-std::map<int, std::vector<std::tuple<std::map<GLuint, std::vector<ParticleRenderData*>>, bool, Render::BlendFuncFactor, size_t>>> particleRenderData;
+std::map<Render::RendererMode, std::map<int, std::vector<std::tuple<std::map<GLuint, std::vector<ParticleRenderData*>>, bool, Render::BlendFuncFactor, size_t>>>> particleRenderData;
 ```
 
 ### Functions:
@@ -251,13 +251,13 @@ void DestroyObject() override;
 **SetData**  
 This function converts the renderData to particleRenderData.
 ```cpp
-void SetData(const std::map<int, std::vector<Render::RenderData*>>& renderData) override;
+void SetData(const std::map<Render::RendererMode, std::map<int, std::vector<Render::RenderData*>>>& renderData) override;
 ```
 
 **Draw**  
-It draws those objects, which was added with SetData and they are on the selected layer.
+It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
-void Draw(int layer) override;
+void Draw(Render::RendererMode rendererMode, int layer) override;
 ```
 
 ##
