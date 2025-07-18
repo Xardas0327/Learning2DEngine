@@ -84,10 +84,9 @@ namespace Learning2DEngine
 
 		void DebugBoxColliderRenderer::Draw(RendererMode rendererMode, int layer)
 		{
-			//DebugCollider colliders should be in the RENDER mode only.
-			if (rendererMode != RendererMode::RENDER)
+			if (debugRenderData.find(rendererMode) == debugRenderData.end())
 				return;
-			if (debugRenderData.find(layer) == debugRenderData.end())
+			if (debugRenderData[rendererMode].find(layer) == debugRenderData[rendererMode].end())
 				return;
 
 			shader->Use();
@@ -97,9 +96,9 @@ namespace Learning2DEngine
 			glBindVertexArray(vao);
 			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
 
-			for (int i = 0; i < debugRenderData[layer].size(); ++i)
+			for (int i = 0; i < debugRenderData[rendererMode][layer].size(); ++i)
 			{
-				auto colliderData = debugRenderData[layer][i];
+				auto colliderData = debugRenderData[rendererMode][layer][i];
 
 				glm::mat4 model = glm::mat4(1.0f);
 				model = glm::translate(model,
@@ -121,8 +120,8 @@ namespace Learning2DEngine
 						sizeof(dynamicData[i].color));
 			}
 
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(BaseColorDynamicData) * debugRenderData[layer].size(), dynamicData);
-			glDrawArraysInstanced(GL_LINE_LOOP, 0, 4, static_cast<GLsizei>(debugRenderData[layer].size()));
+			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(BaseColorDynamicData) * debugRenderData[rendererMode][layer].size(), dynamicData);
+			glDrawArraysInstanced(GL_LINE_LOOP, 0, 4, static_cast<GLsizei>(debugRenderData[rendererMode][layer].size()));
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);

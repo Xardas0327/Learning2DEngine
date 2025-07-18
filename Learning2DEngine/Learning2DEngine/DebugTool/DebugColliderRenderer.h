@@ -24,7 +24,7 @@ namespace Learning2DEngine
 		{
 		protected:
 			//The int is the layer
-			std::map<int, std::vector<DebugRenderData<TColliderComponent>*>> debugRenderData;
+			std::map < Render::RendererMode, std::map<int, std::vector<DebugRenderData<TColliderComponent>*>>> debugRenderData;
 
 			DebugColliderRenderer()
 				: BaseMultiRenderer(), debugRenderData()
@@ -56,22 +56,28 @@ namespace Learning2DEngine
 			{
 				debugRenderData.clear();
 				size_t maxDynamicSize = 0;
-				//DebugCollider colliders should be in the RENDER mode only.
-				for (auto& layerData : renderData.at(Render::RendererMode::RENDER))
+				for (auto& modeData : renderData)
 				{
-					auto& actualLayerData = debugRenderData[layerData.first];
-
-					for (auto& data : layerData.second)
+					size_t actualDynamicSize = 0;
+					for (auto& layerData : modeData.second)
 					{
-						auto colliderData = static_cast<DebugRenderData<TColliderComponent>*>(data);
-						if (!colliderData->objectComponent->isActive)
-							continue;
+						auto& actualLayerData = debugRenderData[modeData.first][layerData.first];
 
-						actualLayerData.push_back(colliderData);
+						for (auto& data : layerData.second)
+						{
+							auto colliderData = static_cast<DebugRenderData<TColliderComponent>*>(data);
+							if (!colliderData->objectComponent->isActive)
+								continue;
+
+							actualLayerData.push_back(colliderData);
+						}
+
+						if (actualDynamicSize < actualLayerData.size())
+							actualDynamicSize = actualLayerData.size();
 					}
 
-					if (maxDynamicSize < actualLayerData.size())
-						maxDynamicSize = actualLayerData.size();
+					if(maxDynamicSize < actualDynamicSize)
+						maxDynamicSize = actualDynamicSize;
 				}
 
 				CalcDynamicDataSize(maxDynamicSize);
