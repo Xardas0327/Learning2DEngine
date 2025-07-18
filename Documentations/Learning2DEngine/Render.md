@@ -785,7 +785,7 @@ std::map<std::string, std::map<RendererMode, std::map<int, std::vector<RenderDat
 **renderDataMapping**  
 It helps for find the data faster, when the layer is changed.
 ```cpp
-std::map<RenderData*, std::tuple<std::string, int>> renderDataMapping;
+std::map<RenderData*, std::tuple<std::string, RendererMode, int>> renderDataMapping;
 ```
 
 **rendererMutex**  
