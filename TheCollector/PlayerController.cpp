@@ -44,7 +44,9 @@ void PlayerController::Init()
 
     gameObject->transform.SetScale(PLAYER_SIZE);
 
+#if L2DE_DEBUG
     gameObject->AddComponent<DebugPosition>();
+#endif
 
     auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
         RendererMode::RENDER,

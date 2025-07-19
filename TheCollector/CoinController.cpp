@@ -29,7 +29,9 @@ void CoinController::Init()
 		ColliderType::KINEMATIC
 	);
 
+#if L2DE_DEBUG
 	gameObject->AddComponent<DebugPosition>();
+#endif
 
 	auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
 		RendererMode::RENDER,

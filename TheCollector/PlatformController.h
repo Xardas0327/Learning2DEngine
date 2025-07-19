@@ -40,7 +40,9 @@ protected:
 			Learning2DEngine::Physics::ColliderMode::COLLIDER
 		);
 
+#if L2DE_DEBUG
 		gameObject->AddComponent<Learning2DEngine::DebugTool::DebugPosition>();
+#endif
 	}
 
 public:
