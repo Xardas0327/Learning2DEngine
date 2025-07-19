@@ -17,7 +17,8 @@
 
 ### Description:
 A component, which is used to render the box colliders.  
-It is used in Render Mode only.
+It is used in Render Mode only and it works well with renderers
+if the renderers use the camera view matrix.
 
 ### Header:
 ```cpp
@@ -96,7 +97,8 @@ void Draw(Render::RendererMode rendererMode, int layer) override;
 
 ### Description:
 A component, which is used to render the circle colliders.  
-It is used in Render Mode only.
+It is used in Render Mode only and it works well with renderers
+if the renderers use the camera view matrix.
 
 ### Header:
 ```cpp
