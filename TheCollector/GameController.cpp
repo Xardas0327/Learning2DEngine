@@ -6,6 +6,9 @@
 #include <Learning2DEngine/System/Time.h>
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Object/FpsShower.h>
+#if L2DE_DEBUG
+#include <Learning2DEngine/DebugTool/DebugPosition.h>
+#endif
 
 #include "PlatformController.h"
 #include "BushController.h"
@@ -15,11 +18,12 @@ using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::Object;
 using namespace Learning2DEngine::UI;
+using namespace Learning2DEngine::DebugTool;
 #if USE_IRRKLANG_SOUND_ENGINE
 using namespace irrklang;
 #endif
 
-GameController::GameController(Learning2DEngine::System::GameObject* gameObject)
+GameController::GameController(GameObject* gameObject)
     : UpdaterComponent(gameObject), Component(gameObject),
     coins(), movingPlatforms(), playerController(nullptr), gameStatus(GameStatus::Menu),
     fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24), playerCoinEventItem(this), currentPlayTime(0),
@@ -38,6 +42,10 @@ void GameController::Init()
 
     auto& gameObjectManager = GameObjectManager::GetInstance();
     gameObjectManager.Reserve(100);
+
+#if L2DE_DEBUG
+    DebugPosition::Init(FontSizePair("Assets/Fonts/PixelOperator8.ttf", 16));
+#endif
 
     InitEnvironment();
     InitTexts();

@@ -168,6 +168,7 @@
     <ClCompile Include="Learning2DEngine\DebugTool\DebugBoxColliderRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\DebugTool\DebugCircleColliderRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\DebugTool\DebugCircleColliderRenderer.cpp" />
+    <ClCompile Include="Learning2DEngine\DebugTool\DebugPosition.cpp" />
     <ClCompile Include="Learning2DEngine\Object\FpsShower.cpp" />
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystemComponent.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="Learning2DEngine\DebugTool\DebugCircleColliderRenderer.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugColliderRenderer.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugMacro.h" />
+    <ClInclude Include="Learning2DEngine\DebugTool\DebugPosition.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugRenderData.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\CursorEnterEventItem.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\CursorPositionEventItem.h" />

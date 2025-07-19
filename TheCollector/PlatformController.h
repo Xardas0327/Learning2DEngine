@@ -9,6 +9,10 @@
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
 
+#if L2DE_DEBUG
+#include <Learning2DEngine/DebugTool/DebugPosition.h>
+#endif
+
 const glm::vec2 PLATFORM_SIZE(200.0f, 50.0f);
 const glm::vec2 EDGE_SIZE(100.0f, 100.0f);
 
@@ -35,6 +39,10 @@ protected:
 			Learning2DEngine::Physics::ColliderType::KINEMATIC,
 			Learning2DEngine::Physics::ColliderMode::COLLIDER
 		);
+
+#if L2DE_DEBUG
+		gameObject->AddComponent<Learning2DEngine::DebugTool::DebugPosition>();
+#endif
 	}
 
 public:

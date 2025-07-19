@@ -6,12 +6,17 @@
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
 
+#if L2DE_DEBUG
+#include <Learning2DEngine/DebugTool/DebugPosition.h>
+#endif
+
 #include "CoinController.h"
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::Physics;
 using namespace Learning2DEngine::Animator;
+using namespace Learning2DEngine::DebugTool;
 #if USE_IRRKLANG_SOUND_ENGINE
 using namespace irrklang;
 #endif
@@ -38,6 +43,10 @@ void PlayerController::Init()
     BoxColliderComponent::Init();
 
     gameObject->transform.SetScale(PLAYER_SIZE);
+
+#if L2DE_DEBUG
+    gameObject->AddComponent<DebugPosition>();
+#endif
 
     auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
         RendererMode::RENDER,

@@ -124,8 +124,10 @@ namespace Learning2DEngine
 			{
 			case TextBoxMode::SIMPLE:
 				return simpleRenderComponent->GetLayer();
+				break;
 			case TextBoxMode::MULTI:
 				return multiRenderComponent->GetLayer();
+				break;
 			}
 
 			return 0;
@@ -150,8 +152,10 @@ namespace Learning2DEngine
 			{
 			case TextBoxMode::SIMPLE:
 				return simpleRenderComponent->data.color;
+				break;
 			case TextBoxMode::MULTI:
 				return multiRenderComponent->data.color;
+				break;
 			}
 
 			return glm::vec4(1.0f);
@@ -163,8 +167,10 @@ namespace Learning2DEngine
 			{
 			case TextBoxMode::SIMPLE:
 				simpleRenderComponent->data.color = color;
+				break;
 			case TextBoxMode::MULTI:
 				multiRenderComponent->data.color = color;
+				break;
 			}
 		}
     }
