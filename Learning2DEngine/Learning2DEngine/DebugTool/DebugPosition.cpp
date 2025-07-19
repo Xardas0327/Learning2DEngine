@@ -56,6 +56,8 @@ namespace Learning2DEngine
 				L2DE_DEBUG_SHOW_POSITION_BOX_COLOR
 			);
 			boxComponent->SetPadding(L2DE_DEBUG_SHOW_POSITION_BOX_PADDING);
+
+			isActive = L2DE_DEBUG_SHOW_POSITION_DEFAULT_VALUE;
 		}
 
 		void DebugPosition::Destroy()
