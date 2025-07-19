@@ -5,6 +5,7 @@
 - [DebugCircleColliderRenderer](DebugTool.md#debugcirclecolliderrenderer)
 - [DebugColliderRenderer](DebugTool.md#debugcolliderrenderer)
 - [DebugMacro](DebugTool.md#debugmacro)
+- [DebugPosition](DebugTool.md#debugposition)
 - [DebugRenderData](DebugTool.md#debugrenderdata)
 - [Log](DebugTool.md#log)
 
@@ -283,6 +284,123 @@ The default color of the text boxes.
 
 **L2DE_DEBUG_SHOW_POSITION_BOX_PADDING**  
 The default padding of the text boxes.
+
+##
+## DebugPosition
+### Source Code:
+[DebugPosition.h](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugPosition.h)
+[DebugPosition.cpp](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugPosition.cpp)
+
+### Description:
+It can the position of the game objects in the game.  
+The DebugPosition will be updated in a LateUpdate() and it is used in Render Mode only.  
+So, it can work well only if the position of the GameObject is updated in Update() function(s).  
+Moreover, it works well with renderers if the renderers use the camera view matrix.  
+By default, it doesn't work, only those GameObjects can show their position, which were created
+after the DebugPosition::Init function was called.  
+
+### Header:
+```cpp
+class DebugPosition : public System::LateUpdaterComponent
+{...}
+```
+
+### Variables:
+**Private:**  
+**textComponent**  
+```cpp
+UI::SimpleText2DRenderComponent* textComponent;
+```
+
+**boxComponent**  
+```cpp
+UI::TextBoxComponent* boxComponent;
+```
+
+**fontSizePair**  
+```cpp
+static UI::FontSizePair fontSizePair;
+```
+
+**isInited**  
+```cpp
+static bool isInited;
+```
+
+### Functions:
+**Private:**  
+**DebugPosition**  
+```cpp
+DebugPosition(System::GameObject* gameObject);
+```
+
+**Init**  
+```cpp
+void Init() override;
+```
+
+**Destroy**  
+```cpp
+void Destroy() override;
+```
+
+**LateUpdate**  
+```cpp
+void LateUpdate() override;
+```
+
+**Public:**  
+**Init**  
+```cpp
+static void Init(const UI::FontSizePair& fontSizePair);
+```
+
+**SetActive**  
+This function should be used instead of isActive variable.  
+It turns on/off the text and the box renders too.
+```cpp
+void SetActive(bool value);
+```
+
+**SetTextLayer**  
+```cpp
+inline void SetTextLayer(int value);
+```
+
+**GetTextLayer**  
+```cpp
+inline int GetTextLayer() const;
+```
+
+**SetBoxLayer**  
+```cpp
+inline void SetBoxLayer(int value);
+```
+
+**GetBoxLayer**  
+```cpp
+inline int GetBoxLayer() const;
+```
+
+**SetTextColor**  
+```cpp
+inline void SetTextColor(glm::vec4 color);
+```
+
+**GetTextColor**  
+```cpp
+inline glm::vec4 GetTextColor() const;
+```
+
+**SetBoxColor**  
+```cpp
+inline void SetBoxColor(glm::vec4 color);
+```
+
+**GetBoxColor**  
+```cpp
+inline glm::vec4 GetBoxColor() const;
+```
 
 ##
 ## DebugRenderData

@@ -11,8 +11,8 @@ namespace Learning2DEngine
 	{
 		// It is used in Render Mode only.
 		// The DebugPosition will be updated in a LateUpdate().
-		// So, it can work well only if the position of the GameObject is updated in a Update() function(s).
-		// Moverover, it works well with renderers if the renderers use the camera view matrix.
+		// So, it can work well only if the position of the GameObject is updated in Update() function(s).
+		// Moreover, it works well with renderers if the renderers use the camera view matrix.
 		class DebugPosition : public System::LateUpdaterComponent
 		{
 			friend class System::GameObject;

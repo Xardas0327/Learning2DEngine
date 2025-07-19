@@ -461,7 +461,7 @@ A text box component, which can be used to display a text in a box.
 The `TextBoxComponent` will create a new GameObject with a `SimpleSpriteRenderComponent`
 or with a `SpriteRenderComponent`.  
 The TextBox will be updated in a LateUpdate().
-So, the text should be updated in a Update() function(s).
+So, the text should be updated in Update() function(s).
 
 ### Header:
 ```cpp
