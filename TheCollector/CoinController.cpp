@@ -6,10 +6,15 @@
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
 #include <Learning2DEngine/Animator/AnimationController.h>
 
+#if L2DE_DEBUG
+#include <Learning2DEngine/DebugTool/DebugPosition.h>
+#endif
+
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Physics;
 using namespace Learning2DEngine::Animator;
+using namespace Learning2DEngine::DebugTool;
 
 
 CoinController::CoinController(GameObject* gameObject, float speed)
@@ -23,6 +28,8 @@ void CoinController::Init()
 		gameObject->transform.GetScale().x / 2,
 		ColliderType::KINEMATIC
 	);
+
+	gameObject->AddComponent<DebugPosition>();
 
 	auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
 		RendererMode::RENDER,

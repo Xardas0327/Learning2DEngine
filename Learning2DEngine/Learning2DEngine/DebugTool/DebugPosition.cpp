@@ -51,13 +51,13 @@ namespace Learning2DEngine
 			auto boxGo = GameObjectManager::GetInstance().CreateGameObject();
 			boxComponent = boxGo->AddComponent<TextBoxComponent>(
 				*textComponent,
-				TextBoxMode::SIMPLE,
+				TextBoxMode::MULTI,
 				L2DE_DEBUG_SHOW_POSITION_DEFAULT_BOX_LAYER,
 				L2DE_DEBUG_SHOW_POSITION_BOX_COLOR
 			);
 			boxComponent->SetPadding(L2DE_DEBUG_SHOW_POSITION_BOX_PADDING);
 
-			isActive = L2DE_DEBUG_SHOW_POSITION_DEFAULT_VALUE;
+			SetActive(L2DE_DEBUG_SHOW_POSITION_DEFAULT_VALUE);
 		}
 
 		void DebugPosition::Destroy()
@@ -83,6 +83,13 @@ namespace Learning2DEngine
 			std::string result = oss.str();
 			textComponent->data.SetText(oss.str());
 			textComponent->gameObject->transform.SetPosition(gameObject->transform.GetPosition());
+		}
+
+		void DebugPosition::SetActive(bool value)
+		{
+			isActive = value;
+			textComponent->gameObject->isActive = value;
+			boxComponent->gameObject->isActive = value;
 		}
 	}
 }

@@ -31,6 +31,8 @@ namespace Learning2DEngine
 
 			static void Init(const UI::FontSizePair& fontSizePair);
 
+			void SetActive(bool value);
+
 			inline void SetTextLayer(int value)
 			{
 				textComponent->SetLayer(value);
