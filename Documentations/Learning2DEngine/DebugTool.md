@@ -288,7 +288,7 @@ The default padding of the text boxes.
 ##
 ## DebugPosition
 ### Source Code:
-[DebugPosition.h](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugPosition.h)
+[DebugPosition.h](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugPosition.h)  
 [DebugPosition.cpp](../../Learning2DEngine/Learning2DEngine/DebugTool/DebugPosition.cpp)
 
 ### Description:
