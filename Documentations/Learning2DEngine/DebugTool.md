@@ -335,6 +335,7 @@ DebugPosition(System::GameObject* gameObject);
 ```
 
 **Init**  
+This function has to be called before, the `DebugPosition` is added to a `GameObject`.
 ```cpp
 void Init() override;
 ```
