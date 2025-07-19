@@ -254,13 +254,35 @@ If is is 0 (or false), the colliders will be invisible in the game by default.
 But the developer can change them one by one.
 
 **L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER**  
-The colliders are rendered by a renderer (not late renderer), and this macro give their default layer.
+The colliders are rendered with Render mode (an not LateRender),
+and this macro give their default layer.
 
 **L2DE_DEBUG_SHOW_COLLIDER_COLOR**  
 The default color of the colliders, which use collider mode.
 
 **L2DE_DEBUG_SHOW_COLLIDER_TRIGGER_COLOR**  
 The default color of the triggers. (Colliders with trigger mode)
+
+**L2DE_DEBUG_SHOW_POSITION_DEFAULT_VALUE**  
+If it is 1 (or true), it will show the position of the game objects by default.  
+If is is 0 (or false), it won't show the position of the game objects by default.  
+
+**L2DE_DEBUG_SHOW_POSITION_DEFAULT_TEXT_LAYER**  
+The texts are rendered with Render mode (an not LateRender),
+and this macro give their default layer.
+
+**L2DE_DEBUG_SHOW_POSITION_DEFAULT_BOX_LAYER**  
+The text boxes are rendered with Render mode (an not LateRender),
+and this macro give their default layer.
+
+**L2DE_DEBUG_SHOW_POSITION_TEXT_COLOR**  
+The default color of the texts.
+
+**L2DE_DEBUG_SHOW_POSITION_BOX_COLOR**  
+The default color of the text boxes.
+
+**L2DE_DEBUG_SHOW_POSITION_BOX_PADDING**  
+The default padding of the text boxes.
 
 ##
 ## DebugRenderData
