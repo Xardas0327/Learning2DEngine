@@ -293,11 +293,11 @@ The default padding of the text boxes.
 
 ### Description:
 It can the position of the game objects in the game.  
-The DebugPosition will be updated in a LateUpdate() and it is used in Render Mode only.  
-So, it can work well only if the position of the GameObject is updated in Update() function(s).  
+The `DebugPosition` will be updated in a LateUpdate() and it is used in Render Mode only.  
+So, it can work well only if the position of the `GameObject` is updated in Update() function(s).  
 Moreover, it works well with renderers if the renderers use the camera view matrix.  
-By default, it doesn't work, only those GameObjects can show their position, which were created
-after the DebugPosition::Init function was called.  
+By default, it doesn't work, only those `GameObjects` can show their position, which got the
+`DebugPosition` component after the DebugPosition::Init static function was called.  
 
 ### Header:
 ```cpp
@@ -309,12 +309,25 @@ class DebugPosition : public System::LateUpdaterComponent
 **Private:**  
 **textComponent**  
 ```cpp
-UI::SimpleText2DRenderComponent* textComponent;
+UI::Text2DRenderComponent* textComponent;
 ```
 
 **boxComponent**  
 ```cpp
 UI::TextBoxComponent* boxComponent;
+```
+
+**isFirstUpdate**  
+First time, the position of the `GameObject` has to be checked to save.
+```cpp
+bool isFirstUpdate;
+```
+
+**lastPosition**  
+The last position of the `GameObject` will be saved, so the system don't have to update the text
+everytime.
+```cpp
+glm::vec2 lastPosition;
 ```
 
 **fontSizePair**  
