@@ -19,6 +19,7 @@ namespace Learning2DEngine
 
 		DebugPosition::DebugPosition(GameObject* gameObject)
 			:LateUpdaterComponent(gameObject), Component(gameObject),
+			isFirstUpdate(true), lastPosition(),
 			textComponent(nullptr), boxComponent(nullptr)
 		{
 
@@ -40,7 +41,7 @@ namespace Learning2DEngine
 			auto& gameObjectManager = GameObjectManager::GetInstance();
 
 			auto textGo = GameObjectManager::GetInstance().CreateGameObject();
-			textComponent = textGo->AddComponent<SimpleText2DRenderComponent>(
+			textComponent = textGo->AddComponent<Text2DRenderComponent>(
 				RendererMode::RENDER,
 				DebugPosition::fontSizePair,
 				L2DE_DEBUG_SHOW_POSITION_DEFAULT_TEXT_LAYER,
@@ -76,13 +77,19 @@ namespace Learning2DEngine
 
 		void DebugPosition::LateUpdate()
 		{
-			std::ostringstream oss;
-			oss << std::fixed << std::setprecision(2);
-			oss << "X: " << gameObject->transform.GetPosition().x << " Y: " << gameObject->transform.GetPosition().y;
+			if(isFirstUpdate || 
+				gameObject->transform.GetPosition() != lastPosition)
+			{
+				isFirstUpdate = false;
+				lastPosition = gameObject->transform.GetPosition();
 
-			std::string result = oss.str();
-			textComponent->data.SetText(oss.str());
-			textComponent->gameObject->transform.SetPosition(gameObject->transform.GetPosition());
+				std::ostringstream oss;
+				oss << std::fixed << std::setprecision(2);
+				oss << "X: " << lastPosition.x << " Y: " << lastPosition.y;
+
+				textComponent->data.SetText(oss.str());
+				textComponent->gameObject->transform.SetPosition(lastPosition);
+			}
 		}
 
 		void DebugPosition::SetActive(bool value)

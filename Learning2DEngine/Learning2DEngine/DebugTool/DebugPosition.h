@@ -2,7 +2,7 @@
 
 #include "../System/GameObject.h"
 #include "../System/LateUpdaterComponent.h"
-#include "../UI/SimpleText2DRenderComponent.h"
+#include "../UI/Text2DRenderComponent.h"
 #include "../UI/TextBoxComponent.h"
 
 namespace Learning2DEngine
@@ -17,8 +17,11 @@ namespace Learning2DEngine
 		{
 			friend class System::GameObject;
 		private:
-			UI::SimpleText2DRenderComponent* textComponent;
+			UI::Text2DRenderComponent* textComponent;
 			UI::TextBoxComponent* boxComponent;
+			bool isFirstUpdate;
+			glm::vec2 lastPosition;
+
 			static UI::FontSizePair fontSizePair;
 			static bool isInited;
 

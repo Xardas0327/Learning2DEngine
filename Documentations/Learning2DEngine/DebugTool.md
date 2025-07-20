@@ -309,12 +309,25 @@ class DebugPosition : public System::LateUpdaterComponent
 **Private:**  
 **textComponent**  
 ```cpp
-UI::SimpleText2DRenderComponent* textComponent;
+UI::Text2DRenderComponent* textComponent;
 ```
 
 **boxComponent**  
 ```cpp
 UI::TextBoxComponent* boxComponent;
+```
+
+**isFirstUpdate**  
+First time, the position of the `GameObject` has to be checked to save.
+```cpp
+bool isFirstUpdate;
+```
+
+**lastPosition**  
+The last position of the `GameObject` will be saved, so the system don't have to update the text
+everytime.
+```cpp
+glm::vec2 lastPosition;
 ```
 
 **fontSizePair**  
