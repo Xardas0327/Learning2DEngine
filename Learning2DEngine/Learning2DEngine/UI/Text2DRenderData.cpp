@@ -199,7 +199,7 @@ namespace Learning2DEngine
                 textSize = CalculateTextSize();
                 shouldRecalcSize = false;
             }
-            return CalculateTextSize();
+            return textSize;
         }
 
         glm::vec2 Text2DRenderData::GetTextSize() const
@@ -207,7 +207,7 @@ namespace Learning2DEngine
             if (shouldRecalcSize)
                 return CalculateTextSize();
 
-            return CalculateTextSize();
+            return textSize;
         }
     }
 }
