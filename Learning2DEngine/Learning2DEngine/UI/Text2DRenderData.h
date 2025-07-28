@@ -23,6 +23,7 @@ namespace Learning2DEngine
             glm::mat4 previousModelMatrix;
             std::map<char, std::vector<glm::mat4>> characterVertices;
             glm::vec2 textSize;
+            float lineSpacing;
 
             glm::vec2 CalculateTextSize() const;
             std::map<char, std::vector<glm::mat4>> CalculateCharacterVertices() const;
@@ -60,6 +61,13 @@ namespace Learning2DEngine
             }
 
             void SetFontSizePair(const FontSizePair& fontSizePair);
+
+            inline float GetLineSpacing() const
+            {
+                return lineSpacing;
+            }
+
+            void SetLineSpacing(float lineSpacing);
 
             const std::map<char, std::vector<glm::mat4>>& GetCharacterVertices();
             std::map<char, std::vector<glm::mat4>> GetCharacterVertices() const;

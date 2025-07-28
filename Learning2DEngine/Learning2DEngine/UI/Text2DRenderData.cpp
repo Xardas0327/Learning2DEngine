@@ -10,7 +10,7 @@ namespace Learning2DEngine
     {
         Text2DRenderData::Text2DRenderData(const System::Component* component, const FontSizePair& fontSizePair, glm::vec4 color)
             : RenderData(component), fontSizePair(fontSizePair), text(""), shouldRecalcSize(true), shouldRecalcVertices(true),
-            previousModelMatrix(), characterVertices(), textSize(), color(color), isUseCameraView(false)
+            previousModelMatrix(), characterVertices(), textSize(), lineSpacing(5.0f), color(color), isUseCameraView(false)
         {
         }
 
@@ -21,7 +21,7 @@ namespace Learning2DEngine
             glm::vec4 color
         )
             : RenderData(component), fontSizePair(fontSizePair), text(text), shouldRecalcSize(true), shouldRecalcVertices(true),
-            previousModelMatrix(), characterVertices(), textSize(), color(color), isUseCameraView(false)
+            previousModelMatrix(), characterVertices(), textSize(), lineSpacing(5.0f), color(color), isUseCameraView(false)
         {
         }
 
@@ -33,7 +33,7 @@ namespace Learning2DEngine
             glm::vec4 color
         )
             : RenderData(component), fontSizePair(fontSizePair), text(text), shouldRecalcSize(true), shouldRecalcVertices(true),
-            previousModelMatrix(), characterVertices(), textSize(), color(color), isUseCameraView(isUseCameraView)
+            previousModelMatrix(), characterVertices(), textSize(), lineSpacing(5.0f), color(color), isUseCameraView(isUseCameraView)
         {
         }
 
@@ -69,6 +69,13 @@ namespace Learning2DEngine
             shouldRecalcVertices = true;
         }
 
+        void Text2DRenderData::SetLineSpacing(float lineSpacing)
+        {
+            this->lineSpacing = lineSpacing;
+            shouldRecalcSize = true;
+            shouldRecalcVertices = true;
+        }
+
         glm::vec2 Text2DRenderData::CalculateTextSize() const
         {
             TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
@@ -76,11 +83,26 @@ namespace Learning2DEngine
             CharacterMap& characterMap = textCharacterSet[fontSizePair];
 
             glm::vec2 size(0.0f, characterMap['H'].bearing.y * component->gameObject->transform.GetScale().y);
+            float x = 0.0f;
             for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
             {
+                // If the character is a newline
+                if (*c == '\n')
+                {
+                    if (x > size.x)
+                    {
+                        size.x = x;
+                        size.y += characterMap['H'].size.y * component->gameObject->transform.GetScale().y + lineSpacing;
+                        x = 0.0f;
+                    }
+                    continue;
+                }
                 const auto& ch = characterMap[*c];
-                size.x += (ch.advance >> 6) * component->gameObject->transform.GetScale().x;
+                x += (ch.advance >> 6) * component->gameObject->transform.GetScale().x;
             }
+
+            if (x > size.x)
+                size.x = x;
 
             return size;
         }
@@ -98,8 +120,18 @@ namespace Learning2DEngine
             textCharacterSet.Load(fontSizePair);
             CharacterMap& characterMap = textCharacterSet[fontSizePair];
 
+            glm::vec2 firstCharacterPosition = startPosition;
             for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
             {
+                // If the character is a newline
+                if (*c == '\n')
+                {
+                    startPosition = firstCharacterPosition;
+                    startPosition.y += characterMap['H'].size.y * component->gameObject->transform.GetScale().y + lineSpacing;
+                    firstCharacterPosition = startPosition;
+                    continue;
+                }
+
                 const auto& ch = characterMap[*c];
 
                 //Calculcate character position
