@@ -408,7 +408,9 @@ Text2DRenderData(const System::Component* component, const FontSizePair& fontSiz
 inline const std::string& GetText() const;
 ```
 
-**SetText**
+**SetText**  
+It doesn't check the text is same as the current value,
+so the text size and character vertices will be recalculated later.
 ```cpp
 void SetText(const std::string& text);
 ```
