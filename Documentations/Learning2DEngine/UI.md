@@ -361,6 +361,12 @@ std::map<char, std::vector<glm::mat4>> characterVertices;
 glm::vec2 textSize;
 ```
 
+**lineSpacing**  
+Its default value is 5.0f.
+```cpp
+float lineSpacing;
+```
+
 **Public:**  
 **color**
 ```cpp
@@ -408,7 +414,9 @@ Text2DRenderData(const System::Component* component, const FontSizePair& fontSiz
 inline const std::string& GetText() const;
 ```
 
-**SetText**
+**SetText**  
+It doesn't check the text is same as the current value,
+so the text size and character vertices will be recalculated later.
 ```cpp
 void SetText(const std::string& text);
 ```
@@ -424,6 +432,16 @@ inline const FontSizePair& GetFontSizePair() const;
 **SetFontSizePair**
 ```cpp
 void SetFontSizePair(const FontSizePair& fontSizePair);
+```
+
+**GetLineSpacing**
+```cpp
+inline float GetLineSpacing() const;
+```
+
+**SetLineSpacing**
+```cpp
+void SetLineSpacing(float lineSpacing);
 ```
 
 **GetCharacterVertices**  

@@ -6,6 +6,7 @@
 #include <Learning2DEngine/System/Time.h>
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Object/FpsShower.h>
+#include <Learning2DEngine/UI/TextBoxComponent.h>
 #if L2DE_DEBUG
 #include <Learning2DEngine/DebugTool/DebugPosition.h>
 #endif
@@ -27,8 +28,8 @@ GameController::GameController(GameObject* gameObject)
     : UpdaterComponent(gameObject), Component(gameObject),
     coins(), movingPlatforms(), playerController(nullptr), gameStatus(GameStatus::Menu),
     fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24), playerCoinEventItem(this), currentPlayTime(0),
-    scoreText(nullptr), playTimeText(nullptr), description1Text(nullptr), description2Text(nullptr),
-    startText(nullptr), winText(nullptr), loseText(nullptr), endText(nullptr), descriptionBox(nullptr), endBox(nullptr)
+    scoreText(nullptr), playTimeText(nullptr), descriptionText(nullptr), startText(nullptr), winText(nullptr),
+    loseText(nullptr), endText(nullptr)
 #if USE_IRRKLANG_SOUND_ENGINE
     , soundEngine(nullptr)
 #endif
@@ -207,52 +208,25 @@ void GameController::InitTexts()
     playTimeText = playTimeGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
 
     //Description
-    auto descriptionBoxGameObejct = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(180.0f, 280.0f), glm::vec2(910.0f, 160.0f)
-        )
-    );
-    descriptionBox = descriptionBoxGameObejct->AddComponent<SimpleSpriteRenderComponent>(
-        RendererMode::LATERENDER,
-        -1,
-        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
-    );
-    descriptionBox->data.isUseCameraView = false;
-
-    auto description1GameObject = gameObjectManager.CreateGameObject(
+    auto descriptionGameObject = gameObjectManager.CreateGameObject(
         Transform(
             glm::vec2(200.0f, 300.0f)
         )
     );
-    description1Text = description1GameObject->AddComponent<SimpleText2DRenderComponent>(
+    descriptionText = descriptionGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
-        "Collect the coins in time."
+        "Collect the coins in time.\nYou can move with A and D and jump with SPACE."
     );
+    descriptionText->data.SetLineSpacing(25.0f);
 
-    auto description2GameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(200.0f, 350.0f)
-        )
-    );
-    description2Text = description2GameObject->AddComponent<SimpleText2DRenderComponent>(
-        RendererMode::LATERENDER,
-        fontSizePair,
-        "You can move with A and D and jump with SPACE."
-    );
-
-    // End box
-    auto endBoxGameObejct = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(425.0f, 280.0f), glm::vec2(435.0f, 160.0f)
-        )
-    );
-    endBox = endBoxGameObejct->AddComponent<SimpleSpriteRenderComponent>(
-        RendererMode::LATERENDER,
+    auto descriptionBox = descriptionGameObject->AddComponent<TextBoxComponent>(
+        *descriptionText,
+        TextBoxMode::SIMPLE,
         -1,
         glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
     );
-    endBox->data.isUseCameraView = false;
+    descriptionBox->SetPadding(20.0f);
 
     // Start text
     auto startGameObject = gameObjectManager.CreateGameObject(
@@ -266,6 +240,14 @@ void GameController::InitTexts()
         fontSizePair,
         "Press ENTER for start."
     );
+
+    auto startBox = startGameObject->AddComponent<TextBoxComponent>(
+        *startText,
+        TextBoxMode::SIMPLE,
+        -1,
+        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
+    );
+    startBox->SetPadding(10.0f);
 
     // Win text
     auto winGameObject = gameObjectManager.CreateGameObject(
@@ -282,6 +264,15 @@ void GameController::InitTexts()
         glm::vec4(0.08f, 0.43f, 0.185f, 1.0f)
     );
 
+    auto winBox = winGameObject->AddComponent<TextBoxComponent>(
+        *winText,
+        TextBoxMode::SIMPLE,
+        -1,
+        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
+    );
+	winBox->paddingLeftRight = 65.0f;
+	winBox->paddingTopBottom = 25.0f;
+
     // Lose text
     auto loseGameObject = gameObjectManager.CreateGameObject(
         Transform(
@@ -297,10 +288,19 @@ void GameController::InitTexts()
         glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)
     );
 
+    auto loseBox = loseGameObject->AddComponent<TextBoxComponent>(
+        *loseText,
+        TextBoxMode::SIMPLE,
+        -1,
+        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
+    );
+    loseBox->paddingLeftRight = 65.0f;
+    loseBox->paddingTopBottom = 25.0f;
+
     // End text
     auto endGameObject = gameObjectManager.CreateGameObject(
         Transform(
-            glm::vec2(resolution.GetWidth() / 2 - 200, 375.0f),
+            glm::vec2(resolution.GetWidth() / 2 - 203, 380.0f),
             glm::vec2(0.75f, 0.75f)
         )
     );
@@ -309,6 +309,14 @@ void GameController::InitTexts()
         fontSizePair,
         "Press ENTER for home screen."
     );
+
+    auto endBox = endGameObject->AddComponent<TextBoxComponent>(
+        *endText,
+        TextBoxMode::SIMPLE,
+        -1,
+        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
+    );
+	endBox->SetPadding(10.0f);
 
 #if L2DE_DEBUG
     FpsShower::CreateFpsShowerObject(
@@ -322,15 +330,12 @@ void GameController::InitTexts()
 
 void GameController::ShowMenu()
 {
-    descriptionBox->gameObject->isActive = true;
-    description1Text->gameObject->isActive = true;
-    description2Text->gameObject->isActive = true;
-    startText->gameObject->isActive = true;
+    descriptionText->isActive = true;
+    startText->isActive = true;
 
-    endBox->gameObject->isActive = false;
-    winText->gameObject->isActive = false;
-    loseText->gameObject->isActive = false;
-    endText->gameObject->isActive = false;
+    winText->isActive = false;
+    loseText->isActive = false;
+    endText->isActive = false;
     gameStatus = GameStatus::Menu;
 }
 
@@ -353,10 +358,8 @@ void GameController::StartPlay()
 
     RefreshScoreText();
     RefreshPlayTimeText();
-    descriptionBox->gameObject->isActive = false;
-    description1Text->gameObject->isActive = false;
-    description2Text->gameObject->isActive = false;
-    startText->gameObject->isActive = false;
+    descriptionText->isActive = false;
+    startText->isActive = false;
 
     gameStatus = GameStatus::Play;
 }
@@ -364,13 +367,12 @@ void GameController::StartPlay()
 void GameController::EndPlay()
 {
     playerController->rigidbody->isFrozen = true;
-    endBox->gameObject->isActive = true;
-    endText->gameObject->isActive = true;
+    endText->isActive = true;
 
     if (playerController->coinNumber == coins.size())
-        winText->gameObject->isActive = true;
+        winText->isActive = true;
     else
-        loseText->gameObject->isActive = true;
+        loseText->isActive = true;
 
     gameStatus = GameStatus::Ended;
 }

@@ -82,6 +82,10 @@ namespace Learning2DEngine
 			switch (textBoxMode)
 			{
 				case TextBoxMode::SIMPLE:
+					simpleRenderComponent->gameObject->isActive = textRenderData->component->isActive;
+					if (!simpleRenderComponent->gameObject->isActive)
+						return;
+
 					simpleRenderComponent->data.isUseCameraView = textRenderData->isUseCameraView;
 					simpleRenderComponent->gameObject->transform = Transform(
 						glm::vec2(
@@ -96,6 +100,10 @@ namespace Learning2DEngine
 					);
 					break;
 				case TextBoxMode::MULTI:
+					multiRenderComponent->gameObject->isActive = textRenderData->component->isActive;
+					if (!multiRenderComponent->gameObject->isActive)
+						return;
+
 					multiRenderComponent->data.isUseCameraView = textRenderData->isUseCameraView;
 					multiRenderComponent->gameObject->transform = Transform(
 						glm::vec2(

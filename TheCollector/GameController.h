@@ -11,7 +11,6 @@
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
 #include <Learning2DEngine/UI/SimpleText2DRenderComponent.h>
-#include <Learning2DEngine/Render/SimpleSpriteRenderComponent.h>
 
 #include "CoinController.h"
 #include "PlayerController.h"
@@ -36,14 +35,11 @@ protected:
     float currentPlayTime;
     Learning2DEngine::UI::SimpleText2DRenderComponent* scoreText;
     Learning2DEngine::UI::SimpleText2DRenderComponent* playTimeText;
-    Learning2DEngine::UI::SimpleText2DRenderComponent* description1Text;
-    Learning2DEngine::UI::SimpleText2DRenderComponent* description2Text;
+    Learning2DEngine::UI::SimpleText2DRenderComponent* descriptionText;
     Learning2DEngine::UI::SimpleText2DRenderComponent* startText;
     Learning2DEngine::UI::SimpleText2DRenderComponent* winText;
     Learning2DEngine::UI::SimpleText2DRenderComponent* loseText;
     Learning2DEngine::UI::SimpleText2DRenderComponent* endText;
-    Learning2DEngine::Render::SimpleSpriteRenderComponent* descriptionBox;
-    Learning2DEngine::Render::SimpleSpriteRenderComponent* endBox;
 #if USE_IRRKLANG_SOUND_ENGINE
     irrklang::ISoundEngine* soundEngine;
 #endif
