@@ -361,6 +361,11 @@ std::map<char, std::vector<glm::mat4>> characterVertices;
 glm::vec2 textSize;
 ```
 
+**lineSpacing**
+```cpp
+float lineSpacing;
+```
+
 **Public:**  
 **color**
 ```cpp
@@ -426,6 +431,16 @@ inline const FontSizePair& GetFontSizePair() const;
 **SetFontSizePair**
 ```cpp
 void SetFontSizePair(const FontSizePair& fontSizePair);
+```
+
+**GetLineSpacing**
+```cpp
+inline float GetLineSpacing() const;
+```
+
+**SetLineSpacing**
+```cpp
+void SetLineSpacing(float lineSpacing);
 ```
 
 **GetCharacterVertices**  
