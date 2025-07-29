@@ -361,7 +361,8 @@ std::map<char, std::vector<glm::mat4>> characterVertices;
 glm::vec2 textSize;
 ```
 
-**lineSpacing**
+**lineSpacing**  
+Its default value is 5.0f.
 ```cpp
 float lineSpacing;
 ```
