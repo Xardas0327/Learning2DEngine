@@ -10,29 +10,44 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
+#define L2DE_SPRITE_TEX_COOR_DEFAULT glm::mat2x4 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}
+
 		class SpriteRenderData : public RenderData, public Texture2DContainer
 		{
 		public:
 			glm::vec4 color;
 			bool isUseCameraView;
 
+			/// <summary>
+			/// The texture order:
+			/// Top Left,
+			/// Top Right,
+			/// Bottom Right,
+			/// Bottom Left
+			/// </summary>
+			glm::mat2x4 textureMatrix;
+
 			SpriteRenderData(const System::Component* component, glm::vec4 color = glm::vec4(1.0f))
-				: RenderData(component), color(color), isUseCameraView(true), Texture2DContainer()
+				: RenderData(component), color(color), isUseCameraView(true),
+				textureMatrix(L2DE_SPRITE_TEX_COOR_DEFAULT), Texture2DContainer()
 			{
 			}
 
 			SpriteRenderData(const System::Component* component, bool isUseCameraView, glm::vec4 color = glm::vec4(1.0f))
-				: RenderData(component), color(color), isUseCameraView(isUseCameraView), Texture2DContainer()
+				: RenderData(component), color(color), isUseCameraView(isUseCameraView),
+				textureMatrix(L2DE_SPRITE_TEX_COOR_DEFAULT), Texture2DContainer()
 			{
 			}
 
 			SpriteRenderData(const System::Component* component, const Texture2D& texture, glm::vec4 color = glm::vec4(1.0f))
-				: RenderData(component), color(color), isUseCameraView(true), Texture2DContainer(texture)
+				: RenderData(component), color(color), isUseCameraView(true),
+				textureMatrix(L2DE_SPRITE_TEX_COOR_DEFAULT), Texture2DContainer(texture)
 			{
 			}
 
 			SpriteRenderData(const System::Component* component, const Texture2D& texture, bool isUseCameraView, glm::vec4 color = glm::vec4(1.0f))
-				: RenderData(component), color(color), isUseCameraView(isUseCameraView), Texture2DContainer(texture)
+				: RenderData(component), color(color), isUseCameraView(isUseCameraView),
+				textureMatrix(L2DE_SPRITE_TEX_COOR_DEFAULT), Texture2DContainer(texture)
 			{
 			}
 		};

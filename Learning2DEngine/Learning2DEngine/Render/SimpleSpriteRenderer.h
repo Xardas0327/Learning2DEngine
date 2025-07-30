@@ -17,6 +17,8 @@ namespace Learning2DEngine
 		{
 			friend class Singleton<SimpleSpriteRenderer>;
 		private:
+			GLuint vboDynamicTexture;
+
 			//int is the layer
 			std::map<RendererMode, std::map<int, std::vector<RenderData*>>> spriteRenderData;
 
