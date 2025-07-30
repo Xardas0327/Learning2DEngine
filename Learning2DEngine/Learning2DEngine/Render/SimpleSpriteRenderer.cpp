@@ -32,13 +32,13 @@ namespace Learning2DEngine
 
 		void SimpleSpriteRenderer::InitVao()
 		{
-			float vertices[] = {
-				// pos      // tex
-				1.0f, 1.0f, 1.0f, 1.0f,
-				1.0f, 0.0f, 1.0f, 0.0f,
-				0.0f, 0.0f, 0.0f, 0.0f,
-				0.0f, 1.0f, 0.0f, 1.0f,
-			};
+			//float vertices[] = {
+			//	// pos      // tex
+			//	1.0f, 1.0f, 1.0f, 1.0f,
+			//	1.0f, 0.0f, 1.0f, 0.0f,
+			//	0.0f, 0.0f, 0.0f, 0.0f,
+			//	0.0f, 1.0f, 0.0f, 1.0f,
+			//};
 
 			unsigned int indices[] = {
 			   0, 1, 3,
@@ -50,7 +50,8 @@ namespace Learning2DEngine
 			glGenBuffers(1, &ebo);
 			glBindVertexArray(vao);
 			glBindBuffer(GL_ARRAY_BUFFER, vbo);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+			//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 4, NULL, GL_DYNAMIC_DRAW);
 
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
@@ -104,6 +105,17 @@ namespace Learning2DEngine
 					glActiveTexture(GL_TEXTURE0);
 					spriteData->GetTexture()->Bind();
 				}
+				float vertices[] = {
+					// pos      // tex
+					1.0f, 1.0f, 1.0f, 1.0f,
+					1.0f, 0.0f, 1.0f, 0.0f,
+					0.0f, 0.0f, 0.0f, 0.0f,
+					0.0f, 1.0f, 0.0f, 1.0f,
+				};
+
+				glBindBuffer(GL_ARRAY_BUFFER, vbo);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 4 * 4, vertices);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 				glBindTexture(GL_TEXTURE_2D, 0);
