@@ -42,8 +42,8 @@ namespace Learning2DEngine
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 6, NULL, GL_DYNAMIC_DRAW);
 
 
-			glGenBuffers(1, &vboDynamic);
-			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+			glGenBuffers(1, &vboDynamicObject);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData), NULL, GL_DYNAMIC_DRAW);
 
 			glEnableVertexAttribArray(0);
@@ -84,7 +84,7 @@ namespace Learning2DEngine
 					static_cast<float>(maxDynamicSize) * 1.2f
 					);
 
-				glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+				glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 				//Multiply by 4, because an object has 4 vertices.
 				glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData) * maxObjectSize * 4, NULL, GL_DYNAMIC_DRAW);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -201,7 +201,7 @@ namespace Learning2DEngine
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindVertexArray(vao);
-			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 
 			int dynamicSize = 0;
 			int objectCount = 0;

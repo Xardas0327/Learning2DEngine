@@ -65,8 +65,8 @@ namespace Learning2DEngine
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 			glEnableVertexAttribArray(1);
 
-			glGenBuffers(1, &vboDynamic);
-			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+			glGenBuffers(1, &vboDynamicObject);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(MultiSpriteDynamicData), NULL, GL_DYNAMIC_DRAW);
 			glEnableVertexAttribArray(2);
 			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE,
@@ -230,7 +230,7 @@ namespace Learning2DEngine
 			shader->SetMatrix4("projection", Game::mainCamera.GetProjection());
 			shader->SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
-			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 
 			auto& renderManager = RenderManager::GetInstance();
 			for (auto& particleData : particleRenderData[rendererMode][layer])

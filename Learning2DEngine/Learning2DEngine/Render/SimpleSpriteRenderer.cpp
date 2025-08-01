@@ -14,7 +14,7 @@ namespace Learning2DEngine
 	{
 
 		SimpleSpriteRenderer::SimpleSpriteRenderer()
-			: BaseRenderer(), spriteRenderData(), vboDynamicTexture(0)
+			: BaseRenderer(), spriteRenderData()
 		{
 
 		}
@@ -57,7 +57,6 @@ namespace Learning2DEngine
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-			//Texture coordinates
 			glGenBuffers(1, &vboDynamicTexture);
 			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicTexture);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat2x4), NULL, GL_DYNAMIC_DRAW);
@@ -73,8 +72,6 @@ namespace Learning2DEngine
 		void SimpleSpriteRenderer::DestroyObject()
 		{
 			BaseRenderer::DestroyObject();
-
-			glDeleteBuffers(1, &vboDynamicTexture);
 
 			spriteRenderData.clear();
 		}

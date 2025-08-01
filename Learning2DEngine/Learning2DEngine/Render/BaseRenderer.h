@@ -17,9 +17,10 @@ namespace Learning2DEngine
 			GLuint vao;
 			GLuint ebo;
 			GLuint vbo;
+			GLuint vboDynamicTexture;
 
 			BaseRenderer()
-				: shader(nullptr), vao(0), ebo(0), vbo(0)
+				: shader(nullptr), vao(0), ebo(0), vbo(0), vboDynamicTexture(0)
 			{
 
 			}
@@ -33,6 +34,9 @@ namespace Learning2DEngine
 
 				if (vbo)
 					glDeleteBuffers(1, &vbo);
+
+				if (vboDynamicTexture)
+					glDeleteBuffers(1, &vboDynamicTexture);
 
 				if (ebo)
 					glDeleteBuffers(1, &ebo);
