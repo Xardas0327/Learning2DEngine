@@ -38,9 +38,9 @@ namespace Learning2DEngine
 		{
 			float vertices[] = {
 				// pos      // tex
-				1.0f, 1.0f, 1.0f, 1.0f,
-				1.0f, 0.0f, 1.0f, 0.0f,
 				0.0f, 0.0f, 0.0f, 0.0f,
+				1.0f, 0.0f, 1.0f, 0.0f,
+				1.0f, 1.0f, 1.0f, 1.0f,
 				0.0f, 1.0f, 0.0f, 1.0f,
 			};
 

@@ -144,15 +144,15 @@ namespace Learning2DEngine
 
                 glm::vec2 relativePoint = (startPosition - middlePosition) + glm::vec2(chPositionX, chPositionY);
 
-                glm::vec2 v1 = middlePosition + rotationMatrix * (relativePoint + glm::vec2(chWidth, chHeight));
+                glm::vec2 v1 = middlePosition + rotationMatrix * relativePoint;
                 glm::vec2 v2 = middlePosition + rotationMatrix * (relativePoint + glm::vec2(chWidth, 0.0f));
-                glm::vec2 v3 = middlePosition + rotationMatrix * relativePoint;
+                glm::vec2 v3 = middlePosition + rotationMatrix * (relativePoint + glm::vec2(chWidth, chHeight));
                 glm::vec2 v4 = middlePosition + rotationMatrix * (relativePoint + glm::vec2(0.0f, chHeight));
 
                 textMap[*c].push_back(glm::mat4(
-                    v1.x, v1.y, 1.0f, 1.0f,
+                    v1.x, v1.y, 0.0f, 0.0f,
                     v2.x, v2.y, 1.0f, 0.0f,
-                    v3.x, v3.y, 0.0f, 0.0f,
+                    v3.x, v3.y, 1.0f, 1.0f,
                     v4.x, v4.y, 0.0f, 1.0f
                 ));
 

@@ -29,9 +29,9 @@ namespace Learning2DEngine
 		{
 			//positions
 			float vertices[] = {
-				1.0f, 1.0f,
-				1.0f, 0.0f,
 				0.0f, 0.0f,
+				1.0f, 0.0f,
+				1.0f, 1.0f,
 				0.0f, 1.0f,
 			};
 			glGenVertexArrays(1, &vao);
