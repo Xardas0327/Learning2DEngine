@@ -57,8 +57,8 @@ namespace Learning2DEngine
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-			glGenBuffers(1, &vboDynamicTexture);
-			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicTexture);
+			glGenBuffers(1, &vboDynamicUV);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicUV);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat2x4), NULL, GL_DYNAMIC_DRAW);
 
 			glEnableVertexAttribArray(1);
@@ -109,8 +109,8 @@ namespace Learning2DEngine
 					spriteData->GetTexture()->Bind();
 				}
 
-				glBindBuffer(GL_ARRAY_BUFFER, vboDynamicTexture);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat2x4), &spriteData->textureMatrix[0][0]);
+				glBindBuffer(GL_ARRAY_BUFFER, vboDynamicUV);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat2x4), &spriteData->uvMatrix[0][0]);
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
