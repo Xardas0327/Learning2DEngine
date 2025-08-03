@@ -8,6 +8,7 @@ namespace Learning2DEngine
 	{
 		struct MultiSpriteDynamicData : public BaseColorDynamicData
 		{
+			float uvMatrix[8];
 			float textureId;
 			float isUseCameraView;
 		};

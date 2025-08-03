@@ -14,7 +14,7 @@ namespace Learning2DEngine
 	{
 
 		SimpleSpriteRenderer::SimpleSpriteRenderer()
-			: BaseRenderer(), spriteRenderData()
+			: BaseRenderer(), spriteRenderData(), vboDynamicUV(0)
 		{
 
 		}
@@ -72,6 +72,8 @@ namespace Learning2DEngine
 		void SimpleSpriteRenderer::DestroyObject()
 		{
 			BaseRenderer::DestroyObject();
+
+			glDeleteBuffers(1, &vboDynamicUV);
 
 			spriteRenderData.clear();
 		}

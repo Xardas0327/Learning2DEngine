@@ -62,19 +62,25 @@ namespace Learning2DEngine
 			glEnableVertexAttribArray(0);
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
-			glGenBuffers(1, &vboDynamicUV);
-			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicUV);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat2x4), NULL, GL_DYNAMIC_DRAW);
-
-			for (int i = 0; i < 4; ++i) {
-				glEnableVertexAttribArray(1 + i);
-				glVertexAttribPointer(1 + i, 2, GL_FLOAT, GL_FALSE, sizeof(glm::mat2x4), (void*)(sizeof(float) * 2 * i));
-				glVertexAttribDivisor(1 + i, 1);
-			}
-
 			glGenBuffers(1, &vboDynamicObject);
 			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(MultiSpriteDynamicData), NULL, GL_DYNAMIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)offsetof(MultiSpriteDynamicData, uvMatrix));
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)(offsetof(MultiSpriteDynamicData, uvMatrix) + sizeof(float) * 2));
+			glEnableVertexAttribArray(3);
+			glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)(offsetof(MultiSpriteDynamicData, uvMatrix) + sizeof(float) * 4));
+			glEnableVertexAttribArray(4);
+			glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)(offsetof(MultiSpriteDynamicData, uvMatrix) + sizeof(float) * 6));
 			glEnableVertexAttribArray(5);
 			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
@@ -104,6 +110,10 @@ namespace Learning2DEngine
 				sizeof(MultiSpriteDynamicData),
 				(void*)offsetof(MultiSpriteDynamicData, isUseCameraView));
 
+			glVertexAttribDivisor(1, 1);
+			glVertexAttribDivisor(2, 1);
+			glVertexAttribDivisor(3, 1);
+			glVertexAttribDivisor(4, 1);
 			glVertexAttribDivisor(5, 1);
 			glVertexAttribDivisor(6, 1);
 			glVertexAttribDivisor(7, 1);
@@ -194,6 +204,7 @@ namespace Learning2DEngine
 			shader->SetMatrix4("projection", Game::mainCamera.GetProjection());
 			shader->SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 
 			int textureUnitCount = 0;
 			int dataCount = 0;
@@ -218,6 +229,10 @@ namespace Learning2DEngine
 						glm::value_ptr(data.second[i]->color),
 						sizeof(dynamicData[dynamicDataCount].color));
 
+					std::memcpy(dynamicData[dynamicDataCount].uvMatrix,
+						glm::value_ptr(data.second[i]->uvMatrix),
+						sizeof(dynamicData[dynamicDataCount].uvMatrix));
+
 					dynamicData[dynamicDataCount].textureId = data.second[i]->IsUseTexture()
 						? textureUnitCount - 1 //because it is incremented before
 						: -1.0f;
@@ -231,23 +246,11 @@ namespace Learning2DEngine
 				// Check if the texture unit number is arrived to max or this is the last data
 				if (textureUnitCount >= maxTextureUnit || dataCount == spriteRenderData[rendererMode][layer].size())
 				{
-					glBindBuffer(GL_ARRAY_BUFFER, vboDynamicUV);
-					glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat2x4) * dynamicDataCount, NULL, GL_DYNAMIC_DRAW);
-
-					glm::mat2x4* a = new glm::mat2x4[dynamicDataCount];
-					for (size_t i = 0; i < dynamicDataCount; i++)
-					{
-						a[i] = L2DE_SPRITE_UV_DEFAULT;
-					}
-					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat2x4) * dynamicDataCount, a);
-
-					glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(MultiSpriteDynamicData) * dynamicDataCount, dynamicData);
 					glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, dynamicDataCount);
 
 					dynamicDataCount = 0;
 					textureUnitCount = 0;
-					delete[] a;
 				}
 			}
 
