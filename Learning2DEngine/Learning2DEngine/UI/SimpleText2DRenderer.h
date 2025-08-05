@@ -16,6 +16,8 @@ namespace Learning2DEngine
 		{
 			friend class Singleton<SimpleText2DRenderer>;
 		private:
+			GLuint vboDynamicPosition;
+
 			//int is the layer
 			std::map<Render::RendererMode, std::map<int, std::vector<Render::RenderData*>>> textRenderData;
 
