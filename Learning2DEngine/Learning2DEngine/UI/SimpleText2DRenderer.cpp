@@ -118,15 +118,8 @@ namespace Learning2DEngine
 					{
 						glBindTexture(GL_TEXTURE_2D, ch.textureId);
 
-						glm::mat4x2 position = glm::mat4x2(
-							vertices[0][0], vertices[0][1],
-							vertices[1][0], vertices[1][1],
-							vertices[2][0], vertices[2][1],
-							vertices[3][0], vertices[3][1]
-						);
-
 						glBindBuffer(GL_ARRAY_BUFFER, vboDynamicPosition);
-						glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4x2), &position[0][0]);
+						glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4x2), &vertices[0][0]);
 						glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 						glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

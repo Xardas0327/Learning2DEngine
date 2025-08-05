@@ -143,13 +143,13 @@ namespace Learning2DEngine
 										std::array<float, 33>{
 										// vertex 1
 										// position						// texture coordinates			// color
-										vertices[0][0], vertices[0][1], vertices[0][2], vertices[0][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+										vertices[0][0], vertices[0][1], 0.0f, 0.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
 											// vertex 2
-											vertices[1][0], vertices[1][1], vertices[1][2], vertices[1][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+											vertices[1][0], vertices[1][1], 1.0f, 0.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
 											// vertex 3
-											vertices[2][0], vertices[2][1], vertices[2][2], vertices[2][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+											vertices[2][0], vertices[2][1], 1.0f, 1.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
 											// vertex 4
-											vertices[3][0], vertices[3][1], vertices[3][2], vertices[3][3], textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+											vertices[3][0], vertices[3][1], 0.0f, 1.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
 											//Use camera view
 											static_cast<float>(textData->isUseCameraView)
 									});

@@ -21,12 +21,12 @@ namespace Learning2DEngine
             bool shouldRecalcSize;
             bool shouldRecalcVertices;
             glm::mat4 previousModelMatrix;
-            std::map<char, std::vector<glm::mat4>> characterVertices;
+            std::map<char, std::vector<glm::mat4x2>> characterVertices;
             glm::vec2 textSize;
             float lineSpacing;
 
             glm::vec2 CalculateTextSize() const;
-            std::map<char, std::vector<glm::mat4>> CalculateCharacterVertices() const;
+            std::map<char, std::vector<glm::mat4x2>> CalculateCharacterVertices() const;
             glm::mat2 GetRotationMatrix() const;
         public:
             glm::vec4 color;
@@ -69,8 +69,8 @@ namespace Learning2DEngine
 
             void SetLineSpacing(float lineSpacing);
 
-            const std::map<char, std::vector<glm::mat4>>& GetCharacterVertices();
-            std::map<char, std::vector<glm::mat4>> GetCharacterVertices() const;
+            const std::map<char, std::vector<glm::mat4x2>>& GetCharacterVertices();
+            std::map<char, std::vector<glm::mat4x2>> GetCharacterVertices() const;
 
             glm::vec2 GetTextSize();
             glm::vec2 GetTextSize() const;
