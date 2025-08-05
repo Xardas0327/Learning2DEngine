@@ -1,5 +1,8 @@
 #include "MultiText2DRenderer.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "../System/Game.h"
 #include "../System/ResourceManager.h"
 #include "../Render/ShaderConstant.h"
@@ -34,36 +37,73 @@ namespace Learning2DEngine
 
 		void MultiText2DRenderer::InitVao()
 		{
+			float textureCoords[] = {
+				0.0f, 0.0f,
+				1.0f, 0.0f,
+				1.0f, 1.0f,
+				0.0f, 1.0f,
+			};
+
+			unsigned int indices[] = {
+			   0, 1, 3,
+			   1, 2, 3
+			};
+
 			glGenVertexArrays(1, &vao);
 			glBindVertexArray(vao);
 
 			glGenBuffers(1, &ebo);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 6, NULL, GL_DYNAMIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+			glGenBuffers(1, &vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(textureCoords), textureCoords, GL_STATIC_DRAW);
+
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
 
 			glGenBuffers(1, &vboDynamicObject);
 			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData), NULL, GL_DYNAMIC_DRAW);
-
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, position));
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, textCoord));
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
+				sizeof(Text2DDynamicData),
+				(void*)offsetof(Text2DDynamicData, position));
 			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, color));
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE,
+				sizeof(Text2DDynamicData),
+				(void*)(offsetof(Text2DDynamicData, position) + sizeof(float) * 2));
 			glEnableVertexAttribArray(3);
-			glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, textureId));
+			glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE,
+				sizeof(Text2DDynamicData),
+				(void*)(offsetof(Text2DDynamicData, position) + sizeof(float) * 4));
 			glEnableVertexAttribArray(4);
-			glVertexAttribPointer(4, 1, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, isUseCameraView));
+			glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE,
+				sizeof(Text2DDynamicData),
+				(void*)(offsetof(Text2DDynamicData, position) + sizeof(float) * 6));
+			glEnableVertexAttribArray(5);
+			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, color));
+			glEnableVertexAttribArray(6);
+			glVertexAttribPointer(6, 1, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, textureId));
+			glEnableVertexAttribArray(7);
+			glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE, sizeof(Text2DDynamicData), (void*)offsetof(Text2DDynamicData, isUseCameraView));
 
+			glVertexAttribDivisor(1, 1);
+			glVertexAttribDivisor(2, 1);
+			glVertexAttribDivisor(3, 1);
+			glVertexAttribDivisor(4, 1);
+			glVertexAttribDivisor(5, 1);
+			glVertexAttribDivisor(6, 1);
+			glVertexAttribDivisor(7, 1);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 			maxObjectSize = 1;
-			dynamicData = new Text2DDynamicData[maxObjectSize * 4];
+			dynamicData = new Text2DDynamicData[maxObjectSize];
 		}
 
 		void MultiText2DRenderer::DestroyObject()
@@ -71,44 +111,6 @@ namespace Learning2DEngine
 			BaseMultiRenderer::DestroyObject();
 
 			textRenderData.clear();
-		}
-
-		void MultiText2DRenderer::CalcDynamicDataSize(size_t maxDynamicSize)
-		{
-			//if the size is not enough or too big, it will be reallocated.
-			if (maxDynamicSize > maxObjectSize || maxObjectSize > maxDynamicSize * 2)
-			{
-				//It allocates 20% more space, so that it does not have to allocate again
-				//if there are some dynamic renderers. 
-				maxObjectSize = static_cast<size_t>(
-					static_cast<float>(maxDynamicSize) * 1.2f
-					);
-
-				glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
-				//Multiply by 4, because an object has 4 vertices.
-				glBufferData(GL_ARRAY_BUFFER, sizeof(Text2DDynamicData) * maxObjectSize * 4, NULL, GL_DYNAMIC_DRAW);
-				glBindBuffer(GL_ARRAY_BUFFER, 0);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-				//Multiply by 6, because an object (2 triangles) has 6 indices.
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * maxObjectSize * 6, NULL, GL_DYNAMIC_DRAW);
-
-				delete[] dynamicData;
-				dynamicData = new Text2DDynamicData[maxObjectSize * 4];
-				unsigned int* dynamicIndices = new unsigned int[maxObjectSize * 6];
-
-				for (int i = 0; i < maxObjectSize; i++)
-				{
-					dynamicIndices[i * 6 + 0] = i * 4 + 0;
-					dynamicIndices[i * 6 + 1] = i * 4 + 1;
-					dynamicIndices[i * 6 + 2] = i * 4 + 3;
-					dynamicIndices[i * 6 + 3] = i * 4 + 1;
-					dynamicIndices[i * 6 + 4] = i * 4 + 2;
-					dynamicIndices[i * 6 + 5] = i * 4 + 3;
-				}
-				glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(float) * 6 * maxObjectSize, dynamicIndices);
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-				delete[] dynamicIndices;
-			}
 		}
 
 		void MultiText2DRenderer::SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData)
@@ -194,8 +196,7 @@ namespace Learning2DEngine
 			glBindVertexArray(vao);
 			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 
-			int dynamicSize = 0;
-			int objectCount = 0;
+			int dynamicDataCount = 0;
 			GLint textureUnitId = 0;
 			size_t elementCount = 0;
 			for (auto& characterData : textRenderData[rendererMode][layer])
@@ -204,59 +205,20 @@ namespace Learning2DEngine
 				glActiveTexture(GL_TEXTURE0 + textureUnitId);
 				glBindTexture(GL_TEXTURE_2D, characterData.first);
 
+				float tUnitId = static_cast<float>(textureUnitId);
 				for (auto& character : characterData.second)
 				{
-					float tUnitId = static_cast<float>(textureUnitId);
-					float isUseCameraView = static_cast<float>(std::get<2>(character));
+					std::memcpy(dynamicData[dynamicDataCount].position,
+						glm::value_ptr(std::get<0>(character)),
+						sizeof(dynamicData[dynamicDataCount].position));
 
-					dynamicData[dynamicSize].position[0] = std::get<0>(character)[0][0];
-					dynamicData[dynamicSize].position[1] = std::get<0>(character)[0][1];
-					dynamicData[dynamicSize].textCoord[0] = 0.0f;
-					dynamicData[dynamicSize].textCoord[1] = 0.0f;
-					dynamicData[dynamicSize].color[0] = std::get<1>(character)[0];
-					dynamicData[dynamicSize].color[1] = std::get<1>(character)[1];
-					dynamicData[dynamicSize].color[2] = std::get<1>(character)[2];
-					dynamicData[dynamicSize].color[3] = std::get<1>(character)[3];
-					dynamicData[dynamicSize].textureId = tUnitId;
-					dynamicData[dynamicSize].isUseCameraView = isUseCameraView;
-					++dynamicSize;
+					std::memcpy(dynamicData[dynamicDataCount].color,
+						glm::value_ptr(std::get<1>(character)),
+						sizeof(dynamicData[dynamicDataCount].color));
 
-					dynamicData[dynamicSize].position[0] = std::get<0>(character)[1][0];
-					dynamicData[dynamicSize].position[1] = std::get<0>(character)[1][1];
-					dynamicData[dynamicSize].textCoord[0] = 1.0f;
-					dynamicData[dynamicSize].textCoord[1] = 0.0f;
-					dynamicData[dynamicSize].color[0] = std::get<1>(character)[0];
-					dynamicData[dynamicSize].color[1] = std::get<1>(character)[1];
-					dynamicData[dynamicSize].color[2] = std::get<1>(character)[2];
-					dynamicData[dynamicSize].color[3] = std::get<1>(character)[3];
-					dynamicData[dynamicSize].textureId = tUnitId;
-					dynamicData[dynamicSize].isUseCameraView = isUseCameraView;
-					++dynamicSize;
-
-					dynamicData[dynamicSize].position[0] = std::get<0>(character)[2][0];
-					dynamicData[dynamicSize].position[1] = std::get<0>(character)[2][1];
-					dynamicData[dynamicSize].textCoord[0] = 1.0f;
-					dynamicData[dynamicSize].textCoord[1] = 1.0f;
-					dynamicData[dynamicSize].color[0] = std::get<1>(character)[0];
-					dynamicData[dynamicSize].color[1] = std::get<1>(character)[1];
-					dynamicData[dynamicSize].color[2] = std::get<1>(character)[2];
-					dynamicData[dynamicSize].color[3] = std::get<1>(character)[3];
-					dynamicData[dynamicSize].textureId = tUnitId;
-					dynamicData[dynamicSize].isUseCameraView = isUseCameraView;
-					++dynamicSize;
-
-					dynamicData[dynamicSize].position[0] = std::get<0>(character)[3][0];
-					dynamicData[dynamicSize].position[1] = std::get<0>(character)[3][1];
-					dynamicData[dynamicSize].textCoord[0] = 0.0f;
-					dynamicData[dynamicSize].textCoord[1] = 1.0f;
-					dynamicData[dynamicSize].color[0] = std::get<1>(character)[0];
-					dynamicData[dynamicSize].color[1] = std::get<1>(character)[1];
-					dynamicData[dynamicSize].color[2] = std::get<1>(character)[2];
-					dynamicData[dynamicSize].color[3] = std::get<1>(character)[3];
-					dynamicData[dynamicSize].textureId = tUnitId;
-					dynamicData[dynamicSize].isUseCameraView = isUseCameraView;
-					++dynamicSize;
-					++objectCount;
+					dynamicData[dynamicDataCount].textureId = tUnitId;
+					dynamicData[dynamicDataCount].isUseCameraView = static_cast<float>(std::get<2>(character));
+					++dynamicDataCount;
 				}
 				++textureUnitId;
 				++elementCount;
@@ -264,10 +226,10 @@ namespace Learning2DEngine
 				//Check if the texture unit number is arrived to max or this is the last data
 				if (textureUnitId >= maxTextureUnit || elementCount == textRenderData[rendererMode][layer].size())
 				{
-					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData) * dynamicSize, dynamicData);
-					glDrawElements(GL_TRIANGLES, 6 * objectCount, GL_UNSIGNED_INT, 0);
-					dynamicSize = 0;
-					objectCount = 0;
+					glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Text2DDynamicData) * dynamicDataCount, dynamicData);
+					glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, dynamicDataCount);
+
+					dynamicDataCount = 0;
 					textureUnitId = 0;
 				}
 			}

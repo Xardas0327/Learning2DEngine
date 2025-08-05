@@ -29,7 +29,6 @@ namespace Learning2DEngine
 			void InitShader() override;
 			void InitVao() override;
 			void DestroyObject() override;
-			void CalcDynamicDataSize(size_t maxDynamicSize) override;
 		public:
 			//int is the layer
 			void SetData(const std::map<Render::RendererMode, std::map<int, std::vector<Render::RenderData*>>>& renderData) override;
