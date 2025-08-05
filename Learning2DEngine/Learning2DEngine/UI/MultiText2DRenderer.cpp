@@ -140,16 +140,11 @@ namespace Learning2DEngine
 								for (auto& vertices : chPair.second)
 								{
 									actualLayerData[ch.textureId].emplace_back(
-										std::array<float, 33>{
-										// vertex 1
-										// position						// texture coordinates			// color
-										vertices[0][0], vertices[0][1], 0.0f, 0.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
-											// vertex 2
-											vertices[1][0], vertices[1][1], 1.0f, 0.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
-											// vertex 3
-											vertices[2][0], vertices[2][1], 1.0f, 1.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
-											// vertex 4
-											vertices[3][0], vertices[3][1], 0.0f, 1.0f, textData->color.r, textData->color.g, textData->color.b, textData->color.a,
+										std::array<float, 13>{
+											//Position
+											vertices[0][0], vertices[0][1], vertices[1][0], vertices[1][1], vertices[2][0], vertices[2][1], vertices[3][0], vertices[3][1],
+											//Color
+											textData->color.r, textData->color.g, textData->color.b, textData->color.a,
 											//Use camera view
 											static_cast<float>(textData->isUseCameraView)
 									});
@@ -217,32 +212,52 @@ namespace Learning2DEngine
 				{
 					float tUnitId = static_cast<float>(textureUnitId);
 
-					std::memcpy(&dynamicData[dynamicSize],
-						character.data(),
-						sizeof(float) * 8);
+					dynamicData[dynamicSize].position[0] = character[0];
+					dynamicData[dynamicSize].position[1] = character[1];
+					dynamicData[dynamicSize].textCoord[0] = 0.0f;
+					dynamicData[dynamicSize].textCoord[1] = 0.0f;
+					dynamicData[dynamicSize].color[0] = character[8];
+					dynamicData[dynamicSize].color[1] = character[9];
+					dynamicData[dynamicSize].color[2] = character[10];
+					dynamicData[dynamicSize].color[3] = character[11];
 					dynamicData[dynamicSize].textureId = tUnitId;
-					dynamicData[dynamicSize].isUseCameraView = character[32];
+					dynamicData[dynamicSize].isUseCameraView = character[12];
 					++dynamicSize;
 
-					std::memcpy(&dynamicData[dynamicSize],
-						character.data() + 8,
-						sizeof(float) * 8);
+					dynamicData[dynamicSize].position[0] = character[2];
+					dynamicData[dynamicSize].position[1] = character[3];
+					dynamicData[dynamicSize].textCoord[0] = 1.0f;
+					dynamicData[dynamicSize].textCoord[1] = 0.0f;
+					dynamicData[dynamicSize].color[0] = character[8];
+					dynamicData[dynamicSize].color[1] = character[9];
+					dynamicData[dynamicSize].color[2] = character[10];
+					dynamicData[dynamicSize].color[3] = character[11];
 					dynamicData[dynamicSize].textureId = tUnitId;
-					dynamicData[dynamicSize].isUseCameraView = character[32];
+					dynamicData[dynamicSize].isUseCameraView = character[12];
 					++dynamicSize;
 
-					std::memcpy(&dynamicData[dynamicSize],
-						character.data() + 16,
-						sizeof(float) * 8);
+					dynamicData[dynamicSize].position[0] = character[4];
+					dynamicData[dynamicSize].position[1] = character[5];
+					dynamicData[dynamicSize].textCoord[0] = 1.0f;
+					dynamicData[dynamicSize].textCoord[1] = 1.0f;
+					dynamicData[dynamicSize].color[0] = character[8];
+					dynamicData[dynamicSize].color[1] = character[9];
+					dynamicData[dynamicSize].color[2] = character[10];
+					dynamicData[dynamicSize].color[3] = character[11];
 					dynamicData[dynamicSize].textureId = tUnitId;
-					dynamicData[dynamicSize].isUseCameraView = character[32];
+					dynamicData[dynamicSize].isUseCameraView = character[12];
 					++dynamicSize;
 
-					std::memcpy(&dynamicData[dynamicSize],
-						character.data() + 24,
-						sizeof(float) * 8);
+					dynamicData[dynamicSize].position[0] = character[6];
+					dynamicData[dynamicSize].position[1] = character[7];
+					dynamicData[dynamicSize].textCoord[0] = 0.0f;
+					dynamicData[dynamicSize].textCoord[1] = 1.0f;
+					dynamicData[dynamicSize].color[0] = character[8];
+					dynamicData[dynamicSize].color[1] = character[9];
+					dynamicData[dynamicSize].color[2] = character[10];
+					dynamicData[dynamicSize].color[3] = character[11];
 					dynamicData[dynamicSize].textureId = tUnitId;
-					dynamicData[dynamicSize].isUseCameraView = character[32];
+					dynamicData[dynamicSize].isUseCameraView = character[12];
 					++dynamicSize;
 					++objectCount;
 				}
