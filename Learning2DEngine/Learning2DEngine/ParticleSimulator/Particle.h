@@ -8,6 +8,8 @@ namespace Learning2DEngine
 {
 	namespace ParticleSimulator
 	{
+#define L2DE_PARTICLE_UV_DEFAULT glm::mat2x4 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}
+
         struct Particle
         {
             System::Transform transform;
@@ -17,8 +19,18 @@ namespace Learning2DEngine
             float lifeTime;
             float speed;
 
+            /// <summary>
+            /// The texture coordinate order:
+            /// Top Left,
+            /// Top Right,
+            /// Bottom Right,
+            /// Bottom Left
+            /// </summary>
+            glm::mat2x4 uvMatrix;
+
             Particle() 
-                : transform(), velocity(0.0f), color(1.0f), lifeTime(0.0f), speed(1.0f)
+                : transform(), velocity(0.0f), color(1.0f), lifeTime(0.0f), speed(1.0f),
+                uvMatrix(L2DE_PARTICLE_UV_DEFAULT)
             {
             }
         };
