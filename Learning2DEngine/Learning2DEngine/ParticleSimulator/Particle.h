@@ -8,7 +8,7 @@ namespace Learning2DEngine
 {
 	namespace ParticleSimulator
 	{
-#define L2DE_PARTICLE_UV_DEFAULT glm::mat2x4 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}
+#define L2DE_PARTICLE_UV_DEFAULT glm::mat4x2 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}
 
         struct Particle
         {
@@ -26,7 +26,7 @@ namespace Learning2DEngine
             /// Bottom Right,
             /// Bottom Left
             /// </summary>
-            glm::mat2x4 uvMatrix;
+            glm::mat4x2 uvMatrix;
 
             Particle() 
                 : transform(), velocity(0.0f), color(1.0f), lifeTime(0.0f), speed(1.0f),

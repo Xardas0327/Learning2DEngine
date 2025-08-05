@@ -10,7 +10,7 @@ namespace Learning2DEngine
 {
 	namespace Render
 	{
-#define L2DE_SPRITE_UV_DEFAULT glm::mat2x4 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}
+#define L2DE_SPRITE_UV_DEFAULT glm::mat4x2 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}
 
 		class SpriteRenderData : public RenderData, public Texture2DContainer
 		{
@@ -25,7 +25,7 @@ namespace Learning2DEngine
 			/// Bottom Right,
 			/// Bottom Left
 			/// </summary>
-			glm::mat2x4 uvMatrix;
+			glm::mat4x2 uvMatrix;
 
 			SpriteRenderData(const System::Component* component, glm::vec4 color = glm::vec4(1.0f))
 				: RenderData(component), color(color), isUseCameraView(true),
