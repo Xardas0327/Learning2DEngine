@@ -72,10 +72,10 @@ class MultiText2DRenderer : public Render::BaseMultiRenderer<Text2DDynamicData>,
 **Private:**  
 **textRenderData**  
 The first int is the layer. 
-The map key is a GLuint, which a character texture id, and the value is a vector of array,
-which contains the position, the texture coordinates, the color and isUseCameraView.
+The map key is a GLuint, which a character texture id, and the value is a vector,
+which contains the position, the color and isUseCameraView.
 ```cpp
-std::map<Render::RendererMode, std::map<int, std::map<GLuint, std::vector<std::array<float, 33>>>>> textRenderData;
+std::map<Render::RendererMode, std::map<int, std::map<GLuint, std::vector<std::tuple<glm::mat4x2, glm::vec4, bool>>>>> textRenderData;
 ```
 
 ### Functions:
@@ -99,15 +99,6 @@ void InitVao() override;
 The Destroy() call it with or without mutex.
 ```cpp
 void DestroyObject() override;
-```
-
-**CalcDynamicDataSize**  
-If the current buffers' size is not enough or it is bigger twice than the maxDynamicSize,
-it will reallocate the buffers.  
-It allocates 20% more space in the buffer, so that it does not have to allocate again 
-if there are some dynamic renderers.
-```cpp
-void CalcDynamicDataSize(size_t maxDynamicSize) override;
 ```
 
 **Public:**  
@@ -194,6 +185,11 @@ class SimpleText2DRenderer : public Render::BaseRenderer, public System::Singlet
 
 ### Variables:
 **Private:**  
+**vboDynamicPosition**  
+```cpp
+GLuint vboDynamicPosition;
+```
+
 **textRenderData**  
 Note: the int is the layer.
 ```cpp
@@ -301,8 +297,7 @@ but textureId will be converted to int and the isUseCameraView will be converted
 ```cpp
 struct Text2DDynamicData
 {
-	float position[2];
-	float textCoord[2];
+	float position[8];
 	float color[4];
 	float textureId;
 	float isUseCameraView;
@@ -353,7 +348,7 @@ glm::mat4 previousModelMatrix;
 
 **characterVertices**
 ```cpp
-std::map<char, std::vector<glm::mat4>> characterVertices;
+std::map<char, std::vector<glm::mat4x2>> characterVertices;
 ```
 
 **textSize**
@@ -389,7 +384,7 @@ glm::vec2 CalculateTextSize() const;
 
 **CalculateCharacterVertices**
 ```cpp
-std::map<char, std::vector<glm::mat4>> CalculateCharacterVertices() const;
+std::map<char, std::vector<glm::mat4x2>> CalculateCharacterVertices() const;
 ```
 
 **GetRotationMatrix**
@@ -451,10 +446,10 @@ that's why it will not recalculate the character vertices again.
 In same situation the const version will always recalculate the character vertices.  
 Note: The previous model matrix is used to track the gameobject's transform has changed or not.
 ```cpp
-const std::map<char, std::vector<glm::mat4>>& GetCharacterVertices();
+const std::map<char, std::vector<glm::mat4x2>>& GetCharacterVertices();
 ```
 ```cpp
-std::map<char, std::vector<glm::mat4>> GetCharacterVertices() const;
+std::map<char, std::vector<glm::mat4x2>> GetCharacterVertices() const;
 ```
 
 **GetTextSize**  
