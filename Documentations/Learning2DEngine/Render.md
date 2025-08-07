@@ -62,7 +62,7 @@ class BaseMultiRenderer : public BaseRenderer
 **Protected:**  
 **vboDynamicObject**  
 It can contain the uploaded data for rendering like uv matrices,
-model matrices, colors and similar data.
+model matrices, colors and similar.
 ```cpp
 GLuint vboDynamicObject;
 ```
