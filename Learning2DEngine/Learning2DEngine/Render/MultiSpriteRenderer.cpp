@@ -36,12 +36,11 @@ namespace Learning2DEngine
 
 		void MultiSpriteRenderer::InitVao()
 		{
-			float vertices[] = {
-				// pos      // tex
-				1.0f, 1.0f, 1.0f, 1.0f,
-				1.0f, 0.0f, 1.0f, 0.0f,
-				0.0f, 0.0f, 0.0f, 0.0f,
-				0.0f, 1.0f, 0.0f, 1.0f,
+			float positions[] = {
+				0.0f, 0.0f,
+				1.0f, 0.0f,
+				1.0f, 1.0f,
+				0.0f, 1.0f,
 			};
 
 			unsigned int indices[] = {
@@ -52,51 +51,66 @@ namespace Learning2DEngine
 			glGenVertexArrays(1, &vao);
 			glBindVertexArray(vao);
 
-			glGenBuffers(1, &vbo);
-			glBindBuffer(GL_ARRAY_BUFFER, vbo);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
 			glGenBuffers(1, &ebo);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+			glGenBuffers(1, &vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
 
-			glGenBuffers(1, &vboDynamic);
-			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+			glGenBuffers(1, &vboDynamicObject);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 			glBufferData(GL_ARRAY_BUFFER, sizeof(MultiSpriteDynamicData), NULL, GL_DYNAMIC_DRAW);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)offsetof(MultiSpriteDynamicData, uvMatrix));
 			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE,
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
-				(void*)offsetof(MultiSpriteDynamicData, modelMatrix));
+				(void*)(offsetof(MultiSpriteDynamicData, uvMatrix) + sizeof(float) * 2));
 			glEnableVertexAttribArray(3);
-			glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE,
+			glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
-				(void*)(offsetof(MultiSpriteDynamicData, modelMatrix) + sizeof(float) * 4));
+				(void*)(offsetof(MultiSpriteDynamicData, uvMatrix) + sizeof(float) * 4));
 			glEnableVertexAttribArray(4);
-			glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE,
+			glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
-				(void*)(offsetof(MultiSpriteDynamicData, modelMatrix) + sizeof(float) * 8));
+				(void*)(offsetof(MultiSpriteDynamicData, uvMatrix) + sizeof(float) * 6));
 			glEnableVertexAttribArray(5);
 			glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
-				(void*)(offsetof(MultiSpriteDynamicData, modelMatrix) + sizeof(float) * 12));
+				(void*)offsetof(MultiSpriteDynamicData, modelMatrix));
 			glEnableVertexAttribArray(6);
 			glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
-				(void*)offsetof(MultiSpriteDynamicData, color));
+				(void*)(offsetof(MultiSpriteDynamicData, modelMatrix) + sizeof(float) * 4));
 			glEnableVertexAttribArray(7);
-			glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE,
+			glVertexAttribPointer(7, 4, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)(offsetof(MultiSpriteDynamicData, modelMatrix) + sizeof(float) * 8));
+			glEnableVertexAttribArray(8);
+			glVertexAttribPointer(8, 4, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)(offsetof(MultiSpriteDynamicData, modelMatrix) + sizeof(float) * 12));
+			glEnableVertexAttribArray(9);
+			glVertexAttribPointer(9, 4, GL_FLOAT, GL_FALSE,
+				sizeof(MultiSpriteDynamicData),
+				(void*)offsetof(MultiSpriteDynamicData, color));
+			glEnableVertexAttribArray(10);
+			glVertexAttribPointer(10, 1, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
 				(void*)offsetof(MultiSpriteDynamicData, textureId));
-			glEnableVertexAttribArray(8);
-			glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE,
+			glEnableVertexAttribArray(11);
+			glVertexAttribPointer(11, 1, GL_FLOAT, GL_FALSE,
 				sizeof(MultiSpriteDynamicData),
 				(void*)offsetof(MultiSpriteDynamicData, isUseCameraView));
 
+			glVertexAttribDivisor(1, 1);
 			glVertexAttribDivisor(2, 1);
 			glVertexAttribDivisor(3, 1);
 			glVertexAttribDivisor(4, 1);
@@ -104,6 +118,9 @@ namespace Learning2DEngine
 			glVertexAttribDivisor(6, 1);
 			glVertexAttribDivisor(7, 1);
 			glVertexAttribDivisor(8, 1);
+			glVertexAttribDivisor(9, 1);
+			glVertexAttribDivisor(10, 1);
+			glVertexAttribDivisor(11, 1);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
@@ -187,7 +204,7 @@ namespace Learning2DEngine
 			shader->SetMatrix4("projection", Game::mainCamera.GetProjection());
 			shader->SetMatrix4("view", Game::mainCamera.GetViewMatrix());
 			glBindVertexArray(vao);
-			glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 
 			int textureUnitCount = 0;
 			int dataCount = 0;
@@ -211,6 +228,10 @@ namespace Learning2DEngine
 					std::memcpy(dynamicData[dynamicDataCount].color,
 						glm::value_ptr(data.second[i]->color),
 						sizeof(dynamicData[dynamicDataCount].color));
+
+					std::memcpy(dynamicData[dynamicDataCount].uvMatrix,
+						glm::value_ptr(data.second[i]->uvMatrix),
+						sizeof(dynamicData[dynamicDataCount].uvMatrix));
 
 					dynamicData[dynamicDataCount].textureId = data.second[i]->IsUseTexture()
 						? textureUnitCount - 1 //because it is incremented before

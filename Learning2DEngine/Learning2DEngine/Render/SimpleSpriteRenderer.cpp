@@ -14,7 +14,7 @@ namespace Learning2DEngine
 	{
 
 		SimpleSpriteRenderer::SimpleSpriteRenderer()
-			: BaseRenderer(), spriteRenderData()
+			: BaseRenderer(), spriteRenderData(), vboDynamicUV(0)
 		{
 
 		}
@@ -32,12 +32,11 @@ namespace Learning2DEngine
 
 		void SimpleSpriteRenderer::InitVao()
 		{
-			float vertices[] = {
-				// pos      // tex
-				1.0f, 1.0f, 1.0f, 1.0f,
-				1.0f, 0.0f, 1.0f, 0.0f,
-				0.0f, 0.0f, 0.0f, 0.0f,
-				0.0f, 1.0f, 0.0f, 1.0f,
+			float positions[] = {
+				0.0f, 0.0f,
+				1.0f, 0.0f,
+				1.0f, 1.0f,
+				0.0f, 1.0f,
 			};
 
 			unsigned int indices[] = {
@@ -50,15 +49,20 @@ namespace Learning2DEngine
 			glGenBuffers(1, &ebo);
 			glBindVertexArray(vao);
 			glBindBuffer(GL_ARRAY_BUFFER, vbo);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 2, positions, GL_STATIC_DRAW);
+
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+			glGenBuffers(1, &vboDynamicUV);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicUV);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4x2), NULL, GL_DYNAMIC_DRAW);
+
 			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
@@ -68,6 +72,8 @@ namespace Learning2DEngine
 		void SimpleSpriteRenderer::DestroyObject()
 		{
 			BaseRenderer::DestroyObject();
+
+			glDeleteBuffers(1, &vboDynamicUV);
 
 			spriteRenderData.clear();
 		}
@@ -104,6 +110,10 @@ namespace Learning2DEngine
 					glActiveTexture(GL_TEXTURE0);
 					spriteData->GetTexture()->Bind();
 				}
+
+				glBindBuffer(GL_ARRAY_BUFFER, vboDynamicUV);
+				glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4x2), &spriteData->uvMatrix[0][0]);
+				glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 				glBindTexture(GL_TEXTURE_2D, 0);

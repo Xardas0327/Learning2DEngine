@@ -10,13 +10,13 @@ namespace Learning2DEngine
 		class BaseMultiRenderer : public BaseRenderer
 		{
 		protected:
-			GLuint vboDynamic;
+			GLuint vboDynamicObject;
 			size_t maxObjectSize;
 
 			TDynamicData* dynamicData;
 
 			BaseMultiRenderer()
-				: BaseRenderer(), vboDynamic(0), maxObjectSize(0), dynamicData(nullptr)
+				: BaseRenderer(), vboDynamicObject(0), maxObjectSize(0), dynamicData(nullptr)
 			{
 
 			}
@@ -25,8 +25,8 @@ namespace Learning2DEngine
 			{
 				BaseRenderer::DestroyObject();
 
-				if (vboDynamic)
-					glDeleteBuffers(1, &vboDynamic);
+				if (vboDynamicObject)
+					glDeleteBuffers(1, &vboDynamicObject);
 
 				if (dynamicData != nullptr)
 				{
@@ -45,7 +45,7 @@ namespace Learning2DEngine
 						static_cast<float>(maxDynamicSize) * 1.2f
 						);
 
-					glBindBuffer(GL_ARRAY_BUFFER, vboDynamic);
+					glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 					glBufferData(GL_ARRAY_BUFFER, sizeof(TDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
 					glBindBuffer(GL_ARRAY_BUFFER, 0);
 

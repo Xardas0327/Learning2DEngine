@@ -60,10 +60,11 @@ class BaseMultiRenderer : public BaseRenderer
 
 ### Variables:
 **Protected:**  
-**vboDynamic**  
-It contains the uploaded model matrices, colors and similar data of the renderable objects.
+**vboDynamicObject**  
+It can contain the uploaded data for rendering like uv matrices,
+model matrices, colors and similar.
 ```cpp
-GLuint vboDynamic;
+GLuint vboDynamicObject;
 ```
 
 **maxObjectSize**  
@@ -433,6 +434,7 @@ but textureId will be converted to int and the isUseCameraView will be converted
 ```cpp
 struct MultiSpriteDynamicData : public BaseColorDynamicData
 {
+    float uvMatrix[8];
     float textureId;
     float isUseCameraView;
 };
@@ -1524,6 +1526,11 @@ class SimpleSpriteRenderer : public BaseRenderer, public System::Singleton<Simpl
 
 ### Variables:
 **Private:**  
+**vboDynamicUV**   
+```cpp
+GLuint vboDynamicUV;
+```
+
 **spriteRenderData**  
 Note: The int is the layer.  
 ```cpp
@@ -1632,6 +1639,10 @@ class SpriteRenderData : public RenderData, public Texture2DContainer
 {...}
 ```
 
+### Macros:
+**L2DE_SPRITE_UV_DEFAULT**  
+Default values: `glm::mat4x2 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}`
+
 ### Variables:
 **Public:**  
 **color**
@@ -1644,6 +1655,13 @@ It shows, that the sprite should be rendered with camera view matrix or not.
 Note: default value is true.
 ```cpp
 bool isUseCameraView;
+```
+
+**uvMatrix**  
+The texture coordinate order:  
+Top Left, Top Right, Bottom Right, Bottom Left
+```cpp
+glm::mat4x2 uvMatrix;
 ```
 
 ### Functions:

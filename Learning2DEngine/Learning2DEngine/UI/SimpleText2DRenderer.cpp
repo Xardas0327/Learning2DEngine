@@ -15,7 +15,7 @@ namespace Learning2DEngine
 	namespace UI
 	{
 		SimpleText2DRenderer::SimpleText2DRenderer()
-			: BaseRenderer(), textRenderData()
+			: BaseRenderer(), textRenderData(), vboDynamicPosition(0)
 		{
 
 		}
@@ -34,25 +34,38 @@ namespace Learning2DEngine
 
 		void SimpleText2DRenderer::InitVao()
 		{
+			float textureCoords[] = {
+				0.0f, 0.0f,
+				1.0f, 0.0f,
+				1.0f, 1.0f,
+				0.0f, 1.0f,
+			};
+
 			unsigned int indices[] = {
 				0, 1, 3,
 				1, 2, 3
 			};
 
 			glGenVertexArrays(1, &vao);
-			glGenBuffers(1, &vbo);
-			glGenBuffers(1, &ebo);
 			glBindVertexArray(vao);
-			glBindBuffer(GL_ARRAY_BUFFER, vbo);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 4, NULL, GL_DYNAMIC_DRAW);
 
+			glGenBuffers(1, &ebo);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+			glGenBuffers(1, &vboDynamicPosition);
+			glBindBuffer(GL_ARRAY_BUFFER, vboDynamicPosition);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4x2), NULL, GL_DYNAMIC_DRAW);
+
 			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+			glGenBuffers(1, &vbo);
+			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(textureCoords), textureCoords, GL_STATIC_DRAW);
+
 			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
@@ -105,8 +118,8 @@ namespace Learning2DEngine
 					{
 						glBindTexture(GL_TEXTURE_2D, ch.textureId);
 
-						glBindBuffer(GL_ARRAY_BUFFER, vbo);
-						glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4), &vertices[0][0]);
+						glBindBuffer(GL_ARRAY_BUFFER, vboDynamicPosition);
+						glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(glm::mat4x2), &vertices[0][0]);
 						glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 						glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

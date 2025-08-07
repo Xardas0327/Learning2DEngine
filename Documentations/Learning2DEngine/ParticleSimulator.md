@@ -96,19 +96,48 @@ The particles representation in the Engine.
 ### Header:
 ```cpp
 struct Particle
-{
-    System::Transform transform;
-    glm::vec2 velocity;
-    glm::vec4 color;
-    //In seconds. The negative number is same as 0.
-    float lifeTime;
-    float speed;
+{...}
+```
 
-    Particle() 
-        : transform(), velocity(0.0f), color(1.0f), lifeTime(0.0f), speed(1.0f)
-    {
-    }
-};
+### Macros:
+**L2DE_PARTICLE_UV_DEFAULT**  
+Default values: `glm::mat4x2 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}`
+
+### Variables:
+**Public:**  
+**transform**  
+```cpp
+System::Transform transform;
+```
+
+**velocity**  
+```cpp
+glm::vec2 velocity;
+```
+
+**color**  
+```cpp
+ glm::vec4 color;
+```
+
+**lifeTime**  
+In seconds. The negative number is same as 0.
+```cpp
+float lifeTime;
+```
+
+**uvMatrix**  
+The texture coordinate order:  
+Top Left, Top Right, Bottom Right, Bottom Left
+```cpp
+glm::mat4x2 uvMatrix;
+```
+
+### Functions:
+**Public:**  
+**Particle**  
+```cpp
+Particle();
 ```
 
 ##
