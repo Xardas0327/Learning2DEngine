@@ -7,7 +7,7 @@
 
 #include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/Render/SimpleSpriteRenderComponent.h>
+#include <Learning2DEngine/Render/SpriteRenderComponent.h>
 
 const unsigned int INIT_SNAKE_LENGTH = 3;
 const glm::vec4 PLAYER_COLOR = glm::vec4(0.0f, 0.75f, 0.0f, 1.0f);
@@ -19,11 +19,11 @@ protected:
     const std::string textureId;
     const unsigned int initSize;
     const glm::vec4 color;
-    std::list<Learning2DEngine::Render::SimpleSpriteRenderComponent*> snake;
+    std::list<Learning2DEngine::Render::SpriteRenderComponent*> snake;
 
     PlayerController(Learning2DEngine::System::GameObject* gameObject, const std::string& textureId);
     void Destroy() override;
-    Learning2DEngine::Render::SimpleSpriteRenderComponent* CreateNewSnakeUnit(glm::vec2 position, glm::vec2 scale);
+    Learning2DEngine::Render::SpriteRenderComponent* CreateNewSnakeUnit(glm::vec2 position, glm::vec2 scale);
 public:
     void Regenerate(glm::ivec2 unitSize);
     void IncreaseSize(glm::vec2 headPosition, glm::ivec2 unitSize);
