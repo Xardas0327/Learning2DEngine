@@ -14,9 +14,7 @@ using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::UI;
 using namespace Learning2DEngine::Object;
-#if USE_IRRKLANG_SOUND_ENGINE
 using namespace irrklang;
-#endif
 
 GameController::GameController(GameObject* gameObject, const FontSizePair& fontSizePair, PostProcessData* postProcessData)
 	: UpdaterComponent(gameObject), LateUpdaterComponent(gameObject), Component(gameObject),
@@ -25,9 +23,7 @@ GameController::GameController(GameObject* gameObject, const FontSizePair& fontS
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
     shakeTime(0.0f), lifeText(nullptr), startText(nullptr), levelSelectorText(nullptr), winText(nullptr), retryText(nullptr),
     powerUpActivationEventItem(this), ballHitPlayerEventItem(this), ballHitBrickEventItem(this)
-#if USE_IRRKLANG_SOUND_ENGINE
     , soundEngine(nullptr)
-#endif
 {
 
 }
@@ -146,20 +142,16 @@ void GameController::Init()
         99);
 #endif
 
-#if USE_IRRKLANG_SOUND_ENGINE
     // Sounds
     soundEngine = createIrrKlangDevice();
     soundEngine->play2D("Assets/Sounds/breakout.mp3", true);
-#endif
 }
 
 void GameController::Destroy()
 {
     UpdaterComponent::Destroy();
     LateUpdaterComponent::Destroy();
-#if USE_IRRKLANG_SOUND_ENGINE
     soundEngine->drop();
-#endif
 }
 
 void GameController::Update()
@@ -482,16 +474,12 @@ void GameController::ActivatePowerUp(PowerUpType powerUpType)
         break;
     }
 
-#if USE_IRRKLANG_SOUND_ENGINE
     soundEngine->play2D("Assets/Sounds/powerup.wav", false);
-#endif
 }
 
 void GameController::BallHitPlayer()
 {
-#if USE_IRRKLANG_SOUND_ENGINE
     soundEngine->play2D("Assets/Sounds/bleep.wav", false);
-#endif
 }
 
 void GameController::BallHitBrick(BrickController* brick)
@@ -500,16 +488,12 @@ void GameController::BallHitBrick(BrickController* brick)
     {
         brick->gameObject->isActive = false;
         SpawnPowerUps(brick->gameObject->transform.GetPosition());
-#if USE_IRRKLANG_SOUND_ENGINE
         soundEngine->play2D("Assets/Sounds/bleep.mp3", false);
-#endif
     }
     else
     {
         shakeTime = 0.05f;
         postProcessData->shake = true;
-#if USE_IRRKLANG_SOUND_ENGINE
         soundEngine->play2D("Assets/Sounds/solid.wav", false);
-#endif
     }
 }

@@ -17,23 +17,14 @@ using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::Physics;
 using namespace Learning2DEngine::Animator;
 using namespace Learning2DEngine::DebugTool;
-#if USE_IRRKLANG_SOUND_ENGINE
 using namespace irrklang;
-#endif
 
-PlayerController::PlayerController(GameObject* gameObject
-#if USE_IRRKLANG_SOUND_ENGINE
-    , ISoundEngine* soundEngine
-#endif
-)
+PlayerController::PlayerController(GameObject* gameObject, ISoundEngine* soundEngine)
     : UpdaterComponent(gameObject), Component(gameObject),
     BoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
     onGround(false), detector(nullptr), eventItem(this),
     rightIdleAnimation(nullptr), leftIdleAnimation(nullptr), rightRunAnimation(nullptr), leftRunAnimation(nullptr),
-    currentState(PlayerAnimatioState::RIGHT_IDLE), rigidbody(nullptr), coinNumber(0), coinCollected()
-#if USE_IRRKLANG_SOUND_ENGINE
-    , soundEngine(soundEngine)
-#endif
+    currentState(PlayerAnimatioState::RIGHT_IDLE), rigidbody(nullptr), coinNumber(0), coinCollected(), soundEngine(soundEngine)
 {
 }
 
@@ -111,9 +102,7 @@ void PlayerController::Update()
     {
         rigidbody->velocity.y += -400.0f;
         onGround = false;
-#if USE_IRRKLANG_SOUND_ENGINE
         soundEngine->play2D("Assets/Sounds/jump.wav");
-#endif
     }
 
     if (Game::GetKeyboardButtonStatus(GLFW_KEY_A) == InputStatus::KEY_HOLD)
@@ -151,9 +140,7 @@ void PlayerController::OnCollision(const Collision& collision)
     {
         ++coinNumber;
         coin->gameObject->isActive = false;
-#if USE_IRRKLANG_SOUND_ENGINE
         soundEngine->play2D("Assets/Sounds/coin.wav");
-#endif
         coinCollected.Invoke();
     }
 }

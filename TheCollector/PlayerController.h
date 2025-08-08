@@ -1,11 +1,7 @@
 #pragma once
 
-#include "Macro.h"
-
 #include <glm/glm.hpp>
-#if USE_IRRKLANG_SOUND_ENGINE
 #include <irrklang/irrKlang.h>
-#endif
 #include <vector>
 
 #include <Learning2DEngine/Physics/Rigidbody.h>
@@ -61,15 +57,9 @@ protected:
     Learning2DEngine::Animator::AnimationController* rightRunAnimation;
     Learning2DEngine::Animator::AnimationController* leftRunAnimation;
     PlayerAnimatioState currentState;
-#if USE_IRRKLANG_SOUND_ENGINE
     irrklang::ISoundEngine* soundEngine;
-#endif
 
-    PlayerController(Learning2DEngine::System::GameObject* gameObject
-#if USE_IRRKLANG_SOUND_ENGINE
-        , irrklang::ISoundEngine* soundEngine
-#endif
-    );
+    PlayerController(Learning2DEngine::System::GameObject* gameObject, irrklang::ISoundEngine* soundEngine);
 
     void Init() override;
     void Destroy() override;

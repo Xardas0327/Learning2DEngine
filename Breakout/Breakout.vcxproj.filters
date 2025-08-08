@@ -69,9 +69,6 @@
     <ClInclude Include="Script\GameController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Script\Macro.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Script\BallController.cpp">
