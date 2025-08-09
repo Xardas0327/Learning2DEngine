@@ -37,15 +37,7 @@ void TheCollector::Init()
     resourceManager.LoadTextureFromFile("Bush4", "Assets/Images/Bushes/Bush4.png", basicSettings);
 
     resourceManager.LoadTextureFromFile("Coin", "Assets/Images/Coins/Coin.png", basicSettings);
-
-    resourceManager.LoadTextureFromFile("KnightRightIdle1", "Assets/Images/Knights/KnightRightIdle1.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightIdle2", "Assets/Images/Knights/KnightRightIdle2.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightIdle3", "Assets/Images/Knights/KnightRightIdle3.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightIdle4", "Assets/Images/Knights/KnightRightIdle4.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftIdle1", "Assets/Images/Knights/KnightLeftIdle1.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftIdle2", "Assets/Images/Knights/KnightLeftIdle2.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftIdle3", "Assets/Images/Knights/KnightLeftIdle3.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftIdle4", "Assets/Images/Knights/KnightLeftIdle4.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Knight", "Assets/Images/Knights/Knight.png", basicSettings);
 
     resourceManager.LoadTextureFromFile("KnightRightRun1", "Assets/Images/Knights/KnightRightRun1.png", basicSettings);
     resourceManager.LoadTextureFromFile("KnightRightRun2", "Assets/Images/Knights/KnightRightRun2.png", basicSettings);

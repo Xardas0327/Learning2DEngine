@@ -17,12 +17,16 @@
 const glm::vec2 PLAYER_SIZE(50.0f, 50.0f);
 const glm::vec2 PLAYER_START_POSITION(200.0f, 450.0f);
 
-const std::vector<std::string> PLAYER_RIGHT_IDLE_TEXTURE_IDS = {
-    "KnightRightIdle1", "KnightRightIdle2", "KnightRightIdle3", "KnightRightIdle4"
+const std::string PLAYER_TEXTURE_ID = "Knight";
+const int PLAYER_IDLE_ANIMATION_NUMBER = 4;
+const int PLAYER_RUN_ANIMATION_NUMBER = 16;
+const glm::mat4x2 PLAYER_ANIMATION_UV_OFFSET = glm::mat4x2{
+        0.03125f, 0.0703125f,
+        -0.03125f, 0.0703125f,
+        -0.03125f, -0.03125f,
+        0.03125f, -0.03125f,
 };
-const std::vector<std::string> PLAYER_LEFT_IDLE_TEXTURE_IDS = {
-    "KnightLeftIdle1", "KnightLeftIdle2", "KnightLeftIdle3", "KnightLeftIdle4"
-};
+
 const std::vector<std::string> PLAYER_RIGHT_RUN_TEXTURE_IDS = {
     "KnightRightRun1", "KnightRightRun2", "KnightRightRun3", "KnightRightRun4",
     "KnightRightRun5", "KnightRightRun6", "KnightRightRun7", "KnightRightRun8",

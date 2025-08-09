@@ -203,11 +203,8 @@
     <Image Include="Assets\Images\KnightIdle1.png" />
     <Image Include="Assets\Images\KnightLeft.png" />
     <Image Include="Assets\Images\KnightRight.png" />
+    <Image Include="Assets\Images\Knights\Knight.png" />
     <Image Include="Assets\Images\Knights\KnightLeft.png" />
-    <Image Include="Assets\Images\Knights\KnightLeftIdle1.png" />
-    <Image Include="Assets\Images\Knights\KnightLeftIdle2.png" />
-    <Image Include="Assets\Images\Knights\KnightLeftIdle3.png" />
-    <Image Include="Assets\Images\Knights\KnightLeftIdle4.png" />
     <Image Include="Assets\Images\Knights\KnightLeftRun1.png" />
     <Image Include="Assets\Images\Knights\KnightLeftRun10.png" />
     <Image Include="Assets\Images\Knights\KnightLeftRun11.png" />
@@ -225,10 +222,6 @@
     <Image Include="Assets\Images\Knights\KnightLeftRun8.png" />
     <Image Include="Assets\Images\Knights\KnightLeftRun9.png" />
     <Image Include="Assets\Images\Knights\KnightRight.png" />
-    <Image Include="Assets\Images\Knights\KnightRightIdle1.png" />
-    <Image Include="Assets\Images\Knights\KnightRightIdle2.png" />
-    <Image Include="Assets\Images\Knights\KnightRightIdle3.png" />
-    <Image Include="Assets\Images\Knights\KnightRightIdle4.png" />
     <Image Include="Assets\Images\Knights\KnightRightRun1.png" />
     <Image Include="Assets\Images\Knights\KnightRightRun10.png" />
     <Image Include="Assets\Images\Knights\KnightRightRun11.png" />
