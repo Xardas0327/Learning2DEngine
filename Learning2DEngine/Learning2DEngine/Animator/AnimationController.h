@@ -63,6 +63,11 @@ namespace Learning2DEngine
 				return currentTime;
 			}
 
+			inline size_t GetFrameCount() const
+			{
+				return frames.size();
+			}
+
 		};
 	}
 }
