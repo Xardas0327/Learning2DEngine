@@ -44,6 +44,7 @@ void CoinController::Init()
 	{
 		animationController->Add(std::move(AnimationFrame{
 			&ResourceManager::GetInstance().GetTexture(coinId),
+			L2DE_Texture2D_UV_DEFAULT,
 			0.1f
 			}));
 	}

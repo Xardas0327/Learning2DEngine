@@ -55,6 +55,7 @@ void PlayerController::Init()
     {
         rightIdleAnimation->Add(std::move(AnimationFrame{
             &ResourceManager::GetInstance().GetTexture(textureId),
+            L2DE_Texture2D_UV_DEFAULT,
             0.5f
             }));
     }
@@ -65,6 +66,7 @@ void PlayerController::Init()
     {
         leftIdleAnimation->Add(std::move(AnimationFrame{
             &ResourceManager::GetInstance().GetTexture(textureId),
+            L2DE_Texture2D_UV_DEFAULT,
             0.5f
             }));
     }
@@ -74,6 +76,7 @@ void PlayerController::Init()
     {
         rightRunAnimation->Add(std::move(AnimationFrame{
             &ResourceManager::GetInstance().GetTexture(textureId),
+            L2DE_Texture2D_UV_DEFAULT,
             0.25f
             }));
     }
@@ -83,6 +86,7 @@ void PlayerController::Init()
     {
         leftRunAnimation->Add(std::move(AnimationFrame{
             &ResourceManager::GetInstance().GetTexture(textureId),
+            L2DE_Texture2D_UV_DEFAULT,
             0.25f
             }));
     }

@@ -11,7 +11,7 @@ namespace Learning2DEngine
 {
 	namespace Animator
 	{
-		AnimationController::AnimationController(GameObject* gameObject, Texture2DContainer* textureContainer, bool isLoop)
+		AnimationController::AnimationController(GameObject* gameObject, UVTexture2DContainer* textureContainer, bool isLoop)
 			: LateUpdaterComponent(gameObject), Component(gameObject),
 			textureContainer(textureContainer), frames(), currentIndex(0), currentTime(0.0f), isPlaying(false),
 			speed(1.0f), isLoop(isLoop)
@@ -20,7 +20,7 @@ namespace Learning2DEngine
 			frames.reserve(2);
 		}
 
-		AnimationController::AnimationController(GameObject* gameObject, Texture2DContainer* textureContainer, size_t minFrameSize, bool isLoop)
+		AnimationController::AnimationController(GameObject* gameObject, UVTexture2DContainer* textureContainer, size_t minFrameSize, bool isLoop)
 			: LateUpdaterComponent(gameObject), Component(gameObject),
 			textureContainer(textureContainer), frames(), currentIndex(0), currentTime(0.0f), isPlaying(false),
 			speed(1.0f), isLoop(isLoop)
@@ -76,7 +76,7 @@ namespace Learning2DEngine
 
 				currentTime+= frames[currentIndex].time;
 			}
-			textureContainer->SetTexture(*frames[currentIndex].texture);
+			SetFrameByIndex();
 		}
 
 		void AnimationController::Play(bool reset)
@@ -85,7 +85,7 @@ namespace Learning2DEngine
 				currentIndex = 0;
 
 			currentTime = frames[currentIndex].time;
-			textureContainer->SetTexture(*frames[currentIndex].texture);
+			SetFrameByIndex();
 			isPlaying = true;
 		}
 
@@ -128,7 +128,7 @@ namespace Learning2DEngine
 		{
 			currentIndex = index;
 			currentTime = time < 0.0f ? frames[currentIndex].time : time;
-			textureContainer->SetTexture(*frames[currentIndex].texture);
+			SetFrameByIndex();
 		}
 	}
 }

@@ -258,6 +258,7 @@
     <ClInclude Include="Learning2DEngine\Render\SpriteRenderData.h" />
     <ClInclude Include="Learning2DEngine\Render\MultiSpriteRenderer.h" />
     <ClInclude Include="Learning2DEngine\Render\Texture2DContainer.h" />
+    <ClInclude Include="Learning2DEngine\Render\UVTexture2DContainer.h" />
     <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\BaseLateUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\BaseUpdaterComponent.h" />
