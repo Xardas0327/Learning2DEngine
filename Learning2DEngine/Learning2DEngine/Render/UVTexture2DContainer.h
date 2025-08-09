@@ -34,26 +34,6 @@ namespace Learning2DEngine
             {
 
             }
-
-            inline void FlipUVx()
-            {
-                uvMatrix = glm::mat4x2{
-                    uvMatrix[1].x, uvMatrix[1].y,
-                    uvMatrix[0].x, uvMatrix[0].y,
-                    uvMatrix[3].x, uvMatrix[3].y,
-                    uvMatrix[2].x, uvMatrix[2].y,
-                };
-			}
-
-            inline void FlipUVy()
-            {
-                uvMatrix = glm::mat4x2{
-                    uvMatrix[3].x, uvMatrix[3].y,
-                    uvMatrix[2].x, uvMatrix[2].y,
-                    uvMatrix[1].x, uvMatrix[1].y,
-                    uvMatrix[0].x, uvMatrix[0].y,
-                };
-            }
         };
     }
 }

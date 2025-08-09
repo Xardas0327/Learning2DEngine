@@ -280,6 +280,7 @@
     <ClInclude Include="Learning2DEngine\System\IKeyboardRefresher.h" />
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponentHandler.h" />
+    <ClInclude Include="Learning2DEngine\System\Math.h" />
     <ClInclude Include="Learning2DEngine\System\Random.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\ResolutionEventItem.h" />
     <ClInclude Include="Learning2DEngine\System\ResourceManager.h" />

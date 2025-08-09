@@ -4,6 +4,7 @@
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/InputStatus.h>
 #include <Learning2DEngine/System/ResourceManager.h>
+#include <Learning2DEngine/System/Math.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
 
 #if L2DE_DEBUG
@@ -64,16 +65,9 @@ void PlayerController::Init()
             0.5f
         });
 
-        uvMatrix = glm::mat4x2{
-            uvMatrix[1][0], uvMatrix[1][1],
-			uvMatrix[0][0], uvMatrix[0][1],
-            uvMatrix[3][0], uvMatrix[3][1],
-			uvMatrix[2][0], uvMatrix[2][1]
-        };
-
         leftIdleAnimation->Add(std::move(AnimationFrame{
             &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
-            uvMatrix,
+            Math::FlipByX(uvMatrix),
             0.5f
             }));
 	}
@@ -99,15 +93,9 @@ void PlayerController::Init()
                 0.25f
                 });
 
-            uvMatrix = glm::mat4x2{
-                uvMatrix[1][0], uvMatrix[1][1],
-                uvMatrix[0][0], uvMatrix[0][1],
-                uvMatrix[3][0], uvMatrix[3][1],
-                uvMatrix[2][0], uvMatrix[2][1]
-            };
             leftRunAnimation->Add(std::move(AnimationFrame{
                 &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
-                uvMatrix,
+                Math::FlipByX(uvMatrix),
                 0.25f
                 }));
         }
