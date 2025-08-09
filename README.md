@@ -7,9 +7,6 @@ I have relearned the C++ and I have learned the OpenGL form
 [learnopengl.com](https://learnopengl.com/).  
 But I think the Game Engine Architecture book, the Unity Engine and The Cherno also influenced me a lot.
 
-Futhermore, I know lots of features are missing,
-some features could be better and why it is Visual Studio Project and not
-a CMake project.
 I plan to continue its developing. But I think one full life is not enough
 for a huge project like a Game Engine (mostly, if I can work on it only in my free time)
 and we have to accept it, that similar projects will never be completed, just stopped
