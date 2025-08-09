@@ -8,10 +8,8 @@
 #include <Learning2DEngine/System/Component.h>
 
 const glm::vec2 COIN_SIZE(50.0f, 50.0f);
-const std::vector<std::string> COIN_TEXTURE_IDS = {
-	"Coin1", "Coin2", "Coin3", "Coin4", "Coin5", "Coin6",
-	"Coin7", "Coin8", "Coin9", "Coin10", "Coin11", "Coin12",
-};
+const std::string COIN_TEXTURE_ID = "Coin";
+const int COIN_ANIMATION_NUMBER = 12;
 
 class CoinController : public Learning2DEngine::System::Component
 {
