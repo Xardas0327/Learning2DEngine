@@ -73,7 +73,7 @@ void LateUpdate() override;
 ```
 
 **SetFrameByIndex**  
-It is called, when it update the current frame.
+It is called, when it updates the current frame.
 ```cpp
 inline void SetFrameByIndex();
 ```
