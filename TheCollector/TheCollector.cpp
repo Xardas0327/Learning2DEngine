@@ -27,17 +27,11 @@ void TheCollector::Init()
     basicSettings.wrapS = GL_CLAMP_TO_EDGE;
     basicSettings.wrapT = GL_CLAMP_TO_EDGE;
 
-    resourceManager.LoadTextureFromFile("SmallPlatform", "Assets/Images/Platforms/SmallPlatform.png", basicSettings);
-    resourceManager.LoadTextureFromFile("LargePlatform", "Assets/Images/Platforms/LargePlatform.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Ground1", "Assets/Images/Grounds/Ground1.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Ground2", "Assets/Images/Grounds/Ground2.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Bush1", "Assets/Images/Bushes/Bush1.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Bush2", "Assets/Images/Bushes/Bush2.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Bush3", "Assets/Images/Bushes/Bush3.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Bush4", "Assets/Images/Bushes/Bush4.png", basicSettings);
-
-    resourceManager.LoadTextureFromFile("Coin", "Assets/Images/Coins/Coin.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Knight", "Assets/Images/Knights/Knight.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Bushes", "Assets/Images/Bushes.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Coin", "Assets/Images/Coin.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Grounds", "Assets/Images/Grounds.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Knight", "Assets/Images/Knight.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Platforms", "Assets/Images/Platforms.png", basicSettings);
 
     //Background color
     renderManager.SetClearColor(0.0f, 0.6f, 0.9f, 1.0f);

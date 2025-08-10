@@ -186,30 +186,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\Images\Bush1.png" />
-    <Image Include="Assets\Images\Bush2.png" />
-    <Image Include="Assets\Images\Bush3.png" />
-    <Image Include="Assets\Images\Bush4.png" />
-    <Image Include="Assets\Images\Bushes\Bush1.png" />
-    <Image Include="Assets\Images\Bushes\Bush2.png" />
-    <Image Include="Assets\Images\Bushes\Bush3.png" />
-    <Image Include="Assets\Images\Bushes\Bush4.png" />
+    <Image Include="Assets\Images\Bushes.png" />
     <Image Include="Assets\Images\Coin.png" />
-    <Image Include="Assets\Images\Coins\Coin.png" />
-    <Image Include="Assets\Images\Ground1.png" />
-    <Image Include="Assets\Images\Ground2.png" />
-    <Image Include="Assets\Images\Grounds\Ground1.png" />
-    <Image Include="Assets\Images\Grounds\Ground2.png" />
-    <Image Include="Assets\Images\KnightIdle1.png" />
-    <Image Include="Assets\Images\KnightLeft.png" />
-    <Image Include="Assets\Images\KnightRight.png" />
-    <Image Include="Assets\Images\Knights\Knight.png" />
-    <Image Include="Assets\Images\Knights\KnightLeft.png" />
-    <Image Include="Assets\Images\Knights\KnightRight.png" />
-    <Image Include="Assets\Images\LargePlatform.png" />
-    <Image Include="Assets\Images\Platforms\LargePlatform.png" />
-    <Image Include="Assets\Images\Platforms\SmallPlatform.png" />
-    <Image Include="Assets\Images\SmallPlatform.png" />
+    <Image Include="Assets\Images\Grounds.png" />
+    <Image Include="Assets\Images\Knight.png" />
+    <Image Include="Assets\Images\Platforms.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\PixelOperator8.ttf" />

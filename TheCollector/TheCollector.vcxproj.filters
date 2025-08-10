@@ -73,76 +73,22 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets\Images\LargePlatform.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\SmallPlatform.png">
+    <Image Include="Assets\Images\Coin.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Assets\Images\Coin.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Assets\Images\Bush1.png">
+    <Image Include="Assets\Images\Knight.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Assets\Images\Bush2.png">
+    <Image Include="Assets\Images\Platforms.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Assets\Images\Bush3.png">
+    <Image Include="Assets\Images\Bushes.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Assets\Images\Bush4.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Ground1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Ground2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\KnightIdle1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\KnightLeft.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\KnightRight.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Bushes\Bush1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Bushes\Bush2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Bushes\Bush3.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Bushes\Bush4.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Platforms\LargePlatform.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Platforms\SmallPlatform.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Grounds\Ground1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Grounds\Ground2.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Knights\KnightLeft.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Knights\KnightRight.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Coins\Coin.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Knights\Knight.png">
+    <Image Include="Assets\Images\Grounds.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
