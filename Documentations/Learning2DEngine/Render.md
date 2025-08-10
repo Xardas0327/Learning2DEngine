@@ -25,6 +25,7 @@
 - [Texture2D](Render.md#texture2d)
 - [Texture2DContainer](Render.md#texture2dcontainer)
 - [Texture2DSettings](Render.md#texture2dsettings)
+- [UVTexture2DContainer](Render.md#uvtexture2dcontainer)
 
 ##
 ## BaseColorDynamicData
@@ -1635,13 +1636,9 @@ It contains the data, which is important to render the sprite.
 
 ### Header:
 ```cpp
-class SpriteRenderData : public RenderData, public Texture2DContainer
+class SpriteRenderData : public RenderData, public UVTexture2DContainer
 {...}
 ```
-
-### Macros:
-**L2DE_SPRITE_UV_DEFAULT**  
-Default values: `glm::mat4x2 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}`
 
 ### Variables:
 **Public:**  
@@ -1655,13 +1652,6 @@ It shows, that the sprite should be rendered with camera view matrix or not.
 Note: default value is true.
 ```cpp
 bool isUseCameraView;
-```
-
-**uvMatrix**  
-The texture coordinate order:  
-Top Left, Top Right, Bottom Right, Bottom Left
-```cpp
-glm::mat4x2 uvMatrix;
 ```
 
 ### Functions:
@@ -1864,4 +1854,40 @@ struct Texture2DSettings
 };
 ```
 
-            
+##
+## UVTexture2DContainer
+### Source Code:
+[UVTexture2DContainer.h](../../Learning2DEngine/Learning2DEngine/Render/UVTexture2DContainer.h)  
+
+### Description:
+It is a texture container with UV coordinates.  
+
+### Header:
+```cpp
+class UVTexture2DContainer : public Texture2DContainer
+{...}
+```
+
+### Macros:
+**L2DE_Texture2D_UV_DEFAULT**  
+Default values: `glm::mat4x2 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}`
+
+### Variables:
+**Public:**  
+**uvMatrix**  
+The texture coordinate order:  
+Top Left, Top Right, Bottom Right, Bottom Left
+```cpp
+glm::mat4x2 uvMatrix;
+```
+
+### Functions:
+**Public:**  
+**UVTexture2DContainer**  
+It will not copy the texture, it will use texture reference.  
+```cpp
+UVTexture2DContainer(glm::mat4x2 uvMatrix = L2DE_Texture2D_UV_DEFAULT);
+```
+```cpp
+UVTexture2DContainer(const Texture2D& texture, glm::mat4x2 uvMatrix = L2DE_Texture2D_UV_DEFAULT);
+```
