@@ -10,8 +10,8 @@
 
 ### Description:
 It can control an animation.  
-It has to get a `Texture2DContainer` in its contructor, because it will change the textures on that
-`Texture2DContainer`.
+It has to get a `UVTexture2DContainer` in its contructor, because it will change the texture and the UV
+on that `UVTexture2DContainer`.
 
 ### Header:
 ```cpp
@@ -23,7 +23,7 @@ class AnimationController : public Learning2DEngine::System::LateUpdaterComponen
 **Private:**  
 **textureContainer**  
 ```cpp
-Render::Texture2DContainer* textureContainer;
+Render::UVTexture2DContainer* textureContainer;
 ```
 
 **frames**  
@@ -61,15 +61,21 @@ bool isLoop;
 **Protected:**  
 **AnimationController**  
 ```cpp
-AnimationController(System::GameObject* gameObject, Render::Texture2DContainer* textureContainer, bool isLoop = false);
+AnimationController(System::GameObject* gameObject, Render::UVTexture2DContainer* textureContainer, bool isLoop = false);
 ```
 ```cpp
-AnimationController(System::GameObject* gameObject, Render::Texture2DContainer* textureContainer, size_t minFrameSize, bool isLoop = false);
+AnimationController(System::GameObject* gameObject, Render::UVTexture2DContainer* textureContainer, size_t minFrameSize, bool isLoop = false);
 ```
 
 **LateUpdate**  
 ```cpp
 void LateUpdate() override;
+```
+
+**SetFrameByIndex**  
+It is called, when it updates the current frame.
+```cpp
+inline void SetFrameByIndex();
 ```
 
 **Public:**  
@@ -117,7 +123,7 @@ void JumpToFrame(size_t index, float time = -1.0f);
 
 **GetCurrentFrame**  
 ```cpp
-const inline AnimationFrame& GetCurrentFrame() const;
+inline const AnimationFrame& GetCurrentFrame() const;
 ```
 
 **GetCurrentIndex**  
@@ -128,6 +134,11 @@ inline size_t GetCurrentIndex() const;
 **GetCurrentTime**  
 ```cpp
 inline float GetCurrentTime() const;
+```
+
+**GetFrameCount**  
+```cpp
+inline size_t GetFrameCount() const;
 ```
 
 ##
@@ -143,6 +154,14 @@ It contains an animation frame.
 struct AnimationFrame
 {
 	Render::Texture2D* texture;
+	/// <summary>
+	/// The texture coordinate order:
+	/// Top Left,
+	/// Top Right,
+	/// Bottom Right,
+	/// Bottom Left
+	/// </summary>
+	glm::mat4x2 uvMatrix;
 	float time;
 };
 ```

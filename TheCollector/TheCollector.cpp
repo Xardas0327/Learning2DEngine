@@ -27,70 +27,11 @@ void TheCollector::Init()
     basicSettings.wrapS = GL_CLAMP_TO_EDGE;
     basicSettings.wrapT = GL_CLAMP_TO_EDGE;
 
-    resourceManager.LoadTextureFromFile("SmallPlatform", "Assets/Images/Platforms/SmallPlatform.png", basicSettings);
-    resourceManager.LoadTextureFromFile("LargePlatform", "Assets/Images/Platforms/LargePlatform.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Ground1", "Assets/Images/Grounds/Ground1.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Ground2", "Assets/Images/Grounds/Ground2.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Bush1", "Assets/Images/Bushes/Bush1.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Bush2", "Assets/Images/Bushes/Bush2.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Bush3", "Assets/Images/Bushes/Bush3.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Bush4", "Assets/Images/Bushes/Bush4.png", basicSettings);
-
-    resourceManager.LoadTextureFromFile("Coin1", "Assets/Images/Coins/Coin1.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Coin2", "Assets/Images/Coins/Coin2.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Coin3", "Assets/Images/Coins/Coin3.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Coin4", "Assets/Images/Coins/Coin4.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Coin5", "Assets/Images/Coins/Coin5.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Coin6", "Assets/Images/Coins/Coin6.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Coin7", "Assets/Images/Coins/Coin7.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Coin8", "Assets/Images/Coins/Coin8.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Coin9", "Assets/Images/Coins/Coin9.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Coin10", "Assets/Images/Coins/Coin10.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Coin11", "Assets/Images/Coins/Coin11.png", basicSettings);
-    resourceManager.LoadTextureFromFile("Coin12", "Assets/Images/Coins/Coin12.png", basicSettings);
-
-    resourceManager.LoadTextureFromFile("KnightRightIdle1", "Assets/Images/Knights/KnightRightIdle1.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightIdle2", "Assets/Images/Knights/KnightRightIdle2.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightIdle3", "Assets/Images/Knights/KnightRightIdle3.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightIdle4", "Assets/Images/Knights/KnightRightIdle4.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftIdle1", "Assets/Images/Knights/KnightLeftIdle1.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftIdle2", "Assets/Images/Knights/KnightLeftIdle2.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftIdle3", "Assets/Images/Knights/KnightLeftIdle3.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftIdle4", "Assets/Images/Knights/KnightLeftIdle4.png", basicSettings);
-
-    resourceManager.LoadTextureFromFile("KnightRightRun1", "Assets/Images/Knights/KnightRightRun1.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun2", "Assets/Images/Knights/KnightRightRun2.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun3", "Assets/Images/Knights/KnightRightRun3.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun4", "Assets/Images/Knights/KnightRightRun4.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun5", "Assets/Images/Knights/KnightRightRun5.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun6", "Assets/Images/Knights/KnightRightRun6.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun7", "Assets/Images/Knights/KnightRightRun7.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun8", "Assets/Images/Knights/KnightRightRun8.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun9", "Assets/Images/Knights/KnightRightRun9.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun10", "Assets/Images/Knights/KnightRightRun10.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun11", "Assets/Images/Knights/KnightRightRun11.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun12", "Assets/Images/Knights/KnightRightRun12.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun13", "Assets/Images/Knights/KnightRightRun13.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun14", "Assets/Images/Knights/KnightRightRun14.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun15", "Assets/Images/Knights/KnightRightRun15.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightRightRun16", "Assets/Images/Knights/KnightRightRun16.png", basicSettings);
-
-    resourceManager.LoadTextureFromFile("KnightLeftRun1", "Assets/Images/Knights/KnightLeftRun1.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun2", "Assets/Images/Knights/KnightLeftRun2.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun3", "Assets/Images/Knights/KnightLeftRun3.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun4", "Assets/Images/Knights/KnightLeftRun4.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun5", "Assets/Images/Knights/KnightLeftRun5.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun6", "Assets/Images/Knights/KnightLeftRun6.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun7", "Assets/Images/Knights/KnightLeftRun7.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun8", "Assets/Images/Knights/KnightLeftRun8.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun9", "Assets/Images/Knights/KnightLeftRun9.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun10", "Assets/Images/Knights/KnightLeftRun10.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun11", "Assets/Images/Knights/KnightLeftRun11.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun12", "Assets/Images/Knights/KnightLeftRun12.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun13", "Assets/Images/Knights/KnightLeftRun13.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun14", "Assets/Images/Knights/KnightLeftRun14.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun15", "Assets/Images/Knights/KnightLeftRun15.png", basicSettings);
-    resourceManager.LoadTextureFromFile("KnightLeftRun16", "Assets/Images/Knights/KnightLeftRun16.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Bushes", "Assets/Images/Bushes.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Coin", "Assets/Images/Coin.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Grounds", "Assets/Images/Grounds.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Knight", "Assets/Images/Knight.png", basicSettings);
+    resourceManager.LoadTextureFromFile("Platforms", "Assets/Images/Platforms.png", basicSettings);
 
     //Background color
     renderManager.SetClearColor(0.0f, 0.6f, 0.9f, 1.0f);

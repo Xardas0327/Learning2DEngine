@@ -40,10 +40,11 @@ MovingPlatformController* MovingPlatformController::Create(
 	glm::vec2 startPosition,
 	glm::vec2 endPosition,
 	const std::string& textureId,
+	const glm::mat4x2& uvMatrix,
 	float speed,
 	glm::vec2 size)
 {
-	auto platform = PlatformController::Create(startPosition, textureId, size);
+	auto platform = PlatformController::Create(startPosition, textureId, uvMatrix, size);
 
 	return platform->gameObject->AddComponent<MovingPlatformController>(endPosition, speed);
 }

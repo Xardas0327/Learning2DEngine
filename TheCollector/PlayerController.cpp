@@ -4,6 +4,7 @@
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/InputStatus.h>
 #include <Learning2DEngine/System/ResourceManager.h>
+#include <Learning2DEngine/System/Math.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
 
 #if L2DE_DEBUG
@@ -39,10 +40,7 @@ void PlayerController::Init()
     gameObject->AddComponent<DebugPosition>();
 #endif
 
-    auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
-        RendererMode::RENDER,
-        ResourceManager::GetInstance().GetTexture(PLAYER_RIGHT_IDLE_TEXTURE_IDS[0])
-    );
+    auto renderer = gameObject->AddComponent<SpriteRenderComponent>(RendererMode::RENDER);
     rigidbody = gameObject->AddComponent<Rigidbody>(glm::vec2(0.0f, 0.0f), true);
     rigidbody->gravityMultiplier = 50.0f;
     InitRigidbody();
@@ -50,42 +48,58 @@ void PlayerController::Init()
     detector = gameObject->AddComponent<PlatformDetectorController>(glm::vec2(30.0f, 5.0f), glm::vec2(10.0f, 45.0f));
     detector->eventhandler.Add(&eventItem);
 
-    rightIdleAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_RIGHT_IDLE_TEXTURE_IDS.size(), true);
-    for (auto& textureId : PLAYER_RIGHT_IDLE_TEXTURE_IDS)
+    rightIdleAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_IDLE_ANIMATION_NUMBER, true);
+    leftIdleAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_IDLE_ANIMATION_NUMBER, true);
+    for(int i = 0; i < PLAYER_IDLE_ANIMATION_NUMBER; ++i)
     {
-        rightIdleAnimation->Add(std::move(AnimationFrame{
-            &ResourceManager::GetInstance().GetTexture(textureId),
+        auto uvMatrix = glm::mat4x2{
+            i / 8.0f, 0.0f,
+            (i + 1.0f) / 8.0f, 0.0f,
+            (i + 1.0f) / 8.0f, 0.25f,
+            i / 8.0f, 0.25f
+        };
+		uvMatrix += PLAYER_ANIMATION_UV_OFFSET;
+        rightIdleAnimation->Add(AnimationFrame{
+            &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+            uvMatrix,
+            0.5f
+        });
+
+        leftIdleAnimation->Add(std::move(AnimationFrame{
+            &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+            Math::FlipByX(uvMatrix),
             0.5f
             }));
-    }
+	}
     rightIdleAnimation->Play();
 
-    leftIdleAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_LEFT_IDLE_TEXTURE_IDS.size(), true);
-    for (auto& textureId : PLAYER_LEFT_IDLE_TEXTURE_IDS)
-    {
-        leftIdleAnimation->Add(std::move(AnimationFrame{
-            &ResourceManager::GetInstance().GetTexture(textureId),
-            0.5f
-            }));
-    }
+    rightRunAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_RUN_ANIMATION_NUMBER, true);
+    leftRunAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_RUN_ANIMATION_NUMBER, true);
 
-    rightRunAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_RIGHT_RUN_TEXTURE_IDS.size(), true);
-    for (auto& textureId : PLAYER_RIGHT_RUN_TEXTURE_IDS)
+    for(int j = 0; j < 2; ++j)
     {
-        rightRunAnimation->Add(std::move(AnimationFrame{
-            &ResourceManager::GetInstance().GetTexture(textureId),
-            0.25f
-            }));
-    }
+        for (int i = 0; i < PLAYER_RUN_ANIMATION_NUMBER / 2; ++i)
+        {
+            auto uvMatrix = glm::mat4x2{
+                i / 8.0f,           0.5f + 0.25f * j,
+                (i + 1.0f) / 8.0f,  0.5f + 0.25f * j,
+                (i + 1.0f) / 8.0f,  0.75f + 0.25f * j,
+                i / 8.0f,           0.75f + 0.25f * j
+            };
+            uvMatrix += PLAYER_ANIMATION_UV_OFFSET;
+            rightRunAnimation->Add(AnimationFrame{
+                &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+                uvMatrix,
+                0.25f
+                });
 
-    leftRunAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_LEFT_RUN_TEXTURE_IDS.size(), true);
-    for (auto& textureId : PLAYER_LEFT_RUN_TEXTURE_IDS)
-    {
-        leftRunAnimation->Add(std::move(AnimationFrame{
-            &ResourceManager::GetInstance().GetTexture(textureId),
-            0.25f
-            }));
-    }
+            leftRunAnimation->Add(std::move(AnimationFrame{
+                &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+                Math::FlipByX(uvMatrix),
+                0.25f
+                }));
+        }
+	}
 }
 
 void PlayerController::Destroy()

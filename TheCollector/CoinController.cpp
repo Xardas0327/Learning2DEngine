@@ -33,20 +33,25 @@ void CoinController::Init()
 	gameObject->AddComponent<DebugPosition>();
 #endif
 
-	auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
-		RendererMode::RENDER,
-		ResourceManager::GetInstance().GetTexture(COIN_TEXTURE_IDS[0])
-	);
+	auto renderer = gameObject->AddComponent<SpriteRenderComponent>(RendererMode::RENDER);
 
-	auto animationController = gameObject->AddComponent<AnimationController>(&renderer->data, COIN_TEXTURE_IDS.size(), true);
+	auto animationController = gameObject->AddComponent<AnimationController>(&renderer->data, COIN_ANIMATION_NUMBER, true);
 	animationController->speed = speed;
-	for (auto& coinId : COIN_TEXTURE_IDS)
+	
+	for(int i = 0; i < COIN_ANIMATION_NUMBER; ++i)
 	{
-		animationController->Add(std::move(AnimationFrame{
-			&ResourceManager::GetInstance().GetTexture(coinId),
+		animationController->Add(AnimationFrame{
+			&ResourceManager::GetInstance().GetTexture(COIN_TEXTURE_ID),
+			glm::mat4x2 {
+				i / 12.0f, 0.0f,
+				(i + 1.0f) / 12.0f, 0.0f,
+				(i + 1.0f) / 12.0f, 1.0f,
+				i / 12.0f, 1.0f
+			},
 			0.1f
-			}));
+			});
 	}
+
 	animationController->Play();
 }
 

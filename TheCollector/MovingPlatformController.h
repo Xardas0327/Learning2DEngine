@@ -29,6 +29,7 @@ public:
 		glm::vec2 startPosition,
 		glm::vec2 endPosition,
 		const std::string& textureId,
+		const glm::mat4x2& uvMatrix,
 		float speed = 100.0f,
 		glm::vec2 size = PLATFORM_SIZE);
 };

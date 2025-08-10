@@ -15,6 +15,7 @@
 - [InputStatus](System.md#inputstatus)
 - [LateUpdaterComponent](System.md#lateupdatercomponent)
 - [LateUpdaterComponentHandler](System.md#lateupdatercomponenthandler)
+- [Math](System.md#math)
 - [Random](System.md#random)
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
@@ -1294,6 +1295,34 @@ void RunPart(size_t startIndex, size_t endIndex) override;
 **LateUpdaterComponentHandler**  
 ```cpp
 LateUpdaterComponentHandler();
+```
+
+##
+## Math
+### Source Code:
+[Math.h](../../Learning2DEngine/Learning2DEngine/System/Math.h)  
+
+### Description:
+It contains some Math functions.
+
+### Header:
+```cpp
+struct Math
+{...}
+```
+
+### Functions:
+**Public:**  
+**FlipByX**  
+Horizontally flips the matrix by X axis.
+```cpp
+static inline glm::mat4x2 FlipByX(const glm::mat4x2& matrix);
+```
+
+**FlipByY**  
+Vertically flips the matrix by Y axis.
+```cpp
+static inline glm::mat4x2 FlipByY(const glm::mat4x2& matrix);
 ```
 
 ##

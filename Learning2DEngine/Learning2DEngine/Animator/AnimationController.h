@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "AnimationFrame.h"
-#include "../Render/Texture2DContainer.h"
+#include "../Render/UVTexture2DContainer.h"
 #include "../System/LateUpdaterComponent.h"
 #include "../System/GameObject.h"
 
@@ -15,16 +15,23 @@ namespace Learning2DEngine
 		{
 			friend class Learning2DEngine::System::GameObject;
 		protected:
-			Render::Texture2DContainer* textureContainer;
+			Render::UVTexture2DContainer* textureContainer;
 			std::vector<AnimationFrame> frames;
 			size_t currentIndex;
 			float currentTime;
 			bool isPlaying;
 
-			AnimationController(System::GameObject* gameObject, Render::Texture2DContainer* textureContainer, bool isLoop = false);
-			AnimationController(System::GameObject* gameObject, Render::Texture2DContainer* textureContainer, size_t minFrameSize, bool isLoop = false);
+			AnimationController(System::GameObject* gameObject, Render::UVTexture2DContainer* textureContainer, bool isLoop = false);
+			AnimationController(System::GameObject* gameObject, Render::UVTexture2DContainer* textureContainer, size_t minFrameSize, bool isLoop = false);
 
 			void LateUpdate() override;
+
+			inline void SetFrameByIndex()
+			{
+				textureContainer->SetTexture(*frames[currentIndex].texture);
+				textureContainer->uvMatrix = frames[currentIndex].uvMatrix;
+			}
+
 		public:
 			float speed;
 			bool isLoop;
@@ -41,7 +48,7 @@ namespace Learning2DEngine
 			//If the time is less then 0.0f, it will use the index frame time.
 			void JumpToFrame(size_t index, float time = -1.0f);
 
-			const inline AnimationFrame& GetCurrentFrame() const
+			inline const AnimationFrame& GetCurrentFrame() const
 			{
 				return frames[currentIndex];
 			}
@@ -54,6 +61,11 @@ namespace Learning2DEngine
 			inline float GetCurrentTime() const
 			{
 				return currentTime;
+			}
+
+			inline size_t GetFrameCount() const
+			{
+				return frames.size();
 			}
 
 		};
