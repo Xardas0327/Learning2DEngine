@@ -46,6 +46,7 @@ namespace Learning2DEngine
 						delete component;
 					}
 				}
+				components.clear();
 			}
 
 			template <class TComponent, class ...Params>
