@@ -50,6 +50,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheCollector", "TheCollecto
 		{ADAB7EDA-73C6-4E6D-8900-5B0B4CE68529} = {ADAB7EDA-73C6-4E6D-8900-5B0B4CE68529}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Learning2DEngineTest", "Learning2DEngineTest\Learning2DEngineTest.vcxproj", "{E15BADA9-1C63-AF62-F8FF-7E9C41EAC592}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ADAB7EDA-73C6-4E6D-8900-5B0B4CE68529} = {ADAB7EDA-73C6-4E6D-8900-5B0B4CE68529}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -72,6 +77,10 @@ Global
 		{EF496A81-97CB-4CCB-994F-C2FA0515BFCB}.Debug|x64.Build.0 = Debug|x64
 		{EF496A81-97CB-4CCB-994F-C2FA0515BFCB}.Release|x64.ActiveCfg = Release|x64
 		{EF496A81-97CB-4CCB-994F-C2FA0515BFCB}.Release|x64.Build.0 = Release|x64
+		{E15BADA9-1C63-AF62-F8FF-7E9C41EAC592}.Debug|x64.ActiveCfg = Debug|x64
+		{E15BADA9-1C63-AF62-F8FF-7E9C41EAC592}.Debug|x64.Build.0 = Debug|x64
+		{E15BADA9-1C63-AF62-F8FF-7E9C41EAC592}.Release|x64.ActiveCfg = Release|x64
+		{E15BADA9-1C63-AF62-F8FF-7E9C41EAC592}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
