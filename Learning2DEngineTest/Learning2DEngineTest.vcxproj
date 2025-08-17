@@ -160,7 +160,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="System\CameraTest.cpp" />
     <ClCompile Include="System\MathTest.cpp" />
+    <ClCompile Include="TestHelper\CompareFloat.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Learning2DEngine\Learning2DEngine.vcxproj">
+      <Project>{adab7eda-73c6-4e6d-8900-5b0b4ce68529}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestHelper\CompareFloat.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

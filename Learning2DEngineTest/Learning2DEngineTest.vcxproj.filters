@@ -18,5 +18,16 @@
     <ClCompile Include="System\MathTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="System\CameraTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestHelper\CompareFloat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestHelper\CompareFloat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
