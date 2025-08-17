@@ -83,9 +83,11 @@ _Note: In the past, it was under the CC BY-NC 4.0, but it has changed from v1.7.
   - freetype.lib
 
 ## Source code
-Couple things will not really be described,
-because I think their names and/or their comments can explain simple,
-what they are.
+A couple functions/variables will not really be described,
+because I think their names and/or their comments can explain simple, what they are.  
+The unit tests of a class will not really be described here, but their files will be added to the class's
+documentation.  
+Any helper for the testing will be in the Test namespace.
 
 ### Namespaces
 - Learning2DEngine
@@ -98,3 +100,5 @@ what they are.
   - [Render](Learning2DEngine/Render.md)
   - [System](Learning2DEngine/System.md)
   - [UI](Learning2DEngine/UI.md)
+  ###
+  - [Test](Learning2DEngine/Test.md)

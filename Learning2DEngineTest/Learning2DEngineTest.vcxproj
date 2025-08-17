@@ -162,7 +162,7 @@
   <ItemGroup>
     <ClCompile Include="System\CameraTest.cpp" />
     <ClCompile Include="System\MathTest.cpp" />
-    <ClCompile Include="TestHelper\CompareFloat.cpp" />
+    <ClCompile Include="Test\CompareFloat.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Learning2DEngine\Learning2DEngine.vcxproj">
@@ -170,7 +170,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TestHelper\CompareFloat.h" />
+    <ClInclude Include="Test\CompareFloat.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
