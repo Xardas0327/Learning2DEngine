@@ -45,4 +45,6 @@ jobs:
       
     - name: Execute Unit Tests
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: dotnet test
+      run: |
+        $vstest = Get-ChildItem "C:\Program Files\Microsoft Visual Studio\2022" -Recurse -Filter vstest.console.exe | Select-Object -First 1
+        & $vstest.FullName x64\${{env.BUILD_CONFIGURATION}}\Learning2DEngineTest.dll
