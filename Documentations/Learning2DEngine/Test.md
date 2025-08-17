@@ -1,4 +1,4 @@
-# Object
+# Test
 It contains any helper classes for the testing.
 
 - [CompareFloat](Test.md#comparefloat)
