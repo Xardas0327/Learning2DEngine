@@ -45,4 +45,5 @@ jobs:
       
     - name: Execute Unit Tests
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: dotnet test
+      run: |
+        vstest.console.exe Learning2DEngineTest\bin\${{env.BUILD_CONFIGURATION}}\Learning2DEngineTest.dll
