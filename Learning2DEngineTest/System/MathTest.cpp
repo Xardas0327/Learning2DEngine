@@ -5,40 +5,43 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Learning2DEngine::System;
 
-namespace System
+namespace Learning2DEngine
 {
-	TEST_CLASS(MathTest)
+	namespace System
 	{
-	public:
-		TEST_METHOD(FlipByX)
+		TEST_CLASS(MathTest)
 		{
-			auto matrix = glm::mat4x2{
-				{1.0f, 2.0f}, {3.0f, 4.0f},
-				{5.0f, 6.0f}, {7.0f, 8.0f}
-			};
+		public:
+			TEST_METHOD(FlipByX)
+			{
+				auto matrix = glm::mat4x2{
+					{1.0f, 2.0f}, {3.0f, 4.0f},
+					{5.0f, 6.0f}, {7.0f, 8.0f}
+				};
 
-			auto resultMatrix = glm::mat4x2{
-				{3.0f, 4.0f}, {1.0f, 2.0f},
-				{7.0f, 8.0f}, {5.0f, 6.0f}
-			};
+				auto resultMatrix = glm::mat4x2{
+					{3.0f, 4.0f}, {1.0f, 2.0f},
+					{7.0f, 8.0f}, {5.0f, 6.0f}
+				};
 
-			Assert::IsTrue(resultMatrix == Math::FlipByX(matrix));
-		}
+				Assert::IsTrue(resultMatrix == Math::FlipByX(matrix));
+			}
 
-		TEST_METHOD(FlipByY)
-		{
-			auto matrix = glm::mat4x2{
-				{1.0f, 2.0f}, {3.0f, 4.0f},
-				{5.0f, 6.0f}, {7.0f, 8.0f}
-			};
+			TEST_METHOD(FlipByY)
+			{
+				auto matrix = glm::mat4x2{
+					{1.0f, 2.0f}, {3.0f, 4.0f},
+					{5.0f, 6.0f}, {7.0f, 8.0f}
+				};
 
-			auto resultMatrix = glm::mat4x2{
-				{5.0f, 6.0f}, {7.0f, 8.0f},
-				{1.0f, 2.0f}, {3.0f, 4.0f}
-			};
+				auto resultMatrix = glm::mat4x2{
+					{5.0f, 6.0f}, {7.0f, 8.0f},
+					{1.0f, 2.0f}, {3.0f, 4.0f}
+				};
 
-			Assert::IsTrue(resultMatrix == Math::FlipByY(matrix));
-		}
-	};
+				Assert::IsTrue(resultMatrix == Math::FlipByY(matrix));
+			}
+		};
 
+	}
 }

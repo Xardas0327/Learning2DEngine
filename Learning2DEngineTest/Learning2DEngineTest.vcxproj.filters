@@ -21,12 +21,12 @@
     <ClCompile Include="System\CameraTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestHelper\CompareFloat.cpp">
+    <ClCompile Include="Test\CompareFloat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TestHelper\CompareFloat.h">
+    <ClInclude Include="Test\CompareFloat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

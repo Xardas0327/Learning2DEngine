@@ -35,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Learning2DEngine", "Learnin
 		Documentations\Learning2DEngine\Physics.md = Documentations\Learning2DEngine\Physics.md
 		Documentations\Learning2DEngine\Render.md = Documentations\Learning2DEngine\Render.md
 		Documentations\Learning2DEngine\System.md = Documentations\Learning2DEngine\System.md
+		Documentations\Learning2DEngine\Test.md = Documentations\Learning2DEngine\Test.md
 		Documentations\Learning2DEngine\UI.md = Documentations\Learning2DEngine\UI.md
 	EndProjectSection
 EndProject

@@ -163,7 +163,8 @@ virtual void Update() = 0;
 ## Camera
 ### Source Code:
 [Camera.h](../../Learning2DEngine/Learning2DEngine/System/Camera.h)  
-[Camera.cpp](../../Learning2DEngine/Learning2DEngine/System/Camera.cpp)
+[Camera.cpp](../../Learning2DEngine/Learning2DEngine/System/Camera.cpp)  
+[CameraTest.cpp](../../Learning2DEngineTest/System/CameraTest.cpp)
 
 ### Description:
 The `Camera` contains the camera settings, which the developer can transform the view of the users.
@@ -1301,6 +1302,7 @@ LateUpdaterComponentHandler();
 ## Math
 ### Source Code:
 [Math.h](../../Learning2DEngine/Learning2DEngine/System/Math.h)  
+[MathTest.cpp](../../Learning2DEngineTest/System/MathTest.cpp)
 
 ### Description:
 It contains some Math functions.
