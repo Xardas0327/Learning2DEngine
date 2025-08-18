@@ -5,7 +5,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Learning2DEngine::Render;
-using namespace  Learning2DEngine::Test;
+using namespace Learning2DEngine::Test;
 
 namespace Learning2DEngine
 {
