@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Render\ResolutionTest.cpp" />
     <ClCompile Include="System\CameraTest.cpp" />
     <ClCompile Include="System\GameObjectTest.cpp" />
     <ClCompile Include="System\MathTest.cpp" />
