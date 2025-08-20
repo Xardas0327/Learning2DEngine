@@ -32,7 +32,7 @@ namespace Learning2DEngine
 
 			void Invoke(Params... params)
 			{
-				for (auto item : events)
+				for (auto& item : events)
 				{
 					item->Call(params...);
 				}

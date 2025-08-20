@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EventSystem\EventHandlerTest.cpp" />
     <ClCompile Include="Render\ResolutionTest.cpp" />
     <ClCompile Include="System\CameraTest.cpp" />
     <ClCompile Include="System\GameObjectTest.cpp" />

@@ -40,6 +40,7 @@ namespace Learning2DEngine
 
 				manager.DestroyAllGameObjects();
 			}
+
 			TEST_METHOD(AddComponent)
 			{
 				auto& manager = GameObjectManager::GetInstance();
