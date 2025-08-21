@@ -163,6 +163,7 @@
     <ClCompile Include="EventSystem\EventHandlerTest.cpp" />
     <ClCompile Include="Physics\BaseBoxColliderComponentTest.cpp" />
     <ClCompile Include="Physics\BaseCircleColliderComponentTest.cpp" />
+    <ClCompile Include="Physics\CollisionHelperTest.cpp" />
     <ClCompile Include="Render\ResolutionTest.cpp" />
     <ClCompile Include="System\CameraTest.cpp" />
     <ClCompile Include="System\GameObjectTest.cpp" />

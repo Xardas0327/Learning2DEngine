@@ -45,6 +45,9 @@
     <ClCompile Include="Physics\BaseCircleColliderComponentTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\CollisionHelperTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Test\CompareFloat.h">
