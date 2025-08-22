@@ -181,6 +181,119 @@ namespace Learning2DEngine
 
                 manager.DestroyAllGameObjects();
             }
+
+            TEST_METHOD(FixPosition2Trigger)
+            {
+                auto& manager = GameObjectManager::GetInstance();
+
+                auto gameObject1 = manager.CreateGameObject();
+                auto boxCollider1 = gameObject1->AddComponent<TestBoxColliderComponent>(glm::vec2(10.0f, 10.0f));
+				auto position1 = gameObject1->transform.GetPosition();
+
+                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(7.5f, 7.5f)));
+                auto boxCollider2 = gameObject2->AddComponent<TestBoxColliderComponent>(glm::vec2(10.0f, 10.0f));
+                auto position2= gameObject2->transform.GetPosition();
+
+                auto result = CollisionHelper::CheckCollision(*boxCollider1, *boxCollider2);
+                Assert::IsTrue(result.isCollided);
+
+                CollisionHelper::FixPosition(*boxCollider1, result.edge1, *boxCollider2, result.edge2);
+                Assert::IsTrue(position1 == gameObject1->transform.GetPosition());
+                Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
+
+
+                manager.DestroyAllGameObjects();
+            }
+
+            TEST_METHOD(FixPosition2KinematicCollider)
+            {
+                auto& manager = GameObjectManager::GetInstance();
+
+                auto gameObject1 = manager.CreateGameObject();
+                auto boxCollider1 = gameObject1->AddComponent<TestBoxColliderComponent>(
+                    glm::vec2(10.0f, 10.0f),
+                    ColliderType::KINEMATIC,
+                    ColliderMode::COLLIDER
+                );
+                auto position1 = gameObject1->transform.GetPosition();
+
+                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(7.5f, 7.5f)));
+                auto boxCollider2 = gameObject2->AddComponent<TestBoxColliderComponent>(
+                    glm::vec2(10.0f, 10.0f),
+                    ColliderType::KINEMATIC,
+                    ColliderMode::COLLIDER
+                );
+                auto position2 = gameObject2->transform.GetPosition();
+
+                auto result = CollisionHelper::CheckCollision(*boxCollider1, *boxCollider2);
+                Assert::IsTrue(result.isCollided);
+
+                CollisionHelper::FixPosition(*boxCollider1, result.edge1, *boxCollider2, result.edge2);
+                Assert::IsTrue(position1 == gameObject1->transform.GetPosition());
+                Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
+
+
+                manager.DestroyAllGameObjects();
+            }
+
+            TEST_METHOD(FixPosition1DynamicCollider)
+            {
+                auto& manager = GameObjectManager::GetInstance();
+
+                auto gameObject1 = manager.CreateGameObject();
+                auto boxCollider1 = gameObject1->AddComponent<TestBoxColliderComponent>(
+                    glm::vec2(10.0f, 10.0f),
+                    ColliderType::DYNAMIC,
+                    ColliderMode::COLLIDER
+                );
+
+                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(7.5f, 7.5f)));
+                auto boxCollider2 = gameObject2->AddComponent<TestBoxColliderComponent>(
+                    glm::vec2(10.0f, 10.0f),
+                    ColliderType::KINEMATIC,
+                    ColliderMode::COLLIDER
+                );
+                auto position2 = gameObject2->transform.GetPosition();
+
+                auto result = CollisionHelper::CheckCollision(*boxCollider1, *boxCollider2);
+                Assert::IsTrue(result.isCollided);
+
+                CollisionHelper::FixPosition(*boxCollider1, result.edge1, *boxCollider2, result.edge2);
+                Assert::IsTrue(glm::vec2(0.0f, -2.5f) == gameObject1->transform.GetPosition());
+                Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
+
+
+                manager.DestroyAllGameObjects();
+            }
+
+            TEST_METHOD(FixPosition2DynamicCollider)
+            {
+                auto& manager = GameObjectManager::GetInstance();
+
+                auto gameObject1 = manager.CreateGameObject();
+                auto boxCollider1 = gameObject1->AddComponent<TestBoxColliderComponent>(
+                    glm::vec2(10.0f, 10.0f),
+                    ColliderType::DYNAMIC,
+                    ColliderMode::COLLIDER
+                );
+
+                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(7.5f, 7.5f)));
+                auto boxCollider2 = gameObject2->AddComponent<TestBoxColliderComponent>(
+                    glm::vec2(10.0f, 10.0f),
+                    ColliderType::DYNAMIC,
+                    ColliderMode::COLLIDER
+                );
+
+                auto result = CollisionHelper::CheckCollision(*boxCollider1, *boxCollider2);
+                Assert::IsTrue(result.isCollided);
+
+                CollisionHelper::FixPosition(*boxCollider1, result.edge1, *boxCollider2, result.edge2);
+                Assert::IsTrue(glm::vec2(0.0f, -1.25f) == gameObject1->transform.GetPosition());
+                Assert::IsTrue(glm::vec2(7.5f, 8.75f) == gameObject2->transform.GetPosition());
+
+
+                manager.DestroyAllGameObjects();
+            }
         };
     }
 }
