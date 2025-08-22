@@ -168,6 +168,7 @@
     <ClCompile Include="TheCollector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoxController.h" />
     <ClInclude Include="BushController.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="CoinController.h" />

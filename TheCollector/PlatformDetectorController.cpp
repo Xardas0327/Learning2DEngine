@@ -1,6 +1,7 @@
 #include "PlatformDetectorController.h"
 
 #include "PlatformController.h"
+#include "BoxController.h"
 
 using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Physics;
@@ -21,7 +22,8 @@ void PlatformDetectorController::Destroy()
 void PlatformDetectorController::OnCollision(const Collision& collision)
 {
     auto paltform = collision.collidedObject->GetComponent<PlatformController>();
-    if (paltform != nullptr)
+    auto box = collision.collidedObject->GetComponent<BoxController>();
+    if (paltform != nullptr || box != nullptr)
     {
         eventhandler.Invoke();
     }

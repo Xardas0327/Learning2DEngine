@@ -71,6 +71,9 @@
     <ClInclude Include="IDetectorCustomer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BoxController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\Coin.png">

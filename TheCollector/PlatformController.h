@@ -60,7 +60,8 @@ protected:
 	{
 		auto render = gameObject->AddComponent<Learning2DEngine::Render::SpriteRenderComponent>(
 			Learning2DEngine::Render::RendererMode::RENDER,
-			Learning2DEngine::System::ResourceManager::GetInstance().GetTexture(textureId), layer
+			Learning2DEngine::System::ResourceManager::GetInstance().GetTexture(textureId),
+			layer
 		);
 		render->data.uvMatrix = uvMatrix;
 

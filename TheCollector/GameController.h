@@ -12,6 +12,7 @@
 #include "PlayerController.h"
 #include "DetectorEventItem.h"
 #include "MovingPlatformController.h"
+#include "BoxController.h"
 
 enum class GameStatus {Menu, Play, Ended};
 
@@ -24,6 +25,7 @@ class GameController : public Learning2DEngine::System::UpdaterComponent,
 protected:
     std::vector<CoinController*> coins;
     std::vector<MovingPlatformController*> movingPlatforms;
+    BoxController* box;
     PlayerController* playerController;
     GameStatus gameStatus;
     const Learning2DEngine::UI::FontSizePair fontSizePair;
