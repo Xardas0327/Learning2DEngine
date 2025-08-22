@@ -160,8 +160,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EventSystem\EventHandlerTest.cpp" />
+    <ClCompile Include="Physics\BaseBoxColliderComponentTest.cpp" />
+    <ClCompile Include="Physics\BaseCircleColliderComponentTest.cpp" />
+    <ClCompile Include="Physics\CollisionHelperTest.cpp" />
+    <ClCompile Include="Render\ResolutionTest.cpp" />
     <ClCompile Include="System\CameraTest.cpp" />
+    <ClCompile Include="System\GameObjectTest.cpp" />
     <ClCompile Include="System\MathTest.cpp" />
+    <ClCompile Include="System\RandomTest.cpp" />
+    <ClCompile Include="System\TransformTest.cpp" />
     <ClCompile Include="Test\CompareFloat.cpp" />
   </ItemGroup>
   <ItemGroup>

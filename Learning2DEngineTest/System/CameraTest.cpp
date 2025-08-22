@@ -4,11 +4,12 @@
 #include "../Test/CompareFloat.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace Learning2DEngine::Render;
-using namespace  Learning2DEngine::Test;
 
 namespace Learning2DEngine
 {
+	using namespace Render;
+	using namespace Test;
+
 	namespace System
 	{
 		TEST_CLASS(CameraTest)

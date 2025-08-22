@@ -47,13 +47,14 @@ namespace Learning2DEngine
             template<class T, class U>
             static void FixPosition(T& first, glm::vec2 edge1, U& second, glm::vec2 edge2)
             {
-                if (first.type == ColliderType::DYNAMIC && first.mode == ColliderMode::COLLIDER
-                    && second.mode == ColliderMode::COLLIDER)
+                if (first.mode != ColliderMode::COLLIDER || second.mode != ColliderMode::COLLIDER)
+                    return;
+
+                if (first.type == ColliderType::DYNAMIC)
                 {
                     FixPosition(first, edge2, second.type == ColliderType::DYNAMIC ? 0.5f : 1.0f);
                 }
-                if (second.type == ColliderType::DYNAMIC && second.mode == ColliderMode::COLLIDER
-                    && first.mode == ColliderMode::COLLIDER)
+                if (second.type == ColliderType::DYNAMIC)
                 {
                     FixPosition(second, edge1, first.type == ColliderType::DYNAMIC ? 0.5f : 1.0f);
                 }

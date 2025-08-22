@@ -1241,7 +1241,8 @@ void RemoveScrollEvent(EventSystem::EventItem<double, double>* eventItem);
 ##
 ## Resolution
 ### Source Code:
-[Resolution.h](../../Learning2DEngine/Learning2DEngine/Render/Resolution.h)
+[Resolution.h](../../Learning2DEngine/Learning2DEngine/Render/Resolution.h)  
+[ResolutionTest.cpp](../../Learning2DEngineTest/Render/ResolutionTest.cpp)
 
 ### Description:
 The resolution of the screen/window

@@ -3,7 +3,6 @@
 #include <Learning2DEngine/System/Math.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace Learning2DEngine::System;
 
 namespace Learning2DEngine
 {
