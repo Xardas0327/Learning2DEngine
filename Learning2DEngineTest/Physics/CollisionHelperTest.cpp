@@ -201,7 +201,6 @@ namespace Learning2DEngine
                 Assert::IsTrue(position1 == gameObject1->transform.GetPosition());
                 Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
 
-
                 manager.DestroyAllGameObjects();
             }
 
@@ -232,7 +231,6 @@ namespace Learning2DEngine
                 Assert::IsTrue(position1 == gameObject1->transform.GetPosition());
                 Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
 
-
                 manager.DestroyAllGameObjects();
             }
 
@@ -262,7 +260,6 @@ namespace Learning2DEngine
                 Assert::IsTrue(glm::vec2(0.0f, -2.5f) == gameObject1->transform.GetPosition());
                 Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
 
-
                 manager.DestroyAllGameObjects();
             }
 
@@ -290,7 +287,6 @@ namespace Learning2DEngine
                 CollisionHelper::FixPosition(*boxCollider1, result.edge1, *boxCollider2, result.edge2);
                 Assert::IsTrue(glm::vec2(0.0f, -1.25f) == gameObject1->transform.GetPosition());
                 Assert::IsTrue(glm::vec2(7.5f, 8.75f) == gameObject2->transform.GetPosition());
-
 
                 manager.DestroyAllGameObjects();
             }
