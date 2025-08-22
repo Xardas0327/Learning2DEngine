@@ -24,7 +24,7 @@ using namespace irrklang;
 
 GameController::GameController(GameObject* gameObject)
     : UpdaterComponent(gameObject), Component(gameObject),
-    coins(), movingPlatforms(), playerController(nullptr), gameStatus(GameStatus::Menu),
+    coins(), movingPlatforms(), box(nullptr), playerController(nullptr), gameStatus(GameStatus::Menu),
     fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24), playerCoinEventItem(this), currentPlayTime(0),
     scoreText(nullptr), playTimeText(nullptr), descriptionText(nullptr), startText(nullptr), winText(nullptr),
     loseText(nullptr), endText(nullptr)
@@ -138,6 +138,9 @@ void GameController::InitEnvironment()
     PlatformController::Create(glm::vec2(1340.0f, 300.0f), "Platforms", SMALL_PLATFORM_TEXTCOOR, glm::vec2(PLATFORM_SIZE.x / 2, PLATFORM_SIZE.y));
 
     PlatformController::Create(glm::vec2(1100.0f, 150.0f), "Platforms", SMALL_PLATFORM_TEXTCOOR, glm::vec2(PLATFORM_SIZE.x / 2, PLATFORM_SIZE.y));
+
+	//Box
+    box = BoxController::Create(glm::vec2(350.0f, 400.0f));
 
     //Moving Platform
     movingPlatforms.reserve(2);
@@ -348,6 +351,7 @@ void GameController::StartPlay()
     playerController->rigidbody->isFrozen = false;
     playerController->rigidbody->velocity = glm::vec2(0.0f);
     playerController->coinNumber = 0;
+    box->ResetPosition();
     currentPlayTime = PLAY_TIME;
 
     RefreshScoreText();
