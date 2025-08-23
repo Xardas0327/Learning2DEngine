@@ -26,6 +26,7 @@
 - [Texture2DContainer](Render.md#texture2dcontainer)
 - [Texture2DSettings](Render.md#texture2dsettings)
 - [UVTexture2DContainer](Render.md#uvtexture2dcontainer)
+- [WindowType](Render.md#windowtype)
 
 ##
 ## BaseColorDynamicData
@@ -1070,7 +1071,7 @@ void UpdateScroll(GLFWwindow* window, double xoffset, double yoffset);
 **Init**  
 It initializes RenderManager.
 ```cpp
-void Init(int majorVersion, int minorVersion, Resolution resolution, const char* title, bool resizableWindows = true);
+void Init(int majorVersion, int minorVersion, Resolution resolution, const char* title, WindowType windowType);
 ```
 
 **Terminate**  
@@ -1891,4 +1892,22 @@ UVTexture2DContainer(glm::mat4x2 uvMatrix = L2DE_Texture2D_UV_DEFAULT);
 ```
 ```cpp
 UVTexture2DContainer(const Texture2D& texture, glm::mat4x2 uvMatrix = L2DE_Texture2D_UV_DEFAULT);
+```
+
+##
+## WindowType
+### Source Code:
+[WindowType.h](../../Learning2DEngine/Learning2DEngine/Render/WindowType.h)
+
+### Description:
+It is the type of the (game) screen window.
+
+### Header:
+```cpp
+enum class WindowType
+{
+    FIXED_SIZE,
+    RESIZABLE,
+    BORDERLESS
+};
 ```
