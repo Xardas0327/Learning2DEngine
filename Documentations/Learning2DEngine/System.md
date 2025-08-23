@@ -846,7 +846,7 @@ virtual ~Game();
 **InitWithRender**  
 It initializes the `RenderManager`. After that, the `Init()` will be called.
 ```cpp
-void InitWithRender(int majorRenderVersion, int minorRenderVersion, Render::Resolution resolution, const char* title, bool resizableWindows = true);
+void InitWithRender(int majorRenderVersion, int minorRenderVersion, Render::Resolution resolution, const char* title, Render::WindowType windowType);
 ``` 
 
 **Init**  
