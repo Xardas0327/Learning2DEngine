@@ -33,9 +33,9 @@ namespace Learning2DEngine
 
         }
 
-        void Game::InitWithRender(int majorRenderVersion, int minorRenderVersion, Resolution resolution, const char* title, bool resizableWindows)
+        void Game::InitWithRender(int majorRenderVersion, int minorRenderVersion, Resolution resolution, const char* title, WindowType windowType)
         {
-            RenderManager::GetInstance().Init(majorRenderVersion, minorRenderVersion, resolution, title, resizableWindows);
+            RenderManager::GetInstance().Init(majorRenderVersion, minorRenderVersion, resolution, title, windowType);
             Init();
         }
 

@@ -17,22 +17,33 @@ namespace Learning2DEngine
 
         }
 
-        void RenderManager::Init(int majorVersion, int minorVersion, Resolution resolution, const char* title, bool resizableWindows)
+        void RenderManager::Init(int majorVersion, int minorVersion, Resolution resolution, const char* title, WindowType windowType)
         {
             this->resolution = resolution;
 
             glfwInit();
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, majorVersion);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minorVersion);
-            if(!resizableWindows)
-                glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 #ifdef __APPLE__
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-            window = glfwCreateWindow(resolution.GetWidth(), resolution.GetHeight(), title, nullptr, nullptr);
+            GLFWmonitor* monitor = nullptr;
+            switch (windowType)
+            {   
+            case WindowType::FIXED_SIZE:
+                glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+                break;
+            case WindowType::BORDERLESS:
+                monitor = glfwGetPrimaryMonitor();
+                break;
+            case WindowType::RESIZABLE:
+                break;
+            }
+
+            window = glfwCreateWindow(resolution.GetWidth(), resolution.GetHeight(), title, monitor, nullptr);
             if (window == NULL)
             {
                 glfwTerminate();

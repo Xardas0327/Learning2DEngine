@@ -1,5 +1,6 @@
 #include "Breakout.h"
 #include <Learning2DEngine/Render/Resolution.h>
+#include <Learning2DEngine/Render/WindowType.h>
 
 using namespace Learning2DEngine::Render;
 
@@ -8,7 +9,7 @@ Breakout breakoutGame;
 
 int main()
 {
-    breakoutGame.InitWithRender(3, 3, resolution, "Breakout");
+    breakoutGame.InitWithRender(3, 3, resolution, "Breakout", WindowType::RESIZABLE);
     breakoutGame.Run();
     breakoutGame.Terminate();
     return 0;

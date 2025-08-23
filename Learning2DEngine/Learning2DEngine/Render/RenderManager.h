@@ -8,6 +8,7 @@
 
 #include "Resolution.h"
 #include "Blend.h"
+#include "WindowType.h"
 #include "../System/Singleton.h"
 #include "../EventSystem/EventHandler.h"
 #include "../EventSystem/EventItem.h"
@@ -52,7 +53,7 @@ namespace Learning2DEngine
 			//It is a "global" mutex, that the OpenGL can be thread-safe
 			std::mutex mutex;
 
-			void Init(int majorVersion, int minorVersion, Resolution resolution, const char* title, bool resizableWindows = true);
+			void Init(int majorVersion, int minorVersion, Resolution resolution, const char* title, WindowType windowType);
 			void Terminate();
 			void CloseWindow();
 			bool IsWindowClosed();
