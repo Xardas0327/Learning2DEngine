@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <glm/glm.hpp>
 
 namespace Learning2DEngine
 {
@@ -14,6 +15,13 @@ namespace Learning2DEngine
         private:
             std::string version;
             std::string tiledVersion;
+            std::string orientation;
+            int width;
+            int height;
+            int tileWidth;
+            int tileHeight;
+            bool infinite;
+            glm::vec4 backgroundColor;
 
             TiledMap();
         public:
@@ -27,6 +35,41 @@ namespace Learning2DEngine
             inline const std::string& GetTiledVersion() const
             {
                 return tiledVersion;
+            }
+
+            inline const std::string& GetOrientation() const
+            {
+                return orientation;
+            }
+
+            inline int GetWidth() const
+            {
+                return width;
+            }
+
+            inline int GetHeight() const
+            {
+                return height;
+            }
+
+            inline int GetTileWidth() const
+            {
+                return tileWidth;
+            }
+
+            inline int GetTileHeight() const
+            {
+                return tileHeight;
+            }
+
+            inline bool IsInfinite() const
+            {
+                return infinite;
+            }
+
+            inline const glm::vec4& GetBackgroundColor() const
+            {
+                return backgroundColor;
             }
         };
     }
