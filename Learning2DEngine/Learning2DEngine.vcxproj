@@ -169,7 +169,6 @@
     <ClCompile Include="Learning2DEngine\DebugTool\DebugCircleColliderRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\DebugTool\DebugCircleColliderRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\DebugTool\DebugPosition.cpp" />
-    <ClCompile Include="Learning2DEngine\Editor\TiledMap.cpp" />
     <ClCompile Include="Learning2DEngine\Editor\TiledMapLoader.cpp" />
     <ClCompile Include="Learning2DEngine\Object\FpsShower.cpp" />
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleRenderer.cpp" />
@@ -217,6 +216,7 @@
     <ClInclude Include="Learning2DEngine\Editor\TiledMap.h" />
     <ClInclude Include="Learning2DEngine\Editor\TiledMapConstant.h" />
     <ClInclude Include="Learning2DEngine\Editor\TiledMapLoader.h" />
+    <ClInclude Include="Learning2DEngine\Editor\TiledMapTexture.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\CursorEnterEventItem.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\CursorPositionEventItem.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\MouseButtonEventItem.h" />

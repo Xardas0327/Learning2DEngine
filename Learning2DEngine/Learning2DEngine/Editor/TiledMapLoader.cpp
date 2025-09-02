@@ -1,26 +1,28 @@
 #include "TiledMapLoader.h"
 
-#include <string>
 #include <exception>
+#include <memory>
 #include <rapidxml/rapidxml_utils.hpp>
 
 #include "TiledMapConstant.h"
 #include "../DebugTool/Log.h"
 #include "../Render/RenderManager.h"
+#include "../System/ResourceManager.h"
 
 namespace Learning2DEngine
 {
     using namespace Render;
+    using namespace System;
 
     namespace Editor
     {
         TiledMap TiledMapLoader::LoadFromFile(const std::string& filePath)
         {
-            auto doc = new rapidxml::xml_document<>;
+            auto doc = std::make_unique<rapidxml::xml_document<>>();
             try
             {
                 std::size_t folderIndex = filePath.find_last_of("/");
-                std::string folderPath = folderIndex == std::string::npos? "" : filePath.substr(0, folderIndex);
+                std::string folderPath = folderIndex == std::string::npos ? "" : filePath.substr(0, folderIndex) + "/";
 
                 rapidxml::file<> xmlFile(filePath.c_str());
                 doc->parse<0>(xmlFile.data());
@@ -35,17 +37,17 @@ namespace Learning2DEngine
                 }
 
                 TiledMapLoader::LoadMapAttributes(map, mapNode);
+                auto textures = TiledMapLoader::LoadTextures(mapNode, folderPath);
 
-                delete doc;
                 return map;
             }
             catch (std::exception& e)
             {
-                delete doc;
                 L2DE_LOG_ERROR((std::string)"TiledMapLoader: " + e.what());
                 throw e;
             }
         }
+
         void TiledMapLoader::LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode)
         {
             map.version = mapNode->first_attribute(L2DE_TILEDMAP_ATTR_VERSION)->value();
@@ -153,6 +155,106 @@ namespace Learning2DEngine
             }
 
             return color;
+        }
+
+        std::vector<TiledMapTexture> TiledMapLoader::LoadTextures(rapidxml::xml_node<>* mapNode, const std::string& folderPath)
+        {
+            std::vector<TiledMapTexture> textures;
+            Texture2DSettings textureSettings(true);
+            for (
+                auto mapTileset = mapNode->first_node(L2DE_TILEDMAP_NODE_TILESET);
+                mapTileset != nullptr;
+                mapTileset = mapTileset->next_sibling(L2DE_TILEDMAP_NODE_TILESET)
+                )
+            {
+                TiledMapTexture texture;
+                texture.firstGid = std::atoi(mapTileset->first_attribute(L2DE_TILEDMAP_ATTR_FIRSTGID)->value());
+                if (texture.firstGid <= 0)
+                {
+                    L2DE_LOG_ERROR("TiledMapLoader: the tileset firstgid should be bigger then 0.");
+                    continue;
+                }
+
+                std::string sourceName = mapTileset->first_attribute(L2DE_TILEDMAP_ATTR_SOURCE)->value();
+                if (sourceName.empty())
+                {
+                    L2DE_LOG_ERROR("TiledMapLoader: the tileset source is empty.");
+                    continue;
+                }
+
+                if (TiledMapLoader::LoadTexture(folderPath, sourceName, texture))
+                    textures.push_back(texture);
+            }
+            return textures;
+        }
+
+        bool TiledMapLoader::LoadTexture(const std::string& folderPath, const std::string& sourceName, TiledMapTexture& tiledMapTexture)
+        {
+            rapidxml::file<> xmlFile((folderPath + sourceName).c_str());
+            auto doc = std::make_unique<rapidxml::xml_document<>>();
+            doc->parse<0>(xmlFile.data());
+
+            auto tilesetNode = doc->first_node(L2DE_TILEDMAP_NODE_TILESET);
+
+            std::string version = tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_VERSION)->value();
+            if (version != L2DE_TILEDMAP_SUPPORTED_VERSION)
+            {
+                L2DE_LOG_WARNING("TiledMapLoader: the " + sourceName + " tileset version is not supported: "
+                    + version + "\n Supported version: " + L2DE_TILEDMAP_SUPPORTED_VERSION);
+            }
+
+            tiledMapTexture.objectSize.x = std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_TILEWIDTH)->value());
+            if (tiledMapTexture.objectSize.x <= 0)
+            {
+                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile width should be bigger then 0.");
+            }
+            tiledMapTexture.objectSize.y = std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_TILEHEIGHT)->value());
+            if (tiledMapTexture.objectSize.y <= 0)
+            {
+                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile height should be bigger then 0.");
+            }
+
+            tiledMapTexture.columns = std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_COLUMNS)->value());
+            if (tiledMapTexture.columns <= 0)
+            {
+                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset columns should be bigger then 0.");
+            }
+
+            tiledMapTexture.rows = tiledMapTexture.columns == 0 ? 0 :
+                std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_TILECOUNT)->value()) / tiledMapTexture.columns;
+            if (tiledMapTexture.rows <= 0)
+            {
+                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset rows should be bigger then 0.");
+            }
+
+            std::string name = tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_NAME)->value();
+            if (name.empty())
+            {
+                L2DE_LOG_ERROR("TiledMapLoader: the tileset name is empty.");
+                return false;
+            }
+
+            std::string imageSource = tilesetNode->first_node(L2DE_TILEDMAP_NODE_IMAGE)->first_attribute(L2DE_TILEDMAP_ATTR_SOURCE)->value();
+            if (imageSource.empty())
+            {
+                L2DE_LOG_ERROR("TiledMapLoader: the tileset image source is empty.");
+                return false;
+            }
+
+            auto& resourceManager = ResourceManager::GetInstance();
+            if (resourceManager.IsTextureExist(name))
+            {
+                tiledMapTexture.texture = &resourceManager.GetTexture(name);
+            }
+            else
+            {
+                tiledMapTexture.texture = &resourceManager.LoadTextureFromFile(
+                    name,
+                    (folderPath + imageSource).c_str(),
+                    Texture2DSettings(true));
+            }
+
+            return true;
         }
     }
 }

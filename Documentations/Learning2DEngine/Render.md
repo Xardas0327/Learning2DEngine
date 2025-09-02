@@ -1845,11 +1845,10 @@ struct Texture2DSettings
     unsigned int filterMin;
     // Filtering mode if texture pixels > window pixels
     unsigned int filterMax;
-
-    Texture2DSettings()
-        : internalFormat(GL_RGB), imageFormat(GL_RGB),
-            wrapS(GL_REPEAT), wrapT(GL_REPEAT),
-            filterMin(GL_LINEAR), filterMax(GL_LINEAR)
+    
+    Texture2DSettings(bool useAlpha = false)
+        : internalFormat(useAlpha ? GL_RGBA : GL_RGB),imageFormat(useAlpha ? GL_RGBA : GL_RGB),
+            wrapS(GL_REPEAT), wrapT(GL_REPEAT), filterMin(GL_LINEAR), filterMax(GL_LINEAR)
     {
 
     }
