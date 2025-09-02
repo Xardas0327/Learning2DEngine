@@ -4,7 +4,7 @@
 #include <string>
 
 #include "TiledMap.h"
-#include "TiledMapTexture.h"
+#include "TiledMapObject.h"
 #include <rapidxml/rapidxml.hpp>
 
 namespace Learning2DEngine
@@ -20,8 +20,8 @@ namespace Learning2DEngine
 			static void LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode);
 			static glm::vec4 ConvertBackgroundColor(const std::string& hex);
 
-			static std::vector<TiledMapTexture> LoadTextures(rapidxml::xml_node<>* mapNode, const std::string& folderPath);
-			static bool LoadTexture(const std::string& folderPath, const std::string& sourceName, TiledMapTexture& tiledMapTexture);
+			static std::vector<TiledMapObject> LoadObjects(rapidxml::xml_node<>* mapNode, const std::string& folderPath);
+			static bool LoadObject(const std::string& folderPath, const std::string& sourceName, TiledMapObject& tiledMapObject);
 		public:
 			~TiledMapLoader() = default;
 

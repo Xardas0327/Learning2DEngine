@@ -9,12 +9,12 @@ namespace Learning2DEngine
 {
 	namespace Editor
 	{
-		struct TiledMapTexture final
+		struct TiledMapObject final
 		{
 			int firstGid;
 			int columns;
 			int rows; 
-			glm::vec2 objectSize;
+			glm::vec2 size;
 			Render::Texture2D* texture;
 
 			bool HasNumber(int gid) const
@@ -34,12 +34,14 @@ namespace Learning2DEngine
 				int actualId = gid - firstGid;
 				float column = static_cast<float>(actualId % columns);
 				float row = static_cast<float>(actualId / columns);
+				float allColumns = static_cast<float>(columns);
+				float allRows = static_cast<float>(rows);
 
 				return { 
-					column / (float)columns, row / (float)rows,
-					(column + 1.0f) / (float)columns, row / (float)rows,
-					(column + 1.0f) / (float)columns, (row + 1.0f) / (float)rows,
-					column / (float)columns, (row + 1.0f) / (float)rows
+					column / allColumns, row / allRows,
+					(column + 1.0f) / allColumns, row / allRows,
+					(column + 1.0f) / allColumns, (row + 1.0f) / allRows,
+					column / allColumns, (row + 1.0f) / allRows
 				};
 			}
 		};

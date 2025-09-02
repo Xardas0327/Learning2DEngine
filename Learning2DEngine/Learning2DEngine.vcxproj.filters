@@ -452,7 +452,7 @@
     <ClInclude Include="Learning2DEngine\Editor\TiledMapConstant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Editor\TiledMapTexture.h">
+    <ClInclude Include="Learning2DEngine\Editor\TiledMapObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
