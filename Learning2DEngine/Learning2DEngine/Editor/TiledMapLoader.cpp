@@ -14,12 +14,15 @@ namespace Learning2DEngine
 
     namespace Editor
     {
-        TiledMap TiledMapLoader::LoadFromFile(const char* filePath)
+        TiledMap TiledMapLoader::LoadFromFile(const std::string& filePath)
         {
             auto doc = new rapidxml::xml_document<>;
             try
             {
-                rapidxml::file<> xmlFile(filePath);
+                std::size_t folderIndex = filePath.find_last_of("/");
+                std::string folderPath = folderIndex == std::string::npos? "" : filePath.substr(0, folderIndex);
+
+                rapidxml::file<> xmlFile(filePath.c_str());
                 doc->parse<0>(xmlFile.data());
                 TiledMap map;
 
@@ -39,7 +42,7 @@ namespace Learning2DEngine
             catch (std::exception& e)
             {
                 delete doc;
-                L2DE_LOG_ERROR(e.what());
+                L2DE_LOG_ERROR((std::string)"TiledMapLoader: " + e.what());
                 throw e;
             }
         }

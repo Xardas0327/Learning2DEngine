@@ -19,7 +19,7 @@ namespace Learning2DEngine
 		public:
 			~TiledMapLoader() = default;
 
-			static TiledMap LoadFromFile(const char* filePath);
+			static TiledMap LoadFromFile(const std::string& filePath);
 		};
 	}
 }

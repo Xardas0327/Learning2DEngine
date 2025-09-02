@@ -23,7 +23,12 @@ namespace Learning2DEngine
             bool infinite;
             glm::vec4 backgroundColor;
 
-            TiledMap();
+            TiledMap()
+                : version(), tiledVersion(), orientation(), width(0), height(0),
+                tileWidth(0), tileHeight(0), infinite(false), backgroundColor(0.0f)
+            {
+
+            }
         public:
             ~TiledMap() = default;
 
