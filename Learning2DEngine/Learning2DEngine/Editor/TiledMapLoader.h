@@ -19,9 +19,9 @@ namespace Learning2DEngine
 			//If there is valid background color, it will be set by RenderManager::SetClearColor.
 			static void LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode);
 			static glm::vec4 ConvertBackgroundColor(const std::string& hex);
-
 			static std::vector<TiledMapObject> LoadObjects(rapidxml::xml_node<>* mapNode, const std::string& folderPath);
 			static bool LoadObject(const std::string& folderPath, const std::string& sourceName, TiledMapObject& tiledMapObject);
+			static void LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, const std::vector<TiledMapObject>& objects);
 		public:
 			~TiledMapLoader() = default;
 

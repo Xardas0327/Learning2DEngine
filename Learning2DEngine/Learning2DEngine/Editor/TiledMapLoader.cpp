@@ -1,5 +1,6 @@
 #include "TiledMapLoader.h"
 
+#include <sstream>
 #include <exception>
 #include <memory>
 #include <rapidxml/rapidxml_utils.hpp>
@@ -7,7 +8,9 @@
 #include "TiledMapConstant.h"
 #include "../DebugTool/Log.h"
 #include "../Render/RenderManager.h"
+#include "../Render/SpriteRenderComponent.h"
 #include "../System/ResourceManager.h"
+#include "../System/GameObjectManager.h"
 
 namespace Learning2DEngine
 {
@@ -38,6 +41,7 @@ namespace Learning2DEngine
 
                 TiledMapLoader::LoadMapAttributes(map, mapNode);
                 auto objects = TiledMapLoader::LoadObjects(mapNode, folderPath);
+                LoadLayers(map, mapNode, objects);
 
                 return map;
             }
@@ -160,7 +164,6 @@ namespace Learning2DEngine
         std::vector<TiledMapObject> TiledMapLoader::LoadObjects(rapidxml::xml_node<>* mapNode, const std::string& folderPath)
         {
             std::vector<TiledMapObject> objects;
-            Texture2DSettings textureSettings(true);
             for (
                 auto mapTileset = mapNode->first_node(L2DE_TILEDMAP_NODE_TILESET);
                 mapTileset != nullptr;
@@ -255,6 +258,108 @@ namespace Learning2DEngine
             }
 
             return true;
+        }
+
+        void TiledMapLoader::LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, const std::vector<TiledMapObject>& objects)
+        {
+            auto& gameObjectManager = System::GameObjectManager::GetInstance();
+            int layerId = 0;
+            for (
+                auto layerNode = mapNode->first_node(L2DE_TILEDMAP_NODE_LAYER);
+                layerNode != nullptr;
+                layerNode = layerNode->next_sibling(L2DE_TILEDMAP_NODE_LAYER)
+                )
+            {
+                int layerWidth = std::atoi(layerNode->first_attribute(L2DE_TILEDMAP_ATTR_WIDTH)->value());
+                if (layerWidth != map.GetWidth())
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: the layer width is not equal to the map width.");
+                }
+
+                int layerHeight = std::atoi(layerNode->first_attribute(L2DE_TILEDMAP_ATTR_HEIGHT)->value());
+                if (layerHeight != map.GetHeight())
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: the layer height is not equal to the map height.");
+                }
+
+                auto dataNode = layerNode->first_node(L2DE_TILEDMAP_NODE_DATA);
+                if (dataNode == nullptr)
+                {
+                    L2DE_LOG_ERROR("TiledMapLoader: the layer data node is missing.");
+                    continue;
+                }
+
+                auto encodingAttr = dataNode->first_attribute(L2DE_TILEDMAP_ATTR_ENCODING);
+                if (encodingAttr == nullptr)
+                {
+                    L2DE_LOG_ERROR("TiledMapLoader: the layer data encoding attribute is missing.");
+                    continue;
+                }
+
+                std::string encoding = encodingAttr->value();
+                if (encoding != L2DE_TILEDMAP_SUPPORTED_ENCODING)
+                {
+                    L2DE_LOG_ERROR("TiledMapLoader: the layer data encoding is not supported: "
+                        + encoding + "\n Supported encoding: " + L2DE_TILEDMAP_SUPPORTED_ENCODING);
+                    continue;
+                }
+
+                std::stringstream dataText(dataNode->value());
+                std::string line;
+
+				int row = 0;
+                while (std::getline(dataText, line)) {
+                    //Remove \r
+                    line.erase(std::remove(line.begin(), line.end(), '\r'), line.end());
+                    if(line.empty())
+						continue;
+
+                    std::stringstream lineStream(line);
+                    std::string token;
+
+					int column = 0;
+                    while (std::getline(lineStream, token, ',')) {
+                        if (!token.empty()) {
+							int id = std::atoi(token.c_str());
+                            if (id > 0)
+                            {
+                                const TiledMapObject* selectedObject = nullptr;
+                                for (auto& object : objects)
+                                {
+                                    if (object.HasNumber(id))
+                                    {
+                                        selectedObject = &object;
+                                        break;
+                                    }
+                                }
+
+                                if (selectedObject == nullptr)
+                                {
+                                    L2DE_LOG_WARNING("TiledMapLoader: the tile id " + std::to_string(id) + " is not valid.");
+                                    continue;
+                                }
+
+                                Transform transform(
+                                    glm::vec2(
+                                        static_cast<float>(column) * map.GetTileWidth(),
+                                        static_cast<float>(row + 1) * map.GetTileHeight() - selectedObject->size.y),
+                                    selectedObject->size
+                                );
+                                auto gameObject = gameObjectManager.CreateGameObject(transform);
+                                auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
+                                    RendererMode::RENDER,
+                                    *selectedObject->texture,
+                                    layerId);
+                                renderer->data.uvMatrix = selectedObject->GetUV(id);
+                            }
+                            
+                        }
+                        ++column;
+                    }
+                    ++row;
+                }
+                ++layerId;
+            }
         }
     }
 }

@@ -1,7 +1,10 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <glm/glm.hpp>
+
+#include "../System/GameObject.h"
 
 namespace Learning2DEngine
 {
@@ -25,11 +28,14 @@ namespace Learning2DEngine
 
             TiledMap()
                 : version(), tiledVersion(), orientation(), width(0), height(0),
-                tileWidth(0), tileHeight(0), infinite(false), backgroundColor(0.0f)
+                tileWidth(0), tileHeight(0), infinite(false), backgroundColor(0.0f),
+                gameObjects()
             {
 
             }
         public:
+            std::vector<System::GameObject*> gameObjects;
+
             ~TiledMap() = default;
 
             inline const std::string& GetVersion() const
