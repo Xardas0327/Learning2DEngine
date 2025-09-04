@@ -37,11 +37,18 @@ namespace Learning2DEngine
 				float allColumns = static_cast<float>(columns);
 				float allRows = static_cast<float>(rows);
 
-				return { 
-					column / allColumns, row / allRows,
-					(column + 1.0f) / allColumns, row / allRows,
-					(column + 1.0f) / allColumns, (row + 1.0f) / allRows,
-					column / allColumns, (row + 1.0f) / allRows
+				//if it is not start from 0, add 1 pixel offset to avoid texture bleeding
+				float startX = column == 0.0f ? 0.0f : ((column * size.x +1.0f) / (allColumns * size.x));
+				float startY = row == 0.0f ? 0.0f : ((row * size.y + 1.0f) / (allRows * size.y));
+
+				float endX = (column + 1.0f) / allColumns;
+				float endY = (row + 1.0f) / allRows;
+
+				return {
+					startX, startY,
+					endX, startY,
+					endX, endY,
+					startX,endY
 				};
 			}
 		};
