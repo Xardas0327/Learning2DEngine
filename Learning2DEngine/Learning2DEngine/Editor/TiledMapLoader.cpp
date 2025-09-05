@@ -3,9 +3,11 @@
 #include <sstream>
 #include <exception>
 #include <memory>
+#include <GLFW/glfw3.h>
 #include <rapidxml/rapidxml_utils.hpp>
 
 #include "TiledMapConstant.h"
+#include "../DebugTool/DebugMacro.h"
 #include "../DebugTool/Log.h"
 #include "../Render/RenderManager.h"
 #include "../Render/SpriteRenderComponent.h"
@@ -19,8 +21,13 @@ namespace Learning2DEngine
 
     namespace Editor
     {
-        TiledMap TiledMapLoader::LoadFromFile(const std::string& filePath)
+        TiledMap TiledMapLoader::LoadFromFile(const std::string& filePath,
+            const std::map<std::string, std::string>& textureMap,
+            bool loadBackground)
         {
+#if L2DE_DEBUG
+            float startTime = static_cast<float>(glfwGetTime());
+#endif
             auto doc = std::make_unique<rapidxml::xml_document<>>();
             try
             {
@@ -39,9 +46,14 @@ namespace Learning2DEngine
                     return map;
                 }
 
-                TiledMapLoader::LoadMapAttributes(map, mapNode);
-                auto objects = TiledMapLoader::LoadObjects(mapNode, folderPath);
+                TiledMapLoader::LoadMapAttributes(map, mapNode, loadBackground);
+                auto objects = TiledMapLoader::LoadObjects(mapNode, folderPath, textureMap);
                 LoadLayers(map, mapNode, objects);
+
+#if L2DE_DEBUG
+                float loadingTime = static_cast<float>(glfwGetTime()) - startTime;
+                L2DE_LOG_INFO("TiledMapLoader: " + filePath + " file's loading time: " + std::to_string(loadingTime) + "s");
+#endif
 
                 return map;
             }
@@ -52,7 +64,7 @@ namespace Learning2DEngine
             }
         }
 
-        void TiledMapLoader::LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode)
+        void TiledMapLoader::LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode, bool loadBackground)
         {
             map.version = mapNode->first_attribute(L2DE_TILEDMAP_ATTR_VERSION)->value();
             if (map.version != L2DE_TILEDMAP_SUPPORTED_VERSION)
@@ -104,11 +116,15 @@ namespace Learning2DEngine
             if (backgroundColorAttr != nullptr)
             {
                 map.backgroundColor = TiledMapLoader::ConvertBackgroundColor(backgroundColorAttr->value());
-                RenderManager::GetInstance().SetClearColor(
-                    map.backgroundColor.r,
-                    map.backgroundColor.g,
-                    map.backgroundColor.b,
-                    map.backgroundColor.a);
+
+                if (loadBackground)
+                {
+                    RenderManager::GetInstance().SetClearColor(
+                        map.backgroundColor.r,
+                        map.backgroundColor.g,
+                        map.backgroundColor.b,
+                        map.backgroundColor.a);
+                }
             }
         }
 
@@ -161,7 +177,10 @@ namespace Learning2DEngine
             return color;
         }
 
-        std::vector<TiledMapObject> TiledMapLoader::LoadObjects(rapidxml::xml_node<>* mapNode, const std::string& folderPath)
+        std::vector<TiledMapObject> TiledMapLoader::LoadObjects(
+            rapidxml::xml_node<>* mapNode,
+            const std::string& folderPath,
+            const std::map<std::string, std::string>& textureMap)
         {
             std::vector<TiledMapObject> objects;
             for (
@@ -185,13 +204,17 @@ namespace Learning2DEngine
                     continue;
                 }
 
-                if (TiledMapLoader::LoadObject(folderPath, sourceName, object))
+                if (TiledMapLoader::LoadObject(folderPath, sourceName, textureMap, object))
                     objects.push_back(object);
             }
             return objects;
         }
 
-        bool TiledMapLoader::LoadObject(const std::string& folderPath, const std::string& sourceName, TiledMapObject& tiledMapObject)
+        bool TiledMapLoader::LoadObject(
+            const std::string& folderPath,
+            const std::string& sourceName,
+            const std::map<std::string, std::string>& textureMap,
+            TiledMapObject& tiledMapObject)
         {
             rapidxml::file<> xmlFile((folderPath + sourceName).c_str());
             auto doc = std::make_unique<rapidxml::xml_document<>>();
@@ -245,7 +268,11 @@ namespace Learning2DEngine
             }
 
             auto& resourceManager = ResourceManager::GetInstance();
-            if (resourceManager.IsTextureExist(name))
+            if (textureMap.find(name) != textureMap.end())
+            {
+                tiledMapObject.texture = &resourceManager.GetTexture(textureMap.at(name));
+            }
+            else if (resourceManager.IsTextureExist(name))
             {
                 tiledMapObject.texture = &resourceManager.GetTexture(name);
             }
@@ -307,20 +334,20 @@ namespace Learning2DEngine
                 std::stringstream dataText(dataNode->value());
                 std::string line;
 
-				int row = 0;
+                int row = 0;
                 while (std::getline(dataText, line)) {
                     //Remove \r
                     line.erase(std::remove(line.begin(), line.end(), '\r'), line.end());
-                    if(line.empty())
-						continue;
+                    if (line.empty())
+                        continue;
 
                     std::stringstream lineStream(line);
                     std::string token;
 
-					int column = 0;
+                    int column = 0;
                     while (std::getline(lineStream, token, ',')) {
                         if (!token.empty()) {
-							int id = std::atoi(token.c_str());
+                            int id = std::atoi(token.c_str());
                             if (id > 0)
                             {
                                 const TiledMapObject* selectedObject = nullptr;
@@ -352,7 +379,7 @@ namespace Learning2DEngine
                                     layerId);
                                 renderer->data.uvMatrix = selectedObject->GetUV(id);
                             }
-                            
+
                         }
                         ++column;
                     }
