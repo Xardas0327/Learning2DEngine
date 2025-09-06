@@ -26,8 +26,10 @@
 #define L2DE_TILEDMAP_ATTR_NAME "name"
 #define L2DE_TILEDMAP_ATTR_COLUMNS "columns"
 #define L2DE_TILEDMAP_ATTR_TILECOUNT "tilecount"
+#define L2DE_TILEDMAP_ATTR_SPACING "spacing"
+#define L2DE_TILEDMAP_ATTR_MARGIN "margin"
 
-// Tileset
+// Layer
 #define L2DE_TILEDMAP_NODE_LAYER "layer"
 #define L2DE_TILEDMAP_NODE_DATA "data"
 #define L2DE_TILEDMAP_ATTR_ENCODING "encoding"

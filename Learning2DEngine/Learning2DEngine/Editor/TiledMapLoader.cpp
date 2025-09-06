@@ -229,13 +229,13 @@ namespace Learning2DEngine
                     + version + "\n Supported version: " + L2DE_TILEDMAP_SUPPORTED_VERSION);
             }
 
-            tiledMapObject.size.x = static_cast<float>(std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_TILEWIDTH)->value()));
-            if (tiledMapObject.size.x <= 0)
+            tiledMapObject.tiledSize.x = static_cast<float>(std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_TILEWIDTH)->value()));
+            if (tiledMapObject.tiledSize.x <= 0)
             {
                 L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile width should be bigger then 0.");
             }
-            tiledMapObject.size.y = static_cast<float>(std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_TILEHEIGHT)->value()));
-            if (tiledMapObject.size.y <= 0)
+            tiledMapObject.tiledSize.y = static_cast<float>(std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_TILEHEIGHT)->value()));
+            if (tiledMapObject.tiledSize.y <= 0)
             {
                 L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile height should be bigger then 0.");
             }
@@ -246,11 +246,10 @@ namespace Learning2DEngine
                 L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset columns should be bigger then 0.");
             }
 
-            tiledMapObject.rows = tiledMapObject.columns == 0 ? 0 :
-                std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_TILECOUNT)->value()) / tiledMapObject.columns;
-            if (tiledMapObject.rows <= 0)
+            tiledMapObject.tileCount = std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_TILECOUNT)->value());
+            if (tiledMapObject.tileCount <= 0)
             {
-                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset rows should be bigger then 0.");
+                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tilecount should be bigger then 0.");
             }
 
             std::string name = tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_NAME)->value();
@@ -260,11 +259,32 @@ namespace Learning2DEngine
                 return false;
             }
 
-            std::string imageSource = tilesetNode->first_node(L2DE_TILEDMAP_NODE_IMAGE)->first_attribute(L2DE_TILEDMAP_ATTR_SOURCE)->value();
+            auto spacingAttr = tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_SPACING);
+            if (spacingAttr != nullptr)
+                tiledMapObject.spacing = std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_SPACING)->value());
+
+            auto marginAttr = tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_MARGIN);
+            if (marginAttr != nullptr)
+                tiledMapObject.margin = std::atoi(tilesetNode->first_attribute(L2DE_TILEDMAP_ATTR_MARGIN)->value());
+
+			auto imageNode = tilesetNode->first_node(L2DE_TILEDMAP_NODE_IMAGE);
+
+            std::string imageSource = imageNode->first_attribute(L2DE_TILEDMAP_ATTR_SOURCE)->value();
             if (imageSource.empty())
             {
                 L2DE_LOG_ERROR("TiledMapLoader: the tileset image source is empty.");
                 return false;
+            }
+
+            tiledMapObject.imageSize.x = static_cast<float>(std::atoi(imageNode->first_attribute(L2DE_TILEDMAP_ATTR_WIDTH)->value()));
+            if (tiledMapObject.imageSize.x <= 0)
+            {
+                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " image width should be bigger then 0.");
+            }
+            tiledMapObject.imageSize.y = static_cast<float>(std::atoi(imageNode->first_attribute(L2DE_TILEDMAP_ATTR_HEIGHT)->value()));
+            if (tiledMapObject.imageSize.y <= 0)
+            {
+                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " image height should be bigger then 0.");
             }
 
             auto& resourceManager = ResourceManager::GetInstance();
@@ -369,8 +389,8 @@ namespace Learning2DEngine
                                 Transform transform(
                                     glm::vec2(
                                         static_cast<float>(column) * map.GetTileWidth(),
-                                        static_cast<float>(row + 1) * map.GetTileHeight() - selectedObject->size.y),
-                                    selectedObject->size
+                                        static_cast<float>(row + 1) * map.GetTileHeight() - selectedObject->tiledSize.y),
+                                    selectedObject->tiledSize
                                 );
                                 auto gameObject = gameObjectManager.CreateGameObject(transform);
                                 auto renderer = gameObject->AddComponent<SpriteRenderComponent>(

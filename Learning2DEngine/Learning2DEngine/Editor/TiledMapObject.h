@@ -13,13 +13,24 @@ namespace Learning2DEngine
 		{
 			int firstGid;
 			int columns;
-			int rows; 
-			glm::vec2 size;
+			int tileCount;
+			int spacing;
+			int margin;
+			glm::vec2 tiledSize;
+			glm::vec2 imageSize;
 			Render::Texture2D* texture;
+
+			TiledMapObject()
+				: firstGid(0), columns(0), tileCount(0), spacing(0), margin(0),
+				tiledSize(0.0f), imageSize(0.0f), texture(nullptr)
+			{
+			}
+
+			~TiledMapObject() = default;
 
 			bool HasNumber(int gid) const
 			{
-				return gid >= firstGid && gid < firstGid + (columns * rows);
+				return gid >= firstGid && gid < firstGid + tileCount;
 			}
 
 			/// <summary>
@@ -34,15 +45,18 @@ namespace Learning2DEngine
 				int actualId = gid - firstGid;
 				float column = static_cast<float>(actualId % columns);
 				float row = static_cast<float>(actualId / columns);
-				float allColumns = static_cast<float>(columns);
-				float allRows = static_cast<float>(rows);
+
+				glm::vec2 topLeft(
+					static_cast<float>(margin) + column * (tiledSize.x + spacing),
+					static_cast<float>(margin) + row * (tiledSize.y + spacing)
+				);
 
 				//if it is not start from 0, add 1 pixel offset to avoid texture bleeding
-				float startX = column == 0.0f ? 0.0f : ((column * size.x +1.0f) / (allColumns * size.x));
-				float startY = row == 0.0f ? 0.0f : ((row * size.y + 1.0f) / (allRows * size.y));
+				float startX = (topLeft.x + static_cast<float>(column != 0.0f)) / imageSize.x;
+				float startY = (topLeft.y + static_cast<float>(row != 0.0f)) / imageSize.y;
 
-				float endX = (column + 1.0f) / allColumns;
-				float endY = (row + 1.0f) / allRows;
+				float endX = (topLeft.x + tiledSize.x) / imageSize.x;
+				float endY = (topLeft.y + tiledSize.y) / imageSize.y;
 
 				return {
 					startX, startY,
