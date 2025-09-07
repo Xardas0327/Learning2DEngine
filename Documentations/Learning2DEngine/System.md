@@ -914,8 +914,9 @@ static glm::vec2 GetScroll();
 
 ### Description:
 The `GameObject` represent the objects in the game.
-It contains the components, which give a big flexibility to the developer.  
-Please check the `Component` too.
+It contains the `Transform` and the `Components`, which give a big flexibility to the developer.  
+Note: the position of an object is on the top-left corner.  
+Please check the `Transform` and the `Component` too.
 
 ### Header:
 ```cpp
@@ -1658,7 +1659,8 @@ static inline float GetDeltaTime();
 
 ### Description: 
 It contains the position the scale and the rotation.  
-Every `GameObject` has a `Transform`.
+Every `GameObject` has a `Transform`.  
+Note: the position of an object is on the top-left corner.
 
 ### Header:
 ```cpp
