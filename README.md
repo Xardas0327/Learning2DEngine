@@ -36,6 +36,7 @@ but I tried to keep them minimum.
 - GLM for OpenGL math [License](https://github.com/g-truc/glm?tab=License-1-ov-file)
 - stb_image for load images into textures [License](https://github.com/nothings/stb?tab=License-1-ov-file)
 - Freetype for write texts on the screen [License](https://freetype.org/license.html)
+- RapidXML for Tiled Map Editor support (MIT) [License](https://rapidxml.sourceforge.net/license.txt)
 
 ## Documentation:
 It is recommended to use the documentation links in the released branches.

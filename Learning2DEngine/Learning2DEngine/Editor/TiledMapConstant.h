@@ -1,0 +1,35 @@
+#pragma once
+
+#define L2DE_TILEDMAP_SUPPORTED_VERSION "1.10"
+#define L2DE_TILEDMAP_SUPPORTED_ORIENTATION "orthogonal"
+#define L2DE_TILEDMAP_SUPPORTED_ENCODING "csv"
+
+//Common
+#define L2DE_TILEDMAP_ATTR_TILEWIDTH "tilewidth"
+#define L2DE_TILEDMAP_ATTR_TILEHEIGHT "tileheight"
+#define L2DE_TILEDMAP_ATTR_WIDTH "width"
+#define L2DE_TILEDMAP_ATTR_HEIGHT "height"
+
+// Map
+#define L2DE_TILEDMAP_NODE_MAP "map"
+#define L2DE_TILEDMAP_ATTR_VERSION "version"
+#define L2DE_TILEDMAP_ATTR_TILEDVERSION "tiledversion"
+#define L2DE_TILEDMAP_ATTR_ORIENTATION "orientation"
+#define L2DE_TILEDMAP_ATTR_INFINITE "infinite"
+#define L2DE_TILEDMAP_ATTR_BACKGROUND_COLOR "backgroundcolor"
+
+// Tileset
+#define L2DE_TILEDMAP_NODE_TILESET "tileset"
+#define L2DE_TILEDMAP_NODE_IMAGE "image"
+#define L2DE_TILEDMAP_ATTR_FIRSTGID "firstgid"
+#define L2DE_TILEDMAP_ATTR_SOURCE "source"
+#define L2DE_TILEDMAP_ATTR_NAME "name"
+#define L2DE_TILEDMAP_ATTR_COLUMNS "columns"
+#define L2DE_TILEDMAP_ATTR_TILECOUNT "tilecount"
+#define L2DE_TILEDMAP_ATTR_SPACING "spacing"
+#define L2DE_TILEDMAP_ATTR_MARGIN "margin"
+
+// Layer
+#define L2DE_TILEDMAP_NODE_LAYER "layer"
+#define L2DE_TILEDMAP_NODE_DATA "data"
+#define L2DE_TILEDMAP_ATTR_ENCODING "encoding"
