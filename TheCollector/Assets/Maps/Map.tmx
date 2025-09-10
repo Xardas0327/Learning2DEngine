@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="36" height="20" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#0099e6" nextlayerid="4" nextobjectid="1">
+ <properties>
+  <property name="BoolTest" type="bool" value="true"/>
+  <property name="ColorTest" type="color" value="#ffd45a14"/>
+  <property name="FileTest" type="file" value="../../../../../../Downloads/buszok.txt"/>
+  <property name="FloatTest" type="float" value="1.5"/>
+  <property name="IntTest" type="int" value="4"/>
+  <property name="ObjectTest" type="object" value="0"/>
+  <property name="StringTest" value="txtttdasdsgaj"/>
+ </properties>
  <tileset firstgid="1" source="Grounds.tsx"/>
  <tileset firstgid="3" source="Platform2.tsx"/>
  <tileset firstgid="4" source="Platform1.tsx"/>
  <tileset firstgid="5" source="Bushes.tsx"/>
  <tileset firstgid="9" source="Coin.tsx"/>
  <layer id="3" name="Back" width="36" height="20">
+  <properties>
+   <property name="Layer" type="int" value="-1"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -30,6 +42,9 @@
 </data>
  </layer>
  <layer id="1" name="Main" width="36" height="20">
+  <properties>
+   <property name="Layer" type="int" value="0"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
@@ -54,6 +69,9 @@
 </data>
  </layer>
  <layer id="2" name="Front" width="36" height="20">
+  <properties>
+   <property name="Layer" type="int" value="1"/>
+  </properties>
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
