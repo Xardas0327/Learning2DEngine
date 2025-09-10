@@ -46,7 +46,7 @@ namespace Learning2DEngine
                     return map;
                 }
 
-                TiledMapLoader::LoadMapAttributes(map, mapNode, loadBackground);
+                TiledMapLoader::LoadMapAttributes(map, mapNode, folderPath, loadBackground);
                 auto objects = TiledMapLoader::LoadObjects(mapNode, folderPath, textureMap);
                 LoadLayers(map, mapNode, objects);
 
@@ -64,7 +64,7 @@ namespace Learning2DEngine
             }
         }
 
-        void TiledMapLoader::LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode, bool loadBackground)
+        void TiledMapLoader::LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode, const std::string& folderPath, bool loadBackground)
         {
             bool foundWidth = false;
             bool foundHeight = false;
@@ -134,7 +134,7 @@ namespace Learning2DEngine
                 }
                 else if (strcmp(attr->name(), L2DE_TILEDMAP_ATTR_BACKGROUND_COLOR) == 0)
                 {
-                    map.backgroundColor = TiledMapLoader::ConvertBackgroundColor(attr->value());
+                    map.backgroundColor = TiledMapLoader::ConvertStringToColor(attr->value());
 
                     if (loadBackground)
                     {
@@ -155,9 +155,11 @@ namespace Learning2DEngine
                 L2DE_LOG_ERROR("TiledMapLoader: the map tile width is missing.");
             if (!foundTileHeight)
                 L2DE_LOG_ERROR("TiledMapLoader: the map tile height is missing.");
+
+            auto properties = LoadProperties(mapNode, folderPath);
         }
 
-        glm::vec4 TiledMapLoader::ConvertBackgroundColor(const std::string& hex)
+        glm::vec4 TiledMapLoader::ConvertStringToColor(const std::string& hex)
         {
             glm::vec4 color(1.0f);
 
@@ -176,7 +178,7 @@ namespace Learning2DEngine
                 shift = 2;
                 try
                 {
-                    int alpha = std::stoi(hex.substr(0, 2), nullptr, 16);
+                    int alpha = std::stoi(hex.substr(1, 2), nullptr, 16);
                     color.a = static_cast<float>(alpha) / 255.0f;
                 }
                 catch (const std::exception&)
@@ -509,6 +511,92 @@ namespace Learning2DEngine
                 }
                 ++layerId;
             }
+        }
+
+        std::map<std::string, System::Property> TiledMapLoader::LoadProperties(rapidxml::xml_node<>* node, const std::string& folderPath)
+        {
+            std::map<std::string, Property> properties;
+            if (node == nullptr)
+                return properties;
+
+            if (node->name() != L2DE_TILEDMAP_NODE_PROPERTIES)
+            {
+                node = node->first_node(L2DE_TILEDMAP_NODE_PROPERTIES);
+            }
+
+            if (node == nullptr)
+                return properties;
+
+            for (
+                auto property = node->first_node(L2DE_TILEDMAP_NODE_PROPERTY);
+                property != nullptr;
+                property = property->next_sibling(L2DE_TILEDMAP_NODE_PROPERTY)
+                )
+            {
+                auto nameAttr = property->first_attribute(L2DE_TILEDMAP_ATTR_NAME);
+                if (nameAttr == nullptr)
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: the property name attribute is missing.");
+                    continue;
+                }
+
+                auto valueAttr = property->first_attribute(L2DE_TILEDMAP_ATTR_VALUE);
+                if (valueAttr == nullptr)
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: the property value attribute is missing.");
+                    continue;
+                }
+
+                auto typeAttr = property->first_attribute(L2DE_TILEDMAP_ATTR_TYPE);
+                PropertyType type = PropertyType::String;
+                if (typeAttr != nullptr)
+                {
+                    std::string typeStr = typeAttr->value();
+                    if (typeStr == L2DE_TILEDMAP_PROPERTY_TYPE_BOOL)
+                        type = PropertyType::Bool;
+                    else if (typeStr == L2DE_TILEDMAP_PROPERTY_TYPE_COLOR)
+                        type = PropertyType::Color;
+                    else if (typeStr == L2DE_TILEDMAP_PROPERTY_TYPE_FILE)
+                        type = PropertyType::File;
+                    else if (typeStr == L2DE_TILEDMAP_PROPERTY_TYPE_FLOAT)
+                        type = PropertyType::Float;
+                    else if (typeStr == L2DE_TILEDMAP_PROPERTY_TYPE_INT)
+                        type = PropertyType::Int;
+                    else if (typeStr == L2DE_TILEDMAP_PROPERTY_TYPE_STRING)
+                        type = PropertyType::String;
+                    else
+                    {
+                        L2DE_LOG_WARNING("TiledMapLoader: the property type is not valid: " + typeStr);
+                        continue;
+                    }
+                }
+
+                switch (type)
+                {
+                case Learning2DEngine::System::PropertyType::Bool:
+                    properties.emplace(nameAttr->value(), Property(strcmp(valueAttr->value(), "true") == 0 ? true : false));
+                    break;
+                case Learning2DEngine::System::PropertyType::Color:
+                    properties.emplace(nameAttr->value(), Property(TiledMapLoader::ConvertStringToColor(valueAttr->value())));
+                    break;
+                case Learning2DEngine::System::PropertyType::File:
+                    properties.emplace(nameAttr->value(), Property(folderPath + valueAttr->value(), type));
+                    break;
+                case Learning2DEngine::System::PropertyType::Float:
+                    properties.emplace(nameAttr->value(), Property(static_cast<float>(std::atof(valueAttr->value()))));
+                    break;
+                case Learning2DEngine::System::PropertyType::Int:
+                    properties.emplace(nameAttr->value(), Property(std::atoi(valueAttr->value())));
+                    break;
+                case Learning2DEngine::System::PropertyType::String:
+                    properties.emplace(nameAttr->value(), Property(valueAttr->value(), type));
+                    break;
+                default:
+                    break;
+                }
+            }
+
+            return properties;
         }
     }
 }
