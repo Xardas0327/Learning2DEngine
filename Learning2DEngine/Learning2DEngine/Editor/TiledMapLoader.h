@@ -19,8 +19,7 @@ namespace Learning2DEngine
 		private:
 			TiledMapLoader() = default;
 
-			//If there is valid background color, it will be set by RenderManager::SetClearColor.
-			static void LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode, const std::string& folderPath, bool loadBackground);
+			static void LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode);
 			static glm::vec4 ConvertStringToColor(const std::string& hex);
 
 			static std::vector<TiledMapObject> LoadObjects(
@@ -38,13 +37,16 @@ namespace Learning2DEngine
 
 			// The folderPath is used when the property type is file.
 			static std::map<std::string, System::Property> LoadProperties(rapidxml::xml_node<>* node, const std::string& folderPath = "");
+
+			static bool LoadMapBackground(rapidxml::xml_node<>* mapNode);
+			static bool LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId);
 		public:
 			~TiledMapLoader() = default;
 
 			static TiledMap LoadFromFile(
 				const std::string& filePath,
-				const std::map<std::string, std::string>& textureMap = std::map<std::string, std::string>(),
-				bool loadBackground = true);
+				const std::map<std::string, std::string>& textureMap = std::map<std::string, std::string>()
+			);
 		};
 	}
 }

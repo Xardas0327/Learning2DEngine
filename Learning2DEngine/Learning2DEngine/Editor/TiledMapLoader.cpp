@@ -22,8 +22,7 @@ namespace Learning2DEngine
     namespace Editor
     {
         TiledMap TiledMapLoader::LoadFromFile(const std::string& filePath,
-            const std::map<std::string, std::string>& textureMap,
-            bool loadBackground)
+            const std::map<std::string, std::string>& textureMap)
         {
 #if L2DE_DEBUG
             float startTime = static_cast<float>(glfwGetTime());
@@ -46,9 +45,9 @@ namespace Learning2DEngine
                     return map;
                 }
 
-                TiledMapLoader::LoadMapAttributes(map, mapNode, folderPath, loadBackground);
+                TiledMapLoader::LoadMapAttributes(map, mapNode);
                 auto objects = TiledMapLoader::LoadObjects(mapNode, folderPath, textureMap);
-                LoadLayers(map, mapNode, objects);
+                TiledMapLoader::LoadLayers(map, mapNode, objects);
 
 #if L2DE_DEBUG
                 float loadingTime = static_cast<float>(glfwGetTime()) - startTime;
@@ -64,7 +63,7 @@ namespace Learning2DEngine
             }
         }
 
-        void TiledMapLoader::LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode, const std::string& folderPath, bool loadBackground)
+        void TiledMapLoader::LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode)
         {
             bool foundWidth = false;
             bool foundHeight = false;
@@ -135,15 +134,6 @@ namespace Learning2DEngine
                 else if (strcmp(attr->name(), L2DE_TILEDMAP_ATTR_BACKGROUND_COLOR) == 0)
                 {
                     map.backgroundColor = TiledMapLoader::ConvertStringToColor(attr->value());
-
-                    if (loadBackground)
-                    {
-                        RenderManager::GetInstance().SetClearColor(
-                            map.backgroundColor.r,
-                            map.backgroundColor.g,
-                            map.backgroundColor.b,
-                            map.backgroundColor.a);
-                    }
                 }
             }
 
@@ -156,7 +146,14 @@ namespace Learning2DEngine
             if (!foundTileHeight)
                 L2DE_LOG_ERROR("TiledMapLoader: the map tile height is missing.");
 
-            auto properties = LoadProperties(mapNode, folderPath);
+            if (TiledMapLoader::LoadMapBackground(mapNode))
+            {
+                RenderManager::GetInstance().SetClearColor(
+                    map.backgroundColor.r,
+                    map.backgroundColor.g,
+                    map.backgroundColor.b,
+                    map.backgroundColor.a);
+            }
         }
 
         glm::vec4 TiledMapLoader::ConvertStringToColor(const std::string& hex)
@@ -433,6 +430,9 @@ namespace Learning2DEngine
                     L2DE_LOG_WARNING("TiledMapLoader: the layer height is not equal to the map height.");
                 }
 
+                int overrideLayerId = 0;
+                bool useOverrideLayerId = TiledMapLoader::LoadLayerId(layerNode, overrideLayerId);
+
                 auto dataNode = layerNode->first_node(L2DE_TILEDMAP_NODE_DATA);
                 if (dataNode == nullptr)
                 {
@@ -497,10 +497,12 @@ namespace Learning2DEngine
                                     selectedObject->tiledSize
                                 );
                                 auto gameObject = gameObjectManager.CreateGameObject(transform);
+
+                                int usedLayerId = useOverrideLayerId ? overrideLayerId : layerId;
                                 auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
                                     RendererMode::RENDER,
                                     *selectedObject->texture,
-                                    layerId);
+                                    usedLayerId);
                                 renderer->data.uvMatrix = selectedObject->GetUV(id);
                             }
 
@@ -597,6 +599,71 @@ namespace Learning2DEngine
             }
 
             return properties;
+        }
+
+        bool TiledMapLoader::LoadMapBackground(rapidxml::xml_node<>* mapNode)
+        {
+
+            auto properties = LoadProperties(mapNode);
+#if L2DE_DEBUG
+            int tooMuchProperties = 1;
+#endif
+
+            if (properties.count(L2DE_TILEDMAP_SMART_LOADBACKGROUND))
+            {
+#if L2DE_DEBUG
+                ++tooMuchProperties;
+#endif
+                if (properties[L2DE_TILEDMAP_SMART_LOADBACKGROUND].GetType() == PropertyType::Bool
+                    && properties[L2DE_TILEDMAP_SMART_LOADBACKGROUND].GetBool())
+                {
+                    return true;
+                }
+                else
+                {
+                    L2DE_LOG_ERROR("TiledMapLoader: the " L2DE_TILEDMAP_SMART_LOADBACKGROUND " property type is not valid. It should be Bool.");
+                }
+            }
+
+#if L2DE_DEBUG
+            if (properties.size() >= tooMuchProperties)
+            {
+                L2DE_LOG_WARNING("TiledMapLoader: The Map's properties won't be processed. Except: " L2DE_TILEDMAP_SMART_LOADBACKGROUND);
+            }
+#endif
+            return false;
+        }
+
+        bool TiledMapLoader::LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId)
+        {
+            auto properties = LoadProperties(layerNode);
+#if L2DE_DEBUG
+            int tooMuchProperties = 1;
+#endif
+
+            if (properties.count(L2DE_TILEDMAP_SMART_LAYER))
+            {
+#if L2DE_DEBUG
+                ++tooMuchProperties;
+#endif
+                if (properties[L2DE_TILEDMAP_SMART_LAYER].GetType() == PropertyType::Int)
+                {
+                    layerId = properties[L2DE_TILEDMAP_SMART_LAYER].GetInt();
+                    return true;
+                }
+                else
+                {
+                    L2DE_LOG_ERROR("TiledMapLoader: the " L2DE_TILEDMAP_SMART_LAYER " property type is not valid. It should be Int.");
+                }
+            }
+
+#if L2DE_DEBUG
+            if (properties.size() >= tooMuchProperties)
+            {
+                L2DE_LOG_WARNING("TiledMapLoader: The Layer's properties won't be processed. Except: " L2DE_TILEDMAP_SMART_LAYER);
+            }
+#endif
+            return false;
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Learning2DEngine
 	{
 		enum class PropertyType
 		{
+			None,
 			Bool,
 			Color,
 			File,

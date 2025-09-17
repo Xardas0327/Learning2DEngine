@@ -25,6 +25,10 @@ namespace Learning2DEngine
 			//for text and file
 			std::string textValue;
 		public:
+			Property()
+				: type(PropertyType::None), boolValue(false), textValue()
+			{
+			}
 			Property(bool value)
 				: type(PropertyType::Bool), boolValue(value), textValue()
 			{
