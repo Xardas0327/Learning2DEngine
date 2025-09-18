@@ -13,6 +13,8 @@
 #include "../Render/SpriteRenderComponent.h"
 #include "../System/ResourceManager.h"
 #include "../System/GameObjectManager.h"
+#include "../System/PropertyComponent.h"
+
 
 namespace Learning2DEngine
 {
@@ -405,10 +407,13 @@ namespace Learning2DEngine
                     Texture2DSettings(true));
             }
 
+            tiledMapObject.commonProperties = TiledMapLoader::LoadProperties(tilesetNode, folderPath);
+            tiledMapObject.uniqueProperties = TiledMapLoader::LoadTilesProperties(tilesetNode, sourceName, folderPath);
+
             return true;
         }
 
-        void TiledMapLoader::LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, const std::vector<TiledMapObject>& objects)
+        void TiledMapLoader::LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapObject>& objects)
         {
             auto& gameObjectManager = System::GameObjectManager::GetInstance();
             int layerId = 0;
@@ -474,7 +479,7 @@ namespace Learning2DEngine
                             int id = std::atoi(token.c_str());
                             if (id > 0)
                             {
-                                const TiledMapObject* selectedObject = nullptr;
+                                TiledMapObject* selectedObject = nullptr;
                                 for (auto& object : objects)
                                 {
                                     if (object.HasNumber(id))
@@ -504,6 +509,19 @@ namespace Learning2DEngine
                                     *selectedObject->texture,
                                     usedLayerId);
                                 renderer->data.uvMatrix = selectedObject->GetUV(id);
+
+                                if (selectedObject->commonProperties.size() > 0 ||
+                                    selectedObject->uniqueProperties[selectedObject->GetLocalId(id)].size() > 0)
+                                {
+                                    auto properties = selectedObject->commonProperties;
+                                    for (auto& prop : selectedObject->uniqueProperties[selectedObject->GetLocalId(id)])
+                                    {
+                                        properties[prop.first] = prop.second;
+                                    }
+                                    gameObject->AddComponent<PropertyComponent>(std::move(properties));
+                                }
+
+                                map.gameObjects.push_back(gameObject);
                             }
 
                         }
@@ -596,6 +614,42 @@ namespace Learning2DEngine
                 default:
                     break;
                 }
+            }
+
+            return properties;
+        }
+
+        std::map<int, std::map<std::string, System::Property>> TiledMapLoader::LoadTilesProperties(
+            rapidxml::xml_node<>* node,
+            const std::string& sourceName,
+            const std::string& folderPath
+        )
+        {
+            std::map<int, std::map<std::string, System::Property>> properties;
+
+            for (
+                auto tile = node->first_node(L2DE_TILEDMAP_NODE_TILE);
+                tile != nullptr;
+                tile = tile->next_sibling(L2DE_TILEDMAP_NODE_TILE)
+                )
+            {
+                auto idAttr = tile->first_attribute(L2DE_TILEDMAP_ATTR_ID);
+                if (idAttr == nullptr)
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id attribute is missing.");
+                    continue;
+                }
+
+                int id = std::atoi(idAttr->value());
+                if (properties.count(id))
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id is duplicated: " + std::to_string(id));
+                    continue;
+                }
+
+                auto tileProperties = LoadProperties(tile, folderPath);
+                if (!tileProperties.empty())
+                    properties.emplace(id, std::move(tileProperties));
             }
 
             return properties;

@@ -33,10 +33,15 @@ namespace Learning2DEngine
 				const std::map<std::string, std::string>& textureMap,
 				TiledMapObject& tiledMapObject);
 
-			static void LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, const std::vector<TiledMapObject>& objects);
+			static void LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapObject>& objects);
 
 			// The folderPath is used when the property type is file.
 			static std::map<std::string, System::Property> LoadProperties(rapidxml::xml_node<>* node, const std::string& folderPath = "");
+			static std::map<int, std::map<std::string, System::Property>> LoadTilesProperties(
+				rapidxml::xml_node<>* node,
+				const std::string& sourceName,
+				const std::string& folderPath = ""
+			);
 
 			static bool LoadMapBackground(rapidxml::xml_node<>* mapNode);
 			static bool LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId);

@@ -47,6 +47,10 @@
 #define L2DE_TILEDMAP_PROPERTY_TYPE_STRING "string"
 #define L2DE_TILEDMAP_PROPERTY_TYPE_OBJECT "object"
 
+// Tile
+#define L2DE_TILEDMAP_NODE_TILE "tile"
+#define L2DE_TILEDMAP_ATTR_ID "id"
+
 // Smart Property
 #define L2DE_TILEDMAP_SMART_LOADBACKGROUND "LoadBackground"
 #define L2DE_TILEDMAP_SMART_LAYER "Layer"

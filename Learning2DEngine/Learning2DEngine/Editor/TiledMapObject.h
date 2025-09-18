@@ -1,9 +1,12 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <string>
+#include <map>
 
 
 #include "../Render/Texture2D.h"
+#include "../System/Property.h"
 
 namespace Learning2DEngine
 {
@@ -19,10 +22,12 @@ namespace Learning2DEngine
 			glm::vec2 tiledSize;
 			glm::vec2 imageSize;
 			Render::Texture2D* texture;
+			std::map<std::string, System::Property> commonProperties;
+			std::map<int, std::map<std::string, System::Property>> uniqueProperties;
 
 			TiledMapObject()
 				: firstGid(0), columns(0), tileCount(0), spacing(0), margin(0),
-				tiledSize(0.0f), imageSize(0.0f), texture(nullptr)
+				tiledSize(0.0f), imageSize(0.0f), texture(nullptr), commonProperties(), uniqueProperties()
 			{
 			}
 
@@ -31,6 +36,11 @@ namespace Learning2DEngine
 			bool HasNumber(int gid) const
 			{
 				return gid >= firstGid && gid < firstGid + tileCount;
+			}
+
+			int GetLocalId(int gid) const
+			{
+				return gid - firstGid;
 			}
 
 			/// <summary>

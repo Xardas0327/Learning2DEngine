@@ -26,6 +26,12 @@ namespace Learning2DEngine
 			{
 
 			}
+
+			PropertyComponent(GameObject* gameObject, const std::map<std::string, Property>&& properties)
+				: Component(gameObject), properties(std::move(properties))
+			{
+
+			}
 		public:
 			std::map<std::string, Property> properties;
 
