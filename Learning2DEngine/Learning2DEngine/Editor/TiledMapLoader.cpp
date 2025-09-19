@@ -13,13 +13,15 @@
 #include "../Render/SpriteRenderComponent.h"
 #include "../System/ResourceManager.h"
 #include "../System/GameObjectManager.h"
-#include "../System/PropertyComponent.h"
+#include "../Physics/BoxColliderComponent.h"
+#include "../Physics/CircleColliderComponent.h"
 
 
 namespace Learning2DEngine
 {
     using namespace Render;
     using namespace System;
+    using namespace Physics;
 
     namespace Editor
     {
@@ -724,7 +726,9 @@ namespace Learning2DEngine
                 {
                     properties[prop.first] = prop.second;
                 }
+
                 propertyComponent = gameObject->AddComponent<PropertyComponent>(std::move(properties));
+                TiledMapLoader::AddColliderToGameObject(propertyComponent);
             }
 
             if (propertyComponent != nullptr && propertyComponent->properties.count(L2DE_TILEDMAP_SMART_GROUPNAME))
@@ -736,16 +740,107 @@ namespace Learning2DEngine
                 }
                 else
                 {
-                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_GROUPNAME);
-
                     map.gameObjects[
                         propertyComponent->properties[L2DE_TILEDMAP_SMART_GROUPNAME].GetString()
                     ].push_back(gameObject);
+
+                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_GROUPNAME);
                 }
             }
             else
             {
                 map.gameObjects[L2DE_TILEDMAP_BASE_MAPID].push_back(gameObject);
+            }
+        }
+
+        void TiledMapLoader::AddColliderToGameObject(System::PropertyComponent* propertyComponent)
+        {
+            if (propertyComponent->properties.count(L2DE_TILEDMAP_SMART_COLLIDER))
+            {
+                if (propertyComponent->properties[L2DE_TILEDMAP_SMART_COLLIDER].GetType() != PropertyType::String)
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: the " L2DE_TILEDMAP_SMART_COLLIDER " should be string.");
+                    return;
+                }
+
+                auto type = ColliderType::DYNAMIC;
+                auto mode = ColliderMode::COLLIDER;
+                glm::vec2 offset(0.0f, 0.0f);
+                int32_t maskLayer = ~0;
+
+                if (propertyComponent->properties.count(L2DE_TILEDMAP_SMART_COLLIDER_IS_KINEMATIC) &&
+                    propertyComponent->properties[L2DE_TILEDMAP_SMART_COLLIDER_IS_KINEMATIC].GetBool())
+                {
+                    type = ColliderType::KINEMATIC;
+                }
+
+                if (propertyComponent->properties.count(L2DE_TILEDMAP_SMART_COLLIDER_IS_TRIGGER) &&
+                    propertyComponent->properties[L2DE_TILEDMAP_SMART_COLLIDER_IS_TRIGGER].GetBool())
+                {
+                    mode = ColliderMode::TRIGGER;
+                }
+
+                if (propertyComponent->properties.count(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_X))
+                {
+                    offset.x = propertyComponent->properties[L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_X].GetFloat();
+                }
+
+                if (propertyComponent->properties.count(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_Y))
+                {
+                    offset.y = propertyComponent->properties[L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_Y].GetFloat();
+                }
+
+                if (propertyComponent->properties.count(L2DE_TILEDMAP_SMART_COLLIDER_MASKLAYER))
+                {
+                    maskLayer = propertyComponent->properties[L2DE_TILEDMAP_SMART_COLLIDER_MASKLAYER].GetInt();
+                }
+
+                bool addedCollider = false;
+                if (propertyComponent->properties[L2DE_TILEDMAP_SMART_COLLIDER].GetString() == L2DE_TILEDMAP_SMART_COLLIDER_VALUE_BOX)
+                {
+                    glm::vec2 size(propertyComponent->gameObject->transform.GetScale());
+                    if (propertyComponent->properties.count(L2DE_TILEDMAP_SMART_COLLIDER_SIZE_X))
+                    {
+                        size.x = propertyComponent->properties[L2DE_TILEDMAP_SMART_COLLIDER_SIZE_X].GetFloat();
+                    }
+
+                    if (propertyComponent->properties.count(L2DE_TILEDMAP_SMART_COLLIDER_SIZE_Y))
+                    {
+                        size.y = propertyComponent->properties[L2DE_TILEDMAP_SMART_COLLIDER_SIZE_Y].GetFloat();
+                    }
+
+                    propertyComponent->gameObject->AddComponent<BoxColliderComponent>(size, type, mode, offset, maskLayer);
+                    addedCollider = true;
+                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_SIZE_X);
+                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_SIZE_Y);
+                }
+                else if (propertyComponent->properties[L2DE_TILEDMAP_SMART_COLLIDER].GetString() == L2DE_TILEDMAP_SMART_COLLIDER_VALUE_CIRCLE)
+                {
+                    float radius = propertyComponent->gameObject->transform.GetScale().x / 2.0f;
+                    if (propertyComponent->properties.count(L2DE_TILEDMAP_SMART_COLLIDER_RADIUS))
+                    {
+                        radius = propertyComponent->properties[L2DE_TILEDMAP_SMART_COLLIDER_RADIUS].GetFloat();
+                    }
+
+                    propertyComponent->gameObject->AddComponent<CircleColliderComponent>(radius, type, mode, offset, maskLayer);
+                    addedCollider = true;
+                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_RADIUS);
+                }
+                else
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: the " L2DE_TILEDMAP_SMART_COLLIDER " has invalid value. Supported values: "
+                        L2DE_TILEDMAP_SMART_COLLIDER_VALUE_BOX ", " L2DE_TILEDMAP_SMART_COLLIDER_VALUE_CIRCLE);
+                }
+
+                if (addedCollider)
+                {
+                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_COLLIDER);
+                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_IS_KINEMATIC);
+                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_IS_TRIGGER);
+                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_X);
+                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_Y);
+                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_MASKLAYER);
+                }
             }
         }
     }
