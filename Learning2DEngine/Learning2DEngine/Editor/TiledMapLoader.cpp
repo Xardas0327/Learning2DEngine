@@ -415,7 +415,6 @@ namespace Learning2DEngine
 
         void TiledMapLoader::LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapObject>& objects)
         {
-            auto& gameObjectManager = System::GameObjectManager::GetInstance();
             int layerId = 0;
             for (
                 auto layerNode = mapNode->first_node(L2DE_TILEDMAP_NODE_LAYER);
@@ -495,33 +494,13 @@ namespace Learning2DEngine
                                     continue;
                                 }
 
-                                Transform transform(
-                                    glm::vec2(
-                                        static_cast<float>(column) * map.GetTileWidth(),
-                                        static_cast<float>(row + 1) * map.GetTileHeight() - selectedObject->tiledSize.y),
-                                    selectedObject->tiledSize
-                                );
-                                auto gameObject = gameObjectManager.CreateGameObject(transform);
-
-                                int usedLayerId = useOverrideLayerId ? overrideLayerId : layerId;
-                                auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
-                                    RendererMode::RENDER,
-                                    *selectedObject->texture,
-                                    usedLayerId);
-                                renderer->data.uvMatrix = selectedObject->GetUV(id);
-
-                                if (selectedObject->commonProperties.size() > 0 ||
-                                    selectedObject->uniqueProperties[selectedObject->GetLocalId(id)].size() > 0)
-                                {
-                                    auto properties = selectedObject->commonProperties;
-                                    for (auto& prop : selectedObject->uniqueProperties[selectedObject->GetLocalId(id)])
-                                    {
-                                        properties[prop.first] = prop.second;
-                                    }
-                                    gameObject->AddComponent<PropertyComponent>(std::move(properties));
-                                }
-
-                                map.gameObjects.push_back(gameObject);
+                                TiledMapLoader::CreateGameObject(
+                                    map,
+                                    selectedObject,
+                                    useOverrideLayerId ? overrideLayerId : layerId,
+                                    id,
+                                    row,
+                                    column);
                             }
 
                         }
@@ -718,6 +697,56 @@ namespace Learning2DEngine
             }
 #endif
             return false;
+        }
+
+        void TiledMapLoader::CreateGameObject(TiledMap& map, TiledMapObject* object, int layerId, int imageId, int row, int column)
+        {
+            Transform transform(
+                glm::vec2(
+                    static_cast<float>(column) * map.GetTileWidth(),
+                    static_cast<float>(row + 1) * map.GetTileHeight() - object->tiledSize.y),
+                object->tiledSize
+            );
+            auto gameObject = GameObjectManager::GetInstance().CreateGameObject(transform);
+
+            auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
+                RendererMode::RENDER,
+                *object->texture,
+                layerId);
+            renderer->data.uvMatrix = object->GetUV(imageId);
+
+            PropertyComponent* propertyComponent = nullptr;
+            if (object->commonProperties.size() > 0 ||
+                object->uniqueProperties[object->GetLocalId(imageId)].size() > 0)
+            {
+                auto properties = object->commonProperties;
+                for (auto& prop : object->uniqueProperties[object->GetLocalId(imageId)])
+                {
+                    properties[prop.first] = prop.second;
+                }
+                propertyComponent = gameObject->AddComponent<PropertyComponent>(std::move(properties));
+            }
+
+            if (propertyComponent != nullptr && propertyComponent->properties.count(L2DE_TILEDMAP_SMART_GROUPNAME))
+            {
+                if (propertyComponent->properties[L2DE_TILEDMAP_SMART_GROUPNAME].GetType() != PropertyType::String)
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: the " L2DE_TILEDMAP_SMART_GROUPNAME " should be string.");
+                    map.gameObjects[L2DE_TILEDMAP_BASE_MAPID].push_back(gameObject);
+                }
+                else
+                {
+                    propertyComponent->properties.erase(L2DE_TILEDMAP_SMART_GROUPNAME);
+
+                    map.gameObjects[
+                        propertyComponent->properties[L2DE_TILEDMAP_SMART_GROUPNAME].GetString()
+                    ].push_back(gameObject);
+                }
+            }
+            else
+            {
+                map.gameObjects[L2DE_TILEDMAP_BASE_MAPID].push_back(gameObject);
+            }
         }
     }
 }

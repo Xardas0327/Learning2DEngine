@@ -45,6 +45,8 @@ namespace Learning2DEngine
 
 			static bool LoadMapBackground(rapidxml::xml_node<>* mapNode);
 			static bool LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId);
+
+			static void CreateGameObject(TiledMap& map, TiledMapObject* object, int layerId, int imageId, int row, int column);
 		public:
 			~TiledMapLoader() = default;
 

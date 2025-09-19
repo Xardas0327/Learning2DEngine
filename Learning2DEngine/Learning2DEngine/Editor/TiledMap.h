@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <glm/glm.hpp>
 
 #include "../System/GameObject.h"
@@ -34,7 +35,7 @@ namespace Learning2DEngine
 
             }
         public:
-            std::vector<System::GameObject*> gameObjects;
+            std::map<std::string, std::vector<System::GameObject*>> gameObjects;
 
             ~TiledMap() = default;
 
