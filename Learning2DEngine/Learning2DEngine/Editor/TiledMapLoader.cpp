@@ -299,7 +299,7 @@ namespace Learning2DEngine
                 }
                 else if (strcmp(attr->name(), L2DE_TILEDMAP_ATTR_COLUMNS) == 0)
                 {
-                    tiledMapObject.columns = static_cast<float>(std::atoi(attr->value()));
+                    tiledMapObject.columns = std::atoi(attr->value());
                     foundColumns = true;
 
                     if (tiledMapObject.columns <= 0)
