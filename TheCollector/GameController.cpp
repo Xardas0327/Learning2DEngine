@@ -44,7 +44,7 @@ void GameController::Init()
     gameObjectManager.Reserve(100);
 
 #if L2DE_DEBUG
-    DebugPosition::Init(FontSizePair("Assets/Fonts/PixelOperator8.ttf", 16));
+    DebugPosition::Init(FontSizePair("Assets/Fonts/PixelOperator8.ttf", 16), glm::vec2(0.1f, 0.1f), 1.0f);
 #endif
 
     Game::mainCamera.SetResolution(Resolution(200, 115));

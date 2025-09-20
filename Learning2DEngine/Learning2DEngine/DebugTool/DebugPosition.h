@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DebugMacro.h"
 #include "../System/GameObject.h"
 #include "../System/LateUpdaterComponent.h"
 #include "../UI/Text2DRenderComponent.h"
@@ -24,6 +25,8 @@ namespace Learning2DEngine
 
 			static UI::FontSizePair fontSizePair;
 			static bool isInited;
+			static glm::vec2 defaultScale;
+			static float defaultPadding;
 
 			DebugPosition(System::GameObject* gameObject);
 
@@ -32,7 +35,11 @@ namespace Learning2DEngine
 			void LateUpdate() override;
 		public:
 
-			static void Init(const UI::FontSizePair& fontSizePair);
+			static void Init(
+				const UI::FontSizePair& fontSizePair,
+				glm::vec2 defaultScale = glm::vec2(1.0f, 1.0f),
+				float defaultPadding = L2DE_DEBUG_SHOW_POSITION_BOX_PADDING
+			);
 
 			void SetActive(bool value);
 
@@ -74,6 +81,41 @@ namespace Learning2DEngine
 			inline glm::vec4 GetBoxColor() const
 			{
 				return boxComponent->GetColor();
+			}
+
+			inline void SetTextScale(glm::vec2 scale)
+			{
+				textComponent->gameObject->transform.SetScale(scale);
+			}
+
+			inline glm::vec2 GetTextScale() const
+			{
+				return textComponent->gameObject->transform.GetScale();
+			}
+
+			inline void SetBoxPadding(float padding)
+			{
+				boxComponent->SetPadding(padding);
+			}
+
+			inline void SetBoxLeftRightPadding(float padding)
+			{
+				boxComponent->paddingLeftRight = padding;
+			}
+
+			inline float GetBoxLeftRightPadding() const
+			{
+				return boxComponent->paddingLeftRight;
+			}
+
+			inline void SetBoxTopBottomPadding(float padding)
+			{
+				boxComponent->paddingTopBottom = padding;
+			}
+
+			inline float GetBoxTopBottomPadding() const
+			{
+				return boxComponent->paddingTopBottom;
 			}
 		};
 	}
