@@ -650,10 +650,9 @@ namespace Learning2DEngine
 #if L2DE_DEBUG
                 ++tooMuchProperties;
 #endif
-                if (properties[L2DE_TILEDMAP_SMART_LOADBACKGROUND].GetType() == PropertyType::Bool
-                    && properties[L2DE_TILEDMAP_SMART_LOADBACKGROUND].GetBool())
+                if (properties[L2DE_TILEDMAP_SMART_LOADBACKGROUND].GetType() == PropertyType::Bool)
                 {
-                    return true;
+                    return properties[L2DE_TILEDMAP_SMART_LOADBACKGROUND].GetBool();
                 }
                 else
                 {

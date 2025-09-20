@@ -6,6 +6,7 @@
 #include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/ResourceManager.h>
+#include <Learning2DEngine/System/PropertyComponent.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
 
@@ -13,8 +14,7 @@
 #include <Learning2DEngine/DebugTool/DebugPosition.h>
 #endif
 
-const glm::vec2 PLATFORM_SIZE(200.0f, 50.0f);
-const glm::vec2 EDGE_SIZE(100.0f, 100.0f);
+const glm::vec2 PLATFORM_SIZE(32.0f, 9.0f);
 
 const glm::mat4x2 GROUND1_TEXTCOOR = glm::mat4x2{
 	0.01f, 0.01f,
@@ -70,6 +70,9 @@ protected:
 			Learning2DEngine::Physics::ColliderType::KINEMATIC,
 			Learning2DEngine::Physics::ColliderMode::COLLIDER
 		);
+
+		auto propertyComponent = gameObject->AddComponent<Learning2DEngine::System::PropertyComponent>();
+		propertyComponent->properties.emplace("ResetJump", Learning2DEngine::System::Property(true));
 
 #if L2DE_DEBUG
 		gameObject->AddComponent<Learning2DEngine::DebugTool::DebugPosition>();

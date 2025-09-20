@@ -1,6 +1,5 @@
 #include "TheCollector.h"
 
-#include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/ResourceManager.h>
@@ -17,7 +16,6 @@ void TheCollector::Init()
 {
     Game::Init();
 
-    auto& renderManager = RenderManager::GetInstance();
     auto& resourceManager = ResourceManager::GetInstance();
 
     // Textures
@@ -33,14 +31,8 @@ void TheCollector::Init()
     resourceManager.LoadTextureFromFile("Knight", "Assets/Images/Knight.png", basicSettings);
     resourceManager.LoadTextureFromFile("Platforms", "Assets/Images/Platforms.png", basicSettings);
 
-    //Background color
-    renderManager.SetClearColor(0.0f, 0.6f, 0.9f, 1.0f);
-
     // MSAA
     ActivateMSAA(4);
-
-    // Camera
-    Game::mainCamera.SetResolution(renderManager.GetResolution());
 
     //GameController
     auto gameController = GameObjectManager::GetInstance().CreateGameObject();
