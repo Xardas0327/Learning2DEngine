@@ -3,6 +3,7 @@
  <properties>
   <property name="Collider" value="Box"/>
   <property name="IsKinematic" type="bool" value="true"/>
+  <property name="ResetJump" type="bool" value="true"/>
  </properties>
  <image source="../Images/Grounds.png" width="16" height="32"/>
 </tileset>
