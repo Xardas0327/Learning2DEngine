@@ -9,7 +9,7 @@
 #include "TiledMap.h"
 #include "TiledMapObject.h"
 #include "../System/Property.h"
-#include "../System/PropertyComponent.h"
+#include "../System/GameObject.h"
 
 namespace Learning2DEngine
 {
@@ -48,7 +48,7 @@ namespace Learning2DEngine
 			static bool LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId);
 
 			static void CreateGameObject(TiledMap& map, TiledMapObject* object, int layerId, int imageId, int row, int column);
-			static void AddColliderToGameObject(System::PropertyComponent* propertyComponent);
+			static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
 		public:
 			~TiledMapLoader() = default;
 
