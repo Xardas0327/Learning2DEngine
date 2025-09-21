@@ -7,15 +7,11 @@
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Object/FpsShower.h>
 #include <Learning2DEngine/UI/TextBoxComponent.h>
+#include <Learning2DEngine/Editor/TiledMapLoader.h>
 #if L2DE_DEBUG
 #include <Learning2DEngine/DebugTool/DebugPosition.h>
 #endif
 
-#include <Learning2DEngine/Editor/TiledMapLoader.h>
-using namespace Learning2DEngine::Editor;
-
-#include "PlatformController.h"
-#include "BushController.h"
 #include "CameraController.h"
 
 using namespace Learning2DEngine::System;
@@ -23,6 +19,7 @@ using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::Object;
 using namespace Learning2DEngine::UI;
 using namespace Learning2DEngine::DebugTool;
+using namespace Learning2DEngine::Editor;
 using namespace irrklang;
 
 GameController::GameController(GameObject* gameObject)
@@ -93,10 +90,10 @@ void GameController::InitDynamicEnvironment()
     //Moving Platform
     movingPlatforms.reserve(2);
     movingPlatforms.push_back(
-        MovingPlatformController::Create(glm::vec2(90.0f, 65.0f), glm::vec2(90.0f, 120.0f), "Platforms", LARGE_PLATFORM_TEXTCOOR)
+        MovingPlatformController::Create(glm::vec2(90.0f, 65.0f), glm::vec2(90.0f, 120.0f), "Platform2")
     );
     movingPlatforms.push_back(
-        MovingPlatformController::Create(glm::vec2(176.0f, 111.0f), glm::vec2(200.0f, 111.0f), "Platforms", LARGE_PLATFORM_TEXTCOOR)
+        MovingPlatformController::Create(glm::vec2(176.0f, 111.0f), glm::vec2(200.0f, 111.0f), "Platform2")
     );
 
     //Coin
@@ -243,15 +240,13 @@ void GameController::InitTexts()
     );
 	endBox->SetPadding(1.0f);
 
-#if L2DE_DEBUG
-    auto fps = FpsShower::CreateFpsShowerObject(
+    FpsShower::CreateFpsShowerObject(
         Transform(
             glm::vec2(2.0f, Game::mainCamera.GetResolution().GetHeight() - 5),
             glm::vec2(0.15f, 0.15f)
         ),
         fontSizePair,
         99);
-#endif
 }
 
 void GameController::ShowMenu()

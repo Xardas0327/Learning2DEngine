@@ -36,6 +36,9 @@ void PlayerController::Init()
     UpdaterComponent::Init();
     BoxColliderComponent::Init();
 
+    auto& playerTexture = ResourceManager::GetInstance()
+        .LoadTextureFromFile(PLAYER_TEXTURE_ID, "Assets/Images/Knight.png", Texture2DSettings(true));
+
     gameObject->transform.SetScale(PLAYER_SIZE);
 
 #if L2DE_DEBUG
@@ -62,13 +65,13 @@ void PlayerController::Init()
         };
 		uvMatrix += PLAYER_ANIMATION_UV_OFFSET;
         rightIdleAnimation->Add(AnimationFrame{
-            &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+            &playerTexture,
             uvMatrix,
             0.5f
         });
 
         leftIdleAnimation->Add(std::move(AnimationFrame{
-            &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+            &playerTexture,
             Math::FlipByX(uvMatrix),
             0.5f
             }));
@@ -90,13 +93,13 @@ void PlayerController::Init()
             };
             uvMatrix += PLAYER_ANIMATION_UV_OFFSET;
             rightRunAnimation->Add(AnimationFrame{
-                &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+                &playerTexture,
                 uvMatrix,
                 0.25f
                 });
 
             leftRunAnimation->Add(std::move(AnimationFrame{
-                &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+                &playerTexture,
                 Math::FlipByX(uvMatrix),
                 0.25f
                 }));

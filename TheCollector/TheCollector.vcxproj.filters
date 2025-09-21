@@ -56,9 +56,6 @@
     <ClInclude Include="CoinController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BushController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -83,9 +80,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Assets\Images\Knight.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Images\Platforms.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Assets\Images\Bushes.png">
