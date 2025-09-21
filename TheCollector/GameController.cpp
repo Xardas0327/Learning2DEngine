@@ -7,12 +7,11 @@
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Object/FpsShower.h>
 #include <Learning2DEngine/UI/TextBoxComponent.h>
+#include <Learning2DEngine/Editor/TiledMapLoader.h>
 #if L2DE_DEBUG
 #include <Learning2DEngine/DebugTool/DebugPosition.h>
 #endif
 
-#include "PlatformController.h"
-#include "BushController.h"
 #include "CameraController.h"
 
 using namespace Learning2DEngine::System;
@@ -20,6 +19,7 @@ using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::Object;
 using namespace Learning2DEngine::UI;
 using namespace Learning2DEngine::DebugTool;
+using namespace Learning2DEngine::Editor;
 using namespace irrklang;
 
 GameController::GameController(GameObject* gameObject)
@@ -41,10 +41,15 @@ void GameController::Init()
     gameObjectManager.Reserve(100);
 
 #if L2DE_DEBUG
-    DebugPosition::Init(FontSizePair("Assets/Fonts/PixelOperator8.ttf", 16));
+    DebugPosition::Init(FontSizePair("Assets/Fonts/PixelOperator8.ttf", 16), glm::vec2(0.1f, 0.1f), 1.0f);
 #endif
 
-    InitEnvironment();
+    Game::mainCamera.SetResolution(Resolution(200, 115));
+    Game::mainCamera.SetPosition(glm::vec2(0.0f, 40.0f));
+
+	TiledMapLoader::LoadFromFile("Assets/Maps/Map.tmx");
+
+    InitDynamicEnvironment();
     InitTexts();
 
     // Sounds
@@ -52,7 +57,8 @@ void GameController::Init()
 
     // I have to load a sound, because it gets stuck a bit on the first sound.
     ISound* sound = soundEngine->play2D("Assets/Sounds/jump.wav", false, false, true);
-    if (sound) sound->stop();
+    if (sound)
+        sound->stop();
 
     //Player
     auto player = gameObjectManager.CreateGameObject(Transform(PLAYER_START_POSITION));
@@ -76,122 +82,39 @@ void GameController::Destroy()
     UpdaterComponent::Destroy();
 }
 
-void GameController::InitEnvironment()
+void GameController::InitDynamicEnvironment()
 {
-    //Floor
-    PlatformController::Create(glm::vec2(0.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(100.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(200.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(300.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(400.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(500.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(600.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(700.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(800.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(900.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(1000.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(1100.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(1200.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(1300.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-    PlatformController::Create(glm::vec2(1400.0f, 650.0f), "Grounds", GROUND1_TEXTCOOR, EDGE_SIZE);
-
-    //Wall
-    PlatformController::Create(glm::vec2(-100.0f, 650.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, 550.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, 450.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, 350.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, 250.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, 150.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, 50.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, -50.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, -150.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, -250.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, -350.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, -450.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, -550.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(-100.0f, -650.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-
-    PlatformController::Create(glm::vec2(1437.5f, 650.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, 550.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, 450.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, 350.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, 250.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, 150.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, 50.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, -50.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, -150.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, -250.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, -350.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, -450.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, -550.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-    PlatformController::Create(glm::vec2(1437.5f, -650.0f), "Grounds", GROUND2_TEXTCOOR, EDGE_SIZE, 1);
-
-    //Platform
-    PlatformController::Create(glm::vec2(200.0f, 500.0f), "Platforms", LARGE_PLATFORM_TEXTCOOR);
-
-    PlatformController::Create(glm::vec2(0.0f, 150.0f), "Platforms", LARGE_PLATFORM_TEXTCOOR);
-
-    PlatformController::Create(glm::vec2(850.0f, 500.0f), "Platforms", SMALL_PLATFORM_TEXTCOOR, glm::vec2(PLATFORM_SIZE.x / 4, PLATFORM_SIZE.y));
-
-    PlatformController::Create(glm::vec2(900.0f, 450.0f), "Platforms", SMALL_PLATFORM_TEXTCOOR, glm::vec2(PLATFORM_SIZE.x / 4, PLATFORM_SIZE.y));
-
-    PlatformController::Create(glm::vec2(1340.0f, 300.0f), "Platforms", SMALL_PLATFORM_TEXTCOOR, glm::vec2(PLATFORM_SIZE.x / 2, PLATFORM_SIZE.y));
-
-    PlatformController::Create(glm::vec2(1100.0f, 150.0f), "Platforms", SMALL_PLATFORM_TEXTCOOR, glm::vec2(PLATFORM_SIZE.x / 2, PLATFORM_SIZE.y));
-
 	//Box
-    box = BoxController::Create(glm::vec2(350.0f, 400.0f));
+    box = BoxController::Create(glm::vec2(70.0f, 90.0f));
 
     //Moving Platform
     movingPlatforms.reserve(2);
     movingPlatforms.push_back(
-        MovingPlatformController::Create(glm::vec2(500.0f, 150.0f), glm::vec2(500.0f, 500.0f), "Platforms", LARGE_PLATFORM_TEXTCOOR)
+        MovingPlatformController::Create(glm::vec2(90.0f, 65.0f), glm::vec2(90.0f, 120.0f), "Platform2")
     );
     movingPlatforms.push_back(
-        MovingPlatformController::Create(glm::vec2(950.0f, 450.0f), glm::vec2(1150.0f, 450.0f), "Platforms", LARGE_PLATFORM_TEXTCOOR)
+        MovingPlatformController::Create(glm::vec2(176.0f, 111.0f), glm::vec2(200.0f, 111.0f), "Platform2")
     );
-
-    //Bush
-    BushController::Create(glm::vec2(0.0f, 600.0f), "Bushes", BUSH2_TEXTCOOR, BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(50.0f, 600.0f), "Bushes", BUSH1_TEXTCOOR, BUSH_SIZE, 1);
-    BushController::Create(glm::vec2(200.0f, 600.0f), "Bushes", BUSH2_TEXTCOOR, BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(250.0f, 600.0f), "Bushes", BUSH1_TEXTCOOR, BUSH_SIZE, 1);
-    BushController::Create(glm::vec2(100.0f, 600.0f), "Bushes", BUSH2_TEXTCOOR, BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(150.0f, 600.0f), "Bushes", BUSH1_TEXTCOOR, BUSH_SIZE, 1);
-    BushController::Create(glm::vec2(200.0f, 600.0f), "Bushes", BUSH2_TEXTCOOR, BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(250.0f, 600.0f), "Bushes", BUSH1_TEXTCOOR, BUSH_SIZE, 1);
-
-    BushController::Create(glm::vec2(1100.0f, 600.0f), "Bushes", BUSH2_TEXTCOOR, BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(1150.0f, 600.0f), "Bushes", BUSH1_TEXTCOOR, BUSH_SIZE, 1);
-    BushController::Create(glm::vec2(1200.0f, 600.0f), "Bushes", BUSH2_TEXTCOOR, BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(1250.0f, 600.0f), "Bushes", BUSH1_TEXTCOOR, BUSH_SIZE, 1);
-    BushController::Create(glm::vec2(1300.0f, 600.0f), "Bushes", BUSH2_TEXTCOOR, BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(1350.0f, 600.0f), "Bushes", BUSH1_TEXTCOOR, BUSH_SIZE, 1);
-
-    BushController::Create(glm::vec2(100.0f, 100.0f), "Bushes", BUSH4_TEXTCOOR, BUSH_SIZE, 1);
-    BushController::Create(glm::vec2(300.0f, 450.0f), "Bushes", BUSH3_TEXTCOOR, BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(1362.5f, 250.0f), "Bushes", BUSH3_TEXTCOOR, BUSH_SIZE, -1);
-    BushController::Create(glm::vec2(1125.0f, 100.0f), "Bushes", BUSH4_TEXTCOOR, BUSH_SIZE, 1);
 
     //Coin
     coins.reserve(5);
-    coins.push_back(CoinController::Create(glm::vec2(50.0f, 75.0f)));
-    coins.push_back(CoinController::Create(glm::vec2(25.0f, 525.0f)));
-    coins.push_back(CoinController::Create(glm::vec2(900.0f, 500.0f)));
-    coins.push_back(CoinController::Create(glm::vec2(1387.5f, 350.0f)));
-    coins.push_back(CoinController::Create(glm::vec2(1125.0f, 75.0f)));
+    coins.push_back(CoinController::Create(glm::vec2(20.0f, 45.0f)));
+    coins.push_back(CoinController::Create(glm::vec2(20.0f, 120.0f)));
+    coins.push_back(CoinController::Create(glm::vec2(160.0f, 120.0f)));
+    coins.push_back(CoinController::Create(glm::vec2(245.0f, 98.0f)));
+    coins.push_back(CoinController::Create(glm::vec2(195.0f, 45.0f)));
 
 }
 
 void GameController::InitTexts()
 {
-    auto resolution = RenderManager::GetInstance().GetResolution();
     auto& gameObjectManager = GameObjectManager::GetInstance();
 
     //Score
     auto scoreGameObject = gameObjectManager.CreateGameObject(
         Transform(
-            glm::vec2(5.0f, 5.0f)
+            glm::vec2(1.0f, 1.0f),
+            glm::vec2(0.2f, 0.2f)
         )
     );
     scoreText = scoreGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
@@ -199,7 +122,8 @@ void GameController::InitTexts()
     //Play time
     auto playTimeGameObject = gameObjectManager.CreateGameObject(
         Transform(
-            glm::vec2(200.0f, 5.0f)
+            glm::vec2(35.0f, 1.0f),
+            glm::vec2(0.2f, 0.2f)
         )
     );
     playTimeText = playTimeGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
@@ -207,7 +131,8 @@ void GameController::InitTexts()
     //Description
     auto descriptionGameObject = gameObjectManager.CreateGameObject(
         Transform(
-            glm::vec2(200.0f, 300.0f)
+            glm::vec2(50.0f, 50.0f),
+            glm::vec2(0.15f, 0.15f)
         )
     );
     descriptionText = descriptionGameObject->AddComponent<SimpleText2DRenderComponent>(
@@ -215,21 +140,21 @@ void GameController::InitTexts()
         fontSizePair,
         "Collect the coins in time.\nYou can move with A and D and jump with SPACE."
     );
-    descriptionText->data.SetLineSpacing(25.0f);
+    descriptionText->data.SetLineSpacing(2.0f);
 
     auto descriptionBox = descriptionGameObject->AddComponent<TextBoxComponent>(
         *descriptionText,
         TextBoxMode::SIMPLE,
         -1,
-        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
+        glm::vec4(0.0f, 0.0f, 0.0f, 0.8f)
     );
-    descriptionBox->SetPadding(20.0f);
+    descriptionBox->SetPadding(5.0f);
 
     // Start text
     auto startGameObject = gameObjectManager.CreateGameObject(
         Transform(
-            glm::vec2(resolution.GetWidth() / 2 - 150, 400.0f),
-            glm::vec2(0.75f, 0.75f)
+            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 10.0f, 70.0f),
+            glm::vec2(0.1f, 0.1f)
         )
     );
     startText = startGameObject->AddComponent<SimpleText2DRenderComponent>(
@@ -242,15 +167,15 @@ void GameController::InitTexts()
         *startText,
         TextBoxMode::SIMPLE,
         -1,
-        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
+        glm::vec4(0.0f, 0.0f, 0.0f, 0.8f)
     );
-    startBox->SetPadding(10.0f);
+    startBox->SetPadding(2.0f);
 
     // Win text
     auto winGameObject = gameObjectManager.CreateGameObject(
         Transform(
-            glm::vec2(resolution.GetWidth() / 2 - 150, 300.0f),
-            glm::vec2(2.0f, 2.0f)
+            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 10.0f, 50.0f),
+            glm::vec2(0.15f, 0.15f)
         )
     );
     winText = winGameObject->AddComponent<SimpleText2DRenderComponent>(
@@ -265,16 +190,16 @@ void GameController::InitTexts()
         *winText,
         TextBoxMode::SIMPLE,
         -1,
-        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
+        glm::vec4(0.0f, 0.0f, 0.0f, 0.8f)
     );
-	winBox->paddingLeftRight = 65.0f;
-	winBox->paddingTopBottom = 25.0f;
+	winBox->paddingLeftRight = 15.0f;
+	winBox->paddingTopBottom = 5.0f;
 
     // Lose text
     auto loseGameObject = gameObjectManager.CreateGameObject(
         Transform(
-            glm::vec2(resolution.GetWidth() / 2 - 175, 300.0f),
-            glm::vec2(2.0f, 2.0f)
+            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 12.0f, 50.0f),
+            glm::vec2(0.15f, 0.15f)
         )
     );
     loseText = loseGameObject->AddComponent<SimpleText2DRenderComponent>(
@@ -289,16 +214,16 @@ void GameController::InitTexts()
         *loseText,
         TextBoxMode::SIMPLE,
         -1,
-        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
+        glm::vec4(0.0f, 0.0f, 0.0f, 0.9f)
     );
-    loseBox->paddingLeftRight = 65.0f;
-    loseBox->paddingTopBottom = 25.0f;
+    loseBox->paddingLeftRight = 15.0f;
+    loseBox->paddingTopBottom = 5.0f;
 
     // End text
     auto endGameObject = gameObjectManager.CreateGameObject(
         Transform(
-            glm::vec2(resolution.GetWidth() / 2 - 203, 380.0f),
-            glm::vec2(0.75f, 0.75f)
+            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 26.0f, 62.0f),
+            glm::vec2(0.1f, 0.1f)
         )
     );
     endText = endGameObject->AddComponent<SimpleText2DRenderComponent>(
@@ -311,18 +236,17 @@ void GameController::InitTexts()
         *endText,
         TextBoxMode::SIMPLE,
         -1,
-        glm::vec4(0.0f, 0.0f, 0.0f, 0.7f)
+        glm::vec4(0.0f, 0.0f, 0.0f, 0.8f)
     );
-	endBox->SetPadding(10.0f);
+	endBox->SetPadding(1.0f);
 
-#if L2DE_DEBUG
     FpsShower::CreateFpsShowerObject(
         Transform(
-            glm::vec2(5.0f, resolution.GetHeight() - 30)
+            glm::vec2(2.0f, Game::mainCamera.GetResolution().GetHeight() - 5),
+            glm::vec2(0.15f, 0.15f)
         ),
         fontSizePair,
         99);
-#endif
 }
 
 void GameController::ShowMenu()

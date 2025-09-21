@@ -340,6 +340,16 @@ static UI::FontSizePair fontSizePair;
 static bool isInited;
 ```
 
+**defaultScale**  
+```cpp
+static glm::vec2 defaultScale;
+```
+
+**defaultPadding**  
+```cpp
+static float defaultPadding;
+```
+
 ### Functions:
 **Private:**  
 **DebugPosition**  
@@ -366,7 +376,7 @@ void LateUpdate() override;
 **Public:**  
 **Init**  
 ```cpp
-static void Init(const UI::FontSizePair& fontSizePair);
+static void Init(const UI::FontSizePair& fontSizePair, glm::vec2 defaultScale = glm::vec2(1.0f, 1.0f), float defaultPadding = L2DE_DEBUG_SHOW_POSITION_BOX_PADDING);
 ```
 
 **SetActive**  
@@ -414,6 +424,41 @@ inline void SetBoxColor(glm::vec4 color);
 **GetBoxColor**  
 ```cpp
 inline glm::vec4 GetBoxColor() const;
+```
+
+**SetTextScale**  
+```cpp
+inline void SetTextScale(glm::vec2 scale);
+```
+
+**GetTextScale**  
+```cpp
+inline glm::vec2 GetTextScale() const;
+```
+
+**SetBoxPadding**  
+```cpp
+inline void SetBoxPadding(float padding);
+```
+
+**SetBoxLeftRightPadding**  
+```cpp
+inline void SetBoxLeftRightPadding(float padding);
+```
+
+**GetBoxLeftRightPadding**  
+```cpp
+inline float GetBoxLeftRightPadding() const;
+```
+
+**SetBoxTopBottomPadding**  
+```cpp
+inline void SetBoxTopBottomPadding(float padding);
+```
+
+**GetBoxTopBottomPadding**  
+```cpp
+inline float GetBoxTopBottomPadding() const;
 ```
 
 ##

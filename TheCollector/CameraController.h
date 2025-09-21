@@ -8,9 +8,9 @@
 
 #include "PlayerController.h"
 
-const glm::vec2 MIN_CAMERA_POSITIONS(-95.0f, -100.0f);
-const glm::vec2 MAX_CAMERA_POSITIONS(255.0f, 260.0f);
-const float PLAYER_DISTANCEX = -615.0f;
+const glm::vec2 MIN_CAMERA_POSITIONS(0.0f, 0.0f);
+const glm::vec2 MAX_CAMERA_POSITIONS(72.0f, 200.0f);
+const float PLAYER_DISTANCEX = -100.0f;
 
 class CameraController : public Learning2DEngine::System::LateUpdaterComponent
 {

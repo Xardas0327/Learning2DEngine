@@ -4,9 +4,12 @@
 #include <map>
 #include <string>
 
+#include <rapidxml/rapidxml.hpp>
+
 #include "TiledMap.h"
 #include "TiledMapObject.h"
-#include <rapidxml/rapidxml.hpp>
+#include "../System/Property.h"
+#include "../System/GameObject.h"
 
 namespace Learning2DEngine
 {
@@ -17,26 +20,42 @@ namespace Learning2DEngine
 		private:
 			TiledMapLoader() = default;
 
-			//If there is valid background color, it will be set by RenderManager::SetClearColor.
-			static void LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode, bool loadBackground);
-			static glm::vec4 ConvertBackgroundColor(const std::string& hex);
+			static void LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode);
+			static glm::vec4 ConvertStringToColor(const std::string& hex);
+
 			static std::vector<TiledMapObject> LoadObjects(
 				rapidxml::xml_node<>* mapNode,
 				const std::string& folderPath,
 				const std::map<std::string, std::string>& textureMap);
+
 			static bool LoadObject(
 				const std::string& folderPath, 
 				const std::string& sourceName,
 				const std::map<std::string, std::string>& textureMap,
 				TiledMapObject& tiledMapObject);
-			static void LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, const std::vector<TiledMapObject>& objects);
+
+			static void LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapObject>& objects);
+
+			// The folderPath is used when the property type is file.
+			static std::map<std::string, System::Property> LoadProperties(rapidxml::xml_node<>* node, const std::string& folderPath = "");
+			static std::map<int, std::map<std::string, System::Property>> LoadTilesProperties(
+				rapidxml::xml_node<>* node,
+				const std::string& sourceName,
+				const std::string& folderPath = ""
+			);
+
+			static bool LoadMapBackground(rapidxml::xml_node<>* mapNode);
+			static bool LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId);
+
+			static void CreateGameObject(TiledMap& map, TiledMapObject* object, int layerId, int imageId, int row, int column);
+			static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
 		public:
 			~TiledMapLoader() = default;
 
 			static TiledMap LoadFromFile(
 				const std::string& filePath,
-				const std::map<std::string, std::string>& textureMap = std::map<std::string, std::string>(),
-				bool loadBackground = true);
+				const std::map<std::string, std::string>& textureMap = std::map<std::string, std::string>()
+			);
 		};
 	}
 }

@@ -3,7 +3,6 @@
 #include <sstream>
 #include <iomanip>
 
-#include "DebugMacro.h"
 #include "../System/GameObjectManager.h"
 
 namespace Learning2DEngine
@@ -16,6 +15,8 @@ namespace Learning2DEngine
 	{
 		UI::FontSizePair DebugPosition::fontSizePair;
 		bool DebugPosition::isInited = false;
+		glm::vec2 DebugPosition::defaultScale = glm::vec2(1.0f, 1.0f);
+		float DebugPosition::defaultPadding = L2DE_DEBUG_SHOW_POSITION_BOX_PADDING;
 
 		DebugPosition::DebugPosition(GameObject* gameObject)
 			:LateUpdaterComponent(gameObject), Component(gameObject),
@@ -25,9 +26,11 @@ namespace Learning2DEngine
 
 		}
 
-		void DebugPosition::Init(const UI::FontSizePair& fontSizePair)
+		void DebugPosition::Init(const UI::FontSizePair& fontSizePair, glm::vec2 defaultScale, float defaultPadding)
 		{
 			DebugPosition::fontSizePair = fontSizePair;
+			DebugPosition::defaultScale = defaultScale;
+			DebugPosition::defaultPadding = defaultPadding;
 			DebugPosition::isInited = true;
 		}
 
@@ -40,7 +43,7 @@ namespace Learning2DEngine
 
 			auto& gameObjectManager = GameObjectManager::GetInstance();
 
-			auto textGo = GameObjectManager::GetInstance().CreateGameObject();
+			auto textGo = gameObjectManager.CreateGameObject(Transform(glm::vec2(0.0f, 0.0f), DebugPosition::defaultScale));
 			textComponent = textGo->AddComponent<Text2DRenderComponent>(
 				RendererMode::RENDER,
 				DebugPosition::fontSizePair,
@@ -49,14 +52,14 @@ namespace Learning2DEngine
 			);
 			textComponent->data.isUseCameraView = true;
 
-			auto boxGo = GameObjectManager::GetInstance().CreateGameObject();
+			auto boxGo = gameObjectManager.CreateGameObject();
 			boxComponent = boxGo->AddComponent<TextBoxComponent>(
 				*textComponent,
 				TextBoxMode::MULTI,
 				L2DE_DEBUG_SHOW_POSITION_DEFAULT_BOX_LAYER,
 				L2DE_DEBUG_SHOW_POSITION_BOX_COLOR
 			);
-			boxComponent->SetPadding(L2DE_DEBUG_SHOW_POSITION_BOX_PADDING);
+			boxComponent->SetPadding(DebugPosition::defaultPadding);
 
 			SetActive(L2DE_DEBUG_SHOW_POSITION_DEFAULT_VALUE);
 		}

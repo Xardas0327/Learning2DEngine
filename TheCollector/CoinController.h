@@ -7,7 +7,7 @@
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/Component.h>
 
-const glm::vec2 COIN_SIZE(50.0f, 50.0f);
+const glm::vec2 COIN_SIZE(8.0f, 8.0f);
 const std::string COIN_TEXTURE_ID = "Coin";
 const int COIN_ANIMATION_NUMBER = 12;
 

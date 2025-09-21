@@ -20,10 +20,12 @@ using namespace Learning2DEngine::Animator;
 using namespace Learning2DEngine::DebugTool;
 using namespace irrklang;
 
+constexpr float JUMP_FORCE = -150.0f;
+
 PlayerController::PlayerController(GameObject* gameObject, ISoundEngine* soundEngine)
     : UpdaterComponent(gameObject), Component(gameObject),
     BoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
-    onGround(false), detector(nullptr), eventItem(this),
+    onGround(true), detector(nullptr), eventItem(this),
     rightIdleAnimation(nullptr), leftIdleAnimation(nullptr), rightRunAnimation(nullptr), leftRunAnimation(nullptr),
     currentState(PlayerAnimatioState::RIGHT_IDLE), rigidbody(nullptr), coinNumber(0), coinCollected(), soundEngine(soundEngine)
 {
@@ -34,6 +36,9 @@ void PlayerController::Init()
     UpdaterComponent::Init();
     BoxColliderComponent::Init();
 
+    auto& playerTexture = ResourceManager::GetInstance()
+        .LoadTextureFromFile(PLAYER_TEXTURE_ID, "Assets/Images/Knight.png", Texture2DSettings(true));
+
     gameObject->transform.SetScale(PLAYER_SIZE);
 
 #if L2DE_DEBUG
@@ -42,10 +47,10 @@ void PlayerController::Init()
 
     auto renderer = gameObject->AddComponent<SpriteRenderComponent>(RendererMode::RENDER);
     rigidbody = gameObject->AddComponent<Rigidbody>(glm::vec2(0.0f, 0.0f), true);
-    rigidbody->gravityMultiplier = 50.0f;
+    rigidbody->gravityMultiplier = 45.0f;
     InitRigidbody();
 
-    detector = gameObject->AddComponent<PlatformDetectorController>(glm::vec2(45.0f, 5.0f), glm::vec2(2.5f, 45.0f));
+    detector = gameObject->AddComponent<PlatformDetectorController>(glm::vec2(10.0f, 2.0f), glm::vec2(2.5f, 14.0f));
     detector->eventhandler.Add(&eventItem);
 
     rightIdleAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_IDLE_ANIMATION_NUMBER, true);
@@ -60,13 +65,13 @@ void PlayerController::Init()
         };
 		uvMatrix += PLAYER_ANIMATION_UV_OFFSET;
         rightIdleAnimation->Add(AnimationFrame{
-            &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+            &playerTexture,
             uvMatrix,
             0.5f
         });
 
         leftIdleAnimation->Add(std::move(AnimationFrame{
-            &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+            &playerTexture,
             Math::FlipByX(uvMatrix),
             0.5f
             }));
@@ -88,13 +93,13 @@ void PlayerController::Init()
             };
             uvMatrix += PLAYER_ANIMATION_UV_OFFSET;
             rightRunAnimation->Add(AnimationFrame{
-                &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+                &playerTexture,
                 uvMatrix,
                 0.25f
                 });
 
             leftRunAnimation->Add(std::move(AnimationFrame{
-                &ResourceManager::GetInstance().GetTexture(PLAYER_TEXTURE_ID),
+                &playerTexture,
                 Math::FlipByX(uvMatrix),
                 0.25f
                 }));
@@ -114,19 +119,19 @@ void PlayerController::Update()
 {
     if (onGround && Game::GetKeyboardButtonStatus(GLFW_KEY_SPACE) == InputStatus::KEY_DOWN)
     {
-        rigidbody->velocity.y += -400.0f;
+        rigidbody->velocity.y += JUMP_FORCE;
         onGround = false;
         soundEngine->play2D("Assets/Sounds/jump.wav");
     }
 
     if (Game::GetKeyboardButtonStatus(GLFW_KEY_A) == InputStatus::KEY_HOLD)
     {
-        rigidbody->velocity.x = -200.0f;
+        rigidbody->velocity.x = -60.0f;
         RefreshAnimation(PlayerAnimatioState::LEFT_RUN);
     }
     else if (Game::GetKeyboardButtonStatus(GLFW_KEY_D) == InputStatus::KEY_HOLD)
     {
-        rigidbody->velocity.x = 200.0f;
+        rigidbody->velocity.x = 60.0f;
         RefreshAnimation(PlayerAnimatioState::RIGHT_RUN);
     }
     else

@@ -6,6 +6,7 @@
 #include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/Component.h>
 #include <Learning2DEngine/System/ResourceManager.h>
+#include <Learning2DEngine/System/PropertyComponent.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 #include <Learning2DEngine/Physics/Rigidbody.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
@@ -16,7 +17,14 @@
 #include <Learning2DEngine/DebugTool/DebugPosition.h>
 #endif
 
-const glm::vec2 BOX_SIZE(50.0f, 50.0f);
+const glm::vec2 BOX_SIZE(10.0f, 10.0f);
+
+const glm::mat4x2 BOX_TEXTCOOR = glm::mat4x2{
+	0.0f, 0.51f,
+	1.0f, 0.51f,
+	1.0f, 1.0f,
+	0.0f, 1.0f
+};
 
 class BoxController : public Learning2DEngine::System::Component
 {
@@ -36,10 +44,10 @@ protected:
 	{
 		auto render = gameObject->AddComponent<Learning2DEngine::Render::SpriteRenderComponent>(
 			Learning2DEngine::Render::RendererMode::RENDER,
-			Learning2DEngine::System::ResourceManager::GetInstance().GetTexture("Grounds"),
+			Learning2DEngine::System::ResourceManager::GetInstance().GetTexture("Grounds"), //The Texture exits because of TiledMap
 			layer
 		);
-		render->data.uvMatrix = GROUND2_TEXTCOOR;
+		render->data.uvMatrix = BOX_TEXTCOOR;
 
 		rigidbody = gameObject->AddComponent<Learning2DEngine::Physics::Rigidbody>(glm::vec2(0.0f, 0.0f), true);
 		rigidbody->gravityMultiplier = 100.0f;
@@ -50,6 +58,9 @@ protected:
 			Learning2DEngine::Physics::ColliderMode::COLLIDER
 		);
 		collider->InitRigidbody();
+
+		auto propertyComponent = gameObject->AddComponent<Learning2DEngine::System::PropertyComponent>();
+		propertyComponent->properties.emplace("ResetJump", Learning2DEngine::System::Property(true));
 
 #if L2DE_DEBUG
 		gameObject->AddComponent<Learning2DEngine::DebugTool::DebugPosition>();

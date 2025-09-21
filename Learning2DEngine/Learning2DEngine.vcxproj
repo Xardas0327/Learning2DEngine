@@ -287,6 +287,9 @@
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\Math.h" />
+    <ClInclude Include="Learning2DEngine\System\Property.h" />
+    <ClInclude Include="Learning2DEngine\System\PropertyComponent.h" />
+    <ClInclude Include="Learning2DEngine\System\PropertyType.h" />
     <ClInclude Include="Learning2DEngine\System\Random.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\ResolutionEventItem.h" />
     <ClInclude Include="Learning2DEngine\System\ResourceManager.h" />

@@ -169,7 +169,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoxController.h" />
-    <ClInclude Include="BushController.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="CoinController.h" />
     <ClInclude Include="IDetectorCustomer.h" />
@@ -191,7 +190,6 @@
     <Image Include="Assets\Images\Coin.png" />
     <Image Include="Assets\Images\Grounds.png" />
     <Image Include="Assets\Images\Knight.png" />
-    <Image Include="Assets\Images\Platforms.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Assets\Fonts\PixelOperator8.ttf" />
