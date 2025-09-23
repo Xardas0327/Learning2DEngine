@@ -735,11 +735,11 @@ namespace Learning2DEngine
                 if (properties[L2DE_TILEDMAP_SMART_GROUPNAME].GetType() != PropertyType::String)
                 {
                     L2DE_LOG_WARNING("TiledMapLoader: the " L2DE_TILEDMAP_SMART_GROUPNAME " should be string.");
-                    map.gameObjects[L2DE_TILEDMAP_BASE_MAPID].push_back(gameObject);
+                    map.gameObjects.push_back(gameObject);
                 }
                 else
                 {
-                    map.gameObjects[
+                    map.groupedGameObjects[
                         properties[L2DE_TILEDMAP_SMART_GROUPNAME].GetString()
                     ].push_back(gameObject);
 
@@ -748,7 +748,7 @@ namespace Learning2DEngine
             }
             else
             {
-                map.gameObjects[L2DE_TILEDMAP_BASE_MAPID].push_back(gameObject);
+                map.gameObjects.push_back(gameObject);
             }
 
             if(properties.size() > 0)

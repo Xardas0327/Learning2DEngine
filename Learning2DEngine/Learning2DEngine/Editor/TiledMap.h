@@ -30,12 +30,13 @@ namespace Learning2DEngine
             TiledMap()
                 : version(), tiledVersion(), orientation(), width(0), height(0),
                 tileWidth(0), tileHeight(0), infinite(false), backgroundColor(0.0f),
-                gameObjects()
+                gameObjects(), groupedGameObjects()
             {
 
             }
         public:
-            std::map<std::string, std::vector<System::GameObject*>> gameObjects;
+            std::vector<System::GameObject*> gameObjects;
+            std::map<std::string, std::vector<System::GameObject*>> groupedGameObjects;
 
             ~TiledMap() = default;
 
