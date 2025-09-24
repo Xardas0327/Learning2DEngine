@@ -51,8 +51,8 @@ namespace Learning2DEngine
                 }
 
                 TiledMapLoader::LoadMapAttributes(map, mapNode);
-                auto objects = TiledMapLoader::LoadObjects(mapNode, folderPath, textureMap);
-                TiledMapLoader::LoadLayers(map, mapNode, objects);
+                auto tilesets = TiledMapLoader::LoadTilesets(mapNode, folderPath, textureMap);
+                TiledMapLoader::LoadLayers(map, mapNode, tilesets);
 
 #if L2DE_DEBUG
                 float loadingTime = static_cast<float>(glfwGetTime()) - startTime;
@@ -210,21 +210,21 @@ namespace Learning2DEngine
             return color;
         }
 
-        std::vector<TiledMapObject> TiledMapLoader::LoadObjects(
+        std::vector<TiledMapTileset> TiledMapLoader::LoadTilesets(
             rapidxml::xml_node<>* mapNode,
             const std::string& folderPath,
             const std::map<std::string, std::string>& textureMap)
         {
-            std::vector<TiledMapObject> objects;
+            std::vector<TiledMapTileset> tilesets;
             for (
                 auto mapTileset = mapNode->first_node(L2DE_TILEDMAP_NODE_TILESET);
                 mapTileset != nullptr;
                 mapTileset = mapTileset->next_sibling(L2DE_TILEDMAP_NODE_TILESET)
                 )
             {
-                TiledMapObject object;
-                object.firstGid = std::atoi(mapTileset->first_attribute(L2DE_TILEDMAP_ATTR_FIRSTGID)->value());
-                if (object.firstGid <= 0)
+                TiledMapTileset tileset;
+                tileset.firstGid = std::atoi(mapTileset->first_attribute(L2DE_TILEDMAP_ATTR_FIRSTGID)->value());
+                if (tileset.firstGid <= 0)
                 {
                     L2DE_LOG_ERROR("TiledMapLoader: the tileset firstgid should be bigger then 0.");
                     continue;
@@ -237,17 +237,17 @@ namespace Learning2DEngine
                     continue;
                 }
 
-                if (TiledMapLoader::LoadObject(folderPath, sourceName, textureMap, object))
-                    objects.push_back(object);
+                if (TiledMapLoader::LoadTileset(folderPath, sourceName, textureMap, tileset))
+                    tilesets.push_back(tileset);
             }
-            return objects;
+            return tilesets;
         }
 
-        bool TiledMapLoader::LoadObject(
+        bool TiledMapLoader::LoadTileset(
             const std::string& folderPath,
             const std::string& sourceName,
             const std::map<std::string, std::string>& textureMap,
-            TiledMapObject& tiledMapObject)
+            TiledMapTileset& tiledMapObject)
         {
             rapidxml::file<> xmlFile((folderPath + sourceName).c_str());
             auto doc = std::make_unique<rapidxml::xml_document<>>();
@@ -416,7 +416,7 @@ namespace Learning2DEngine
             return true;
         }
 
-        void TiledMapLoader::LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapObject>& objects)
+        void TiledMapLoader::LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapTileset>& tilesets)
         {
             int layerId = 0;
             for (
@@ -481,17 +481,17 @@ namespace Learning2DEngine
                             int id = std::atoi(token.c_str());
                             if (id > 0)
                             {
-                                TiledMapObject* selectedObject = nullptr;
-                                for (auto& object : objects)
+                                TiledMapTileset* selectedTileset = nullptr;
+                                for (auto& tileset : tilesets)
                                 {
-                                    if (object.HasNumber(id))
+                                    if (tileset.HasNumber(id))
                                     {
-                                        selectedObject = &object;
+                                        selectedTileset = &tileset;
                                         break;
                                     }
                                 }
 
-                                if (selectedObject == nullptr)
+                                if (selectedTileset == nullptr)
                                 {
                                     L2DE_LOG_WARNING("TiledMapLoader: the tile id " + std::to_string(id) + " is not valid.");
                                     continue;
@@ -499,7 +499,7 @@ namespace Learning2DEngine
 
                                 TiledMapLoader::CreateGameObject(
                                     map,
-                                    selectedObject,
+                                    selectedTileset,
                                     useOverrideLayerId ? overrideLayerId : layerId,
                                     id,
                                     row,
@@ -701,28 +701,28 @@ namespace Learning2DEngine
             return false;
         }
 
-        void TiledMapLoader::CreateGameObject(TiledMap& map, TiledMapObject* object, int layerId, int imageId, int row, int column)
+        void TiledMapLoader::CreateGameObject(TiledMap& map, TiledMapTileset* tileset, int layerId, int imageId, int row, int column)
         {
             Transform transform(
                 glm::vec2(
                     static_cast<float>(column) * map.GetTileWidth(),
-                    static_cast<float>(row + 1) * map.GetTileHeight() - object->tiledSize.y),
-                object->tiledSize
+                    static_cast<float>(row + 1) * map.GetTileHeight() - tileset->tiledSize.y),
+                tileset->tiledSize
             );
             auto gameObject = GameObjectManager::GetInstance().CreateGameObject(transform);
 
             auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
                 RendererMode::RENDER,
-                *object->texture,
+                *tileset->texture,
                 layerId);
-            renderer->data.uvMatrix = object->GetUV(imageId);
+            renderer->data.uvMatrix = tileset->GetUV(imageId);
 
             std::map<std::string, System::Property> properties;
-            if (object->commonProperties.size() > 0 ||
-                object->uniqueProperties[object->GetLocalId(imageId)].size() > 0)
+            if (tileset->commonProperties.size() > 0 ||
+                tileset->uniqueProperties[tileset->GetLocalId(imageId)].size() > 0)
             {
-                properties = object->commonProperties;
-                for (auto& prop : object->uniqueProperties[object->GetLocalId(imageId)])
+                properties = tileset->commonProperties;
+                for (auto& prop : tileset->uniqueProperties[tileset->GetLocalId(imageId)])
                 {
                     properties[prop.first] = prop.second;
                 }

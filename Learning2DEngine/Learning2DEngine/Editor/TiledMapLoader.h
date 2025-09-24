@@ -7,7 +7,7 @@
 #include <rapidxml/rapidxml.hpp>
 
 #include "TiledMap.h"
-#include "TiledMapObject.h"
+#include "TiledMapTileset.h"
 #include "../System/Property.h"
 #include "../System/GameObject.h"
 
@@ -23,18 +23,18 @@ namespace Learning2DEngine
 			static void LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode);
 			static glm::vec4 ConvertStringToColor(const std::string& hex);
 
-			static std::vector<TiledMapObject> LoadObjects(
+			static std::vector<TiledMapTileset> LoadTilesets(
 				rapidxml::xml_node<>* mapNode,
 				const std::string& folderPath,
 				const std::map<std::string, std::string>& textureMap);
 
-			static bool LoadObject(
+			static bool LoadTileset(
 				const std::string& folderPath, 
 				const std::string& sourceName,
 				const std::map<std::string, std::string>& textureMap,
-				TiledMapObject& tiledMapObject);
+				TiledMapTileset& tiledMapObject);
 
-			static void LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapObject>& objects);
+			static void LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapTileset>& tilesets);
 
 			// The folderPath is used when the property type is file.
 			static std::map<std::string, System::Property> LoadProperties(rapidxml::xml_node<>* node, const std::string& folderPath = "");
@@ -47,7 +47,7 @@ namespace Learning2DEngine
 			static bool LoadMapBackground(rapidxml::xml_node<>* mapNode);
 			static bool LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId);
 
-			static void CreateGameObject(TiledMap& map, TiledMapObject* object, int layerId, int imageId, int row, int column);
+			static void CreateGameObject(TiledMap& map, TiledMapTileset* tileset, int layerId, int imageId, int row, int column);
 			static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
 		public:
 			~TiledMapLoader() = default;
