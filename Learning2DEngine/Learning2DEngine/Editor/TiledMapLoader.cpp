@@ -637,10 +637,159 @@ namespace Learning2DEngine
             return properties;
         }
 
+        std::vector<ObjectItem> TiledMapLoader::LoadObjectItems(rapidxml::xml_node<>* node, const std::string& folderPath)
+        {
+            std::vector<ObjectItem> objects;
+            if (node == nullptr)
+                return objects;
+
+            if (node->name() != L2DE_TILEDMAP_NODE_OBJECTGROUP)
+            {
+                node = node->first_node(L2DE_TILEDMAP_NODE_OBJECTGROUP);
+            }
+
+            if (node == nullptr)
+                return objects;
+
+            for (
+                auto object = node->first_node(L2DE_TILEDMAP_NODE_OBJECT);
+                object != nullptr;
+                object = object->next_sibling(L2DE_TILEDMAP_NODE_OBJECT)
+                )
+            {
+                auto child = object->first_node();
+
+                //the properties will be check later
+                if(child != nullptr && strcmp(child->name(), L2DE_TILEDMAP_NODE_PROPERTIES) == 0)
+					child = child->next_sibling();
+
+                ObjectType type = ObjectType::Box;
+                if (child == nullptr)
+                {
+                    //it should be box.
+                }
+                else if (strcmp(child->name(), L2DE_TILEDMAP_NODE_POLYGON) == 0)
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: polygon object type is not supported.");
+                    continue;
+                }
+                else if (strcmp(child->name(), L2DE_TILEDMAP_NODE_TEXT) == 0)
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: text object type is not supported.");
+                    continue;
+                }
+                else if (strcmp(child->name(), L2DE_TILEDMAP_NODE_POINT) == 0)
+                {
+                    type = ObjectType::Point;
+                }
+                else if (strcmp(child->name(), L2DE_TILEDMAP_NODE_ELLIPSE) == 0)
+                {
+                    type = ObjectType::Ellipse;
+                }
+
+                bool foundGid = false;
+                bool foundX = false;
+                bool foundY = false;
+                bool foundWidth = false;
+                bool foundHeight = false;
+                int gid;
+                glm::vec2 position;
+                glm::vec2 size;
+                for (auto attr = object->first_attribute();
+                    attr != nullptr;
+                    attr = attr->next_attribute())
+                {
+                    if (strcmp(attr->name(), L2DE_TILEDMAP_ATTR_X) == 0)
+                    {
+                        position.x = static_cast<float>(std::atof(attr->value()));
+                        foundX = true;
+                    }
+                    else if (strcmp(attr->name(), L2DE_TILEDMAP_ATTR_Y) == 0)
+                    {
+                        position.y = static_cast<float>(std::atof(attr->value()));
+                        foundY = true;
+                    }
+                    else if (strcmp(attr->name(), L2DE_TILEDMAP_ATTR_WIDTH) == 0)
+                    {
+                        size.x = static_cast<float>(std::atof(attr->value()));
+                        foundWidth = true;
+
+                        if (size.x <= 0)
+                            L2DE_LOG_ERROR("TiledMapLoader: an object width should be bigger then 0: " + std::to_string(size.x));
+                    }
+                    else if (strcmp(attr->name(), L2DE_TILEDMAP_ATTR_HEIGHT) == 0)
+                    {
+                        size.y = static_cast<float>(std::atof(attr->value()));
+                        foundHeight = true;
+
+                        if (size.y <= 0)
+                            L2DE_LOG_ERROR("TiledMapLoader: an object height should be bigger then 0: " + std::to_string(size.y));
+                    }
+                    else if (strcmp(attr->name(), L2DE_TILEDMAP_ATTR_GID) == 0)
+                    {
+                        gid = std::atoi(attr->value());
+                        type = ObjectType::Image;
+                        if (gid <= 0)
+                            L2DE_LOG_ERROR("TiledMapLoader: an object gid should be bigger then 0: " + std::to_string(gid));
+                        else
+                            foundGid = true;
+                    }
+                }
+
+                auto properties = TiledMapLoader::LoadProperties(object, folderPath);
+
+                switch (type)
+                {
+                case ObjectType::Point:
+                    if (!foundX || !foundY)
+                    {
+                        L2DE_LOG_ERROR("TiledMapLoader: a point object can't be created, because some data is missing.");
+                        continue;
+                    }
+                    objects.push_back(ObjectItem(std::move(
+                        ObjectPoint(position, std::move(properties))
+                    )));
+                    break;
+                case ObjectType::Box:
+                    if (!foundX || !foundY || !foundWidth || !foundHeight)
+                    {
+                        L2DE_LOG_ERROR("TiledMapLoader: a box object can't be created, because some data is missing.");
+                        continue;
+                    }
+                    objects.push_back(ObjectItem(std::move(
+                        ObjectBox(position, size, std::move(properties))
+                    )));
+                    break;
+                case ObjectType::Ellipse:
+                    if (!foundX || !foundY || !foundWidth || !foundHeight)
+                    {
+                        L2DE_LOG_ERROR("TiledMapLoader: a ellipse object can't be created, because some data is missing.");
+                        continue;
+                    }
+                    objects.push_back(ObjectItem(std::move(
+                        ObjectEllipse(position, size, std::move(properties))
+                    )));
+                    break;
+                case ObjectType::Image:
+                    if (!foundX || !foundY || !foundWidth || !foundHeight|| !foundGid)
+                    {
+                        L2DE_LOG_ERROR("TiledMapLoader: a ellipse object can't be created, because some data is missing.");
+                        continue;
+                    }
+                    objects.push_back(ObjectItem(std::move(
+                        ObjectImage(position, size, std::move(properties), gid)
+                    )));
+                    break;
+                }
+
+            }
+            return objects;
+        }
+
         bool TiledMapLoader::LoadMapBackground(rapidxml::xml_node<>* mapNode)
         {
 
-            auto properties = LoadProperties(mapNode);
+            auto properties = TiledMapLoader::LoadProperties(mapNode);
 #if L2DE_DEBUG
             int tooMuchProperties = 1;
 #endif
@@ -671,7 +820,7 @@ namespace Learning2DEngine
 
         bool TiledMapLoader::LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId)
         {
-            auto properties = LoadProperties(layerNode);
+            auto properties = TiledMapLoader::LoadProperties(layerNode);
 #if L2DE_DEBUG
             int tooMuchProperties = 1;
 #endif

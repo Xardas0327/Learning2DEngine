@@ -10,6 +10,12 @@ namespace Learning2DEngine
 		struct ObjectEllipse : public ObjectPoint
 		{
 			glm::vec2 size;
+
+			ObjectEllipse(const glm::vec2& position, const glm::vec2& size, std::map<std::string, System::Property>&& properties)
+				: ObjectPoint(position, std::move(properties)), size(size)
+			{
+
+			}
 		};
 	}
 }

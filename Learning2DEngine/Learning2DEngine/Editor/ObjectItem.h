@@ -12,9 +12,9 @@ namespace Learning2DEngine
 	{
 		class ObjectItem
 		{
+			IObjectData* data;
 		public:
 			const ObjectType type;
-			const IObjectData* const data;
 
 			ObjectItem(ObjectPoint&& point)
 				: type(ObjectType::Point), data(new ObjectPoint(std::move(point)))
@@ -36,9 +36,34 @@ namespace Learning2DEngine
 			{
 			}
 
+			ObjectItem(const ObjectItem& other)
+				: type(other.type), data(nullptr)
+			{
+				switch (type)
+				{
+				case ObjectType::Point:
+					data = new ObjectPoint(*static_cast<ObjectPoint*>(other.data));
+					break;
+				case ObjectType::Box:
+					data = new ObjectBox(*static_cast<ObjectBox*>(other.data));
+					break;
+				case ObjectType::Ellipse:
+					data = new ObjectEllipse(*static_cast<ObjectEllipse*>(other.data));
+					break;
+				case ObjectType::Image:
+					data = new ObjectImage(*static_cast<ObjectImage*>(other.data));
+					break;
+				}
+			}
+
 			~ObjectItem()
 			{
 				delete data;
+			}
+
+			const IObjectData* GetData() const
+			{
+				return data;
 			}
 		};
 	}

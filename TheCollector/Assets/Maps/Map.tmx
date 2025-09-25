@@ -90,21 +90,21 @@
 </data>
  </layer>
  <objectgroup id="4" name="Test">
+  <properties>
+   <property name="Layer" type="int" value="0"/>
+  </properties>
   <object id="1" x="63.4785" y="22.6232" width="13.0144" height="8.42105">
    <properties>
     <property name="Property" value="property"/>
    </properties>
   </object>
   <object id="2" x="94.375" y="28.25">
+   <properties>
+    <property name="sss" value="ss"/>
+   </properties>
    <point/>
   </object>
-  <object id="8" x="82.25" y="53.75">
-   <polygon points="0,0 25.5,1 18,13 3,9.25 12.25,5.75 2,3.5"/>
-  </object>
   <object id="12" gid="3" x="125.53" y="91.2852" width="32" height="21.3285" rotation="343.783"/>
-  <object id="14" x="176.27" y="-5.0577" width="83" height="43.8027" rotation="31.3968">
-   <text fontfamily="Cambria" wrap="1" color="#c8434343" valign="center">Hello World</text>
-  </object>
   <object id="23" x="117.333" y="23.6667" width="34" height="29">
    <ellipse/>
   </object>

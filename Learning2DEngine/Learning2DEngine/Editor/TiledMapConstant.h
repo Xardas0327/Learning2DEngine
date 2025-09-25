@@ -72,7 +72,9 @@
 #define L2DE_TILEDMAP_NODE_OBJECTGROUP "objectgroup"
 #define L2DE_TILEDMAP_NODE_OBJECT "object"
 #define L2DE_TILEDMAP_NODE_POINT "point"
-#define L2DE_TILEDMAP_NODE_ELLIPSE "ellipse
+#define L2DE_TILEDMAP_NODE_ELLIPSE "ellipse"
+#define L2DE_TILEDMAP_NODE_POLYGON "polygon"
+#define L2DE_TILEDMAP_NODE_TEXT "text"
 #define L2DE_TILEDMAP_ATTR_X "x"
 #define L2DE_TILEDMAP_ATTR_Y "y"
 #define L2DE_TILEDMAP_ATTR_GID "gid"

@@ -9,7 +9,7 @@ namespace Learning2DEngine
 			Point,
 			Box,
 			Ellipse,
-			Image
+			Image,
 		};
 	}
 }
