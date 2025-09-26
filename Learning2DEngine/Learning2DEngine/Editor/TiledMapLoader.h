@@ -8,8 +8,12 @@
 
 #include "TiledMap.h"
 #include "TiledMapTileset.h"
+#include "ObjectItem.h"
+#include "TiledMapConstant.h"
 #include "../System/Property.h"
 #include "../System/GameObject.h"
+#include "../System/GameObjectManager.h"
+#include "../System/PropertyComponent.h"
 
 namespace Learning2DEngine
 {
@@ -50,11 +54,68 @@ namespace Learning2DEngine
 			// The folderPath is used when the property type is file.
 			static std::vector<ObjectItem> LoadObjectItems(rapidxml::xml_node<>* node, const std::string& folderPath = "");
 
+			// The folderPath is used when the property type is file.
+			// The sourceName is used for the logging only.
+			static std::map<int, std::vector<ObjectItem>> LoadTilesObjectItems(
+				rapidxml::xml_node<>* node,
+				const std::string& sourceName,
+				const std::string& folderPath = ""
+			);
+
 			static bool LoadMapBackground(rapidxml::xml_node<>* mapNode);
 			static bool LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId);
 
 			static void CreateGameObject(TiledMap& map, TiledMapTileset* tileset, int layerId, int imageId, int row, int column);
 			static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
+
+			
+			template<class T>
+			static void CreateColliderFromObjectItem(
+				ObjectItem objectItem,
+				System::GameObject* mainGameObject,
+				std::map<std::string, System::Property>& mainProperties)
+			{
+				const auto& object = static_cast<const T&>(*objectItem.GetData());
+				System::GameObject* objectGameObject = nullptr;
+				std::map<std::string, System::Property> objectProperties = object.properties;
+				bool isOnGameObject = objectProperties.count(L2DE_TILEDMAP_SMART_ONGAMEOBJECT) &&
+					objectProperties[L2DE_TILEDMAP_SMART_ONGAMEOBJECT].GetBool();
+				objectProperties.erase(L2DE_TILEDMAP_SMART_ONGAMEOBJECT);
+
+				//the object will be the mainGameObject or a new game object
+				if (isOnGameObject)
+					objectGameObject = mainGameObject;
+				else
+					objectGameObject = System::GameObjectManager::GetInstance().CreateGameObject(mainGameObject->transform);
+
+				TiledMapLoader::AddColliderToGameObject(objectGameObject, object, objectProperties);
+
+				//if it is on the main game object, add the properties to the main properties
+				if (isOnGameObject)
+				{
+					for (const auto& kv : objectProperties) {
+						mainProperties.insert(kv);
+					}
+				}
+				else
+				{
+					if (objectProperties.size() > 0)
+						objectGameObject->AddComponent<System::PropertyComponent>(std::move(objectProperties));
+				}
+			}
+
+			//the object.position will be the offset
+			static void AddColliderToGameObject(
+				System::GameObject* gameObject,
+				const ObjectBox& object,
+				std::map<std::string, System::Property>& properties
+			);
+			//the object.position will be the offset
+			static void AddColliderToGameObject(
+				System::GameObject* gameObject,
+				const ObjectEllipse& object,
+				std::map<std::string, System::Property>& properties
+			);
 		public:
 			~TiledMapLoader() = default;
 

@@ -6,14 +6,11 @@
 #include <GLFW/glfw3.h>
 #include <rapidxml/rapidxml_utils.hpp>
 
-#include "TiledMapConstant.h"
 #include "../DebugTool/DebugMacro.h"
 #include "../DebugTool/Log.h"
 #include "../Render/RenderManager.h"
 #include "../Render/SpriteRenderComponent.h"
 #include "../System/ResourceManager.h"
-#include "../System/PropertyComponent.h"
-#include "../System/GameObjectManager.h"
 #include "../Physics/BoxColliderComponent.h"
 #include "../Physics/CircleColliderComponent.h"
 
@@ -412,6 +409,7 @@ namespace Learning2DEngine
 
             tiledMapObject.commonProperties = TiledMapLoader::LoadProperties(tilesetNode, folderPath);
             tiledMapObject.uniqueProperties = TiledMapLoader::LoadTilesProperties(tilesetNode, sourceName, folderPath);
+            tiledMapObject.objects = TiledMapLoader::LoadTilesObjectItems(tilesetNode, sourceName, folderPath);
 
             return true;
         }
@@ -637,6 +635,42 @@ namespace Learning2DEngine
             return properties;
         }
 
+        std::map<int, std::vector<ObjectItem>> TiledMapLoader::LoadTilesObjectItems(
+            rapidxml::xml_node<>* node,
+            const std::string& sourceName,
+            const std::string& folderPath
+        )
+        {
+            std::map<int, std::vector<ObjectItem>> objects;
+
+            for (
+                auto tile = node->first_node(L2DE_TILEDMAP_NODE_TILE);
+                tile != nullptr;
+                tile = tile->next_sibling(L2DE_TILEDMAP_NODE_TILE)
+                )
+            {
+                auto idAttr = tile->first_attribute(L2DE_TILEDMAP_ATTR_ID);
+                if (idAttr == nullptr)
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id attribute is missing.");
+                    continue;
+                }
+
+                int id = std::atoi(idAttr->value());
+                if (objects.count(id))
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id is duplicated: " + std::to_string(id));
+                    continue;
+                }
+
+                auto tileObjects = LoadObjectItems(tile, folderPath);
+                if (!tileObjects.empty())
+                    objects.emplace(id, std::move(tileObjects));
+            }
+
+            return objects;
+        }
+
         std::vector<ObjectItem> TiledMapLoader::LoadObjectItems(rapidxml::xml_node<>* node, const std::string& folderPath)
         {
             std::vector<ObjectItem> objects;
@@ -660,8 +694,8 @@ namespace Learning2DEngine
                 auto child = object->first_node();
 
                 //the properties will be check later
-                if(child != nullptr && strcmp(child->name(), L2DE_TILEDMAP_NODE_PROPERTIES) == 0)
-					child = child->next_sibling();
+                if (child != nullptr && strcmp(child->name(), L2DE_TILEDMAP_NODE_PROPERTIES) == 0)
+                    child = child->next_sibling();
 
                 ObjectType type = ObjectType::Box;
                 if (child == nullptr)
@@ -766,12 +800,18 @@ namespace Learning2DEngine
                         L2DE_LOG_ERROR("TiledMapLoader: a ellipse object can't be created, because some data is missing.");
                         continue;
                     }
+                    //At the moment, there is circle, not ellipse collider.
+                    if (size.x != size.y)
+                    {
+                        L2DE_LOG_WARNING("TiledMapLoader: an ellipse object should have the same width and height. Only the width will be used.");
+                        size.y = size.x;
+                    }
                     objects.push_back(ObjectItem(std::move(
                         ObjectEllipse(position, size, std::move(properties))
                     )));
                     break;
                 case ObjectType::Image:
-                    if (!foundX || !foundY || !foundWidth || !foundHeight|| !foundGid)
+                    if (!foundX || !foundY || !foundWidth || !foundHeight || !foundGid)
                     {
                         L2DE_LOG_ERROR("TiledMapLoader: a ellipse object can't be created, because some data is missing.");
                         continue;
@@ -900,11 +940,37 @@ namespace Learning2DEngine
                 map.gameObjects.push_back(gameObject);
             }
 
-            if(properties.size() > 0)
+            for (const auto& object : tileset->objects[tileset->GetLocalId(imageId)])
+            {
+                const ObjectPoint* point = nullptr;
+                GameObject* objectGameObject = nullptr;
+
+                //The image is not supported in the tileds, even in Editor.
+                switch (object.type)
+                {
+                case ObjectType::Point:
+                    point = static_cast<const ObjectPoint*>(object.GetData());
+
+                    objectGameObject = GameObjectManager::GetInstance().CreateGameObject(
+                        Transform(gameObject->transform.GetPosition() + point->position)
+                    );
+                    if (point->properties.size() > 0)
+                        objectGameObject->AddComponent<PropertyComponent>(point->properties);
+                    break;
+                case ObjectType::Box:
+                    CreateColliderFromObjectItem<ObjectBox>(object, gameObject, properties);
+                    break;
+                case ObjectType::Ellipse:
+                    CreateColliderFromObjectItem<ObjectEllipse>(object, gameObject, properties);
+                    break;
+                }
+            }
+
+            if (properties.size() > 0)
                 gameObject->AddComponent<PropertyComponent>(std::move(properties));
         }
 
-        void TiledMapLoader::AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties)
+        void TiledMapLoader::AddColliderToGameObject(GameObject* gameObject, std::map<std::string, Property>& properties)
         {
             if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER))
             {
@@ -993,6 +1059,122 @@ namespace Learning2DEngine
                     properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_MASKLAYER);
                 }
             }
+        }
+
+        void TiledMapLoader::AddColliderToGameObject(
+            GameObject* gameObject,
+            const ObjectBox& object,
+            std::map<std::string, Property>& properties
+        )
+        {
+            auto size = object.size;
+            auto type = ColliderType::DYNAMIC;
+            auto mode = ColliderMode::COLLIDER;
+            glm::vec2 offset(object.position);
+            int32_t maskLayer = ~0;
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_IS_KINEMATIC) &&
+                properties[L2DE_TILEDMAP_SMART_COLLIDER_IS_KINEMATIC].GetBool())
+            {
+                type = ColliderType::KINEMATIC;
+            }
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_IS_TRIGGER) &&
+                properties[L2DE_TILEDMAP_SMART_COLLIDER_IS_TRIGGER].GetBool())
+            {
+                mode = ColliderMode::TRIGGER;
+            }
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_X))
+            {
+                offset.x = properties[L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_X].GetFloat();
+            }
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_Y))
+            {
+                offset.y = properties[L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_Y].GetFloat();
+            }
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_MASKLAYER))
+            {
+                maskLayer = properties[L2DE_TILEDMAP_SMART_COLLIDER_MASKLAYER].GetInt();
+            }
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_SIZE_X))
+            {
+                size.x = properties[L2DE_TILEDMAP_SMART_COLLIDER_SIZE_X].GetFloat();
+            }
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_SIZE_Y))
+            {
+                size.y = properties[L2DE_TILEDMAP_SMART_COLLIDER_SIZE_Y].GetFloat();
+            }
+
+            gameObject->AddComponent<BoxColliderComponent>(size, type, mode, offset, maskLayer);
+
+            //The L2DE_TILEDMAP_SMART_COLLIDER is not used here, because the object is box.
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_SIZE_X);
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_SIZE_Y);
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_IS_KINEMATIC);
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_IS_TRIGGER);
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_X);
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_Y);
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_MASKLAYER);
+        }
+
+        void TiledMapLoader::AddColliderToGameObject(
+            GameObject* gameObject,
+            const ObjectEllipse& object,
+            std::map<std::string, Property>& properties
+        )
+        {
+            float radius = object.size.x;
+            auto type = ColliderType::DYNAMIC;
+            auto mode = ColliderMode::COLLIDER;
+            glm::vec2 offset(object.position);
+            int32_t maskLayer = ~0;
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_IS_KINEMATIC) &&
+                properties[L2DE_TILEDMAP_SMART_COLLIDER_IS_KINEMATIC].GetBool())
+            {
+                type = ColliderType::KINEMATIC;
+            }
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_IS_TRIGGER) &&
+                properties[L2DE_TILEDMAP_SMART_COLLIDER_IS_TRIGGER].GetBool())
+            {
+                mode = ColliderMode::TRIGGER;
+            }
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_X))
+            {
+                offset.x = properties[L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_X].GetFloat();
+            }
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_Y))
+            {
+                offset.y = properties[L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_Y].GetFloat();
+            }
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_MASKLAYER))
+            {
+                maskLayer = properties[L2DE_TILEDMAP_SMART_COLLIDER_MASKLAYER].GetInt();
+            }
+
+            if (properties.count(L2DE_TILEDMAP_SMART_COLLIDER_RADIUS))
+            {
+                radius = properties[L2DE_TILEDMAP_SMART_COLLIDER_RADIUS].GetFloat();
+            }
+
+            gameObject->AddComponent<CircleColliderComponent>(radius, type, mode, offset, maskLayer);
+
+            //The L2DE_TILEDMAP_SMART_COLLIDER is not used here, because the object is box.
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_RADIUS);
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_IS_KINEMATIC);
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_IS_TRIGGER);
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_X);
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_Y);
+            properties.erase(L2DE_TILEDMAP_SMART_COLLIDER_MASKLAYER);
         }
     }
 }
