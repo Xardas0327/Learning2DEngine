@@ -89,27 +89,9 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="4" name="Test">
+ <objectgroup id="4" name="MovingPlatforms">
   <properties>
    <property name="Layer" type="int" value="0"/>
   </properties>
-  <object id="1" x="54.3333" y="65" width="13" height="8">
-   <properties>
-    <property name="IsTrigger" type="bool" value="true"/>
-   </properties>
-  </object>
-  <object id="2" x="94.375" y="28.25">
-   <properties>
-    <property name="sss" value="ss"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="12" gid="3" x="125.53" y="91.2852" width="32" height="9" rotation="45"/>
-  <object id="23" x="94.9997" y="109.667" width="34" height="34">
-   <properties>
-    <property name="IsTrigger" type="bool" value="true"/>
-   </properties>
-   <ellipse/>
-  </object>
  </objectgroup>
 </map>
