@@ -467,7 +467,7 @@
     <ClInclude Include="Learning2DEngine\Editor\ObjectType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\Editor\IObjectData.h">
+    <ClInclude Include="Learning2DEngine\Editor\BaseObjectData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Editor\ObjectPoint.h">

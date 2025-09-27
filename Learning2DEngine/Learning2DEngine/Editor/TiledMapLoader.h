@@ -40,6 +40,12 @@ namespace Learning2DEngine
 
 			static void LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapTileset>& tilesets);
 
+			static void LoadObjectLayers(
+				TiledMap& map, rapidxml::xml_node<>* mapNode,
+				std::vector<TiledMapTileset>& tilesets,
+				const std::string& folderPath = ""
+			);
+
 			// The folderPath is used when the property type is file.
 			static std::map<std::string, System::Property> LoadProperties(rapidxml::xml_node<>* node, const std::string& folderPath = "");
 
@@ -65,15 +71,21 @@ namespace Learning2DEngine
 			static bool LoadMapBackground(rapidxml::xml_node<>* mapNode);
 			static bool LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId);
 
-			static void CreateGameObject(TiledMap& map, TiledMapTileset* tileset, int layerId, int imageId, int row, int column);
+			static void CreateGameObjectFromLayerData(TiledMap& map, TiledMapTileset* tileset, int layerId, int imageId, int row, int column);
+			static void CreateGameObjectFromObjectLayerData(
+				TiledMap& map,
+				const ObjectItem& objectItem,
+				const std::vector<TiledMapTileset>& tilesets,
+				int layerId
+			);
+
 			static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
 
-			
 			template<class T>
 			static void CreateColliderFromObjectItem(
 				ObjectItem objectItem,
-				System::GameObject* mainGameObject,
-				std::map<std::string, System::Property>& mainProperties)
+				System::GameObject* tiledGameObject,
+				std::map<std::string, System::Property>& tiledProperties)
 			{
 				const auto& object = static_cast<const T&>(*objectItem.GetData());
 				System::GameObject* objectGameObject = nullptr;
@@ -82,19 +94,19 @@ namespace Learning2DEngine
 					objectProperties[L2DE_TILEDMAP_SMART_ONGAMEOBJECT].GetBool();
 				objectProperties.erase(L2DE_TILEDMAP_SMART_ONGAMEOBJECT);
 
-				//the object will be the mainGameObject or a new game object
+				//the object will be the tiledGameObject or a new game object
 				if (isOnGameObject)
-					objectGameObject = mainGameObject;
+					objectGameObject = tiledGameObject;
 				else
-					objectGameObject = System::GameObjectManager::GetInstance().CreateGameObject(mainGameObject->transform);
+					objectGameObject = System::GameObjectManager::GetInstance().CreateGameObject(tiledGameObject->transform);
 
-				TiledMapLoader::AddColliderToGameObject(objectGameObject, object, objectProperties);
+				TiledMapLoader::AddColliderToGameObject(objectGameObject, object, objectProperties, true);
 
 				//if it is on the main game object, add the properties to the main properties
 				if (isOnGameObject)
 				{
 					for (const auto& kv : objectProperties) {
-						mainProperties.insert(kv);
+						tiledProperties[kv.first] = kv.second;
 					}
 				}
 				else
@@ -108,13 +120,15 @@ namespace Learning2DEngine
 			static void AddColliderToGameObject(
 				System::GameObject* gameObject,
 				const ObjectBox& object,
-				std::map<std::string, System::Property>& properties
+				std::map<std::string, System::Property>& properties,
+				bool useObjectPositionAsOffset
 			);
 			//the object.position will be the offset
 			static void AddColliderToGameObject(
 				System::GameObject* gameObject,
 				const ObjectEllipse& object,
-				std::map<std::string, System::Property>& properties
+				std::map<std::string, System::Property>& properties,
+				bool useObjectPositionAsOffset
 			);
 		public:
 			~TiledMapLoader() = default;

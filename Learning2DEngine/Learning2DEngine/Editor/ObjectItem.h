@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ObjectType.h"
+#include "BaseObjectData.h"
 #include "ObjectPoint.h"
 #include "ObjectBox.h"
 #include "ObjectEllipse.h"
@@ -12,7 +13,7 @@ namespace Learning2DEngine
 	{
 		class ObjectItem
 		{
-			IObjectData* data;
+			BaseObjectData* data;
 		public:
 			const ObjectType type;
 
@@ -61,7 +62,7 @@ namespace Learning2DEngine
 				delete data;
 			}
 
-			const IObjectData* GetData() const
+			const BaseObjectData* GetData() const
 			{
 				return data;
 			}

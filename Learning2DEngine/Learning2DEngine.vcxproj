@@ -213,7 +213,7 @@
     <ClInclude Include="Learning2DEngine\DebugTool\DebugMacro.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugPosition.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugRenderData.h" />
-    <ClInclude Include="Learning2DEngine\Editor\IObjectData.h" />
+    <ClInclude Include="Learning2DEngine\Editor\BaseObjectData.h" />
     <ClInclude Include="Learning2DEngine\Editor\ObjectBox.h" />
     <ClInclude Include="Learning2DEngine\Editor\ObjectEllipse.h" />
     <ClInclude Include="Learning2DEngine\Editor\ObjectImage.h" />

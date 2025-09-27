@@ -4,20 +4,19 @@
 #include <map>
 #include <string>
 
-#include "IObjectData.h"
+#include "BaseObjectData.h"
 #include "../System/Property.h"
 
 namespace Learning2DEngine
 {
 	namespace Editor
 	{
-		struct ObjectPoint : public IObjectData
+		struct ObjectPoint : public BaseObjectData
 		{
 			glm::vec2 position;
-			std::map<std::string, System::Property> properties;
 
 			ObjectPoint(const glm::vec2& position, std::map<std::string, System::Property>&& properties)
-				: position(position), properties(std::move(properties))
+				: BaseObjectData(std::move(properties)), position(position)
 			{
 
 			}
