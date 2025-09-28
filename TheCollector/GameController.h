@@ -27,6 +27,7 @@ protected:
     std::vector<MovingPlatformController*> movingPlatforms;
     BoxController* box;
     PlayerController* playerController;
+    glm::vec2 playerStartPosition;
     GameStatus gameStatus;
     const Learning2DEngine::UI::FontSizePair fontSizePair;
     DetectorEventItem playerCoinEventItem;
