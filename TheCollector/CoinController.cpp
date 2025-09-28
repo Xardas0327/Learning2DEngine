@@ -24,6 +24,9 @@ CoinController::CoinController(GameObject* gameObject, float speed)
 
 void CoinController::Init()
 {
+	Component::Init();
+	gameObject->transform.SetScale(COIN_SIZE);
+
 	gameObject->AddComponent<CircleColliderComponent>(
 		gameObject->transform.GetScale().x / 2.0f,
 		ColliderType::KINEMATIC

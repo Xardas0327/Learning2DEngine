@@ -174,7 +174,6 @@
     <ClInclude Include="IDetectorCustomer.h" />
     <ClInclude Include="GameController.h" />
     <ClInclude Include="MovingPlatformController.h" />
-    <ClInclude Include="PlatformController.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="TheCollector.h" />
     <ClInclude Include="DetectorEventItem.h" />

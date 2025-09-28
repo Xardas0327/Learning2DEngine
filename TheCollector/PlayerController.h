@@ -15,7 +15,6 @@
 #include "DetectorEventItem.h"
 
 const glm::vec2 PLAYER_SIZE(16.0f, 16.0f);
-const glm::vec2 PLAYER_START_POSITION(50.0f, 90.0f);
 
 const std::string PLAYER_TEXTURE_ID = "Knight";
 const int PLAYER_IDLE_ANIMATION_NUMBER = 4;

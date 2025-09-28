@@ -24,10 +24,10 @@ using namespace irrklang;
 
 GameController::GameController(GameObject* gameObject)
     : UpdaterComponent(gameObject), Component(gameObject),
-    coins(), movingPlatforms(), box(nullptr), playerController(nullptr), gameStatus(GameStatus::Menu),
-    fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24), playerCoinEventItem(this), currentPlayTime(0),
-    scoreText(nullptr), playTimeText(nullptr), descriptionText(nullptr), startText(nullptr), winText(nullptr),
-    loseText(nullptr), endText(nullptr)
+    coins(), movingPlatforms(), box(nullptr), playerController(nullptr), playerStartPosition(),
+    gameStatus(GameStatus::Menu), fontSizePair("Assets/Fonts/PixelOperator8.ttf", 24),
+    playerCoinEventItem(this), currentPlayTime(0), scoreText(nullptr), playTimeText(nullptr),
+    descriptionText(nullptr), startText(nullptr), winText(nullptr), loseText(nullptr), endText(nullptr)
     , soundEngine(nullptr)
 {
 
@@ -47,9 +47,7 @@ void GameController::Init()
     Game::mainCamera.SetResolution(Resolution(200, 115));
     Game::mainCamera.SetPosition(glm::vec2(0.0f, 40.0f));
 
-	TiledMapLoader::LoadFromFile("Assets/Maps/Map.tmx");
-
-    InitDynamicEnvironment();
+    InitEnvironment();
     InitTexts();
 
     // Sounds
@@ -61,7 +59,7 @@ void GameController::Init()
         sound->stop();
 
     //Player
-    auto player = gameObjectManager.CreateGameObject(Transform(PLAYER_START_POSITION));
+    auto player = gameObjectManager.CreateGameObject(Transform(playerStartPosition));
     playerController = player->AddComponent<PlayerController>(
         soundEngine
     );
@@ -82,28 +80,39 @@ void GameController::Destroy()
     UpdaterComponent::Destroy();
 }
 
-void GameController::InitDynamicEnvironment()
+void GameController::InitEnvironment()
 {
-	//Box
-    box = BoxController::Create(glm::vec2(70.0f, 90.0f));
+    auto map = TiledMapLoader::LoadFromFile("Assets/Maps/Map.tmx");
 
     //Moving Platform
     movingPlatforms.reserve(2);
     movingPlatforms.push_back(
-        MovingPlatformController::Create(glm::vec2(90.0f, 65.0f), glm::vec2(90.0f, 120.0f), "Platform2")
+        MovingPlatformController::Create(
+			map.groupedGameObjects["MovingPlatform1"][0],
+			map.groupedGameObjects["MovingPlatform1Start"][0]->transform.GetPosition(),
+            map.groupedGameObjects["MovingPlatform1End"][0]->transform.GetPosition()
+        )
     );
     movingPlatforms.push_back(
-        MovingPlatformController::Create(glm::vec2(176.0f, 111.0f), glm::vec2(200.0f, 111.0f), "Platform2")
+        MovingPlatformController::Create(
+            map.groupedGameObjects["MovingPlatform2"][0],
+            map.groupedGameObjects["MovingPlatform2Start"][0]->transform.GetPosition(),
+            map.groupedGameObjects["MovingPlatform2End"][0]->transform.GetPosition()
+        )
     );
 
-    //Coin
-    coins.reserve(5);
-    coins.push_back(CoinController::Create(glm::vec2(20.0f, 45.0f)));
-    coins.push_back(CoinController::Create(glm::vec2(20.0f, 120.0f)));
-    coins.push_back(CoinController::Create(glm::vec2(160.0f, 120.0f)));
-    coins.push_back(CoinController::Create(glm::vec2(245.0f, 98.0f)));
-    coins.push_back(CoinController::Create(glm::vec2(195.0f, 45.0f)));
+	//Box
+    box = BoxController::Create(map.groupedGameObjects["Rock"][0]->transform.GetPosition());
 
+    //Coin
+    coins.reserve(map.groupedGameObjects["Coin"].size());
+    for (auto& coinGameObject : map.groupedGameObjects["Coin"])
+    {
+        coins.push_back(coinGameObject->AddComponent<CoinController>());
+	}
+
+    //Player start position
+	playerStartPosition = map.groupedGameObjects["PlayerStart"][0]->transform.GetPosition();
 }
 
 void GameController::InitTexts()
@@ -271,7 +280,7 @@ void GameController::StartPlay()
         platform->Reset();
     }
 
-    playerController->gameObject->transform.SetPosition(PLAYER_START_POSITION);
+    playerController->gameObject->transform.SetPosition(playerStartPosition);
     playerController->rigidbody->isFrozen = false;
     playerController->rigidbody->velocity = glm::vec2(0.0f);
     playerController->coinNumber = 0;

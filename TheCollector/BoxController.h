@@ -11,8 +11,6 @@
 #include <Learning2DEngine/Physics/Rigidbody.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
 
-#include "PlatformController.h"
-
 #if L2DE_DEBUG
 #include <Learning2DEngine/DebugTool/DebugPosition.h>
 #endif
