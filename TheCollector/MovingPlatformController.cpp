@@ -2,13 +2,17 @@
 
 #include <Learning2DEngine/System/Time.h>
 
+#if L2DE_DEBUG
+#include <Learning2DEngine/DebugTool/DebugPosition.h>
+#endif
+
 using namespace Learning2DEngine::System;
 
 
-MovingPlatformController::MovingPlatformController(GameObject* gameObject, glm::vec2 endPosition, float speed)
+MovingPlatformController::MovingPlatformController(GameObject* gameObject, glm::vec2 startPosition, glm::vec2 endPosition, float speed)
 	: UpdaterComponent(gameObject), Component(gameObject),
-	startPosition(gameObject->transform.GetPosition()), endPosition(endPosition),
-	directionVector(glm::normalize(endPosition - gameObject->transform.GetPosition())),
+	startPosition(startPosition), endPosition(endPosition),
+	directionVector(glm::normalize(endPosition - startPosition)),
 	minVector(startPosition.x > endPosition.x ? endPosition.x : startPosition.x, startPosition.y > endPosition.y ? endPosition.y : startPosition.y),
 	maxVector(startPosition.x < endPosition.x ? endPosition.x : startPosition.x, startPosition.y < endPosition.y ? endPosition.y : startPosition.y),
 	speed(speed), movingToEnd(true)
@@ -16,8 +20,21 @@ MovingPlatformController::MovingPlatformController(GameObject* gameObject, glm::
 
 }
 
+void MovingPlatformController::Init()
+{
+	UpdaterComponent::Init();
+
+#if L2DE_DEBUG
+	gameObject->AddComponent<Learning2DEngine::DebugTool::DebugPosition>();
+#endif
+
+	Reset();
+}
+
 void MovingPlatformController::Update()
 {
+	auto p = gameObject->transform.GetPosition();
+	auto m = (movingToEnd ? 1.0f : -1.0f) * directionVector * speed * Time::GetDeltaTime();
 	glm::vec2 newPosition = gameObject->transform.GetPosition() + (movingToEnd ? 1.0f : -1.0f) * directionVector * speed * Time::GetDeltaTime();
 
 	gameObject->transform.SetPosition(
@@ -37,13 +54,11 @@ void MovingPlatformController::Reset()
 }
 
 MovingPlatformController* MovingPlatformController::Create(
+	GameObject* gameObject,
 	glm::vec2 startPosition,
 	glm::vec2 endPosition,
-	const std::string& textureId,
-	float speed,
-	glm::vec2 size)
+	float speed
+)
 {
-	auto platform = PlatformController::Create(startPosition, textureId, size);
-
-	return platform->gameObject->AddComponent<MovingPlatformController>(endPosition, speed);
+	return gameObject->AddComponent<MovingPlatformController>(startPosition, endPosition, speed);
 }

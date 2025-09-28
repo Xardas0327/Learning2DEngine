@@ -50,7 +50,7 @@ void PlayerController::Init()
     rigidbody->gravityMultiplier = 45.0f;
     InitRigidbody();
 
-    detector = gameObject->AddComponent<PlatformDetectorController>(glm::vec2(10.0f, 2.0f), glm::vec2(2.5f, 14.0f));
+    detector = gameObject->AddComponent<PlatformDetectorController>(glm::vec2(15.8f, 2.0f), glm::vec2(0.1f, 14.0f));
     detector->eventhandler.Add(&eventItem);
 
     rightIdleAnimation = gameObject->AddComponent<AnimationController>(&renderer->data, PLAYER_IDLE_ANIMATION_NUMBER, true);

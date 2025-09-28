@@ -531,14 +531,14 @@ namespace Learning2DEngine
                 int overrideLayerId = 0;
                 bool useOverrideLayerId = TiledMapLoader::LoadLayerId(objectLayerNode, overrideLayerId);
 
-				auto objects = LoadObjectItems(objectLayerNode, folderPath);
+                auto objects = LoadObjectItems(objectLayerNode, folderPath);
                 for (auto& object : objects)
                 {
                     CreateGameObjectFromObjectLayerData(
                         map,
                         object,
                         tilesets,
-						useOverrideLayerId ? overrideLayerId : layerId
+                        useOverrideLayerId ? overrideLayerId : layerId
                     );
                 }
 
@@ -833,7 +833,7 @@ namespace Learning2DEngine
                         continue;
                     }
                     //We want radius instead of diameter.
-					size /= 2.0f;
+                    size /= 2.0f;
                     //At the moment, there is circle, not ellipse collider.
                     if (size.x != size.y)
                     {
@@ -989,7 +989,7 @@ namespace Learning2DEngine
                     if (point->properties.size() > 0)
                         objectGameObject->AddComponent<PropertyComponent>(point->properties);
                 }
-                    break;
+                break;
                 case ObjectType::Box:
                     CreateColliderFromObjectItem<ObjectBox>(object, gameObject, properties);
                     break;
@@ -1065,6 +1065,22 @@ namespace Learning2DEngine
                         *selectedTileset->texture,
                         layerId);
                     renderer->data.uvMatrix = selectedTileset->GetUV(image->gid);
+
+                    //it will have all tileset properties and the object properties.
+                    std::map<std::string, System::Property> allProperties = selectedTileset->commonProperties;
+                    if (selectedTileset->uniqueProperties.count(selectedTileset->GetLocalId(image->gid)))
+                    {
+                        for (auto& prop : selectedTileset->uniqueProperties.at(selectedTileset->GetLocalId(image->gid)))
+                        {
+                            allProperties[prop.first] = prop.second;
+                        }
+                    }
+                    for (auto& prop : properties)
+                    {
+                        allProperties[prop.first] = prop.second;
+                    }
+                    properties = std::move(allProperties);
+                    TiledMapLoader::AddColliderToGameObject(gameObject, properties);
                 }
             }
             break;

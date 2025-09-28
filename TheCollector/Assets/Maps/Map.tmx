@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="36" height="20" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#0099e6" nextlayerid="5" nextobjectid="31">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="36" height="20" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#0099e6" nextlayerid="5" nextobjectid="39">
  <properties>
   <property name="LoadBackground" type="bool" value="true"/>
  </properties>
@@ -93,5 +93,39 @@
   <properties>
    <property name="Layer" type="int" value="0"/>
   </properties>
+  <object id="32" gid="3" x="90" y="90" width="32" height="9">
+   <properties>
+    <property name="GroupName" value="MovingPlatform1"/>
+   </properties>
+  </object>
+  <object id="33" x="90" y="65">
+   <properties>
+    <property name="GroupName" value="MovingPlatform1Start"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="34" x="90" y="120">
+   <properties>
+    <property name="GroupName" value="MovingPlatform1End"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="35" gid="3" x="199.667" y="120.667" width="32" height="9">
+   <properties>
+    <property name="GroupName" value="MovingPlatform2"/>
+   </properties>
+  </object>
+  <object id="36" x="176" y="111">
+   <properties>
+    <property name="GroupName" value="MovingPlatform2Start"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="37" x="200" y="111">
+   <properties>
+    <property name="GroupName" value="MovingPlatform2End"/>
+   </properties>
+   <point/>
+  </object>
  </objectgroup>
 </map>

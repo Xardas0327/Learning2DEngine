@@ -45,7 +45,7 @@ protected:
     void Init() override;
     void Destroy() override;
     void Update() override;
-    void InitDynamicEnvironment();
+    void InitEnvironment();
     void InitTexts();
     void ShowMenu();
     void StartPlay();

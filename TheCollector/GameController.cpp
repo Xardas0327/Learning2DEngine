@@ -47,9 +47,7 @@ void GameController::Init()
     Game::mainCamera.SetResolution(Resolution(200, 115));
     Game::mainCamera.SetPosition(glm::vec2(0.0f, 40.0f));
 
-	TiledMapLoader::LoadFromFile("Assets/Maps/Map.tmx");
-
-    InitDynamicEnvironment();
+    InitEnvironment();
     InitTexts();
 
     // Sounds
@@ -82,19 +80,30 @@ void GameController::Destroy()
     UpdaterComponent::Destroy();
 }
 
-void GameController::InitDynamicEnvironment()
+void GameController::InitEnvironment()
 {
-	//Box
-    box = BoxController::Create(glm::vec2(70.0f, 90.0f));
+
+    auto map = TiledMapLoader::LoadFromFile("Assets/Maps/Map.tmx");
 
     //Moving Platform
     movingPlatforms.reserve(2);
     movingPlatforms.push_back(
-        MovingPlatformController::Create(glm::vec2(90.0f, 65.0f), glm::vec2(90.0f, 120.0f), "Platform2")
+        MovingPlatformController::Create(
+			map.groupedGameObjects["MovingPlatform1"][0],
+			map.groupedGameObjects["MovingPlatform1Start"][0]->transform.GetPosition(),
+            map.groupedGameObjects["MovingPlatform1End"][0]->transform.GetPosition()
+        )
     );
     movingPlatforms.push_back(
-        MovingPlatformController::Create(glm::vec2(176.0f, 111.0f), glm::vec2(200.0f, 111.0f), "Platform2")
+        MovingPlatformController::Create(
+            map.groupedGameObjects["MovingPlatform2"][0],
+            map.groupedGameObjects["MovingPlatform2Start"][0]->transform.GetPosition(),
+            map.groupedGameObjects["MovingPlatform2End"][0]->transform.GetPosition()
+        )
     );
+
+	//Box
+    box = BoxController::Create(glm::vec2(70.0f, 90.0f));
 
     //Coin
     coins.reserve(5);

@@ -44,9 +44,6 @@
     <ClInclude Include="PlayerController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlatformController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MovingPlatformController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
