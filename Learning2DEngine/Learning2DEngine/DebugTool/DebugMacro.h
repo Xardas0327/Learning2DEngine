@@ -28,7 +28,7 @@
 #endif
 
 #ifndef L2DE_DEBUG_SHOW_COLLIDER_TRIGGER_COLOR
-	#define L2DE_DEBUG_SHOW_COLLIDER_TRIGGER_COLOR glm::vec4(0.2f, 0.6f, 1.0f, 0.9f)
+	#define L2DE_DEBUG_SHOW_COLLIDER_TRIGGER_COLOR glm::vec4(1.0f, 0.8f, 0.5f, 0.9f)
 #endif
 
 //Position
