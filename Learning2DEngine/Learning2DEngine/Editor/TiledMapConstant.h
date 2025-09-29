@@ -1,6 +1,5 @@
 #pragma once
 
-
 namespace Learning2DEngine
 {
 	namespace Editor
@@ -9,7 +8,7 @@ namespace Learning2DEngine
 		constexpr const char* TiledMapSupportedOrientation = "orthogonal";
 		constexpr const char* TiledMapSupportedEncoding = "csv";
 
-		//Common
+		// Common
 		constexpr const char* TiledMapAttrName = "name";
 		constexpr const char* TiledMapAttrWidth = "width";
 		constexpr const char* TiledMapAttrHeight = "height";
@@ -33,56 +32,56 @@ namespace Learning2DEngine
 		constexpr const char* TiledMapAttrTileCount = "tilecount";
 		constexpr const char* TiledMapAttrSpacing = "spacing";
 		constexpr const char* TiledMapAttrMargin = "margin";
+
+		// Layer
+		constexpr const char* TiledMapNodeLayer = "layer";
+		constexpr const char* TiledMapNodeData = "data";
+		constexpr const char* TiledMapAttrEncoding = "encoding";
+
+		// Property
+		constexpr const char* TiledMapNodeProperties = "properties";
+		constexpr const char* TiledMapNodeProperty = "property";
+		constexpr const char* TiledMapAttrType = "type";
+		constexpr const char* TiledMapAttrValue = "value";
+		constexpr const char* TiledMapPropertyTypeBool = "bool";
+		constexpr const char* TiledMapPropertyTypeColor = "color";
+		constexpr const char* TiledMapPropertyTypeFile = "file";
+		constexpr const char* TiledMapPropertyTypeFloat = "float";
+		constexpr const char* TiledMapPropertyTypeInt = "int";
+		constexpr const char* TiledMapPropertyTypeString = "string";
+		constexpr const char* TiledMapPropertyTypeObject = "object";
+
+		// Tile
+		constexpr const char* TiledMapNodeTile = "tile";
+		constexpr const char* TiledMapAttrId = "id";
+
+		// Smart Property
+		constexpr const char* TiledMapSmartLoadBackground = "LoadBackground";
+		constexpr const char* TiledMapSmartLayer = "Layer";
+		constexpr const char* TiledMapSmartGroupName = "GroupName";
+		constexpr const char* TiledMapSmartOnGameObject = "OnGameObject";
+		constexpr const char* TiledMapSmartCollider = "Collider";
+		constexpr const char* TiledMapSmartColliderValueBox = "Box";
+		constexpr const char* TiledMapSmartColliderValueCircle = "Circle";
+		constexpr const char* TiledMapSmartColliderSizeX = "SizeX";
+		constexpr const char* TiledMapSmartColliderSizeY = "SizeY";
+		constexpr const char* TiledMapSmartColliderRadius = "Radius";
+		constexpr const char* TiledMapSmartColliderIsKinematic = "IsKinematic";
+		constexpr const char* TiledMapSmartColliderIsTrigger = "IsTrigger";
+		constexpr const char* TiledMapSmartColliderOffsetX = "OffsetX";
+		constexpr const char* TiledMapSmartColliderOffsetY = "OffsetY";
+		constexpr const char* TiledMapSmartColliderMaskLayer = "MaskLayer";
+
+		// Object Group
+		constexpr const char* TiledMapNodeObjectGroup = "objectgroup";
+		constexpr const char* TiledMapNodeObject = "object";
+		constexpr const char* TiledMapNodePoint = "point";
+		constexpr const char* TiledMapNodeEllipse = "ellipse";
+		constexpr const char* TiledMapNodePolygon = "polygon";
+		constexpr const char* TiledMapNodeText = "text";
+		constexpr const char* TiledMapAttrX = "x";
+		constexpr const char* TiledMapAttrY = "y";
+		constexpr const char* TiledMapAttrGid = "gid";
 	}
 }
-
-// Layer
-#define L2DE_TILEDMAP_NODE_LAYER "layer"
-#define L2DE_TILEDMAP_NODE_DATA "data"
-#define L2DE_TILEDMAP_ATTR_ENCODING "encoding"
-
-// Property
-#define L2DE_TILEDMAP_NODE_PROPERTIES "properties"
-#define L2DE_TILEDMAP_NODE_PROPERTY "property"
-#define L2DE_TILEDMAP_ATTR_TYPE "type"
-#define L2DE_TILEDMAP_ATTR_VALUE "value"
-#define L2DE_TILEDMAP_PROPERTY_TYPE_BOOL "bool"
-#define L2DE_TILEDMAP_PROPERTY_TYPE_COLOR "color"
-#define L2DE_TILEDMAP_PROPERTY_TYPE_FILE "file"
-#define L2DE_TILEDMAP_PROPERTY_TYPE_FLOAT "float"
-#define L2DE_TILEDMAP_PROPERTY_TYPE_INT "int"
-#define L2DE_TILEDMAP_PROPERTY_TYPE_STRING "string"
-#define L2DE_TILEDMAP_PROPERTY_TYPE_OBJECT "object"
-
-// Tile
-#define L2DE_TILEDMAP_NODE_TILE "tile"
-#define L2DE_TILEDMAP_ATTR_ID "id"
-
-// Smart Property
-#define L2DE_TILEDMAP_SMART_LOADBACKGROUND "LoadBackground"
-#define L2DE_TILEDMAP_SMART_LAYER "Layer"
-#define L2DE_TILEDMAP_SMART_GROUPNAME "GroupName"
-#define L2DE_TILEDMAP_SMART_ONGAMEOBJECT "OnGameObject"
-#define L2DE_TILEDMAP_SMART_COLLIDER "Collider"
-#define L2DE_TILEDMAP_SMART_COLLIDER_VALUE_BOX "Box"
-#define L2DE_TILEDMAP_SMART_COLLIDER_VALUE_CIRCLE "Circle"
-#define L2DE_TILEDMAP_SMART_COLLIDER_SIZE_X "SizeX"
-#define L2DE_TILEDMAP_SMART_COLLIDER_SIZE_Y "SizeY"
-#define L2DE_TILEDMAP_SMART_COLLIDER_RADIUS "Radius"
-#define L2DE_TILEDMAP_SMART_COLLIDER_IS_KINEMATIC "IsKinematic"
-#define L2DE_TILEDMAP_SMART_COLLIDER_IS_TRIGGER "IsTrigger"
-#define L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_X "OffsetX"
-#define L2DE_TILEDMAP_SMART_COLLIDER_OFFSET_Y "OffsetY"
-#define L2DE_TILEDMAP_SMART_COLLIDER_MASKLAYER "MaskLayer"
-
-// Object Group
-#define L2DE_TILEDMAP_NODE_OBJECTGROUP "objectgroup"
-#define L2DE_TILEDMAP_NODE_OBJECT "object"
-#define L2DE_TILEDMAP_NODE_POINT "point"
-#define L2DE_TILEDMAP_NODE_ELLIPSE "ellipse"
-#define L2DE_TILEDMAP_NODE_POLYGON "polygon"
-#define L2DE_TILEDMAP_NODE_TEXT "text"
-#define L2DE_TILEDMAP_ATTR_X "x"
-#define L2DE_TILEDMAP_ATTR_Y "y"
-#define L2DE_TILEDMAP_ATTR_GID "gid"
 
