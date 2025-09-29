@@ -24,8 +24,6 @@ namespace Learning2DEngine
 {
     namespace System
     {
-#define L2DE_KEYBOARD_BUTTON_NUMBER 512
-
         /*
             The Function order in the Run() (in a frame):
             Calculate deltaTime
@@ -44,6 +42,8 @@ namespace Learning2DEngine
                     protected Render::IResolutionRefresher
         {
         private:
+            static constexpr const int KeyboardButtonNumber = 512;
+
             bool isMsaaActive;
             bool isPostProcessEffectActive;
             bool isPostProcessEffectUsed;
@@ -56,7 +56,7 @@ namespace Learning2DEngine
             EventSystem::ScrollEventItem scrollEventItem;
             EventSystem::ResolutionEventItem resolutionEventItem;
 
-            static InputStatus keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER];
+            static InputStatus keyboardButtons[Game::KeyboardButtonNumber];
             static Cursor cursor;
 
             void UpdateEvents();

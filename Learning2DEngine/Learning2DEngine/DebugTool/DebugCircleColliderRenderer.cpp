@@ -27,10 +27,10 @@ namespace Learning2DEngine
 
 		void DebugCircleColliderRenderer::InitVao()
 		{
-			float vertices[CircleSegment * 2];
+			float vertices[DebugCircleColliderRenderer::CircleSegment * 2];
 
-			for (int i = 0; i < CircleSegment; ++i) {
-				float theta = 2.0f * 3.14159265359f * i / CircleSegment;
+			for (int i = 0; i < DebugCircleColliderRenderer::CircleSegment; ++i) {
+				float theta = 2.0f * 3.14159265359f * i / DebugCircleColliderRenderer::CircleSegment;
 				vertices[i * 2] = glm::cos(theta);
 				vertices[i * 2 + 1] = glm::sin(theta);
 			}
@@ -122,7 +122,12 @@ namespace Learning2DEngine
 			}
 
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(BaseColorDynamicData) * debugRenderData[rendererMode][layer].size(), dynamicData);
-			glDrawArraysInstanced(GL_LINE_LOOP, 0, CircleSegment, static_cast<GLsizei>(debugRenderData[rendererMode][layer].size()));
+			glDrawArraysInstanced(
+				GL_LINE_LOOP,
+				0,
+				DebugCircleColliderRenderer::CircleSegment,
+				static_cast<GLsizei>(debugRenderData[rendererMode][layer].size())
+			);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);

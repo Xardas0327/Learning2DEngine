@@ -618,11 +618,6 @@ class TextCharacterSet : public System::Singleton<TextCharacterSet>
 {...}
 ```
 
-### Macros:
-**L2DE_FONT_NUMBER**  
-The `TextCharacterSet` load the first `L2DE_FONT_NUMBER` characters from a ttf file.
-Its value is 128.
-
 ### Auxiliary classes:
 **CharacterMap**  
 ```cpp
@@ -631,6 +626,12 @@ typedef std::map<char, FreeTypeCharacter> CharacterMap;
 
 ### Variables:
 **Private:**  
+**FontNumber**  
+The `TextCharacterSet` load the first `FontNumber` characters from a ttf file.
+```cpp
+static constexpr const int FontNumber = 128;
+```
+
 **characters**  
 ```cpp
 std::map<FontSizePair, CharacterMap> characters;

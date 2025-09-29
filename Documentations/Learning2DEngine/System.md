@@ -568,17 +568,14 @@ cursor is in the window.
 ### Header:
 ```cpp
 struct Cursor {
-	InputStatus mouseButtons[L2DE_MOUSE_BUTTON_NUMBER];
+    static constexpr const int MouseButtonNumber = 8;
+
+	InputStatus mouseButtons[Cursor::MouseButtonNumber];
 	glm::vec2 position;
 	glm::vec2 scroll;
 	bool isInWindow;
 };
 ```
-
-### Macros:
-**L2DE_MOUSE_BUTTON_NUMBER**  
-The number of mouse buttons.  
-Its value is 8.
 
 ##
 ## Game
@@ -609,13 +606,13 @@ class Game : private IKeyboardRefresher, private ICursorRefresher, public protec
 {...}
 ```
 
-### Macros:
-**L2DE_KEYBOARD_BUTTON_NUMBER**  
-The number of keyboard buttons.
-Its value is 512.
-
 ### Variables:
 **Private:**  
+**KeyboardButtonNumber**  
+```cpp
+static constexpr const int KeyboardButtonNumber = 512;
+```
+ 
 **isMsaaActive**  
 ```cpp
 bool isMsaaActive;
@@ -677,7 +674,7 @@ EventSystem::ResolutionEventItem resolutionEventItem;
 **keyboardButtons**  
 This array contains, which keyboard button is up, down or hold.
 ```cpp
-static InputStatus keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER];
+static InputStatus keyboardButtons[Game::KeyboardButtonNumber];
 ```
 
 **cursor**  
@@ -1584,13 +1581,13 @@ class Time
 {...}
 ```
 
-### Macros:
-**L2DE_TIME_SCALE_DEFAULT**  
-The default value of the timeScale.
-Its value is 1.0f.
-
 ### Variables:
 **Private:**  
+**DefaultTimeScale**  
+```cpp
+static constexpr const float DefaultTimeScale = 1.0f;
+```
+
 **deltaTime**  
 It is multiplied by timeScale.  
 Before the first frame, it is 0.0f.

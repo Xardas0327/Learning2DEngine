@@ -4,7 +4,7 @@ namespace Learning2DEngine
 {
     namespace Physics
     {
-        glm::vec2 Rigidbody::gravity = DefaultGravity;
+        glm::vec2 Rigidbody::gravity = Rigidbody::DefaultGravity;
 
         Rigidbody::Rigidbody(System::GameObject* gameObject, glm::vec2 velocity, bool isGravityEnabled, bool isFrozen)
             : System::UpdaterComponent(gameObject), System::Component(gameObject),

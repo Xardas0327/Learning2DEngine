@@ -32,7 +32,7 @@ namespace Learning2DEngine
 
             Particle() 
                 : transform(), velocity(0.0f), color(1.0f), lifeTime(0.0f), speed(1.0f),
-                uvMatrix(DefaultUV)
+                uvMatrix(Particle::DefaultUV)
             {
             }
         };

@@ -7,10 +7,10 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-#define L2DE_MOUSE_BUTTON_NUMBER 8
-
 		struct Cursor {
-			InputStatus mouseButtons[L2DE_MOUSE_BUTTON_NUMBER];
+			static constexpr const int MouseButtonNumber = 8;
+
+			InputStatus mouseButtons[Cursor::MouseButtonNumber];
 			glm::vec2 position;
 			glm::vec2 scroll;
 			bool isInWindow;

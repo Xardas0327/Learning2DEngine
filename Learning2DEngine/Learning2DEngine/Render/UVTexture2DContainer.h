@@ -23,14 +23,14 @@ namespace Learning2DEngine
             /// </summary>
             glm::mat4x2 uvMatrix;
 
-            UVTexture2DContainer(glm::mat4x2 uvMatrix = DefaultUV)
+            UVTexture2DContainer(glm::mat4x2 uvMatrix = UVTexture2DContainer::DefaultUV)
                 : Texture2DContainer(), uvMatrix(uvMatrix)
             {
 
             }
 
             // It will not copy the texture, it will use texture reference.
-            UVTexture2DContainer(const Texture2D& texture, glm::mat4x2 uvMatrix = DefaultUV)
+            UVTexture2DContainer(const Texture2D& texture, glm::mat4x2 uvMatrix = UVTexture2DContainer::DefaultUV)
                 : Texture2DContainer(texture), uvMatrix(uvMatrix)
             {
 

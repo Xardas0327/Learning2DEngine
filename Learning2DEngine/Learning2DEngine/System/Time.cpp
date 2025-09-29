@@ -10,7 +10,7 @@ namespace Learning2DEngine
     namespace System
     {
         float Time::deltaTime = 0.0f;
-        float Time::timeScale = L2DE_TIME_SCALE_DEFAULT;
+        float Time::timeScale = Time::DefaultTimeScale;
         float Time::lastTime = 0.0f;
         bool Time::isInited = false;
 

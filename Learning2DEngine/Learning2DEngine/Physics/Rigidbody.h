@@ -35,7 +35,7 @@ namespace Learning2DEngine
 
             static inline void ResetGravity()
             {
-                gravity = DefaultGravity;
+                gravity = Rigidbody::DefaultGravity;
             }
         };
     }

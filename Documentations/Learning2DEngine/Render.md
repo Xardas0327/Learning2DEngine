@@ -1889,10 +1889,10 @@ glm::mat4x2 uvMatrix;
 **UVTexture2DContainer**  
 It will not copy the texture, it will use texture reference.  
 ```cpp
-UVTexture2DContainer(glm::mat4x2 uvMatrix = DefaultUV);
+UVTexture2DContainer(glm::mat4x2 uvMatrix = UVTexture2DContainer::DefaultUV);
 ```
 ```cpp
-UVTexture2DContainer(const Texture2D& texture, glm::mat4x2 uvMatrix = DefaultUV);
+UVTexture2DContainer(const Texture2D& texture, glm::mat4x2 uvMatrix = UVTexture2DContainer::DefaultUV);
 ```
 
 ##
