@@ -1,34 +1,40 @@
 #pragma once
 
-#define L2DE_TILEDMAP_SUPPORTED_VERSION "1.10"
-#define L2DE_TILEDMAP_SUPPORTED_ORIENTATION "orthogonal"
-#define L2DE_TILEDMAP_SUPPORTED_ENCODING "csv"
-#define L2DE_TILEDMAP_BASE_MAPID "base"
 
-//Common
-#define L2DE_TILEDMAP_ATTR_TILEWIDTH "tilewidth"
-#define L2DE_TILEDMAP_ATTR_TILEHEIGHT "tileheight"
-#define L2DE_TILEDMAP_ATTR_WIDTH "width"
-#define L2DE_TILEDMAP_ATTR_HEIGHT "height"
-#define L2DE_TILEDMAP_ATTR_NAME "name"
+namespace Learning2DEngine
+{
+	namespace Editor
+	{
+		constexpr const char* TiledMapSupportedVersion = "1.10";
+		constexpr const char* TiledMapSupportedOrientation = "orthogonal";
+		constexpr const char* TiledMapSupportedEncoding = "csv";
 
-// Map
-#define L2DE_TILEDMAP_NODE_MAP "map"
-#define L2DE_TILEDMAP_ATTR_VERSION "version"
-#define L2DE_TILEDMAP_ATTR_TILEDVERSION "tiledversion"
-#define L2DE_TILEDMAP_ATTR_ORIENTATION "orientation"
-#define L2DE_TILEDMAP_ATTR_INFINITE "infinite"
-#define L2DE_TILEDMAP_ATTR_BACKGROUND_COLOR "backgroundcolor"
+		//Common
+		constexpr const char* TiledMapAttrName = "name";
+		constexpr const char* TiledMapAttrWidth = "width";
+		constexpr const char* TiledMapAttrHeight = "height";
+		constexpr const char* TiledMapAttrTileWidth = "tilewidth";
+		constexpr const char* TiledMapAttrTileHeight = "tileheight";
 
-// Tileset
-#define L2DE_TILEDMAP_NODE_TILESET "tileset"
-#define L2DE_TILEDMAP_NODE_IMAGE "image"
-#define L2DE_TILEDMAP_ATTR_FIRSTGID "firstgid"
-#define L2DE_TILEDMAP_ATTR_SOURCE "source"
-#define L2DE_TILEDMAP_ATTR_COLUMNS "columns"
-#define L2DE_TILEDMAP_ATTR_TILECOUNT "tilecount"
-#define L2DE_TILEDMAP_ATTR_SPACING "spacing"
-#define L2DE_TILEDMAP_ATTR_MARGIN "margin"
+		// Map
+		constexpr const char* TiledMapNodeMap = "map";
+		constexpr const char* TiledMapAttrVersion = "version";
+		constexpr const char* TiledMapAttrTiledVersion = "tiledversion";
+		constexpr const char* TiledMapAttrOrientation = "orientation";
+		constexpr const char* TiledMapAttrInfinite = "infinite";
+		constexpr const char* TiledMapAttrBackgroundColor = "backgroundcolor";
+
+		// Tileset
+		constexpr const char* TiledMapNodeTileset = "tileset";
+		constexpr const char* TiledMapNodeImage = "image";
+		constexpr const char* TiledMapAttrFirstGid = "firstgid";
+		constexpr const char* TiledMapAttrSource = "source";
+		constexpr const char* TiledMapAttrColumns = "columns";
+		constexpr const char* TiledMapAttrTileCount = "tilecount";
+		constexpr const char* TiledMapAttrSpacing = "spacing";
+		constexpr const char* TiledMapAttrMargin = "margin";
+	}
+}
 
 // Layer
 #define L2DE_TILEDMAP_NODE_LAYER "layer"
