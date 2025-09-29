@@ -725,11 +725,13 @@ class Rigidbody : public System::UpdaterComponent, public BaseRigidbody
 {...}
 ```
 
-### Macros:
-**L2DE_DEFAULT_GRAVITY**    
-Its value is glm::vec2(0.0f, 9.81f).
-
 ### Variables:
+**protected:**  
+**DefaultGravity**  
+```cpp
+static constexpr const glm::vec2 DefaultGravity = glm::vec2(0.0f, 9.81f);
+```
+
 **Public:**  
 **isFrozen**  
 ```cpp
@@ -747,7 +749,7 @@ float gravityMultiplier;
 ```
 
 **gravity**  
-It's default value is `L2DE_DEFAULT_GRAVITY`.
+It's default value is `DefaultGravity`.
 ```cpp
 static glm::vec2 gravity;
 ```
@@ -770,7 +772,7 @@ virtual void Update() override;
 
 **Public:**  
 **ResetGravity**  
-It resets the gravity to `L2DE_DEFAULT_GRAVITY`.
+It resets the gravity to `DefaultGravity`.
 ```cpp
 static inline void ResetGravity();
 ```

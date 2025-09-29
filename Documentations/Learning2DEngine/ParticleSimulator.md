@@ -95,15 +95,17 @@ The particles representation in the Engine.
 
 ### Header:
 ```cpp
-struct Particle
+class Particle
 {...}
 ```
 
-### Macros:
-**L2DE_PARTICLE_UV_DEFAULT**  
-Default values: `glm::mat4x2 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}`
-
 ### Variables:
+**Private:**  
+**DefaultUV**  
+```cpp
+static constexpr const glm::mat4x2 DefaultUV = { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f };
+```
+
 **Public:**  
 **transform**  
 ```cpp
