@@ -1869,11 +1869,13 @@ class UVTexture2DContainer : public Texture2DContainer
 {...}
 ```
 
-### Macros:
-**L2DE_Texture2D_UV_DEFAULT**  
-Default values: `glm::mat4x2 { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f}`
-
 ### Variables:
+**Private:**  
+**DefaultUV**  
+```cpp
+static constexpr const glm::mat4x2 DefaultUV = { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f };
+```
+
 **Public:**  
 **uvMatrix**  
 The texture coordinate order:  
@@ -1887,10 +1889,10 @@ glm::mat4x2 uvMatrix;
 **UVTexture2DContainer**  
 It will not copy the texture, it will use texture reference.  
 ```cpp
-UVTexture2DContainer(glm::mat4x2 uvMatrix = L2DE_Texture2D_UV_DEFAULT);
+UVTexture2DContainer(glm::mat4x2 uvMatrix = UVTexture2DContainer::DefaultUV);
 ```
 ```cpp
-UVTexture2DContainer(const Texture2D& texture, glm::mat4x2 uvMatrix = L2DE_Texture2D_UV_DEFAULT);
+UVTexture2DContainer(const Texture2D& texture, glm::mat4x2 uvMatrix = UVTexture2DContainer::DefaultUV);
 ```
 
 ##

@@ -13,12 +13,12 @@ namespace Learning2DEngine
 {
 	namespace DebugTool
 	{
-#define L2DE_DEBUG_CIRCLE_SEGMENT 50
-
 		class DebugCircleColliderRenderer : public DebugColliderRenderer<Physics::BaseCircleColliderComponent>, public System::Singleton<DebugCircleColliderRenderer>
 		{
 			friend class Singleton<DebugCircleColliderRenderer>;
 		private:
+			static constexpr const int CircleSegment = 50;
+
 			DebugCircleColliderRenderer();
 
 			void InitVao() override;

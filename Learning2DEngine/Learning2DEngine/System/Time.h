@@ -6,12 +6,11 @@ namespace Learning2DEngine
     {
         class Game;
 
-#define L2DE_TIME_SCALE_DEFAULT 1.0f
-
         class Time
         {
             friend class Game;
         private:
+            static constexpr const float DefaultTimeScale = 1.0f;
 
             /// <summary>
             /// It is multiplied by timeScale.
@@ -30,7 +29,7 @@ namespace Learning2DEngine
         public:
             static inline void ResetTimeScale()
             {
-                timeScale = L2DE_TIME_SCALE_DEFAULT;
+                timeScale = Time::DefaultTimeScale;
             }
 
             static inline void SetTimeScale(float value)

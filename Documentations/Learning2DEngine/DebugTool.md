@@ -151,11 +151,15 @@ class DebugCircleColliderRenderer : public DebugColliderRenderer<Physics::BaseCi
 {...}
 ```
 
-### Macros:
-**L2DE_DEBUG_CIRCLE_SEGMENT**  
+### Variables:
+**Private:**  
+**CircleSegment**  
 It is a segment of the circle.  
 If it is bigger, a circle will be smoother.  
 It's value is 50.
+```cpp
+static constexpr const int CircleSegment = 50;
+```
 
 ### Functions:
 **Private:**  

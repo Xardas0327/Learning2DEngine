@@ -18,7 +18,7 @@ namespace Learning2DEngine
     namespace System
     {
         Camera Game::mainCamera = Camera();
-        InputStatus Game::keyboardButtons[L2DE_KEYBOARD_BUTTON_NUMBER] = { InputStatus::KEY_UP };
+        InputStatus Game::keyboardButtons[Game::KeyboardButtonNumber] = { InputStatus::KEY_UP };
         Cursor Game::cursor = Cursor();
 
         Game::Game()
@@ -200,7 +200,7 @@ namespace Learning2DEngine
 
         void Game::RefreshKeyboard(int key, int scancode, int action, int mode)
         {
-            if (key > GLFW_KEY_UNKNOWN && key < L2DE_KEYBOARD_BUTTON_NUMBER)
+            if (key > GLFW_KEY_UNKNOWN && key < Game::KeyboardButtonNumber)
             {
                 switch (action)
                 {
@@ -221,7 +221,7 @@ namespace Learning2DEngine
 
         void Game::RefreshMouseButton(int button, int action, int mods)
         {
-            if (button >= 0 && button < L2DE_MOUSE_BUTTON_NUMBER)
+            if (button >= 0 && button < Cursor::MouseButtonNumber)
             {
                 switch (action)
                 {
@@ -278,7 +278,7 @@ namespace Learning2DEngine
 
         void Game::FixKeyboardButtons()
         {
-            for (int i = 0; i < L2DE_KEYBOARD_BUTTON_NUMBER; ++i)
+            for (int i = 0; i < Game::KeyboardButtonNumber; ++i)
             {
                 if (Game::keyboardButtons[i] == InputStatus::KEY_DOWN)
                     Game::keyboardButtons[i] = InputStatus::KEY_HOLD;
@@ -287,7 +287,7 @@ namespace Learning2DEngine
 
         void Game::FixCursor()
         {
-            for (int i = 0; i < L2DE_MOUSE_BUTTON_NUMBER; ++i)
+            for (int i = 0; i < Cursor::MouseButtonNumber; ++i)
             {
                 if (Game::cursor.mouseButtons[i] == InputStatus::KEY_DOWN)
                     Game::cursor.mouseButtons[i] = InputStatus::KEY_HOLD;

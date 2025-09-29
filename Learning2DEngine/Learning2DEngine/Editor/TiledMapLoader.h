@@ -90,9 +90,9 @@ namespace Learning2DEngine
 				const auto& object = static_cast<const T&>(*objectItem.GetData());
 				System::GameObject* objectGameObject = nullptr;
 				std::map<std::string, System::Property> objectProperties = object.properties;
-				bool isOnGameObject = objectProperties.count(L2DE_TILEDMAP_SMART_ONGAMEOBJECT) &&
-					objectProperties[L2DE_TILEDMAP_SMART_ONGAMEOBJECT].GetBool();
-				objectProperties.erase(L2DE_TILEDMAP_SMART_ONGAMEOBJECT);
+				bool isOnGameObject = objectProperties.count(TiledMapSmartOnGameObject) &&
+					objectProperties[TiledMapSmartOnGameObject].GetBool();
+				objectProperties.erase(TiledMapSmartOnGameObject);
 
 				//the object will be the tiledGameObject or a new game object
 				if (isOnGameObject)
