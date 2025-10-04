@@ -494,29 +494,15 @@ namespace Learning2DEngine
                             int id = std::atoi(token.c_str());
                             if (id > 0)
                             {
-                                TiledMapTileset* selectedTileset = nullptr;
-                                for (auto& tileset : tilesets)
-                                {
-                                    if (tileset.HasNumber(id))
-                                    {
-                                        selectedTileset = &tileset;
-                                        break;
-                                    }
-                                }
-
-                                if (selectedTileset == nullptr)
-                                {
-                                    L2DE_LOG_WARNING("TiledMapLoader: the tile id " + std::to_string(id) + " is not valid.");
-                                    continue;
-                                }
-
-                                TiledMapLoader::CreateGameObjectFromLayerData(
+                                CreateGameObject(
                                     map,
-                                    selectedTileset,
-                                    useOverrideLayerId ? overrideLayerId : layerId,
-                                    id,
-                                    row,
-                                    column);
+									LayerItemData(
+                                        tilesets,
+                                        id,
+                                        row,
+                                        column,
+                                        useOverrideLayerId ? overrideLayerId : layerId)
+                                );
                             }
 
                         }
@@ -548,11 +534,12 @@ namespace Learning2DEngine
                 auto objects = LoadObjectItems(objectLayerNode, folderPath);
                 for (auto& object : objects)
                 {
-                    CreateGameObjectFromObjectLayerData(
+                    CreateGameObject(
                         map,
-                        object,
-                        tilesets,
-                        useOverrideLayerId ? overrideLayerId : layerId
+                        ObjectLayerItemData(
+                            tilesets,
+                            object,
+                            useOverrideLayerId ? overrideLayerId : layerId)
                     );
                 }
 
@@ -939,30 +926,58 @@ namespace Learning2DEngine
             return false;
         }
 
-        void TiledMapLoader::CreateGameObjectFromLayerData(TiledMap& map, TiledMapTileset* tileset, int layerId, int imageId, int row, int column)
+        const TiledMapTileset* TiledMapLoader::GetTilesetFromGid(const std::vector<TiledMapTileset>& tilesets, int gid)
         {
+            for (auto& tileset : tilesets)
+            {
+                if (tileset.HasNumber(gid))
+                {
+                    return &tileset;
+                }
+            }
+			return nullptr;
+        }
+
+        void TiledMapLoader::CreateGameObject(TiledMap& map, const LayerItemData& itemData)
+        {
+			auto selectedTileset = TiledMapLoader::GetTilesetFromGid(itemData.tilesets, itemData.gid);
+
+            if (selectedTileset == nullptr)
+            {
+                L2DE_LOG_WARNING("TiledMapLoader: the tile id " + std::to_string(itemData.gid) + " is not valid.");
+                return;
+            }
+
             Transform transform(
                 glm::vec2(
-                    static_cast<float>(column) * map.GetTileWidth(),
-                    static_cast<float>(row + 1) * map.GetTileHeight() - tileset->tiledSize.y),
-                tileset->tiledSize
+                    static_cast<float>(itemData.column) * map.GetTileWidth() + itemData.offset.x,
+                    static_cast<float>(itemData.row + 1) * map.GetTileHeight() + itemData.offset.y - selectedTileset->tiledSize.y),
+                selectedTileset->tiledSize
             );
-            auto gameObject = GameObjectManager::GetInstance().CreateGameObject(transform);
+            auto gameObject = GameObjectManager::GetInstance().CreateGameObject(transform, itemData.visible);
+
+			auto color = itemData.tintColor;
+            color.a *= itemData.opacity;
 
             auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
                 RendererMode::RENDER,
-                *tileset->texture,
-                layerId);
-            renderer->data.uvMatrix = tileset->GetUV(imageId);
+                *selectedTileset->texture,
+                itemData.layerId,
+                color);
+            renderer->data.uvMatrix = selectedTileset->GetUV(itemData.gid);
 
             std::map<std::string, System::Property> properties;
-            if (tileset->commonProperties.size() > 0 ||
-                tileset->uniqueProperties[tileset->GetLocalId(imageId)].size() > 0)
+            if (selectedTileset->commonProperties.size() > 0 ||
+                selectedTileset->uniqueProperties.count(selectedTileset->GetLocalId(itemData.gid)) > 0)
             {
-                properties = tileset->commonProperties;
-                for (auto& prop : tileset->uniqueProperties[tileset->GetLocalId(imageId)])
+                properties = selectedTileset->commonProperties;
+
+                if (selectedTileset->uniqueProperties.count(selectedTileset->GetLocalId(itemData.gid)) > 0)
                 {
-                    properties[prop.first] = prop.second;
+                    for (auto& prop : selectedTileset->uniqueProperties.at(selectedTileset->GetLocalId(itemData.gid)))
+                    {
+                        properties[prop.first] = prop.second;
+                    }
                 }
 
                 TiledMapLoader::AddColliderToGameObject(gameObject, properties);
@@ -972,7 +987,7 @@ namespace Learning2DEngine
             {
                 if (properties[TiledMapSmartGroupName].GetType() != PropertyType::String)
                 {
-                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the "+TiledMapSmartGroupName+" should be string.");
+                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
                     map.gameObjects.push_back(gameObject);
                 }
                 else
@@ -989,28 +1004,32 @@ namespace Learning2DEngine
                 map.gameObjects.push_back(gameObject);
             }
 
-            for (const auto& object : tileset->objects[tileset->GetLocalId(imageId)])
+            if (selectedTileset->objects.count(selectedTileset->GetLocalId(itemData.gid)))
             {
-                //The image is not supported in the tileds, even in Editor.
-                switch (object.type)
-                {
-                case ObjectType::Point:
-                {
-                    const ObjectPoint* point = static_cast<const ObjectPoint*>(object.GetData());
 
-                    GameObject* objectGameObject = GameObjectManager::GetInstance().CreateGameObject(
-                        Transform(gameObject->transform.GetPosition() + point->position)
-                    );
-                    if (point->properties.size() > 0)
-                        objectGameObject->AddComponent<PropertyComponent>(point->properties);
-                }
-                break;
-                case ObjectType::Box:
-                    CreateColliderFromObjectItem<ObjectBox>(object, gameObject, properties);
+                for (const auto& object : selectedTileset->objects.at(selectedTileset->GetLocalId(itemData.gid)))
+                {
+                    //The image is not supported in the tileds, even in Editor.
+                    switch (object.type)
+                    {
+                    case ObjectType::Point:
+                    {
+                        const ObjectPoint* point = static_cast<const ObjectPoint*>(object.GetData());
+
+                        GameObject* objectGameObject = GameObjectManager::GetInstance().CreateGameObject(
+                            Transform(gameObject->transform.GetPosition() + point->position)
+                        );
+                        if (point->properties.size() > 0)
+                            objectGameObject->AddComponent<PropertyComponent>(point->properties);
+                    }
                     break;
-                case ObjectType::Ellipse:
-                    CreateColliderFromObjectItem<ObjectEllipse>(object, gameObject, properties);
-                    break;
+                    case ObjectType::Box:
+                        CreateColliderFromObjectItem<ObjectBox>(object, gameObject, properties);
+                        break;
+                    case ObjectType::Ellipse:
+                        CreateColliderFromObjectItem<ObjectEllipse>(object, gameObject, properties);
+                        break;
+                    }
                 }
             }
 
@@ -1018,55 +1037,51 @@ namespace Learning2DEngine
                 gameObject->AddComponent<PropertyComponent>(std::move(properties));
         }
 
-        void TiledMapLoader::CreateGameObjectFromObjectLayerData(
-            TiledMap& map,
-            const ObjectItem& objectItem,
-            const std::vector<TiledMapTileset>& tilesets,
-            int layerId
-        )
+        void TiledMapLoader::CreateGameObject(TiledMap& map, const ObjectLayerItemData& itemData)
         {
             GameObject* gameObject = nullptr;
-            std::map<std::string, System::Property> properties = objectItem.GetData()->properties;
+            std::map<std::string, System::Property> properties = itemData.objectItem.GetData()->properties;
 
-            switch (objectItem.type)
+            switch (itemData.objectItem.type)
             {
             case ObjectType::Point:
             {
-                const ObjectPoint* point = static_cast<const ObjectPoint*>(objectItem.GetData());
+                const ObjectPoint* point = static_cast<const ObjectPoint*>(itemData.objectItem.GetData());
 
-                gameObject = GameObjectManager::GetInstance().CreateGameObject(Transform(point->position));
+                gameObject = GameObjectManager::GetInstance().CreateGameObject(
+                    Transform(point->position + itemData.offset),
+					itemData.visible
+                );
             }
             break;
             case ObjectType::Box:
             {
-                const ObjectBox* box = static_cast<const ObjectBox*>(objectItem.GetData());
-                gameObject = GameObjectManager::GetInstance().CreateGameObject(Transform(box->position));
+                const ObjectBox* box = static_cast<const ObjectBox*>(itemData.objectItem.GetData());
+                gameObject = GameObjectManager::GetInstance().CreateGameObject(
+                    Transform(box->position + itemData.offset),
+                    itemData.visible
+                );
 
                 TiledMapLoader::AddColliderToGameObject(gameObject, *box, properties, false);
             }
             break;
             case ObjectType::Ellipse:
             {
-                const ObjectEllipse* ellipse = static_cast<const ObjectEllipse*>(objectItem.GetData());
-                gameObject = GameObjectManager::GetInstance().CreateGameObject(Transform(ellipse->position));
+                const ObjectEllipse* ellipse = static_cast<const ObjectEllipse*>(itemData.objectItem.GetData());
+                gameObject = GameObjectManager::GetInstance().CreateGameObject(
+                    Transform(ellipse->position + itemData.offset),
+                    itemData.visible
+                );
 
                 TiledMapLoader::AddColliderToGameObject(gameObject, *ellipse, properties, false);
             }
             break;
             case ObjectType::Image:
             {
-                const ObjectImage* image = static_cast<const ObjectImage*>(objectItem.GetData());
+                const ObjectImage* image = static_cast<const ObjectImage*>(itemData.objectItem.GetData());
                 if (image->gid > 0)
                 {
-                    const TiledMapTileset* selectedTileset = nullptr;
-                    for (auto& tileset : tilesets)
-                    {
-                        if (tileset.HasNumber(image->gid))
-                        {
-                            selectedTileset = &tileset;
-                            break;
-                        }
-                    }
+                    auto selectedTileset = TiledMapLoader::GetTilesetFromGid(itemData.tilesets, image->gid);
 
                     if (selectedTileset == nullptr)
                     {
@@ -1074,11 +1089,18 @@ namespace Learning2DEngine
                         return;
                     }
 
-                    gameObject = GameObjectManager::GetInstance().CreateGameObject(Transform(image->position, image->size));
+                    gameObject = GameObjectManager::GetInstance().CreateGameObject(
+                        Transform(image->position + itemData.offset, image->size),
+                        itemData.visible
+                    );
+
+                    auto color = itemData.tintColor;
+                    color.a *= itemData.opacity;
                     auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
                         RendererMode::RENDER,
                         *selectedTileset->texture,
-                        layerId);
+                        itemData.layerId,
+                        color);
                     renderer->data.uvMatrix = selectedTileset->GetUV(image->gid);
 
                     //it will have all tileset properties and the object properties.
@@ -1107,7 +1129,7 @@ namespace Learning2DEngine
                 {
                     if (properties[TiledMapSmartGroupName].GetType() != PropertyType::String)
                     {
-                        L2DE_LOG_WARNING((std::string)"TiledMapLoader: the "+TiledMapSmartGroupName+" should be string.");
+                        L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
                         map.gameObjects.push_back(gameObject);
                     }
                     else

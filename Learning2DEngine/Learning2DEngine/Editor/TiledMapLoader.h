@@ -10,6 +10,8 @@
 #include "TiledMapTileset.h"
 #include "ObjectItem.h"
 #include "TiledMapConstant.h"
+#include "LayerItemData.h"
+#include "ObjectLayerItemData.h"
 #include "../System/Property.h"
 #include "../System/GameObject.h"
 #include "../System/GameObjectManager.h"
@@ -71,13 +73,9 @@ namespace Learning2DEngine
 			static bool LoadMapBackground(rapidxml::xml_node<>* mapNode);
 			static bool LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId);
 
-			static void CreateGameObjectFromLayerData(TiledMap& map, TiledMapTileset* tileset, int layerId, int imageId, int row, int column);
-			static void CreateGameObjectFromObjectLayerData(
-				TiledMap& map,
-				const ObjectItem& objectItem,
-				const std::vector<TiledMapTileset>& tilesets,
-				int layerId
-			);
+			static const TiledMapTileset* GetTilesetFromGid(const std::vector<TiledMapTileset>& tilesets, int gid);
+			static void CreateGameObject(TiledMap& map, const LayerItemData& itemData);
+			static void CreateGameObject(TiledMap& map, const ObjectLayerItemData& itemData);
 
 			static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
 
