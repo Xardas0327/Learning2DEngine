@@ -839,6 +839,7 @@ namespace Learning2DEngine
                 int gid;
                 glm::vec2 position;
                 glm::vec2 size;
+                bool visible = true;
                 for (auto attr = object->first_attribute();
                     attr != nullptr;
                     attr = attr->next_attribute())
@@ -878,6 +879,10 @@ namespace Learning2DEngine
                         else
                             foundGid = true;
                     }
+                    else if (strcmp(attr->name(), TiledMapAttrVisible) == 0)
+                    {
+                        visible = strcmp(attr->value(), "1") == 0;
+                    }
                 }
 
                 auto properties = TiledMapLoader::LoadProperties(object, folderPath);
@@ -891,7 +896,7 @@ namespace Learning2DEngine
                         continue;
                     }
                     objects.push_back(ObjectItem(std::move(
-                        ObjectPoint(position, std::move(properties))
+                        ObjectPoint(position, std::move(properties), visible)
                     )));
                     break;
                 case ObjectType::Box:
@@ -901,7 +906,7 @@ namespace Learning2DEngine
                         continue;
                     }
                     objects.push_back(ObjectItem(std::move(
-                        ObjectBox(position, size, std::move(properties))
+                        ObjectBox(position, size, std::move(properties), visible)
                     )));
                     break;
                 case ObjectType::Ellipse:
@@ -919,7 +924,7 @@ namespace Learning2DEngine
                         size.y = size.x;
                     }
                     objects.push_back(ObjectItem(std::move(
-                        ObjectEllipse(position, size, std::move(properties))
+                        ObjectEllipse(position, size, std::move(properties), visible)
                     )));
                     break;
                 case ObjectType::Image:
@@ -929,7 +934,7 @@ namespace Learning2DEngine
                         continue;
                     }
                     objects.push_back(ObjectItem(std::move(
-                        ObjectImage(position, size, std::move(properties), gid)
+                        ObjectImage(position, size, std::move(properties), gid, visible)
                     )));
                     break;
                 }
@@ -1094,7 +1099,8 @@ namespace Learning2DEngine
                         const ObjectPoint* point = static_cast<const ObjectPoint*>(object.GetData());
 
                         GameObject* objectGameObject = GameObjectManager::GetInstance().CreateGameObject(
-                            Transform(gameObject->transform.GetPosition() + point->position)
+                            Transform(gameObject->transform.GetPosition() + point->position),
+                            point->visible
                         );
                         if (point->properties.size() > 0)
                             objectGameObject->AddComponent<PropertyComponent>(point->properties);
@@ -1127,7 +1133,7 @@ namespace Learning2DEngine
 
                 gameObject = GameObjectManager::GetInstance().CreateGameObject(
                     Transform(point->position + itemData.offset),
-                    itemData.visible
+                    itemData.visible && point->visible
                 );
             }
             break;
@@ -1168,7 +1174,7 @@ namespace Learning2DEngine
 
                     gameObject = GameObjectManager::GetInstance().CreateGameObject(
                         Transform(image->position + itemData.offset, image->size),
-                        itemData.visible
+                        itemData.visible && image->visible
                     );
 
                     auto color = itemData.tintColor;
@@ -1371,7 +1377,8 @@ namespace Learning2DEngine
                 size.y = properties[TiledMapSmartColliderSizeY].GetFloat();
             }
 
-            gameObject->AddComponent<BoxColliderComponent>(size, type, mode, offset, maskLayer);
+            auto collider = gameObject->AddComponent<BoxColliderComponent>(size, type, mode, offset, maskLayer);
+            collider->isActive = object.visible;
 
             //The L2DE_TILEDMAP_SMART_COLLIDER is not used here, because the object is box.
             properties.erase(TiledMapSmartColliderSizeX);
@@ -1430,7 +1437,8 @@ namespace Learning2DEngine
                 radius = properties[TiledMapSmartColliderRadius].GetFloat();
             }
 
-            gameObject->AddComponent<CircleColliderComponent>(radius, type, mode, offset, maskLayer);
+            auto collider = gameObject->AddComponent<CircleColliderComponent>(radius, type, mode, offset, maskLayer);
+            collider->isActive = object.visible;
 
             //The L2DE_TILEDMAP_SMART_COLLIDER is not used here, because the object is box.
             properties.erase(TiledMapSmartColliderRadius);
