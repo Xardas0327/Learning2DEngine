@@ -1194,6 +1194,9 @@ namespace Learning2DEngine
                         itemData.visible && image->visible
                     );
 
+                    //The position in Tiled is bottom-left, but in Learning2DEngine is top-left.
+                    gameObject->transform.AddPosition(glm::vec2(0.0f, -image->size.y));
+
                     auto color = itemData.tintColor;
                     color.a *= itemData.opacity;
                     auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
