@@ -213,11 +213,14 @@
     <ClInclude Include="Learning2DEngine\DebugTool\DebugMacro.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugPosition.h" />
     <ClInclude Include="Learning2DEngine\DebugTool\DebugRenderData.h" />
+    <ClInclude Include="Learning2DEngine\Editor\BaseLayerItemData.h" />
     <ClInclude Include="Learning2DEngine\Editor\BaseObjectData.h" />
+    <ClInclude Include="Learning2DEngine\Editor\LayerItemData.h" />
     <ClInclude Include="Learning2DEngine\Editor\ObjectBox.h" />
     <ClInclude Include="Learning2DEngine\Editor\ObjectEllipse.h" />
     <ClInclude Include="Learning2DEngine\Editor\ObjectImage.h" />
     <ClInclude Include="Learning2DEngine\Editor\ObjectItem.h" />
+    <ClInclude Include="Learning2DEngine\Editor\ObjectLayerItemData.h" />
     <ClInclude Include="Learning2DEngine\Editor\ObjectPoint.h" />
     <ClInclude Include="Learning2DEngine\Editor\ObjectType.h" />
     <ClInclude Include="Learning2DEngine\Editor\TiledMap.h" />

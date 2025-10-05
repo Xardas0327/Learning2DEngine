@@ -10,8 +10,14 @@ namespace Learning2DEngine
 		{
 			int gid;
 
-			ObjectImage(const glm::vec2& position, const glm::vec2& size, std::map<std::string, System::Property>&& properties, int gid)
-				: ObjectBox(position, size, std::move(properties)), gid(gid)
+			ObjectImage(
+				const glm::vec2& position,
+				const glm::vec2& size,
+				std::map<std::string, System::Property>&& properties,
+				int gid,
+				bool visible = true
+			)
+				: ObjectBox(position, size, std::move(properties), visible), gid(gid)
 			{
 
 			}

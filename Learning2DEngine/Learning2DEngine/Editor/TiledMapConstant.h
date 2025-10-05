@@ -14,6 +14,13 @@ namespace Learning2DEngine
 		constexpr const char* TiledMapAttrHeight = "height";
 		constexpr const char* TiledMapAttrTileWidth = "tilewidth";
 		constexpr const char* TiledMapAttrTileHeight = "tileheight";
+		constexpr const char* TiledMapAttrVisible = "visible";
+		constexpr const char* TiledMapAttrOpacity = "opacity";
+		constexpr const char* TiledMapAttrTintcolor = "tintcolor";
+		constexpr const char* TiledMapAttrOffsetX = "offsetx";
+		constexpr const char* TiledMapAttrOffsetY = "offsety";
+		constexpr const char* TiledMapAttrX = "x";
+		constexpr const char* TiledMapAttrY = "y";
 
 		// Map
 		constexpr const char* TiledMapNodeMap = "map";
@@ -32,6 +39,7 @@ namespace Learning2DEngine
 		constexpr const char* TiledMapAttrTileCount = "tilecount";
 		constexpr const char* TiledMapAttrSpacing = "spacing";
 		constexpr const char* TiledMapAttrMargin = "margin";
+		constexpr const char* TiledMapAttrTileOffset = "tileoffset";
 
 		// Layer
 		constexpr const char* TiledMapNodeLayer = "layer";
@@ -79,8 +87,6 @@ namespace Learning2DEngine
 		constexpr const char* TiledMapNodeEllipse = "ellipse";
 		constexpr const char* TiledMapNodePolygon = "polygon";
 		constexpr const char* TiledMapNodeText = "text";
-		constexpr const char* TiledMapAttrX = "x";
-		constexpr const char* TiledMapAttrY = "y";
 		constexpr const char* TiledMapAttrGid = "gid";
 	}
 }

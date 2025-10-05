@@ -282,18 +282,18 @@ namespace Learning2DEngine
                 }
                 else if (strcmp(attr->name(), TiledMapAttrTileWidth) == 0)
                 {
-                    tiledMapObject.tiledSize.x = static_cast<float>(std::atoi(attr->value()));
+                    tiledMapObject.tileSize.x = static_cast<float>(std::atoi(attr->value()));
                     foundTileWidth = true;
 
-                    if (tiledMapObject.tiledSize.x <= 0.0f)
+                    if (tiledMapObject.tileSize.x <= 0.0f)
                         L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile width should be bigger then 0.");
                 }
                 else if (strcmp(attr->name(), TiledMapAttrTileHeight) == 0)
                 {
-                    tiledMapObject.tiledSize.y = static_cast<float>(std::atoi(attr->value()));
+                    tiledMapObject.tileSize.y = static_cast<float>(std::atoi(attr->value()));
                     foundTileHeight = true;
 
-                    if (tiledMapObject.tiledSize.y <= 0.0f)
+                    if (tiledMapObject.tileSize.y <= 0.0f)
                         L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile height should be bigger then 0.");
                 }
                 else if (strcmp(attr->name(), TiledMapAttrColumns) == 0)
@@ -341,6 +341,22 @@ namespace Learning2DEngine
             {
                 L2DE_LOG_ERROR("TiledMapLoader: the tileset name is empty.");
                 return false;
+            }
+
+            auto tileOffsetNode = tilesetNode->first_node(TiledMapAttrTileOffset);
+            if (tileOffsetNode != nullptr)
+            {
+                auto offsetXAttr = tileOffsetNode->first_attribute(TiledMapAttrX);
+                if (offsetXAttr != nullptr)
+                {
+                    tiledMapObject.tileOffset.x = static_cast<float>(std::atoi(offsetXAttr->value()));
+                }
+
+                auto offsetYAttr = tileOffsetNode->first_attribute(TiledMapAttrY);
+                if (offsetYAttr != nullptr)
+                {
+                    tiledMapObject.tileOffset.y = static_cast<float>(std::atoi(offsetYAttr->value()));
+                }
             }
 
             auto imageNode = tilesetNode->first_node(TiledMapNodeImage);
@@ -424,30 +440,66 @@ namespace Learning2DEngine
                 layerNode = layerNode->next_sibling(TiledMapNodeLayer)
                 )
             {
-                auto widthAttr = layerNode->first_attribute(TiledMapAttrWidth);
-                if (widthAttr == nullptr)
+                bool foundWidth = false;
+                bool foundHeight = false;
+                bool visible = true;
+                float opacity = 1.0f;
+                glm::vec4 tintColor(1.0f);
+                glm::vec2 offset(0.0f);
+
+                for (auto attr = layerNode->first_attribute();
+                    attr != nullptr;
+                    attr = attr->next_attribute())
                 {
-                    L2DE_LOG_ERROR("TiledMapLoader: the layer data width attribute is missing.");
+                    if (strcmp(attr->name(), TiledMapAttrWidth) == 0)
+                    {
+                        foundWidth = true;
+                        if (std::atoi(attr->value()) != map.GetWidth())
+                        {
+                            L2DE_LOG_WARNING("TiledMapLoader: the layer width is not equal to the map width.");
+                        }
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrHeight) == 0)
+                    {
+                        foundHeight = true;
+                        if (std::atoi(attr->value()) != map.GetHeight())
+                        {
+                            L2DE_LOG_WARNING("TiledMapLoader: the layer width is not equal to the map width.");
+                        }
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrVisible) == 0)
+                    {
+                        visible = strcmp(attr->value(), "1") == 0;
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOpacity) == 0)
+                    {
+                        opacity = std::atof(attr->value());
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrTintcolor) == 0)
+                    {
+                        tintColor = TiledMapLoader::ConvertStringToColor(attr->value());
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOffsetX) == 0)
+                    {
+                        offset.x = static_cast<float>(std::atof(attr->value()));
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOffsetY) == 0)
+                    {
+                        offset.y = static_cast<float>(std::atof(attr->value()));
+                    }
+                }
+
+                if (!foundWidth || !foundHeight)
+                {
+                    if (!foundWidth)
+                    {
+                        L2DE_LOG_ERROR("TiledMapLoader: the layer data width attribute is missing.");
+                    }
+                    if (!foundHeight)
+                    {
+                        L2DE_LOG_ERROR("TiledMapLoader: the layer data height attribute is missing.");
+                    }
                     continue;
-                }
-
-                int layerWidth = std::atoi(widthAttr->value());
-                if (layerWidth != map.GetWidth())
-                {
-                    L2DE_LOG_WARNING("TiledMapLoader: the layer width is not equal to the map width.");
-                }
-
-                auto heightAttr = layerNode->first_attribute(TiledMapAttrHeight);
-                if (heightAttr == nullptr)
-                {
-                    L2DE_LOG_ERROR("TiledMapLoader: the layer data height attribute is missing.");
-                    continue;
-                }
-
-                int layerHeight = std::atoi(heightAttr->value());
-                if (layerHeight != map.GetHeight())
-                {
-                    L2DE_LOG_WARNING("TiledMapLoader: the layer height is not equal to the map height.");
                 }
 
                 int overrideLayerId = 0;
@@ -494,29 +546,20 @@ namespace Learning2DEngine
                             int id = std::atoi(token.c_str());
                             if (id > 0)
                             {
-                                TiledMapTileset* selectedTileset = nullptr;
-                                for (auto& tileset : tilesets)
-                                {
-                                    if (tileset.HasNumber(id))
-                                    {
-                                        selectedTileset = &tileset;
-                                        break;
-                                    }
-                                }
-
-                                if (selectedTileset == nullptr)
-                                {
-                                    L2DE_LOG_WARNING("TiledMapLoader: the tile id " + std::to_string(id) + " is not valid.");
-                                    continue;
-                                }
-
-                                TiledMapLoader::CreateGameObjectFromLayerData(
+                                CreateGameObject(
                                     map,
-                                    selectedTileset,
-                                    useOverrideLayerId ? overrideLayerId : layerId,
-                                    id,
-                                    row,
-                                    column);
+                                    LayerItemData(
+                                        tilesets,
+                                        id,
+                                        row,
+                                        column,
+                                        useOverrideLayerId ? overrideLayerId : layerId,
+                                        visible,
+                                        opacity,
+                                        offset,
+                                        tintColor
+                                    )
+                                );
                             }
 
                         }
@@ -542,17 +585,54 @@ namespace Learning2DEngine
                 objectLayerNode = objectLayerNode->next_sibling(TiledMapNodeObjectGroup)
                 )
             {
+                bool visible = true;
+                float opacity = 1.0f;
+                glm::vec4 tintColor(1.0f);
+                glm::vec2 offset(0.0f);
+
+                for (auto attr = objectLayerNode->first_attribute();
+                    attr != nullptr;
+                    attr = attr->next_attribute())
+                {
+                    if (strcmp(attr->name(), TiledMapAttrVisible) == 0)
+                    {
+                        visible = strcmp(attr->value(), "1") == 0;
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOpacity) == 0)
+                    {
+                        opacity = std::atof(attr->value());
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrTintcolor) == 0)
+                    {
+                        tintColor = TiledMapLoader::ConvertStringToColor(attr->value());
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOffsetX) == 0)
+                    {
+                        offset.x = static_cast<float>(std::atof(attr->value()));
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOffsetY) == 0)
+                    {
+                        offset.y = static_cast<float>(std::atof(attr->value()));
+                    }
+                }
+
                 int overrideLayerId = 0;
                 bool useOverrideLayerId = TiledMapLoader::LoadLayerId(objectLayerNode, overrideLayerId);
 
                 auto objects = LoadObjectItems(objectLayerNode, folderPath);
                 for (auto& object : objects)
                 {
-                    CreateGameObjectFromObjectLayerData(
+                    CreateGameObject(
                         map,
-                        object,
-                        tilesets,
-                        useOverrideLayerId ? overrideLayerId : layerId
+                        ObjectLayerItemData(
+                            tilesets,
+                            object,
+                            useOverrideLayerId ? overrideLayerId : layerId,
+                            visible,
+                            opacity,
+                            offset,
+                            tintColor
+                        )
                     );
                 }
 
@@ -775,6 +855,7 @@ namespace Learning2DEngine
                 int gid;
                 glm::vec2 position;
                 glm::vec2 size;
+                bool visible = true;
                 for (auto attr = object->first_attribute();
                     attr != nullptr;
                     attr = attr->next_attribute())
@@ -814,6 +895,10 @@ namespace Learning2DEngine
                         else
                             foundGid = true;
                     }
+                    else if (strcmp(attr->name(), TiledMapAttrVisible) == 0)
+                    {
+                        visible = strcmp(attr->value(), "1") == 0;
+                    }
                 }
 
                 auto properties = TiledMapLoader::LoadProperties(object, folderPath);
@@ -827,7 +912,7 @@ namespace Learning2DEngine
                         continue;
                     }
                     objects.push_back(ObjectItem(std::move(
-                        ObjectPoint(position, std::move(properties))
+                        ObjectPoint(position, std::move(properties), visible)
                     )));
                     break;
                 case ObjectType::Box:
@@ -837,7 +922,7 @@ namespace Learning2DEngine
                         continue;
                     }
                     objects.push_back(ObjectItem(std::move(
-                        ObjectBox(position, size, std::move(properties))
+                        ObjectBox(position, size, std::move(properties), visible)
                     )));
                     break;
                 case ObjectType::Ellipse:
@@ -855,7 +940,7 @@ namespace Learning2DEngine
                         size.y = size.x;
                     }
                     objects.push_back(ObjectItem(std::move(
-                        ObjectEllipse(position, size, std::move(properties))
+                        ObjectEllipse(position, size, std::move(properties), visible)
                     )));
                     break;
                 case ObjectType::Image:
@@ -865,7 +950,7 @@ namespace Learning2DEngine
                         continue;
                     }
                     objects.push_back(ObjectItem(std::move(
-                        ObjectImage(position, size, std::move(properties), gid)
+                        ObjectImage(position, size, std::move(properties), gid, visible)
                     )));
                     break;
                 }
@@ -893,7 +978,7 @@ namespace Learning2DEngine
                 }
                 else
                 {
-                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the "+TiledMapSmartLoadBackground + " property type is not valid. It should be Bool.");
+                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the " + TiledMapSmartLoadBackground + " property type is not valid. It should be Bool.");
                 }
             }
 
@@ -925,44 +1010,73 @@ namespace Learning2DEngine
                 }
                 else
                 {
-                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the "+TiledMapSmartLayer + " property type is not valid. It should be Int.");
+                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the " + TiledMapSmartLayer + " property type is not valid. It should be Int.");
                 }
             }
 
 #if L2DE_DEBUG
             if (properties.size() >= tooMuchProperties)
             {
-                L2DE_LOG_WARNING((std::string)"TiledMapLoader: The Layer's and Object Layer's properties won't be processed. Except: " + 
+                L2DE_LOG_WARNING((std::string)"TiledMapLoader: The Layer's and Object Layer's properties won't be processed. Except: " +
                     TiledMapSmartLayer);
             }
 #endif
             return false;
         }
 
-        void TiledMapLoader::CreateGameObjectFromLayerData(TiledMap& map, TiledMapTileset* tileset, int layerId, int imageId, int row, int column)
+        const TiledMapTileset* TiledMapLoader::GetTilesetFromGid(const std::vector<TiledMapTileset>& tilesets, int gid)
         {
+            for (auto& tileset : tilesets)
+            {
+                if (tileset.HasNumber(gid))
+                {
+                    return &tileset;
+                }
+            }
+            return nullptr;
+        }
+
+        void TiledMapLoader::CreateGameObject(TiledMap& map, const LayerItemData& itemData)
+        {
+            auto selectedTileset = TiledMapLoader::GetTilesetFromGid(itemData.tilesets, itemData.gid);
+
+            if (selectedTileset == nullptr)
+            {
+                L2DE_LOG_WARNING("TiledMapLoader: the tile id " + std::to_string(itemData.gid) + " is not valid.");
+                return;
+            }
+
             Transform transform(
                 glm::vec2(
-                    static_cast<float>(column) * map.GetTileWidth(),
-                    static_cast<float>(row + 1) * map.GetTileHeight() - tileset->tiledSize.y),
-                tileset->tiledSize
+                    static_cast<float>(itemData.column) * map.GetTileWidth() + itemData.offset.x + selectedTileset->tileOffset.x,
+                    static_cast<float>(itemData.row + 1) * map.GetTileHeight()
+                    + itemData.offset.y + selectedTileset->tileOffset.y - selectedTileset->tileSize.y),
+                selectedTileset->tileSize
             );
-            auto gameObject = GameObjectManager::GetInstance().CreateGameObject(transform);
+            auto gameObject = GameObjectManager::GetInstance().CreateGameObject(transform, itemData.visible);
+
+            auto color = itemData.tintColor;
+            color.a *= itemData.opacity;
 
             auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
                 RendererMode::RENDER,
-                *tileset->texture,
-                layerId);
-            renderer->data.uvMatrix = tileset->GetUV(imageId);
+                *selectedTileset->texture,
+                itemData.layerId,
+                color);
+            renderer->data.uvMatrix = selectedTileset->GetUV(itemData.gid);
 
             std::map<std::string, System::Property> properties;
-            if (tileset->commonProperties.size() > 0 ||
-                tileset->uniqueProperties[tileset->GetLocalId(imageId)].size() > 0)
+            if (selectedTileset->commonProperties.size() > 0 ||
+                selectedTileset->uniqueProperties.count(selectedTileset->GetLocalId(itemData.gid)) > 0)
             {
-                properties = tileset->commonProperties;
-                for (auto& prop : tileset->uniqueProperties[tileset->GetLocalId(imageId)])
+                properties = selectedTileset->commonProperties;
+
+                if (selectedTileset->uniqueProperties.count(selectedTileset->GetLocalId(itemData.gid)) > 0)
                 {
-                    properties[prop.first] = prop.second;
+                    for (auto& prop : selectedTileset->uniqueProperties.at(selectedTileset->GetLocalId(itemData.gid)))
+                    {
+                        properties[prop.first] = prop.second;
+                    }
                 }
 
                 TiledMapLoader::AddColliderToGameObject(gameObject, properties);
@@ -972,7 +1086,7 @@ namespace Learning2DEngine
             {
                 if (properties[TiledMapSmartGroupName].GetType() != PropertyType::String)
                 {
-                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the "+TiledMapSmartGroupName+" should be string.");
+                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
                     map.gameObjects.push_back(gameObject);
                 }
                 else
@@ -989,28 +1103,33 @@ namespace Learning2DEngine
                 map.gameObjects.push_back(gameObject);
             }
 
-            for (const auto& object : tileset->objects[tileset->GetLocalId(imageId)])
+            if (selectedTileset->objects.count(selectedTileset->GetLocalId(itemData.gid)))
             {
-                //The image is not supported in the tileds, even in Editor.
-                switch (object.type)
-                {
-                case ObjectType::Point:
-                {
-                    const ObjectPoint* point = static_cast<const ObjectPoint*>(object.GetData());
 
-                    GameObject* objectGameObject = GameObjectManager::GetInstance().CreateGameObject(
-                        Transform(gameObject->transform.GetPosition() + point->position)
-                    );
-                    if (point->properties.size() > 0)
-                        objectGameObject->AddComponent<PropertyComponent>(point->properties);
-                }
-                break;
-                case ObjectType::Box:
-                    CreateColliderFromObjectItem<ObjectBox>(object, gameObject, properties);
+                for (const auto& object : selectedTileset->objects.at(selectedTileset->GetLocalId(itemData.gid)))
+                {
+                    //The image is not supported in the tileds, even in Editor.
+                    switch (object.type)
+                    {
+                    case ObjectType::Point:
+                    {
+                        const ObjectPoint* point = static_cast<const ObjectPoint*>(object.GetData());
+
+                        GameObject* objectGameObject = GameObjectManager::GetInstance().CreateGameObject(
+                            Transform(gameObject->transform.GetPosition() + point->position),
+                            point->visible
+                        );
+                        if (point->properties.size() > 0)
+                            objectGameObject->AddComponent<PropertyComponent>(point->properties);
+                    }
                     break;
-                case ObjectType::Ellipse:
-                    CreateColliderFromObjectItem<ObjectEllipse>(object, gameObject, properties);
-                    break;
+                    case ObjectType::Box:
+                        CreateColliderFromObjectItem<ObjectBox>(object, gameObject, properties);
+                        break;
+                    case ObjectType::Ellipse:
+                        CreateColliderFromObjectItem<ObjectEllipse>(object, gameObject, properties);
+                        break;
+                    }
                 }
             }
 
@@ -1018,55 +1137,51 @@ namespace Learning2DEngine
                 gameObject->AddComponent<PropertyComponent>(std::move(properties));
         }
 
-        void TiledMapLoader::CreateGameObjectFromObjectLayerData(
-            TiledMap& map,
-            const ObjectItem& objectItem,
-            const std::vector<TiledMapTileset>& tilesets,
-            int layerId
-        )
+        void TiledMapLoader::CreateGameObject(TiledMap& map, const ObjectLayerItemData& itemData)
         {
             GameObject* gameObject = nullptr;
-            std::map<std::string, System::Property> properties = objectItem.GetData()->properties;
+            std::map<std::string, System::Property> properties = itemData.objectItem.GetData()->properties;
 
-            switch (objectItem.type)
+            switch (itemData.objectItem.type)
             {
             case ObjectType::Point:
             {
-                const ObjectPoint* point = static_cast<const ObjectPoint*>(objectItem.GetData());
+                const ObjectPoint* point = static_cast<const ObjectPoint*>(itemData.objectItem.GetData());
 
-                gameObject = GameObjectManager::GetInstance().CreateGameObject(Transform(point->position));
+                gameObject = GameObjectManager::GetInstance().CreateGameObject(
+                    Transform(point->position + itemData.offset),
+                    itemData.visible && point->visible
+                );
             }
             break;
             case ObjectType::Box:
             {
-                const ObjectBox* box = static_cast<const ObjectBox*>(objectItem.GetData());
-                gameObject = GameObjectManager::GetInstance().CreateGameObject(Transform(box->position));
+                const ObjectBox* box = static_cast<const ObjectBox*>(itemData.objectItem.GetData());
+                gameObject = GameObjectManager::GetInstance().CreateGameObject(
+                    Transform(box->position + itemData.offset),
+                    itemData.visible
+                );
 
                 TiledMapLoader::AddColliderToGameObject(gameObject, *box, properties, false);
             }
             break;
             case ObjectType::Ellipse:
             {
-                const ObjectEllipse* ellipse = static_cast<const ObjectEllipse*>(objectItem.GetData());
-                gameObject = GameObjectManager::GetInstance().CreateGameObject(Transform(ellipse->position));
+                const ObjectEllipse* ellipse = static_cast<const ObjectEllipse*>(itemData.objectItem.GetData());
+                gameObject = GameObjectManager::GetInstance().CreateGameObject(
+                    Transform(ellipse->position + itemData.offset),
+                    itemData.visible
+                );
 
                 TiledMapLoader::AddColliderToGameObject(gameObject, *ellipse, properties, false);
             }
             break;
             case ObjectType::Image:
             {
-                const ObjectImage* image = static_cast<const ObjectImage*>(objectItem.GetData());
+                const ObjectImage* image = static_cast<const ObjectImage*>(itemData.objectItem.GetData());
                 if (image->gid > 0)
                 {
-                    const TiledMapTileset* selectedTileset = nullptr;
-                    for (auto& tileset : tilesets)
-                    {
-                        if (tileset.HasNumber(image->gid))
-                        {
-                            selectedTileset = &tileset;
-                            break;
-                        }
-                    }
+                    auto selectedTileset = TiledMapLoader::GetTilesetFromGid(itemData.tilesets, image->gid);
 
                     if (selectedTileset == nullptr)
                     {
@@ -1074,11 +1189,21 @@ namespace Learning2DEngine
                         return;
                     }
 
-                    gameObject = GameObjectManager::GetInstance().CreateGameObject(Transform(image->position, image->size));
+                    gameObject = GameObjectManager::GetInstance().CreateGameObject(
+                        Transform(image->position + itemData.offset, image->size),
+                        itemData.visible && image->visible
+                    );
+
+                    //The position in Tiled is bottom-left, but in Learning2DEngine is top-left.
+                    gameObject->transform.AddPosition(glm::vec2(0.0f, -image->size.y));
+
+                    auto color = itemData.tintColor;
+                    color.a *= itemData.opacity;
                     auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
                         RendererMode::RENDER,
                         *selectedTileset->texture,
-                        layerId);
+                        itemData.layerId,
+                        color);
                     renderer->data.uvMatrix = selectedTileset->GetUV(image->gid);
 
                     //it will have all tileset properties and the object properties.
@@ -1107,7 +1232,7 @@ namespace Learning2DEngine
                 {
                     if (properties[TiledMapSmartGroupName].GetType() != PropertyType::String)
                     {
-                        L2DE_LOG_WARNING((std::string)"TiledMapLoader: the "+TiledMapSmartGroupName+" should be string.");
+                        L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
                         map.gameObjects.push_back(gameObject);
                     }
                     else
@@ -1135,7 +1260,7 @@ namespace Learning2DEngine
             {
                 if (properties[TiledMapSmartCollider].GetType() != PropertyType::String)
                 {
-                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the "+TiledMapSmartCollider+" should be string.");
+                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartCollider + " should be string.");
                     return;
                 }
 
@@ -1204,7 +1329,7 @@ namespace Learning2DEngine
                 }
                 else
                 {
-                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the "+TiledMapSmartCollider + " has invalid value. Supported values: "
+                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartCollider + " has invalid value. Supported values: "
                         + TiledMapSmartColliderValueBox + ", " + TiledMapSmartColliderValueCircle);
                 }
 
@@ -1272,7 +1397,8 @@ namespace Learning2DEngine
                 size.y = properties[TiledMapSmartColliderSizeY].GetFloat();
             }
 
-            gameObject->AddComponent<BoxColliderComponent>(size, type, mode, offset, maskLayer);
+            auto collider = gameObject->AddComponent<BoxColliderComponent>(size, type, mode, offset, maskLayer);
+            collider->isActive = object.visible;
 
             //The L2DE_TILEDMAP_SMART_COLLIDER is not used here, because the object is box.
             properties.erase(TiledMapSmartColliderSizeX);
@@ -1331,7 +1457,8 @@ namespace Learning2DEngine
                 radius = properties[TiledMapSmartColliderRadius].GetFloat();
             }
 
-            gameObject->AddComponent<CircleColliderComponent>(radius, type, mode, offset, maskLayer);
+            auto collider = gameObject->AddComponent<CircleColliderComponent>(radius, type, mode, offset, maskLayer);
+            collider->isActive = object.visible;
 
             //The L2DE_TILEDMAP_SMART_COLLIDER is not used here, because the object is box.
             properties.erase(TiledMapSmartColliderRadius);

@@ -21,8 +21,9 @@ namespace Learning2DEngine
 			int tileCount;
 			int spacing;
 			int margin;
-			glm::vec2 tiledSize;
+			glm::vec2 tileSize;
 			glm::vec2 imageSize;
+			glm::vec2 tileOffset;
 			Render::Texture2D* texture;
 			std::map<std::string, System::Property> commonProperties;
 			std::map<int, std::map<std::string, System::Property>> uniqueProperties;
@@ -30,7 +31,7 @@ namespace Learning2DEngine
 
 			TiledMapTileset()
 				: firstGid(0), columns(0), tileCount(0), spacing(0), margin(0),
-				tiledSize(0.0f), imageSize(0.0f), texture(nullptr),
+				tileSize(0.0f), imageSize(0.0f), tileOffset(0.0f), texture(nullptr),
 				commonProperties(), uniqueProperties(), objects()
 			{
 			}
@@ -61,16 +62,16 @@ namespace Learning2DEngine
 				float row = static_cast<float>(actualId / columns);
 
 				glm::vec2 topLeft(
-					static_cast<float>(margin) + column * (tiledSize.x + spacing),
-					static_cast<float>(margin) + row * (tiledSize.y + spacing)
+					static_cast<float>(margin) + column * (tileSize.x + spacing),
+					static_cast<float>(margin) + row * (tileSize.y + spacing)
 				);
 
 				//if it is not start from 0, add 1 pixel offset to avoid texture bleeding
 				float startX = (topLeft.x + static_cast<float>(column != 0.0f)) / imageSize.x;
 				float startY = (topLeft.y + static_cast<float>(row != 0.0f)) / imageSize.y;
 
-				float endX = (topLeft.x + tiledSize.x) / imageSize.x;
-				float endY = (topLeft.y + tiledSize.y) / imageSize.y;
+				float endX = (topLeft.x + tileSize.x) / imageSize.x;
+				float endY = (topLeft.y + tileSize.y) / imageSize.y;
 
 				return {
 					startX, startY,

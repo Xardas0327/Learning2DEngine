@@ -15,8 +15,8 @@ namespace Learning2DEngine
 		{
 			glm::vec2 position;
 
-			ObjectPoint(const glm::vec2& position, std::map<std::string, System::Property>&& properties)
-				: BaseObjectData(std::move(properties)), position(position)
+			ObjectPoint(const glm::vec2& position, std::map<std::string, System::Property>&& properties, bool visible = true)
+				: BaseObjectData(std::move(properties), visible), position(position)
 			{
 
 			}

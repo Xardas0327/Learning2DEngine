@@ -9,15 +9,19 @@ namespace Learning2DEngine
 {
 	namespace Editor
 	{
-		struct BaseObjectData
+		class BaseObjectData
 		{
-			std::map<std::string, System::Property> properties;
-
-			BaseObjectData(std::map<std::string, System::Property>&& properties)
-				: properties(std::move(properties))
+		protected:
+			BaseObjectData(std::map<std::string, System::Property>&& properties, bool visible = true)
+				: properties(std::move(properties)), visible(visible)
 			{
 
 			}
+
+		public:
+			bool visible;
+			std::map<std::string, System::Property> properties;
+
 		};
 	}
 }
