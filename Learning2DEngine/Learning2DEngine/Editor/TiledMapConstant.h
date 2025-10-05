@@ -14,6 +14,11 @@ namespace Learning2DEngine
 		constexpr const char* TiledMapAttrHeight = "height";
 		constexpr const char* TiledMapAttrTileWidth = "tilewidth";
 		constexpr const char* TiledMapAttrTileHeight = "tileheight";
+		constexpr const char* TiledMapAttrVisible = "visible";
+		constexpr const char* TiledMapAttrOpacity = "opacity";
+		constexpr const char* TiledMapAttrTintcolor = "tintcolor";
+		constexpr const char* TiledMapAttrOffsetX = "offsetx";
+		constexpr const char* TiledMapAttrOffsetY = "offsety";
 
 		// Map
 		constexpr const char* TiledMapNodeMap = "map";

@@ -424,30 +424,66 @@ namespace Learning2DEngine
                 layerNode = layerNode->next_sibling(TiledMapNodeLayer)
                 )
             {
-                auto widthAttr = layerNode->first_attribute(TiledMapAttrWidth);
-                if (widthAttr == nullptr)
+                bool foundWidth = false;
+                bool foundHeight = false;
+                bool visible = true;
+                float opacity = 1.0f;
+                glm::vec4 tintColor(1.0f);
+                glm::vec2 offset(0.0f);
+
+                for (auto attr = layerNode->first_attribute();
+                    attr != nullptr;
+                    attr = attr->next_attribute())
                 {
-                    L2DE_LOG_ERROR("TiledMapLoader: the layer data width attribute is missing.");
+                    if (strcmp(attr->name(), TiledMapAttrWidth) == 0)
+                    {
+                        foundWidth = true;
+                        if (std::atoi(attr->value()) != map.GetWidth())
+                        {
+                            L2DE_LOG_WARNING("TiledMapLoader: the layer width is not equal to the map width.");
+                        }
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrHeight) == 0)
+                    {
+                        foundHeight = true;
+                        if (std::atoi(attr->value()) != map.GetHeight())
+                        {
+                            L2DE_LOG_WARNING("TiledMapLoader: the layer width is not equal to the map width.");
+                        }
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrVisible) == 0)
+                    {
+                        visible = strcmp(attr->value(), "1") == 0;
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOpacity) == 0)
+                    {
+                        opacity = std::atof(attr->value());
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrTintcolor) == 0)
+                    {
+                        tintColor = TiledMapLoader::ConvertStringToColor(attr->value());
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOffsetX) == 0)
+                    {
+                        offset.x = static_cast<float>(std::atof(attr->value()));
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOffsetY) == 0)
+                    {
+                        offset.y = static_cast<float>(std::atof(attr->value()));
+                    }
+                }
+
+                if (!foundWidth || !foundHeight)
+                {
+                    if (!foundWidth)
+                    {
+                        L2DE_LOG_ERROR("TiledMapLoader: the layer data width attribute is missing.");
+                    }
+                    if (!foundHeight)
+                    {
+                        L2DE_LOG_ERROR("TiledMapLoader: the layer data height attribute is missing.");
+                    }
                     continue;
-                }
-
-                int layerWidth = std::atoi(widthAttr->value());
-                if (layerWidth != map.GetWidth())
-                {
-                    L2DE_LOG_WARNING("TiledMapLoader: the layer width is not equal to the map width.");
-                }
-
-                auto heightAttr = layerNode->first_attribute(TiledMapAttrHeight);
-                if (heightAttr == nullptr)
-                {
-                    L2DE_LOG_ERROR("TiledMapLoader: the layer data height attribute is missing.");
-                    continue;
-                }
-
-                int layerHeight = std::atoi(heightAttr->value());
-                if (layerHeight != map.GetHeight())
-                {
-                    L2DE_LOG_WARNING("TiledMapLoader: the layer height is not equal to the map height.");
                 }
 
                 int overrideLayerId = 0;
@@ -496,12 +532,17 @@ namespace Learning2DEngine
                             {
                                 CreateGameObject(
                                     map,
-									LayerItemData(
+                                    LayerItemData(
                                         tilesets,
                                         id,
                                         row,
                                         column,
-                                        useOverrideLayerId ? overrideLayerId : layerId)
+                                        useOverrideLayerId ? overrideLayerId : layerId,
+                                        visible,
+                                        opacity,
+                                        offset,
+                                        tintColor
+                                    )
                                 );
                             }
 
@@ -528,6 +569,37 @@ namespace Learning2DEngine
                 objectLayerNode = objectLayerNode->next_sibling(TiledMapNodeObjectGroup)
                 )
             {
+                bool visible = true;
+                float opacity = 1.0f;
+                glm::vec4 tintColor(1.0f);
+                glm::vec2 offset(0.0f);
+
+                for (auto attr = objectLayerNode->first_attribute();
+                    attr != nullptr;
+                    attr = attr->next_attribute())
+                {
+                    if (strcmp(attr->name(), TiledMapAttrVisible) == 0)
+                    {
+                        visible = strcmp(attr->value(), "1") == 0;
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOpacity) == 0)
+                    {
+                        opacity = std::atof(attr->value());
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrTintcolor) == 0)
+                    {
+                        tintColor = TiledMapLoader::ConvertStringToColor(attr->value());
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOffsetX) == 0)
+                    {
+                        offset.x = static_cast<float>(std::atof(attr->value()));
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOffsetY) == 0)
+                    {
+                        offset.y = static_cast<float>(std::atof(attr->value()));
+                    }
+                }
+
                 int overrideLayerId = 0;
                 bool useOverrideLayerId = TiledMapLoader::LoadLayerId(objectLayerNode, overrideLayerId);
 
@@ -539,7 +611,12 @@ namespace Learning2DEngine
                         ObjectLayerItemData(
                             tilesets,
                             object,
-                            useOverrideLayerId ? overrideLayerId : layerId)
+                            useOverrideLayerId ? overrideLayerId : layerId,
+                            visible,
+                            opacity,
+                            offset,
+                            tintColor
+                        )
                     );
                 }
 
@@ -880,7 +957,7 @@ namespace Learning2DEngine
                 }
                 else
                 {
-                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the "+TiledMapSmartLoadBackground + " property type is not valid. It should be Bool.");
+                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the " + TiledMapSmartLoadBackground + " property type is not valid. It should be Bool.");
                 }
             }
 
@@ -912,14 +989,14 @@ namespace Learning2DEngine
                 }
                 else
                 {
-                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the "+TiledMapSmartLayer + " property type is not valid. It should be Int.");
+                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the " + TiledMapSmartLayer + " property type is not valid. It should be Int.");
                 }
             }
 
 #if L2DE_DEBUG
             if (properties.size() >= tooMuchProperties)
             {
-                L2DE_LOG_WARNING((std::string)"TiledMapLoader: The Layer's and Object Layer's properties won't be processed. Except: " + 
+                L2DE_LOG_WARNING((std::string)"TiledMapLoader: The Layer's and Object Layer's properties won't be processed. Except: " +
                     TiledMapSmartLayer);
             }
 #endif
@@ -935,12 +1012,12 @@ namespace Learning2DEngine
                     return &tileset;
                 }
             }
-			return nullptr;
+            return nullptr;
         }
 
         void TiledMapLoader::CreateGameObject(TiledMap& map, const LayerItemData& itemData)
         {
-			auto selectedTileset = TiledMapLoader::GetTilesetFromGid(itemData.tilesets, itemData.gid);
+            auto selectedTileset = TiledMapLoader::GetTilesetFromGid(itemData.tilesets, itemData.gid);
 
             if (selectedTileset == nullptr)
             {
@@ -956,7 +1033,7 @@ namespace Learning2DEngine
             );
             auto gameObject = GameObjectManager::GetInstance().CreateGameObject(transform, itemData.visible);
 
-			auto color = itemData.tintColor;
+            auto color = itemData.tintColor;
             color.a *= itemData.opacity;
 
             auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
@@ -1050,7 +1127,7 @@ namespace Learning2DEngine
 
                 gameObject = GameObjectManager::GetInstance().CreateGameObject(
                     Transform(point->position + itemData.offset),
-					itemData.visible
+                    itemData.visible
                 );
             }
             break;
@@ -1157,7 +1234,7 @@ namespace Learning2DEngine
             {
                 if (properties[TiledMapSmartCollider].GetType() != PropertyType::String)
                 {
-                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the "+TiledMapSmartCollider+" should be string.");
+                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartCollider + " should be string.");
                     return;
                 }
 
@@ -1226,7 +1303,7 @@ namespace Learning2DEngine
                 }
                 else
                 {
-                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the "+TiledMapSmartCollider + " has invalid value. Supported values: "
+                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartCollider + " has invalid value. Supported values: "
                         + TiledMapSmartColliderValueBox + ", " + TiledMapSmartColliderValueCircle);
                 }
 
