@@ -282,18 +282,18 @@ namespace Learning2DEngine
                 }
                 else if (strcmp(attr->name(), TiledMapAttrTileWidth) == 0)
                 {
-                    tiledMapObject.tiledSize.x = static_cast<float>(std::atoi(attr->value()));
+                    tiledMapObject.tileSize.x = static_cast<float>(std::atoi(attr->value()));
                     foundTileWidth = true;
 
-                    if (tiledMapObject.tiledSize.x <= 0.0f)
+                    if (tiledMapObject.tileSize.x <= 0.0f)
                         L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile width should be bigger then 0.");
                 }
                 else if (strcmp(attr->name(), TiledMapAttrTileHeight) == 0)
                 {
-                    tiledMapObject.tiledSize.y = static_cast<float>(std::atoi(attr->value()));
+                    tiledMapObject.tileSize.y = static_cast<float>(std::atoi(attr->value()));
                     foundTileHeight = true;
 
-                    if (tiledMapObject.tiledSize.y <= 0.0f)
+                    if (tiledMapObject.tileSize.y <= 0.0f)
                         L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile height should be bigger then 0.");
                 }
                 else if (strcmp(attr->name(), TiledMapAttrColumns) == 0)
@@ -341,6 +341,22 @@ namespace Learning2DEngine
             {
                 L2DE_LOG_ERROR("TiledMapLoader: the tileset name is empty.");
                 return false;
+            }
+
+            auto tileOffsetNode = tilesetNode->first_node(TiledMapAttrTileOffset);
+            if (tileOffsetNode != nullptr)
+            {
+                auto offsetXAttr = tileOffsetNode->first_attribute(TiledMapAttrX);
+                if (offsetXAttr != nullptr)
+                {
+                    tiledMapObject.tileOffset.x = static_cast<float>(std::atoi(offsetXAttr->value()));
+                }
+
+                auto offsetYAttr = tileOffsetNode->first_attribute(TiledMapAttrY);
+                if (offsetYAttr != nullptr)
+                {
+                    tiledMapObject.tileOffset.y = static_cast<float>(std::atoi(offsetYAttr->value()));
+                }
             }
 
             auto imageNode = tilesetNode->first_node(TiledMapNodeImage);
@@ -1032,9 +1048,10 @@ namespace Learning2DEngine
 
             Transform transform(
                 glm::vec2(
-                    static_cast<float>(itemData.column) * map.GetTileWidth() + itemData.offset.x,
-                    static_cast<float>(itemData.row + 1) * map.GetTileHeight() + itemData.offset.y - selectedTileset->tiledSize.y),
-                selectedTileset->tiledSize
+                    static_cast<float>(itemData.column) * map.GetTileWidth() + itemData.offset.x + selectedTileset->tileOffset.x,
+                    static_cast<float>(itemData.row + 1) * map.GetTileHeight()
+                    + itemData.offset.y + selectedTileset->tileOffset.y - selectedTileset->tileSize.y),
+                selectedTileset->tileSize
             );
             auto gameObject = GameObjectManager::GetInstance().CreateGameObject(transform, itemData.visible);
 
