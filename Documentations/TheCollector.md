@@ -1,13 +1,13 @@
 # The Collector:
 
 ## Introduction:
-You can play with the collector and get the chance to collect all coins in time.
+You can play with the collector and get the chance to collect all coins in time.  
+The map of the game is created by [Tiled Map Editor v1.11.2](https://www.mapeditor.org/2025/01/28/tiled-1-11-2-released.html)  
 
 ![The Collector Game](Images/thecollector.png)
 
 ## License:
 The Collector © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  
-_Note: In the past, it was under the CC BY-NC 4.0, but it has changed from v1.7.0._
 
 For sounds, there is the irrKlang, which I use it with
 its non pro license, which is [here](https://www.ambiera.com/irrklang/license.html).
