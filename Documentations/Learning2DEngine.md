@@ -92,6 +92,7 @@ Any helper for the testing will be in the Test namespace.
 - Learning2DEngine
   - [Animator](Learning2DEngine/Animator.md)
   - [DebugTool](Learning2DEngine/DebugTool.md)
+  - [Editor](Learning2DEngine/Editor.md)
   - [EventSystem](Learning2DEngine/EventSystem.md)
   - [Object](Learning2DEngine/Object.md)
   - [ParticleSimulator](Learning2DEngine/ParticleSimulator.md)
