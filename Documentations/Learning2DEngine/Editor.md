@@ -3,20 +3,20 @@ The engine does not have its own editor.
 But the Tiled Map Editor's CSV export is supported.  
 Supported format version: 1.10
 
-- [BaseLayerItemData](System.md#baselayeritemdata)
-- [BaseObjectData](System.md#baseobjectdata)
-- [LayerItemData](System.md#layeritemdata)
-- [ObjectBox](System.md#objectbox)
-- [ObjectEllipse](System.md#objectellipse)
-- [ObjectImage](System.md#objectimage)
-- [ObjectItem](System.md#objectitem)
-- [ObjectLayerItemData](System.md#objectlayeritemdata)
-- [ObjectPoint](System.md#objectpoint)
-- [ObjectType](System.md#objecttype)
-- [TiledMap](System.md#tiledmap)
-- [TiledMapConstant](System.md#tiledmapconstant)
-- [TiledMapLoader](System.md#tiledmaploader)
-- [TiledMapTileset](System.md#tiledmaptileset)
+- [BaseLayerItemData](Editor.md#baselayeritemdata)
+- [BaseObjectData](Editor.md#baseobjectdata)
+- [LayerItemData](Editor.md#layeritemdata)
+- [ObjectBox](Editor.md#objectbox)
+- [ObjectEllipse](Editor.md#objectellipse)
+- [ObjectImage](Editor.md#objectimage)
+- [ObjectItem](Editor.md#objectitem)
+- [ObjectLayerItemData](Editor.md#objectlayeritemdata)
+- [ObjectPoint](Editor.md#objectpoint)
+- [ObjectType](Editor.md#objecttype)
+- [TiledMap](Editor.md#tiledmap)
+- [TiledMapConstant](Editor.md#tiledmapconstant)
+- [TiledMapLoader](Editor.md#tiledmaploader)
+- [TiledMapTileset](Editor.md#tiledmaptileset)
 
 ##
 ## BaseLayerItemData
