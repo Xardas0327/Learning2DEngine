@@ -6,13 +6,13 @@ namespace Learning2DEngine
 	{
 		enum class PropertyType
 		{
-			None,
-			Bool,
-			Color,
-			File,
-			Float,
-			Int,
-			String
+			NONE,
+			BOOL,
+			COLOR,
+			FILE,
+			FLOAT,
+			INT,
+			STRING
 		};
 	}
 }
