@@ -6,10 +6,10 @@ namespace Learning2DEngine
 	{
 		enum class ObjectType
 		{
-			Point,
-			Box,
-			Ellipse,
-			Image,
+			POINT,
+			BOX,
+			ELLIPSE,
+			IMAGE
 		};
 	}
 }

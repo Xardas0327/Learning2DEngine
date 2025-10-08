@@ -11,29 +11,31 @@ namespace Learning2DEngine
 {
 	namespace Editor
 	{
-		class ObjectItem
+		class ObjectItem final
 		{
+		private:
 			BaseObjectData* data;
+
 		public:
 			const ObjectType type;
 
 			ObjectItem(ObjectPoint&& point)
-				: type(ObjectType::Point), data(new ObjectPoint(std::move(point)))
+				: type(ObjectType::POINT), data(new ObjectPoint(std::move(point)))
 			{
 			}
 
 			ObjectItem(ObjectBox&& box)
-				: type(ObjectType::Box), data(new ObjectBox(std::move(box)))
+				: type(ObjectType::BOX), data(new ObjectBox(std::move(box)))
 			{
 			}
 
 			ObjectItem(ObjectEllipse&& ellipse)
-				: type(ObjectType::Ellipse), data(new ObjectEllipse(std::move(ellipse)))
+				: type(ObjectType::ELLIPSE), data(new ObjectEllipse(std::move(ellipse)))
 			{
 			}
 
 			ObjectItem(ObjectImage&& image)
-				: type(ObjectType::Image), data(new ObjectImage(std::move(image)))
+				: type(ObjectType::IMAGE), data(new ObjectImage(std::move(image)))
 			{
 			}
 
@@ -42,16 +44,16 @@ namespace Learning2DEngine
 			{
 				switch (type)
 				{
-				case ObjectType::Point:
+				case ObjectType::POINT:
 					data = new ObjectPoint(*static_cast<ObjectPoint*>(other.data));
 					break;
-				case ObjectType::Box:
+				case ObjectType::BOX:
 					data = new ObjectBox(*static_cast<ObjectBox*>(other.data));
 					break;
-				case ObjectType::Ellipse:
+				case ObjectType::ELLIPSE:
 					data = new ObjectEllipse(*static_cast<ObjectEllipse*>(other.data));
 					break;
-				case ObjectType::Image:
+				case ObjectType::IMAGE:
 					data = new ObjectImage(*static_cast<ObjectImage*>(other.data));
 					break;
 				}
@@ -62,7 +64,7 @@ namespace Learning2DEngine
 				delete data;
 			}
 
-			const BaseObjectData* GetData() const
+			inline const BaseObjectData* GetData() const
 			{
 				return data;
 			}

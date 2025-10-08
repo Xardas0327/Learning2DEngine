@@ -546,7 +546,7 @@ namespace Learning2DEngine
                             int id = std::atoi(token.c_str());
                             if (id > 0)
                             {
-                                CreateGameObject(
+                                TiledMapLoader::CreateGameObject(
                                     map,
                                     LayerItemData(
                                         tilesets,
@@ -622,7 +622,7 @@ namespace Learning2DEngine
                 auto objects = LoadObjectItems(objectLayerNode, folderPath);
                 for (auto& object : objects)
                 {
-                    CreateGameObject(
+                    TiledMapLoader::CreateGameObject(
                         map,
                         ObjectLayerItemData(
                             tilesets,
@@ -674,22 +674,22 @@ namespace Learning2DEngine
                 }
 
                 auto typeAttr = property->first_attribute(TiledMapAttrType);
-                PropertyType type = PropertyType::String;
+                PropertyType type = PropertyType::STRING;
                 if (typeAttr != nullptr)
                 {
                     std::string typeStr = typeAttr->value();
                     if (typeStr == TiledMapPropertyTypeBool)
-                        type = PropertyType::Bool;
+                        type = PropertyType::BOOL;
                     else if (typeStr == TiledMapPropertyTypeColor)
-                        type = PropertyType::Color;
+                        type = PropertyType::COLOR;
                     else if (typeStr == TiledMapPropertyTypeFile)
-                        type = PropertyType::File;
+                        type = PropertyType::FILE;
                     else if (typeStr == TiledMapPropertyTypeFloat)
-                        type = PropertyType::Float;
+                        type = PropertyType::FLOAT;
                     else if (typeStr == TiledMapPropertyTypeInt)
-                        type = PropertyType::Int;
+                        type = PropertyType::INT;
                     else if (typeStr == TiledMapPropertyTypeString)
-                        type = PropertyType::String;
+                        type = PropertyType::STRING;
                     else
                     {
                         L2DE_LOG_WARNING("TiledMapLoader: the property type is not valid: " + typeStr);
@@ -699,22 +699,22 @@ namespace Learning2DEngine
 
                 switch (type)
                 {
-                case PropertyType::Bool:
+                case PropertyType::BOOL:
                     properties.emplace(nameAttr->value(), Property(strcmp(valueAttr->value(), "true") == 0 ? true : false));
                     break;
-                case PropertyType::Color:
+                case PropertyType::COLOR:
                     properties.emplace(nameAttr->value(), Property(TiledMapLoader::ConvertStringToColor(valueAttr->value())));
                     break;
-                case PropertyType::File:
+                case PropertyType::FILE:
                     properties.emplace(nameAttr->value(), Property(folderPath + valueAttr->value(), type));
                     break;
-                case PropertyType::Float:
+                case PropertyType::FLOAT:
                     properties.emplace(nameAttr->value(), Property(static_cast<float>(std::atof(valueAttr->value()))));
                     break;
-                case PropertyType::Int:
+                case PropertyType::INT:
                     properties.emplace(nameAttr->value(), Property(std::atoi(valueAttr->value())));
                     break;
-                case PropertyType::String:
+                case PropertyType::STRING:
                     properties.emplace(nameAttr->value(), Property(valueAttr->value(), type));
                     break;
                 default:
@@ -823,7 +823,7 @@ namespace Learning2DEngine
                 if (child != nullptr && strcmp(child->name(), TiledMapNodeProperties) == 0)
                     child = child->next_sibling();
 
-                ObjectType type = ObjectType::Box;
+                ObjectType type = ObjectType::BOX;
                 if (child == nullptr)
                 {
                     //it should be box.
@@ -840,11 +840,11 @@ namespace Learning2DEngine
                 }
                 else if (strcmp(child->name(), TiledMapNodePoint) == 0)
                 {
-                    type = ObjectType::Point;
+                    type = ObjectType::POINT;
                 }
                 else if (strcmp(child->name(), TiledMapNodeEllipse) == 0)
                 {
-                    type = ObjectType::Ellipse;
+                    type = ObjectType::ELLIPSE;
                 }
 
                 bool foundGid = false;
@@ -889,7 +889,7 @@ namespace Learning2DEngine
                     else if (strcmp(attr->name(), TiledMapAttrGid) == 0)
                     {
                         gid = std::atoi(attr->value());
-                        type = ObjectType::Image;
+                        type = ObjectType::IMAGE;
                         if (gid <= 0)
                             L2DE_LOG_ERROR("TiledMapLoader: an object gid should be bigger then 0: " + std::to_string(gid));
                         else
@@ -905,7 +905,7 @@ namespace Learning2DEngine
 
                 switch (type)
                 {
-                case ObjectType::Point:
+                case ObjectType::POINT:
                     if (!foundX || !foundY)
                     {
                         L2DE_LOG_ERROR("TiledMapLoader: a point object can't be created, because some data is missing.");
@@ -915,7 +915,7 @@ namespace Learning2DEngine
                         ObjectPoint(position, std::move(properties), visible)
                     )));
                     break;
-                case ObjectType::Box:
+                case ObjectType::BOX:
                     if (!foundX || !foundY || !foundWidth || !foundHeight)
                     {
                         L2DE_LOG_ERROR("TiledMapLoader: a box object can't be created, because some data is missing.");
@@ -925,7 +925,7 @@ namespace Learning2DEngine
                         ObjectBox(position, size, std::move(properties), visible)
                     )));
                     break;
-                case ObjectType::Ellipse:
+                case ObjectType::ELLIPSE:
                     if (!foundX || !foundY || !foundWidth || !foundHeight)
                     {
                         L2DE_LOG_ERROR("TiledMapLoader: a ellipse object can't be created, because some data is missing.");
@@ -943,7 +943,7 @@ namespace Learning2DEngine
                         ObjectEllipse(position, size, std::move(properties), visible)
                     )));
                     break;
-                case ObjectType::Image:
+                case ObjectType::IMAGE:
                     if (!foundX || !foundY || !foundWidth || !foundHeight || !foundGid)
                     {
                         L2DE_LOG_ERROR("TiledMapLoader: a ellipse object can't be created, because some data is missing.");
@@ -972,7 +972,7 @@ namespace Learning2DEngine
 #if L2DE_DEBUG
                 ++tooMuchProperties;
 #endif
-                if (properties[TiledMapSmartLoadBackground].GetType() == PropertyType::Bool)
+                if (properties[TiledMapSmartLoadBackground].GetType() == PropertyType::BOOL)
                 {
                     return properties[TiledMapSmartLoadBackground].GetBool();
                 }
@@ -1003,7 +1003,7 @@ namespace Learning2DEngine
 #if L2DE_DEBUG
                 ++tooMuchProperties;
 #endif
-                if (properties[TiledMapSmartLayer].GetType() == PropertyType::Int)
+                if (properties[TiledMapSmartLayer].GetType() == PropertyType::INT)
                 {
                     layerId = properties[TiledMapSmartLayer].GetInt();
                     return true;
@@ -1084,7 +1084,7 @@ namespace Learning2DEngine
 
             if (properties.count(TiledMapSmartGroupName))
             {
-                if (properties[TiledMapSmartGroupName].GetType() != PropertyType::String)
+                if (properties[TiledMapSmartGroupName].GetType() != PropertyType::STRING)
                 {
                     L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
                     map.gameObjects.push_back(gameObject);
@@ -1111,7 +1111,7 @@ namespace Learning2DEngine
                     //The image is not supported in the tileds, even in Editor.
                     switch (object.type)
                     {
-                    case ObjectType::Point:
+                    case ObjectType::POINT:
                     {
                         const ObjectPoint* point = static_cast<const ObjectPoint*>(object.GetData());
 
@@ -1123,10 +1123,10 @@ namespace Learning2DEngine
                             objectGameObject->AddComponent<PropertyComponent>(point->properties);
                     }
                     break;
-                    case ObjectType::Box:
+                    case ObjectType::BOX:
                         CreateColliderFromObjectItem<ObjectBox>(object, gameObject, properties);
                         break;
-                    case ObjectType::Ellipse:
+                    case ObjectType::ELLIPSE:
                         CreateColliderFromObjectItem<ObjectEllipse>(object, gameObject, properties);
                         break;
                     }
@@ -1144,7 +1144,7 @@ namespace Learning2DEngine
 
             switch (itemData.objectItem.type)
             {
-            case ObjectType::Point:
+            case ObjectType::POINT:
             {
                 const ObjectPoint* point = static_cast<const ObjectPoint*>(itemData.objectItem.GetData());
 
@@ -1154,7 +1154,7 @@ namespace Learning2DEngine
                 );
             }
             break;
-            case ObjectType::Box:
+            case ObjectType::BOX:
             {
                 const ObjectBox* box = static_cast<const ObjectBox*>(itemData.objectItem.GetData());
                 gameObject = GameObjectManager::GetInstance().CreateGameObject(
@@ -1165,7 +1165,7 @@ namespace Learning2DEngine
                 TiledMapLoader::AddColliderToGameObject(gameObject, *box, properties, false);
             }
             break;
-            case ObjectType::Ellipse:
+            case ObjectType::ELLIPSE:
             {
                 const ObjectEllipse* ellipse = static_cast<const ObjectEllipse*>(itemData.objectItem.GetData());
                 gameObject = GameObjectManager::GetInstance().CreateGameObject(
@@ -1176,7 +1176,7 @@ namespace Learning2DEngine
                 TiledMapLoader::AddColliderToGameObject(gameObject, *ellipse, properties, false);
             }
             break;
-            case ObjectType::Image:
+            case ObjectType::IMAGE:
             {
                 const ObjectImage* image = static_cast<const ObjectImage*>(itemData.objectItem.GetData());
                 if (image->gid > 0)
@@ -1191,7 +1191,7 @@ namespace Learning2DEngine
 
                     gameObject = GameObjectManager::GetInstance().CreateGameObject(
                         Transform(image->position + itemData.offset, image->size),
-                        itemData.visible && image->visible
+                        itemData.visible
                     );
 
                     //The position in Tiled is bottom-left, but in Learning2DEngine is top-left.
@@ -1205,6 +1205,7 @@ namespace Learning2DEngine
                         itemData.layerId,
                         color);
                     renderer->data.uvMatrix = selectedTileset->GetUV(image->gid);
+					renderer->isActive = image->visible;
 
                     //it will have all tileset properties and the object properties.
                     std::map<std::string, System::Property> allProperties = selectedTileset->commonProperties;
@@ -1230,7 +1231,7 @@ namespace Learning2DEngine
             {
                 if (properties.count(TiledMapSmartGroupName))
                 {
-                    if (properties[TiledMapSmartGroupName].GetType() != PropertyType::String)
+                    if (properties[TiledMapSmartGroupName].GetType() != PropertyType::STRING)
                     {
                         L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
                         map.gameObjects.push_back(gameObject);
@@ -1258,7 +1259,7 @@ namespace Learning2DEngine
         {
             if (properties.count(TiledMapSmartCollider))
             {
-                if (properties[TiledMapSmartCollider].GetType() != PropertyType::String)
+                if (properties[TiledMapSmartCollider].GetType() != PropertyType::STRING)
                 {
                     L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartCollider + " should be string.");
                     return;
