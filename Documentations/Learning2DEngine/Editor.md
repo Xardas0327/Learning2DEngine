@@ -342,7 +342,7 @@ ObjectLayerItemData(const std::vector<TiledMapTileset>& tilesets, const ObjectIt
 ### Description:
 It is the representation of a point object from Tiled Map Editor.  
 A `GameObject` will be created from this object.  
-Note: If the visible is false, the `GameObject` won't be active.    
+Note: If the visible is false, the `GameObject` won't be active.  
 
 ### Header:
 ```cpp
@@ -382,3 +382,255 @@ enum class ObjectType
 	IMAGE
 };
 ```
+
+##
+## TiledMap
+### Source Code:
+[TiledMap.h](../../Learning2DEngine/Learning2DEngine/Editor/TiledMap.h)  
+
+### Description:
+It contains the Tiled Map data and the game objects, which were created.
+
+### Header:
+```cpp
+class TiledMap final
+{...}
+```
+
+### Variables:
+**Private**  
+**version**  
+```cpp
+std::string version;
+```
+
+**tiledVersion**  
+```cpp
+std::string tiledVersion;
+```
+
+**orientation**  
+```cpp
+std::string orientation;
+```
+
+**width**  
+```cpp
+int width;
+```
+
+**height**  
+```cpp
+int height;
+```
+
+**tileWidth**  
+```cpp
+int tileWidth;
+```
+
+**tileHeight**  
+```cpp
+int tileHeight;
+```
+
+**infinite**  
+```cpp
+bool infinite;
+```
+
+**backgroundColor**  
+```cpp
+glm::vec4 backgroundColor;
+```
+
+**Public**  
+**gameObjects**  
+It contains all game object, which are not in a group.
+```cpp
+std::vector<System::GameObject*> gameObjects;
+```
+
+**groupedGameObjects**  
+It contains those game objects, which are in a group.
+```cpp
+std::map<std::string, std::vector<System::GameObject*>> groupedGameObjects;
+```
+
+### Functions:
+**Private:**  
+**TiledMap**  
+```cpp
+TiledMap();
+```
+
+**Public**  
+**~TiledMap**  
+```cpp
+~TiledMap() = default;
+```
+
+**GetVersion**  
+```cpp
+inline const std::string& GetVersion() const;
+```
+
+**GetTiledVersion**  
+```cpp
+inline const std::string& GetTiledVersion() const;
+```
+
+**GetOrientation**  
+```cpp
+inline const std::string& GetOrientation() const;
+```
+
+**GetWidth**  
+```cpp
+inline int GetWidth() const;
+```
+
+**GetHeight**  
+```cpp
+inline int GetHeight() const;
+```
+
+**GetTileWidth**  
+```cpp
+inline int GetTileWidth() const;
+```
+
+**GetTileHeight**  
+```cpp
+inline int GetTileHeight() const;
+```
+
+**IsInfinite**  
+```cpp
+inline bool IsInfinite() const;
+```
+
+**GetBackgroundColor**  
+```cpp
+inline const glm::vec4& GetBackgroundColor() const;
+```
+
+##
+## TiledMapConstant
+### Source Code:
+[TiledMapConstant.h](../../Learning2DEngine/Learning2DEngine/Editor/TiledMapConstant.h)  
+
+### Description:
+These constans are used in the TiledMapLoader.  
+They are node names and attribute names and some values.
+
+
+### Variables:
+**Supported versions**  
+```cpp
+constexpr const char* TiledMapSupportedVersion = "1.10";
+constexpr const char* TiledMapSupportedOrientation = "orthogonal";
+constexpr const char* TiledMapSupportedEncoding = "csv";
+```
+
+**Common**  
+These constants are used in multiple places.
+```cpp
+constexpr const char* TiledMapAttrName = "name";
+constexpr const char* TiledMapAttrWidth = "width";
+constexpr const char* TiledMapAttrHeight = "height";
+constexpr const char* TiledMapAttrTileWidth = "tilewidth";
+constexpr const char* TiledMapAttrTileHeight = "tileheight";
+constexpr const char* TiledMapAttrVisible = "visible";
+constexpr const char* TiledMapAttrOpacity = "opacity";
+constexpr const char* TiledMapAttrTintcolor = "tintcolor";
+constexpr const char* TiledMapAttrOffsetX = "offsetx";
+constexpr const char* TiledMapAttrOffsetY = "offsety";
+constexpr const char* TiledMapAttrX = "x";
+constexpr const char* TiledMapAttrY = "y";
+```
+
+**Map**  
+```cpp
+constexpr const char* TiledMapNodeMap = "map";
+constexpr const char* TiledMapAttrVersion = "version";
+constexpr const char* TiledMapAttrTiledVersion = "tiledversion";
+constexpr const char* TiledMapAttrOrientation = "orientation";
+constexpr const char* TiledMapAttrInfinite = "infinite";
+constexpr const char* TiledMapAttrBackgroundColor = "backgroundcolor";
+```
+
+**Layer**  
+```cpp
+constexpr const char* TiledMapNodeLayer = "layer";
+constexpr const char* TiledMapNodeData = "data";
+constexpr const char* TiledMapAttrEncoding = "encoding";
+```
+
+**Tileset**  
+```cpp
+constexpr const char* TiledMapNodeTileset = "tileset";
+constexpr const char* TiledMapNodeImage = "image";
+constexpr const char* TiledMapAttrFirstGid = "firstgid";
+constexpr const char* TiledMapAttrSource = "source";
+constexpr const char* TiledMapAttrColumns = "columns";
+constexpr const char* TiledMapAttrTileCount = "tilecount";
+constexpr const char* TiledMapAttrSpacing = "spacing";
+constexpr const char* TiledMapAttrMargin = "margin";
+constexpr const char* TiledMapAttrTileOffset = "tileoffset";
+```
+
+**Tile**  
+```cpp
+constexpr const char* TiledMapNodeTile = "tile";
+constexpr const char* TiledMapAttrId = "id";
+```
+
+**Object Group**  
+```cpp
+constexpr const char* TiledMapNodeObjectGroup = "objectgroup";
+constexpr const char* TiledMapNodeObject = "object";
+constexpr const char* TiledMapNodePoint = "point";
+constexpr const char* TiledMapNodeEllipse = "ellipse";
+constexpr const char* TiledMapNodePolygon = "polygon";
+constexpr const char* TiledMapNodeText = "text";
+constexpr const char* TiledMapAttrGid = "gid";
+```
+
+**Property**  
+```cpp
+constexpr const char* TiledMapNodeProperties = "properties";
+constexpr const char* TiledMapNodeProperty = "property";
+constexpr const char* TiledMapAttrType = "type";
+constexpr const char* TiledMapAttrValue = "value";
+constexpr const char* TiledMapPropertyTypeBool = "bool";
+constexpr const char* TiledMapPropertyTypeColor = "color";
+constexpr const char* TiledMapPropertyTypeFile = "file";
+constexpr const char* TiledMapPropertyTypeFloat = "float";
+constexpr const char* TiledMapPropertyTypeInt = "int";
+constexpr const char* TiledMapPropertyTypeString = "string";
+constexpr const char* TiledMapPropertyTypeObject = "object";
+```
+
+**Smart Property**  
+If these properties are used, the TiledMapLoader will do something.  
+For example: load background color, add colliders etc.
+```cpp
+constexpr const char* TiledMapSmartLoadBackground = "LoadBackground";
+constexpr const char* TiledMapSmartLayer = "Layer";
+constexpr const char* TiledMapSmartGroupName = "GroupName";
+constexpr const char* TiledMapSmartOnGameObject = "OnGameObject";
+constexpr const char* TiledMapSmartCollider = "Collider";
+constexpr const char* TiledMapSmartColliderValueBox = "Box";
+constexpr const char* TiledMapSmartColliderValueCircle = "Circle";
+constexpr const char* TiledMapSmartColliderSizeX = "SizeX";
+constexpr const char* TiledMapSmartColliderSizeY = "SizeY";
+constexpr const char* TiledMapSmartColliderRadius = "Radius";
+constexpr const char* TiledMapSmartColliderIsKinematic = "IsKinematic";
+constexpr const char* TiledMapSmartColliderIsTrigger = "IsTrigger";
+constexpr const char* TiledMapSmartColliderOffsetX = "OffsetX";
+constexpr const char* TiledMapSmartColliderOffsetY = "OffsetY";
+constexpr const char* TiledMapSmartColliderMaskLayer = "MaskLayer";
+```
+
+
