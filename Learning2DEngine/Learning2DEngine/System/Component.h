@@ -28,7 +28,7 @@ namespace Learning2DEngine
 			bool isActive;
 			GameObject* const gameObject;
 
-			virtual ~Component() {}
+			virtual ~Component() = default;
 		};
 	}
 }

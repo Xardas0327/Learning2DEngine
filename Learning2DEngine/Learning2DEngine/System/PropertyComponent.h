@@ -34,8 +34,6 @@ namespace Learning2DEngine
 			}
 		public:
 			std::map<std::string, Property> properties;
-
-			virtual ~PropertyComponent() = default;
 		};
 	}
 }

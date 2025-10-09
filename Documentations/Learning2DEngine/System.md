@@ -16,6 +16,9 @@
 - [LateUpdaterComponent](System.md#lateupdatercomponent)
 - [LateUpdaterComponentHandler](System.md#lateupdatercomponenthandler)
 - [Math](System.md#math)
+- [Property](System.md#property)
+- [PropertyComponent.h](System.md#propertycomponent)
+- [PropertyType](System.md#propertytype)
 - [Random](System.md#random)
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
@@ -364,7 +367,7 @@ virtual void Destroy();
 **Public:**  
 **~Component**  
 ```cpp
-virtual ~Component();
+virtual ~Component() = default;
 ```  
 
 ##
@@ -1325,6 +1328,170 @@ Vertically flips the matrix by Y axis.
 ```cpp
 static inline glm::mat4x2 FlipByY(const glm::mat4x2& matrix);
 ```
+
+##
+## Property
+### Source Code:
+[Property.h](../../Learning2DEngine/Learning2DEngine/System/Property.h)  
+
+### Description:
+It can contain a value with a type.  
+It is not type safe, that's why the developer should check
+the type before use the value.
+
+### Header:
+```cpp
+class Property final
+{...}
+```
+
+### Variables:
+**Private:**  
+**type**  
+```cpp
+PropertyType type;
+```
+
+**"value"**  
+The most value can be stored in the same memory place.
+```cpp
+union {
+	bool boolValue;
+	glm::vec4 colorValue;
+	float floatValue;
+	int intValue;
+};
+```
+
+**textValue**  
+For text and file.
+```cpp
+std::string textValue;
+```
+
+### Functions:
+**Public:**  
+**Property**  
+It has a lot of constructor for different types.  
+Note: the type of the string constructor should be
+PropertyType\::File or PropertyType\::String.
+```cpp
+Property();
+```
+```cpp
+Property(bool value);
+```
+```cpp
+Property(const glm::vec4& value);
+```
+```cpp
+Property(float value);
+```
+```cpp
+Property(int value);
+```
+```cpp
+Property(const std::string& value, PropertyType type);
+```
+```cpp
+Property(std::string&& value, PropertyType type);
+```
+
+**~Property**  
+```cpp
+~Property() = default;
+```
+
+**GetType**  
+```cpp
+inline PropertyType GetType() const;
+```
+
+**GetBool**  
+```cpp
+inline bool GetBool() const;
+```
+
+**GetColor**  
+```cpp
+inline glm::vec4 GetColor() const;
+```
+
+**GetFloat**  
+```cpp
+inline float GetFloat() const;
+```
+
+**GetInt**  
+```cpp
+inline int GetInt() const;
+```
+
+**GetString**  
+```cpp
+inline const std::string& GetString() const;
+```
+
+**GetFile**  
+```cpp
+inline const std::string& GetFile() const;
+```
+
+##
+## PropertyComponent
+### Source Code:
+[PropertyComponent.h](../../Learning2DEngine/Learning2DEngine/System/PropertyComponent.h)  
+
+### Description:
+A component, which can contain properties.
+
+### Header:
+```cpp
+class PropertyComponent : public virtual Component
+{...}
+```
+
+### Variables:
+**Public:**  
+**properties**  
+```cpp
+std::map<std::string, Property> properties;
+```
+
+### Functions:
+**Protected:**  
+**PropertyComponent**  
+```cpp
+PropertyComponent(GameObject* gameObject);
+```
+```cpp
+PropertyComponent(GameObject* gameObject, const std::map<std::string, Property>& properties);
+```
+```cpp
+PropertyComponent(GameObject* gameObject, std::map<std::string, Property>&& properties);
+```
+
+##
+## PropertyType
+### Source Code:
+[PropertyType.h](../../Learning2DEngine/Learning2DEngine/System/PropertyType.h)  
+
+### Description:
+The type of the `Property`.
+
+### Header:
+```cpp
+enum class PropertyType
+{
+	NONE,
+	BOOL,
+	COLOR,
+	FILE,
+	FLOAT,
+	INT,
+	STRING
+};
+``` 
 
 ##
 ## Random

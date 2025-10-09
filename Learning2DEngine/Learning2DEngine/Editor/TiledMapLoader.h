@@ -114,14 +114,14 @@ namespace Learning2DEngine
 				}
 			}
 
-			//the object.position will be the offset
+			//the object.position will be the offset if the useObjectPositionAsOffset is true
 			static void AddColliderToGameObject(
 				System::GameObject* gameObject,
 				const ObjectBox& object,
 				std::map<std::string, System::Property>& properties,
 				bool useObjectPositionAsOffset
 			);
-			//the object.position will be the offset
+			//the object.position will be the offset if the useObjectPositionAsOffset is true
 			static void AddColliderToGameObject(
 				System::GameObject* gameObject,
 				const ObjectEllipse& object,

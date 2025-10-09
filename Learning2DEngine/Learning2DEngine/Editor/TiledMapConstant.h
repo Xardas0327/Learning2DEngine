@@ -30,6 +30,11 @@ namespace Learning2DEngine
 		constexpr const char* TiledMapAttrInfinite = "infinite";
 		constexpr const char* TiledMapAttrBackgroundColor = "backgroundcolor";
 
+		// Layer
+		constexpr const char* TiledMapNodeLayer = "layer";
+		constexpr const char* TiledMapNodeData = "data";
+		constexpr const char* TiledMapAttrEncoding = "encoding";
+
 		// Tileset
 		constexpr const char* TiledMapNodeTileset = "tileset";
 		constexpr const char* TiledMapNodeImage = "image";
@@ -41,10 +46,18 @@ namespace Learning2DEngine
 		constexpr const char* TiledMapAttrMargin = "margin";
 		constexpr const char* TiledMapAttrTileOffset = "tileoffset";
 
-		// Layer
-		constexpr const char* TiledMapNodeLayer = "layer";
-		constexpr const char* TiledMapNodeData = "data";
-		constexpr const char* TiledMapAttrEncoding = "encoding";
+		// Tile
+		constexpr const char* TiledMapNodeTile = "tile";
+		constexpr const char* TiledMapAttrId = "id";
+
+		// Object Group
+		constexpr const char* TiledMapNodeObjectGroup = "objectgroup";
+		constexpr const char* TiledMapNodeObject = "object";
+		constexpr const char* TiledMapNodePoint = "point";
+		constexpr const char* TiledMapNodeEllipse = "ellipse";
+		constexpr const char* TiledMapNodePolygon = "polygon";
+		constexpr const char* TiledMapNodeText = "text";
+		constexpr const char* TiledMapAttrGid = "gid";
 
 		// Property
 		constexpr const char* TiledMapNodeProperties = "properties";
@@ -58,10 +71,6 @@ namespace Learning2DEngine
 		constexpr const char* TiledMapPropertyTypeInt = "int";
 		constexpr const char* TiledMapPropertyTypeString = "string";
 		constexpr const char* TiledMapPropertyTypeObject = "object";
-
-		// Tile
-		constexpr const char* TiledMapNodeTile = "tile";
-		constexpr const char* TiledMapAttrId = "id";
 
 		// Smart Property
 		constexpr const char* TiledMapSmartLoadBackground = "LoadBackground";
@@ -79,15 +88,6 @@ namespace Learning2DEngine
 		constexpr const char* TiledMapSmartColliderOffsetX = "OffsetX";
 		constexpr const char* TiledMapSmartColliderOffsetY = "OffsetY";
 		constexpr const char* TiledMapSmartColliderMaskLayer = "MaskLayer";
-
-		// Object Group
-		constexpr const char* TiledMapNodeObjectGroup = "objectgroup";
-		constexpr const char* TiledMapNodeObject = "object";
-		constexpr const char* TiledMapNodePoint = "point";
-		constexpr const char* TiledMapNodeEllipse = "ellipse";
-		constexpr const char* TiledMapNodePolygon = "polygon";
-		constexpr const char* TiledMapNodeText = "text";
-		constexpr const char* TiledMapAttrGid = "gid";
 	}
 }
 

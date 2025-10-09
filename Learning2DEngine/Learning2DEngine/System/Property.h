@@ -26,33 +26,33 @@ namespace Learning2DEngine
 			std::string textValue;
 		public:
 			Property()
-				: type(PropertyType::None), boolValue(false), textValue()
+				: type(PropertyType::NONE), boolValue(false), textValue()
 			{
 			}
 			Property(bool value)
-				: type(PropertyType::Bool), boolValue(value), textValue()
+				: type(PropertyType::BOOL), boolValue(value), textValue()
 			{
 			}
 
 			Property(const glm::vec4& value)
-				: type(PropertyType::Color), colorValue(value), textValue()
+				: type(PropertyType::COLOR), colorValue(value), textValue()
 			{
 			}
 
 			Property(float value)
-				: type(PropertyType::Float), floatValue(value), textValue()
+				: type(PropertyType::FLOAT), floatValue(value), textValue()
 			{
 			}
 
 			Property(int value)
-				: type(PropertyType::Int), intValue(value), textValue()
+				: type(PropertyType::INT), intValue(value), textValue()
 			{
 			}
 
 			Property(const std::string& value, PropertyType type)
 				: type(type), boolValue(false), textValue(value)
 			{
-				if (type != PropertyType::String && type != PropertyType::File)
+				if (type != PropertyType::STRING && type != PropertyType::FILE)
 				{
 					L2DE_LOG_ERROR("TiledProperty: the type is not valid for string constructor.");
 				}
@@ -61,7 +61,7 @@ namespace Learning2DEngine
 			Property(std::string&& value, PropertyType type)
 				: type(type), boolValue(false), textValue(std::move(value))
 			{
-				if (type != PropertyType::String && type != PropertyType::File)
+				if (type != PropertyType::STRING && type != PropertyType::FILE)
 				{
 					L2DE_LOG_ERROR("TiledProperty: the type is not valid for string constructor.");
 				}

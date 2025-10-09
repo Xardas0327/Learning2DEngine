@@ -29,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Learning2DEngine", "Learnin
 	ProjectSection(SolutionItems) = preProject
 		Documentations\Learning2DEngine\Animator.md = Documentations\Learning2DEngine\Animator.md
 		Documentations\Learning2DEngine\DebugTool.md = Documentations\Learning2DEngine\DebugTool.md
+		Documentations\Learning2DEngine\Editor.md = Documentations\Learning2DEngine\Editor.md
 		Documentations\Learning2DEngine\EventSystem.md = Documentations\Learning2DEngine\EventSystem.md
 		Documentations\Learning2DEngine\Object.md = Documentations\Learning2DEngine\Object.md
 		Documentations\Learning2DEngine\ParticleSimulator.md = Documentations\Learning2DEngine\ParticleSimulator.md

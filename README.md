@@ -28,6 +28,11 @@ Moreover, if I create a new version, maybe it won't be compatible with the older
 - Visual Studio 2022
 - With "Desktop development with C++" Module
 
+## Optional Requirements:
+- Tiled Map Editor (please check the documentation for more details) 
+  - [Download](https://www.mapeditor.org/)
+  - [Documentation](https://doc.mapeditor.org/en/stable/)
+
 ## Used Libraries:
 The most project can't really be started from zero, so I also use some libraries,
 but I tried to keep them minimum.
