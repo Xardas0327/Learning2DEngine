@@ -46,6 +46,7 @@ but I tried to keep them minimum.
 ## Documentation:
 It is recommended to use the documentation links in the released branches.
 ### [Learning2DEngine](Documentations/Learning2DEngine.md)
+### [Tiled Map Editor](Documentations/TiledMapEditor.md)
 
 ### Games
 - [Breakout](Documentations/Breakout.md)
