@@ -633,4 +633,242 @@ constexpr const char* TiledMapSmartColliderOffsetY = "OffsetY";
 constexpr const char* TiledMapSmartColliderMaskLayer = "MaskLayer";
 ```
 
+##
+## TiledMapLoader
+### Source Code:
+[TiledMapLoader.h](../../Learning2DEngine/Learning2DEngine/Editor/TiledMap.h)  
+[TiledMapLoader.cpp](../../Learning2DEngine/Learning2DEngine/Editor/TiledMapLoader.cpp)  
+
+### Description:
+This is the main class to load a Tiled Map Editor map from the main tmx file.  
+All functions are static.
+
+### Header:
+```cpp
+class TiledMapLoader final
+{...}
+```
+
+### Functions:
+**Private:**  
+**TiledMapLoader**  
+```cpp
+TiledMapLoader() = default;
+```
+
+**LoadMapAttributes**  
+```cpp
+static void LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode);
+```
+
+**ConvertStringToColor**  
+It converts a hexadecimal string to a glm::vec4 color.
+```cpp
+static glm::vec4 ConvertStringToColor(const std::string& hex);
+```
+
+**LoadTilesets**  
+```cpp
+static std::vector<TiledMapTileset> LoadTilesets(rapidxml::xml_node<>* mapNode, const std::string& folderPath, const std::map<std::string, std::string>& textureMap);
+```
+
+**LoadTileset**  
+The LoadTilesets function use this one.
+```cpp
+static bool LoadTileset(const std::string& folderPath, const std::string& sourceName, const std::map<std::string, std::string>& textureMap, TiledMapTileset& tiledMapObject);
+```
+
+**LoadLayers**  
+```cpp
+static void LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapTileset>& tilesets);
+```
+
+**LoadObjectLayers**  
+```cpp
+static void LoadObjectLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapTileset>& tilesets, const std::string& folderPath = "");
+```
+
+**LoadProperties**  
+The folderPath is used when the property type is file.
+```cpp
+static std::map<std::string, System::Property> LoadProperties(rapidxml::xml_node<>* node, const std::string& folderPath = "");
+```
+
+**LoadTilesProperties**  
+The folderPath is used when the property type is file.  
+The sourceName is used for the logging only.
+```cpp
+static std::map<int, std::map<std::string, System::Property>> LoadTilesProperties(rapidxml::xml_node<>* node, const std::string& sourceName, const std::string& folderPath = "");
+```
+
+**LoadObjectItems**  
+The folderPath is used when the property type is file.  
+```cpp
+static std::vector<ObjectItem> LoadObjectItems(rapidxml::xml_node<>* node, const std::string& folderPath = "");
+```
+
+**LoadTilesObjectItems**  
+The folderPath is used when the property type is file.  
+The sourceName is used for the logging only.
+```cpp
+static std::map<int, std::vector<ObjectItem>> LoadTilesObjectItems(rapidxml::xml_node<>* node, const std::string& sourceName, const std::string& folderPath = "");
+```
+
+**LoadMapBackground**  
+```cpp
+static bool LoadMapBackground(rapidxml::xml_node<>* mapNode);
+```
+
+**GetTilesetFromGid**  
+```cpp
+static const TiledMapTileset* GetTilesetFromGid(const std::vector<TiledMapTileset>& tilesets, int gid);
+```
+
+**CreateGameObject**  
+```cpp
+static void CreateGameObject(TiledMap& map, const LayerItemData& itemData);
+```
+```cpp
+static void CreateGameObject(TiledMap& map, const ObjectLayerItemData& itemData);
+```
+
+**AddColliderToGameObject**  
+```cpp
+static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
+```
+
+**CreateColliderFromObjectItem**  
+```cpp
+template<class T>
+static void CreateColliderFromObjectItem(ObjectItem objectItem, System::GameObject* tiledGameObject, std::map<std::string, System::Property>& tiledProperties);
+```
+
+**AddColliderToGameObject**  
+The object.position will be the offset if the useObjectPositionAsOffset is true.
+```cpp
+static void AddColliderToGameObject(System::GameObject* gameObject, const ObjectBox& object, std::map<std::string, System::Property>& properties, bool useObjectPositionAsOffset);
+```
+```cpp
+static void AddColliderToGameObject(System::GameObject* gameObject, const ObjectEllipse& object, std::map<std::string, System::Property>& properties, bool useObjectPositionAsOffset);
+```
+
+**Public:**  
+**~TiledMapLoader()**  
+```cpp
+~TiledMapLoader() = default;
+```
+
+**LoadFromFile()**  
+```cpp
+static TiledMap LoadFromFile(const std::string& filePath, const std::map<std::string, std::string>& textureMap = std::map<std::string, std::string>());
+```
+
+##
+## TiledMapTileset
+### Source Code:
+[TiledMapTileset.h](../../Learning2DEngine/Learning2DEngine/Editor/TiledMapTileset.h)  
+
+### Description:
+It contains the tileset data.
+
+### Header:
+```cpp
+struct TiledMapTileset final
+{...}
+```
+
+### Variables:
+**Public**  
+**firstGid**  
+```cpp
+int firstGid;
+```
+
+**columns**  
+```cpp
+int columns;
+```
+
+**tileCount**  
+```cpp
+int tileCount;
+```
+
+**spacing**  
+```cpp
+int spacing;
+```
+
+**margin**  
+```cpp
+int margin;
+```
+
+**tileSize**  
+```cpp
+glm::vec2 tileSize;
+```
+
+**imageSize**  
+```cpp
+glm::vec2 imageSize;
+```
+
+**tileOffset**  
+```cpp
+glm::vec2 tileOffset;
+```
+
+**texture**  
+```cpp
+Render::Texture2D* texture;
+```
+
+**commonProperties**  
+```cpp
+std::map<std::string, System::Property> commonProperties;
+```
+
+**uniqueProperties**  
+```cpp
+std::map<int, std::map<std::string, System::Property>> uniqueProperties;
+```
+
+**objects**  
+```cpp
+std::map<int, std::vector<ObjectItem>> objects;
+```
+
+### Functions:
+**Public:**  
+**TiledMapTileset**  
+```cpp
+TiledMapTileset();
+```
+
+**~TiledMapTileset**  
+```cpp
+~TiledMapTileset() = default;
+```
+
+**HasNumber**  
+```cpp
+bool HasNumber(int gid) const;
+```
+
+**GetLocalId**  
+```cpp
+int GetLocalId(int gid) const;
+```
+
+**GetUV**  
+The texture coordinate order:  
+Top Left,  
+Top Right,  
+Bottom Right,  
+Bottom Left
+```cpp
+glm::mat4x2 GetUV(int gid) const;
+```
+
 
