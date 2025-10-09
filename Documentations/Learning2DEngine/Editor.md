@@ -1,7 +1,7 @@
 # Editor
 The engine does not have its own editor.
 That is why the [Tiled Map Editor](https://www.mapeditor.org/) is supported.  
-This code documentation will help, how Tiled Map Editor's feature are supported.
+This code documentation will help, how Tiled Map Editor's feature are supported.  
 If you are interested more about the user documentation, which can explain what
 is supported and what is not, it is [here](../TiledMapEditor.md).  
 
