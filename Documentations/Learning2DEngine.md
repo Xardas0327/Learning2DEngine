@@ -4,7 +4,7 @@
 This is a 2D Game Engine, which I created for game development and learning.
 Maybe today, there is not any code line, but this Engine was created
 from a [Breakout Tutorial](https://learnopengl.com/In-Practice/2D-Game/Breakout).  
-The code owner is Joey de Vries, who has the
+The tutorial owner is Joey de Vries, who has the
 [learnopengl.com](https://learnopengl.com/) webpage too.
 Its [License](https://learnopengl.com/code_viewer_gh.php?code=src/7.in_practice/3.2d_game/0.full_source/progress/2.program.cpp).
 
@@ -24,6 +24,8 @@ If you want more info please check the Order of Execution.
 The game has `GameObject`(s), which has a `Transform` and the components. The transform
 contains the position, scale and rotation. The components contains `Component` items,
 which can have data and functions. There are some special components, which can run automatically.  
+The engine does not have its own editor, but the [Tiled Map Editor](https://www.mapeditor.org/)
+is supported.  
 If you want to read more, please check the Order of Execution
 or check the classes documentations under Namespaces.
 

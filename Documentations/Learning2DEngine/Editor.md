@@ -636,7 +636,7 @@ constexpr const char* TiledMapSmartColliderMaskLayer = "MaskLayer";
 ##
 ## TiledMapLoader
 ### Source Code:
-[TiledMapLoader.h](../../Learning2DEngine/Learning2DEngine/Editor/TiledMap.h)  
+[TiledMapLoader.h](../../Learning2DEngine/Learning2DEngine/Editor/TiledMapLoader.h)  
 [TiledMapLoader.cpp](../../Learning2DEngine/Learning2DEngine/Editor/TiledMapLoader.cpp)  
 
 ### Description:
