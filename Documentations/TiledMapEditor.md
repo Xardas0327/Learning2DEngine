@@ -122,6 +122,31 @@ Just the point object doesn't have width and height.
 | Rotate by button   | No |  |
 
 ## Tileset
+A tileset contains some tiles, which are from the same image and
+they have the same attributes and properties.  
+Please check Tileset in the Properties section too, because it will have a lot of
+useful information.
+
+| Import Settings   | Supported |
+| ----------- | ---------- |
+| Use transparent color | No         |
+| Margin                | Yes        |
+| Spacing               | Yes        |
+
+| Attribute   | Supported  | Notes              |
+| ----------- | ---------- | ------------------ |
+| Name        | No         | It is not relevant. |
+| Class       | No         | It is not relevant. |
+| Object Aligment   | No   |   |
+| Tiled Render Size | No   |   |
+| Fill Mode         | No   | It is relevant with Tiled Render Size only. |
+| Background Color  | No   | It is relevant in Editor only. |
+| Orientation       | No   | It is only used in case of isometric. |
+| Grid Width        | Yes  |   |
+| Grid Height       | Yes  |   |
+| Allowed Transformations | No   |   |
+| Rearrange | No   | It is not relevant. |
+
 
 ## Tile
 
