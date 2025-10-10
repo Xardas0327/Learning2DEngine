@@ -27,7 +27,7 @@ It is represented by the `TiledMap` class, but there is no game object for it.
 
 | Feature     | Supported  | Notes              |
 | ----------- | ---------- | ------------------ |
-| Class       | Yes        | It is not relevant. |
+| Class       | No         | It is not relevant.|
 | Orientation | Yes (part) | Only the `Orthogonal` is supported. |
 | Width       | Yes        | |
 | Height      | Yes        | |
@@ -42,9 +42,29 @@ It is represented by the `TiledMap` class, but there is no game object for it.
 | Output Chucks | No | Only for Infinite maps. |
 | Tile Render Order | No  | It is not relevant for the Engine. |
 | Compression Level | No  | It is not relevant for CSV format. |
-| Background Color  | Yes | It is used only by `Smart Property`: LoadBackground |
+| Background Color  | Yes | It is used only by `Smart Property`: _LoadBackground_ |
 
 ## Layer
+It doesn't have its own game object and it doesn't really have any representation.  
+But its attribute affect game objects, which are in this layer.
+Plus, every `BaseRendererComponent::layer` is depend on the layer order.
+The fist layer will be layer 0, the second layer 1 and so on.  
+But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
+
+| Feature     | Supported  | Notes              |
+| ----------- | ---------- | ------------------ |
+| Name        | No         | It is not relevant.|
+| Class       | No         | It is not relevant.|
+| Visible     | Yes        | If it is false, the game objects will be inactive.|
+| Locked      | No         | It is not relevant.|
+| Opacity     | Yes        | `SpriteRenderComponent::data.color` alpha channel will be multiplied by it. (after the Tint Color)|
+| Tint Color  | Yes        | `SpriteRenderComponent::data.color` will be overwritten by it (before Opacity).|
+| Horizontal Offset | Yes  | It will be added to game object's position.|
+| Vertical Offset | Yes  | It will be added to game object's position.|
+| Parallax Factor | No   |   |
+| Flipping by button | No   | In the file, the tile id will be changed. |
+| Rotate by button | No   | In the file, the tile id will be changed. |
+
 
 ## Object Layer
 
