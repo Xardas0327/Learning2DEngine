@@ -119,7 +119,7 @@ Just the point object doesn't have width and height.
 | Height      | Yes (part) | The ellipse doesn't support it. |
 | Rotation    | No         | It is not supported, because it is not compatible with the `Transform::rotation`. |
 | Flipping by button | No |  |
-| Rotate by button   | No   |  |
+| Rotate by button   | No |  |
 
 ## Tileset
 
