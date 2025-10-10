@@ -67,6 +67,28 @@ But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
 
 
 ## Object Layer
+It is more or less same as the Layer, just there is a few more not relevant attribute too.  
+So, it doesn't have its own game object and it doesn't really have any representation.  
+But its attribute affect game objects, which are in this layer.
+Plus, every `BaseRendererComponent::layer` is depend on the layer order.
+The first layer will be layer 0, the second layer 1 and so on.  
+But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
+
+| Feature     | Supported  | Notes              |
+| ----------- | ---------- | ------------------ |
+| Name        | No         | It is not relevant.|
+| Class       | No         | It is not relevant.|
+| Visible     | Yes        | If it is false, the game objects will be inactive.|
+| Locked      | No         | It is not relevant.|
+| Opacity     | Yes        | `SpriteRenderComponent::data.color` alpha channel will be multiplied by it. (after the Tint Color)|
+| Tint Color  | Yes        | `SpriteRenderComponent::data.color` will be overwritten by it (before Opacity).|
+| Horizontal Offset | Yes  | It will be added to game object's position.|
+| Vertical Offset | Yes   | It will be added to game object's position.|
+| Parallax Factor | No    |   |
+| Color           | No    | It is not relevant. It is good in the editor only. |
+| Drawing         | No    | It is not relevant. |
+| Flipping by button | No | In the file, the tile id will be changed. |
+| Rotate by button | No   | In the file, the tile id will be changed. |
 
 ## Object
 
