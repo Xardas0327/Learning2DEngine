@@ -48,7 +48,7 @@ It is represented by the `TiledMap` class, but there is no game object for it.
 It doesn't have its own game object and it doesn't really have any representation.  
 But its attribute affect game objects, which are in this layer.
 Plus, every `BaseRendererComponent::layer` is depend on the layer order.
-The fist layer will be layer 0, the second layer 1 and so on.  
+The first layer will be layer 0, the second layer 1 and so on.  
 But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
 
 | Feature     | Supported  | Notes              |
@@ -60,9 +60,9 @@ But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
 | Opacity     | Yes        | `SpriteRenderComponent::data.color` alpha channel will be multiplied by it. (after the Tint Color)|
 | Tint Color  | Yes        | `SpriteRenderComponent::data.color` will be overwritten by it (before Opacity).|
 | Horizontal Offset | Yes  | It will be added to game object's position.|
-| Vertical Offset | Yes  | It will be added to game object's position.|
-| Parallax Factor | No   |   |
-| Flipping by button | No   | In the file, the tile id will be changed. |
+| Vertical Offset | Yes   | It will be added to game object's position.|
+| Parallax Factor | No    |   |
+| Flipping by button | No | In the file, the tile id will be changed. |
 | Rotate by button | No   | In the file, the tile id will be changed. |
 
 
