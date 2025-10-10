@@ -25,7 +25,7 @@ The groupedGameObjects will be explained in the Properties section.
 ## Map
 It is represented by the `TiledMap` class, but there is no game object for it.
 
-| Feature     | Supported  | Notes              |
+| Attribute   | Supported  | Notes              |
 | ----------- | ---------- | ------------------ |
 | Class       | No         | It is not relevant.|
 | Orientation | Yes (part) | Only the `Orthogonal` is supported. |
@@ -51,7 +51,7 @@ Plus, every `BaseRendererComponent::layer` is depend on the layer order.
 The first layer will be layer 0, the second layer 1 and so on.  
 But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
 
-| Feature     | Supported  | Notes              |
+| Attribute   | Supported  | Notes              |
 | ----------- | ---------- | ------------------ |
 | Name        | No         | It is not relevant.|
 | Class       | No         | It is not relevant.|
@@ -67,14 +67,15 @@ But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
 
 
 ## Object Layer
-It is more or less same as the Layer, just there is a few more not relevant attribute too.  
+It is more or less same as the Layer, just there are objects instead of tiles and
+there are few more not relevant attribute too.  
 So, it doesn't have its own game object and it doesn't really have any representation.  
 But its attribute affect game objects, which are in this layer.
 Plus, every `BaseRendererComponent::layer` is depend on the layer order.
 The first layer will be layer 0, the second layer 1 and so on.  
 But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
 
-| Feature     | Supported  | Notes              |
+| Attribute   | Supported  | Notes              |
 | ----------- | ---------- | ------------------ |
 | Name        | No         | It is not relevant.|
 | Class       | No         | It is not relevant.|
@@ -91,6 +92,34 @@ But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
 | Rotate by button | No   | In the file, the tile id will be changed. |
 
 ## Object
+The Object Layer contains the objects, which will be converted to game objects.
+
+| Object Type | Supported  | Notes              |
+| ----------- | ---------- | ------------------ |
+| Rectangle   | Yes        | It will be a game object with `BoxColliderComponent`. The collider attribute is addable by `Smart Properties`.|
+| Point       | Yes        | It will be a simple game object.|
+| Ellipse     | Yes (part) | It will be a game object with `CircleColliderComponent`. The collider attribute is addable by `Smart Properties`. It will use only the half of the width for radius.|
+| Polygon     | No         |   |
+| Image       | Yes        | It will be a game object with `SpriteRenderComponent`.|
+| Template    | No         |   |
+| Text    | No         | It is not supported, because it is not compatible with the engine's text renderers |
+
+### Attributes
+They have more or less same attributes.  
+Just the point object doesn't have width and height.
+
+| Attribute   | Supported  | Notes              |
+| ----------- | ---------- | ------------------ |
+| Name        | No         | It is not relevant.|
+| Class       | No         | It is not relevant.|
+| Visible     | Yes        | If it is false, the game objects will be inactive.|
+| X           | Yes        | |
+| Y           | Yes        | |
+| Width       | Yes        | |
+| Height      | Yes (part) | The ellipse doesn't support it. |
+| Rotation    | No         | It is not supported, because it is not compatible with the `Transform::rotation`. |
+| Flipping by button | No |  |
+| Rotate by button   | No   |  |
 
 ## Tileset
 
