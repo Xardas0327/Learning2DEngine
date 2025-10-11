@@ -22,6 +22,7 @@ The game objects are in the `map.gameObjects` or `map.groupedGameObjects`
 if they were added to a group.  
 The groupedGameObjects will be explained in the Properties section.
 
+##
 ## Property
 The Tiled Map Editor supports properties for almost everything.
 It is a useful feature, because a tile, an object or even the layers or the map 
