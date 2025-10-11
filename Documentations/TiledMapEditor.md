@@ -170,6 +170,23 @@ Just the point object doesn't have width and height.
 | Flipping by button | No |  |
 | Rotate by button   | No |  |
 
+#### Property
+The object can have properties, which will be added to the game object.  
+The Point Object doesn't support `Smart Properties`, but other object do.
+
+| Smart Property | Type   | Description   |
+| -------------- | ------ | ------------- |
+| GroupName      | String | The game object will added to the `TiledMap::groupedGameObjects`, where the index is the _GroupName_'s value |
+| Collider       | String | The Image Object only supports it. The _Collider_'s value can be only `Box` or `Circle` and the engine will add a `BoxColliderComponent` or a `CircleColliderComponent` to the game object.  |
+| IsKinematic    | Bool   | If it is true, the collider type will be kinematic. Otherwise it will be dynamic. |
+| IsTrigger      | Bool   | If it is true, the collider mode will be trigger. Otherwise it will be collider. |
+| OffsetX        | Float  | The collider's offset.x will be it. |
+| OffsetY        | Float  | The collider's offset.y will be it. |
+| MaskLayer      | Int    | The collider's mask layer will be it. |
+| SizeX          | Float  | If the collider is Box, the collider's size.x will be it. |
+| SizeY          | Float  | If the collider is Box, the collider's size.y will be it. |
+| Radius         | Float  | If the collider is Circle, the collider's radius will be it. |
+
 ##
 ## Tileset
 A tileset contains some tiles, which are from the same image and
@@ -194,6 +211,12 @@ they have the same attributes and properties.
 | Grid Height       | Yes  |   |
 | Allowed Transformations | No   |   |
 | Rearrange | No   | It is not relevant. |
+
+
+#### Property
+The tileset can have properties, and support some `Smart Properties` too.  
+Every tile will have those properties, which are in the tileset.  
+That is why, if you want more about Tile Propertt, please check the Tile section.
 
 ##
 ## Tile
