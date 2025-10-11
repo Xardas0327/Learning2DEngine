@@ -102,7 +102,7 @@ The Object Layer contains the objects, which will be converted to game objects.
 | Polygon     | No         |   |
 | Image       | Yes        | It will be a game object with `SpriteRenderComponent`.|
 | Template    | No         |   |
-| Text    | No         | It is not supported, because it is not compatible with the engine's text renderers |
+| Text    | No         | It is not supported, because it is not compatible with the engine's text renderers. |
 
 ### Attributes
 They have more or less same attributes.  
@@ -149,8 +149,31 @@ useful information.
 
 
 ## Tile
+A tile is part of a tileset, which can be used
+in the tile layer or as an image object.
+When it is used in the tile layer, then it will also be a game object and 
+it will have a `SpriteRenderComponent`.  
+But it can have other components too with objects and `Smart Property`.  
+Unfortunately, the anmation is not supported yet.
 
-## Tile Object
+| Attribute   | Supported  | Notes              |
+| ----------- | ---------- | ------------------ |
+| Class       | No         | It is not relevant.|
+| Probability | No         | It is not relevant.|
+
+### Tile Object
+They are really similar like the Object section.  Just when it is added into a tile,
+then it will be created every time, when the tile is used in the map.  
+If you interested more about the object's attributes, please check the Object section.
+
+| Object Type | Supported  | Notes              |
+| ----------- | ---------- | ------------------ |
+| Rectangle   | Yes        | It will be a game object with `BoxColliderComponent`. The collider attribute is addable by `Smart Properties`. It has separate game object by default, but with the _OnGameObject_ `Smart Property`, it will be added to the tile's game object.|
+| Point       | Yes        | It will be a simple game object.|
+| Ellipse     | Yes (part) | It will be a game object with `CircleColliderComponent`. The collider attribute is addable by `Smart Properties`. It will use only the half of the width for radius. It has separate game object by default, but with the _OnGameObject_ `Smart Property`, it will be added to the tile's game object.|
+| Polygon     | No         |   |
+| Template    | No         |   |
+| Detect Bounding Box | Yes | It is a simple Rectangle with the tile's size. |
 
 ## Properties
 
