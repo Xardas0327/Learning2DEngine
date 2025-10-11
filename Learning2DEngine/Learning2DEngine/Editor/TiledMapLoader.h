@@ -110,27 +110,7 @@ namespace Learning2DEngine
 				}
 				else
 				{
-
-					if (objectProperties.count(TiledMapSmartGroupName))
-					{
-						if (objectProperties[TiledMapSmartGroupName].GetType() != System::PropertyType::STRING)
-						{
-							L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
-							map.gameObjects.push_back(objectGameObject);
-						}
-						else
-						{
-							map.groupedGameObjects[
-								objectProperties[TiledMapSmartGroupName].GetString()
-							].push_back(objectGameObject);
-
-							objectProperties.erase(TiledMapSmartGroupName);
-						}
-					}
-					else
-					{
-						map.gameObjects.push_back(objectGameObject);
-					}
+					TiledMapLoader::AddGameObjectToMap(map, objectGameObject, objectProperties);
 
 					if (objectProperties.size() > 0)
 						objectGameObject->AddComponent<System::PropertyComponent>(std::move(objectProperties));
@@ -150,6 +130,12 @@ namespace Learning2DEngine
 				const ObjectEllipse& object,
 				std::map<std::string, System::Property>& properties,
 				bool useObjectPositionAsOffset
+			);
+
+			static void AddGameObjectToMap(
+				TiledMap& map,
+				System::GameObject* gameObject,
+				std::map<std::string, System::Property>& properties
 			);
 		public:
 			~TiledMapLoader() = default;

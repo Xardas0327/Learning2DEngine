@@ -757,6 +757,11 @@ static void AddColliderToGameObject(System::GameObject* gameObject, const Object
 static void AddColliderToGameObject(System::GameObject* gameObject, const ObjectEllipse& object, std::map<std::string, System::Property>& properties, bool useObjectPositionAsOffset);
 ```
 
+**AddColliderToGameObject**  
+```cpp
+static void AddGameObjectToMap(TiledMap& map, System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
+```
+
 **Public:**  
 **~TiledMapLoader()**  
 ```cpp
