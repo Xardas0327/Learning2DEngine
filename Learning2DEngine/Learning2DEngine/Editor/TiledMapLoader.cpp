@@ -1082,27 +1082,6 @@ namespace Learning2DEngine
                 TiledMapLoader::AddColliderToGameObject(gameObject, properties);
             }
 
-            if (properties.count(TiledMapSmartGroupName))
-            {
-                if (properties[TiledMapSmartGroupName].GetType() != PropertyType::STRING)
-                {
-                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
-                    map.gameObjects.push_back(gameObject);
-                }
-                else
-                {
-                    map.groupedGameObjects[
-                        properties[TiledMapSmartGroupName].GetString()
-                    ].push_back(gameObject);
-
-                    properties.erase(TiledMapSmartGroupName);
-                }
-            }
-            else
-            {
-                map.gameObjects.push_back(gameObject);
-            }
-
             if (selectedTileset->objects.count(selectedTileset->GetLocalId(itemData.gid)))
             {
 
@@ -1119,19 +1098,25 @@ namespace Learning2DEngine
                             Transform(gameObject->transform.GetPosition() + point->position),
                             point->visible
                         );
-                        if (point->properties.size() > 0)
-                            objectGameObject->AddComponent<PropertyComponent>(point->properties);
+
+                        std::map<std::string, System::Property> pointProperties = point->properties;
+                        TiledMapLoader::AddGameObjectToMap(map, objectGameObject, pointProperties);
+
+                        if (pointProperties.size() > 0)
+                            objectGameObject->AddComponent<PropertyComponent>(pointProperties);
                     }
                     break;
                     case ObjectType::BOX:
-                        CreateColliderFromObjectItem<ObjectBox>(object, gameObject, properties);
+                        CreateColliderFromObjectItem<ObjectBox>(map, object, gameObject, properties);
                         break;
                     case ObjectType::ELLIPSE:
-                        CreateColliderFromObjectItem<ObjectEllipse>(object, gameObject, properties);
+                        CreateColliderFromObjectItem<ObjectEllipse>(map, object, gameObject, properties);
                         break;
                     }
                 }
             }
+
+            TiledMapLoader::AddGameObjectToMap(map, gameObject, properties);
 
             if (properties.size() > 0)
                 gameObject->AddComponent<PropertyComponent>(std::move(properties));
@@ -1229,26 +1214,7 @@ namespace Learning2DEngine
 
             if (gameObject != nullptr)
             {
-                if (properties.count(TiledMapSmartGroupName))
-                {
-                    if (properties[TiledMapSmartGroupName].GetType() != PropertyType::STRING)
-                    {
-                        L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
-                        map.gameObjects.push_back(gameObject);
-                    }
-                    else
-                    {
-                        map.groupedGameObjects[
-                            properties[TiledMapSmartGroupName].GetString()
-                        ].push_back(gameObject);
-
-                        properties.erase(TiledMapSmartGroupName);
-                    }
-                }
-                else
-                {
-                    map.gameObjects.push_back(gameObject);
-                }
+                TiledMapLoader::AddGameObjectToMap(map, gameObject, properties);
 
                 if (properties.size() > 0)
                     gameObject->AddComponent<PropertyComponent>(properties);
@@ -1468,6 +1434,34 @@ namespace Learning2DEngine
             properties.erase(TiledMapSmartColliderOffsetX);
             properties.erase(TiledMapSmartColliderOffsetY);
             properties.erase(TiledMapSmartColliderMaskLayer);
+        }
+
+        void TiledMapLoader::AddGameObjectToMap(
+            TiledMap& map,
+            GameObject* gameObject,
+            std::map<std::string, Property>& properties
+        )
+        {
+            if (properties.count(TiledMapSmartGroupName))
+            {
+                if (properties[TiledMapSmartGroupName].GetType() != PropertyType::STRING)
+                {
+                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
+                    map.gameObjects.push_back(gameObject);
+                }
+                else
+                {
+                    map.groupedGameObjects[
+                        properties[TiledMapSmartGroupName].GetString()
+                    ].push_back(gameObject);
+
+                    properties.erase(TiledMapSmartGroupName);
+                }
+            }
+            else
+            {
+                map.gameObjects.push_back(gameObject);
+            }
         }
     }
 }

@@ -1,6 +1,11 @@
 # Editor
-The engine does not have its own editor.  
-But the Tiled Map Editor's CSV export is supported.  
+The engine does not have its own editor.
+That is why the [Tiled Map Editor](https://www.mapeditor.org/) is supported.  
+This code documentation will help, how Tiled Map Editor's feature are supported.  
+If you are interested more about the user documentation, which can explain what
+is supported and what is not, it is [here](../TiledMapEditor.md).  
+
+Supported tile layer format: CSV  
 Supported format version: 1.10
 
 - [BaseLayerItemData](Editor.md#baselayeritemdata)
@@ -740,7 +745,7 @@ static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std
 **CreateColliderFromObjectItem**  
 ```cpp
 template<class T>
-static void CreateColliderFromObjectItem(ObjectItem objectItem, System::GameObject* tiledGameObject, std::map<std::string, System::Property>& tiledProperties);
+static void CreateColliderFromObjectItem(TiledMap& map, ObjectItem objectItem, System::GameObject* tiledGameObject, std::map<std::string, System::Property>& tiledProperties);
 ```
 
 **AddColliderToGameObject**  
@@ -750,6 +755,11 @@ static void AddColliderToGameObject(System::GameObject* gameObject, const Object
 ```
 ```cpp
 static void AddColliderToGameObject(System::GameObject* gameObject, const ObjectEllipse& object, std::map<std::string, System::Property>& properties, bool useObjectPositionAsOffset);
+```
+
+**AddColliderToGameObject**  
+```cpp
+static void AddGameObjectToMap(TiledMap& map, System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
 ```
 
 **Public:**  

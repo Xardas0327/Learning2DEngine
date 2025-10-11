@@ -81,6 +81,7 @@ namespace Learning2DEngine
 
 			template<class T>
 			static void CreateColliderFromObjectItem(
+				TiledMap& map,
 				ObjectItem objectItem,
 				System::GameObject* tiledGameObject,
 				std::map<std::string, System::Property>& tiledProperties)
@@ -109,6 +110,8 @@ namespace Learning2DEngine
 				}
 				else
 				{
+					TiledMapLoader::AddGameObjectToMap(map, objectGameObject, objectProperties);
+
 					if (objectProperties.size() > 0)
 						objectGameObject->AddComponent<System::PropertyComponent>(std::move(objectProperties));
 				}
@@ -127,6 +130,12 @@ namespace Learning2DEngine
 				const ObjectEllipse& object,
 				std::map<std::string, System::Property>& properties,
 				bool useObjectPositionAsOffset
+			);
+
+			static void AddGameObjectToMap(
+				TiledMap& map,
+				System::GameObject* gameObject,
+				std::map<std::string, System::Property>& properties
 			);
 		public:
 			~TiledMapLoader() = default;

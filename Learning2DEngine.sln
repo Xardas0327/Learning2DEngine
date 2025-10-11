@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentations", "Documenta
 		Documentations\Learning2DEngine.md = Documentations\Learning2DEngine.md
 		Documentations\Snake.md = Documentations\Snake.md
 		Documentations\TheCollector.md = Documentations\TheCollector.md
+		Documentations\TiledMapEditor.md = Documentations\TiledMapEditor.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Learning2DEngine", "Learning2DEngine", "{0CC89BBB-1730-4365-AE78-CA6FF717F7EC}"
