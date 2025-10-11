@@ -104,7 +104,7 @@ The Object Layer contains the objects, which will be converted to game objects.
 | Template    | No         |   |
 | Text    | No         | It is not supported, because it is not compatible with the engine's text renderers. |
 
-### Attributes
+#### Attributes
 They have more or less same attributes.  
 Just the point object doesn't have width and height.
 
@@ -161,7 +161,7 @@ Unfortunately, the anmation is not supported yet.
 | Class       | No         | It is not relevant.|
 | Probability | No         | It is not relevant.|
 
-### Tile Object
+#### Tile Object
 They are really similar like the Object section.  Just when it is added into a tile,
 then it will be created every time, when the tile is used in the map.  
 If you interested more about the object's attributes, please check the Object section.
