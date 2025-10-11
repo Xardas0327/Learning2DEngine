@@ -43,6 +43,7 @@ how the properties/smart properties are supported.
 | Object        | No        |
 | String        | Yes       |
 
+##
 ## Map
 It is represented by the `TiledMap` class, but there is no game object for it.
 
@@ -73,6 +74,7 @@ But there is a `Smart Properties`, which is relevant for the map.
 | ---------------- | ------ | ------------------------------------------------ |
 | LoadBackground   | Bool   | If it is true, the Background Color will set to `RenderManager::clearColor`|
 
+##
 ## Layer
 It doesn't have its own game object and it doesn't really have any representation.  
 But its attribute affect game objects, which are in this layer.
@@ -102,6 +104,7 @@ But there is a `Smart Properties`, which is relevant for the layers.
 | -------------- | ----- | ------------- |
 | Layer          | Int   | The `BaseRendererComponent::layer` will be overwritten by it. |
 
+##
 ## Object Layer
 It is more or less same as the Layer, just there are objects instead of tiles and
 there are few more not relevant attribute too.  
@@ -135,6 +138,7 @@ But there is a `Smart Properties`, which is relevant for the layers.
 | -------------- | ----- | ------------- |
 | Layer          | Int   | The `BaseRendererComponent::layer` will be overwritten by it. |
 
+##
 ## Object
 The Object Layer contains the objects, which will be converted to game objects.
 
@@ -165,6 +169,7 @@ Just the point object doesn't have width and height.
 | Flipping by button | No |  |
 | Rotate by button   | No |  |
 
+##
 ## Tileset
 A tileset contains some tiles, which are from the same image and
 they have the same attributes and properties.  
@@ -189,7 +194,7 @@ they have the same attributes and properties.
 | Allowed Transformations | No   |   |
 | Rearrange | No   | It is not relevant. |
 
-
+##
 ## Tile
 A tile is part of a tileset, which can be used
 in the tile layer or as an image object.
