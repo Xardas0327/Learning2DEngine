@@ -25,8 +25,8 @@ The groupedGameObjects will be explained in the Properties section.
 ## Property
 The Tiled Map Editor supports properties for almost everything.
 It is a useful feature, because a tile, an object or even the layers or the map 
-can have properties.  
-Furthermore, the engine supports `Smart Properties`, which are special properties.
+can have properties. Furthermore, the engine supports `Smart Properties`,
+which are special properties.  
 For example: overwrite the layer number or a collider will be kinematic etc.  
 Every used `Smart Properties` will be removed from the properties list, and
 the remaining properties will be added to the game object with a `PropertyComponent`.  
