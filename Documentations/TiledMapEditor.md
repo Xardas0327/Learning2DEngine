@@ -22,6 +22,27 @@ The game objects are in the `map.gameObjects` or `map.groupedGameObjects`
 if they were added to a group.  
 The groupedGameObjects will be explained in the Properties section.
 
+## Property
+The Tiled Map Editor supports properties for almost everything.
+It is a useful feature, because a tile, an object or even the layers or the map 
+can have properties.  
+Furthermore, the engine supports `Smart Properties`, which are special properties.
+For example: overwrite the layer number or a collider will be kinematic etc.  
+Every used `Smart Properties` will be removed from the properties list, and
+the remaining properties will be added to the game object with a `PropertyComponent`.  
+Every section will have a Property section, which will explain,
+how the properties/smart properties are supported.
+
+| Property Type | Supported |
+| ------------- | --------- |
+| Bool          | Yes       |
+| Color         | Yes       |
+| Float         | Yes       |
+| File          | Yes       |
+| Int           | Yes       |
+| Object        | No        |
+| String        | Yes       |
+
 ## Map
 It is represented by the `TiledMap` class, but there is no game object for it.
 
@@ -44,12 +65,20 @@ It is represented by the `TiledMap` class, but there is no game object for it.
 | Compression Level | No  | It is not relevant for CSV format. |
 | Background Color  | Yes | It is used only by `Smart Property`: _LoadBackground_ |
 
+#### Property
+The engine doesn't support properties for the map, because it won't be a game object.  
+But there is a `Smart Properties`, which is relevant for the map.
+
+| Smart Property   | Type   | Description                                      |
+| ---------------- | ------ | ------------------------------------------------ |
+| LoadBackground   | Bool   | If it is true, the Background Color will set to `RenderManager::clearColor`|
+
 ## Layer
 It doesn't have its own game object and it doesn't really have any representation.  
 But its attribute affect game objects, which are in this layer.
 Plus, every `BaseRendererComponent::layer` is depend on the layer order.
 The first layer will be layer 0, the second layer 1 and so on.  
-But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
+But the layer number/order can be overwritten by the `Smart Property`: _Layer_.
 
 | Attribute   | Supported  | Notes              |
 | ----------- | ---------- | ------------------ |
@@ -65,6 +94,13 @@ But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
 | Flipping by button | No | In the file, the tile id will be changed. |
 | Rotate by button | No   | In the file, the tile id will be changed. |
 
+#### Property
+The engine doesn't support properties for the layers, because it won't be a game object.  
+But there is a `Smart Properties`, which is relevant for the layers.
+
+| Smart Property | Type  | Description   |
+| -------------- | ----- | ------------- |
+| Layer          | Int   | The `BaseRendererComponent::layer` will be overwritten by it. |
 
 ## Object Layer
 It is more or less same as the Layer, just there are objects instead of tiles and
@@ -90,6 +126,14 @@ But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
 | Drawing         | No    | It is not relevant. |
 | Flipping by button | No | In the file, the tile id will be changed. |
 | Rotate by button | No   | In the file, the tile id will be changed. |
+
+#### Property
+It is same as the Layer, because it won't be a game object.  
+But there is a `Smart Properties`, which is relevant for the layers.
+
+| Smart Property | Type  | Description   |
+| -------------- | ----- | ------------- |
+| Layer          | Int   | The `BaseRendererComponent::layer` will be overwritten by it. |
 
 ## Object
 The Object Layer contains the objects, which will be converted to game objects.
@@ -124,8 +168,6 @@ Just the point object doesn't have width and height.
 ## Tileset
 A tileset contains some tiles, which are from the same image and
 they have the same attributes and properties.  
-Please check Tileset in the Properties section too, because it will have a lot of
-useful information.
 
 | Import Settings   | Supported |
 | ----------- | ---------- |
@@ -174,7 +216,5 @@ If you interested more about the object's attributes, please check the Object se
 | Polygon     | No         |   |
 | Template    | No         |   |
 | Detect Bounding Box | Yes | It is a simple Rectangle with the tile's size. |
-
-## Properties
 
 
