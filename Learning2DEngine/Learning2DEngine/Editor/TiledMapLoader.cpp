@@ -1082,6 +1082,57 @@ namespace Learning2DEngine
                 TiledMapLoader::AddColliderToGameObject(gameObject, properties);
             }
 
+            if (selectedTileset->objects.count(selectedTileset->GetLocalId(itemData.gid)))
+            {
+
+                for (const auto& object : selectedTileset->objects.at(selectedTileset->GetLocalId(itemData.gid)))
+                {
+                    //The image is not supported in the tileds, even in Editor.
+                    switch (object.type)
+                    {
+                    case ObjectType::POINT:
+                    {
+                        const ObjectPoint* point = static_cast<const ObjectPoint*>(object.GetData());
+
+                        GameObject* objectGameObject = GameObjectManager::GetInstance().CreateGameObject(
+                            Transform(gameObject->transform.GetPosition() + point->position),
+                            point->visible
+                        );
+                        std::map<std::string, System::Property> pointProperties = point->properties;
+                        if (pointProperties.count(TiledMapSmartGroupName))
+                        {
+                            if (pointProperties[TiledMapSmartGroupName].GetType() != PropertyType::STRING)
+                            {
+                                L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
+                                map.gameObjects.push_back(gameObject);
+                            }
+                            else
+                            {
+                                map.groupedGameObjects[
+                                    pointProperties[TiledMapSmartGroupName].GetString()
+                                ].push_back(gameObject);
+
+                                pointProperties.erase(TiledMapSmartGroupName);
+                            }
+                        }
+                        else
+                        {
+                            map.gameObjects.push_back(gameObject);
+                        }
+                        if (pointProperties.size() > 0)
+                            objectGameObject->AddComponent<PropertyComponent>(pointProperties);
+                    }
+                    break;
+                    case ObjectType::BOX:
+                        CreateColliderFromObjectItem<ObjectBox>(map, object, gameObject, properties);
+                        break;
+                    case ObjectType::ELLIPSE:
+                        CreateColliderFromObjectItem<ObjectEllipse>(map, object, gameObject, properties);
+                        break;
+                    }
+                }
+            }
+
             if (properties.count(TiledMapSmartGroupName))
             {
                 if (properties[TiledMapSmartGroupName].GetType() != PropertyType::STRING)
@@ -1101,36 +1152,6 @@ namespace Learning2DEngine
             else
             {
                 map.gameObjects.push_back(gameObject);
-            }
-
-            if (selectedTileset->objects.count(selectedTileset->GetLocalId(itemData.gid)))
-            {
-
-                for (const auto& object : selectedTileset->objects.at(selectedTileset->GetLocalId(itemData.gid)))
-                {
-                    //The image is not supported in the tileds, even in Editor.
-                    switch (object.type)
-                    {
-                    case ObjectType::POINT:
-                    {
-                        const ObjectPoint* point = static_cast<const ObjectPoint*>(object.GetData());
-
-                        GameObject* objectGameObject = GameObjectManager::GetInstance().CreateGameObject(
-                            Transform(gameObject->transform.GetPosition() + point->position),
-                            point->visible
-                        );
-                        if (point->properties.size() > 0)
-                            objectGameObject->AddComponent<PropertyComponent>(point->properties);
-                    }
-                    break;
-                    case ObjectType::BOX:
-                        CreateColliderFromObjectItem<ObjectBox>(object, gameObject, properties);
-                        break;
-                    case ObjectType::ELLIPSE:
-                        CreateColliderFromObjectItem<ObjectEllipse>(object, gameObject, properties);
-                        break;
-                    }
-                }
             }
 
             if (properties.size() > 0)

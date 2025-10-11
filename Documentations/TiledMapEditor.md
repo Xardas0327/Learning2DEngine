@@ -172,7 +172,7 @@ Just the point object doesn't have width and height.
 
 #### Property
 The object can have properties, which will be added to the game object.  
-The Point Object doesn't support `Smart Properties`, but other object do.
+The Point Object supports only the _GroupName_ `Smart Properties`, but other object do.
 
 | Smart Property | Type   | Description   |
 | -------------- | ------ | ------------- |
@@ -212,7 +212,6 @@ they have the same attributes and properties.
 | Allowed Transformations | No   |   |
 | Rearrange | No   | It is not relevant. |
 
-
 #### Property
 The tileset can have properties, and support some `Smart Properties` too.  
 Every tile will have those properties, which are in the tileset.  
@@ -233,8 +232,10 @@ Unfortunately, the anmation is not supported yet.
 | Probability | No         | It is not relevant.|
 
 #### Tile Object
-They are really similar like the Object section.  Just when it is added into a tile,
-then it will be created every time, when the tile is used in the map.  
+They are really similar like the Object section. Just when it is added into a tile,
+then it will be created every time, when the tile is used in the map. It can have
+a separate game object or it can be added to the tile's game object by _OnGameObject_
+`Smart Property`.  
 If you interested more about the object's attributes, please check the Object section.
 
 | Object Type | Supported  | Notes              |
@@ -245,5 +246,34 @@ If you interested more about the object's attributes, please check the Object se
 | Polygon     | No         |   |
 | Template    | No         |   |
 | Detect Bounding Box | Yes | It is a simple Rectangle with the tile's size. |
+
+#### Property
+The tiles and the tile's objects have property support.  
+The tiles get the properties from more places:
+1. The base properties from the tileset.
+1. After that, the tile's own properties will be added. It a property has the same id,
+	they will be overwritten.
+1. After that, if a object will be added to the tile's game object by _OnGameObject_
+	`Smart Property`, then the object's properties will be added too. 
+	If a property has the same id, they will be overwritten.
+
+Note: if a tile's object is not added to the tile's game object, then
+It will work like a normal object.  
+Note 2: the Point Object supports only the _GroupName_ `Smart Properties`.
+
+| Smart Property | Type   | Description   |
+| -------------- | ------ | ------------- |
+| GroupName      | String | The game object will added to the `TiledMap::groupedGameObjects`, where the index is the _GroupName_'s value |
+| OnGameObject   | Bool   | The supported object will be attached to game object.  |
+| Collider       | String | The Tile only support it. The _Collider_'s value can be only `Box` or `Circle` and the engine will add a `BoxColliderComponent` or a `CircleColliderComponent` to the game object.  |
+| IsKinematic    | Bool   | If it is true, the collider type will be kinematic. Otherwise it will be dynamic. |
+| IsTrigger      | Bool   | If it is true, the collider mode will be trigger. Otherwise it will be collider. |
+| OffsetX        | Float  | The collider's offset.x will be it. |
+| OffsetY        | Float  | The collider's offset.y will be it. |
+| MaskLayer      | Int    | The collider's mask layer will be it. |
+| SizeX          | Float  | If the collider is Box, the collider's size.x will be it. |
+| SizeY          | Float  | If the collider is Box, the collider's size.y will be it. |
+| Radius         | Float  | If the collider is Circle, the collider's radius will be it. |
+
 
 

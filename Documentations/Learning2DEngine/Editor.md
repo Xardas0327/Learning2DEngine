@@ -745,7 +745,7 @@ static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std
 **CreateColliderFromObjectItem**  
 ```cpp
 template<class T>
-static void CreateColliderFromObjectItem(ObjectItem objectItem, System::GameObject* tiledGameObject, std::map<std::string, System::Property>& tiledProperties);
+static void CreateColliderFromObjectItem(TiledMap& map, ObjectItem objectItem, System::GameObject* tiledGameObject, std::map<std::string, System::Property>& tiledProperties);
 ```
 
 **AddColliderToGameObject**  

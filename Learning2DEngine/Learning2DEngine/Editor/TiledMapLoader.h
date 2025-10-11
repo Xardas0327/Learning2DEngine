@@ -81,6 +81,7 @@ namespace Learning2DEngine
 
 			template<class T>
 			static void CreateColliderFromObjectItem(
+				TiledMap& map,
 				ObjectItem objectItem,
 				System::GameObject* tiledGameObject,
 				std::map<std::string, System::Property>& tiledProperties)
@@ -109,6 +110,28 @@ namespace Learning2DEngine
 				}
 				else
 				{
+
+					if (objectProperties.count(TiledMapSmartGroupName))
+					{
+						if (objectProperties[TiledMapSmartGroupName].GetType() != System::PropertyType::STRING)
+						{
+							L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
+							map.gameObjects.push_back(objectGameObject);
+						}
+						else
+						{
+							map.groupedGameObjects[
+								objectProperties[TiledMapSmartGroupName].GetString()
+							].push_back(objectGameObject);
+
+							objectProperties.erase(TiledMapSmartGroupName);
+						}
+					}
+					else
+					{
+						map.gameObjects.push_back(objectGameObject);
+					}
+
 					if (objectProperties.size() > 0)
 						objectGameObject->AddComponent<System::PropertyComponent>(std::move(objectProperties));
 				}
