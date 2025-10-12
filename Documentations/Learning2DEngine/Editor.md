@@ -673,8 +673,9 @@ static glm::vec4 ConvertStringToColor(const std::string& hex);
 ```
 
 **LoadTilesets**  
+The data will be added to the loadedTilesets vector.
 ```cpp
-static std::vector<TiledMapTileset> LoadTilesets(rapidxml::xml_node<>* mapNode, const std::string& folderPath, const std::map<std::string, std::string>& textureMap);
+static std::vector<TiledMapTileset> LoadTilesets(rapidxml::xml_node<>* mapNode, const std::string& folderPath, const std::map<std::string, std::string>& textureMap, std::vector<TiledMapTileset>& loadedTilesets);
 ```
 
 **LoadTileset**  
@@ -694,34 +695,44 @@ static void LoadObjectLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::
 ```
 
 **LoadProperties**  
+The data will be added to the loadedProperties vector.  
 The folderPath is used when the property type is file.
 ```cpp
-static std::map<std::string, System::Property> LoadProperties(rapidxml::xml_node<>* node, const std::string& folderPath = "");
+static void LoadProperties(std::map<std::string, System::Property>& loadedProperties, rapidxml::xml_node<>* node, const std::string& folderPath = "");
 ```
 
 **LoadTilesProperties**  
+The data will be added to the loadedProperties vector.  
 The folderPath is used when the property type is file.  
 The sourceName is used for the logging only.
 ```cpp
-static std::map<int, std::map<std::string, System::Property>> LoadTilesProperties(rapidxml::xml_node<>* node, const std::string& sourceName, const std::string& folderPath = "");
+static void LoadTilesProperties(std::map<int, std::map<std::string, System::Property>>& loadedProperties, rapidxml::xml_node<>* node, const std::string& sourceName, const std::string& folderPath = "");
 ```
 
 **LoadObjectItems**  
+The data will be added to the loadedObjects vector.  
 The folderPath is used when the property type is file.  
 ```cpp
-static std::vector<ObjectItem> LoadObjectItems(rapidxml::xml_node<>* node, const std::string& folderPath = "");
+static void LoadObjectItems(std::vector<ObjectItem>& loadedObjects, rapidxml::xml_node<>* node, const std::string& folderPath = "");
 ```
 
 **LoadTilesObjectItems**  
+The data will be added to the loadedObjects vector.  
 The folderPath is used when the property type is file.  
 The sourceName is used for the logging only.
 ```cpp
-static std::map<int, std::vector<ObjectItem>> LoadTilesObjectItems(rapidxml::xml_node<>* node, const std::string& sourceName, const std::string& folderPath = "");
+static void LoadTilesObjectItems(std::map<int, std::vector<ObjectItem>>& loadedObjects, rapidxml::xml_node<>* node, const std::string& sourceName, const std::string& folderPath = "");
 ```
 
 **LoadMapBackground**  
 ```cpp
 static bool LoadMapBackground(rapidxml::xml_node<>* mapNode);
+```
+
+**LoadLayerId**  
+The id will be set to layerId.  
+```cpp
+static bool LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId);
 ```
 
 **GetTilesetFromGid**  
@@ -737,11 +748,6 @@ static void CreateGameObject(TiledMap& map, const LayerItemData& itemData);
 static void CreateGameObject(TiledMap& map, const ObjectLayerItemData& itemData);
 ```
 
-**AddColliderToGameObject**  
-```cpp
-static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
-```
-
 **CreateColliderFromObjectItem**  
 ```cpp
 template<class T>
@@ -749,7 +755,10 @@ static void CreateColliderFromObjectItem(TiledMap& map, ObjectItem objectItem, S
 ```
 
 **AddColliderToGameObject**  
-The object.position will be the offset if the useObjectPositionAsOffset is true.
+In the second and third options, the object.position will be the offset if the useObjectPositionAsOffset is true.
+```cpp
+static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
+```
 ```cpp
 static void AddColliderToGameObject(System::GameObject* gameObject, const ObjectBox& object, std::map<std::string, System::Property>& properties, bool useObjectPositionAsOffset);
 ```
