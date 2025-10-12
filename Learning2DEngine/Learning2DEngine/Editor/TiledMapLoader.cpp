@@ -48,7 +48,9 @@ namespace Learning2DEngine
                 }
 
                 TiledMapLoader::LoadMapAttributes(map, mapNode);
-                auto tilesets = TiledMapLoader::LoadTilesets(mapNode, folderPath, textureMap);
+
+                std::vector<TiledMapTileset> tilesets;
+                TiledMapLoader::LoadTilesets(mapNode, folderPath, textureMap, tilesets);
                 TiledMapLoader::LoadLayers(map, mapNode, tilesets);
                 TiledMapLoader::LoadObjectLayers(map, mapNode, tilesets, folderPath);
 
@@ -208,12 +210,12 @@ namespace Learning2DEngine
             return color;
         }
 
-        std::vector<TiledMapTileset> TiledMapLoader::LoadTilesets(
+        void TiledMapLoader::LoadTilesets(
             rapidxml::xml_node<>* mapNode,
             const std::string& folderPath,
-            const std::map<std::string, std::string>& textureMap)
+            const std::map<std::string, std::string>& textureMap,
+            std::vector<TiledMapTileset>& loadedTilesets)
         {
-            std::vector<TiledMapTileset> tilesets;
             for (
                 auto mapTileset = mapNode->first_node(TiledMapNodeTileset);
                 mapTileset != nullptr;
@@ -236,9 +238,8 @@ namespace Learning2DEngine
                 }
 
                 if (TiledMapLoader::LoadTileset(folderPath, sourceName, textureMap, tileset))
-                    tilesets.push_back(tileset);
+                    loadedTilesets.push_back(tileset);
             }
-            return tilesets;
         }
 
         bool TiledMapLoader::LoadTileset(

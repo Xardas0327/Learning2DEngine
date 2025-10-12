@@ -29,10 +29,11 @@ namespace Learning2DEngine
 			static void LoadMapAttributes(TiledMap& map, rapidxml::xml_node<>* mapNode);
 			static glm::vec4 ConvertStringToColor(const std::string& hex);
 
-			static std::vector<TiledMapTileset> LoadTilesets(
+			static void LoadTilesets(
 				rapidxml::xml_node<>* mapNode,
 				const std::string& folderPath,
-				const std::map<std::string, std::string>& textureMap);
+				const std::map<std::string, std::string>& textureMap,
+				std::vector<TiledMapTileset>& loadedTilesets);
 
 			static bool LoadTileset(
 				const std::string& folderPath, 

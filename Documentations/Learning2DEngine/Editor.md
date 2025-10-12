@@ -673,8 +673,9 @@ static glm::vec4 ConvertStringToColor(const std::string& hex);
 ```
 
 **LoadTilesets**  
+The data will be added to the loadedTilesets vector.
 ```cpp
-static std::vector<TiledMapTileset> LoadTilesets(rapidxml::xml_node<>* mapNode, const std::string& folderPath, const std::map<std::string, std::string>& textureMap);
+static std::vector<TiledMapTileset> LoadTilesets(rapidxml::xml_node<>* mapNode, const std::string& folderPath, const std::map<std::string, std::string>& textureMap, std::vector<TiledMapTileset>& loadedTilesets);
 ```
 
 **LoadTileset**  
