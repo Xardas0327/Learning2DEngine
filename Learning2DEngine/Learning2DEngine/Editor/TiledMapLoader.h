@@ -44,7 +44,8 @@ namespace Learning2DEngine
 			static void LoadLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::vector<TiledMapTileset>& tilesets);
 
 			static void LoadObjectLayers(
-				TiledMap& map, rapidxml::xml_node<>* mapNode,
+				TiledMap& map,
+				rapidxml::xml_node<>* mapNode,
 				std::vector<TiledMapTileset>& tilesets,
 				const std::string& folderPath = ""
 			);
@@ -66,7 +67,7 @@ namespace Learning2DEngine
 			);
 
 			// The folderPath is used when the property type is file.
-			static std::vector<ObjectItem> LoadObjectItems(rapidxml::xml_node<>* node, const std::string& folderPath = "");
+			static void LoadObjectItems(std::vector<ObjectItem>& loadedObjects, rapidxml::xml_node<>* node, const std::string& folderPath = "");
 
 			// The folderPath is used when the property type is file.
 			// The sourceName is used for the logging only.

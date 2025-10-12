@@ -710,9 +710,10 @@ static void LoadTilesProperties(std::map<int, std::map<std::string, System::Prop
 ```
 
 **LoadObjectItems**  
+The data will be added to the loadedObjects vector.  
 The folderPath is used when the property type is file.  
 ```cpp
-static std::vector<ObjectItem> LoadObjectItems(rapidxml::xml_node<>* node, const std::string& folderPath = "");
+static void LoadObjectItems(std::vector<ObjectItem>& loadedObjects, rapidxml::xml_node<>* node, const std::string& folderPath = "");
 ```
 
 **LoadTilesObjectItems**  

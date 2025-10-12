@@ -620,7 +620,9 @@ namespace Learning2DEngine
                 int overrideLayerId = 0;
                 bool useOverrideLayerId = TiledMapLoader::LoadLayerId(objectLayerNode, overrideLayerId);
 
-                auto objects = LoadObjectItems(objectLayerNode, folderPath);
+                std::vector<ObjectItem> objects;
+                LoadObjectItems(objects, objectLayerNode, folderPath);
+
                 for (auto& object : objects)
                 {
                     TiledMapLoader::CreateGameObject(
@@ -790,17 +792,18 @@ namespace Learning2DEngine
                     continue;
                 }
 
-                auto tileObjects = LoadObjectItems(tile, folderPath);
+                std::vector<ObjectItem> tileObjects;
+                LoadObjectItems(tileObjects, tile, folderPath);
+
                 if (!tileObjects.empty())
                     loadedObjects.emplace(id, std::move(tileObjects));
             }
         }
 
-        std::vector<ObjectItem> TiledMapLoader::LoadObjectItems(rapidxml::xml_node<>* node, const std::string& folderPath)
+        void TiledMapLoader::LoadObjectItems(std::vector<ObjectItem>& loadedObjects, rapidxml::xml_node<>* node, const std::string& folderPath)
         {
-            std::vector<ObjectItem> objects;
             if (node == nullptr)
-                return objects;
+                return;
 
             if (strcmp(node->name(), TiledMapNodeObjectGroup) != 0)
             {
@@ -808,7 +811,7 @@ namespace Learning2DEngine
             }
 
             if (node == nullptr)
-                return objects;
+                return;
 
             for (
                 auto object = node->first_node(TiledMapNodeObject);
@@ -911,7 +914,7 @@ namespace Learning2DEngine
                         L2DE_LOG_ERROR("TiledMapLoader: a point object can't be created, because some data is missing.");
                         continue;
                     }
-                    objects.push_back(ObjectItem(std::move(
+                    loadedObjects.push_back(ObjectItem(std::move(
                         ObjectPoint(position, std::move(properties), visible)
                     )));
                     break;
@@ -921,7 +924,7 @@ namespace Learning2DEngine
                         L2DE_LOG_ERROR("TiledMapLoader: a box object can't be created, because some data is missing.");
                         continue;
                     }
-                    objects.push_back(ObjectItem(std::move(
+                    loadedObjects.push_back(ObjectItem(std::move(
                         ObjectBox(position, size, std::move(properties), visible)
                     )));
                     break;
@@ -939,7 +942,7 @@ namespace Learning2DEngine
                         L2DE_LOG_WARNING("TiledMapLoader: an ellipse object should have the same width and height. Only the width will be used.");
                         size.y = size.x;
                     }
-                    objects.push_back(ObjectItem(std::move(
+                    loadedObjects.push_back(ObjectItem(std::move(
                         ObjectEllipse(position, size, std::move(properties), visible)
                     )));
                     break;
@@ -949,14 +952,12 @@ namespace Learning2DEngine
                         L2DE_LOG_ERROR("TiledMapLoader: a ellipse object can't be created, because some data is missing.");
                         continue;
                     }
-                    objects.push_back(ObjectItem(std::move(
+                    loadedObjects.push_back(ObjectItem(std::move(
                         ObjectImage(position, size, std::move(properties), gid, visible)
                     )));
                     break;
                 }
-
             }
-            return objects;
         }
 
         bool TiledMapLoader::LoadMapBackground(rapidxml::xml_node<>* mapNode)
