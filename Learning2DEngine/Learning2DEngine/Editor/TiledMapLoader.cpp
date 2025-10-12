@@ -425,9 +425,9 @@ namespace Learning2DEngine
                     Texture2DSettings(true));
             }
 
-            tiledMapObject.commonProperties = TiledMapLoader::LoadProperties(tilesetNode, folderPath);
-            tiledMapObject.uniqueProperties = TiledMapLoader::LoadTilesProperties(tilesetNode, sourceName, folderPath);
-            tiledMapObject.objects = TiledMapLoader::LoadTilesObjectItems(tilesetNode, sourceName, folderPath);
+            TiledMapLoader::LoadProperties(tiledMapObject.commonProperties, tilesetNode, folderPath);
+            TiledMapLoader::LoadTilesProperties(tiledMapObject.uniqueProperties, tilesetNode, sourceName, folderPath);
+            TiledMapLoader::LoadTilesObjectItems(tiledMapObject.objects, tilesetNode, sourceName, folderPath);
 
             return true;
         }
@@ -641,18 +641,22 @@ namespace Learning2DEngine
             }
         }
 
-        std::map<std::string, System::Property> TiledMapLoader::LoadProperties(rapidxml::xml_node<>* node, const std::string& folderPath)
+        void TiledMapLoader::LoadProperties(
+            std::map<std::string, System::Property>& loadedProperties,
+            rapidxml::xml_node<>* node,
+            const std::string& folderPath
+        )
         {
-            std::map<std::string, Property> properties;
             if (node == nullptr)
-                return properties;
+                return;
+
             if (strcmp(node->name(), TiledMapNodeProperties) != 0)
             {
                 node = node->first_node(TiledMapNodeProperties);
             }
 
             if (node == nullptr)
-                return properties;
+                return;
 
             for (
                 auto property = node->first_node(TiledMapNodeProperty);
@@ -701,39 +705,36 @@ namespace Learning2DEngine
                 switch (type)
                 {
                 case PropertyType::BOOL:
-                    properties.emplace(nameAttr->value(), Property(strcmp(valueAttr->value(), "true") == 0 ? true : false));
+                    loadedProperties.emplace(nameAttr->value(), Property(strcmp(valueAttr->value(), "true") == 0 ? true : false));
                     break;
                 case PropertyType::COLOR:
-                    properties.emplace(nameAttr->value(), Property(TiledMapLoader::ConvertStringToColor(valueAttr->value())));
+                    loadedProperties.emplace(nameAttr->value(), Property(TiledMapLoader::ConvertStringToColor(valueAttr->value())));
                     break;
                 case PropertyType::FILE:
-                    properties.emplace(nameAttr->value(), Property(folderPath + valueAttr->value(), type));
+                    loadedProperties.emplace(nameAttr->value(), Property(folderPath + valueAttr->value(), type));
                     break;
                 case PropertyType::FLOAT:
-                    properties.emplace(nameAttr->value(), Property(static_cast<float>(std::atof(valueAttr->value()))));
+                    loadedProperties.emplace(nameAttr->value(), Property(static_cast<float>(std::atof(valueAttr->value()))));
                     break;
                 case PropertyType::INT:
-                    properties.emplace(nameAttr->value(), Property(std::atoi(valueAttr->value())));
+                    loadedProperties.emplace(nameAttr->value(), Property(std::atoi(valueAttr->value())));
                     break;
                 case PropertyType::STRING:
-                    properties.emplace(nameAttr->value(), Property(valueAttr->value(), type));
+                    loadedProperties.emplace(nameAttr->value(), Property(valueAttr->value(), type));
                     break;
                 default:
                     break;
                 }
             }
-
-            return properties;
         }
 
-        std::map<int, std::map<std::string, System::Property>> TiledMapLoader::LoadTilesProperties(
+        void TiledMapLoader::LoadTilesProperties(
+            std::map<int, std::map<std::string, System::Property>>& loadedProperties,
             rapidxml::xml_node<>* node,
             const std::string& sourceName,
             const std::string& folderPath
         )
         {
-            std::map<int, std::map<std::string, System::Property>> properties;
-
             for (
                 auto tile = node->first_node(TiledMapNodeTile);
                 tile != nullptr;
@@ -748,28 +749,27 @@ namespace Learning2DEngine
                 }
 
                 int id = std::atoi(idAttr->value());
-                if (properties.count(id))
+                if (loadedProperties.count(id))
                 {
                     L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id is duplicated: " + std::to_string(id));
                     continue;
                 }
 
-                auto tileProperties = LoadProperties(tile, folderPath);
-                if (!tileProperties.empty())
-                    properties.emplace(id, std::move(tileProperties));
-            }
+                std::map<std::string, System::Property> tileProperties;
+                LoadProperties(tileProperties, tile, folderPath);
 
-            return properties;
+                if (!tileProperties.empty())
+                    loadedProperties.emplace(id, std::move(tileProperties));
+            }
         }
 
-        std::map<int, std::vector<ObjectItem>> TiledMapLoader::LoadTilesObjectItems(
+        void TiledMapLoader::LoadTilesObjectItems(
+            std::map<int, std::vector<ObjectItem>>& loadedObjects,
             rapidxml::xml_node<>* node,
             const std::string& sourceName,
             const std::string& folderPath
         )
         {
-            std::map<int, std::vector<ObjectItem>> objects;
-
             for (
                 auto tile = node->first_node(TiledMapNodeTile);
                 tile != nullptr;
@@ -784,7 +784,7 @@ namespace Learning2DEngine
                 }
 
                 int id = std::atoi(idAttr->value());
-                if (objects.count(id))
+                if (loadedObjects.count(id))
                 {
                     L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id is duplicated: " + std::to_string(id));
                     continue;
@@ -792,10 +792,8 @@ namespace Learning2DEngine
 
                 auto tileObjects = LoadObjectItems(tile, folderPath);
                 if (!tileObjects.empty())
-                    objects.emplace(id, std::move(tileObjects));
+                    loadedObjects.emplace(id, std::move(tileObjects));
             }
-
-            return objects;
         }
 
         std::vector<ObjectItem> TiledMapLoader::LoadObjectItems(rapidxml::xml_node<>* node, const std::string& folderPath)
@@ -902,7 +900,8 @@ namespace Learning2DEngine
                     }
                 }
 
-                auto properties = TiledMapLoader::LoadProperties(object, folderPath);
+                std::map<std::string, System::Property> properties;
+                TiledMapLoader::LoadProperties(properties, object, folderPath);
 
                 switch (type)
                 {
@@ -962,8 +961,8 @@ namespace Learning2DEngine
 
         bool TiledMapLoader::LoadMapBackground(rapidxml::xml_node<>* mapNode)
         {
-
-            auto properties = TiledMapLoader::LoadProperties(mapNode);
+            std::map<std::string, System::Property> properties;
+            TiledMapLoader::LoadProperties(properties, mapNode);
 #if L2DE_DEBUG
             int tooMuchProperties = 1;
 #endif
@@ -994,7 +993,9 @@ namespace Learning2DEngine
 
         bool TiledMapLoader::LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId)
         {
-            auto properties = TiledMapLoader::LoadProperties(layerNode);
+            std::map<std::string, System::Property> properties;
+            TiledMapLoader::LoadProperties(properties, layerNode);
+
 #if L2DE_DEBUG
             int tooMuchProperties = 1;
 #endif

@@ -695,16 +695,18 @@ static void LoadObjectLayers(TiledMap& map, rapidxml::xml_node<>* mapNode, std::
 ```
 
 **LoadProperties**  
+The data will be added to the loadedProperties vector.  
 The folderPath is used when the property type is file.
 ```cpp
-static std::map<std::string, System::Property> LoadProperties(rapidxml::xml_node<>* node, const std::string& folderPath = "");
+static void LoadProperties(std::map<std::string, System::Property>& loadedProperties, rapidxml::xml_node<>* node, const std::string& folderPath = "");
 ```
 
 **LoadTilesProperties**  
+The data will be added to the loadedProperties vector.  
 The folderPath is used when the property type is file.  
 The sourceName is used for the logging only.
 ```cpp
-static std::map<int, std::map<std::string, System::Property>> LoadTilesProperties(rapidxml::xml_node<>* node, const std::string& sourceName, const std::string& folderPath = "");
+static void LoadTilesProperties(std::map<int, std::map<std::string, System::Property>>& loadedProperties, rapidxml::xml_node<>* node, const std::string& sourceName, const std::string& folderPath = "");
 ```
 
 **LoadObjectItems**  
@@ -714,10 +716,11 @@ static std::vector<ObjectItem> LoadObjectItems(rapidxml::xml_node<>* node, const
 ```
 
 **LoadTilesObjectItems**  
+The data will be added to the loadedObjects vector.  
 The folderPath is used when the property type is file.  
 The sourceName is used for the logging only.
 ```cpp
-static std::map<int, std::vector<ObjectItem>> LoadTilesObjectItems(rapidxml::xml_node<>* node, const std::string& sourceName, const std::string& folderPath = "");
+static void LoadTilesObjectItems(std::map<int, std::vector<ObjectItem>>& loadedObjects, rapidxml::xml_node<>* node, const std::string& sourceName, const std::string& folderPath = "");
 ```
 
 **LoadMapBackground**  
