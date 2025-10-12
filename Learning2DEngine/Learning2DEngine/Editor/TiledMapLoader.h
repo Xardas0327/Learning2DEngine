@@ -85,8 +85,6 @@ namespace Learning2DEngine
 			static void CreateGameObject(TiledMap& map, const LayerItemData& itemData);
 			static void CreateGameObject(TiledMap& map, const ObjectLayerItemData& itemData);
 
-			static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
-
 			template<class T>
 			static void CreateColliderFromObjectItem(
 				TiledMap& map,
@@ -124,6 +122,8 @@ namespace Learning2DEngine
 						objectGameObject->AddComponent<System::PropertyComponent>(std::move(objectProperties));
 				}
 			}
+
+			static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
 
 			//the object.position will be the offset if the useObjectPositionAsOffset is true
 			static void AddColliderToGameObject(

@@ -729,6 +729,12 @@ static void LoadTilesObjectItems(std::map<int, std::vector<ObjectItem>>& loadedO
 static bool LoadMapBackground(rapidxml::xml_node<>* mapNode);
 ```
 
+**LoadLayerId**  
+The id will be set to layerId.  
+```cpp
+static bool LoadLayerId(rapidxml::xml_node<>* layerNode, int& layerId);
+```
+
 **GetTilesetFromGid**  
 ```cpp
 static const TiledMapTileset* GetTilesetFromGid(const std::vector<TiledMapTileset>& tilesets, int gid);
@@ -742,11 +748,6 @@ static void CreateGameObject(TiledMap& map, const LayerItemData& itemData);
 static void CreateGameObject(TiledMap& map, const ObjectLayerItemData& itemData);
 ```
 
-**AddColliderToGameObject**  
-```cpp
-static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
-```
-
 **CreateColliderFromObjectItem**  
 ```cpp
 template<class T>
@@ -754,7 +755,10 @@ static void CreateColliderFromObjectItem(TiledMap& map, ObjectItem objectItem, S
 ```
 
 **AddColliderToGameObject**  
-The object.position will be the offset if the useObjectPositionAsOffset is true.
+In the second and third options, the object.position will be the offset if the useObjectPositionAsOffset is true.
+```cpp
+static void AddColliderToGameObject(System::GameObject* gameObject, std::map<std::string, System::Property>& properties);
+```
 ```cpp
 static void AddColliderToGameObject(System::GameObject* gameObject, const ObjectBox& object, std::map<std::string, System::Property>& properties, bool useObjectPositionAsOffset);
 ```
