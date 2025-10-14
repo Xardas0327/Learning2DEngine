@@ -160,6 +160,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Editor\ObjectItemTest.cpp" />
     <ClCompile Include="EventSystem\EventHandlerTest.cpp" />
     <ClCompile Include="Physics\BaseBoxColliderComponentTest.cpp" />
     <ClCompile Include="Physics\BaseCircleColliderComponentTest.cpp" />

@@ -258,7 +258,8 @@ ObjectImage(const glm::vec2& position, const glm::vec2& size, std::map<std::stri
 ##
 ## ObjectItem
 ### Source Code:
-[ObjectItem.h](../../Learning2DEngine/Learning2DEngine/Editor/ObjectItem.h)  
+[ObjectItem.h](../../Learning2DEngine/Learning2DEngine/Editor/ObjectItem.h)    
+[ObjectItemTest.cpp](../../Learning2DEngineTest/Editor/ObjectItemTest.cpp)
 
 ### Description:
 It is a container for different object types from Tiled Map Editor.
