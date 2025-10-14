@@ -32,5 +32,26 @@ namespace Learning2DEngine
 
 			return isFine;
 		}
+
+		bool CompareFloat::IsEqual(const glm::mat4x2& a, const glm::mat4x2& b)
+		{
+			bool isFine = true;
+			for (int i = 0; i < 4; ++i)
+			{
+				for (int j = 0; j < 2; ++j)
+				{
+					if (glm::abs(a[i][j] - b[i][j]) > floatThreshold)
+					{
+						isFine = false;
+						break;
+					}
+				}
+
+				if (!isFine)
+					break;
+			}
+
+			return isFine;
+		}
 	}
 }

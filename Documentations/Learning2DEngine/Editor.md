@@ -258,7 +258,7 @@ ObjectImage(const glm::vec2& position, const glm::vec2& size, std::map<std::stri
 ##
 ## ObjectItem
 ### Source Code:
-[ObjectItem.h](../../Learning2DEngine/Learning2DEngine/Editor/ObjectItem.h)    
+[ObjectItem.h](../../Learning2DEngine/Learning2DEngine/Editor/ObjectItem.h)  
 [ObjectItemTest.cpp](../../Learning2DEngineTest/Editor/ObjectItemTest.cpp)
 
 ### Description:
@@ -787,6 +787,7 @@ static TiledMap LoadFromFile(const std::string& filePath, const std::map<std::st
 ## TiledMapTileset
 ### Source Code:
 [TiledMapTileset.h](../../Learning2DEngine/Learning2DEngine/Editor/TiledMapTileset.h)  
+[TiledMapTilesetTest.cpp](../../Learning2DEngineTest/Editor/TiledMapTilesetTest.cpp)
 
 ### Description:
 It contains the tileset data.
