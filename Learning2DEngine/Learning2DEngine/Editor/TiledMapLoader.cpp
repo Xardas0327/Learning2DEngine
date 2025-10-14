@@ -474,7 +474,7 @@ namespace Learning2DEngine
                     }
                     else if (strcmp(attr->name(), TiledMapAttrOpacity) == 0)
                     {
-                        opacity = std::atof(attr->value());
+                        opacity = static_cast<float>(std::atof(attr->value()));
                     }
                     else if (strcmp(attr->name(), TiledMapAttrTintcolor) == 0)
                     {
@@ -601,7 +601,7 @@ namespace Learning2DEngine
                     }
                     else if (strcmp(attr->name(), TiledMapAttrOpacity) == 0)
                     {
-                        opacity = std::atof(attr->value());
+                        opacity = static_cast<float>(std::atof(attr->value()));
                     }
                     else if (strcmp(attr->name(), TiledMapAttrTintcolor) == 0)
                     {
