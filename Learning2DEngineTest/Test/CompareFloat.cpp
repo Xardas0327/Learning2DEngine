@@ -12,6 +12,13 @@ namespace Learning2DEngine
 			return glm::abs(difference.x) < floatThreshold && glm::abs(difference.y) < floatThreshold;
 		}
 
+		bool CompareFloat::IsEqual(const glm::vec4& a, const glm::vec4& b)
+		{
+			glm::vec4 difference = a - b;
+			return glm::abs(difference.x) < floatThreshold && glm::abs(difference.y) < floatThreshold
+				&& glm::abs(difference.z) < floatThreshold && glm::abs(difference.a) < floatThreshold;
+		}
+
 		bool CompareFloat::IsEqual(const glm::mat4& a, const glm::mat4& b)
 		{
 			bool isFine = true;

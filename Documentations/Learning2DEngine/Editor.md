@@ -644,6 +644,7 @@ constexpr const char* TiledMapSmartColliderMaskLayer = "MaskLayer";
 ### Source Code:
 [TiledMapLoader.h](../../Learning2DEngine/Learning2DEngine/Editor/TiledMapLoader.h)  
 [TiledMapLoader.cpp](../../Learning2DEngine/Learning2DEngine/Editor/TiledMapLoader.cpp)  
+[TiledMapLoaderTest.cpp](../../Learning2DEngineTest/Editor/TiledMapLoaderTest.cpp)
 
 ### Description:
 This is the main class to load a Tiled Map Editor map from the main tmx file.  

@@ -23,6 +23,7 @@ namespace Learning2DEngine
 	{
 		class TiledMapLoader final
 		{
+			friend class TiledMapLoaderTest;
 		private:
 			TiledMapLoader() = default;
 

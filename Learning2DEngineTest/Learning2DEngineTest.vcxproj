@@ -102,6 +102,9 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>mkdir "$(OutDir)TestData" &amp; xcopy "$(ProjectDir)TestData" "$(OutDir)TestData\" /e /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -118,6 +121,9 @@
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>mkdir "$(OutDir)TestData" &amp; xcopy "$(ProjectDir)TestData" "$(OutDir)TestData\" /e /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -138,6 +144,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>mkdir "$(OutDir)TestData" &amp; xcopy "$(ProjectDir)TestData" "$(OutDir)TestData\" /e /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -158,9 +167,13 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>mkdir "$(OutDir)TestData" &amp; xcopy "$(ProjectDir)TestData" "$(OutDir)TestData\" /e /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Editor\ObjectItemTest.cpp" />
+    <ClCompile Include="Editor\TiledMapLoaderTest.cpp" />
     <ClCompile Include="Editor\TiledMapTilesetTest.cpp" />
     <ClCompile Include="EventSystem\EventHandlerTest.cpp" />
     <ClCompile Include="Physics\BaseBoxColliderComponentTest.cpp" />
@@ -182,6 +195,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Test\CompareFloat.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestData\Editor\MapTest.tmx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
