@@ -713,7 +713,7 @@ namespace Learning2DEngine
                     loadedProperties.emplace(nameAttr->value(), Property(TiledMapLoader::ConvertStringToColor(valueAttr->value())));
                     break;
                 case PropertyType::FILE:
-                    loadedProperties.emplace(nameAttr->value(), Property(folderPath + valueAttr->value(), type));
+                    loadedProperties.emplace(nameAttr->value(), Property(folderPath + valueAttr->value(), true));
                     break;
                 case PropertyType::FLOAT:
                     loadedProperties.emplace(nameAttr->value(), Property(static_cast<float>(std::atof(valueAttr->value()))));
@@ -722,7 +722,7 @@ namespace Learning2DEngine
                     loadedProperties.emplace(nameAttr->value(), Property(std::atoi(valueAttr->value())));
                     break;
                 case PropertyType::STRING:
-                    loadedProperties.emplace(nameAttr->value(), Property(valueAttr->value(), type));
+                    loadedProperties.emplace(nameAttr->value(), Property(valueAttr->value(), false));
                     break;
                 default:
                     break;

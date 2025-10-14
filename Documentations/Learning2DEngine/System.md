@@ -1391,10 +1391,10 @@ Property(float value);
 Property(int value);
 ```
 ```cpp
-Property(const std::string& value, PropertyType type);
+Property(const std::string& value, bool isFilePath = false);
 ```
 ```cpp
-Property(std::string&& value, PropertyType type);
+Property(std::string&& value, bool isFilePath = false);
 ```
 
 **~Property**  

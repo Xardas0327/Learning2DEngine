@@ -49,22 +49,14 @@ namespace Learning2DEngine
 			{
 			}
 
-			Property(const std::string& value, PropertyType type)
-				: type(type), boolValue(false), textValue(value)
+			Property(const std::string& value, bool isFilePath = false)
+				: type(isFilePath ? PropertyType::FILE : PropertyType::STRING), boolValue(false), textValue(value)
 			{
-				if (type != PropertyType::STRING && type != PropertyType::FILE)
-				{
-					L2DE_LOG_ERROR("TiledProperty: the type is not valid for string constructor.");
-				}
 			}
 
-			Property(std::string&& value, PropertyType type)
-				: type(type), boolValue(false), textValue(std::move(value))
+			Property(std::string&& value, bool isFilePath = false)
+				: type(isFilePath ? PropertyType::FILE : PropertyType::STRING), boolValue(false), textValue(std::move(value))
 			{
-				if (type != PropertyType::STRING && type != PropertyType::FILE)
-				{
-					L2DE_LOG_ERROR("TiledProperty: the type is not valid for string constructor.");
-				}
 			}
 
 			~Property() = default;
