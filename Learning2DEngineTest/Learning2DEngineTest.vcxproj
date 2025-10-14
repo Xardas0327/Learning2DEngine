@@ -168,6 +168,7 @@
     <ClCompile Include="System\CameraTest.cpp" />
     <ClCompile Include="System\GameObjectTest.cpp" />
     <ClCompile Include="System\MathTest.cpp" />
+    <ClCompile Include="System\PropertyTest.cpp" />
     <ClCompile Include="System\RandomTest.cpp" />
     <ClCompile Include="System\TransformTest.cpp" />
     <ClCompile Include="Test\CompareFloat.cpp" />
