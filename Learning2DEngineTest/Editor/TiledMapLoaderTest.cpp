@@ -19,6 +19,11 @@ namespace Learning2DEngine
 
 	namespace Editor
 	{
+		/// <summary>
+		/// It tests the most functions of the TiledMapLoader class.
+		/// But some functions are not tested because they need the OpenGL context.
+		/// And some tests work only in the Release mode.
+		/// </summary>
 		TEST_CLASS(TiledMapLoaderTest)
 		{
 		public:
