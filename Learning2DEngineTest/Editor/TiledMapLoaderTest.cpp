@@ -488,6 +488,13 @@ namespace Learning2DEngine
 
 				GameObjectManager::GetInstance().DestroyAllGameObjects();
 			}
+
+			// These functions are not tested because they need the OpenGL context.
+			// CreateGameObject - LayerItemData
+			// CreateGameObject - ObjectLayerItemData
+			// LoadLayers
+			// LoadObjectLayers
+			// LoadFromFile
 		};
 
 	}
