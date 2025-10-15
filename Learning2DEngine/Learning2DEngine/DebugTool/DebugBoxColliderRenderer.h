@@ -15,7 +15,7 @@ namespace Learning2DEngine
 	{
 		class DebugBoxColliderRenderer : public DebugColliderRenderer<Physics::BaseBoxColliderComponent>, public System::Singleton<DebugBoxColliderRenderer>
 		{
-			friend class Singleton<DebugBoxColliderRenderer>;
+			friend class System::Singleton<DebugBoxColliderRenderer>;
 		private:
 			DebugBoxColliderRenderer();
 

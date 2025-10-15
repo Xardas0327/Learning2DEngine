@@ -68,5 +68,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="TestData\Editor\MapTest.tmx" />
+    <None Include="TestData\Editor\Green.tsx" />
+    <None Include="TestData\Editor\Red.tsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="TestData\Editor\Images\Green.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="TestData\Editor\Images\Red.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

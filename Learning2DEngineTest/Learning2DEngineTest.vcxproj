@@ -197,7 +197,13 @@
     <ClInclude Include="Test\CompareFloat.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="TestData\Editor\Green.tsx" />
     <None Include="TestData\Editor\MapTest.tmx" />
+    <None Include="TestData\Editor\Red.tsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="TestData\Editor\Images\Green.png" />
+    <Image Include="TestData\Editor\Images\Red.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

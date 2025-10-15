@@ -1,8 +1,11 @@
 #include "CppUnitTest.h"
 
 #include <rapidxml/rapidxml_utils.hpp>
+#include <Learning2DEngine/DebugTool/DebugMacro.h>
 #include <Learning2DEngine/Editor/TiledMapLoader.h>
 #include <Learning2DEngine/System/GameObjectManager.h>
+#include <Learning2DEngine/Physics/CircleColliderComponent.h>
+#include <Learning2DEngine/Physics/BoxColliderComponent.h>
 
 #include "../Test/CompareFloat.h"
 
@@ -12,6 +15,7 @@ namespace Learning2DEngine
 {
 	using namespace System;
 	using namespace Test;
+	using namespace Physics;
 
 	namespace Editor
 	{
@@ -55,7 +59,7 @@ namespace Learning2DEngine
 
 				TiledMap map;
 				TiledMapLoader::LoadMapAttributes(map, mapNode);
-				
+
 				Assert::AreEqual(map.GetVersion(), std::string("1.10"));
 				Assert::AreEqual(map.GetTiledVersion(), std::string("1.11.2"));
 				Assert::AreEqual(map.GetOrientation(), std::string("orthogonal"));
@@ -110,7 +114,7 @@ namespace Learning2DEngine
 
 				Assert::IsTrue(properties["String"].GetType() == PropertyType::STRING);
 				Assert::AreEqual(properties["String"].GetString(), std::string("Green"));
-				
+
 			}
 
 			TEST_METHOD(LoadTilesPropertiesWithoutProperties)
@@ -332,6 +336,150 @@ namespace Learning2DEngine
 
 				Assert::IsTrue(map.groupedGameObjects["Group"][0] == gameObject);
 				Assert::AreEqual(properties.size(), size_t(0));
+
+				GameObjectManager::GetInstance().DestroyAllGameObjects();
+			}
+
+			//The collider is not testable in debug mode because of DebugCircleColliderRenderComponent
+			TEST_METHOD(AddColliderToGameObjectWithPropertyOnly)
+			{
+				GameObject* gameObject = GameObjectManager::GetInstance().CreateGameObject();
+				std::map<std::string, Property> properties;
+				properties[TiledMapSmartCollider] = Property(std::string(TiledMapSmartColliderValueCircle));
+				properties[TiledMapSmartColliderRadius] = Property(5.2f);
+
+#if !L2DE_DEBUG
+				TiledMapLoader::AddColliderToGameObject(gameObject, properties);
+
+				auto collider = gameObject->GetComponent<CircleColliderComponent>();
+
+				Assert::IsTrue(collider != nullptr);
+				Assert::IsTrue(CompareFloat::IsEqual(collider->colliderRadius, 5.2f));
+				Assert::AreEqual(properties.size(), size_t(0));
+#endif
+
+				GameObjectManager::GetInstance().DestroyAllGameObjects();
+			}
+
+			//The collider is not testable in debug mode because of DebugBoxColliderRenderComponent
+			TEST_METHOD(AddColliderToGameObjectWithObjectBoxWithoutOffset)
+			{
+				GameObject* gameObject = GameObjectManager::GetInstance().CreateGameObject();
+				ObjectBox object(glm::vec2(2.0f, 2.0f), glm::vec2(8.0f, 8.0f), std::map<std::string, Property>());
+				std::map<std::string, Property> properties;
+
+#if !L2DE_DEBUG
+				TiledMapLoader::AddColliderToGameObject(gameObject, object, properties, false);
+
+				auto collider = gameObject->GetComponent<BoxColliderComponent>();
+
+				Assert::IsTrue(collider != nullptr);
+				Assert::IsTrue(CompareFloat::IsEqual(collider->colliderOffset, glm::vec2(0.0f, 0.0f)));
+				Assert::IsTrue(CompareFloat::IsEqual(collider->colliderSize, glm::vec2(8.0f, 8.0f)));
+#endif
+
+				GameObjectManager::GetInstance().DestroyAllGameObjects();
+			}
+
+			//The collider is not testable in debug mode because of DebugBoxColliderRenderComponent
+			TEST_METHOD(AddColliderToGameObjectWithObjectBoxWithOffset)
+			{
+				GameObject* gameObject = GameObjectManager::GetInstance().CreateGameObject();
+				ObjectBox object(glm::vec2(2.0f, 2.0f), glm::vec2(8.0f, 8.0f), std::map<std::string, Property>());
+				std::map<std::string, Property> properties;
+
+#if !L2DE_DEBUG
+				TiledMapLoader::AddColliderToGameObject(gameObject, object, properties, true);
+
+				auto collider = gameObject->GetComponent<BoxColliderComponent>();
+
+				Assert::IsTrue(collider != nullptr);
+				Assert::IsTrue(CompareFloat::IsEqual(collider->colliderOffset, glm::vec2(2.0f, 2.0f)));
+				Assert::IsTrue(CompareFloat::IsEqual(collider->colliderSize, glm::vec2(8.0f, 8.0f)));
+#endif
+
+				GameObjectManager::GetInstance().DestroyAllGameObjects();
+			}
+
+			//The collider is not testable in debug mode because of DebugCircleColliderRenderComponent
+			TEST_METHOD(AddColliderToGameObjectWithObjectEllipseWithoutOffset)
+			{
+				GameObject* gameObject = GameObjectManager::GetInstance().CreateGameObject();
+				ObjectEllipse object(glm::vec2(2.0f, 2.0f), glm::vec2(8.0f, 8.0f), std::map<std::string, Property>());
+				std::map<std::string, Property> properties;
+
+#if !L2DE_DEBUG
+				TiledMapLoader::AddColliderToGameObject(gameObject, object, properties, false);
+
+				auto collider = gameObject->GetComponent<CircleColliderComponent>();
+
+				Assert::IsTrue(collider != nullptr);
+				Assert::IsTrue(CompareFloat::IsEqual(collider->colliderOffset, glm::vec2(0.0f, 0.0f)));
+				Assert::IsTrue(CompareFloat::IsEqual(collider->colliderRadius, 8.0f));
+#endif
+
+				GameObjectManager::GetInstance().DestroyAllGameObjects();
+			}
+
+			//The collider is not testable in debug mode because of DebugCircleColliderRenderComponent
+			TEST_METHOD(AddColliderToGameObjectWithObjectEllipseWithOffset)
+			{
+				GameObject* gameObject = GameObjectManager::GetInstance().CreateGameObject();
+				ObjectEllipse object(glm::vec2(2.0f, 2.0f), glm::vec2(8.0f, 8.0f), std::map<std::string, Property>());
+				std::map<std::string, Property> properties;
+
+#if !L2DE_DEBUG
+				TiledMapLoader::AddColliderToGameObject(gameObject, object, properties, true);
+
+				auto collider = gameObject->GetComponent<CircleColliderComponent>();
+
+				Assert::IsTrue(collider != nullptr);
+				Assert::IsTrue(CompareFloat::IsEqual(collider->colliderOffset, glm::vec2(2.0f, 2.0f)));
+				Assert::IsTrue(CompareFloat::IsEqual(collider->colliderRadius, 8.0f));
+#endif
+
+				GameObjectManager::GetInstance().DestroyAllGameObjects();
+			}
+
+			//The collider is not testable in debug mode because of DebugCircleColliderRenderComponent
+			TEST_METHOD(CreateColliderFromObjectItemWithoutSmartTag)
+			{
+				TiledMap map;
+				GameObject* gameObject = GameObjectManager::GetInstance().CreateGameObject();
+				ObjectEllipse object(glm::vec2(2.0f, 2.0f), glm::vec2(8.0f, 8.0f), std::map<std::string, Property>());
+				std::map<std::string, Property> properties;
+				ObjectItem objectItem(std::move(object));
+
+#if !L2DE_DEBUG
+				TiledMapLoader::CreateColliderFromObjectItem<ObjectEllipse>(map, objectItem, gameObject, properties);
+
+				auto collider = gameObject->GetComponent<CircleColliderComponent>();
+
+				Assert::IsTrue(collider == nullptr);
+#endif
+
+				GameObjectManager::GetInstance().DestroyAllGameObjects();
+			}
+
+			//The collider is not testable in debug mode because of DebugCircleColliderRenderComponent
+			TEST_METHOD(CreateColliderFromObjectItemWithSmartTag)
+			{
+				TiledMap map;
+				GameObject* gameObject = GameObjectManager::GetInstance().CreateGameObject();
+				std::map<std::string, Property> properties;
+				properties[TiledMapSmartOnGameObject] = Property(true);
+				ObjectEllipse object(glm::vec2(2.0f, 2.0f), glm::vec2(8.0f, 8.0f), std::move(properties));
+				ObjectItem objectItem(std::move(object));
+
+#if !L2DE_DEBUG
+				TiledMapLoader::CreateColliderFromObjectItem<ObjectEllipse>(map, objectItem, gameObject, std::map<std::string, Property>());
+
+				auto collider = gameObject->GetComponent<CircleColliderComponent>();
+
+				Assert::IsTrue(collider != nullptr);
+				Assert::IsTrue(CompareFloat::IsEqual(collider->colliderOffset, glm::vec2(2.0f, 2.0f)));
+				Assert::IsTrue(CompareFloat::IsEqual(collider->colliderRadius, 8.0f));
+#endif
 
 				GameObjectManager::GetInstance().DestroyAllGameObjects();
 			}

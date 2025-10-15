@@ -89,7 +89,7 @@ namespace Learning2DEngine
 			template<class T>
 			static void CreateColliderFromObjectItem(
 				TiledMap& map,
-				ObjectItem objectItem,
+				const ObjectItem& objectItem,
 				System::GameObject* tiledGameObject,
 				std::map<std::string, System::Property>& tiledProperties)
 			{

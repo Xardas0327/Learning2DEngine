@@ -6,6 +6,11 @@ namespace Learning2DEngine
 	{
 		const float CompareFloat::floatThreshold = 0.001f;
 
+		bool CompareFloat::IsEqual(float a, float b)
+		{
+			return glm::abs(a - b) < floatThreshold;
+		}
+
 		bool CompareFloat::IsEqual(const glm::vec2& a, const glm::vec2& b)
 		{
 			glm::vec2 difference = a - b;

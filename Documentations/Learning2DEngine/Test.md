@@ -33,6 +33,9 @@ static const float floatThreshold;
 **Public:**  
 **IsEqual**  
 ```cpp
+static bool IsEqual(float a, float b);
+```
+```cpp
 static bool IsEqual(const glm::vec2& a, const glm::vec2& b);
 ```
 ```cpp

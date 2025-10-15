@@ -15,7 +15,7 @@ namespace Learning2DEngine
 	{
 		class DebugCircleColliderRenderer : public DebugColliderRenderer<Physics::BaseCircleColliderComponent>, public System::Singleton<DebugCircleColliderRenderer>
 		{
-			friend class Singleton<DebugCircleColliderRenderer>;
+			friend class System::Singleton<DebugCircleColliderRenderer>;
 		private:
 			static constexpr const int CircleSegment = 50;
 

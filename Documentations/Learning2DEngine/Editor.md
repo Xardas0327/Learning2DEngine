@@ -753,7 +753,7 @@ static void CreateGameObject(TiledMap& map, const ObjectLayerItemData& itemData)
 **CreateColliderFromObjectItem**  
 ```cpp
 template<class T>
-static void CreateColliderFromObjectItem(TiledMap& map, ObjectItem objectItem, System::GameObject* tiledGameObject, std::map<std::string, System::Property>& tiledProperties);
+static void CreateColliderFromObjectItem(TiledMap& map, const ObjectItem& objectItem, System::GameObject* tiledGameObject, std::map<std::string, System::Property>& tiledProperties);
 ```
 
 **AddColliderToGameObject**  
