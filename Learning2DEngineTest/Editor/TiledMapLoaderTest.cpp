@@ -232,6 +232,62 @@ namespace Learning2DEngine
 				Assert::AreEqual(tileset.margin, 0);
 
 			}
+
+			TEST_METHOD(LoadTilesets)
+			{
+				rapidxml::file<> xmlFile("TestData/Editor/MapTest.tmx");
+				auto doc = std::make_unique<rapidxml::xml_document<>>();
+				doc->parse<0>(xmlFile.data());
+
+				auto mapNode = doc->first_node(TiledMapNodeMap);
+
+				std::map<std::string, std::string> textureMap;
+				textureMap["Green"] = "Green";
+				textureMap["Red"] = "Red";
+				std::vector<TiledMapTileset> tilesets;
+
+				TiledMapLoader::LoadTilesets(mapNode, "TestData/Editor/", textureMap, tilesets);
+				Assert::AreEqual(tilesets.size(), size_t(2));
+
+				//Red
+				Assert::AreEqual(tilesets[0].firstGid, 1);
+				Assert::IsTrue(tilesets[0].HasNumber(1));
+				Assert::IsFalse(tilesets[0].HasNumber(2));
+
+				//Green
+				Assert::AreEqual(tilesets[1].firstGid, 2);
+				Assert::IsFalse(tilesets[1].HasNumber(1));
+				Assert::IsTrue(tilesets[1].HasNumber(2));
+				Assert::IsTrue(tilesets[1].HasNumber(5));
+				Assert::IsFalse(tilesets[1].HasNumber(6));
+			}
+
+			TEST_METHOD(GetTilesetFromGid)
+			{
+				rapidxml::file<> xmlFile("TestData/Editor/MapTest.tmx");
+				auto doc = std::make_unique<rapidxml::xml_document<>>();
+				doc->parse<0>(xmlFile.data());
+
+				auto mapNode = doc->first_node(TiledMapNodeMap);
+
+				std::map<std::string, std::string> textureMap;
+				textureMap["Green"] = "Green";
+				textureMap["Red"] = "Red";
+				std::vector<TiledMapTileset> tilesets;
+
+				TiledMapLoader::LoadTilesets(mapNode, "TestData/Editor/", textureMap, tilesets);
+				Assert::AreEqual(tilesets.size(), size_t(2));
+
+				const TiledMapTileset* tileset1 = TiledMapLoader::GetTilesetFromGid(tilesets, 1);
+				Assert::IsNotNull(tileset1);
+
+				const TiledMapTileset* tileset2 = TiledMapLoader::GetTilesetFromGid(tilesets, 4);
+				Assert::IsNotNull(tileset2);
+				Assert::IsFalse(tileset1 == tileset2);
+
+				const TiledMapTileset* tileset3 = TiledMapLoader::GetTilesetFromGid(tilesets, 10);
+				Assert::IsNull(tileset3);
+			}
 		};
 
 	}
