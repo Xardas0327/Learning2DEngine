@@ -259,6 +259,7 @@ ObjectImage(const glm::vec2& position, const glm::vec2& size, std::map<std::stri
 ## ObjectItem
 ### Source Code:
 [ObjectItem.h](../../Learning2DEngine/Learning2DEngine/Editor/ObjectItem.h)  
+[ObjectItemTest.cpp](../../Learning2DEngineTest/Editor/ObjectItemTest.cpp)
 
 ### Description:
 It is a container for different object types from Tiled Map Editor.
@@ -643,6 +644,7 @@ constexpr const char* TiledMapSmartColliderMaskLayer = "MaskLayer";
 ### Source Code:
 [TiledMapLoader.h](../../Learning2DEngine/Learning2DEngine/Editor/TiledMapLoader.h)  
 [TiledMapLoader.cpp](../../Learning2DEngine/Learning2DEngine/Editor/TiledMapLoader.cpp)  
+[TiledMapLoaderTest.cpp](../../Learning2DEngineTest/Editor/TiledMapLoaderTest.cpp)
 
 ### Description:
 This is the main class to load a Tiled Map Editor map from the main tmx file.  
@@ -751,7 +753,7 @@ static void CreateGameObject(TiledMap& map, const ObjectLayerItemData& itemData)
 **CreateColliderFromObjectItem**  
 ```cpp
 template<class T>
-static void CreateColliderFromObjectItem(TiledMap& map, ObjectItem objectItem, System::GameObject* tiledGameObject, std::map<std::string, System::Property>& tiledProperties);
+static void CreateColliderFromObjectItem(TiledMap& map, const ObjectItem& objectItem, System::GameObject* tiledGameObject, std::map<std::string, System::Property>& tiledProperties);
 ```
 
 **AddColliderToGameObject**  
@@ -786,6 +788,7 @@ static TiledMap LoadFromFile(const std::string& filePath, const std::map<std::st
 ## TiledMapTileset
 ### Source Code:
 [TiledMapTileset.h](../../Learning2DEngine/Learning2DEngine/Editor/TiledMapTileset.h)  
+[TiledMapTilesetTest.cpp](../../Learning2DEngineTest/Editor/TiledMapTilesetTest.cpp)
 
 ### Description:
 It contains the tileset data.

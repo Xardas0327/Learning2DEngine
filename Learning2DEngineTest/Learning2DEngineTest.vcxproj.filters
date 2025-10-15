@@ -48,10 +48,35 @@
     <ClCompile Include="Physics\CollisionHelperTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="System\PropertyTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\ObjectItemTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\TiledMapTilesetTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\TiledMapLoaderTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Test\CompareFloat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TestData\Editor\MapTest.tmx" />
+    <None Include="TestData\Editor\Green.tsx" />
+    <None Include="TestData\Editor\Red.tsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="TestData\Editor\Images\Green.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="TestData\Editor\Images\Red.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

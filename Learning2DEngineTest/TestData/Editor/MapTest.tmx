@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="36" height="20" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#0099e6" nextlayerid="5" nextobjectid="51">
+ <properties>
+  <property name="LoadBackground" type="bool" value="true"/>
+ </properties>
+ <tileset firstgid="1" source="Red.tsx"/>
+ <tileset firstgid="2" source="Green.tsx"/>
+ <layer id="1" name="Layer" width="36" height="20">
+  <properties>
+   <property name="Layer" type="int" value="5"/>
+  </properties>
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,2,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,2,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,
+1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,0,0
+</data>
+ </layer>
+ <objectgroup id="4" name="ObjectLayer">
+  <properties>
+   <property name="Layer" type="int" value="0"/>
+  </properties>
+  <object id="32" gid="3" x="90" y="90" width="32" height="9">
+   <properties>
+    <property name="GroupName" value="MovingPlatform1"/>
+   </properties>
+  </object>
+  <object id="33" x="90" y="65">
+   <properties>
+    <property name="GroupName" value="MovingPlatform1Start"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="34" x="90" y="120">
+   <properties>
+    <property name="GroupName" value="MovingPlatform1End"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="39" x="20" y="45">
+   <properties>
+    <property name="GroupName" value="Coin"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="40" x="20" y="120">
+   <properties>
+    <property name="GroupName" value="Coin"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="41" x="160" y="120">
+   <properties>
+    <property name="GroupName" value="Coin"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="42" x="245" y="98">
+   <properties>
+    <property name="GroupName" value="Coin"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="46" x="50" y="90">
+   <properties>
+    <property name="GroupName" value="PlayerStart"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>

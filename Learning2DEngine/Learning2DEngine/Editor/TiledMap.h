@@ -16,6 +16,7 @@ namespace Learning2DEngine
         class TiledMap final
         {
             friend class TiledMapLoader;
+            friend class TiledMapLoaderTest;
         private:
             std::string version;
             std::string tiledVersion;

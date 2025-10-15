@@ -1333,6 +1333,7 @@ static inline glm::mat4x2 FlipByY(const glm::mat4x2& matrix);
 ## Property
 ### Source Code:
 [Property.h](../../Learning2DEngine/Learning2DEngine/System/Property.h)  
+[PropertyTest.cpp](../../Learning2DEngineTest/System/PropertyTest.cpp)
 
 ### Description:
 It can contain a value with a type.  
@@ -1391,10 +1392,10 @@ Property(float value);
 Property(int value);
 ```
 ```cpp
-Property(const std::string& value, PropertyType type);
+Property(const std::string& value, bool isFilePath = false);
 ```
 ```cpp
-Property(std::string&& value, PropertyType type);
+Property(std::string&& value, bool isFilePath = false);
 ```
 
 **~Property**  

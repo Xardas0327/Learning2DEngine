@@ -474,7 +474,7 @@ namespace Learning2DEngine
                     }
                     else if (strcmp(attr->name(), TiledMapAttrOpacity) == 0)
                     {
-                        opacity = std::atof(attr->value());
+                        opacity = static_cast<float>(std::atof(attr->value()));
                     }
                     else if (strcmp(attr->name(), TiledMapAttrTintcolor) == 0)
                     {
@@ -601,7 +601,7 @@ namespace Learning2DEngine
                     }
                     else if (strcmp(attr->name(), TiledMapAttrOpacity) == 0)
                     {
-                        opacity = std::atof(attr->value());
+                        opacity = static_cast<float>(std::atof(attr->value()));
                     }
                     else if (strcmp(attr->name(), TiledMapAttrTintcolor) == 0)
                     {
@@ -713,7 +713,7 @@ namespace Learning2DEngine
                     loadedProperties.emplace(nameAttr->value(), Property(TiledMapLoader::ConvertStringToColor(valueAttr->value())));
                     break;
                 case PropertyType::FILE:
-                    loadedProperties.emplace(nameAttr->value(), Property(folderPath + valueAttr->value(), type));
+                    loadedProperties.emplace(nameAttr->value(), Property(folderPath + valueAttr->value(), true));
                     break;
                 case PropertyType::FLOAT:
                     loadedProperties.emplace(nameAttr->value(), Property(static_cast<float>(std::atof(valueAttr->value()))));
@@ -722,7 +722,7 @@ namespace Learning2DEngine
                     loadedProperties.emplace(nameAttr->value(), Property(std::atoi(valueAttr->value())));
                     break;
                 case PropertyType::STRING:
-                    loadedProperties.emplace(nameAttr->value(), Property(valueAttr->value(), type));
+                    loadedProperties.emplace(nameAttr->value(), Property(valueAttr->value(), false));
                     break;
                 default:
                     break;
@@ -1450,7 +1450,6 @@ namespace Learning2DEngine
                 if (properties[TiledMapSmartGroupName].GetType() != PropertyType::STRING)
                 {
                     L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
-                    map.gameObjects.push_back(gameObject);
                 }
                 else
                 {
@@ -1459,12 +1458,11 @@ namespace Learning2DEngine
                     ].push_back(gameObject);
 
                     properties.erase(TiledMapSmartGroupName);
+                    return;
                 }
             }
-            else
-            {
-                map.gameObjects.push_back(gameObject);
-            }
+
+            map.gameObjects.push_back(gameObject);
         }
     }
 }
