@@ -2,7 +2,7 @@
 
 #include <rapidxml/rapidxml_utils.hpp>
 #include <Learning2DEngine/Editor/TiledMapLoader.h>
-#include <Learning2DEngine/System/ResourceManager.h>
+#include <Learning2DEngine/System/GameObjectManager.h>
 
 #include "../Test/CompareFloat.h"
 
@@ -75,7 +75,7 @@ namespace Learning2DEngine
 				doc->parse<0>(xmlFile.data());
 
 				auto tilesetNode = doc->first_node(TiledMapNodeTileset);
-				std::map<std::string, System::Property> properties;
+				std::map<std::string, Property> properties;
 				TiledMapLoader::LoadProperties(properties, tilesetNode);
 
 
@@ -89,7 +89,7 @@ namespace Learning2DEngine
 				doc->parse<0>(xmlFile.data());
 
 				auto tilesetNode = doc->first_node(TiledMapNodeTileset);
-				std::map<std::string, System::Property> properties;
+				std::map<std::string, Property> properties;
 				TiledMapLoader::LoadProperties(properties, tilesetNode, "C:/Images/");
 
 				Assert::AreEqual(properties.size(), size_t(6));
@@ -120,7 +120,7 @@ namespace Learning2DEngine
 				doc->parse<0>(xmlFile.data());
 
 				auto tilesetNode = doc->first_node(TiledMapNodeTileset);
-				std::map<int, std::map<std::string, System::Property>> properties;
+				std::map<int, std::map<std::string, Property>> properties;
 				TiledMapLoader::LoadTilesProperties(properties, tilesetNode, "SourceName");
 
 				Assert::AreEqual(properties.size(), size_t(0));
@@ -133,7 +133,7 @@ namespace Learning2DEngine
 				doc->parse<0>(xmlFile.data());
 
 				auto tilesetNode = doc->first_node(TiledMapNodeTileset);
-				std::map<int, std::map<std::string, System::Property>> properties;
+				std::map<int, std::map<std::string, Property>> properties;
 				TiledMapLoader::LoadTilesProperties(properties, tilesetNode, "SourceName");
 
 				Assert::AreEqual(properties.size(), size_t(2));
@@ -287,6 +287,53 @@ namespace Learning2DEngine
 
 				const TiledMapTileset* tileset3 = TiledMapLoader::GetTilesetFromGid(tilesets, 10);
 				Assert::IsNull(tileset3);
+			}
+
+			TEST_METHOD(LoadLayerId)
+			{
+				rapidxml::file<> xmlFile("TestData/Editor/MapTest.tmx");
+				auto doc = std::make_unique<rapidxml::xml_document<>>();
+				doc->parse<0>(xmlFile.data());
+
+				auto layerNode = doc->first_node(TiledMapNodeMap)->first_node(TiledMapNodeLayer);
+
+				int overrideLayerId = 0;
+				bool useOverrideLayerId = TiledMapLoader::LoadLayerId(layerNode, overrideLayerId);
+
+				Assert::AreEqual(useOverrideLayerId, true);
+				Assert::AreEqual(overrideLayerId, 5);
+			}
+
+			TEST_METHOD(AddGameObjectToMapWithoutSmart)
+			{
+				TiledMap map;
+				GameObject* gameObject = GameObjectManager::GetInstance().CreateGameObject();
+				std::map<std::string, Property> properties;
+				TiledMapLoader::AddGameObjectToMap(map, gameObject, properties);
+
+				Assert::AreEqual(map.gameObjects.size(), size_t(1));
+				Assert::AreEqual(map.groupedGameObjects.size(), size_t(0));
+
+				Assert::IsTrue(map.gameObjects[0] == gameObject);
+
+				GameObjectManager::GetInstance().DestroyAllGameObjects();
+			}
+
+			TEST_METHOD(AddGameObjectToMapWithSmart)
+			{
+				TiledMap map;
+				GameObject* gameObject = GameObjectManager::GetInstance().CreateGameObject();
+				std::map<std::string, Property> properties;
+				properties[TiledMapSmartGroupName] = Property(std::string("Group"));
+				TiledMapLoader::AddGameObjectToMap(map, gameObject, properties);
+
+				Assert::AreEqual(map.gameObjects.size(), size_t(0));
+				Assert::AreEqual(map.groupedGameObjects.size(), size_t(1));
+
+				Assert::IsTrue(map.groupedGameObjects["Group"][0] == gameObject);
+				Assert::AreEqual(properties.size(), size_t(0));
+
+				GameObjectManager::GetInstance().DestroyAllGameObjects();
 			}
 		};
 

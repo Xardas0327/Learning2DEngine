@@ -1450,7 +1450,6 @@ namespace Learning2DEngine
                 if (properties[TiledMapSmartGroupName].GetType() != PropertyType::STRING)
                 {
                     L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
-                    map.gameObjects.push_back(gameObject);
                 }
                 else
                 {
@@ -1459,12 +1458,11 @@ namespace Learning2DEngine
                     ].push_back(gameObject);
 
                     properties.erase(TiledMapSmartGroupName);
+                    return;
                 }
             }
-            else
-            {
-                map.gameObjects.push_back(gameObject);
-            }
+
+            map.gameObjects.push_back(gameObject);
         }
     }
 }
