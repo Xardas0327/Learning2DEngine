@@ -2,6 +2,7 @@
 
 #include <rapidxml/rapidxml_utils.hpp>
 #include <Learning2DEngine/Editor/TiledMapLoader.h>
+#include <Learning2DEngine/System/ResourceManager.h>
 
 #include "../Test/CompareFloat.h"
 
@@ -30,6 +31,17 @@ namespace Learning2DEngine
 					TiledMapLoader::ConvertStringToColor("#8000fff0"),
 					c2
 				));
+			}
+
+			TEST_METHOD(LoadMapBackground)
+			{
+				rapidxml::file<> xmlFile("TestData/Editor/MapTest.tmx");
+				auto doc = std::make_unique<rapidxml::xml_document<>>();
+				doc->parse<0>(xmlFile.data());
+
+				auto mapNode = doc->first_node(TiledMapNodeMap);
+
+				Assert::AreEqual(TiledMapLoader::LoadMapBackground(mapNode), true);
 			}
 
 			TEST_METHOD(LoadMapAttributes)
@@ -203,6 +215,22 @@ namespace Learning2DEngine
 				Assert::IsNotNull(box);
 				Assert::IsTrue(CompareFloat::IsEqual(box->position, glm::vec2(0.0f, 0.0f)));
 				Assert::IsTrue(CompareFloat::IsEqual(box->size, glm::vec2(8.0f, 8.0f)));
+			}
+
+			TEST_METHOD(LoadTileset)
+			{
+				std::map<std::string, std::string> textureMap;
+				textureMap["Green"] = "Green";
+				TiledMapTileset tileset;
+				TiledMapLoader::LoadTileset("TestData/Editor/", "Green.tsx", textureMap, tileset);
+
+				Assert::IsTrue(CompareFloat::IsEqual(tileset.tileSize, glm::vec2(8.0f, 8.0f)));
+				Assert::IsTrue(CompareFloat::IsEqual(tileset.tileOffset, glm::vec2(0.0f, 0.0f)));
+				Assert::AreEqual(tileset.columns, 2);
+				Assert::AreEqual(tileset.tileCount, 4);
+				Assert::AreEqual(tileset.spacing, 0);
+				Assert::AreEqual(tileset.margin, 0);
+
 			}
 		};
 
