@@ -124,13 +124,85 @@ namespace Learning2DEngine
 				std::map<int, std::map<std::string, System::Property>> properties;
 				TiledMapLoader::LoadTilesProperties(properties, tilesetNode, "SourceName");
 
-				Assert::AreEqual(properties.size(), size_t(1));
+				Assert::AreEqual(properties.size(), size_t(2));
 
 				Assert::AreEqual(properties.count(0), size_t(0));
+				Assert::AreEqual(properties.count(2), size_t(1));
 				Assert::AreEqual(properties.count(3), size_t(1));
 
+				Assert::IsTrue(properties[2]["Type"].GetType() == PropertyType::STRING);
+				Assert::AreEqual(properties[2]["Type"].GetString(), std::string("Dark"));
 				Assert::IsTrue(properties[3]["Type"].GetType() == PropertyType::STRING);
 				Assert::AreEqual(properties[3]["Type"].GetString(), std::string("Light"));
+			}
+
+			TEST_METHOD(LoadObjectItemsWithoutObjects)
+			{
+				rapidxml::file<> xmlFile("TestData/Editor/Red.tsx");
+				auto doc = std::make_unique<rapidxml::xml_document<>>();
+				doc->parse<0>(xmlFile.data());
+
+				auto tileNode = doc->first_node(TiledMapNodeTileset)->first_node(TiledMapNodeTile);
+
+				std::vector<ObjectItem> objectItems;
+				TiledMapLoader::LoadObjectItems(objectItems, tileNode);
+				Assert::AreEqual(objectItems.size(), size_t(0));
+			}
+
+			TEST_METHOD(LoadObjectItemsWithObjects)
+			{
+				rapidxml::file<> xmlFile("TestData/Editor/Green.tsx");
+				auto doc = std::make_unique<rapidxml::xml_document<>>();
+				doc->parse<0>(xmlFile.data());
+
+				auto tileNode = doc->first_node(TiledMapNodeTileset)->first_node(TiledMapNodeTile)
+					->next_sibling(TiledMapNodeTile); //the second tile
+
+				std::vector<ObjectItem> objectItems;
+				TiledMapLoader::LoadObjectItems(objectItems, tileNode);
+				Assert::AreEqual(objectItems.size(), size_t(1));
+
+				Assert::IsTrue(objectItems[0].type == ObjectType::BOX);
+				auto box = static_cast<const ObjectBox*>(objectItems[0].GetData());
+				Assert::IsNotNull(box);
+				Assert::IsTrue(CompareFloat::IsEqual(box->position, glm::vec2(0.0f, 0.0f)));
+				Assert::IsTrue(CompareFloat::IsEqual(box->size, glm::vec2(8.0f, 8.0f)));
+			}
+
+			TEST_METHOD(LoadTilesObjectItemsWithoutObjects)
+			{
+				rapidxml::file<> xmlFile("TestData/Editor/Red.tsx");
+				auto doc = std::make_unique<rapidxml::xml_document<>>();
+				doc->parse<0>(xmlFile.data());
+
+				auto tilesetNode = doc->first_node(TiledMapNodeTileset);
+
+				std::map<int, std::vector<ObjectItem>> objectItems;
+				TiledMapLoader::LoadTilesObjectItems(objectItems, tilesetNode, "SourceName");
+				Assert::AreEqual(objectItems.size(), size_t(0));
+			}
+
+			TEST_METHOD(LoadTilesObjectItemsWithObjects)
+			{
+				rapidxml::file<> xmlFile("TestData/Editor/Green.tsx");
+				auto doc = std::make_unique<rapidxml::xml_document<>>();
+				doc->parse<0>(xmlFile.data());
+
+				auto tilesetNode = doc->first_node(TiledMapNodeTileset);
+
+				std::map<int, std::vector<ObjectItem>> objectItems;
+				TiledMapLoader::LoadTilesObjectItems(objectItems, tilesetNode, "SourceName");
+				Assert::AreEqual(objectItems.size(), size_t(1));
+
+				Assert::AreEqual(objectItems.count(0), size_t(0));
+				Assert::AreEqual(objectItems.count(3), size_t(1));
+
+
+				Assert::IsTrue(objectItems[3][0].type == ObjectType::BOX);
+				auto box = static_cast<const ObjectBox*>(objectItems[3][0].GetData());
+				Assert::IsNotNull(box);
+				Assert::IsTrue(CompareFloat::IsEqual(box->position, glm::vec2(0.0f, 0.0f)));
+				Assert::IsTrue(CompareFloat::IsEqual(box->size, glm::vec2(8.0f, 8.0f)));
 			}
 		};
 

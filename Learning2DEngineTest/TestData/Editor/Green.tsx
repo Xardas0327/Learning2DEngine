@@ -9,6 +9,11 @@
   <property name="String" value="Green"/>
  </properties>
  <image source="Images/Green.png" width="16" height="16"/>
+ <tile id="2">
+  <properties>
+   <property name="Type" value="Dark"/>
+  </properties>
+ </tile>
  <tile id="3">
   <properties>
    <property name="Type" value="Light"/>
