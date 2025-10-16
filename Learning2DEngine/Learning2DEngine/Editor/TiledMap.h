@@ -11,8 +11,6 @@ namespace Learning2DEngine
 {
     namespace Editor
     {
-        class TiledMapLoader;
-
         class TiledMap final
         {
             friend class TiledMapLoader;
