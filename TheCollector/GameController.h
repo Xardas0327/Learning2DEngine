@@ -14,12 +14,12 @@
 #include "MovingPlatformController.h"
 #include "BoxController.h"
 
-enum class GameStatus {Menu, Play, Ended};
+enum class GameStatus { Menu, Play, Ended };
 
 #define PLAY_TIME 45.0f
 
 class GameController : public Learning2DEngine::System::UpdaterComponent,
-                        public IDetectorCustomer
+    public IDetectorCustomer
 {
     friend class Learning2DEngine::System::GameObject;
 protected:

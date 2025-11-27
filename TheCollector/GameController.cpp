@@ -56,7 +56,10 @@ void GameController::Init()
     // I have to load a sound, because it gets stuck a bit on the first sound.
     ISound* sound = soundEngine->play2D("Assets/Sounds/jump.wav", false, false, true);
     if (sound)
+    {
         sound->stop();
+        sound->drop();
+    }
 
     //Player
     auto player = gameObjectManager.CreateGameObject(Transform(playerStartPosition));
