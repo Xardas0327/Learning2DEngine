@@ -23,6 +23,9 @@ So, if you want to try Learning2DEngine, you can do it.
 But you should check the licenses first. Their licences are in their own documentation.  
 Moreover, if I create a new version, maybe it won't be compatible with the older versions.
 
+## Made by Learning2DEngine
+- [Space Hell](https://xardas0327.itch.io/space-hell) for [Game Off 2025](https://itch.io/jam/game-off-2025)
+
 ## Requirements:
 - Windows 64-bit (It is tested on Windows 11 only)
 - Visual Studio 2022
@@ -33,22 +36,12 @@ Moreover, if I create a new version, maybe it won't be compatible with the older
   - [Download](https://www.mapeditor.org/)
   - [Documentation](https://doc.mapeditor.org/en/stable/)
 
-## Used Libraries:
-The most project can't really be started from zero, so I also use some libraries,
-but I tried to keep them minimum.
-- GLAD for OpenGL [License](https://github.com/Dav1dde/glad?tab=License-1-ov-file)
-- GLFW for OpenGL [License](https://www.glfw.org/license.html)
-- GLM for OpenGL math [License](https://github.com/g-truc/glm?tab=License-1-ov-file)
-- stb_image for load images into textures [License](https://github.com/nothings/stb?tab=License-1-ov-file)
-- Freetype for write texts on the screen [License](https://freetype.org/license.html)
-- RapidXML for Tiled Map Editor support (MIT) [License](https://rapidxml.sourceforge.net/license.txt)
-
 ## Documentation:
 It is recommended to use the documentation links in the released branches.
 ### [Learning2DEngine](Documentations/Learning2DEngine.md)
 ### [Tiled Map Editor](Documentations/TiledMapEditor.md)
 
-### Games
+### Demos
 - [Breakout](Documentations/Breakout.md)
 - [Snake](Documentations/Snake.md)
 - [The Collector](Documentations/TheCollector.md)
