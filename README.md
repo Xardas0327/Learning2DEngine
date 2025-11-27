@@ -25,7 +25,7 @@ Moreover, if I create a new version, maybe it won't be compatible with the older
 
 ## Made by Learning2DEngine
 - [Space Hell](https://xardas0327.itch.io/space-hell) for [Game Off 2025](https://itch.io/jam/game-off-2025)  
-   Its source Code is on [Github](https://github.com/Xardas0327/SpaceHell).
+   Its source code is on [Github](https://github.com/Xardas0327/SpaceHell).
 
 ## Requirements:
 - Windows 64-bit (It is tested on Windows 11 only)
