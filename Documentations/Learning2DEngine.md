@@ -70,6 +70,16 @@ destroyed immediately. So, every reference pointers will be fine until end of th
 ## License
 Learning2DEngine © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  
 
+## Used Libraries:
+The most project can't really be started from zero, so I also use some libraries,
+but I tried to keep them minimum.
+- GLAD for OpenGL [License](https://github.com/Dav1dde/glad?tab=License-1-ov-file)
+- GLFW for OpenGL [License](https://www.glfw.org/license.html)
+- GLM for OpenGL math [License](https://github.com/g-truc/glm?tab=License-1-ov-file)
+- stb_image for load images into textures [License](https://github.com/nothings/stb?tab=License-1-ov-file)
+- Freetype for write texts on the screen [License](https://freetype.org/license.html)
+- RapidXML for Tiled Map Editor support (MIT) [License](https://rapidxml.sourceforge.net/license.txt)
+
 ## Properties
 - Configuration Type:  
   - Static library (.lib)
