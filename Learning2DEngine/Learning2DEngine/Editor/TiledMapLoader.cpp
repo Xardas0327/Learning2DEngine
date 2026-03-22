@@ -666,20 +666,6 @@ namespace Learning2DEngine
                 property = property->next_sibling(TiledMapNodeProperty)
                 )
             {
-                auto nameAttr = property->first_attribute(TiledMapAttrName);
-                if (nameAttr == nullptr)
-                {
-                    L2DE_LOG_WARNING("TiledMapLoader: the property name attribute is missing.");
-                    continue;
-                }
-
-                auto valueAttr = property->first_attribute(TiledMapAttrValue);
-                if (valueAttr == nullptr)
-                {
-                    L2DE_LOG_WARNING("TiledMapLoader: the property value attribute is missing.");
-                    continue;
-                }
-
                 auto typeAttr = property->first_attribute(TiledMapAttrType);
                 PropertyType type = PropertyType::STRING;
                 if (typeAttr != nullptr)
@@ -702,6 +688,20 @@ namespace Learning2DEngine
                         L2DE_LOG_WARNING("TiledMapLoader: the property type is not valid: " + typeStr);
                         continue;
                     }
+                }
+
+                auto nameAttr = property->first_attribute(TiledMapAttrName);
+                if (nameAttr == nullptr)
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: the property name attribute is missing.");
+                    continue;
+                }
+
+                auto valueAttr = property->first_attribute(TiledMapAttrValue);
+                if (valueAttr == nullptr)
+                {
+                    L2DE_LOG_WARNING("TiledMapLoader: the property value attribute is missing.");
+                    continue;
                 }
 
                 switch (type)
@@ -858,6 +858,8 @@ namespace Learning2DEngine
                 glm::vec2 position;
                 glm::vec2 size;
                 bool visible = true;
+                float opacity = 1.0f;
+
                 for (auto attr = object->first_attribute();
                     attr != nullptr;
                     attr = attr->next_attribute())
@@ -900,6 +902,10 @@ namespace Learning2DEngine
                     else if (strcmp(attr->name(), TiledMapAttrVisible) == 0)
                     {
                         visible = strcmp(attr->value(), "1") == 0;
+                    }
+                    else if (strcmp(attr->name(), TiledMapAttrOpacity) == 0)
+                    {
+                        opacity = static_cast<float>(std::atof(attr->value()));
                     }
                 }
 
@@ -949,11 +955,11 @@ namespace Learning2DEngine
                 case ObjectType::IMAGE:
                     if (!foundX || !foundY || !foundWidth || !foundHeight || !foundGid)
                     {
-                        L2DE_LOG_ERROR("TiledMapLoader: a ellipse object can't be created, because some data is missing.");
+                        L2DE_LOG_ERROR("TiledMapLoader: a image object can't be created, because some data is missing.");
                         continue;
                     }
                     loadedObjects.push_back(ObjectItem(std::move(
-                        ObjectImage(position, size, std::move(properties), gid, visible)
+                        ObjectImage(position, size, std::move(properties), gid, opacity, visible)
                     )));
                     break;
                 }
@@ -1186,7 +1192,7 @@ namespace Learning2DEngine
                     gameObject->transform.AddPosition(glm::vec2(0.0f, -image->size.y));
 
                     auto color = itemData.tintColor;
-                    color.a *= itemData.opacity;
+                    color.a *= itemData.opacity * image->opacity;
                     auto renderer = gameObject->AddComponent<SpriteRenderComponent>(
                         RendererMode::RENDER,
                         *selectedTileset->texture,
