@@ -248,11 +248,16 @@ struct ObjectImage : public ObjectBox
 int gid;
 ```
 
+**opacity**  
+```cpp
+float opacity;
+```
+
 ### Functions:
 **Public:**  
 **ObjectImage**  
 ```cpp
-ObjectImage(const glm::vec2& position, const glm::vec2& size, std::map<std::string, System::Property>&& properties, int gid, bool visible = true);
+ObjectImage(const glm::vec2& position, const glm::vec2& size, std::map<std::string, System::Property>&& properties, int gid, float opacity = 1.0f, bool visible = true);
 ```
 
 ##

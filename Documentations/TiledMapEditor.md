@@ -43,6 +43,7 @@ how the properties/smart properties are supported.
 | Int           | Yes       |
 | Object        | No        |
 | String        | Yes       |
+| List          | No        |
 
 ##
 ## Map
@@ -153,7 +154,7 @@ The Object Layer contains the objects, which will be converted to game objects.
 | Template    | No         |   |
 | Text    | No         | It is not supported, because it is not compatible with the engine's text renderers. |
 
-#### Attributes
+#### Attribute
 They have more or less same attributes.  
 Just the point object doesn't have width and height.
 
@@ -162,6 +163,7 @@ Just the point object doesn't have width and height.
 | Name        | No         | It is not relevant.|
 | Class       | No         | It is not relevant.|
 | Visible     | Yes        | If it is false, the game objects will be inactive.|
+| Opacity     | Yes (part) | `SpriteRenderComponent::data.color` alpha channel will be multiplied by it. It is relevant only for Image Object|
 | X           | Yes        | |
 | Y           | Yes        | |
 | Width       | Yes        | |
