@@ -6,7 +6,9 @@ If you are interested more about the user documentation, which can explain what
 is supported and what is not, it is [here](../TiledMapEditor.md).  
 
 Supported tile layer format: CSV  
-Supported format version: 1.10
+Supported format version: 1.10  
+_Note: The format version is different, than the Tiled version._  
+_For example: the Tiled 1.11.2 and the 1.12's format version is 1.10._
 
 - [BaseLayerItemData](Editor.md#baselayeritemdata)
 - [BaseObjectData](Editor.md#baseobjectdata)

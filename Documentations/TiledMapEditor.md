@@ -8,7 +8,9 @@ If you are interested more about the code, it is [here](Learning2DEngine/Editor.
 Here the code sample will be minimal.  
 If something is not supported, maybe it will be supported in the future.
 
-Supported format version: 1.10
+Supported format version: 1.10  
+_Note: The format version is different, than the Tiled version._  
+_For example: the Tiled 1.11.2 and the 1.12's format version is 1.10._
 
 ## How to use it in your game
 If the `TiledMapLoader::LoadFromFile` function is called with a tmx file path,
@@ -61,6 +63,8 @@ It is represented by the `TiledMap` class, but there is no game object for it.
 | Tile Side Length (Hex) | No | Only for hexagonal maps. |
 | Stragger Axis  | No         | For staggered and hexagonal maps. |
 | Stragger Index | No         | For staggered and hexagonal maps. |
+| Skew X         | No         | It is not relevant for the orthogonal orientation. |
+| Skew Y         | No         | It is not relevant for the orthogonal orientation. |
 | Parallax Origin | No         | |
 | Tile Layer Format | Yes (part) | Only the `CSV` is supported. |
 | Output Chucks | No | Only for Infinite maps. |
@@ -92,6 +96,7 @@ But the layer number/order can be overwritten by the `Smart Property`: _Layer_.
 | Locked      | No         | It is not relevant.|
 | Opacity     | Yes        | `SpriteRenderComponent::data.color` alpha channel will be multiplied by it. (after the Tint Color)|
 | Tint Color  | Yes        | `SpriteRenderComponent::data.color` will be overwritten by it (before Opacity).|
+| Blend Mode  | No         |  |
 | Horizontal Offset | Yes  | It will be added to game object's position.|
 | Vertical Offset | Yes   | It will be added to game object's position.|
 | Parallax Factor | No    |   |
@@ -124,6 +129,7 @@ But the layer number/order can be overwrite by the `Smart Property`: _Layer_.
 | Locked      | No         | It is not relevant.|
 | Opacity     | Yes        | `SpriteRenderComponent::data.color` alpha channel will be multiplied by it. (after the Tint Color)|
 | Tint Color  | Yes        | `SpriteRenderComponent::data.color` will be overwritten by it (before Opacity).|
+| Blend Mode  | No         |  |
 | Horizontal Offset | Yes  | It will be added to game object's position.|
 | Vertical Offset | Yes   | It will be added to game object's position.|
 | Parallax Factor | No    |   |
@@ -149,6 +155,7 @@ The Object Layer contains the objects, which will be converted to game objects.
 | Rectangle   | Yes        | It will be a game object with `BoxColliderComponent`. The collider attribute is addable by `Smart Properties`.|
 | Point       | Yes        | It will be a simple game object.|
 | Ellipse     | Yes (part) | It will be a game object with `CircleColliderComponent`. The collider attribute is addable by `Smart Properties`. It will use only the half of the width for radius.|
+| Capsule     | No         |   |
 | Polygon     | No         |   |
 | Image       | Yes        | It will be a game object with `SpriteRenderComponent`.|
 | Template    | No         |   |
@@ -245,6 +252,7 @@ If you interested more about the object's attributes, please check the Object se
 | Rectangle   | Yes        | It will be a game object with `BoxColliderComponent`. The collider attribute is addable by `Smart Properties`. It has separate game object by default, but with the _OnGameObject_ `Smart Property`, it will be added to the tile's game object.|
 | Point       | Yes        | It will be a simple game object.|
 | Ellipse     | Yes (part) | It will be a game object with `CircleColliderComponent`. The collider attribute is addable by `Smart Properties`. It will use only the half of the width for radius. It has separate game object by default, but with the _OnGameObject_ `Smart Property`, it will be added to the tile's game object.|
+| Capsule     | No         |   |
 | Polygon     | No         |   |
 | Template    | No         |   |
 | Detect Bounding Box | Yes | It is a simple Rectangle with the tile's size. |
