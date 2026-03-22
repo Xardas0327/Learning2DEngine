@@ -92,7 +92,7 @@ BaseMultiRenderer();
 **DestroyObject**  
 The Destroy() call it with or without mutex.
 ```cpp
-virtual void DestroyObject();
+virtual void DestroyObject() override;
 ```
 
 **CalcDynamicDataSize**  
@@ -168,14 +168,14 @@ virtual void DestroyObject();
 If the `ComponentManager` is in thread save mode, it will call the `RenderManager`'s mutex,
 before InitShader and InitVao functions.
 ```cpp
-void Init() override;
+virtual void Init() override;
 ```
 
 **Destroy**  
 If the `ComponentManager` is in thread save mode, it will call the `RenderManager`'s mutex,
 before DestroyObject function.
 ```cpp
-void Destroy() override;
+virtual void Destroy() override;
 ```
 
 ##
@@ -183,12 +183,6 @@ void Destroy() override;
 ### Source Code:
 [BaseRendererComponent.h](../../Learning2DEngine/Learning2DEngine/Render/BaseRendererComponent.h)
 
-### Header:
-```cpp
-template<class TRenderData, class TRenderer>
-class BaseRendererComponent : public virtual System::Component
-{...}
-```
 ### Description:
 It has some basic funcionality, which is essential for rendering, but this is a support
 class only, please use `RendererComponent` instead of this.  

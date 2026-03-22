@@ -21,7 +21,7 @@ namespace Learning2DEngine
 
 			}
 
-			virtual void DestroyObject()
+			virtual void DestroyObject() override
 			{
 				BaseRenderer::DestroyObject();
 
