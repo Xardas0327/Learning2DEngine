@@ -1,7 +1,5 @@
 #include "CppUnitTest.h"
 
-#define L2DE_DEBUG_SHOW_COLLIDER 0
-
 #include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/ComponentManager.h>
 #include <Learning2DEngine/System/GameObject.h>
