@@ -5,7 +5,7 @@
 
 #include "../System/GameObject.h"
 #include "../System/IComponentHandler.h"
-#include "BaseBoxColliderComponent.h"
+#include "BoxColliderComponent.h"
 #include "BaseCircleColliderComponent.h"
 #include "CollisionHelper.h"
 
@@ -16,10 +16,10 @@ namespace Learning2DEngine
 		class ColliderComponentHandler : public System::IComponentHandler
 		{
 		protected:
-			std::vector<BaseBoxColliderComponent*> dynamicBoxColliders;
-			std::vector<BaseBoxColliderComponent*> kinematicBoxColliders;
-			std::vector<BaseBoxColliderComponent*> newBoxColliders;
-			std::vector<BaseBoxColliderComponent*> removableBoxColliders;
+			std::vector<BoxColliderComponent*> dynamicBoxColliders;
+			std::vector<BoxColliderComponent*> kinematicBoxColliders;
+			std::vector<BoxColliderComponent*> newBoxColliders;
+			std::vector<BoxColliderComponent*> removableBoxColliders;
 
 			std::vector<BaseCircleColliderComponent*> dynamicCircleColliders;
 			std::vector<BaseCircleColliderComponent*> kinematicCircleColliders;
@@ -67,7 +67,7 @@ namespace Learning2DEngine
 				return first->isActive && first->gameObject->isActive;
 			}
 
-			void RemoveItem(BaseBoxColliderComponent* component);
+			void RemoveItem(BoxColliderComponent* component);
 			void RemoveItem(BaseCircleColliderComponent* component);
 
 			void RefreshBoxColliders();
@@ -95,8 +95,8 @@ namespace Learning2DEngine
 		public:
 			ColliderComponentHandler();
 
-			void Add(BaseBoxColliderComponent* collider, bool isThreadSafe);
-			void Remove(BaseBoxColliderComponent* collider, bool isThreadSafe);
+			void Add(BoxColliderComponent* collider, bool isThreadSafe);
+			void Remove(BoxColliderComponent* collider, bool isThreadSafe);
 
 			void Add(BaseCircleColliderComponent* collider, bool isThreadSafe);
 			void Remove(BaseCircleColliderComponent* collider, bool isThreadSafe);

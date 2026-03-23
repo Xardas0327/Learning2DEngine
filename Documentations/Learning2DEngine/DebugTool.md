@@ -23,7 +23,7 @@ if the renderers use the camera view matrix.
 
 ### Header:
 ```cpp
-class DebugBoxColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BaseBoxColliderComponent>, DebugBoxColliderRenderer>
+class DebugBoxColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BoxColliderComponent>, DebugBoxColliderRenderer>
 {...}
 ```
 
@@ -38,7 +38,7 @@ static const std::string id;
 **Protected:**  
 **DebugBoxColliderRenderComponent**  
 ```cpp
-DebugBoxColliderRenderComponent(System::GameObject* gameObject, Physics::BaseBoxColliderComponent* collider);
+DebugBoxColliderRenderComponent(System::GameObject* gameObject, Physics::BoxColliderComponent* collider);
 ```
 
 **GetId**  
@@ -67,7 +67,7 @@ This renderer is used by `DebugBoxColliderRenderComponent`, that it can render t
 
 ### Header:
 ```cpp
-class DebugBoxColliderRenderer : public DebugColliderRenderer<Physics::BaseBoxColliderComponent>, public System::Singleton<DebugBoxColliderRenderer>
+class DebugBoxColliderRenderer : public DebugColliderRenderer<Physics::BoxColliderComponent>, public System::Singleton<DebugBoxColliderRenderer>
 {...}
 ```
 

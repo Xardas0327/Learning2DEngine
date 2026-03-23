@@ -1,8 +1,11 @@
 #include "CppUnitTest.h"
 
+#define L2DE_DEBUG_SHOW_COLLIDER 0
+
 #include <Learning2DEngine/System/GameObjectManager.h>
+#include <Learning2DEngine/System/ComponentManager.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/Physics/BaseBoxColliderComponent.h>
+#include <Learning2DEngine/Physics/BoxColliderComponent.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -12,9 +15,10 @@ namespace Learning2DEngine
 
     namespace Physics
     {
-        TEST_CLASS(BaseBoxColliderComponentTest)
+        //It works in Release build only. 
+        TEST_CLASS(BoxColliderComponentTest)
         {
-			class TestBoxColliderComponent : public BaseBoxColliderComponent
+			class TestBoxColliderComponent : public BoxColliderComponent
 			{
             public:
                 TestBoxColliderComponent(
@@ -24,7 +28,7 @@ namespace Learning2DEngine
                     ColliderMode mode = ColliderMode::TRIGGER,
                     glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                     int32_t maskLayer = ~0)
-                    : System::Component(gameObject), BaseBoxColliderComponent(gameObject, size, type, mode, offset, maskLayer)
+                    : System::Component(gameObject), BoxColliderComponent(gameObject, size, type, mode, offset, maskLayer)
                 {
                 }
 			};
@@ -44,6 +48,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(boxCollider->GetColliderCenter() == glm::vec2(17.0f, 28.0f));
 
 				manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
 			}
         };
     }

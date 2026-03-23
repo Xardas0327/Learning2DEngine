@@ -1,7 +1,6 @@
 # Physics
 This namespace really simple. It has only some really basic functionality.
 
-- [BaseBoxColliderComponent](Physics.md#baseboxcollidercomponent)
 - [BaseCircleColliderComponent](Physics.md#basecirclecollidercomponent)
 - [BaseColliderComponent](Physics.md#basecollidercomponent)
 - [BoxColliderComponent](Physics.md#boxcollidercomponent)
@@ -13,45 +12,6 @@ This namespace really simple. It has only some really basic functionality.
 - [CollisionData](Physics.md#collisiondata)
 - [CollisionHelper](Physics.md#collisionhelper)
 - [Rigidbody](Physics.md#rigidbody)
-
-##
-## BaseBoxColliderComponent
-### Source Code:
-[BaseBoxColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseBoxColliderComponent.h)  
-[BaseBoxColliderComponentTest.cpp](../../Learning2DEngineTest/Physics/BaseBoxColliderComponentTest.cpp)
-
-### Description:
-The `BaseBoxColliderComponent` is really basic. It doesn't rotate,
-scale with the gameobject.  
-It has attributes for box collider, but this is a support
-class only. Please use `BoxColliderComponent` instead of this.  
-Please check for more info about `BoxColliderComponent` and `BaseColliderComponent`.
-
-### Header:
-```cpp
-class BaseBoxColliderComponent : public BaseColliderComponent
-{...}
-```
-
-### Variables:
-**Public:**  
-**colliderSize**
-```cpp
-glm::vec2 colliderSize;
-```
-
-### Functions:
-**Protected:**  
-**BaseBoxColliderComponent**  
-```cpp
-BaseBoxColliderComponent(System::GameObject* gameObject, glm::vec2 size, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
-```
-
-**Public:**  
-**GetColliderCenter**  
-```cpp
-glm::vec2 GetColliderCenter() const override;
-```
 
 ##
 ## BaseCircleColliderComponent
@@ -99,10 +59,10 @@ glm::vec2 GetColliderCenter() const override;
 [BaseColliderComponent.cpp](../../Learning2DEngine/Learning2DEngine/Physics/BaseColliderComponent.cpp)
 
 ### Description:
-It is a base class for the `BaseBoxColliderComponent` and
+It is a base class for the `BoxColliderComponent` and
 `BaseCircleColliderComponent` classes.
 It has some basic funcionality, which is essential for the colliders.  
-The classes, which are inherited from this `BaseBoxColliderComponent`
+The classes, which are inherited from this `BaseColliderComponent`
 has to have a constructor, which first parameter is `GameObject*` for gameObject member.  
 Please check more info about `System::Component`.
 
@@ -189,23 +149,29 @@ inline Rigidbody* GetRigidbody() const;
 ##
 ## BoxColliderComponent
 ### Source Code:
-[BoxColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BoxColliderComponent.h)
+[BoxColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BoxColliderComponent.h)  
+[BoxColliderComponent.cpp](../../Learning2DEngine/Learning2DEngine/Physics/BoxColliderComponent.cpp)  
+[BoxColliderComponentTest.cpp](../../Learning2DEngineTest/Physics/BoxColliderComponentTest.cpp)
 
 ### Description:
 The `BoxColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
-It knows everything like the `BaseBoxColliderComponent`, just it subscribes/unsubscribes
-for `ComponentManager`.  
-Please check for more info about `BaseBoxColliderComponent` and `BaseColliderComponent`.
+But it subscribes/unsubscribes for `ComponentManager`.  
+Please check for more info about `BaseColliderComponent`.
 
 ### Header:
 ```cpp
-class BoxColliderComponent : public BaseBoxColliderComponent
+class BoxColliderComponent : public BaseColliderComponent
 {...}
 ```
 
 ### Variables:
 **Public:**  
+**colliderSize**
+```cpp
+glm::vec2 colliderSize;
+```
+
 **debugTool**   
 It is available only, when the `L2DE_DEBUG_SHOW_COLLIDER` macro is defined.  
 It can show/hide the collider in the game.
@@ -230,6 +196,12 @@ virtual void Init() override;
 If this function is override, it must call the BoxColliderComponent::Destroy() in the first line.
 ```cpp
 virtual void Destroy() override;
+```
+
+**Public:**  
+**GetColliderCenter**  
+```cpp
+glm::vec2 GetColliderCenter() const override;
 ```
 
 ##
@@ -285,7 +257,7 @@ virtual void Destroy() override;
 [ColliderComponentHandler.cpp](../../Learning2DEngine/Learning2DEngine/Physics/ColliderComponentHandler.cpp)
 
 ### Description:
-It can handle the collision between the `BaseBoxColliderComponent`
+It can handle the collision between the `BoxColliderComponent`
 and the `BaseCircleColliderComponent` objects.  
 The `ComponentManager` has one from it.
 
@@ -299,22 +271,22 @@ class ColliderComponentHandler : public System::IComponentHandler
 **Protected:**  
 **dynamicBoxColliders**  
 ```cpp
-std::vector<BaseBoxColliderComponent*> dynamicBoxColliders;
+std::vector<BoxColliderComponent*> dynamicBoxColliders;
 ```
 
 **kinematicBoxColliders**  
 ```cpp
-std::vector<BaseBoxColliderComponent*> kinematicBoxColliders;
+std::vector<BoxColliderComponent*> kinematicBoxColliders;
 ```
 
 **newBoxColliders**  
 ```cpp
-std::vector<BaseBoxColliderComponent*> newBoxColliders;
+std::vector<BoxColliderComponent*> newBoxColliders;
 ```
 
 **removableBoxColliders**  
 ```cpp
-std::vector<BaseBoxColliderComponent*> removableBoxColliders;
+std::vector<BoxColliderComponent*> removableBoxColliders;
 ```
 
 **dynamicCircleColliders**  
@@ -383,7 +355,7 @@ bool CheckCollision(T* first, U* second);
 They will remove the item from the new colliders or they will add the item into removable colliders.  
 They are used by Remove functions.
 ```cpp
-void RemoveItem(BaseBoxColliderComponent* component);
+void RemoveItem(BoxColliderComponent* component);
 ```
 ```cpp
 void RemoveItem(BaseCircleColliderComponent* component);
@@ -449,7 +421,7 @@ ColliderComponentHandler();
 **Add**  
 If the isThreadSafe is true, their mutex will be used.
 ```cpp
-void Add(BaseBoxColliderComponent* collider, bool isThreadSafe);
+void Add(BoxColliderComponent* collider, bool isThreadSafe);
 ```
 ```cpp
 void Add(BaseCircleColliderComponent* collider, bool isThreadSafe);
@@ -458,7 +430,7 @@ void Add(BaseCircleColliderComponent* collider, bool isThreadSafe);
 **Remove**  
 If the isThreadSafe is true, their mutex will be used.
 ```cpp
-void Remove(BaseBoxColliderComponent* collider, bool isThreadSafe);
+void Remove(BoxColliderComponent* collider, bool isThreadSafe);
 ```
 ```cpp
 void Remove(BaseCircleColliderComponent* collider, bool isThreadSafe);
@@ -588,7 +560,7 @@ CollisionHelper();
 **GetEdge**  
 It returns the closest point of collider object from other object.
 ```cpp
-static glm::vec2 GetEdge(const BaseBoxColliderComponent& boxCollider, glm::vec2 distanceBetweenCenters);
+static glm::vec2 GetEdge(const BoxColliderComponent& boxCollider, glm::vec2 distanceBetweenCenters);
 ```
 
 ```cpp
@@ -604,7 +576,7 @@ static HitDirection GetDirection(glm::vec2 vector);
 It fixed the gameobject's position, which has this collider.  
 The fixMultiplier should be 1.0f if another object is Kinematic or 0.5f if it is Dynamic.
 ```cpp
-static void FixPosition(const BaseBoxColliderComponent& boxCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier);
+static void FixPosition(const BoxColliderComponent& boxCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier);
 ```
 
 ```cpp
@@ -621,7 +593,7 @@ static inline float GetLength2(glm::vec2 distance);
 **CheckCollision**  
 It checks, that 2 colliders have been collided.
 ```cpp
-static CollisionData CheckCollision(const BaseBoxColliderComponent& collider1, const BaseBoxColliderComponent& collider2);
+static CollisionData CheckCollision(const BoxColliderComponent& collider1, const BoxColliderComponent& collider2);
 ```
 
 ```cpp
@@ -629,11 +601,11 @@ static CollisionData CheckCollision(const BaseCircleColliderComponent& collider1
 ```
 
 ```cpp
-static CollisionData CheckCollision(const BaseCircleColliderComponent& circleCollider, const BaseBoxColliderComponent& boxCollider);
+static CollisionData CheckCollision(const BaseCircleColliderComponent& circleCollider, const BoxColliderComponent& boxCollider);
 ```
 
 ```cpp
-static CollisionData CheckCollision(const BaseBoxColliderComponent& boxCollider, const BaseCircleColliderComponent& circleCollider);
+static CollisionData CheckCollision(const BoxColliderComponent& boxCollider, const BaseCircleColliderComponent& circleCollider);
 ```
 
 **FixPosition**  

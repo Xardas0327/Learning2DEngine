@@ -18,7 +18,7 @@ namespace Learning2DEngine
 			if (removableBoxColliders.size() > 0)
 			{
 				auto newDynamicEnd = remove_if(dynamicBoxColliders.begin(), dynamicBoxColliders.end(),
-					[this](BaseBoxColliderComponent* collider)
+					[this](BoxColliderComponent* collider)
 					{
 						auto it = std::find(removableBoxColliders.begin(), removableBoxColliders.end(), collider);
 						return it != removableBoxColliders.end();
@@ -26,7 +26,7 @@ namespace Learning2DEngine
 				dynamicBoxColliders.erase(newDynamicEnd, dynamicBoxColliders.end());
 
 				auto newKinematicEnd = remove_if(kinematicBoxColliders.begin(), kinematicBoxColliders.end(),
-					[this](BaseBoxColliderComponent* collider)
+					[this](BoxColliderComponent* collider)
 					{
 						auto it = std::find(removableBoxColliders.begin(), removableBoxColliders.end(), collider);
 						return it != removableBoxColliders.end();
@@ -97,7 +97,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ColliderComponentHandler::Add(BaseBoxColliderComponent* component, bool isThreadSafe)
+		void ColliderComponentHandler::Add(BoxColliderComponent* component, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{
@@ -110,7 +110,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ColliderComponentHandler::RemoveItem(BaseBoxColliderComponent* component)
+		void ColliderComponentHandler::RemoveItem(BoxColliderComponent* component)
 		{
 			//Check it, that it is a new one or not.
 			auto it = std::find(newBoxColliders.begin(), newBoxColliders.end(), component);
@@ -120,7 +120,7 @@ namespace Learning2DEngine
 				removableBoxColliders.push_back(component);
 		}
 
-		void ColliderComponentHandler::Remove(BaseBoxColliderComponent* component, bool isThreadSafe)
+		void ColliderComponentHandler::Remove(BoxColliderComponent* component, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{

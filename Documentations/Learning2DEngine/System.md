@@ -409,7 +409,7 @@ void SetLateUpdateMaxComponentPerThread(unsigned int value);
 
 **AddToCollider**  
 ```cpp
-inline void AddToCollider(Physics::BaseBoxColliderComponent* component);
+inline void AddToCollider(Physics::BoxColliderComponent* component);
 ```
 ```cpp
 inline void AddToCollider(Physics::BaseCircleColliderComponent* component);
@@ -417,7 +417,7 @@ inline void AddToCollider(Physics::BaseCircleColliderComponent* component);
 
 **RemoveFromCollider**  
 ```cpp
-inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component);
+inline void RemoveFromCollider(Physics::BoxColliderComponent* component);
 ```
 ```cpp
 inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component);
@@ -1176,7 +1176,8 @@ enum InputStatus
 ##
 ## LateUpdaterComponent
 ### Source Code:
-[LateUpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/LateUpdaterComponent.h)
+[LateUpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/LateUpdaterComponent.h)  
+[LateUpdaterComponent.cpp](../../Learning2DEngine/Learning2DEngine/System/LateUpdaterComponent.cpp)
 
 ### Description:  
 The developer have to inherit from this class, if they want to do something

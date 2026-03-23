@@ -1,5 +1,6 @@
 # Test
-It contains any helper classes for the testing.
+It contains any helper classes for the testing.  
+Note: Some tests works in Release build only.  
 
 - [CompareFloat](Test.md#comparefloat)
 

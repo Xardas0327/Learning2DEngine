@@ -174,6 +174,7 @@
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystemComponent.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\BaseColliderComponent.cpp" />
+    <ClCompile Include="Learning2DEngine\Physics\BoxColliderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\ColliderComponentHandler.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\CollisionHelper.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\Rigidbody.cpp" />
@@ -239,7 +240,6 @@
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleRenderer.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleRenderData.h" />
     <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleSystemComponent.h" />
-    <ClInclude Include="Learning2DEngine\Physics\BaseBoxColliderComponent.h" />
     <ClInclude Include="Learning2DEngine\Physics\BaseCircleColliderComponent.h" />
     <ClInclude Include="Learning2DEngine\Physics\BoxColliderComponent.h" />
     <ClInclude Include="Learning2DEngine\Physics\CircleColliderComponent.h" />

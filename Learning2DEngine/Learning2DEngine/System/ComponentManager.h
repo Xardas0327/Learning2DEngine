@@ -14,7 +14,7 @@
 #include "../Render/RendererComponentHandler.h"
 #include "../Render/RendererMode.h"
 #include "../Physics/ColliderComponentHandler.h"
-#include "../Physics/BaseBoxColliderComponent.h"
+#include "../Physics/BoxColliderComponent.h"
 #include "../Physics/BaseCircleColliderComponent.h"
 
 namespace Learning2DEngine
@@ -96,7 +96,7 @@ namespace Learning2DEngine
 
             //Collider
 
-            inline void AddToCollider(Physics::BaseBoxColliderComponent* component)
+            inline void AddToCollider(Physics::BoxColliderComponent* component)
             {
                 colliderComponentHandler.Add(component, isThreadSafe);
             }
@@ -106,7 +106,7 @@ namespace Learning2DEngine
                 colliderComponentHandler.Add(component, isThreadSafe);
             }
 
-            inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component)
+            inline void RemoveFromCollider(Physics::BoxColliderComponent* component)
             {
                 colliderComponentHandler.Remove(component, isThreadSafe);
             }
