@@ -173,6 +173,7 @@
     <ClCompile Include="Learning2DEngine\Object\FpsShower.cpp" />
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\ParticleSimulator\ParticleSystemComponent.cpp" />
+    <ClCompile Include="Learning2DEngine\Physics\BaseColliderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\ColliderComponentHandler.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\CollisionHelper.cpp" />
     <ClCompile Include="Learning2DEngine\Physics\Rigidbody.cpp" />
@@ -247,7 +248,6 @@
     <ClInclude Include="Learning2DEngine\Physics\Collision.h" />
     <ClInclude Include="Learning2DEngine\Physics\CollisionHelper.h" />
     <ClInclude Include="Learning2DEngine\Physics\CollisionData.h" />
-    <ClInclude Include="Learning2DEngine\Physics\BaseRigidbody.h" />
     <ClInclude Include="Learning2DEngine\Physics\Rigidbody.h" />
     <ClInclude Include="Learning2DEngine\Render\BaseColorDynamicData.h" />
     <ClInclude Include="Learning2DEngine\Render\BaseMultiRenderer.h" />

@@ -4,7 +4,6 @@ This namespace really simple. It has only some really basic functionality.
 - [BaseBoxColliderComponent](Physics.md#baseboxcollidercomponent)
 - [BaseCircleColliderComponent](Physics.md#basecirclecollidercomponent)
 - [BaseColliderComponent](Physics.md#basecollidercomponent)
-- [BaseRigidbody](Physics.md#baserigidbody)
 - [BoxColliderComponent](Physics.md#boxcollidercomponent)
 - [CircleColliderComponent](Physics.md#circlecollidercomponent)
 - [ColliderComponentHandler](Physics.md#collidercomponenthandler)
@@ -96,7 +95,8 @@ glm::vec2 GetColliderCenter() const override;
 ##
 ## BaseColliderComponent
 ### Source Code:
-[BaseColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseColliderComponent.h)
+[BaseColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseColliderComponent.h)  
+[BaseColliderComponent.cpp](../../Learning2DEngine/Learning2DEngine/Physics/BaseColliderComponent.cpp)
 
 ### Description:
 It is a base class for the `BaseBoxColliderComponent` and
@@ -116,7 +116,7 @@ class BaseColliderComponent : public virtual System::Component
 **Private:**  
 **rigidbody**   
 ```cpp
-BaseRigidbody* rigidbody;
+Rigidbody* rigidbody;
 ```
 
 **Public:**  
@@ -183,40 +183,7 @@ inline void ClearRigidbody();
 
 **GetRigidbody**  
 ```cpp
-inline BaseRigidbody* GetRigidbody() const;
-```
-
-##
-## BaseRigidbody
-### Source Code:
-[BaseRigidbody.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseRigidbody.h)
-
-### Description:
-It is an base class, which the colliders can use.
-
-### Header:
-```cpp
-class BaseRigidbody
-{...}
-```
-
-### Variables:
-**Public:**  
-**velocity**   
-```cpp
-glm::vec2 velocity;
-```
-
-### Functions:
-**Public:**  
-**BaseRigidbody**  
-```cpp
-BaseRigidbody(glm::vec2 velocity);
-```
-
-**~IRigidbody**  
-```cpp
-virtual ~BaseRigidbody() = default;
+inline Rigidbody* GetRigidbody() const;
 ```
 
 ##
@@ -721,7 +688,7 @@ A really basic Rigidbody for moving.
 
 ### Header:
 ```cpp
-class Rigidbody : public System::UpdaterComponent, public BaseRigidbody
+class Rigidbody : public System::UpdaterComponent
 {...}
 ```
 
@@ -733,6 +700,11 @@ static constexpr const glm::vec2 DefaultGravity = glm::vec2(0.0f, 9.81f);
 ```
 
 **Public:**  
+**velocity**   
+```cpp
+glm::vec2 velocity;
+```
+
 **isFrozen**  
 ```cpp
 bool isFrozen;

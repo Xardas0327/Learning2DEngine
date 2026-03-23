@@ -1,5 +1,7 @@
 #include "CollisionHelper.h"
 
+#include "Rigidbody.h"
+
 namespace Learning2DEngine
 {
     namespace Physics
