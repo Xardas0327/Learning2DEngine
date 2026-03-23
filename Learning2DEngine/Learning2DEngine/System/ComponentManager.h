@@ -6,7 +6,7 @@
 #include "GameObjectManager.h"
 #include "UpdaterComponentHandler.h"
 #include "LateUpdaterComponentHandler.h"
-#include "BaseUpdaterComponent.h"
+#include "UpdaterComponent.h"
 #include "BaseLateUpdaterComponent.h"
 #include "../DebugTool/Log.h"
 #include "../Render/IRenderer.h"
@@ -42,12 +42,12 @@ namespace Learning2DEngine
         public:
             //Update
 
-            inline void AddToUpdate(BaseUpdaterComponent* component)
+            inline void AddToUpdate(UpdaterComponent* component)
             {
                 updaterComponentHandler.Add(component, isThreadSafe);
             }
 
-            inline void RemoveFromUpdate(BaseUpdaterComponent* component)
+            inline void RemoveFromUpdate(UpdaterComponent* component)
             {
                 updaterComponentHandler.Remove(component, isThreadSafe);
             }

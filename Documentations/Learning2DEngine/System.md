@@ -1,7 +1,6 @@
 # System
 - [BaseComponentHandler](System.md#basecomponenthandler)
 - [BaseLateUpdaterComponent](System.md#baselateupdatercomponent)
-- [BaseUpdaterComponent](System.md#baseupdatercomponent)
 - [Camera](System.md#camera)
 - [Component](System.md#component)
 - [ComponentManager](System.md#componentmanager)
@@ -131,35 +130,6 @@ BaseLateUpdaterComponent(GameObject* gameObject);
 **LateUpdate**  
 ```cpp
 virtual void LateUpdate() = 0;
-```
-
-##
-## BaseUpdaterComponent
-### Source Code:
-[BaseUpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/BaseUpdaterComponent.h)  
-
-### Description:
-It has some basic funcionality, which is essential, but this is a support class only,
-please use `UpdaterComponent` instead of this.  
-Please check for more info about `UpdaterComponent` and `Component`.
-
-### Header:
-```cpp
-class BaseUpdaterComponent : public virtual Component
-{...}
-```
-
-### Functions:
-**Protected:**  
-**BaseUpdaterComponent**  
-```cpp
-BaseUpdaterComponent(GameObject* gameObject);
-```
-
-**Public:**  
-**Update**  
-```cpp
-virtual void Update() = 0;
 ```
 
 ##
@@ -423,12 +393,12 @@ ComponentManager();
 **Public:**  
 **AddToUpdate**  
 ```cpp
-inline void AddToUpdate(BaseUpdaterComponent* component);
+inline void AddToUpdate(UpdaterComponent* component);
 ```
 
 **RemoveFromUpdate**  
 ```cpp
-inline void RemoveFromUpdate(BaseUpdaterComponent* component);
+inline void RemoveFromUpdate(UpdaterComponent* component);
 ```
 
 **Update**  
@@ -1933,17 +1903,17 @@ glm::mat4 GetModelMatrix() const;
 ##
 ## UpdaterComponent
 ### Source Code:
-[UpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/UpdaterComponent.h)
+[UpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/UpdaterComponent.h)  
+[UpdaterComponent.cpp](../../Learning2DEngine/Learning2DEngine/System/UpdaterComponent.cpp)
 
 ### Description:
-It is a class, which is inherited from `BaseUpdaterComponent`.  
 The developer have to inherit from this class, if they want to do something
 in Update section, before the collision checking.    
-Please check for more info about `System::Component` and `BaseUpdaterComponent`.
+Please check for more info about `System::Component`.
 
 ### Header:
 ```cpp
-class UpdaterComponent : public BaseUpdaterComponent
+class UpdaterComponent : public virtual Component
 {...}
 ```
 
@@ -1968,18 +1938,24 @@ in the first line.
 virtual void Destroy() override;
 ```
 
+**Public:**  
+**Update**  
+```cpp
+virtual void Update() = 0;
+```
+
 ##
 ## UpdaterComponentHandler
 ### Source Code:
 [UpdaterComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/UpdaterComponentHandler.h)  
 
 ### Description:
-It can handle the `BaseUpdaterComponentHandler` objects.  
+It can handle the `UpdaterComponent` objects.  
 The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class UpdaterComponentHandler : public ThreadComponentHandler<BaseUpdaterComponent>
+class UpdaterComponentHandler : public ThreadComponentHandler<UpdaterComponent>
 {...}
 ```
 

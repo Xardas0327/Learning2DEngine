@@ -2,13 +2,13 @@
 
 #include "GameObject.h"
 #include "ThreadComponentHandler.h"
-#include "BaseUpdaterComponent.h"
+#include "UpdaterComponent.h"
 
 namespace Learning2DEngine
 {
 	namespace System
 	{
-		class UpdaterComponentHandler : public ThreadComponentHandler<BaseUpdaterComponent>
+		class UpdaterComponentHandler : public ThreadComponentHandler<UpdaterComponent>
 		{
 		private:
 			/// <param name="startIndex">Inclusive</param>
@@ -24,7 +24,7 @@ namespace Learning2DEngine
 			}
 		public:
 			UpdaterComponentHandler()
-				: ThreadComponentHandler<BaseUpdaterComponent>()
+				: ThreadComponentHandler<UpdaterComponent>()
 			{
 
 			}
