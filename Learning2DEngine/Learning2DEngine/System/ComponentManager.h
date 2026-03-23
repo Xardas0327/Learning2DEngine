@@ -7,7 +7,7 @@
 #include "UpdaterComponentHandler.h"
 #include "LateUpdaterComponentHandler.h"
 #include "UpdaterComponent.h"
-#include "BaseLateUpdaterComponent.h"
+#include "LateUpdaterComponent.h"
 #include "../DebugTool/Log.h"
 #include "../Render/IRenderer.h"
 #include "../Render/RenderData.h"
@@ -69,12 +69,12 @@ namespace Learning2DEngine
 
             //LateUpdate
 
-            inline void AddToLateUpdate(BaseLateUpdaterComponent* component)
+            inline void AddToLateUpdate(LateUpdaterComponent* component)
             {
                 lateUpdaterComponentHandler.Add(component, isThreadSafe);
             }
 
-            inline void RemoveFromLateUpdate(BaseLateUpdaterComponent* component)
+            inline void RemoveFromLateUpdate(LateUpdaterComponent* component)
             {
                 lateUpdaterComponentHandler.Remove(component, isThreadSafe);
             }

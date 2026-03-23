@@ -1,6 +1,5 @@
 # System
 - [BaseComponentHandler](System.md#basecomponenthandler)
-- [BaseLateUpdaterComponent](System.md#baselateupdatercomponent)
 - [Camera](System.md#camera)
 - [Component](System.md#component)
 - [ComponentManager](System.md#componentmanager)
@@ -101,35 +100,6 @@ virtual void Remove(T* component, bool isThreadSafe);
 **Clear**  
 ```cpp
 virtual void Clear() override;
-```
-
-##
-## BaseLateUpdaterComponent
-### Source Code:
-[BaseLateUpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/BaseLateUpdaterComponent.h)  
-
-### Description:
-It has some basic funcionality, which is essential, but this is a support class only,
-please use `LateUpdaterComponent` instead of this.  
-Please check for more info about `LateUpdaterComponent` and `Component`.
-
-### Header:
-```cpp
-class BaseLateUpdaterComponent : public virtual Component
-{...}
-```
-
-### Functions:
-**Protected:**  
-**BaseLateUpdaterComponent**  
-```cpp
-BaseLateUpdaterComponent(GameObject* gameObject);
-```
-
-**Public:**  
-**LateUpdate**  
-```cpp
-virtual void LateUpdate() = 0;
 ```
 
 ##
@@ -416,12 +386,12 @@ void SetUpdateMaxComponentPerThread(unsigned int value);
 
 **AddToLateUpdate**  
 ```cpp
-inline void AddToLateUpdate(BaseLateUpdaterComponent* component);
+inline void AddToLateUpdate(LateUpdaterComponent* component);
 ```
 
 **RemoveFromLateUpdate**  
 ```cpp
-inline void RemoveFromLateUpdate(BaseLateUpdaterComponent* component);
+inline void RemoveFromLateUpdate(LateUpdaterComponent* component);
 ```
 
 **LateUpdate**  
@@ -1208,15 +1178,14 @@ enum InputStatus
 ### Source Code:
 [LateUpdaterComponent.h](../../Learning2DEngine/Learning2DEngine/System/LateUpdaterComponent.h)
 
-### Description:
-It is a class, which is inherited from `BaseLateUpdaterComponent`.  
+### Description:  
 The developer have to inherit from this class, if they want to do something
 in LateUpdate section, after the collision checking.    
-Please check for more info about `System::Component` and `BaseLateUpdaterComponent`.
+Please check for more info about `System::Component`.
 
 ### Header:
 ```cpp
-class LateUpdaterComponent : public BaseLateUpdaterComponent
+class LateUpdaterComponent : public virtual Component
 {...}
 ```
 ### Functions:
@@ -1240,18 +1209,24 @@ in the first line.
 virtual void Destroy() override;
 ```
 
+**Public:**  
+**LateUpdate**  
+```cpp
+virtual void LateUpdate() = 0;
+```
+
 ##
 ## LateUpdaterComponentHandler
 ### Source Code:
 [LateUpdaterComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/LateUpdaterComponentHandler.h)  
 
 ### Description:
-It can handle the `BaseLateUpdaterComponent` objects.  
+It can handle the `LateUpdaterComponent` objects.  
 The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class LateUpdaterComponentHandler : public ThreadComponentHandler<BaseLateUpdaterComponent>
+class LateUpdaterComponentHandler : public ThreadComponentHandler<LateUpdaterComponent>
 {...}
 ```
 

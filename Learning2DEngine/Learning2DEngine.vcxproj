@@ -184,6 +184,7 @@
     <ClCompile Include="Learning2DEngine\Render\MultiSpriteRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
     <ClCompile Include="Learning2DEngine\System\GameObjectManager.cpp" />
+    <ClCompile Include="Learning2DEngine\System\LateUpdaterComponent.cpp" />
     <ClCompile Include="Learning2DEngine\System\Time.cpp" />
     <ClCompile Include="Learning2DEngine\System\UpdaterComponent.cpp" />
     <ClCompile Include="Learning2DEngine\UI\SimpleText2DRenderComponent.cpp" />
@@ -277,7 +278,6 @@
     <ClInclude Include="Learning2DEngine\Render\UVTexture2DContainer.h" />
     <ClInclude Include="Learning2DEngine\Render\WindowType.h" />
     <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
-    <ClInclude Include="Learning2DEngine\System\BaseLateUpdaterComponent.h" />
     <ClInclude Include="Learning2DEngine\System\Camera.h" />
     <ClInclude Include="Learning2DEngine\System\Component.h" />
     <ClInclude Include="Learning2DEngine\EventSystem\EventHandler.h" />
