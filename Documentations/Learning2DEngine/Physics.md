@@ -232,7 +232,7 @@ glm::vec2 GetColliderCenter() const override;
 It can handle the collision between the `BoxColliderComponent`
 and the `CircleColliderComponent` objects.  
 The `ComponentManager` has one from it.  
-Note: If it ise multiple threads, the order of OnCollision will not be deterministic.
+Note: If it uses multiple threads, the order of OnCollision will not be deterministic.
 
 ### Header:
 ```cpp
@@ -424,7 +424,7 @@ void Run() override;
 
 **SetMaxColliderPerThread**  
 If it is 0, the class will not use threads.  
-Note: If it ise multiple threads, the order of OnCollision will not be deterministic.
+Note: If it uses multiple threads, the order of OnCollision will not be deterministic.
 ```cpp
 inline void SetMaxColliderPerThread(unsigned int value);
 ```

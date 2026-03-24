@@ -13,6 +13,7 @@ namespace Learning2DEngine
 {
 	namespace Physics
 	{
+		//If it uses multiple threads, the order of OnCollision will not be deterministic.
 		class ColliderComponentHandler : public System::IComponentHandler
 		{
 		protected:
@@ -105,6 +106,7 @@ namespace Learning2DEngine
 			void Run() override;
 
 			//If it is 0, the class will not use threads
+			//If it uses multiple threads, the order of OnCollision will not be deterministic.
 			inline void SetMaxColliderPerThread(unsigned int value)
 			{
 				maxColliderPerThread = value;
