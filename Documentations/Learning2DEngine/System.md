@@ -432,6 +432,7 @@ inline void CheckCollision();
 If it is bigger then 0, than every component handlers and the `GameObjectManager`
 will be thread safe.  
 But if it is 0, the thread safe will not be turn off automatically.  
+Note: If it ise multiple threads, the order of OnCollision will not be deterministic.
 ```cpp
 void SetMaxColliderPerThread(unsigned int value);
 ```
