@@ -42,7 +42,6 @@ namespace Learning2DEngine
 
 		void GameObjectManager::DestroyGameObject(GameObject* gameObject)
 		{
-			gameObject->isActive = false;
 			if (isThreadSafe)
 			{
 				std::lock_guard<std::mutex> lock(removeMutex);
@@ -54,7 +53,6 @@ namespace Learning2DEngine
 
 		void GameObjectManager::DestroyGameObject(Component* component)
 		{
-			component->gameObject->isActive = false;
 			if (isThreadSafe)
 			{
 				std::lock_guard<std::mutex> lock(removeMutex);

@@ -1019,7 +1019,7 @@ GameObject* CreateGameObject(const Transform& transform, bool isActive = true);
 The `GameObject` and its components will be destroyed.  
 If the developer give a `Component`, it will destroy the `GameObject` of the `Component`.  
 That's why all other `Components`,which the `GameObject` has, will be destroyed.  
-`GameObject` will be inactive immediately, but it will be destroyed just at end of the frame only.
+`GameObject` will be active and run in this frame, and it will be destroyed just end of the frame only.  
 ```cpp
 void DestroyGameObject(GameObject* gameObject);
 ```
