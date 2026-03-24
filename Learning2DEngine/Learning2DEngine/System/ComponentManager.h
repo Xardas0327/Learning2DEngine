@@ -6,16 +6,16 @@
 #include "GameObjectManager.h"
 #include "UpdaterComponentHandler.h"
 #include "LateUpdaterComponentHandler.h"
-#include "BaseUpdaterComponent.h"
-#include "BaseLateUpdaterComponent.h"
+#include "UpdaterComponent.h"
+#include "LateUpdaterComponent.h"
 #include "../DebugTool/Log.h"
 #include "../Render/IRenderer.h"
 #include "../Render/RenderData.h"
 #include "../Render/RendererComponentHandler.h"
 #include "../Render/RendererMode.h"
 #include "../Physics/ColliderComponentHandler.h"
-#include "../Physics/BaseBoxColliderComponent.h"
-#include "../Physics/BaseCircleColliderComponent.h"
+#include "../Physics/BoxColliderComponent.h"
+#include "../Physics/CircleColliderComponent.h"
 
 namespace Learning2DEngine
 {
@@ -42,12 +42,12 @@ namespace Learning2DEngine
         public:
             //Update
 
-            inline void AddToUpdate(BaseUpdaterComponent* component)
+            inline void AddToUpdate(UpdaterComponent* component)
             {
                 updaterComponentHandler.Add(component, isThreadSafe);
             }
 
-            inline void RemoveFromUpdate(BaseUpdaterComponent* component)
+            inline void RemoveFromUpdate(UpdaterComponent* component)
             {
                 updaterComponentHandler.Remove(component, isThreadSafe);
             }
@@ -69,12 +69,12 @@ namespace Learning2DEngine
 
             //LateUpdate
 
-            inline void AddToLateUpdate(BaseLateUpdaterComponent* component)
+            inline void AddToLateUpdate(LateUpdaterComponent* component)
             {
                 lateUpdaterComponentHandler.Add(component, isThreadSafe);
             }
 
-            inline void RemoveFromLateUpdate(BaseLateUpdaterComponent* component)
+            inline void RemoveFromLateUpdate(LateUpdaterComponent* component)
             {
                 lateUpdaterComponentHandler.Remove(component, isThreadSafe);
             }
@@ -96,22 +96,22 @@ namespace Learning2DEngine
 
             //Collider
 
-            inline void AddToCollider(Physics::BaseBoxColliderComponent* component)
+            inline void AddToCollider(Physics::BoxColliderComponent* component)
             {
                 colliderComponentHandler.Add(component, isThreadSafe);
             }
 
-            inline void AddToCollider(Physics::BaseCircleColliderComponent* component)
+            inline void AddToCollider(Physics::CircleColliderComponent* component)
             {
                 colliderComponentHandler.Add(component, isThreadSafe);
             }
 
-            inline void RemoveFromCollider(Physics::BaseBoxColliderComponent* component)
+            inline void RemoveFromCollider(Physics::BoxColliderComponent* component)
             {
                 colliderComponentHandler.Remove(component, isThreadSafe);
             }
 
-            inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component)
+            inline void RemoveFromCollider(Physics::CircleColliderComponent* component)
             {
                 colliderComponentHandler.Remove(component, isThreadSafe);
             }

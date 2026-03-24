@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Physics/BaseBoxColliderComponent.h"
+#include "../Physics/BoxColliderComponent.h"
 #include "../Render/RendererComponent.h"
 
 #include "DebugRenderData.h"
@@ -12,14 +12,14 @@ namespace Learning2DEngine
 	{
 		// It is used in Render Mode only
 		// and it works well with renderers if the renderers use the camera view matrix.
-		class DebugBoxColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BaseBoxColliderComponent>, DebugBoxColliderRenderer>
+		class DebugBoxColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BoxColliderComponent>, DebugBoxColliderRenderer>
 		{
 			friend class System::GameObject;
 		private:
 			static const std::string id;
 
 		protected:
-			DebugBoxColliderRenderComponent(System::GameObject* gameObject, const Physics::BaseBoxColliderComponent* collider);
+			DebugBoxColliderRenderComponent(System::GameObject* gameObject, const Physics::BoxColliderComponent* collider);
 
 			const std::string& GetId() const override;
 			DebugBoxColliderRenderer* GetInitedRenderer() override;

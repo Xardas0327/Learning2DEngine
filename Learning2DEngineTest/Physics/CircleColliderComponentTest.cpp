@@ -1,8 +1,9 @@
 #include "CppUnitTest.h"
 
 #include <Learning2DEngine/System/GameObjectManager.h>
+#include <Learning2DEngine/System/ComponentManager.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/Physics/BaseCircleColliderComponent.h>
+#include <Learning2DEngine/Physics/CircleColliderComponent.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -12,9 +13,10 @@ namespace Learning2DEngine
 
     namespace Physics
     {
-        TEST_CLASS(BaseCircleColliderComponentTest)
+        //It works in Release build only. 
+        TEST_CLASS(CircleColliderComponentTest)
         {
-            class TestCircleColliderComponent : public BaseCircleColliderComponent
+            class TestCircleColliderComponent : public CircleColliderComponent
             {
             public:
                 TestCircleColliderComponent(
@@ -24,7 +26,7 @@ namespace Learning2DEngine
                     ColliderMode mode = ColliderMode::TRIGGER,
                     glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                     int32_t maskLayer = ~0)
-                    : System::Component(gameObject), BaseCircleColliderComponent(gameObject, radius, type, mode, offset, maskLayer)
+                    : System::Component(gameObject), CircleColliderComponent(gameObject, radius, type, mode, offset, maskLayer)
                 {
                 }
             };
@@ -44,6 +46,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(circleCollider->GetColliderCenter() == glm::vec2(17.0f, 23.0f));
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
         };
     }

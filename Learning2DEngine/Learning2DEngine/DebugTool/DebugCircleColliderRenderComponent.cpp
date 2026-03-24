@@ -12,7 +12,7 @@ namespace Learning2DEngine
 	{
 		const std::string DebugCircleColliderRenderComponent::id = "L2DE_DebugCircleColliderRenderComponent";
 
-		DebugCircleColliderRenderComponent::DebugCircleColliderRenderComponent(GameObject* gameObject, const BaseCircleColliderComponent* collider)
+		DebugCircleColliderRenderComponent::DebugCircleColliderRenderComponent(GameObject* gameObject, const CircleColliderComponent* collider)
 			: RendererComponent(gameObject, RendererMode::RENDER, L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_LAYER, collider), Component(gameObject)
 		{
 		}

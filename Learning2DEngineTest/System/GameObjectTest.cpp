@@ -1,6 +1,7 @@
 #include "CppUnitTest.h"
 
 #include <Learning2DEngine/System/GameObjectManager.h>
+#include <Learning2DEngine/System/ComponentManager.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/Component.h>
 
@@ -39,6 +40,7 @@ namespace Learning2DEngine
 				Assert::IsNotNull(gameObject);
 
 				manager.DestroyAllGameObjects();
+				ComponentManager::GetInstance().Clear();
 			}
 
 			TEST_METHOD(AddComponent)
@@ -51,6 +53,7 @@ namespace Learning2DEngine
 				Assert::IsNotNull(component);
 
 				manager.DestroyAllGameObjects();
+				ComponentManager::GetInstance().Clear();
 			}
 
 			TEST_METHOD(GetComponent)
@@ -69,6 +72,7 @@ namespace Learning2DEngine
 				Assert::IsNotNull(component2);
 
 				manager.DestroyAllGameObjects();
+				ComponentManager::GetInstance().Clear();
 			}
 
 			TEST_METHOD(GetComponents)
@@ -91,6 +95,7 @@ namespace Learning2DEngine
 				Assert::IsTrue(component2s.size() == 1);
 
 				manager.DestroyAllGameObjects();
+				ComponentManager::GetInstance().Clear();
 			}
 
 			TEST_METHOD(Destroy)
@@ -106,6 +111,7 @@ namespace Learning2DEngine
 				Assert::IsNull(component1);
 
 				manager.DestroyAllGameObjects();
+				ComponentManager::GetInstance().Clear();
 			}
 		};
 

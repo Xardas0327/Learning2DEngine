@@ -6,13 +6,11 @@
 #include "../System/GameObject.h"
 #include "../System/Time.h"
 
-#include "BaseRigidbody.h"
-
 namespace Learning2DEngine
 {
     namespace Physics
     {
-        class Rigidbody : public System::UpdaterComponent, public BaseRigidbody
+        class Rigidbody : public System::UpdaterComponent
         {
             friend class System::GameObject;
         protected:
@@ -27,6 +25,7 @@ namespace Learning2DEngine
             /// </summary>
             virtual void Update() override;
         public:
+            glm::vec2 velocity;
             bool isFrozen;
             bool isGravityEnabled;
             float gravityMultiplier;

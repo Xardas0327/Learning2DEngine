@@ -38,7 +38,7 @@ namespace Learning2DEngine
 					glDeleteBuffers(1, &ebo);
 			}
 		public:
-			void Init() override
+			virtual void Init() override
 			{
 				if (System::ComponentManager::GetInstance().GetThreadSafe())
 				{
@@ -53,7 +53,7 @@ namespace Learning2DEngine
 				}
 			}
 
-			void Destroy() override
+			virtual void Destroy() override
 			{
 				if (System::ComponentManager::GetInstance().GetThreadSafe())
 				{

@@ -1,9 +1,10 @@
 #include "CppUnitTest.h"
 
 #include <Learning2DEngine/System/GameObjectManager.h>
+#include <Learning2DEngine/System/ComponentManager.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/Physics/BaseCircleColliderComponent.h>
-#include <Learning2DEngine/Physics/BaseBoxColliderComponent.h>
+#include <Learning2DEngine/Physics/CircleColliderComponent.h>
+#include <Learning2DEngine/Physics/BoxColliderComponent.h>
 #include <Learning2DEngine/Physics/CollisionHelper.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -14,9 +15,10 @@ namespace Learning2DEngine
 
     namespace Physics
     {
+        //It works in Release build only. 
         TEST_CLASS(CollisionHelperTest)
         {
-            class TestCircleColliderComponent : public BaseCircleColliderComponent
+            class TestCircleColliderComponent : public CircleColliderComponent
             {
             public:
                 TestCircleColliderComponent(
@@ -26,12 +28,12 @@ namespace Learning2DEngine
                     ColliderMode mode = ColliderMode::TRIGGER,
                     glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                     int32_t maskLayer = ~0)
-                    : System::Component(gameObject), BaseCircleColliderComponent(gameObject, radius, type, mode, offset, maskLayer)
+                    : System::Component(gameObject), CircleColliderComponent(gameObject, radius, type, mode, offset, maskLayer)
                 {
                 }
             };
 
-            class TestBoxColliderComponent : public BaseBoxColliderComponent
+            class TestBoxColliderComponent : public BoxColliderComponent
             {
             public:
                 TestBoxColliderComponent(
@@ -41,7 +43,7 @@ namespace Learning2DEngine
                     ColliderMode mode = ColliderMode::TRIGGER,
                     glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                     int32_t maskLayer = ~0)
-                    : System::Component(gameObject), BaseBoxColliderComponent(gameObject, size, type, mode, offset, maskLayer)
+                    : System::Component(gameObject), BoxColliderComponent(gameObject, size, type, mode, offset, maskLayer)
                 {
                 }
             };
@@ -60,6 +62,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(!result.isCollided);
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
 
             TEST_METHOD(CheckCollisionBoxBoxCollide)
@@ -78,6 +81,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(result.edge2 == glm::vec2(5.0f, 5.0f));
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
 
             TEST_METHOD(CheckCollisionCircleCircleNotCollide)
@@ -94,6 +98,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(!result.isCollided);
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
 			}
 
             TEST_METHOD(CheckCollisionCircleCircleCollide)
@@ -112,6 +117,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(result.edge2 == glm::vec2(23.0f, 21.0f));
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
 
             TEST_METHOD(CheckCollisionCircleBoxNotCollide)
@@ -128,6 +134,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(!result.isCollided);
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
 
             TEST_METHOD(CheckCollisionCircleBoxCollide)
@@ -146,6 +153,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(result.edge2 == glm::vec2(20.0f, 20.0f));
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
 
             TEST_METHOD(CheckCollisionBoxCircleNotCollide)
@@ -162,6 +170,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(!result.isCollided);
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
 
             TEST_METHOD(CheckCollisionBoxCircleCollide)
@@ -180,6 +189,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(result.edge2 == glm::vec2(27.0f, 24.0f));
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
 
             TEST_METHOD(FixPosition2Trigger)
@@ -202,6 +212,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
 
             TEST_METHOD(FixPosition2KinematicCollider)
@@ -232,6 +243,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
 
             TEST_METHOD(FixPosition1DynamicCollider)
@@ -261,6 +273,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
 
             TEST_METHOD(FixPosition2DynamicCollider)
@@ -289,6 +302,7 @@ namespace Learning2DEngine
                 Assert::IsTrue(glm::vec2(7.5f, 8.75f) == gameObject2->transform.GetPosition());
 
                 manager.DestroyAllGameObjects();
+                ComponentManager::GetInstance().Clear();
             }
         };
     }

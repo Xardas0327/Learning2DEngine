@@ -5,7 +5,7 @@
 #include <map>
 
 #include "../System/Singleton.h"
-#include "../Physics/BaseBoxColliderComponent.h"
+#include "../Physics/BoxColliderComponent.h"
 
 #include "DebugColliderRenderer.h"
 
@@ -13,7 +13,7 @@ namespace Learning2DEngine
 {
 	namespace DebugTool
 	{
-		class DebugBoxColliderRenderer : public DebugColliderRenderer<Physics::BaseBoxColliderComponent>, public System::Singleton<DebugBoxColliderRenderer>
+		class DebugBoxColliderRenderer : public DebugColliderRenderer<Physics::BoxColliderComponent>, public System::Singleton<DebugBoxColliderRenderer>
 		{
 			friend class System::Singleton<DebugBoxColliderRenderer>;
 		private:

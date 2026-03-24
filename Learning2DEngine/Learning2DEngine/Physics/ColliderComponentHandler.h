@@ -5,8 +5,8 @@
 
 #include "../System/GameObject.h"
 #include "../System/IComponentHandler.h"
-#include "BaseBoxColliderComponent.h"
-#include "BaseCircleColliderComponent.h"
+#include "BoxColliderComponent.h"
+#include "CircleColliderComponent.h"
 #include "CollisionHelper.h"
 
 namespace Learning2DEngine
@@ -16,15 +16,15 @@ namespace Learning2DEngine
 		class ColliderComponentHandler : public System::IComponentHandler
 		{
 		protected:
-			std::vector<BaseBoxColliderComponent*> dynamicBoxColliders;
-			std::vector<BaseBoxColliderComponent*> kinematicBoxColliders;
-			std::vector<BaseBoxColliderComponent*> newBoxColliders;
-			std::vector<BaseBoxColliderComponent*> removableBoxColliders;
+			std::vector<BoxColliderComponent*> dynamicBoxColliders;
+			std::vector<BoxColliderComponent*> kinematicBoxColliders;
+			std::vector<BoxColliderComponent*> newBoxColliders;
+			std::vector<BoxColliderComponent*> removableBoxColliders;
 
-			std::vector<BaseCircleColliderComponent*> dynamicCircleColliders;
-			std::vector<BaseCircleColliderComponent*> kinematicCircleColliders;
-			std::vector<BaseCircleColliderComponent*> newCircleColliders;
-			std::vector<BaseCircleColliderComponent*> removableCircleColliders;
+			std::vector<CircleColliderComponent*> dynamicCircleColliders;
+			std::vector<CircleColliderComponent*> kinematicCircleColliders;
+			std::vector<CircleColliderComponent*> newCircleColliders;
+			std::vector<CircleColliderComponent*> removableCircleColliders;
 
 			std::mutex boxMutex;
 			std::mutex circleMutex;
@@ -67,8 +67,8 @@ namespace Learning2DEngine
 				return first->isActive && first->gameObject->isActive;
 			}
 
-			void RemoveItem(BaseBoxColliderComponent* component);
-			void RemoveItem(BaseCircleColliderComponent* component);
+			void RemoveItem(BoxColliderComponent* component);
+			void RemoveItem(CircleColliderComponent* component);
 
 			void RefreshBoxColliders();
 			void RefreshCircleColliders();
@@ -95,11 +95,11 @@ namespace Learning2DEngine
 		public:
 			ColliderComponentHandler();
 
-			void Add(BaseBoxColliderComponent* collider, bool isThreadSafe);
-			void Remove(BaseBoxColliderComponent* collider, bool isThreadSafe);
+			void Add(BoxColliderComponent* collider, bool isThreadSafe);
+			void Remove(BoxColliderComponent* collider, bool isThreadSafe);
 
-			void Add(BaseCircleColliderComponent* collider, bool isThreadSafe);
-			void Remove(BaseCircleColliderComponent* collider, bool isThreadSafe);
+			void Add(CircleColliderComponent* collider, bool isThreadSafe);
+			void Remove(CircleColliderComponent* collider, bool isThreadSafe);
 
 			void Clear() override;
 			void Run() override;

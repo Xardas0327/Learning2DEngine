@@ -5,7 +5,7 @@
 #include <map>
 
 #include "../System/Singleton.h"
-#include "../Physics/BaseCircleColliderComponent.h"
+#include "../Physics/CircleColliderComponent.h"
 
 #include "DebugColliderRenderer.h"
 
@@ -13,7 +13,7 @@ namespace Learning2DEngine
 {
 	namespace DebugTool
 	{
-		class DebugCircleColliderRenderer : public DebugColliderRenderer<Physics::BaseCircleColliderComponent>, public System::Singleton<DebugCircleColliderRenderer>
+		class DebugCircleColliderRenderer : public DebugColliderRenderer<Physics::CircleColliderComponent>, public System::Singleton<DebugCircleColliderRenderer>
 		{
 			friend class System::Singleton<DebugCircleColliderRenderer>;
 		private:
