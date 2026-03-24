@@ -3,7 +3,7 @@
 #include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/ComponentManager.h>
 #include <Learning2DEngine/System/GameObject.h>
-#include <Learning2DEngine/Physics/BaseCircleColliderComponent.h>
+#include <Learning2DEngine/Physics/CircleColliderComponent.h>
 #include <Learning2DEngine/Physics/BoxColliderComponent.h>
 #include <Learning2DEngine/Physics/CollisionHelper.h>
 
@@ -18,7 +18,7 @@ namespace Learning2DEngine
         //It works in Release build only. 
         TEST_CLASS(CollisionHelperTest)
         {
-            class TestCircleColliderComponent : public BaseCircleColliderComponent
+            class TestCircleColliderComponent : public CircleColliderComponent
             {
             public:
                 TestCircleColliderComponent(
@@ -28,7 +28,7 @@ namespace Learning2DEngine
                     ColliderMode mode = ColliderMode::TRIGGER,
                     glm::vec2 offset = glm::vec2(0.0f, 0.0f),
                     int32_t maskLayer = ~0)
-                    : System::Component(gameObject), BaseCircleColliderComponent(gameObject, radius, type, mode, offset, maskLayer)
+                    : System::Component(gameObject), CircleColliderComponent(gameObject, radius, type, mode, offset, maskLayer)
                 {
                 }
             };

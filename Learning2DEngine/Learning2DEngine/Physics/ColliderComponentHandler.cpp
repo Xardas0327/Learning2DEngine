@@ -60,7 +60,7 @@ namespace Learning2DEngine
 			if (removableCircleColliders.size() > 0)
 			{
 				auto newDynamicEnd = remove_if(dynamicCircleColliders.begin(), dynamicCircleColliders.end(),
-					[this](BaseCircleColliderComponent* collider)
+					[this](CircleColliderComponent* collider)
 					{
 						auto it = std::find(removableCircleColliders.begin(), removableCircleColliders.end(), collider);
 						return it != removableCircleColliders.end();
@@ -68,7 +68,7 @@ namespace Learning2DEngine
 				dynamicCircleColliders.erase(newDynamicEnd, dynamicCircleColliders.end());
 
 				auto newKinematicEnd = remove_if(kinematicCircleColliders.begin(), kinematicCircleColliders.end(),
-					[this](BaseCircleColliderComponent* collider)
+					[this](CircleColliderComponent* collider)
 					{
 						auto it = std::find(removableCircleColliders.begin(), removableCircleColliders.end(), collider);
 						return it != removableCircleColliders.end();
@@ -133,7 +133,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ColliderComponentHandler::Add(BaseCircleColliderComponent* component, bool isThreadSafe)
+		void ColliderComponentHandler::Add(CircleColliderComponent* component, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{
@@ -146,7 +146,7 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ColliderComponentHandler::RemoveItem(BaseCircleColliderComponent* component)
+		void ColliderComponentHandler::RemoveItem(CircleColliderComponent* component)
 		{
 			//Check it, that it is a new one or not.
 			auto it = std::find(newCircleColliders.begin(), newCircleColliders.end(), component);
@@ -156,7 +156,7 @@ namespace Learning2DEngine
 				removableCircleColliders.push_back(component);
 		}
 
-		void ColliderComponentHandler::Remove(BaseCircleColliderComponent* component, bool isThreadSafe)
+		void ColliderComponentHandler::Remove(CircleColliderComponent* component, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{

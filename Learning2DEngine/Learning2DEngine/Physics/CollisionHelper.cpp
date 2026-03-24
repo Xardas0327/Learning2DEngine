@@ -14,7 +14,7 @@ namespace Learning2DEngine
             return boxCollider.GetColliderCenter() + clamped;
         }
 
-        glm::vec2 CollisionHelper::GetEdge(const BaseCircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters)
+        glm::vec2 CollisionHelper::GetEdge(const CircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters)
         {
             glm::vec2 edge = glm::normalize(distanceBetweenCenters) * circleCollider.colliderRadius;
 
@@ -84,7 +84,7 @@ namespace Learning2DEngine
             }
         }
 
-        void CollisionHelper::FixPosition(const BaseCircleColliderComponent& circleCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier)
+        void CollisionHelper::FixPosition(const CircleColliderComponent& circleCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier)
         {
             glm::vec2 difference = edgeOfCollidedObject - circleCollider.GetColliderCenter();
             HitDirection direction = CollisionHelper::GetDirection(difference);
@@ -147,7 +147,7 @@ namespace Learning2DEngine
             return data;
         }
 
-        CollisionData CollisionHelper::CheckCollision(const BaseCircleColliderComponent& collider1, const BaseCircleColliderComponent& collider2)
+        CollisionData CollisionHelper::CheckCollision(const CircleColliderComponent& collider1, const CircleColliderComponent& collider2)
         {
             glm::vec2 distance = collider2.GetColliderCenter() - collider1.GetColliderCenter();
             float radius = collider1.colliderRadius + collider2.colliderRadius;
@@ -163,7 +163,7 @@ namespace Learning2DEngine
             return data;
         }
 
-        CollisionData CollisionHelper::CheckCollision(const BaseCircleColliderComponent& circleCollider, const BoxColliderComponent& boxCollider)
+        CollisionData CollisionHelper::CheckCollision(const CircleColliderComponent& circleCollider, const BoxColliderComponent& boxCollider)
         {
             glm::vec2 circleCenter = circleCollider.GetColliderCenter();
             glm::vec2 boxCenter = boxCollider.GetColliderCenter();
@@ -184,7 +184,7 @@ namespace Learning2DEngine
             return data;
         }
 
-        CollisionData CollisionHelper::CheckCollision(const BoxColliderComponent& boxCollider, const BaseCircleColliderComponent& circleCollider)
+        CollisionData CollisionHelper::CheckCollision(const BoxColliderComponent& boxCollider, const CircleColliderComponent& circleCollider)
         {
             CollisionData data = CollisionHelper::CheckCollision(circleCollider, boxCollider);
 

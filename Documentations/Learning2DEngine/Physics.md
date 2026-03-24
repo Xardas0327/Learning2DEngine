@@ -1,7 +1,6 @@
 # Physics
 This namespace really simple. It has only some really basic functionality.
 
-- [BaseCircleColliderComponent](Physics.md#basecirclecollidercomponent)
 - [BaseColliderComponent](Physics.md#basecollidercomponent)
 - [BoxColliderComponent](Physics.md#boxcollidercomponent)
 - [CircleColliderComponent](Physics.md#circlecollidercomponent)
@@ -14,45 +13,6 @@ This namespace really simple. It has only some really basic functionality.
 - [Rigidbody](Physics.md#rigidbody)
 
 ##
-## BaseCircleColliderComponent
-### Source Code:
-[BaseCircleColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseCircleColliderComponent.h)  
-[BaseCircleColliderComponentTest.cpp](../../Learning2DEngineTest/Physics/BaseCircleColliderComponentTest.cpp)
-
-### Description:
-The `BaseCircleColliderComponent` is really basic. It doesn't rotate,
-scale with the gameobject.  
-It has attributes for circle collider, but this is a support
-class only. Please use `CircleColliderComponent` instead of this.  
-Please check for more info about `CircleColliderComponent` and `BaseColliderComponent`.
-
-### Header:
-```cpp
-class BaseCircleColliderComponent : public BaseColliderComponent
-{...}
-```
-
-### Variables:
-**Public:**  
-**colliderRadius**
-```cpp
-float colliderRadius;
-```
-
-### Functions:
-**Protected:**  
-**BaseCircleColliderComponent**  
-```cpp
-BaseCircleColliderComponent(System::GameObject* gameObject, float radius, ColliderType type = ColliderType::DYNAMIC, ColliderMode mode = ColliderMode::TRIGGER, glm::vec2 offset = glm::vec2(0.0f, 0.0f), int32_t maskLayer = ~0);
-```
-
-**Public:**  
-**GetColliderCenter**  
-```cpp
-glm::vec2 GetColliderCenter() const override;
-```
-
-##
 ## BaseColliderComponent
 ### Source Code:
 [BaseColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/BaseColliderComponent.h)  
@@ -60,7 +20,7 @@ glm::vec2 GetColliderCenter() const override;
 
 ### Description:
 It is a base class for the `BoxColliderComponent` and
-`BaseCircleColliderComponent` classes.
+`CircleColliderComponent` classes.
 It has some basic funcionality, which is essential for the colliders.  
 The classes, which are inherited from this `BaseColliderComponent`
 has to have a constructor, which first parameter is `GameObject*` for gameObject member.  
@@ -207,23 +167,29 @@ glm::vec2 GetColliderCenter() const override;
 ##
 ## CircleColliderComponent
 ### Source Code:
-[CircleColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/CircleColliderComponent.h)
+[CircleColliderComponent.h](../../Learning2DEngine/Learning2DEngine/Physics/CircleColliderComponent.h)  
+[CircleColliderComponent.cpp](../../Learning2DEngine/Learning2DEngine/Physics/CircleColliderComponent.cpp)  
+[CircleColliderComponentTest.cpp](../../Learning2DEngineTest/Physics/CircleColliderComponentTest.cpp)
 
 ### Description:
 The `CircleColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
-It knows everything like the `BaseCircleColliderComponent`, just it subscribes/unsubscribes
-for `ComponentManager`.  
-Please check for more info about `BaseCircleColliderComponent` and `BaseColliderComponent`.
+But it subscribes/unsubscribes for `ComponentManager`.  
+Please check for more info about `BaseColliderComponent`.
 
 ### Header:
 ```cpp
-class CircleColliderComponent : public BaseCircleColliderComponent
+class CircleColliderComponent : public BaseColliderComponent
 {...}
 ```
 
 ### Variables:
 **Public:**  
+**colliderRadius**
+```cpp
+float colliderRadius;
+```
+
 **debugTool**   
 It is available only, when the `L2DE_DEBUG_SHOW_COLLIDER` macro is defined.  
 It can show/hide the collider in the game.
@@ -250,6 +216,12 @@ If this function is override, it must call the CircleColliderComponent::Destroy(
 virtual void Destroy() override;
 ```
 
+**Public:**  
+**GetColliderCenter**  
+```cpp
+glm::vec2 GetColliderCenter() const override;
+```
+
 ##
 ## ColliderComponentHandler
 ### Source Code:
@@ -258,7 +230,7 @@ virtual void Destroy() override;
 
 ### Description:
 It can handle the collision between the `BoxColliderComponent`
-and the `BaseCircleColliderComponent` objects.  
+and the `CircleColliderComponent` objects.  
 The `ComponentManager` has one from it.
 
 ### Header:
@@ -291,22 +263,22 @@ std::vector<BoxColliderComponent*> removableBoxColliders;
 
 **dynamicCircleColliders**  
 ```cpp
-std::vector<BaseCircleColliderComponent*> dynamicCircleColliders;
+std::vector<CircleColliderComponent*> dynamicCircleColliders;
 ```
 
 **kinematicCircleColliders**  
 ```cpp
-std::vector<BaseCircleColliderComponent*> kinematicCircleColliders;
+std::vector<CircleColliderComponent*> kinematicCircleColliders;
 ```
 
 **newCircleColliders**  
 ```cpp
-std::vector<BaseCircleColliderComponent*> newCircleColliders;
+std::vector<CircleColliderComponent*> newCircleColliders;
 ```
 
 **removableCircleColliders**  
 ```cpp
-std::vector<BaseCircleColliderComponent*> removableCircleColliders;
+std::vector<CircleColliderComponent*> removableCircleColliders;
 ```
 
 **boxMutex**  
@@ -358,7 +330,7 @@ They are used by Remove functions.
 void RemoveItem(BoxColliderComponent* component);
 ```
 ```cpp
-void RemoveItem(BaseCircleColliderComponent* component);
+void RemoveItem(CircleColliderComponent* component);
 ```
 
 **RefreshBoxColliders**  
@@ -424,7 +396,7 @@ If the isThreadSafe is true, their mutex will be used.
 void Add(BoxColliderComponent* collider, bool isThreadSafe);
 ```
 ```cpp
-void Add(BaseCircleColliderComponent* collider, bool isThreadSafe);
+void Add(CircleColliderComponent* collider, bool isThreadSafe);
 ```
 
 **Remove**  
@@ -433,7 +405,7 @@ If the isThreadSafe is true, their mutex will be used.
 void Remove(BoxColliderComponent* collider, bool isThreadSafe);
 ```
 ```cpp
-void Remove(BaseCircleColliderComponent* collider, bool isThreadSafe);
+void Remove(CircleColliderComponent* collider, bool isThreadSafe);
 ```
 
 **Clear**  
@@ -564,7 +536,7 @@ static glm::vec2 GetEdge(const BoxColliderComponent& boxCollider, glm::vec2 dist
 ```
 
 ```cpp
-static glm::vec2 GetEdge(const BaseCircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters);
+static glm::vec2 GetEdge(const CircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters);
 ```
 
 **GetDirection**  
@@ -580,7 +552,7 @@ static void FixPosition(const BoxColliderComponent& boxCollider, glm::vec2 edgeO
 ```
 
 ```cpp
-static void FixPosition(const BaseCircleColliderComponent& circleCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier);
+static void FixPosition(const CircleColliderComponent& circleCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier);
 ```
 
 **GetLength2**  
@@ -597,15 +569,15 @@ static CollisionData CheckCollision(const BoxColliderComponent& collider1, const
 ```
 
 ```cpp
-static CollisionData CheckCollision(const BaseCircleColliderComponent& collider1, const BaseCircleColliderComponent& collider2);
+static CollisionData CheckCollision(const CircleColliderComponent& collider1, const CircleColliderComponent& collider2);
 ```
 
 ```cpp
-static CollisionData CheckCollision(const BaseCircleColliderComponent& circleCollider, const BoxColliderComponent& boxCollider);
+static CollisionData CheckCollision(const CircleColliderComponent& circleCollider, const BoxColliderComponent& boxCollider);
 ```
 
 ```cpp
-static CollisionData CheckCollision(const BoxColliderComponent& boxCollider, const BaseCircleColliderComponent& circleCollider);
+static CollisionData CheckCollision(const BoxColliderComponent& boxCollider, const CircleColliderComponent& circleCollider);
 ```
 
 **FixPosition**  

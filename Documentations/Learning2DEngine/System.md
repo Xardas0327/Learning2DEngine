@@ -412,7 +412,7 @@ void SetLateUpdateMaxComponentPerThread(unsigned int value);
 inline void AddToCollider(Physics::BoxColliderComponent* component);
 ```
 ```cpp
-inline void AddToCollider(Physics::BaseCircleColliderComponent* component);
+inline void AddToCollider(Physics::CircleColliderComponent* component);
 ```
 
 **RemoveFromCollider**  
@@ -420,7 +420,7 @@ inline void AddToCollider(Physics::BaseCircleColliderComponent* component);
 inline void RemoveFromCollider(Physics::BoxColliderComponent* component);
 ```
 ```cpp
-inline void RemoveFromCollider(Physics::BaseCircleColliderComponent* component);
+inline void RemoveFromCollider(Physics::CircleColliderComponent* component);
 ```
 
 **CheckCollision**  

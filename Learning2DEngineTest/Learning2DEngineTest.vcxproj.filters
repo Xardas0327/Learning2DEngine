@@ -42,7 +42,7 @@
     <ClCompile Include="Physics\BoxColliderComponentTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Physics\BaseCircleColliderComponentTest.cpp">
+    <ClCompile Include="Physics\CircleColliderComponentTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Physics\CollisionHelperTest.cpp">

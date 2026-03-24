@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "BoxColliderComponent.h"
-#include "BaseCircleColliderComponent.h"
+#include "CircleColliderComponent.h"
 #include "CollisionData.h"
 #include "ColliderType.h"
 #include "ColliderMode.h"
@@ -20,14 +20,14 @@ namespace Learning2DEngine
             CollisionHelper() {}
 
             static glm::vec2 GetEdge(const BoxColliderComponent& boxCollider, glm::vec2 distanceBetweenCenters);
-            static glm::vec2 GetEdge(const BaseCircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters);
+            static glm::vec2 GetEdge(const CircleColliderComponent& circleCollider, glm::vec2 distanceBetweenCenters);
 
             static HitDirection GetDirection(glm::vec2 vector);
 
             //The fixMultiplier should be 1.0f if another object is Kinematic or 0.5f if it is Dynamic.
             static void FixPosition(const BoxColliderComponent& boxCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier);
             //The fixMultiplier should be 1.0f if another object is Kinematic or 0.5f if it is Dynamic.
-            static void FixPosition(const BaseCircleColliderComponent& circleCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier);
+            static void FixPosition(const CircleColliderComponent& circleCollider, glm::vec2 edgeOfCollidedObject, float fixMultiplier);
 
             //It doesn't use sqrt.
             static inline float GetLength2(glm::vec2 distance)
@@ -36,9 +36,9 @@ namespace Learning2DEngine
             }
         public:
             static CollisionData CheckCollision(const BoxColliderComponent& collider1, const BoxColliderComponent& collider2);
-            static CollisionData CheckCollision(const BaseCircleColliderComponent& collider1, const BaseCircleColliderComponent& collider2);
-            static CollisionData CheckCollision(const BaseCircleColliderComponent& circleCollider, const BoxColliderComponent& boxCollider);
-            static CollisionData CheckCollision(const BoxColliderComponent& boxCollider, const BaseCircleColliderComponent& circleCollider);
+            static CollisionData CheckCollision(const CircleColliderComponent& collider1, const CircleColliderComponent& collider2);
+            static CollisionData CheckCollision(const CircleColliderComponent& circleCollider, const BoxColliderComponent& boxCollider);
+            static CollisionData CheckCollision(const BoxColliderComponent& boxCollider, const CircleColliderComponent& circleCollider);
 
 
             //Fix the position of the game objects, if they are dynamic with collider mode and another collider has collider mode too.

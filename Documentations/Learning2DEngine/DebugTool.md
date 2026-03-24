@@ -103,7 +103,7 @@ if the renderers use the camera view matrix.
 
 ### Header:
 ```cpp
-class DebugCircleColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::BaseCircleColliderComponent>, DebugCircleColliderRenderer>
+class DebugCircleColliderRenderComponent : public Render::RendererComponent<DebugRenderData<Physics::CircleColliderComponent>, DebugCircleColliderRenderer>
 {...}
 ```
 
@@ -118,7 +118,7 @@ static const std::string id;
 **Protected:**  
 **DebugCircleColliderRenderComponent**  
 ```cpp
-DebugCircleColliderRenderComponent(System::GameObject* gameObject, Physics::BaseCircleColliderComponent* collider);
+DebugCircleColliderRenderComponent(System::GameObject* gameObject, Physics::CircleColliderComponent* collider);
 ```
 
 **GetId**  
@@ -147,7 +147,7 @@ This renderer is used by `DebugCircleColliderRenderComponent`, that it can rende
 
 ### Header:
 ```cpp
-class DebugCircleColliderRenderer : public DebugColliderRenderer<Physics::BaseCircleColliderComponent>, public System::Singleton<DebugCircleColliderRenderer>
+class DebugCircleColliderRenderer : public DebugColliderRenderer<Physics::CircleColliderComponent>, public System::Singleton<DebugCircleColliderRenderer>
 {...}
 ```
 
