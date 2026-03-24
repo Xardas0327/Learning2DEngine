@@ -432,6 +432,7 @@ inline void CheckCollision();
 If it is bigger then 0, than every component handlers and the `GameObjectManager`
 will be thread safe.  
 But if it is 0, the thread safe will not be turn off automatically.  
+Note: If it uses multiple threads, the order of OnCollision will not be deterministic.
 ```cpp
 void SetMaxColliderPerThread(unsigned int value);
 ```
@@ -1018,7 +1019,7 @@ GameObject* CreateGameObject(const Transform& transform, bool isActive = true);
 The `GameObject` and its components will be destroyed.  
 If the developer give a `Component`, it will destroy the `GameObject` of the `Component`.  
 That's why all other `Components`,which the `GameObject` has, will be destroyed.  
-`GameObject` will be inactive immediately, but it will be destroyed just at end of the frame only.
+`GameObject` will be active and run in this frame, and it will be destroyed just end of the frame only.  
 ```cpp
 void DestroyGameObject(GameObject* gameObject);
 ```

@@ -30,13 +30,13 @@ namespace Learning2DEngine
 
 			/// <summary>
 			/// The gameObject and its components will be destroyed.
-			/// It will be inactive immediately, but it will be destroyed just end of the frame only.
+			/// The gameObject will be active and run in this frame, and it will be destroyed just end of the frame only.
 			/// </summary>
 			void DestroyGameObject(GameObject* gameObject);
 
 			/// <summary>
 			/// The gameObject of component and its components will be destroyed.
-			/// It will be inactive immediately, but it will be destroyed just end of the frame only.
+			/// The gameObject will be active and run in this frame, and it will be destroyed just end of the frame only.
 			/// </summary>
 			void DestroyGameObject(Component* component);
 

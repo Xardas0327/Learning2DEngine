@@ -123,6 +123,7 @@ namespace Learning2DEngine
 
             // If it is bigger then 0, than every component handlers and the GameObjectManager will be thread safe.
             // But if it is 0, the thread safe will not be turn off automatically.
+            // If it uses multiple threads, the order of OnCollision will not be deterministic.
             void SetMaxColliderPerThread(unsigned int value)
             {
                 if (value > 0)
