@@ -10,7 +10,6 @@
 #include "../System/ComponentManager.h"
 #include "../Render/RenderManager.h"
 #include "../Render/ShaderConstant.h"
-#include "DebugCircleColliderRenderer.h"
 
 namespace Learning2DEngine
 {
