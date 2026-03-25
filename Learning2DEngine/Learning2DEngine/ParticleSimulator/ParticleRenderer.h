@@ -20,6 +20,8 @@ namespace Learning2DEngine
 		{
 			friend class Singleton<ParticleRenderer>;
 		private:
+			static size_t minDynamicDataSize;
+
 			//The first int is the layer
 			//The vector contains the tuples, which renderable at the same time.  
 			//The tuple contains a map, whose keys are the texture ids and values the vector of SpriteRenderData*,
@@ -38,6 +40,8 @@ namespace Learning2DEngine
 			void SetData(const std::map<Render::RendererMode, std::map<int, std::vector<Render::RenderData*>>>& renderData) override;
 			void Draw(Render::RendererMode rendererMode, int layer) override;
 
+			size_t GetMinDynamicDataSize() override;
+			static void SetMinDynamicData(size_t dynamicDataSize);
 		};
 	}
 }

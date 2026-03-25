@@ -10,6 +10,7 @@
 #include "../System/ComponentManager.h"
 #include "../Render/RenderManager.h"
 #include "../Render/ShaderConstant.h"
+#include "DebugCircleColliderRenderer.h"
 
 namespace Learning2DEngine
 {
@@ -19,6 +20,8 @@ namespace Learning2DEngine
 
 	namespace DebugTool
 	{
+		size_t DebugBoxColliderRenderer::minDynamicDataSize = 0;
+
 		DebugBoxColliderRenderer::DebugBoxColliderRenderer()
 			: DebugColliderRenderer()
 		{
@@ -78,7 +81,7 @@ namespace Learning2DEngine
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
 
-			maxObjectSize = 1;
+			maxObjectSize = 0;
 			dynamicData = new BaseColorDynamicData[maxObjectSize];
 		}
 
@@ -125,6 +128,16 @@ namespace Learning2DEngine
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
+		}
+
+		size_t DebugBoxColliderRenderer::GetMinDynamicDataSize()
+		{
+			return DebugBoxColliderRenderer::minDynamicDataSize;
+		}
+
+		void DebugBoxColliderRenderer::SetMinDynamicData(size_t dynamicDataSize)
+		{
+			DebugBoxColliderRenderer::minDynamicDataSize = dynamicDataSize;
 		}
 	}
 }

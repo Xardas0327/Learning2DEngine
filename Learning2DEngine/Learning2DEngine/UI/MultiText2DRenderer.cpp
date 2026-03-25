@@ -17,6 +17,8 @@ namespace Learning2DEngine
 
 	namespace UI
 	{
+		size_t MultiText2DRenderer::minDynamicDataSize = 0;
+
 		MultiText2DRenderer::MultiText2DRenderer()
 			: BaseMultiRenderer(), textRenderData()
 		{
@@ -102,7 +104,7 @@ namespace Learning2DEngine
 			glBindVertexArray(0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-			maxObjectSize = 1;
+			maxObjectSize = 0;
 			dynamicData = new Text2DDynamicData[maxObjectSize];
 		}
 
@@ -236,6 +238,16 @@ namespace Learning2DEngine
 
 			glBindVertexArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
+		}
+
+		size_t MultiText2DRenderer::GetMinDynamicDataSize()
+		{
+			return MultiText2DRenderer::minDynamicDataSize;
+		}
+
+		void MultiText2DRenderer::SetMinDynamicData(size_t dynamicDataSize)
+		{
+			MultiText2DRenderer::minDynamicDataSize = dynamicDataSize;
 		}
 	}
 }

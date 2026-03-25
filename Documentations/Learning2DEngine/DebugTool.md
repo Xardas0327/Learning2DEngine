@@ -71,6 +71,13 @@ class DebugBoxColliderRenderer : public DebugColliderRenderer<Physics::BoxCollid
 {...}
 ```
 
+### Variables:
+**Private:**  
+**minDynamicDataSize**  
+```cpp
+static size_t minDynamicDataSize;
+```
+
 ### Functions:
 **Private:**  
 **DebugBoxColliderRenderer**  
@@ -88,6 +95,16 @@ void InitVao();
 It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
 void Draw(Render::RendererMode rendererMode, int layer) override;
+```
+
+**GetMinDynamicDataSize**  
+```cpp
+size_t GetMinDynamicDataSize() override;
+```
+
+**SetMinDynamicData**  
+```cpp
+static void SetMinDynamicData(size_t dynamicDataSize);
 ```
 
 ##
@@ -153,6 +170,11 @@ class DebugCircleColliderRenderer : public DebugColliderRenderer<Physics::Circle
 
 ### Variables:
 **Private:**  
+**minDynamicDataSize**  
+```cpp
+static size_t minDynamicDataSize;
+```
+
 **CircleSegment**  
 It is a segment of the circle.  
 If it is bigger, a circle will be smoother.  
@@ -178,6 +200,16 @@ void InitVao();
 It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
 void Draw(Render::RendererMode rendererMode, int layer) override;
+```
+
+**GetMinDynamicDataSize**  
+```cpp
+size_t GetMinDynamicDataSize() override;
+```
+
+**SetMinDynamicData**  
+```cpp
+static void SetMinDynamicData(size_t dynamicDataSize);
 ```
 
 ##

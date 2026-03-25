@@ -78,6 +78,11 @@ which contains the position, the color and isUseCameraView.
 std::map<Render::RendererMode, std::map<int, std::map<GLuint, std::vector<std::tuple<glm::mat4x2, glm::vec4, bool>>>>> textRenderData;
 ```
 
+**minDynamicDataSize**  
+```cpp
+static size_t minDynamicDataSize;
+```
+
 ### Functions:
 **Private:**  
 **MultiText2DRenderer**  
@@ -112,6 +117,16 @@ void SetData(const std::map<Render::RendererMode, std::map<int, std::vector<Rend
 It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
 void Draw(Render::RendererMode rendererMode, int layer) override;
+```
+
+**GetMinDynamicDataSize**  
+```cpp
+size_t GetMinDynamicDataSize() override;
+```
+
+**SetMinDynamicData**  
+```cpp
+static void SetMinDynamicData(size_t dynamicDataSize);
 ```
 
 
