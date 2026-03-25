@@ -42,6 +42,8 @@ namespace Learning2DEngine
 				//if the size is not enough or too big, it will be reallocated.
 				if (maxDynamicSize > maxObjectSize || maxObjectSize > maxDynamicSize * 2)
 				{
+					//It allocates 20% more space, so that it does not have to allocate again
+					//if there are some dynamic data.
 					maxObjectSize = static_cast<size_t>(
 						static_cast<float>(maxDynamicSize) * 1.2f
 						);
