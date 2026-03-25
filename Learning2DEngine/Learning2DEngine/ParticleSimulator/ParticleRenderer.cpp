@@ -17,6 +17,8 @@ namespace Learning2DEngine
 
 	namespace ParticleSimulator
 	{
+		size_t ParticleRenderer::minDynamicDataSize = 0;
+
 		ParticleRenderer::ParticleRenderer()
 			: BaseMultiRenderer(), particleRenderData()
 		{
@@ -129,7 +131,7 @@ namespace Learning2DEngine
 			glBindVertexArray(0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-			maxObjectSize = 1;
+			maxObjectSize = 0;
 			dynamicData = new MultiSpriteDynamicData[maxObjectSize];
 		}
 
@@ -320,6 +322,16 @@ namespace Learning2DEngine
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
+		}
+
+		size_t ParticleRenderer::GetMinDynamicDataSize()
+		{
+			return ParticleRenderer::minDynamicDataSize;
+		}
+
+		void ParticleRenderer::SetMinDynamicData(size_t dynamicDataSize)
+		{
+			ParticleRenderer::minDynamicDataSize = dynamicDataSize;
 		}
 	}
 }

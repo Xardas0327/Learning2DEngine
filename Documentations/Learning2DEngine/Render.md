@@ -96,12 +96,19 @@ virtual void DestroyObject() override;
 ```
 
 **CalcDynamicDataSize**  
-If the current buffers size is not enough or it is bigger twice than the maxDynamicSize,
+If the current buffers size is not enough or it is bigger than the maxDynamicSize twice,
 it will reallocate the buffers.  
 It allocates 20% more space in the buffer, so that it does not have to allocate again 
-if there are some dynamic renderers.
+if there are some dynamic data.  
+Plus, the buffer size has to be at least the size, which is returned by `GetMinDynamicDataSize` function.  
 ```cpp
 virtual void CalcDynamicDataSize(size_t maxDynamicSize);
+```
+
+**Public:**  
+**GetMinDynamicDataSize**  
+```cpp
+virtual size_t GetMinDynamicDataSize() = 0;
 ```
 
 ##
@@ -465,6 +472,11 @@ If the sprite doesn't use texture, the key is 0.
 std::map <RendererMode, std::map<int, std::map<GLuint, std::vector<SpriteRenderData*>>>> spriteRenderData;
 ```
 
+**minDynamicDataSize**  
+```cpp
+static size_t minDynamicDataSize;
+```
+
 ### Functions:
 **Private:**  
 **MultiSpriteRenderer**  
@@ -491,7 +503,7 @@ void DestroyObject() override;
 **Public:**  
 **SetData**  
 It allocates 20% more space in the buffer, so that it does not have to allocate again 
-if there are some dynamic renderers.  
+if there are some dynamic data.  
 Note: the int is the layer.
 ```cpp
 void SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>>>& renderData) override;
@@ -501,6 +513,16 @@ void SetData(const std::map<RendererMode, std::map<int, std::vector<RenderData*>
 It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
 void Draw(Render::RendererMode rendererMode, int layer) override;
+```
+
+**GetMinDynamicDataSize**  
+```cpp
+size_t GetMinDynamicDataSize() override;
+```
+
+**SetMinDynamicData**  
+```cpp
+static void SetMinDynamicData(size_t dynamicDataSize);
 ```
 
 ##

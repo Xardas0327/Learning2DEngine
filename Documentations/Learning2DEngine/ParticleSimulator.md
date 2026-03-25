@@ -255,6 +255,11 @@ a bool which means, that it uses blend or not, the blend function factor and the
 std::map<Render::RendererMode, std::map<int, std::vector<std::tuple<std::map<GLuint, std::vector<ParticleRenderData*>>, bool, Render::BlendFuncFactor, size_t>>>> particleRenderData;
 ```
 
+**minDynamicDataSize**  
+```cpp
+static size_t minDynamicDataSize;
+```
+
 ### Functions:
 **Private:**  
 **ParticleRenderer**  
@@ -289,6 +294,16 @@ void SetData(const std::map<Render::RendererMode, std::map<int, std::vector<Rend
 It draws those objects, which was added with SetData and they are on the selected mode and layer.
 ```cpp
 void Draw(Render::RendererMode rendererMode, int layer) override;
+```
+
+**GetMinDynamicDataSize**  
+```cpp
+size_t GetMinDynamicDataSize() override;
+```
+
+**SetMinDynamicData**  
+```cpp
+static void SetMinDynamicData(size_t dynamicDataSize);
 ```
 
 ##

@@ -19,6 +19,8 @@ namespace Learning2DEngine
 		{
 			friend class Singleton<MultiText2DRenderer>;
 		private:
+			static size_t minDynamicDataSize;
+
 			//The int is the layer  
 			//The map key is a GLuint, which a character texture id, and the value is a vector,
 			//which contains the position, the color and isUseCameraView.
@@ -33,6 +35,9 @@ namespace Learning2DEngine
 			//int is the layer
 			void SetData(const std::map<Render::RendererMode, std::map<int, std::vector<Render::RenderData*>>>& renderData) override;
 			void Draw(Render::RendererMode rendererMode, int layer) override;
+
+			size_t GetMinDynamicDataSize() override;
+			static void SetMinDynamicData(size_t dynamicDataSize);
 		};
 	}
 }

@@ -16,6 +16,7 @@ namespace Learning2DEngine
 
 	namespace Render
 	{
+		size_t MultiSpriteRenderer::minDynamicDataSize = 0;
 
 		MultiSpriteRenderer::MultiSpriteRenderer()
 			: BaseMultiRenderer(), spriteRenderData()
@@ -126,7 +127,7 @@ namespace Learning2DEngine
 			glBindVertexArray(0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-			maxObjectSize = 1;
+			maxObjectSize = 0;
 			dynamicData = new MultiSpriteDynamicData[maxObjectSize];
 		}
 
@@ -256,6 +257,16 @@ namespace Learning2DEngine
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
+		}
+
+		size_t MultiSpriteRenderer::GetMinDynamicDataSize()
+		{
+			return MultiSpriteRenderer::minDynamicDataSize;
+		}
+
+		void MultiSpriteRenderer::SetMinDynamicData(size_t dynamicDataSize)
+		{
+			MultiSpriteRenderer::minDynamicDataSize = dynamicDataSize;
 		}
 	}
 }

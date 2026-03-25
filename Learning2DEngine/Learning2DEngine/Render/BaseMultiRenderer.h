@@ -36,15 +36,24 @@ namespace Learning2DEngine
 
 			virtual void CalcDynamicDataSize(size_t maxDynamicSize)
 			{
+				size_t minSize = GetMinDynamicDataSize();
+				size_t oldSize = maxObjectSize;
+
 				//if the size is not enough or too big, it will be reallocated.
 				if (maxDynamicSize > maxObjectSize || maxObjectSize > maxDynamicSize * 2)
 				{
 					//It allocates 20% more space, so that it does not have to allocate again
-					//if there are some dynamic renderers. 
+					//if there are some dynamic data.
 					maxObjectSize = static_cast<size_t>(
 						static_cast<float>(maxDynamicSize) * 1.2f
 						);
+				}
 
+				if(maxObjectSize < minSize)
+					maxObjectSize = minSize;
+
+				if (oldSize != maxObjectSize)
+				{
 					glBindBuffer(GL_ARRAY_BUFFER, vboDynamicObject);
 					glBufferData(GL_ARRAY_BUFFER, sizeof(TDynamicData) * maxObjectSize, NULL, GL_DYNAMIC_DRAW);
 					glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -53,6 +62,9 @@ namespace Learning2DEngine
 					dynamicData = new TDynamicData[maxObjectSize];
 				}
 			}
+
+		public:
+			virtual size_t GetMinDynamicDataSize() = 0;
 		};
 	}
 }

@@ -3,6 +3,7 @@
 #include <string>
 
 #include <Learning2DEngine/Render/RenderManager.h>
+#include <Learning2DEngine/Render/MultiSpriteRenderer.h>
 #include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/System/GameObject.h>
@@ -64,6 +65,9 @@ void Breakout::Init()
 
     // Camera
     mainCamera.SetResolution(RenderManager::GetInstance().GetResolution());
+
+    // Render
+    MultiSpriteRenderer::SetMinDynamicData(50);
 
     // GameController
     auto gameControllerObject = GameObjectManager::GetInstance().CreateGameObject();
