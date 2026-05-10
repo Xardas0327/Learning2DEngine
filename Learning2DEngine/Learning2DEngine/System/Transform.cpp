@@ -1,16 +1,28 @@
 #include "Transform.h"
 
+#include "GameObject.h"
+
 namespace Learning2DEngine
 {
 	namespace System
 	{
 		Transform::Transform(glm::vec2 position, glm::vec2 scale, float rotation)
-			: position(position), scale(scale), rotation(rotation), isModified(true), modelMatrix()
+			: position(position), scale(scale), rotation(rotation),
+			globalPosition(), globalScale(), globalRotation(),
+			isModified(true), modelMatrix(), gameObject(nullptr), parent(nullptr), children()
 		{
 
 		}
 
-		glm::mat4 Transform::CalculateModelMatrix() const
+		Transform::Transform(GameObject* gameObject, glm::vec2 position, glm::vec2 scale, float rotation)
+			: position(position), scale(scale), rotation(rotation),
+			globalPosition(), globalScale(), globalRotation(),
+			isModified(true), modelMatrix(), gameObject(gameObject), parent(nullptr), children()
+		{
+
+		}
+
+		glm::mat4 Transform::CalculateLocalModelMatrix() const
 		{
 			glm::mat4 model = glm::mat4(1.0f);
 			// first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
@@ -27,6 +39,40 @@ namespace Learning2DEngine
 			return model;
 		}
 
+		void Transform::UpdateCachedData() const
+		{
+			if (IsModified())
+			{
+				if (parent == nullptr)
+				{
+					modelMatrix = CalculateLocalModelMatrix();
+
+					globalPosition = position;
+					globalScale = scale;
+					globalRotation = rotation;
+				}
+				else
+				{
+					modelMatrix = parent->transform.GetModelMatrix() * CalculateLocalModelMatrix();
+
+					globalPosition = glm::vec2(modelMatrix[3][0], modelMatrix[3][1]);
+
+					float scaleX = glm::length(glm::vec2(modelMatrix[0][0], modelMatrix[0][1]));
+					float scaleY = glm::length(glm::vec2(modelMatrix[1][0], modelMatrix[1][1]));
+					globalScale = glm::vec2(scaleX, scaleY);
+
+					globalRotation = atan2(modelMatrix[1][0] / scaleY, modelMatrix[0][0] / scaleX);
+				}
+
+				isModified = false;
+			}
+		}
+
+		bool Transform::IsModified() const
+		{
+			return isModified || (parent != nullptr && parent->transform.IsModified());
+		}
+
 		void Transform::SetPosition(const glm::vec2& newPosition)
 		{
 			position = newPosition;
@@ -37,6 +83,13 @@ namespace Learning2DEngine
 		{
 			position += deltaPosition;
 			isModified = true;
+		}
+
+		glm::vec2 Transform::GetGlobalPosition() const
+		{
+			UpdateCachedData();
+
+			return globalPosition;
 		}
 
 		void Transform::SetScale(const glm::vec2& newScale)
@@ -51,6 +104,13 @@ namespace Learning2DEngine
 			isModified = true;
 		}
 
+		glm::vec2 Transform::GetGlobalScale() const
+		{
+			UpdateCachedData();
+
+			return globalScale;
+		}
+
 		void Transform::SetRotation(float newRotation)
 		{
 			rotation = newRotation;
@@ -63,23 +123,42 @@ namespace Learning2DEngine
 			isModified = true;
 		}
 
-		const glm::mat4& Transform::GetModelMatrix()
+		float Transform::GetGlobalRotation() const
 		{
-			if (isModified)
-			{
-				modelMatrix = CalculateModelMatrix();
-				isModified = false;
-			}
+			UpdateCachedData();
+
+			return globalRotation;
+		}
+
+		const glm::mat4& Transform::GetModelMatrix() const
+		{
+			UpdateCachedData();
 
 			return modelMatrix;
 		}
 
-		glm::mat4 Transform::GetModelMatrix() const
+		void Transform::SetParent(GameObject* newParent)
 		{
-			if (isModified)
-				return CalculateModelMatrix();
+			ClearParent();
 
-			return modelMatrix;
+			parent = newParent;
+			if (parent != nullptr)
+			{
+				parent->transform.children.push_back(gameObject);
+				isModified = true;
+			}
+		}
+
+		void Transform::ClearParent()
+		{
+			if (parent != nullptr)
+			{
+				auto& siblings = parent->transform.children;
+				siblings.erase(std::remove(siblings.begin(), siblings.end(), gameObject), siblings.end());
+
+				parent = nullptr;
+				isModified = true;
+			}
 		}
 	}
 }
