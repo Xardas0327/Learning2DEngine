@@ -188,6 +188,7 @@
     <ClCompile Include="Learning2DEngine\System\GameObjectManager.cpp" />
     <ClCompile Include="Learning2DEngine\System\LateUpdaterComponent.cpp" />
     <ClCompile Include="Learning2DEngine\System\Time.cpp" />
+    <ClCompile Include="Learning2DEngine\System\Transform.cpp" />
     <ClCompile Include="Learning2DEngine\System\UpdaterComponent.cpp" />
     <ClCompile Include="Learning2DEngine\UI\SimpleText2DRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\UI\SimpleText2DRenderer.cpp" />
