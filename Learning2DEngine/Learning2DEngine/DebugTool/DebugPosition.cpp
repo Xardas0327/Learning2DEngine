@@ -81,17 +81,17 @@ namespace Learning2DEngine
 		void DebugPosition::LateUpdate()
 		{
 			if(isFirstUpdate || 
-				gameObject->transform.GetPosition() != lastPosition)
+				gameObject->transform.GetGlobalPosition() != lastPosition)
 			{
 				isFirstUpdate = false;
-				lastPosition = gameObject->transform.GetPosition();
+				lastPosition = gameObject->transform.GetGlobalPosition();
 
 				std::ostringstream oss;
 				oss << std::fixed << std::setprecision(2);
 				oss << "X: " << lastPosition.x << " Y: " << lastPosition.y;
 
 				textComponent->data.SetText(oss.str());
-				textComponent->gameObject->transform.SetPosition(lastPosition);
+				textComponent->gameObject->transform.SetLocalPosition(lastPosition);
 			}
 		}
 

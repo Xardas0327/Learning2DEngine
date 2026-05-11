@@ -1104,7 +1104,7 @@ namespace Learning2DEngine
                         const ObjectPoint* point = static_cast<const ObjectPoint*>(object.GetData());
 
                         GameObject* objectGameObject = GameObjectManager::GetInstance().CreateGameObject(
-                            Transform(gameObject->transform.GetPosition() + point->position),
+                            Transform(gameObject->transform.GetLocalPosition() + point->position),
                             point->visible
                         );
 
@@ -1189,7 +1189,7 @@ namespace Learning2DEngine
                     );
 
                     //The position in Tiled is bottom-left, but in Learning2DEngine is top-left.
-                    gameObject->transform.AddPosition(glm::vec2(0.0f, -image->size.y));
+                    gameObject->transform.AddLocalPosition(glm::vec2(0.0f, -image->size.y));
 
                     auto color = itemData.tintColor;
                     color.a *= itemData.opacity * image->opacity;
@@ -1275,7 +1275,7 @@ namespace Learning2DEngine
                 bool addedCollider = false;
                 if (properties[TiledMapSmartCollider].GetString() == TiledMapSmartColliderValueBox)
                 {
-                    glm::vec2 size(gameObject->transform.GetScale());
+                    glm::vec2 size(gameObject->transform.GetLocalScale());
                     if (properties.count(TiledMapSmartColliderSizeX))
                     {
                         size.x = properties[TiledMapSmartColliderSizeX].GetFloat();
@@ -1293,7 +1293,7 @@ namespace Learning2DEngine
                 }
                 else if (properties[TiledMapSmartCollider].GetString() == TiledMapSmartColliderValueCircle)
                 {
-                    float radius = gameObject->transform.GetScale().x / 2.0f;
+                    float radius = gameObject->transform.GetLocalScale().x / 2.0f;
                     if (properties.count(TiledMapSmartColliderRadius))
                     {
                         radius = properties[TiledMapSmartColliderRadius].GetFloat();

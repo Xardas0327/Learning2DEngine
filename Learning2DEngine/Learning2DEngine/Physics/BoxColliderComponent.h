@@ -51,7 +51,7 @@ namespace Learning2DEngine
 
             glm::vec2 GetColliderCenter() const override
             {
-                glm::vec2 position = gameObject->transform.GetPosition() + colliderOffset;
+                glm::vec2 position = gameObject->transform.GetGlobalPosition() + colliderOffset;
                 position.x += colliderSize.x / 2;
                 position.y += colliderSize.y / 2;
 

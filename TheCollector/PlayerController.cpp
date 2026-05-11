@@ -39,7 +39,7 @@ void PlayerController::Init()
     auto& playerTexture = ResourceManager::GetInstance()
         .LoadTextureFromFile(PLAYER_TEXTURE_ID, "Assets/Images/Knight.png", Texture2DSettings(true));
 
-    gameObject->transform.SetScale(PLAYER_SIZE);
+    gameObject->transform.SetLocalScale(PLAYER_SIZE);
 
 #if L2DE_DEBUG
     gameObject->AddComponent<DebugPosition>();

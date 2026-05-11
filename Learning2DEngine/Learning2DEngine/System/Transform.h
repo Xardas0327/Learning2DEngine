@@ -42,36 +42,36 @@ namespace Learning2DEngine
 				float rotation = 0.0f
 			);
 
-			inline glm::vec2 GetPosition() const
+			inline glm::vec2 GetLocalPosition() const
 			{
 				return position;
 			}
 
-			void SetPosition(const glm::vec2& newPosition);
+			void SetLocalPosition(const glm::vec2& newPosition);
 
-			void AddPosition(const glm::vec2& deltaPosition);
+			void AddLocalPosition(const glm::vec2& deltaPosition);
 
 			glm::vec2 GetGlobalPosition() const;
 
-			inline glm::vec2 GetScale() const
+			inline glm::vec2 GetLocalScale() const
 			{
 				return scale;
 			}
 
-			void SetScale(const glm::vec2& newScale);
+			void SetLocalScale(const glm::vec2& newScale);
 
-			void AddScale(const glm::vec2& deltaScale);
+			void AddLocalScale(const glm::vec2& deltaScale);
 
 			glm::vec2 GetGlobalScale() const;
 
-			inline float GetRotation() const
+			inline float GetLocalRotation() const
 			{
 				return rotation;
 			}
 
-			void SetRotation(float newRotation);
+			void SetLocalRotation(float newRotation);
 
-			void AddRotation(float deltaRotation);
+			void AddLocalRotation(float deltaRotation);
 
 			float GetGlobalRotation() const;
 

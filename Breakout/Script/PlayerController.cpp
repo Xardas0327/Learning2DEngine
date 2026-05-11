@@ -30,8 +30,8 @@ void PlayerController::Reset()
 {
 	const Resolution resolution = Game::mainCamera.GetResolution();
 
-	gameObject->transform.SetScale(PLAYER_SIZE);
-	gameObject->transform.SetPosition(
+	gameObject->transform.SetLocalScale(PLAYER_SIZE);
+	gameObject->transform.SetLocalPosition(
 		glm::vec2(resolution.GetWidth() / 2.0f - PLAYER_SIZE.x / 2.0f, resolution.GetHeight() - PLAYER_SIZE.y)
 	);
 

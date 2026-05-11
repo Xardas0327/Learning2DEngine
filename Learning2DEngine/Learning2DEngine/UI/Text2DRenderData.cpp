@@ -40,7 +40,7 @@ namespace Learning2DEngine
 
         glm::mat2 Text2DRenderData::GetRotationMatrix() const
         {
-            float radians = -1.0f * glm::radians(component->gameObject->transform.GetRotation());
+            float radians = -1.0f * glm::radians(component->gameObject->transform.GetGlobalRotation());
 
             return glm::mat2(
                 glm::cos(radians), -glm::sin(radians),
@@ -82,7 +82,7 @@ namespace Learning2DEngine
             textCharacterSet.Load(fontSizePair);
             CharacterMap& characterMap = textCharacterSet[fontSizePair];
 
-            glm::vec2 size(0.0f, characterMap['H'].bearing.y * component->gameObject->transform.GetScale().y);
+            glm::vec2 size(0.0f, characterMap['H'].bearing.y * component->gameObject->transform.GetGlobalScale().y);
             float x = 0.0f;
             for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)
             {
@@ -93,11 +93,11 @@ namespace Learning2DEngine
                         size.x = x;
 
                     x = 0.0f;
-                    size.y += characterMap['H'].size.y * component->gameObject->transform.GetScale().y + lineSpacing;
+                    size.y += characterMap['H'].size.y * component->gameObject->transform.GetGlobalScale().y + lineSpacing;
                     continue;
                 }
                 const auto& ch = characterMap[*c];
-                x += (ch.advance >> 6) * component->gameObject->transform.GetScale().x;
+                x += (ch.advance >> 6) * component->gameObject->transform.GetGlobalScale().x;
             }
 
             if (x > size.x)
@@ -111,7 +111,7 @@ namespace Learning2DEngine
             glm::vec2 textLength = GetTextSize();
 
             std::map<char, std::vector<glm::mat4x2>> textMap;
-            glm::vec2 startPosition(component->gameObject->transform.GetPosition());
+            glm::vec2 startPosition(component->gameObject->transform.GetGlobalPosition());
             glm::vec2 middlePosition = startPosition + glm::vec2(textLength.x / 2.0f, textLength.y / 2);
             glm::mat2 rotationMatrix = GetRotationMatrix();
 
@@ -126,7 +126,7 @@ namespace Learning2DEngine
                 if (*c == '\n')
                 {
                     startPosition = firstCharacterPosition;
-                    startPosition.y += characterMap['H'].size.y * component->gameObject->transform.GetScale().y + lineSpacing;
+                    startPosition.y += characterMap['H'].size.y * component->gameObject->transform.GetGlobalScale().y + lineSpacing;
                     firstCharacterPosition = startPosition;
                     continue;
                 }
@@ -134,12 +134,12 @@ namespace Learning2DEngine
                 const auto& ch = characterMap[*c];
 
                 //Calculcate character position
-                float chPositionX = ch.bearing.x * component->gameObject->transform.GetScale().x;
-                float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * component->gameObject->transform.GetScale().y;
+                float chPositionX = ch.bearing.x * component->gameObject->transform.GetGlobalScale().x;
+                float chPositionY = (characterMap['H'].bearing.y - ch.bearing.y) * component->gameObject->transform.GetGlobalScale().y;
 
                 //Calculcate character size
-                float chWidth = ch.size.x * component->gameObject->transform.GetScale().x;
-                float chHeight = ch.size.y * component->gameObject->transform.GetScale().y;
+                float chWidth = ch.size.x * component->gameObject->transform.GetGlobalScale().x;
+                float chHeight = ch.size.y * component->gameObject->transform.GetGlobalScale().y;
 
                 glm::vec2 relativePoint = (startPosition - middlePosition) + glm::vec2(chPositionX, chPositionY);
 
@@ -159,7 +159,7 @@ namespace Learning2DEngine
                 startPosition +=
                     glm::vec2(
                         // bitshift by 6 to get value in pixels (1/64th times 2^6 = 64)
-                        (ch.advance >> 6) * component->gameObject->transform.GetScale().x,
+                        (ch.advance >> 6) * component->gameObject->transform.GetGlobalScale().x,
                         0);
             }
 

@@ -223,21 +223,21 @@ void GameController::ProcessInput()
         float velocity = PLAYER_VELOCITY * Time::GetDeltaTime();
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_A))
         {
-            if (playerController->gameObject->transform.GetPosition().x >= 0.0f)
+            if (playerController->gameObject->transform.GetLocalPosition().x >= 0.0f)
             {
-                playerController->gameObject->transform.AddPosition(glm::vec2(-velocity, 0.0f));
+                playerController->gameObject->transform.AddLocalPosition(glm::vec2(-velocity, 0.0f));
                 if (ballController->IsStuck())
-                    ballController->gameObject->transform.AddPosition(glm::vec2(-velocity, 0.0f));
+                    ballController->gameObject->transform.AddLocalPosition(glm::vec2(-velocity, 0.0f));
             }
         }
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_D))
         {
-            if (playerController->gameObject->transform.GetPosition().x <=
-                Game::mainCamera.GetResolution().GetWidth() - playerController->gameObject->transform.GetScale().x)
+            if (playerController->gameObject->transform.GetLocalPosition().x <=
+                Game::mainCamera.GetResolution().GetWidth() - playerController->gameObject->transform.GetLocalScale().x)
             {
-                playerController->gameObject->transform.AddPosition(glm::vec2(velocity, 0.0f));
+                playerController->gameObject->transform.AddLocalPosition(glm::vec2(velocity, 0.0f));
                 if (ballController->IsStuck())
-                    ballController->gameObject->transform.AddPosition(glm::vec2(velocity, 0.0f));
+                    ballController->gameObject->transform.AddLocalPosition(glm::vec2(velocity, 0.0f));
             }
         }
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_SPACE))
@@ -258,7 +258,7 @@ void GameController::ShakeScreen()
 
 void GameController::IsLifeLost()
 {
-    if (ballController->gameObject->transform.GetPosition().y >= Game::mainCamera.GetResolution().GetHeight())
+    if (ballController->gameObject->transform.GetLocalPosition().y >= Game::mainCamera.GetResolution().GetHeight())
     {
         --lifes;
         if (lifes == 0)
@@ -371,7 +371,7 @@ void GameController::UpdatePowerUps()
 {
     for (PowerUpController* powerUp : powerUps)
     {
-        if (powerUp->gameObject->transform.GetPosition().y >= Game::mainCamera.GetResolution().GetHeight())
+        if (powerUp->gameObject->transform.GetLocalPosition().y >= Game::mainCamera.GetResolution().GetHeight())
             powerUp->gameObject->isActive = false;
 
         if (powerUp->activated)
@@ -457,8 +457,8 @@ void GameController::ActivatePowerUp(PowerUpType powerUpType)
         ballController->renderer->data.color = glm::vec4(1.0f, 0.5f, 0.5f, 1.0f);
         break;
     case PowerUpType::PAD_SIZE_INCREASE:
-        playerController->gameObject->transform.AddScale(glm::vec2(50.0f, 0.0f));
-        playerController->collider->colliderSize = playerController->gameObject->transform.GetScale();
+        playerController->gameObject->transform.AddLocalScale(glm::vec2(50.0f, 0.0f));
+        playerController->collider->colliderSize = playerController->gameObject->transform.GetLocalScale();
         break;
     case PowerUpType::CONFUSE:
         // It will be activate only if chaos wasn't already active
@@ -487,7 +487,7 @@ void GameController::BallHitBrick(BrickController* brick)
     if (!brick->IsSolid())
     {
         brick->gameObject->isActive = false;
-        SpawnPowerUps(brick->gameObject->transform.GetPosition());
+        SpawnPowerUps(brick->gameObject->transform.GetLocalPosition());
         soundEngine->play2D("Assets/Sounds/bleep.mp3", false);
     }
     else

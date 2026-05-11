@@ -33,15 +33,15 @@ void MovingPlatformController::Init()
 
 void MovingPlatformController::Update()
 {
-	auto p = gameObject->transform.GetPosition();
+	auto p = gameObject->transform.GetLocalPosition();
 	auto m = (movingToEnd ? 1.0f : -1.0f) * directionVector * speed * Time::GetDeltaTime();
-	glm::vec2 newPosition = gameObject->transform.GetPosition() + (movingToEnd ? 1.0f : -1.0f) * directionVector * speed * Time::GetDeltaTime();
+	glm::vec2 newPosition = gameObject->transform.GetLocalPosition() + (movingToEnd ? 1.0f : -1.0f) * directionVector * speed * Time::GetDeltaTime();
 
-	gameObject->transform.SetPosition(
+	gameObject->transform.SetLocalPosition(
 		glm::clamp(newPosition, minVector, maxVector)
 	);
 
-	if (glm::distance(gameObject->transform.GetPosition(), movingToEnd ? endPosition : startPosition) < 0.01f)
+	if (glm::distance(gameObject->transform.GetLocalPosition(), movingToEnd ? endPosition : startPosition) < 0.01f)
 	{
 		movingToEnd = !movingToEnd;
 	}
@@ -49,7 +49,7 @@ void MovingPlatformController::Update()
 
 void MovingPlatformController::Reset()
 {
-	gameObject->transform.SetPosition(startPosition);
+	gameObject->transform.SetLocalPosition(startPosition);
 	movingToEnd = true;
 }
 

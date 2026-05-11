@@ -30,7 +30,7 @@ protected:
         Learning2DEngine::System::Game::mainCamera.SetPosition(
             glm::clamp(
                 glm::vec2(
-                    playerController->gameObject->transform.GetPosition().x + PLAYER_DISTANCEX,
+                    playerController->gameObject->transform.GetLocalPosition().x + PLAYER_DISTANCEX,
                     Learning2DEngine::System::Game::mainCamera.GetPosition().y
                 ),
                 MIN_CAMERA_POSITIONS,

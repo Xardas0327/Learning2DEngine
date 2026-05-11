@@ -73,13 +73,13 @@ namespace Learning2DEngine
 			return isModified || (parent != nullptr && parent->transform.IsModified());
 		}
 
-		void Transform::SetPosition(const glm::vec2& newPosition)
+		void Transform::SetLocalPosition(const glm::vec2& newPosition)
 		{
 			position = newPosition;
 			isModified = true;
 		}
 
-		void Transform::AddPosition(const glm::vec2& deltaPosition)
+		void Transform::AddLocalPosition(const glm::vec2& deltaPosition)
 		{
 			position += deltaPosition;
 			isModified = true;
@@ -92,13 +92,13 @@ namespace Learning2DEngine
 			return globalPosition;
 		}
 
-		void Transform::SetScale(const glm::vec2& newScale)
+		void Transform::SetLocalScale(const glm::vec2& newScale)
 		{
 			scale = newScale;
 			isModified = true;
 		}
 
-		void Transform::AddScale(const glm::vec2& deltaScale)
+		void Transform::AddLocalScale(const glm::vec2& deltaScale)
 		{
 			scale += deltaScale;
 			isModified = true;
@@ -111,13 +111,13 @@ namespace Learning2DEngine
 			return globalScale;
 		}
 
-		void Transform::SetRotation(float newRotation)
+		void Transform::SetLocalRotation(float newRotation)
 		{
 			rotation = newRotation;
 			isModified = true;
 		}
 
-		void Transform::AddRotation(float deltaRotation)
+		void Transform::AddLocalRotation(float deltaRotation)
 		{
 			rotation += deltaRotation;
 			isModified = true;

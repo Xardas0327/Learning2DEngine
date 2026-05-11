@@ -37,6 +37,6 @@ public:
 
     inline glm::vec2 GetHeadPosition()
     {
-        return snake.front()->gameObject->transform.GetPosition();
+        return snake.front()->gameObject->transform.GetLocalPosition();
     }
 };

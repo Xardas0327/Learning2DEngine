@@ -92,20 +92,20 @@ void GameController::InitEnvironment()
     movingPlatforms.push_back(
         MovingPlatformController::Create(
 			map.groupedGameObjects["MovingPlatform1"][0],
-			map.groupedGameObjects["MovingPlatform1Start"][0]->transform.GetPosition(),
-            map.groupedGameObjects["MovingPlatform1End"][0]->transform.GetPosition()
+			map.groupedGameObjects["MovingPlatform1Start"][0]->transform.GetLocalPosition(),
+            map.groupedGameObjects["MovingPlatform1End"][0]->transform.GetLocalPosition()
         )
     );
     movingPlatforms.push_back(
         MovingPlatformController::Create(
             map.groupedGameObjects["MovingPlatform2"][0],
-            map.groupedGameObjects["MovingPlatform2Start"][0]->transform.GetPosition(),
-            map.groupedGameObjects["MovingPlatform2End"][0]->transform.GetPosition()
+            map.groupedGameObjects["MovingPlatform2Start"][0]->transform.GetLocalPosition(),
+            map.groupedGameObjects["MovingPlatform2End"][0]->transform.GetLocalPosition()
         )
     );
 
 	//Box
-    box = BoxController::Create(map.groupedGameObjects["Rock"][0]->transform.GetPosition());
+    box = BoxController::Create(map.groupedGameObjects["Rock"][0]->transform.GetLocalPosition());
 
     //Coin
     coins.reserve(map.groupedGameObjects["Coin"].size());
@@ -115,7 +115,7 @@ void GameController::InitEnvironment()
 	}
 
     //Player start position
-	playerStartPosition = map.groupedGameObjects["PlayerStart"][0]->transform.GetPosition();
+	playerStartPosition = map.groupedGameObjects["PlayerStart"][0]->transform.GetLocalPosition();
 }
 
 void GameController::InitTexts()
@@ -283,7 +283,7 @@ void GameController::StartPlay()
         platform->Reset();
     }
 
-    playerController->gameObject->transform.SetPosition(playerStartPosition);
+    playerController->gameObject->transform.SetLocalPosition(playerStartPosition);
     playerController->rigidbody->isFrozen = false;
     playerController->rigidbody->velocity = glm::vec2(0.0f);
     playerController->coinNumber = 0;

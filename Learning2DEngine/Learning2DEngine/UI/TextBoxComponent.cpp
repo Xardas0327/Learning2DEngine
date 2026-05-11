@@ -89,14 +89,14 @@ namespace Learning2DEngine
 					simpleRenderComponent->data.isUseCameraView = textRenderData->isUseCameraView;
 					simpleRenderComponent->gameObject->transform = Transform(
 						glm::vec2(
-							textRenderData->component->gameObject->transform.GetPosition().x - paddingLeftRight,
-							textRenderData->component->gameObject->transform.GetPosition().y - paddingTopBottom
+							textRenderData->component->gameObject->transform.GetGlobalPosition().x - paddingLeftRight,
+							textRenderData->component->gameObject->transform.GetGlobalPosition().y - paddingTopBottom
 						),
 						glm::vec2(
 							textLength.x + 2.0f * paddingLeftRight,
 							textLength.y + 2.0f * paddingTopBottom
 						),
-						textRenderData->component->gameObject->transform.GetRotation()
+						textRenderData->component->gameObject->transform.GetGlobalRotation()
 					);
 					break;
 				case TextBoxMode::MULTI:
@@ -107,14 +107,14 @@ namespace Learning2DEngine
 					multiRenderComponent->data.isUseCameraView = textRenderData->isUseCameraView;
 					multiRenderComponent->gameObject->transform = Transform(
 						glm::vec2(
-							textRenderData->component->gameObject->transform.GetPosition().x - paddingLeftRight,
-							textRenderData->component->gameObject->transform.GetPosition().y - paddingTopBottom
+							textRenderData->component->gameObject->transform.GetGlobalPosition().x - paddingLeftRight,
+							textRenderData->component->gameObject->transform.GetGlobalPosition().y - paddingTopBottom
 						),
 						glm::vec2(
 							textLength.x + 2.0f * paddingLeftRight,
 							textLength.y + 2.0f * paddingTopBottom
 						),
-						textRenderData->component->gameObject->transform.GetRotation()
+						textRenderData->component->gameObject->transform.GetGlobalRotation()
 					);
 					break;
 			}

@@ -29,7 +29,7 @@ namespace Learning2DEngine
                     velocity += gravity * gravityMultiplier * System::Time::GetDeltaTime();
                 }
 
-                gameObject->transform.AddPosition(
+                gameObject->transform.AddLocalPosition(
                     velocity * System::Time::GetDeltaTime()
                 );
             }

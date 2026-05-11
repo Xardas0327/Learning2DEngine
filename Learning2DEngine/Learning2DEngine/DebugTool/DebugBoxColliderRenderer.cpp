@@ -104,7 +104,7 @@ namespace Learning2DEngine
 
 				glm::mat4 model = glm::mat4(1.0f);
 				model = glm::translate(model,
-					glm::vec3(colliderData->objectComponent->gameObject->transform.GetPosition() + colliderData->objectComponent->colliderOffset, 0.0f)
+					glm::vec3(colliderData->objectComponent->gameObject->transform.GetGlobalPosition() + colliderData->objectComponent->colliderOffset, 0.0f)
 				);
 				model = glm::scale(model, glm::vec3(colliderData->objectComponent->colliderSize, 1.0f));
 				

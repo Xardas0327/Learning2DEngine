@@ -111,8 +111,8 @@ void GameLevel::CalcBrickSize(const Resolution& resolution)
 
     for (BrickController* brick : bricks)
     {
-        brick->gameObject->transform.SetPosition(glm::vec2(unit_width * brick->mapCoorX, unit_height * brick->mapCoorY));
-        brick->gameObject->transform.SetScale(scale);
+        brick->gameObject->transform.SetLocalPosition(glm::vec2(unit_width * brick->mapCoorX, unit_height * brick->mapCoorY));
+        brick->gameObject->transform.SetLocalScale(scale);
         brick->collider->colliderSize = scale;
     }
 }
