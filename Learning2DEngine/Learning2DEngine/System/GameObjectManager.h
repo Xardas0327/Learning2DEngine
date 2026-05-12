@@ -25,7 +25,11 @@ namespace Learning2DEngine
 			GameObjectManager();
 		public:
 
-			GameObject* CreateGameObject(bool isActive = true);
+			GameObject* CreateGameObject(
+				bool isActive = true,
+				glm::vec2 position = glm::vec2(0.0f, 0.0f),
+				glm::vec2 scale = glm::vec2(1.0f, 1.0f),
+				float rotation = 0.0f);
 			GameObject* CreateGameObject(const Transform& transform, bool isActive = true);
 
 			/// <summary>

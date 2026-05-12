@@ -10,9 +10,9 @@ namespace Learning2DEngine
 		{
 		}
 
-		GameObject* GameObjectManager::CreateGameObject(bool isActive)
+		GameObject* GameObjectManager::CreateGameObject(bool isActive, glm::vec2 position, glm::vec2 scale, float rotation)
 		{
-			auto gameObject = new GameObject(isActive);
+			auto gameObject = new GameObject(isActive, position, scale, rotation);
 
 			if (isThreadSafe)
 			{

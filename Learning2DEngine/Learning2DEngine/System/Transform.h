@@ -11,8 +11,9 @@ namespace Learning2DEngine
 	{
 		class GameObject;
 
-		class Transform
+		class Transform final
 		{
+			friend class GameObject;
 		private:
 			glm::vec2 position;
 			glm::vec2 scale;
@@ -31,9 +32,6 @@ namespace Learning2DEngine
 			glm::mat4 CalculateLocalModelMatrix() const;
 			void UpdateCachedData() const;
 			bool IsModified() const;
-		public:
-			//deprecated
-			Transform(glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f);
 
 			Transform(
 				GameObject* gameObject,
@@ -41,6 +39,9 @@ namespace Learning2DEngine
 				glm::vec2 scale = glm::vec2(1.0f, 1.0f),
 				float rotation = 0.0f
 			);
+		public:
+			//deprecated
+			Transform(glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f);
 
 			inline glm::vec2 GetLocalPosition() const
 			{
