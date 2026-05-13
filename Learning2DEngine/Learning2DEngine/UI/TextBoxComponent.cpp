@@ -87,15 +87,19 @@ namespace Learning2DEngine
 						return;
 
 					simpleRenderComponent->data.isUseCameraView = textRenderData->isUseCameraView;
-					simpleRenderComponent->gameObject->transform = Transform(
+					simpleRenderComponent->gameObject->transform.SetLocalPosition(
 						glm::vec2(
 							textRenderData->component->gameObject->transform.GetGlobalPosition().x - paddingLeftRight,
 							textRenderData->component->gameObject->transform.GetGlobalPosition().y - paddingTopBottom
-						),
+						)
+					);
+					simpleRenderComponent->gameObject->transform.SetLocalScale(
 						glm::vec2(
 							textLength.x + 2.0f * paddingLeftRight,
 							textLength.y + 2.0f * paddingTopBottom
-						),
+						)
+					);
+					simpleRenderComponent->gameObject->transform.SetLocalRotation(
 						textRenderData->component->gameObject->transform.GetGlobalRotation()
 					);
 					break;
@@ -105,15 +109,19 @@ namespace Learning2DEngine
 						return;
 
 					multiRenderComponent->data.isUseCameraView = textRenderData->isUseCameraView;
-					multiRenderComponent->gameObject->transform = Transform(
+					multiRenderComponent->gameObject->transform.SetLocalPosition(
 						glm::vec2(
 							textRenderData->component->gameObject->transform.GetGlobalPosition().x - paddingLeftRight,
 							textRenderData->component->gameObject->transform.GetGlobalPosition().y - paddingTopBottom
-						),
+						)
+					);
+					multiRenderComponent->gameObject->transform.SetLocalScale(
 						glm::vec2(
 							textLength.x + 2.0f * paddingLeftRight,
 							textLength.y + 2.0f * paddingTopBottom
-						),
+						)
+					);
+					multiRenderComponent->gameObject->transform.SetLocalRotation(
 						textRenderData->component->gameObject->transform.GetGlobalRotation()
 					);
 					break;

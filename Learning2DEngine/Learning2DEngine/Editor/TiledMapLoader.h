@@ -104,7 +104,12 @@ namespace Learning2DEngine
 				if (isOnGameObject)
 					objectGameObject = tiledGameObject;
 				else
-					objectGameObject = System::GameObjectManager::GetInstance().CreateGameObject(tiledGameObject->transform);
+					objectGameObject = System::GameObjectManager::GetInstance().CreateGameObject(
+						true,
+						tiledGameObject->transform.GetLocalPosition(),
+						tiledGameObject->transform.GetLocalScale(),
+						tiledGameObject->transform.GetLocalRotation()
+					);
 
 				TiledMapLoader::AddColliderToGameObject(objectGameObject, object, objectProperties, true);
 
