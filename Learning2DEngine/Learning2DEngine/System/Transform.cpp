@@ -41,7 +41,7 @@ namespace Learning2DEngine
 
 		void Transform::UpdateCachedData() const
 		{
-			if (IsModified())
+			if (isModified)
 			{
 				if (parent == nullptr)
 				{
@@ -68,21 +68,25 @@ namespace Learning2DEngine
 			}
 		}
 
-		bool Transform::IsModified() const
+		void Transform::MarkAsModified()
 		{
-			return isModified || (parent != nullptr && parent->transform.IsModified());
+			isModified = true;
+			for (GameObject* child : children)
+			{
+				child->transform.MarkAsModified();
+			}
 		}
 
 		void Transform::SetLocalPosition(const glm::vec2& newPosition)
 		{
 			position = newPosition;
-			isModified = true;
+			MarkAsModified();
 		}
 
 		void Transform::AddLocalPosition(const glm::vec2& deltaPosition)
 		{
 			position += deltaPosition;
-			isModified = true;
+			MarkAsModified();
 		}
 
 		glm::vec2 Transform::GetGlobalPosition() const
@@ -95,13 +99,13 @@ namespace Learning2DEngine
 		void Transform::SetLocalScale(const glm::vec2& newScale)
 		{
 			scale = newScale;
-			isModified = true;
+			MarkAsModified();
 		}
 
 		void Transform::AddLocalScale(const glm::vec2& deltaScale)
 		{
 			scale += deltaScale;
-			isModified = true;
+			MarkAsModified();
 		}
 
 		glm::vec2 Transform::GetGlobalScale() const
@@ -114,13 +118,13 @@ namespace Learning2DEngine
 		void Transform::SetLocalRotation(float newRotation)
 		{
 			rotation = newRotation;
-			isModified = true;
+			MarkAsModified();
 		}
 
 		void Transform::AddLocalRotation(float deltaRotation)
 		{
 			rotation += deltaRotation;
-			isModified = true;
+			MarkAsModified();
 		}
 
 		float Transform::GetGlobalRotation() const
@@ -145,7 +149,7 @@ namespace Learning2DEngine
 			if (parent != nullptr)
 			{
 				parent->transform.children.push_back(gameObject);
-				isModified = true;
+				MarkAsModified();
 			}
 		}
 
@@ -157,7 +161,7 @@ namespace Learning2DEngine
 				siblings.erase(std::remove(siblings.begin(), siblings.end(), gameObject), siblings.end());
 
 				parent = nullptr;
-				isModified = true;
+				MarkAsModified();
 			}
 		}
 	}
