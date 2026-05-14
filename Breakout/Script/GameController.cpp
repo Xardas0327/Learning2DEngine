@@ -71,22 +71,14 @@ void GameController::Init()
         );
 
     // Text
-    auto liveGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(5.0f, 5.0f)
-        )
-    );
+    auto liveGameObject = gameObjectManager.CreateGameObject(glm::vec2(5.0f, 5.0f));
     lifeText = liveGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
         "Lifes: " + std::to_string(lifes)
     );
 
-    auto startGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(250.0f, static_cast<float>(middleHeight))
-        )
-    );
+    auto startGameObject = gameObjectManager.CreateGameObject(glm::vec2(250.0f, static_cast<float>(middleHeight)));
     startText = startGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
@@ -94,10 +86,8 @@ void GameController::Init()
     );
 
     auto levelSelectorGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(245.0f, static_cast<float>(middleHeight) + 20.0f),
-            glm::vec2(0.75f, 0.75f)
-        )
+        glm::vec2(245.0f, static_cast<float>(middleHeight) + 20.0f),
+        glm::vec2(0.75f, 0.75f)
     );
     levelSelectorText = levelSelectorGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -106,9 +96,7 @@ void GameController::Init()
     );
 
     auto winGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(320.0f, static_cast<float>(middleHeight) - 20.0f)
-        ),
+        glm::vec2(320.0f, static_cast<float>(middleHeight) - 20.0f),
         false
     );
     winText = winGameObject->AddComponent<SimpleText2DRenderComponent>(
@@ -120,9 +108,7 @@ void GameController::Init()
     );
 
     auto retryGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(130.0f, static_cast<float>(middleHeight))
-        ),
+        glm::vec2(130.0f, static_cast<float>(middleHeight)),
         false
     );
     retryText = retryGameObject->AddComponent<SimpleText2DRenderComponent>(
@@ -135,11 +121,9 @@ void GameController::Init()
 
 #if L2DE_DEBUG
     FpsShower::CreateFpsShowerObject(
-        Transform(
-            glm::vec2(5.0f, resolution.GetHeight() - 30)
-        ),
         fontSizePair,
-        99);
+        99,
+        glm::vec2(5.0f, resolution.GetHeight() - 30));
 #endif
 
     // Sounds

@@ -47,9 +47,7 @@ PowerUpController* PowerUpController::CreatePowerUp(
     glm::vec2 position, 
     PowerUpActivationEventItem& eventItem)
 {
-    auto powerUp = GameObjectManager::GetInstance().CreateGameObject(
-        Transform(position)
-    );
+    auto powerUp = GameObjectManager::GetInstance().CreateGameObject(position);
 
     PowerUpController* controller = powerUp->AddComponent<PowerUpController>(powerUpObject);
     controller->activationEventHandler.Add(&eventItem);

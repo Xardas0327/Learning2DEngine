@@ -22,22 +22,22 @@ void BallParticleSettings::Init(const GameObject& gameObject)
 		L2DE_LOG_ERROR("BallParticleSettings: Rigidbody is missing.");
 	}
 }
-void BallParticleSettings::SpawnParticle(Particle& particle, const GameObject& gameObject)
+void BallParticleSettings::SpawnParticle(ParticleComponent* particle, const GameObject& gameObject)
 {
 	float random = static_cast<float>(Random::GetNumber(-5, 6));
 	float rColor = Random::GetNumber(0.5f, 0.6f);
-	particle.transform.SetLocalPosition(
+	particle->gameObject->transform.SetLocalPosition(
 		gameObject.transform.GetLocalPosition() + random + positionOffset
 	);
-	particle.transform.SetLocalScale(scale);
-	particle.color = glm::vec4(rColor, rColor, rColor, 1.0f);
-	particle.lifeTime = lifeTime;
-	particle.velocity = rigidbody->velocity;
-	particle.speed = speed;
+	particle->gameObject->transform.SetLocalScale(scale);
+	particle->color = glm::vec4(rColor, rColor, rColor, 1.0f);
+	particle->lifeTime = lifeTime;
+	particle->velocity = rigidbody->velocity;
+	particle->speed = speed;
 }
 
-void BallParticleSettings::UpdateParticle(Particle& particle, const GameObject& gameObject)
+void BallParticleSettings::UpdateParticle(ParticleComponent* particle, const GameObject& gameObject)
 {
-	particle.transform.AddLocalPosition(-particle.velocity * particle.speed * Time::GetDeltaTime());
-	particle.color.a -= Time::GetDeltaTime() * 2.5f;
+	particle->gameObject->transform.AddLocalPosition(-particle->velocity * particle->speed * Time::GetDeltaTime());
+	particle->color.a -= Time::GetDeltaTime() * 2.5f;
 }
