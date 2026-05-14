@@ -105,7 +105,6 @@ namespace Learning2DEngine
 					objectGameObject = tiledGameObject;
 				else
 					objectGameObject = System::GameObjectManager::GetInstance().CreateGameObject(
-						true,
 						tiledGameObject->transform.GetLocalPosition(),
 						tiledGameObject->transform.GetLocalScale(),
 						tiledGameObject->transform.GetLocalRotation()

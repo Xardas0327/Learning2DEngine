@@ -7,14 +7,6 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-		Transform::Transform(glm::vec2 position, glm::vec2 scale, float rotation)
-			: position(position), scale(scale), rotation(rotation),
-			globalPosition(), globalScale(), globalRotation(),
-			isModified(true), modelMatrix(), gameObject(nullptr), parent(nullptr), children()
-		{
-
-		}
-
 		Transform::Transform(GameObject* gameObject, glm::vec2 position, glm::vec2 scale, float rotation)
 			: position(position), scale(scale), rotation(rotation),
 			globalPosition(), globalScale(), globalRotation(),

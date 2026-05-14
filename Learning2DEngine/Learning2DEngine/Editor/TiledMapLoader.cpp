@@ -1056,14 +1056,15 @@ namespace Learning2DEngine
             }
 
             auto gameObject = GameObjectManager::GetInstance().CreateGameObject(
-                itemData.visible,
                 //position
                 glm::vec2(
                     static_cast<float>(itemData.column) * map.GetTileWidth() + itemData.offset.x + selectedTileset->tileOffset.x,
                     static_cast<float>(itemData.row + 1) * map.GetTileHeight()
                     + itemData.offset.y + selectedTileset->tileOffset.y - selectedTileset->tileSize.y),
                 //scale
-                selectedTileset->tileSize
+                selectedTileset->tileSize,
+                0.0f,
+                itemData.visible
             );
 
             auto color = itemData.tintColor;
@@ -1106,9 +1107,8 @@ namespace Learning2DEngine
                         const ObjectPoint* point = static_cast<const ObjectPoint*>(object.GetData());
 
                         GameObject* objectGameObject = GameObjectManager::GetInstance().CreateGameObject(
-                            point->visible,
-							// position
-                            gameObject->transform.GetLocalPosition() + point->position
+                            gameObject->transform.GetLocalPosition() + point->position,
+                            point->visible
                         );
 
                         std::map<std::string, System::Property> pointProperties = point->properties;
@@ -1146,9 +1146,8 @@ namespace Learning2DEngine
                 const ObjectPoint* point = static_cast<const ObjectPoint*>(itemData.objectItem.GetData());
 
                 gameObject = GameObjectManager::GetInstance().CreateGameObject(
-                    itemData.visible && point->visible,
-					//position
-                    point->position + itemData.offset
+                    point->position + itemData.offset,
+                    itemData.visible && point->visible
                 );
             }
             break;
@@ -1156,9 +1155,8 @@ namespace Learning2DEngine
             {
                 const ObjectBox* box = static_cast<const ObjectBox*>(itemData.objectItem.GetData());
                 gameObject = GameObjectManager::GetInstance().CreateGameObject(
-                    itemData.visible,
-                    //position
-                    box->position + itemData.offset
+                    box->position + itemData.offset,
+                    itemData.visible
                 );
 
                 TiledMapLoader::AddColliderToGameObject(gameObject, *box, properties, false);
@@ -1168,9 +1166,8 @@ namespace Learning2DEngine
             {
                 const ObjectEllipse* ellipse = static_cast<const ObjectEllipse*>(itemData.objectItem.GetData());
                 gameObject = GameObjectManager::GetInstance().CreateGameObject(
-                    itemData.visible,
-					//position
-                    ellipse->position + itemData.offset
+                    ellipse->position + itemData.offset,
+                    itemData.visible
                 );
 
                 TiledMapLoader::AddColliderToGameObject(gameObject, *ellipse, properties, false);
@@ -1190,11 +1187,12 @@ namespace Learning2DEngine
                     }
 
                     gameObject = GameObjectManager::GetInstance().CreateGameObject(
-                        itemData.visible,
                         //position
                         image->position + itemData.offset,
 						//scale
-                        image->size
+                        image->size,
+                        0.0f,
+                        itemData.visible
                     );
 
                     //The position in Tiled is bottom-left, but in Learning2DEngine is top-left.

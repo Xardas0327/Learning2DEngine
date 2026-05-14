@@ -161,7 +161,7 @@ namespace Learning2DEngine
 						size_t activeParticleCount = 0;
 						for (size_t i = 0; i < particleData->GetParticleAmount(); ++i)
 						{
-							if (particles[i].lifeTime > 0.0f)
+							if (particles[i]->gameObject->isActive)
 							{
 								++activeParticleCount;
 							}
@@ -284,18 +284,18 @@ namespace Learning2DEngine
 
 						for (int i = 0; i < particleRenderData->GetParticleAmount(); ++i)
 						{
-							if (particles[i].lifeTime > 0.0f)
+							if (particles[i]->gameObject->isActive)
 							{
 								std::memcpy(dynamicData[activeParticleCount].modelMatrix,
-									glm::value_ptr(particles[i].transform.GetModelMatrix()),
+									glm::value_ptr(particles[i]->gameObject->transform.GetModelMatrix()),
 									sizeof(dynamicData[activeParticleCount].modelMatrix));
 
 								std::memcpy(dynamicData[activeParticleCount].color,
-									glm::value_ptr(particles[i].color),
+									glm::value_ptr(particles[i]->color),
 									sizeof(dynamicData[activeParticleCount].color));
 
 								std::memcpy(dynamicData[activeParticleCount].uvMatrix,
-									glm::value_ptr(particles[i].uvMatrix),
+									glm::value_ptr(particles[i]->uvMatrix),
 									sizeof(dynamicData[activeParticleCount].uvMatrix));
 
 								dynamicData[activeParticleCount].textureId = particleRenderData->IsUseTexture()

@@ -54,13 +54,13 @@ namespace Learning2DEngine
 
 		FpsShower* FpsShower::CreateFpsShowerObject(
 			const UI::FontSizePair& fontSizePair,
+			int layer,
 			glm::vec2 position,
 			glm::vec2 scale,
 			float rotation,
-			int layer,
 			glm::vec4 color)
 		{
-			auto gameObject = GameObjectManager::GetInstance().CreateGameObject(true, position, scale, rotation);
+			auto gameObject = GameObjectManager::GetInstance().CreateGameObject(position, scale, rotation);
 			return gameObject->AddComponent<FpsShower>(fontSizePair, layer, color);
 		}
 	}

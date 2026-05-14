@@ -10,9 +10,9 @@ namespace Learning2DEngine
 		{
 		}
 
-		GameObject* GameObjectManager::CreateGameObject(bool isActive, glm::vec2 position, glm::vec2 scale, float rotation)
+		GameObject* GameObjectManager::CreateGameObject(glm::vec2 position, glm::vec2 scale, float rotation, bool isActive)
 		{
-			auto gameObject = new GameObject(isActive, position, scale, rotation);
+			auto gameObject = new GameObject(position, scale, rotation, isActive);
 
 			if (isThreadSafe)
 			{
@@ -25,9 +25,24 @@ namespace Learning2DEngine
 			return gameObject;
 		}
 
-		GameObject* GameObjectManager::CreateGameObject(const Transform& transform, bool isActive)
+		GameObject* GameObjectManager::CreateGameObject(glm::vec2 position, bool isActive)
 		{
-			auto gameObject = new GameObject(transform, isActive);
+			auto gameObject = new GameObject(position, DefaultScale, DefaultRotation, isActive);
+
+			if (isThreadSafe)
+			{
+				std::lock_guard<std::mutex> lock(addMutex);
+				gameObjects.push_back(gameObject);
+			}
+			else
+				gameObjects.push_back(gameObject);
+
+			return gameObject;
+		}
+
+		GameObject* GameObjectManager::CreateGameObject(bool isActive)
+		{
+			auto gameObject = new GameObject(DefaultPosition, DefaultScale, DefaultRotation, isActive);
 
 			if (isThreadSafe)
 			{

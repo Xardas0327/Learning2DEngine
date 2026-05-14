@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../System/GameObject.h"
-#include "Particle.h"
+#include "ParticleComponent.h"
 
 namespace Learning2DEngine
 {
@@ -17,12 +17,12 @@ namespace Learning2DEngine
             virtual void Destroy() {};
 
             //It will run in the ParticleSystemComponent::Update()
-            virtual void SpawnParticle(Particle& particle, const System::GameObject& gameObject) = 0;
+            virtual void SpawnParticle(ParticleComponent* particle, const System::GameObject& gameObject) = 0;
             /// <summary>
             /// It will run in the ParticleSystemComponent::Update().
             /// This function will be called with that particle, which life time is bigger than 0, after it was decreased.  
             /// </summary>
-            virtual void UpdateParticle(Particle& particle, const System::GameObject& gameObject) = 0;
+            virtual void UpdateParticle(ParticleComponent* particle, const System::GameObject& gameObject) = 0;
         };
     }
 }

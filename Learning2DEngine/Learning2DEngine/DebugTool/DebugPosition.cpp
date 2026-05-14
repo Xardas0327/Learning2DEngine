@@ -43,7 +43,7 @@ namespace Learning2DEngine
 
 			auto& gameObjectManager = GameObjectManager::GetInstance();
 
-			auto textGo = gameObjectManager.CreateGameObject(true, glm::vec2(0.0f, 0.0f), DebugPosition::defaultScale);
+			auto textGo = gameObjectManager.CreateGameObject(glm::vec2(0.0f, 0.0f), DebugPosition::defaultScale);
 			textComponent = textGo->AddComponent<Text2DRenderComponent>(
 				RendererMode::RENDER,
 				DebugPosition::fontSizePair,

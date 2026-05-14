@@ -41,8 +41,10 @@ namespace Learning2DEngine
 				float rotation = 0.0f
 			);
 		public:
-			//deprecated
-			Transform(glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f);
+			Transform(const Transform&) = delete;
+			Transform& operator=(const Transform&) = delete;
+			Transform(Transform&&) = delete;
+			Transform& operator=(Transform&&) = delete;
 
 			inline glm::vec2 GetLocalPosition() const
 			{

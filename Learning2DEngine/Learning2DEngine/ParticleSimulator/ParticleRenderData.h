@@ -1,9 +1,10 @@
 #pragma once
 
+#include "../System/GameObjectManager.h"
 #include "../Render/RenderData.h"
 #include "../Render/Texture2D.h"
 #include "../Render/Texture2DContainer.h"
-#include "Particle.h"
+#include "ParticleComponent.h"
 
 #include "ParticleSystemSettings.h"
 
@@ -20,7 +21,19 @@ namespace Learning2DEngine
 			bool isRenderable;
 			const size_t minAllocateSize;
 			const size_t particleAmount;
-			Particle* particles;
+			ParticleComponent** particles;
+
+			void InitParticles()
+			{
+				auto& gameObjectManager = System::GameObjectManager::GetInstance();
+
+				particles = new ParticleComponent * [particleAmount];
+				for (size_t i = 0; i < particleAmount; i++)
+				{
+					auto gameObject = gameObjectManager.CreateGameObject(false);
+					particles[i] = gameObject->AddComponent<ParticleComponent>();
+				}
+			}
 
 		public:
 			ParticleSystemSettings systemSettings;
@@ -30,7 +43,7 @@ namespace Learning2DEngine
 				: RenderData(component), minAllocateSize(minAllocateSize), particleAmount(particleAmount), isRenderable(false),
 				particles(nullptr), systemSettings(), isUseCameraView(isUseCameraView), Texture2DContainer()
 			{
-				particles = new Particle[particleAmount];
+				InitParticles();
 			}
 
 			ParticleRenderData(
@@ -43,7 +56,7 @@ namespace Learning2DEngine
 				: RenderData(component), minAllocateSize(minAllocateSize), particleAmount(particleAmount), isRenderable(false),
 				particles(nullptr), systemSettings(systemSettings), isUseCameraView(isUseCameraView), Texture2DContainer(texture)
 			{
-				particles = new Particle[particleAmount];
+				InitParticles();
 			}
 
 			~ParticleRenderData() override
@@ -56,7 +69,7 @@ namespace Learning2DEngine
 				return isRenderable;
 			}
 
-			inline const Particle* GetParticles() const
+			inline ParticleComponent** GetParticles() const
 			{
 				return particles;
 			}

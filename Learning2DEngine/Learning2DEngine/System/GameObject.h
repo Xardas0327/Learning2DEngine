@@ -18,19 +18,12 @@ namespace Learning2DEngine
 		private:
 			std::vector<Component*> components;
 
-			GameObject(bool isActive = true,
-				glm::vec2 position = glm::vec2(0.0f, 0.0f),
+			GameObject(glm::vec2 position = glm::vec2(0.0f, 0.0f),
 				glm::vec2 scale = glm::vec2(1.0f, 1.0f),
-				float rotation = 0.0f)
+				float rotation = 0.0f,
+				bool isActive = true)
 				: isActive(isActive), transform(this, position, scale, rotation), components()
 			{
-			}
-
-			//deprecated
-			GameObject(const Transform& transform, bool isActive = true)
-				:isActive(isActive), transform(transform), components()
-			{
-				this->transform.gameObject = this;
 			}
 		public:
 			bool isActive;

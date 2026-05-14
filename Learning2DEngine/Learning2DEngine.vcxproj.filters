@@ -194,9 +194,6 @@
     <ClInclude Include="Learning2DEngine\System\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Learning2DEngine\ParticleSimulator\Particle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Learning2DEngine\Render\Blend.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -495,6 +492,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\Editor\ObjectLayerItemData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\ParticleSimulator\ParticleComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
