@@ -32,6 +32,7 @@ namespace Learning2DEngine
 			glm::mat4 CalculateLocalModelMatrix() const;
 			void UpdateCachedData() const;
 			void MarkAsModified();
+			bool IsChild(GameObject* potentialChild) const;
 
 			Transform(
 				GameObject* gameObject,

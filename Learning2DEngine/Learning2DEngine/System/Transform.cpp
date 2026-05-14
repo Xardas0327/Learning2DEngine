@@ -1,6 +1,7 @@
 #include "Transform.h"
 
 #include "GameObject.h"
+#include "../DebugTool/Log.h"
 
 namespace Learning2DEngine
 {
@@ -77,6 +78,18 @@ namespace Learning2DEngine
 			}
 		}
 
+		bool Transform::IsChild(GameObject* potentialChild) const
+		{
+			for (GameObject* child : children)
+			{
+				if (child == potentialChild || child->transform.IsChild(potentialChild))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
 		void Transform::SetLocalPosition(const glm::vec2& newPosition)
 		{
 			position = newPosition;
@@ -143,6 +156,12 @@ namespace Learning2DEngine
 
 		void Transform::SetParent(GameObject* newParent)
 		{
+			if(gameObject == newParent || IsChild(newParent))
+			{
+				L2DE_LOG_ERROR("The GameObject can not be a child of itself or its descendants.");
+				return;
+			}
+
 			ClearParent();
 
 			parent = newParent;
