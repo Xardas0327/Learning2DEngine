@@ -25,7 +25,7 @@ namespace Learning2DEngine
 			mutable bool isModified;
 			mutable glm::mat4 modelMatrix;
 
-			GameObject* gameObject;
+			GameObject* const gameObject;
 			GameObject* parent;
 			std::vector<GameObject*> children;
 
