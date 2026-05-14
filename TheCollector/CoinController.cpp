@@ -60,6 +60,6 @@ void CoinController::Init()
 
 CoinController* CoinController::Create(glm::vec2 position, float speed)
 {
-	auto coin = GameObjectManager::GetInstance().CreateGameObject(Transform(position, COIN_SIZE));
+	auto coin = GameObjectManager::GetInstance().CreateGameObject(position, COIN_SIZE);
 	return coin->AddComponent<CoinController>(speed);
 }

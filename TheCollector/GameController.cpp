@@ -62,7 +62,7 @@ void GameController::Init()
     }
 
     //Player
-    auto player = gameObjectManager.CreateGameObject(Transform(playerStartPosition));
+    auto player = gameObjectManager.CreateGameObject(playerStartPosition);
     playerController = player->AddComponent<PlayerController>(
         soundEngine
     );
@@ -123,30 +123,15 @@ void GameController::InitTexts()
     auto& gameObjectManager = GameObjectManager::GetInstance();
 
     //Score
-    auto scoreGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(1.0f, 1.0f),
-            glm::vec2(0.2f, 0.2f)
-        )
-    );
+    auto scoreGameObject = gameObjectManager.CreateGameObject(glm::vec2(1.0f, 1.0f), glm::vec2(0.2f, 0.2f));
     scoreText = scoreGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
 
     //Play time
-    auto playTimeGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(35.0f, 1.0f),
-            glm::vec2(0.2f, 0.2f)
-        )
-    );
+    auto playTimeGameObject = gameObjectManager.CreateGameObject(glm::vec2(35.0f, 1.0f), glm::vec2(0.2f, 0.2f));
     playTimeText = playTimeGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
 
     //Description
-    auto descriptionGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(50.0f, 50.0f),
-            glm::vec2(0.15f, 0.15f)
-        )
-    );
+    auto descriptionGameObject = gameObjectManager.CreateGameObject(glm::vec2(50.0f, 50.0f), glm::vec2(0.15f, 0.15f));
     descriptionText = descriptionGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
@@ -164,10 +149,8 @@ void GameController::InitTexts()
 
     // Start text
     auto startGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 10.0f, 70.0f),
-            glm::vec2(0.1f, 0.1f)
-        )
+        glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 10.0f, 70.0f),
+        glm::vec2(0.1f, 0.1f)
     );
     startText = startGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -185,10 +168,8 @@ void GameController::InitTexts()
 
     // Win text
     auto winGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 10.0f, 50.0f),
-            glm::vec2(0.15f, 0.15f)
-        )
+        glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 10.0f, 50.0f),
+        glm::vec2(0.15f, 0.15f)
     );
     winText = winGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -209,10 +190,8 @@ void GameController::InitTexts()
 
     // Lose text
     auto loseGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 12.0f, 50.0f),
-            glm::vec2(0.15f, 0.15f)
-        )
+        glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 12.0f, 50.0f),
+        glm::vec2(0.15f, 0.15f)
     );
     loseText = loseGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -233,10 +212,8 @@ void GameController::InitTexts()
 
     // End text
     auto endGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 26.0f, 62.0f),
-            glm::vec2(0.1f, 0.1f)
-        )
+        glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 26.0f, 62.0f),
+        glm::vec2(0.1f, 0.1f)
     );
     endText = endGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -253,12 +230,11 @@ void GameController::InitTexts()
 	endBox->SetPadding(1.0f);
 
     FpsShower::CreateFpsShowerObject(
-        Transform(
-            glm::vec2(2.0f, Game::mainCamera.GetResolution().GetHeight() - 5),
-            glm::vec2(0.15f, 0.15f)
-        ),
         fontSizePair,
-        99);
+        99,
+        glm::vec2(2.0f, Game::mainCamera.GetResolution().GetHeight() - 5),
+        glm::vec2(0.15f, 0.15f)
+    );
 }
 
 void GameController::ShowMenu()

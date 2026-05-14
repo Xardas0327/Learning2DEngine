@@ -41,21 +41,12 @@ void GameController::Init()
     playerController = player->AddComponent<PlayerController>("Unit");
 
     //Food
-    auto food = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(0.0f, 0.0f),
-            unitSize
-        )
-    );
+    auto food = gameObjectManager.CreateGameObject(glm::vec2(0.0f, 0.0f), unitSize);
     foodController = food->AddComponent<FoodController>("Unit");
 
 
     // Text
-    auto scoreGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(5.0f, 5.0f)
-        )
-    );
+    auto scoreGameObject = gameObjectManager.CreateGameObject(glm::vec2(5.0f, 5.0f));
     scoreText = scoreGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
@@ -63,9 +54,7 @@ void GameController::Init()
     );
 
     auto startGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(175.0f, static_cast<float>(resolution.GetHeight() / 2))
-        )
+        glm::vec2(175.0f, static_cast<float>(resolution.GetHeight() / 2))
     );
     startText = startGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -74,12 +63,7 @@ void GameController::Init()
     );
 
 #if L2DE_DEBUG
-    FpsShower::CreateFpsShowerObject(
-        Transform(
-            glm::vec2(5.0f, resolution.GetHeight() - 30)
-        ),
-        fontSizePair,
-        99);
+    FpsShower::CreateFpsShowerObject(fontSizePair, 99, glm::vec2(5.0f, resolution.GetHeight() - 30));
 #endif
 
     ResetLevel();

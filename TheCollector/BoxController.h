@@ -76,9 +76,7 @@ public:
 		glm::vec2 position,
 		int layer = 0)
 	{
-		auto gameObject = Learning2DEngine::System::GameObjectManager::GetInstance().CreateGameObject(
-			Learning2DEngine::System::Transform(position, BOX_SIZE)
-		);
+		auto gameObject = Learning2DEngine::System::GameObjectManager::GetInstance().CreateGameObject(position, BOX_SIZE);
 		return gameObject->AddComponent<BoxController>(layer);
 	}
 };
