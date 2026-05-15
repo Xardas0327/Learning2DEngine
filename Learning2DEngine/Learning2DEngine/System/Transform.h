@@ -33,6 +33,7 @@ namespace Learning2DEngine
 			void UpdateCachedData() const;
 			void MarkAsModified();
 			bool IsChild(GameObject* potentialChild) const;
+			void RecalcLocalTransform(const glm::mat4& matrix);
 
 			Transform(
 				GameObject* gameObject,
@@ -86,9 +87,9 @@ namespace Learning2DEngine
 				return parent;
 			}
 
-			void SetParent(GameObject* newParent);
+			void SetParent(GameObject* newParent, bool keepWorldTransform = true);
 
-			void ClearParent();
+			void ClearParent(bool keepWorldTransform = true);
 		};
 	}
 }

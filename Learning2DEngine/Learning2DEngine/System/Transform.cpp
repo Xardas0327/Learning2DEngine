@@ -1,4 +1,4 @@
-#include "Transform.h"
+﻿#include "Transform.h"
 
 #include "GameObject.h"
 #include "../DebugTool/Log.h"
@@ -54,7 +54,7 @@ namespace Learning2DEngine
 					float scaleY = glm::length(glm::vec2(modelMatrix[1][0], modelMatrix[1][1]));
 					globalScale = glm::vec2(scaleX, scaleY);
 
-					globalRotation = atan2(modelMatrix[1][0] / scaleY, modelMatrix[0][0] / scaleX);
+					globalRotation = glm::degrees(atan2(modelMatrix[1][0] / scaleY, modelMatrix[0][0] / scaleX));
 				}
 
 				isModified = false;
@@ -80,6 +80,28 @@ namespace Learning2DEngine
 				}
 			}
 			return false;
+		}
+
+		void Transform::RecalcLocalTransform(const glm::mat4& matrix)
+		{
+			glm::vec2 matrixPos = { matrix[3][0], matrix[3][1] };
+
+			float scaleX = glm::length(glm::vec2(matrix[0][0], matrix[0][1]));
+			float scaleY = glm::length(glm::vec2(matrix[1][0], matrix[1][1]));
+			scale = { scaleX, scaleY };
+
+			float rad = atan2(matrix[1][0] / scaleY, matrix[0][0] / scaleX);
+			glm::vec2 pivotWorld = 0.5f * scale;
+
+			glm::mat2 rotMat = {
+				{ cos(rad), -sin(rad) },
+				{ sin(rad),  cos(rad) }
+			};
+
+			glm::vec2 rotatedPivot = rotMat * pivotWorld;
+
+			position = matrixPos - pivotWorld + rotatedPivot;
+			rotation = -glm::degrees(rad);
 		}
 
 		void Transform::SetLocalPosition(const glm::vec2& newPosition)
@@ -146,7 +168,7 @@ namespace Learning2DEngine
 			return modelMatrix;
 		}
 
-		void Transform::SetParent(GameObject* newParent)
+		void Transform::SetParent(GameObject* newParent, bool keepWorldTransform)
 		{
 			if(gameObject == newParent || IsChild(newParent))
 			{
@@ -156,18 +178,32 @@ namespace Learning2DEngine
 
 			ClearParent();
 
-			parent = newParent;
-			if (parent != nullptr)
+			if (newParent != nullptr)
 			{
+				if (keepWorldTransform)
+				{
+					glm::mat4 invParent = glm::inverse(newParent->transform.GetModelMatrix());
+					glm::mat4 newLocalMatix = invParent * GetModelMatrix();
+
+					RecalcLocalTransform(newLocalMatix);
+				}
+
+				parent = newParent;
 				parent->transform.children.push_back(gameObject);
 				MarkAsModified();
 			}
 		}
 
-		void Transform::ClearParent()
+		void Transform::ClearParent(bool keepWorldTransform)
 		{
 			if (parent != nullptr)
 			{
+				if (keepWorldTransform)
+				{
+					//recalc the local transform from the global model matrix
+					RecalcLocalTransform(GetModelMatrix());
+				}
+
 				auto& siblings = parent->transform.children;
 				siblings.erase(std::remove(siblings.begin(), siblings.end(), gameObject), siblings.end());
 
