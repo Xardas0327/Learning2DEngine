@@ -16,19 +16,20 @@ namespace Learning2DEngine
 		{
 			friend class GameObject;
 		protected:
-			Component(GameObject* gameObject)
-				: gameObject(gameObject), isActive(true)
-			{
-
-			}
-
-			virtual void Init() {}
-			virtual void Destroy() {}
-		public:
 			bool isActive;
+
+			Component(GameObject* gameObject);
+
+			virtual void Init();
+			virtual void Destroy();
+		public:
 			GameObject* const gameObject;
 
 			virtual ~Component() = default;
+
+			bool IsActive() const;
+
+			void SetActive(bool active);
 		};
 	}
 }

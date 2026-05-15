@@ -66,7 +66,7 @@ namespace Learning2DEngine
 						for (auto& data : layerData.second)
 						{
 							auto colliderData = static_cast<DebugRenderData<TColliderComponent>*>(data);
-							if (!colliderData->objectComponent->isActive)
+							if (!colliderData->objectComponent->IsActive())
 								continue;
 
 							actualLayerData.push_back(colliderData);

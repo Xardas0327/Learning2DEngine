@@ -90,7 +90,7 @@ void GameController::ProcessInput()
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
         {
             state = GameState::GAME_ACTIVE;
-            startText->gameObject->isActive = false;
+			startText->gameObject->SetActive(false);
             ResetLevel();
         }
     case GameState::GAME_ACTIVE:
@@ -168,7 +168,7 @@ void GameController::MoveSnake()
         if (IsOut(newPosition) || playerController->IsInSnake(newPosition))
         {
             state = GameState::GAME_MENU;
-            startText->gameObject->isActive = true;
+            startText->gameObject->SetActive(true);
         }
         else
         {
@@ -206,7 +206,7 @@ void GameController::GenerateNextFood()
     if (playerController->GetSize() >= levelResolution.x * levelResolution.y)
     {
         state = GameState::GAME_MENU;
-        startText->gameObject->isActive = true;
+        startText->gameObject->SetActive(true);
         return;
     }
 

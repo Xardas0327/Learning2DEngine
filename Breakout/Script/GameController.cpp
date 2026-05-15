@@ -166,10 +166,10 @@ void GameController::ProcessInput()
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
         {
             state = GameState::GAME_ACTIVE;
-            startText->gameObject->isActive = false;
-            levelSelectorText->gameObject->isActive = false;
-            winText->gameObject->isActive = false;
-            retryText->gameObject->isActive = false;
+			startText->gameObject->SetActive(false);
+            levelSelectorText->gameObject->SetActive(false);
+            winText->gameObject->SetActive(false);
+            retryText->gameObject->SetActive(false);
         }
 
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_W) == InputStatus::KEY_DOWN)
@@ -197,10 +197,10 @@ void GameController::ProcessInput()
         {
             postProcessData->chaos = false;
             state = GameState::GAME_MENU;
-            startText->gameObject->isActive = true;
-            levelSelectorText->gameObject->isActive = true;
-            winText->gameObject->isActive = false;
-            retryText->gameObject->isActive = false;
+            startText->gameObject->SetActive(true);
+            levelSelectorText->gameObject->SetActive(true);
+            winText->gameObject->SetActive(false);
+            retryText->gameObject->SetActive(false);
         }
         break;
     case GameState::GAME_ACTIVE:
@@ -249,10 +249,10 @@ void GameController::IsLifeLost()
         {
             ResetLevel();
             state = GameState::GAME_MENU;
-            startText->gameObject->isActive = true;
-            levelSelectorText->gameObject->isActive = true;
-            winText->gameObject->isActive = false;
-            retryText->gameObject->isActive = false;
+            startText->gameObject->SetActive(true);
+            levelSelectorText->gameObject->SetActive(true);
+            winText->gameObject->SetActive(false);
+            retryText->gameObject->SetActive(false);
         }
         else
         {
@@ -272,10 +272,10 @@ void GameController::IsLevelCompleted()
         ClearPowerUps();
         postProcessData->chaos = true;
         state = GameState::GAME_WIN;
-        startText->gameObject->isActive = false;
-        levelSelectorText->gameObject->isActive = false;
-        winText->gameObject->isActive = true;
-        retryText->gameObject->isActive = true;
+        startText->gameObject->SetActive(false);
+        levelSelectorText->gameObject->SetActive(false);
+        winText->gameObject->SetActive(true);
+        retryText->gameObject->SetActive(true);
     }
 }
 
@@ -356,7 +356,7 @@ void GameController::UpdatePowerUps()
     for (PowerUpController* powerUp : powerUps)
     {
         if (powerUp->gameObject->transform.GetLocalPosition().y >= Game::mainCamera.GetResolution().GetHeight())
-            powerUp->gameObject->isActive = false;
+            powerUp->gameObject->SetActive(false);
 
         if (powerUp->activated)
         {
@@ -404,7 +404,7 @@ void GameController::UpdatePowerUps()
     powerUps.erase(std::remove_if(powerUps.begin(), powerUps.end(),
         [&gameObjectManager](PowerUpController* powerUp)
         {
-            bool isDeletable = !powerUp->gameObject->isActive && !powerUp->activated;
+            bool isDeletable = !powerUp->gameObject->IsActive() && !powerUp->activated;
             if (isDeletable)
             {
                 gameObjectManager.DestroyGameObject(powerUp);
@@ -470,7 +470,7 @@ void GameController::BallHitBrick(BrickController* brick)
 {
     if (!brick->IsSolid())
     {
-        brick->gameObject->isActive = false;
+		brick->gameObject->SetActive(false);
         SpawnPowerUps(brick->gameObject->transform.GetLocalPosition());
         soundEngine->play2D("Assets/Sounds/bleep.mp3", false);
     }

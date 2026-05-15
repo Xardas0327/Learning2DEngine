@@ -161,7 +161,7 @@ namespace Learning2DEngine
 						size_t activeParticleCount = 0;
 						for (size_t i = 0; i < particleData->GetParticleAmount(); ++i)
 						{
-							if (particles[i]->gameObject->isActive)
+							if (particles[i]->gameObject->IsActive())
 							{
 								++activeParticleCount;
 							}
@@ -284,7 +284,7 @@ namespace Learning2DEngine
 
 						for (int i = 0; i < particleRenderData->GetParticleAmount(); ++i)
 						{
-							if (particles[i]->gameObject->isActive)
+							if (particles[i]->gameObject->IsActive())
 							{
 								std::memcpy(dynamicData[activeParticleCount].modelMatrix,
 									glm::value_ptr(particles[i]->gameObject->transform.GetModelMatrix()),

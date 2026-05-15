@@ -158,7 +158,7 @@ void PlayerController::OnCollision(const Collision& collision)
     if (coin != nullptr)
     {
         ++coinNumber;
-        coin->gameObject->isActive = false;
+        coin->gameObject->SetActive(false);
         soundEngine->play2D("Assets/Sounds/coin.wav");
         coinCollected.Invoke();
     }

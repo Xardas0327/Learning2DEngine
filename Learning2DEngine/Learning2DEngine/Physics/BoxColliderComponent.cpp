@@ -32,7 +32,7 @@ namespace Learning2DEngine
 
 #if L2DE_DEBUG_SHOW_COLLIDER
             debugTool = gameObject->AddComponent<DebugTool::DebugBoxColliderRenderComponent>(this);
-            debugTool->isActive = L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_VALUE;
+            debugTool->SetActive(L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_VALUE);
 #endif
         }
 

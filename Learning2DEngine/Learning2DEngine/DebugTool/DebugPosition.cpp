@@ -98,8 +98,8 @@ namespace Learning2DEngine
 		void DebugPosition::SetActive(bool value)
 		{
 			isActive = value;
-			textComponent->gameObject->isActive = value;
-			boxComponent->gameObject->isActive = value;
+			textComponent->gameObject->SetActive(value);
+			boxComponent->gameObject->SetActive(value);
 		}
 	}
 }

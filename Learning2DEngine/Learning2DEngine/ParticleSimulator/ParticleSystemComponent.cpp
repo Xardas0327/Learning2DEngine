@@ -123,7 +123,7 @@ namespace Learning2DEngine
 				}
 				else
 				{
-					data.particles[i]->gameObject->isActive = false;
+					data.particles[i]->gameObject->SetActive(false);
 				}
 			}
 		}
@@ -155,7 +155,7 @@ namespace Learning2DEngine
 			for (unsigned int i = 0; i < data.systemSettings.newParticlesPerSpawn; ++i)
 			{
 				unsigned int index = GetUnusedParticleIndex();
-				data.particles[index]->gameObject->isActive = true;
+				data.particles[index]->gameObject->SetActive(true);
 				particleSettings->SpawnParticle(data.particles[index], *gameObject);
 			}
 		}

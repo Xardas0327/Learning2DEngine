@@ -18,7 +18,7 @@ namespace Learning2DEngine
 				for (size_t i = startIndex; i < endIndex; ++i)
 				{
 					//A GameObject will only be destroyed at the end of the frame.
-					if (components[i]->isActive && components[i]->gameObject->isActive)
+					if (components[i]->IsActive())
 						components[i]->Update();
 				}
 			}

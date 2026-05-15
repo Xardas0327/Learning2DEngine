@@ -53,8 +53,7 @@ namespace Learning2DEngine
 			template<class T, class U>
 			bool CheckCollision(T* first, U* second)
 			{
-				if (second->isActive && second->gameObject->isActive
-					&& (first->maskLayer & second->maskLayer))
+				if (second->IsActive() && (first->maskLayer & second->maskLayer))
 				{
 					CollisionData data = CollisionHelper::CheckCollision(*first, *second);
 					if (data.isCollided)
@@ -65,7 +64,7 @@ namespace Learning2DEngine
 					}
 				}
 
-				return first->isActive && first->gameObject->isActive;
+				return first->IsActive();
 			}
 
 			void RemoveItem(BoxColliderComponent* component);

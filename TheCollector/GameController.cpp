@@ -239,12 +239,12 @@ void GameController::InitTexts()
 
 void GameController::ShowMenu()
 {
-    descriptionText->isActive = true;
-    startText->isActive = true;
+	descriptionText->SetActive(true);
+    startText->SetActive(true);
 
-    winText->isActive = false;
-    loseText->isActive = false;
-    endText->isActive = false;
+    winText->SetActive(false);
+    loseText->SetActive(false);
+    endText->SetActive(false);
     gameStatus = GameStatus::Menu;
 }
 
@@ -252,7 +252,7 @@ void GameController::StartPlay()
 {
     for (auto& coin : coins)
     {
-        coin->gameObject->isActive = true;
+        coin->gameObject->SetActive(true);
     }
     for (auto& platform : movingPlatforms)
     {
@@ -268,8 +268,8 @@ void GameController::StartPlay()
 
     RefreshScoreText();
     RefreshPlayTimeText();
-    descriptionText->isActive = false;
-    startText->isActive = false;
+    descriptionText->SetActive(false);
+    startText->SetActive(false);
 
     gameStatus = GameStatus::Play;
 }
@@ -277,12 +277,12 @@ void GameController::StartPlay()
 void GameController::EndPlay()
 {
     playerController->rigidbody->isFrozen = true;
-    endText->isActive = true;
+    endText->SetActive(true);
 
     if (playerController->coinNumber == coins.size())
-        winText->isActive = true;
+        winText->SetActive(true);
     else
-        loseText->isActive = true;
+        loseText->SetActive(true);
 
     gameStatus = GameStatus::Ended;
 }

@@ -17,6 +17,7 @@ namespace Learning2DEngine
 			friend class GameObjectManager;
 		private:
 			std::vector<Component*> components;
+			bool isActive;
 
 			GameObject(glm::vec2 position = glm::vec2(0.0f, 0.0f),
 				glm::vec2 scale = glm::vec2(1.0f, 1.0f),
@@ -26,7 +27,6 @@ namespace Learning2DEngine
 			{
 			}
 		public:
-			bool isActive;
 			Transform transform;
 
 			~GameObject() = default;
@@ -45,6 +45,16 @@ namespace Learning2DEngine
 					}
 				}
 				components.clear();
+			}
+
+			bool IsActive() const
+			{
+				return isActive && (transform.GetParent() == nullptr || transform.GetParent()->IsActive());
+			}
+
+			void SetActive(bool active)
+			{
+				isActive = active;
 			}
 
 			template <class TComponent, class ...Params>

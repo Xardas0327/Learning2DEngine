@@ -38,7 +38,7 @@ void PowerUpController::OnCollision(const Collision& collision)
     {
         activationEventHandler.Invoke(powerUpObject.type);
         activated = true;
-        gameObject->isActive = false;
+		gameObject->SetActive(false);
     }
 }
 

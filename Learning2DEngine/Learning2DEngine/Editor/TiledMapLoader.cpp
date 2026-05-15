@@ -1206,7 +1206,7 @@ namespace Learning2DEngine
                         itemData.layerId,
                         color);
                     renderer->data.uvMatrix = selectedTileset->GetUV(image->gid);
-					renderer->isActive = image->visible;
+					renderer->SetActive(image->visible);
 
                     //it will have all tileset properties and the object properties.
                     std::map<std::string, System::Property> allProperties = selectedTileset->commonProperties;
@@ -1381,7 +1381,7 @@ namespace Learning2DEngine
             }
 
             auto collider = gameObject->AddComponent<BoxColliderComponent>(size, type, mode, offset, maskLayer);
-            collider->isActive = object.visible;
+			collider->SetActive(object.visible);
 
             //The L2DE_TILEDMAP_SMART_COLLIDER is not used here, because the object is box.
             properties.erase(TiledMapSmartColliderSizeX);
@@ -1441,7 +1441,7 @@ namespace Learning2DEngine
             }
 
             auto collider = gameObject->AddComponent<CircleColliderComponent>(radius, type, mode, offset, maskLayer);
-            collider->isActive = object.visible;
+            collider->SetActive(object.visible);
 
             //The L2DE_TILEDMAP_SMART_COLLIDER is not used here, because the object is box.
             properties.erase(TiledMapSmartColliderRadius);
