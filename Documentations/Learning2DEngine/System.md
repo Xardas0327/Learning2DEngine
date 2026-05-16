@@ -313,6 +313,7 @@ virtual ~Component() = default;
 ```  
 
 **IsActive**  
+It returns, that the component and its gameobject is active or not.
 ```cpp
 bool IsActive() const;
 ``` 
