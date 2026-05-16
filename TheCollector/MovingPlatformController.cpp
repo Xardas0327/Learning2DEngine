@@ -33,8 +33,6 @@ void MovingPlatformController::Init()
 
 void MovingPlatformController::Update()
 {
-	auto p = gameObject->transform.GetLocalPosition();
-	auto m = (movingToEnd ? 1.0f : -1.0f) * directionVector * speed * Time::GetDeltaTime();
 	glm::vec2 newPosition = gameObject->transform.GetLocalPosition() + (movingToEnd ? 1.0f : -1.0f) * directionVector * speed * Time::GetDeltaTime();
 
 	gameObject->transform.SetLocalPosition(

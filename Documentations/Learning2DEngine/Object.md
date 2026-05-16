@@ -58,5 +58,5 @@ void Update() override;
 **CreateFpsShowerObject**  
 It creates a GameObject with FpsShower component.
 ```cpp
-static FpsShower* CreateFpsShowerObject(const System::Transform& transform, const UI::FontSizePair& fontSizePair, int layer = 0, glm::vec4 color = glm::vec4(1.0f));
+static FpsShower* CreateFpsShowerObject(const UI::FontSizePair& fontSizePair, int layer = 0, glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f, glm::vec4 color = glm::vec4(1.0f));
 ```
