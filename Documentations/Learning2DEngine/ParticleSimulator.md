@@ -131,7 +131,7 @@ glm::mat4x2 uvMatrix;
 ```
 
 ### Functions:
-**Public:**  
+**Private:**  
 **ParticleComponent**  
 ```cpp
 ParticleComponent(System::GameObject* gameObject);
