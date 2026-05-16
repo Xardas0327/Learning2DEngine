@@ -28,7 +28,7 @@ namespace Learning2DEngine
 				auto& gameObjectManager = System::GameObjectManager::GetInstance();
 
 				particles = new ParticleComponent * [particleAmount];
-				for (size_t i = 0; i < particleAmount; i++)
+				for (size_t i = 0; i < particleAmount; ++i)
 				{
 					auto gameObject = gameObjectManager.CreateGameObject(false);
 					particles[i] = gameObject->AddComponent<ParticleComponent>();
@@ -61,6 +61,12 @@ namespace Learning2DEngine
 
 			~ParticleRenderData() override
 			{
+				auto& gameObjectManager = System::GameObjectManager::GetInstance();
+				for (size_t i = 0; i < particleAmount; ++i)
+				{
+					gameObjectManager.DestroyGameObject(particles[i]);
+				}
+
 				delete[] particles;
 			}
 
