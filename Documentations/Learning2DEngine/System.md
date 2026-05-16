@@ -236,7 +236,8 @@ void SetResolution(const Render::Resolution& resolution);
 ##
 ## Component
 ### Source Code:
-[Component.h](../../Learning2DEngine/Learning2DEngine/System/Component.h)
+[Component.h](../../Learning2DEngine/Learning2DEngine/System/Component.h)  
+[Component.cpp](../../Learning2DEngine/Learning2DEngine/System/Component.cpp)
 
 ### Description:
 It is a base class for every component in the Engine.
@@ -272,7 +273,7 @@ class Component
 ```
 
 ### Variables:
-**Public:**  
+**Private:**  
 **isActive**  
 It shows, that the actual component is active or not. If not, the `ComponentManager` will not
 call the component's functions.
@@ -280,6 +281,7 @@ call the component's functions.
 bool isActive;
 ```  
 
+**Public:**  
 **gameObject**  
 ```cpp
 GameObject* const gameObject;
@@ -309,6 +311,16 @@ virtual void Destroy();
 ```cpp
 virtual ~Component() = default;
 ```  
+
+**IsActive**  
+```cpp
+bool IsActive() const;
+``` 
+
+**SetActive**  
+```cpp
+void SetActive(bool active);
+``` 
 
 ##
 ## ComponentManager
@@ -872,7 +884,6 @@ class GameObject final
 std::vector<Component*> components;
 ```
 
-**Public:**  
 **isActive**  
 It shows, that the actual game object is active or not.
 If not, the `ComponentManager` will not call the components of the game object.
@@ -880,6 +891,7 @@ If not, the `ComponentManager` will not call the components of the game object.
 bool isActive;
 ```
 
+**Public:**  
 **transform**  
 ```cpp
 Transform transform;
@@ -889,10 +901,7 @@ Transform transform;
 **Private:**  
 **GameObject**  
 ```cpp
-GameObject(bool isActive = true);
-```
-```cpp
-GameObject(const Transform& transform, bool isActive = true);
+GameObject(glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f, bool isActive = true);
 ```
 
 **Public:**  
@@ -906,6 +915,16 @@ It calls Destroy() function of the current gameobject's components
 and delete them.
 ```cpp
 void Destroy();
+```
+
+**IsActive()**  
+```cpp
+bool IsActive() const;
+```
+
+**SetActive()**  
+```cpp
+void SetActive(bool active);
 ```
 
 **AddComponent**  
@@ -974,6 +993,21 @@ class GameObjectManager : public Singleton<GameObjectManager>
 
 ### Variables:
 **Private:**  
+**DefaultPosition**  
+```cpp
+static constexpr const glm::vec2 DefaultPosition = glm::vec2(0.0f, 0.0f);
+```
+
+**DefaultScale**  
+```cpp
+static constexpr const glm::vec2 DefaultScale = glm::vec2(1.0f, 1.0f);
+```
+
+**DefaultRotation**  
+```cpp
+static constexpr const float DefaultRotation = 0.0f;
+```
+
 **gameObjects**  
 ```cpp
 std::vector<GameObject*> gameObjects;
@@ -1009,10 +1043,13 @@ GameObjectManager();
 **Public:**  
 **CreateGameObject**  
 ```cpp
-GameObject* CreateGameObject(bool isActive = true);
+GameObject* CreateGameObject(glm::vec2 position = DefaultPosition, glm::vec2 scale = DefaultScale, float rotation = DefaultRotation, bool isActive = true);
 ```
 ```cpp
-GameObject* CreateGameObject(const Transform& transform, bool isActive = true);
+GameObject* CreateGameObject(glm::vec2 position, bool isActive);
+```
+```cpp
+GameObject* CreateGameObject(bool isActive);
 ```
 
 **DestroyGameObject**  
@@ -1777,7 +1814,7 @@ Note: the position of an object is on the top-left corner.
 
 ### Header:
 ```cpp
-struct Transform
+class Transform final
 {...}
 ```
 
@@ -1798,84 +1835,176 @@ glm::vec2 scale;
 float rotation;
 ```
 
+**globalPosition**  
+```cpp
+mutable glm::vec2 globalPosition;
+```
+
+**globalScale**  
+```cpp
+mutable glm::vec2 globalScale;
+```
+
+**globalRotation**  
+```cpp
+mutable float globalRotation;
+```
+
 **isModified**  
 If it is true, the modelMatrix will be recalculated.
 ```cpp
-bool isModified;
+mutable bool isModified;
 ```
 
 **modelMatrix**  
 ```cpp
-glm::mat4 modelMatrix;
+mutable glm::mat4 modelMatrix;
+```
+
+**gameObject**  
+```cpp
+GameObject* const gameObject;
+```
+
+**parent**  
+```cpp
+GameObject* parent;
+```
+
+**children**  
+```cpp
+std::vector<GameObject*> children;
 ```
 
 ### Functions:
 **Private:**  
-**CalculateModelMatrix**  
+**CalculateLocalModelMatrix**  
 ```cpp
-glm::mat4 CalculateModelMatrix() const;
+glm::mat4 CalculateLocalModelMatrix() const;
+```
+
+**UpdateCachedData**  
+Update the mutable variables.
+```cpp
+void UpdateCachedData() const;
+```
+
+**MarkAsModified**  
+The isModified will be true and its all children will be marked as modified too.
+```cpp
+void MarkAsModified();
+```
+
+**IsChild**  
+Check if the given GameObject is a child of this Transform.
+```cpp
+bool IsChild(GameObject* potentialChild) const;
+```
+
+**RecalcLocalTransform**  
+Recalculate the local transform, when the parent transform is changed.
+```cpp
+void RecalcLocalTransform(const glm::mat4& matrix);
+```
+
+**Transform**  
+```cpp
+Transform(GameObject* gameObject, glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f);
 ```
 
 **Public:**  
-**Transform**  
+**GetLocalPosition**  
 ```cpp
-Transform(glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f);
+inline glm::vec2 GetLocalPosition() const;
 ```
 
-**GetPosition**  
+**SetLocalPosition**  
 ```cpp
-inline glm::vec2 GetPosition() const;
+void SetLocalPosition(const glm::vec2& newPosition);
 ```
 
-**SetPosition**  
+**AddLocalPosition**  
 ```cpp
-void SetPosition(const glm::vec2& newPosition);
+void AddLocalPosition(const glm::vec2& deltaPosition);
 ```
 
-**AddPosition**  
+**GetGlobalPosition**  
 ```cpp
-void AddPosition(const glm::vec2& deltaPosition);
+glm::vec2 GetGlobalPosition() const;
 ```
 
-**GetScale**  
+**GetLocalScale**  
 ```cpp
-inline glm::vec2 GetScale() const;
+inline glm::vec2 GetLocalScale() const;
 ```
 
-**SetScale**  
+**SetLocalScale**  
 ```cpp
-void SetScale(const glm::vec2& newScale);
+void SetLocalScale(const glm::vec2& newScale);
 ```
 
-**AddScale**  
+**AddLocalScale**  
 ```cpp
-void AddScale(const glm::vec2& deltaScale);
+void AddLocalScale(const glm::vec2& deltaScale);
 ```
 
-**GetRotation**  
+**GetGlobalScale**  
 ```cpp
-inline float GetRotation() const;
+glm::vec2 GetGlobalScale() const;
 ```
 
-**SetRotation**  
+**GetLocalRotation**  
 ```cpp
-void SetRotation(float newRotation);
+inline float GetLocalRotation() const;
 ```
 
-**AddRotation**  
+**SetLocalRotation**  
 ```cpp
-void AddRotation(float deltaRotation);
+void SetLocalRotation(float newRotation);
+```
+
+**AddLocalRotation**  
+```cpp
+void AddLocalRotation(float deltaRotation);
+```
+
+**GetGlobalRotation**  
+```cpp
+float GetGlobalRotation() const;
 ```
 
 **GetModelMatrix**  
-If the isModified is true, the non const version save the new calculated model matrix,
-that's why it will not recalculate the model matrix again.  
-In same situation the const version will always recalculate the model matrix.
 ```cpp
-const glm::mat4& GetModelMatrix();
+const glm::mat4& GetModelMatrix() const;
+```
+
+**GetParent**  
+```cpp
+inline GameObject* GetParent() const;
+```
+
+**SetParent**  
+```cpp
+void SetParent(GameObject* newParent, bool keepWorldTransform = true);
+```
+
+**ClearParent**  
+```cpp
+void ClearParent(bool keepWorldTransform = true);
+```
+
+**Deleted:**  
+```cpp
+Transform(const Transform&) = delete;
 ```
 ```cpp
-glm::mat4 GetModelMatrix() const;
+Transform& operator=(const Transform&) = delete;
+```
+```cpp
+Transform(Transform&&) = delete;
+```
+```cpp
+Transform& operator=(Transform&&) = delete;
 ```
 
 ##
