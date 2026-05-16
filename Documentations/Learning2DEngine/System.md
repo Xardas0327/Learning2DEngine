@@ -893,7 +893,7 @@ std::vector<Component*> components;
 
 **isActive**  
 It shows, that the actual game object is active or not.
-If not, the `ComponentManager` will not call the components of the game object.
+If not, the `ComponentManager` will not call the components of the gameobject.
 ```cpp
 bool isActive;
 ```
@@ -924,15 +924,21 @@ and delete them.
 void Destroy();
 ```
 
-**IsActive()**  
-It returns, that the gameobject and its parents are active or not.
+**GetActive()**  
+It returns, that the gameobject is active or not.
 ```cpp
-bool IsActive() const;
+inline bool GetActive() const;
 ```
 
 **SetActive()**  
 ```cpp
 void SetActive(bool active);
+```
+
+**IsActive()**  
+It returns, that the gameobject and its parents are active or not.
+```cpp
+bool IsActive() const;
 ```
 
 **AddComponent**  

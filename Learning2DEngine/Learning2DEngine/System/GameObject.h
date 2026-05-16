@@ -47,14 +47,21 @@ namespace Learning2DEngine
 				components.clear();
 			}
 
-			bool IsActive() const
+			//It returns, that the gameobject is active or not.
+			inline bool GetActive() const
 			{
-				return isActive && (transform.GetParent() == nullptr || transform.GetParent()->IsActive());
+				return isActive;
 			}
 
 			void SetActive(bool active)
 			{
 				isActive = active;
+			}
+
+			//It returns, that the gameobject and its parents are active or not.
+			bool IsActive() const
+			{
+				return isActive && (transform.GetParent() == nullptr || transform.GetParent()->IsActive());
 			}
 
 			template <class TComponent, class ...Params>
