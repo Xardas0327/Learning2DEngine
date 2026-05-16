@@ -86,7 +86,7 @@ void UpdateParticle(ParticleComponent* particle, const System::GameObject& gameO
 ```
 
 ##
-## Particle
+## ParticleComponent
 ### Source Code:
 [ParticleComponent.h](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleComponent.h)
 
