@@ -1824,17 +1824,17 @@ class Transform final
 **Private:**  
 **position**  
 ```cpp
-glm::vec2 position;
+glm::vec2 localPosition;
 ```
 
 **scale**  
 ```cpp
-glm::vec2 scale;
+glm::vec2 localScale;
 ```
 
 **rotation**  
 ```cpp
-float rotation;
+float localRotation;
 ```
 
 **globalPosition**  

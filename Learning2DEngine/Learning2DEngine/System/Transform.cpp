@@ -8,7 +8,7 @@ namespace Learning2DEngine
 	namespace System
 	{
 		Transform::Transform(GameObject* gameObject, glm::vec2 position, glm::vec2 scale, float rotation)
-			: position(position), scale(scale), rotation(rotation),
+			: localPosition(position), localScale(scale), localRotation(rotation),
 			globalPosition(), globalScale(), globalRotation(),
 			isModified(true), modelMatrix(), gameObject(gameObject), parent(nullptr), children()
 		{
@@ -19,16 +19,15 @@ namespace Learning2DEngine
 		{
 			glm::mat4 model = glm::mat4(1.0f);
 			// first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
-			model = glm::translate(model, glm::vec3(position, 0.0f));
+			model = glm::translate(model, glm::vec3(localPosition, 0.0f));
 			// move origin of rotation to center of quad
-			model = glm::translate(model, glm::vec3(0.5f * scale.x, 0.5f * scale.y, 0.0f));
+			model = glm::translate(model, glm::vec3(0.5f * localScale.x, 0.5f * localScale.y, 0.0f));
 			// then rotate
-			model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
+			model = glm::rotate(model, glm::radians(localRotation), glm::vec3(0.0f, 0.0f, 1.0f));
 			// move origin back
-			model = glm::translate(model, glm::vec3(-0.5f * scale.x, -0.5f * scale.y, 0.0f));
+			model = glm::translate(model, glm::vec3(-0.5f * localScale.x, -0.5f * localScale.y, 0.0f));
 			// then rotate
-			model = glm::scale(model, glm::vec3(scale, 1.0f)); // last scale
-
+			model = glm::scale(model, glm::vec3(localScale, 1.0f)); // last scale
 			return model;
 		}
 
@@ -40,9 +39,9 @@ namespace Learning2DEngine
 				{
 					modelMatrix = CalculateLocalModelMatrix();
 
-					globalPosition = position;
-					globalScale = scale;
-					globalRotation = rotation;
+					globalPosition = localPosition;
+					globalScale = localScale;
+					globalRotation = localRotation;
 				}
 				else
 				{
@@ -88,10 +87,10 @@ namespace Learning2DEngine
 
 			float scaleX = glm::length(glm::vec2(matrix[0][0], matrix[0][1]));
 			float scaleY = glm::length(glm::vec2(matrix[1][0], matrix[1][1]));
-			scale = { scaleX, scaleY };
+			localScale = { scaleX, scaleY };
 
 			float rad = atan2(matrix[1][0] / scaleY, matrix[0][0] / scaleX);
-			glm::vec2 pivotWorld = 0.5f * scale;
+			glm::vec2 pivotWorld = 0.5f * localScale;
 
 			glm::mat2 rotMat = {
 				{ cos(rad), -sin(rad) },
@@ -100,19 +99,19 @@ namespace Learning2DEngine
 
 			glm::vec2 rotatedPivot = rotMat * pivotWorld;
 
-			position = matrixPos - pivotWorld + rotatedPivot;
-			rotation = -glm::degrees(rad);
+			localPosition = matrixPos - pivotWorld + rotatedPivot;
+			localRotation = -glm::degrees(rad);
 		}
 
 		void Transform::SetLocalPosition(const glm::vec2& newPosition)
 		{
-			position = newPosition;
+			localPosition = newPosition;
 			MarkAsModified();
 		}
 
 		void Transform::AddLocalPosition(const glm::vec2& deltaPosition)
 		{
-			position += deltaPosition;
+			localPosition += deltaPosition;
 			MarkAsModified();
 		}
 
@@ -125,13 +124,13 @@ namespace Learning2DEngine
 
 		void Transform::SetLocalScale(const glm::vec2& newScale)
 		{
-			scale = newScale;
+			localScale = newScale;
 			MarkAsModified();
 		}
 
 		void Transform::AddLocalScale(const glm::vec2& deltaScale)
 		{
-			scale += deltaScale;
+			localScale += deltaScale;
 			MarkAsModified();
 		}
 
@@ -144,13 +143,13 @@ namespace Learning2DEngine
 
 		void Transform::SetLocalRotation(float newRotation)
 		{
-			rotation = newRotation;
+			localRotation = newRotation;
 			MarkAsModified();
 		}
 
 		void Transform::AddLocalRotation(float deltaRotation)
 		{
-			rotation += deltaRotation;
+			localRotation += deltaRotation;
 			MarkAsModified();
 		}
 

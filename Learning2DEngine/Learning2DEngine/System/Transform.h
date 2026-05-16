@@ -15,9 +15,9 @@ namespace Learning2DEngine
 		{
 			friend class GameObject;
 		private:
-			glm::vec2 position;
-			glm::vec2 scale;
-			float rotation;
+			glm::vec2 localPosition;
+			glm::vec2 localScale;
+			float localRotation;
 
 			mutable glm::vec2 globalPosition;
 			mutable glm::vec2 globalScale;
@@ -49,7 +49,7 @@ namespace Learning2DEngine
 
 			inline glm::vec2 GetLocalPosition() const
 			{
-				return position;
+				return localPosition;
 			}
 
 			void SetLocalPosition(const glm::vec2& newPosition);
@@ -60,7 +60,7 @@ namespace Learning2DEngine
 
 			inline glm::vec2 GetLocalScale() const
 			{
-				return scale;
+				return localScale;
 			}
 
 			void SetLocalScale(const glm::vec2& newScale);
@@ -71,7 +71,7 @@ namespace Learning2DEngine
 
 			inline float GetLocalRotation() const
 			{
-				return rotation;
+				return localRotation;
 			}
 
 			void SetLocalRotation(float newRotation);
