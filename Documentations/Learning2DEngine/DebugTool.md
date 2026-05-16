@@ -464,12 +464,12 @@ inline glm::vec4 GetBoxColor() const;
 
 **SetTextLocalScale**  
 ```cpp
-inline void SetTextScale(glm::vec2 scale);
+inline void SetTextLocalScale(glm::vec2 scale);
 ```
 
 **GetTextLocalScale**  
 ```cpp
-inline glm::vec2 GetTextScale() const;
+inline glm::vec2 GetTextLocalScale() const;
 ```
 
 **SetBoxPadding**  
