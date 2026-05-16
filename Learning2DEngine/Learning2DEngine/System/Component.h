@@ -27,9 +27,16 @@ namespace Learning2DEngine
 
 			virtual ~Component() = default;
 
-			bool IsActive() const;
+			//It returns, that the component is active or not.
+			inline bool GetActive() const
+			{
+				return isActive;
+			}
 
 			void SetActive(bool active);
+
+			//It returns, that the component and its gameobject is active or not.
+			bool IsActive() const;
 		};
 	}
 }

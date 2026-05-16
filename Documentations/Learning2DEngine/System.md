@@ -243,7 +243,7 @@ void SetResolution(const Render::Resolution& resolution);
 It is a base class for every component in the Engine.
 Some base components are inherited from this class, which are used by `ComponentManager`.
 That is why it is recommented to use these component classes, because they have functions,
-which can run automatically:
+which can run automatically. The components will run only if they and their gameobject are active.
 - `System::UpdaterComponent`
 - `System::LateUpdaterComponent`
 - `Physics::BoxColliderComponent`
@@ -312,15 +312,21 @@ virtual void Destroy();
 virtual ~Component() = default;
 ```  
 
-**IsActive**  
-It returns, that the component and its gameobject is active or not.
+**GetActive**  
+It returns, that the component is active or not.
 ```cpp
-bool IsActive() const;
+inline bool GetActive() const;
 ``` 
 
 **SetActive**  
 ```cpp
 void SetActive(bool active);
+``` 
+
+**IsActive**  
+It returns, that the component and its gameobject is active or not.
+```cpp
+bool IsActive() const;
 ``` 
 
 ##

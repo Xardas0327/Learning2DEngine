@@ -22,14 +22,14 @@ namespace Learning2DEngine
 
 		}
 
-		bool Component::IsActive() const
-		{
-			return isActive && gameObject->IsActive();
-		}
-
 		void Component::SetActive(bool active)
 		{
 			isActive = active;
+		}
+
+		bool Component::IsActive() const
+		{
+			return isActive && gameObject->IsActive();
 		}
 	}
 }
