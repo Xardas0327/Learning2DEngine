@@ -116,6 +116,8 @@ inline Rigidbody* GetRigidbody() const;
 ### Description:
 The `BoxColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
+Please use carefully the collider when the gameobject is a
+child of another gameobject.  
 But it subscribes/unsubscribes for `ComponentManager`.  
 Please check for more info about `BaseColliderComponent`.
 
@@ -174,6 +176,8 @@ glm::vec2 GetColliderCenter() const override;
 ### Description:
 The `CircleColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
+Please use carefully the collider when the gameobject is a
+child of another gameobject.  
 But it subscribes/unsubscribes for `ComponentManager`.  
 Please check for more info about `BaseColliderComponent`.
 
