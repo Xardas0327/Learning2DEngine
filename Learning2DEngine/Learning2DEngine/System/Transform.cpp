@@ -54,7 +54,7 @@ namespace Learning2DEngine
 					float scaleY = glm::length(glm::vec2(modelMatrix[1][0], modelMatrix[1][1]));
 					globalScale = glm::vec2(scaleX, scaleY);
 
-					globalRotation = glm::degrees(atan2(modelMatrix[1][0] / scaleY, modelMatrix[0][0] / scaleX));
+					globalRotation = -glm::degrees(atan2(modelMatrix[1][0] / scaleY, modelMatrix[0][0] / scaleX));
 				}
 
 				isModified = false;

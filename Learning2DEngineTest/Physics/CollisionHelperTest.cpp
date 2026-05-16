@@ -55,7 +55,7 @@ namespace Learning2DEngine
                 auto gameObject1 = manager.CreateGameObject();
                 auto boxCollider1 = gameObject1->AddComponent<TestBoxColliderComponent>(glm::vec2(5.0f, 10.0f));
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(50.0f, 50.0f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(50.0f, 50.0f));
                 auto boxCollider2 = gameObject2->AddComponent<TestBoxColliderComponent>(glm::vec2(10.0f, 5.0f));
 
 				auto result = CollisionHelper::CheckCollision(*boxCollider1, *boxCollider2);
@@ -72,7 +72,7 @@ namespace Learning2DEngine
                 auto gameObject1 = manager.CreateGameObject();
                 auto boxCollider1 = gameObject1->AddComponent<TestBoxColliderComponent>(glm::vec2(5.0f, 10.0f));
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(5.0f, 5.0f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(5.0f, 5.0f));
                 auto boxCollider2 = gameObject2->AddComponent<TestBoxColliderComponent>(glm::vec2(10.0f, 5.0f));
 
                 auto result = CollisionHelper::CheckCollision(*boxCollider1, *boxCollider2);
@@ -91,7 +91,7 @@ namespace Learning2DEngine
                 auto gameObject1 = manager.CreateGameObject();
                 auto circleCollider1 = gameObject1->AddComponent<TestCircleColliderComponent>(5.0f);
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(50.0f, 50.0f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(50.0f, 50.0f));
                 auto circleCollider2 = gameObject2->AddComponent<TestCircleColliderComponent>(5.0f);
 
                 auto result = CollisionHelper::CheckCollision(*circleCollider1, *circleCollider2);
@@ -108,7 +108,7 @@ namespace Learning2DEngine
                 auto gameObject1 = manager.CreateGameObject();
                 auto circleCollider1 = gameObject1->AddComponent<TestCircleColliderComponent>(15.0f);
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(20.0f, 15.0f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(20.0f, 15.0f));
                 auto circleCollider2 = gameObject2->AddComponent<TestCircleColliderComponent>(15.0f);
 
                 auto result = CollisionHelper::CheckCollision(*circleCollider1, *circleCollider2);
@@ -127,7 +127,7 @@ namespace Learning2DEngine
                 auto gameObject1 = manager.CreateGameObject();
                 auto circleCollider = gameObject1->AddComponent<TestCircleColliderComponent>(5.0f);
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(50.0f, 50.0f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(50.0f, 50.0f));
                 auto boxCollider = gameObject2->AddComponent<TestBoxColliderComponent>(glm::vec2(10.0f, 5.0f));
 
                 auto result = CollisionHelper::CheckCollision(*circleCollider, *boxCollider);
@@ -144,7 +144,7 @@ namespace Learning2DEngine
                 auto gameObject1 = manager.CreateGameObject();
                 auto circleCollider = gameObject1->AddComponent<TestCircleColliderComponent>(15.0f);
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(20.0f, 20.0f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(20.0f, 20.0f));
                 auto boxCollider = gameObject2->AddComponent<TestBoxColliderComponent>(glm::vec2(10.0f, 5.0f));
 
                 auto result = CollisionHelper::CheckCollision(*circleCollider, *boxCollider);
@@ -163,7 +163,7 @@ namespace Learning2DEngine
                 auto gameObject1 = manager.CreateGameObject();
                 auto circleCollider = gameObject1->AddComponent<TestCircleColliderComponent>(5.0f);
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(50.0f, 50.0f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(50.0f, 50.0f));
                 auto boxCollider = gameObject2->AddComponent<TestBoxColliderComponent>(glm::vec2(10.0f, 5.0f));
 
                 auto result = CollisionHelper::CheckCollision(*boxCollider, *circleCollider);
@@ -180,7 +180,7 @@ namespace Learning2DEngine
                 auto gameObject1 = manager.CreateGameObject();
                 auto circleCollider = gameObject1->AddComponent<TestCircleColliderComponent>(15.0f);
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(20.0f, 20.0f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(20.0f, 20.0f));
                 auto boxCollider = gameObject2->AddComponent<TestBoxColliderComponent>(glm::vec2(10.0f, 5.0f));
 
                 auto result = CollisionHelper::CheckCollision(*boxCollider, *circleCollider);
@@ -198,18 +198,17 @@ namespace Learning2DEngine
 
                 auto gameObject1 = manager.CreateGameObject();
                 auto boxCollider1 = gameObject1->AddComponent<TestBoxColliderComponent>(glm::vec2(10.0f, 10.0f));
-				auto position1 = gameObject1->transform.GetPosition();
+				auto position1 = gameObject1->transform.GetLocalPosition();
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(7.5f, 7.5f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(7.5f, 7.5f));
                 auto boxCollider2 = gameObject2->AddComponent<TestBoxColliderComponent>(glm::vec2(10.0f, 10.0f));
-                auto position2= gameObject2->transform.GetPosition();
-
+                auto position2= gameObject2->transform.GetLocalPosition();
                 auto result = CollisionHelper::CheckCollision(*boxCollider1, *boxCollider2);
                 Assert::IsTrue(result.isCollided);
 
                 CollisionHelper::FixPosition(*boxCollider1, result.edge1, *boxCollider2, result.edge2);
-                Assert::IsTrue(position1 == gameObject1->transform.GetPosition());
-                Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
+                Assert::IsTrue(position1 == gameObject1->transform.GetLocalPosition());
+                Assert::IsTrue(position2 == gameObject2->transform.GetLocalPosition());
 
                 manager.DestroyAllGameObjects();
                 ComponentManager::GetInstance().Clear();
@@ -225,22 +224,22 @@ namespace Learning2DEngine
                     ColliderType::KINEMATIC,
                     ColliderMode::COLLIDER
                 );
-                auto position1 = gameObject1->transform.GetPosition();
+                auto position1 = gameObject1->transform.GetLocalPosition();
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(7.5f, 7.5f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(7.5f, 7.5f));
                 auto boxCollider2 = gameObject2->AddComponent<TestBoxColliderComponent>(
                     glm::vec2(10.0f, 10.0f),
                     ColliderType::KINEMATIC,
                     ColliderMode::COLLIDER
                 );
-                auto position2 = gameObject2->transform.GetPosition();
+                auto position2 = gameObject2->transform.GetLocalPosition();
 
                 auto result = CollisionHelper::CheckCollision(*boxCollider1, *boxCollider2);
                 Assert::IsTrue(result.isCollided);
 
                 CollisionHelper::FixPosition(*boxCollider1, result.edge1, *boxCollider2, result.edge2);
-                Assert::IsTrue(position1 == gameObject1->transform.GetPosition());
-                Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
+                Assert::IsTrue(position1 == gameObject1->transform.GetLocalPosition());
+                Assert::IsTrue(position2 == gameObject2->transform.GetLocalPosition());
 
                 manager.DestroyAllGameObjects();
                 ComponentManager::GetInstance().Clear();
@@ -257,20 +256,20 @@ namespace Learning2DEngine
                     ColliderMode::COLLIDER
                 );
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(7.5f, 7.5f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(7.5f, 7.5f));
                 auto boxCollider2 = gameObject2->AddComponent<TestBoxColliderComponent>(
                     glm::vec2(10.0f, 10.0f),
                     ColliderType::KINEMATIC,
                     ColliderMode::COLLIDER
                 );
-                auto position2 = gameObject2->transform.GetPosition();
+                auto position2 = gameObject2->transform.GetLocalPosition();
 
                 auto result = CollisionHelper::CheckCollision(*boxCollider1, *boxCollider2);
                 Assert::IsTrue(result.isCollided);
 
                 CollisionHelper::FixPosition(*boxCollider1, result.edge1, *boxCollider2, result.edge2);
-                Assert::IsTrue(glm::vec2(0.0f, -2.5f) == gameObject1->transform.GetPosition());
-                Assert::IsTrue(position2 == gameObject2->transform.GetPosition());
+                Assert::IsTrue(glm::vec2(0.0f, -2.5f) == gameObject1->transform.GetLocalPosition());
+                Assert::IsTrue(position2 == gameObject2->transform.GetLocalPosition());
 
                 manager.DestroyAllGameObjects();
                 ComponentManager::GetInstance().Clear();
@@ -287,7 +286,7 @@ namespace Learning2DEngine
                     ColliderMode::COLLIDER
                 );
 
-                auto gameObject2 = manager.CreateGameObject(Transform(glm::vec2(7.5f, 7.5f)));
+                auto gameObject2 = manager.CreateGameObject(glm::vec2(7.5f, 7.5f));
                 auto boxCollider2 = gameObject2->AddComponent<TestBoxColliderComponent>(
                     glm::vec2(10.0f, 10.0f),
                     ColliderType::DYNAMIC,
@@ -298,8 +297,8 @@ namespace Learning2DEngine
                 Assert::IsTrue(result.isCollided);
 
                 CollisionHelper::FixPosition(*boxCollider1, result.edge1, *boxCollider2, result.edge2);
-                Assert::IsTrue(glm::vec2(0.0f, -1.25f) == gameObject1->transform.GetPosition());
-                Assert::IsTrue(glm::vec2(7.5f, 8.75f) == gameObject2->transform.GetPosition());
+                Assert::IsTrue(glm::vec2(0.0f, -1.25f) == gameObject1->transform.GetLocalPosition());
+                Assert::IsTrue(glm::vec2(7.5f, 8.75f) == gameObject2->transform.GetLocalPosition());
 
                 manager.DestroyAllGameObjects();
                 ComponentManager::GetInstance().Clear();
