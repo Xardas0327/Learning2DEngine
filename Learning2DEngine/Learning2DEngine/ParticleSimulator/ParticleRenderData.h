@@ -26,6 +26,7 @@ namespace Learning2DEngine
 			void InitParticles()
 			{
 				auto& gameObjectManager = System::GameObjectManager::GetInstance();
+				gameObjectManager.AddReserve(particleAmount);
 
 				particles = new ParticleComponent * [particleAmount];
 				for (size_t i = 0; i < particleAmount; ++i)

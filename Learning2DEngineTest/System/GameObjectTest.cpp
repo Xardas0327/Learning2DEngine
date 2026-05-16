@@ -156,6 +156,36 @@ namespace Learning2DEngine
 
 				manager.DestroyAllGameObjects();
 			}
+
+			TEST_METHOD(GetActive)
+			{
+				auto& manager = GameObjectManager::GetInstance();
+
+				auto parent = manager.CreateGameObject();
+				auto child = manager.CreateGameObject();
+				child->transform.SetParent(parent);
+
+				// Both of them are active.
+				Assert::IsTrue(parent->GetActive());
+				Assert::IsTrue(child->GetActive());
+
+				parent->SetActive(true);
+				child->SetActive(false);
+				Assert::IsTrue(parent->GetActive());
+				Assert::IsFalse(child->GetActive());
+
+				parent->SetActive(false);
+				child->SetActive(false);
+				Assert::IsFalse(parent->GetActive());
+				Assert::IsFalse(child->GetActive());
+
+				parent->SetActive(false);
+				child->SetActive(true);
+				Assert::IsFalse(parent->GetActive());
+				Assert::IsTrue(child->GetActive());
+
+				manager.DestroyAllGameObjects();
+			}
 		};
 
 	}
