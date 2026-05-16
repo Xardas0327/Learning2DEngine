@@ -919,6 +919,7 @@ void Destroy();
 ```
 
 **IsActive()**  
+It returns, that the gameobject and its parents are active or not.
 ```cpp
 bool IsActive() const;
 ```
