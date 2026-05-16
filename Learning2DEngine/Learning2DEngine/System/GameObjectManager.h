@@ -15,6 +15,10 @@ namespace Learning2DEngine
 		{
 			friend class Singleton<GameObjectManager>;
 		private:
+			static constexpr const glm::vec2 DefaultPosition = glm::vec2(0.0f, 0.0f);
+			static constexpr const glm::vec2 DefaultScale = glm::vec2(1.0f, 1.0f);
+			static constexpr const float DefaultRotation = 0.0f;
+
 			std::vector<GameObject*> gameObjects;
 			std::vector<GameObject*> removableGameObjects;
 			std::mutex addMutex;
@@ -25,8 +29,15 @@ namespace Learning2DEngine
 			GameObjectManager();
 		public:
 
-			GameObject* CreateGameObject(bool isActive = true);
-			GameObject* CreateGameObject(const Transform& transform, bool isActive = true);
+			GameObject* CreateGameObject(
+				glm::vec2 position = DefaultPosition,
+				glm::vec2 scale = DefaultScale,
+				float rotation = DefaultRotation,
+				bool isActive = true);
+
+			GameObject* CreateGameObject(glm::vec2 position, bool isActive);
+
+			GameObject* CreateGameObject(bool isActive);
 
 			/// <summary>
 			/// The gameObject and its components will be destroyed.

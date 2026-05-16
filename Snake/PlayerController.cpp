@@ -36,12 +36,7 @@ void PlayerController::Regenerate(glm::ivec2 unitSize)
 
 SpriteRenderComponent* PlayerController::CreateNewSnakeUnit(glm::vec2 position, glm::vec2 scale)
 {
-    auto playerUnit = GameObjectManager::GetInstance().CreateGameObject(
-        Transform(
-            position,
-            scale
-        )
-    );
+    auto playerUnit = GameObjectManager::GetInstance().CreateGameObject(position, scale);
     return playerUnit->AddComponent<SpriteRenderComponent>(
         RendererMode::RENDER,
         ResourceManager::GetInstance().GetTexture(textureId),
@@ -53,7 +48,7 @@ SpriteRenderComponent* PlayerController::CreateNewSnakeUnit(glm::vec2 position, 
 bool PlayerController::IsInSnake(glm::vec2 position)
 {
     for (auto it = snake.begin(); it != snake.end(); ++it) {
-        if ((*it)->gameObject->transform.GetPosition() == position)
+        if ((*it)->gameObject->transform.GetLocalPosition() == position)
         {
             return true;
         }
@@ -73,11 +68,11 @@ void PlayerController::Move(glm::vec2 headPosition)
     ++beforeIt;
     while (beforeIt != snake.rend())
     {
-        (*end)->gameObject->transform.SetPosition(
-            (*beforeIt)->gameObject->transform.GetPosition()
+        (*end)->gameObject->transform.SetLocalPosition(
+            (*beforeIt)->gameObject->transform.GetLocalPosition()
         );
         ++end;
         ++beforeIt;
     }
-    snake.front()->gameObject->transform.SetPosition(headPosition);
+    snake.front()->gameObject->transform.SetLocalPosition(headPosition);
 }

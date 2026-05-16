@@ -42,7 +42,7 @@ namespace Learning2DEngine
                 circleCollider->colliderOffset = glm::vec2(2.0f, 3.0f);
                 Assert::IsTrue(circleCollider->GetColliderCenter() == glm::vec2(7.0f, 8.0f));
 
-                gameObject->transform.SetPosition(glm::vec2(10.0f, 15.0f));
+                gameObject->transform.SetLocalPosition(glm::vec2(10.0f, 15.0f));
                 Assert::IsTrue(circleCollider->GetColliderCenter() == glm::vec2(17.0f, 23.0f));
 
                 manager.DestroyAllGameObjects();

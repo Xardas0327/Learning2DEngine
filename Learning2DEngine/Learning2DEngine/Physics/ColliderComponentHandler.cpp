@@ -190,7 +190,7 @@ namespace Learning2DEngine
 				end = endIndex > dynamicBoxColliders.size() ? dynamicBoxColliders.size() : endIndex;
 				for (size_t i = startIndex; i < end; ++i)
 				{
-					if (!dynamicBoxColliders[i]->isActive || !dynamicBoxColliders[i]->gameObject->isActive)
+					if (!dynamicBoxColliders[i]->IsActive())
 						continue;
 
 					// dynamicBoxColliders
@@ -216,7 +216,7 @@ namespace Learning2DEngine
 			for (size_t i = startIndex; i < end; ++i)
 			{
 				// All active box colliders were checked in the previous loop
-				if (!dynamicCircleColliders[i]->isActive || !dynamicCircleColliders[i]->gameObject->isActive)
+				if (!dynamicCircleColliders[i]->IsActive())
 					continue;
 
 				// dynamicCircleColliders
@@ -232,7 +232,7 @@ namespace Learning2DEngine
 				end = endIndex > kinematicBoxColliders.size() ? kinematicBoxColliders.size() : endIndex;
 				for (size_t i = startIndex; i < end; ++i)
 				{
-					if (!kinematicBoxColliders[i]->isActive || !kinematicBoxColliders[i]->gameObject->isActive)
+					if (!kinematicBoxColliders[i]->IsActive())
 						continue;
 
 					// dynamicBoxColliders
@@ -257,7 +257,7 @@ namespace Learning2DEngine
 			end = endIndex > kinematicCircleColliders.size() ? kinematicCircleColliders.size() : endIndex;
 			for (size_t i = startIndex; i < end; ++i)
 			{
-				if (!kinematicCircleColliders[i]->isActive || !kinematicCircleColliders[i]->gameObject->isActive)
+				if (!kinematicCircleColliders[i]->IsActive())
 					continue;
 
 				// activeBoxColliders

@@ -39,7 +39,7 @@ void PlayerController::Init()
     auto& playerTexture = ResourceManager::GetInstance()
         .LoadTextureFromFile(PLAYER_TEXTURE_ID, "Assets/Images/Knight.png", Texture2DSettings(true));
 
-    gameObject->transform.SetScale(PLAYER_SIZE);
+    gameObject->transform.SetLocalScale(PLAYER_SIZE);
 
 #if L2DE_DEBUG
     gameObject->AddComponent<DebugPosition>();
@@ -158,7 +158,7 @@ void PlayerController::OnCollision(const Collision& collision)
     if (coin != nullptr)
     {
         ++coinNumber;
-        coin->gameObject->isActive = false;
+        coin->gameObject->SetActive(false);
         soundEngine->play2D("Assets/Sounds/coin.wav");
         coinCollected.Invoke();
     }

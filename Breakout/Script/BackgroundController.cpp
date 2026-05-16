@@ -9,7 +9,7 @@ using namespace Learning2DEngine::System;
 BackgroundController::BackgroundController(GameObject* gameObject, const std::string& textureId, const Resolution& resolution)
     : Component(gameObject), renderer(nullptr), textureId(textureId)
 {
-	gameObject->transform.SetScale(resolution.ToVec2());
+	gameObject->transform.SetLocalScale(resolution.ToVec2());
 }
 
 void BackgroundController::Init()

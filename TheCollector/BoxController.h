@@ -33,7 +33,7 @@ protected:
 	Learning2DEngine::Physics::Rigidbody* rigidbody;
 
 	BoxController(Learning2DEngine::System::GameObject* gameObject, int layer = 0)
-		: Learning2DEngine::System::Component(gameObject), layer(layer), startPostion(gameObject->transform.GetPosition()),
+		: Learning2DEngine::System::Component(gameObject), layer(layer), startPostion(gameObject->transform.GetLocalPosition()),
 		rigidbody(nullptr)
 	{
 	}
@@ -51,7 +51,7 @@ protected:
 		rigidbody->gravityMultiplier = 100.0f;
 
 		auto collider = gameObject->AddComponent<Learning2DEngine::Physics::BoxColliderComponent>(
-			gameObject->transform.GetScale(),
+			gameObject->transform.GetLocalScale(),
 			Learning2DEngine::Physics::ColliderType::DYNAMIC,
 			Learning2DEngine::Physics::ColliderMode::COLLIDER
 		);
@@ -68,7 +68,7 @@ protected:
 public:
 	void ResetPosition()
 	{
-		gameObject->transform.SetPosition(startPostion);
+		gameObject->transform.SetLocalPosition(startPostion);
 		rigidbody->velocity = glm::vec2(0.0f, 0.0f);
 	}
 
@@ -76,9 +76,7 @@ public:
 		glm::vec2 position,
 		int layer = 0)
 	{
-		auto gameObject = Learning2DEngine::System::GameObjectManager::GetInstance().CreateGameObject(
-			Learning2DEngine::System::Transform(position, BOX_SIZE)
-		);
+		auto gameObject = Learning2DEngine::System::GameObjectManager::GetInstance().CreateGameObject(position, BOX_SIZE);
 		return gameObject->AddComponent<BoxController>(layer);
 	}
 };

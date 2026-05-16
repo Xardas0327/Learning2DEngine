@@ -34,7 +34,7 @@ namespace Learning2DEngine
 
 			}
 
-			void SpawnParticle(Particle& particle, const System::GameObject& gameObject) override
+			void SpawnParticle(ParticleComponent* particle, const System::GameObject& gameObject) override
 			{
 				float positionRandomX = randomPositionOffset.first.x != randomPositionOffset.second.x
 					? System::Random::GetNumber(randomPositionOffset.first.x, randomPositionOffset.second.x)
@@ -44,21 +44,22 @@ namespace Learning2DEngine
 					? System::Random::GetNumber(randomPositionOffset.first.y, randomPositionOffset.second.y)
 					: randomPositionOffset.first.y;
 
-				particle.transform = System::Transform(
-					gameObject.transform.GetPosition() + fixPositionOffset + glm::vec2(positionRandomX, positionRandomY),
-					scale,
-					rotation
+				particle->gameObject->transform.SetLocalPosition(
+					gameObject.transform.GetGlobalPosition() + fixPositionOffset + glm::vec2(positionRandomX, positionRandomY)
 				);
-				particle.velocity = velocity;
-				particle.color = color;
-				particle.lifeTime = lifeTime;
-				particle.speed = speed;
+				particle->gameObject->transform.SetLocalScale(scale);
+				particle->gameObject->transform.SetLocalRotation(rotation);
+
+				particle->velocity = velocity;
+				particle->color = color;
+				particle->lifeTime = lifeTime;
+				particle->speed = speed;
 			}
 
-			void UpdateParticle(Particle& particle, const System::GameObject& gameObject) override
+			void UpdateParticle(ParticleComponent* particle, const System::GameObject& gameObject) override
 			{
-				particle.transform.AddPosition(
-					particle.velocity * particle.speed * System::Time::GetDeltaTime()
+				particle->gameObject->transform.AddLocalPosition(
+					particle->velocity * particle->speed * System::Time::GetDeltaTime()
 				);
 			}
 		};

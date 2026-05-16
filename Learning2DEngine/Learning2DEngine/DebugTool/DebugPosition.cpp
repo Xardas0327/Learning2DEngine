@@ -43,7 +43,7 @@ namespace Learning2DEngine
 
 			auto& gameObjectManager = GameObjectManager::GetInstance();
 
-			auto textGo = gameObjectManager.CreateGameObject(Transform(glm::vec2(0.0f, 0.0f), DebugPosition::defaultScale));
+			auto textGo = gameObjectManager.CreateGameObject(glm::vec2(0.0f, 0.0f), DebugPosition::defaultScale);
 			textComponent = textGo->AddComponent<Text2DRenderComponent>(
 				RendererMode::RENDER,
 				DebugPosition::fontSizePair,
@@ -81,25 +81,25 @@ namespace Learning2DEngine
 		void DebugPosition::LateUpdate()
 		{
 			if(isFirstUpdate || 
-				gameObject->transform.GetPosition() != lastPosition)
+				gameObject->transform.GetGlobalPosition() != lastPosition)
 			{
 				isFirstUpdate = false;
-				lastPosition = gameObject->transform.GetPosition();
+				lastPosition = gameObject->transform.GetGlobalPosition();
 
 				std::ostringstream oss;
 				oss << std::fixed << std::setprecision(2);
 				oss << "X: " << lastPosition.x << " Y: " << lastPosition.y;
 
 				textComponent->data.SetText(oss.str());
-				textComponent->gameObject->transform.SetPosition(lastPosition);
+				textComponent->gameObject->transform.SetLocalPosition(lastPosition);
 			}
 		}
 
 		void DebugPosition::SetActive(bool value)
 		{
 			isActive = value;
-			textComponent->gameObject->isActive = value;
-			boxComponent->gameObject->isActive = value;
+			textComponent->gameObject->SetActive(value);
+			boxComponent->gameObject->SetActive(value);
 		}
 	}
 }

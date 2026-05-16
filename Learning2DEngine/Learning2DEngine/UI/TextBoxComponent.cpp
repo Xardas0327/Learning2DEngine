@@ -82,39 +82,47 @@ namespace Learning2DEngine
 			switch (textBoxMode)
 			{
 				case TextBoxMode::SIMPLE:
-					simpleRenderComponent->gameObject->isActive = textRenderData->component->isActive;
-					if (!simpleRenderComponent->gameObject->isActive)
+					simpleRenderComponent->gameObject->SetActive(textRenderData->component->IsActive());
+					if (!simpleRenderComponent->gameObject->IsActive())
 						return;
 
 					simpleRenderComponent->data.isUseCameraView = textRenderData->isUseCameraView;
-					simpleRenderComponent->gameObject->transform = Transform(
+					simpleRenderComponent->gameObject->transform.SetLocalPosition(
 						glm::vec2(
-							textRenderData->component->gameObject->transform.GetPosition().x - paddingLeftRight,
-							textRenderData->component->gameObject->transform.GetPosition().y - paddingTopBottom
-						),
+							textRenderData->component->gameObject->transform.GetGlobalPosition().x - paddingLeftRight,
+							textRenderData->component->gameObject->transform.GetGlobalPosition().y - paddingTopBottom
+						)
+					);
+					simpleRenderComponent->gameObject->transform.SetLocalScale(
 						glm::vec2(
 							textLength.x + 2.0f * paddingLeftRight,
 							textLength.y + 2.0f * paddingTopBottom
-						),
-						textRenderData->component->gameObject->transform.GetRotation()
+						)
+					);
+					simpleRenderComponent->gameObject->transform.SetLocalRotation(
+						textRenderData->component->gameObject->transform.GetGlobalRotation()
 					);
 					break;
 				case TextBoxMode::MULTI:
-					multiRenderComponent->gameObject->isActive = textRenderData->component->isActive;
-					if (!multiRenderComponent->gameObject->isActive)
+					multiRenderComponent->gameObject->SetActive(textRenderData->component->IsActive());
+					if (!multiRenderComponent->gameObject->IsActive())
 						return;
 
 					multiRenderComponent->data.isUseCameraView = textRenderData->isUseCameraView;
-					multiRenderComponent->gameObject->transform = Transform(
+					multiRenderComponent->gameObject->transform.SetLocalPosition(
 						glm::vec2(
-							textRenderData->component->gameObject->transform.GetPosition().x - paddingLeftRight,
-							textRenderData->component->gameObject->transform.GetPosition().y - paddingTopBottom
-						),
+							textRenderData->component->gameObject->transform.GetGlobalPosition().x - paddingLeftRight,
+							textRenderData->component->gameObject->transform.GetGlobalPosition().y - paddingTopBottom
+						)
+					);
+					multiRenderComponent->gameObject->transform.SetLocalScale(
 						glm::vec2(
 							textLength.x + 2.0f * paddingLeftRight,
 							textLength.y + 2.0f * paddingTopBottom
-						),
-						textRenderData->component->gameObject->transform.GetRotation()
+						)
+					);
+					multiRenderComponent->gameObject->transform.SetLocalRotation(
+						textRenderData->component->gameObject->transform.GetGlobalRotation()
 					);
 					break;
 			}

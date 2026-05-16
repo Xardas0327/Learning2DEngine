@@ -83,14 +83,14 @@ namespace Learning2DEngine
 				return boxComponent->GetColor();
 			}
 
-			inline void SetTextScale(glm::vec2 scale)
+			inline void SetTextLocalScale(glm::vec2 scale)
 			{
-				textComponent->gameObject->transform.SetScale(scale);
+				textComponent->gameObject->transform.SetLocalScale(scale);
 			}
 
-			inline glm::vec2 GetTextScale() const
+			inline glm::vec2 GetTextLocalScale() const
 			{
-				return textComponent->gameObject->transform.GetScale();
+				return textComponent->gameObject->transform.GetLocalScale();
 			}
 
 			inline void SetBoxPadding(float padding)

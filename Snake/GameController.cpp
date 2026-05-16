@@ -41,21 +41,12 @@ void GameController::Init()
     playerController = player->AddComponent<PlayerController>("Unit");
 
     //Food
-    auto food = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(0.0f, 0.0f),
-            unitSize
-        )
-    );
+    auto food = gameObjectManager.CreateGameObject(glm::vec2(0.0f, 0.0f), unitSize);
     foodController = food->AddComponent<FoodController>("Unit");
 
 
     // Text
-    auto scoreGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(5.0f, 5.0f)
-        )
-    );
+    auto scoreGameObject = gameObjectManager.CreateGameObject(glm::vec2(5.0f, 5.0f));
     scoreText = scoreGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
@@ -63,9 +54,7 @@ void GameController::Init()
     );
 
     auto startGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(175.0f, static_cast<float>(resolution.GetHeight() / 2))
-        )
+        glm::vec2(175.0f, static_cast<float>(resolution.GetHeight() / 2))
     );
     startText = startGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -74,12 +63,7 @@ void GameController::Init()
     );
 
 #if L2DE_DEBUG
-    FpsShower::CreateFpsShowerObject(
-        Transform(
-            glm::vec2(5.0f, resolution.GetHeight() - 30)
-        ),
-        fontSizePair,
-        99);
+    FpsShower::CreateFpsShowerObject(fontSizePair, 99, glm::vec2(5.0f, resolution.GetHeight() - 30));
 #endif
 
     ResetLevel();
@@ -106,7 +90,7 @@ void GameController::ProcessInput()
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
         {
             state = GameState::GAME_ACTIVE;
-            startText->gameObject->isActive = false;
+			startText->gameObject->SetActive(false);
             ResetLevel();
         }
     case GameState::GAME_ACTIVE:
@@ -184,11 +168,11 @@ void GameController::MoveSnake()
         if (IsOut(newPosition) || playerController->IsInSnake(newPosition))
         {
             state = GameState::GAME_MENU;
-            startText->gameObject->isActive = true;
+            startText->gameObject->SetActive(true);
         }
         else
         {
-            if (newPosition == foodController->gameObject->transform.GetPosition())
+            if (newPosition == foodController->gameObject->transform.GetLocalPosition())
             {
                 playerController->IncreaseSize(newPosition, unitSize);
                 EatFood();
@@ -222,7 +206,7 @@ void GameController::GenerateNextFood()
     if (playerController->GetSize() >= levelResolution.x * levelResolution.y)
     {
         state = GameState::GAME_MENU;
-        startText->gameObject->isActive = true;
+        startText->gameObject->SetActive(true);
         return;
     }
 
@@ -230,9 +214,9 @@ void GameController::GenerateNextFood()
     {
         int x = Random::GetNumber(0, levelResolution.x);
         int y = Random::GetNumber(0, levelResolution.y);
-		foodController->gameObject->transform.SetPosition(glm::vec2(x * unitSize.x, y * unitSize.y));
+		foodController->gameObject->transform.SetLocalPosition(glm::vec2(x * unitSize.x, y * unitSize.y));
 
-        if (!playerController->IsInSnake(foodController->gameObject->transform.GetPosition()))
+        if (!playerController->IsInSnake(foodController->gameObject->transform.GetLocalPosition()))
             break;
     }
 }

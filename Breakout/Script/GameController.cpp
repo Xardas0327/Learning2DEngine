@@ -71,22 +71,14 @@ void GameController::Init()
         );
 
     // Text
-    auto liveGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(5.0f, 5.0f)
-        )
-    );
+    auto liveGameObject = gameObjectManager.CreateGameObject(glm::vec2(5.0f, 5.0f));
     lifeText = liveGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
         "Lifes: " + std::to_string(lifes)
     );
 
-    auto startGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(250.0f, static_cast<float>(middleHeight))
-        )
-    );
+    auto startGameObject = gameObjectManager.CreateGameObject(glm::vec2(250.0f, static_cast<float>(middleHeight)));
     startText = startGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
@@ -94,10 +86,8 @@ void GameController::Init()
     );
 
     auto levelSelectorGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(245.0f, static_cast<float>(middleHeight) + 20.0f),
-            glm::vec2(0.75f, 0.75f)
-        )
+        glm::vec2(245.0f, static_cast<float>(middleHeight) + 20.0f),
+        glm::vec2(0.75f, 0.75f)
     );
     levelSelectorText = levelSelectorGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -106,9 +96,7 @@ void GameController::Init()
     );
 
     auto winGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(320.0f, static_cast<float>(middleHeight) - 20.0f)
-        ),
+        glm::vec2(320.0f, static_cast<float>(middleHeight) - 20.0f),
         false
     );
     winText = winGameObject->AddComponent<SimpleText2DRenderComponent>(
@@ -120,9 +108,7 @@ void GameController::Init()
     );
 
     auto retryGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(130.0f, static_cast<float>(middleHeight))
-        ),
+        glm::vec2(130.0f, static_cast<float>(middleHeight)),
         false
     );
     retryText = retryGameObject->AddComponent<SimpleText2DRenderComponent>(
@@ -135,11 +121,9 @@ void GameController::Init()
 
 #if L2DE_DEBUG
     FpsShower::CreateFpsShowerObject(
-        Transform(
-            glm::vec2(5.0f, resolution.GetHeight() - 30)
-        ),
         fontSizePair,
-        99);
+        99,
+        glm::vec2(5.0f, resolution.GetHeight() - 30));
 #endif
 
     // Sounds
@@ -182,10 +166,10 @@ void GameController::ProcessInput()
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
         {
             state = GameState::GAME_ACTIVE;
-            startText->gameObject->isActive = false;
-            levelSelectorText->gameObject->isActive = false;
-            winText->gameObject->isActive = false;
-            retryText->gameObject->isActive = false;
+			startText->gameObject->SetActive(false);
+            levelSelectorText->gameObject->SetActive(false);
+            winText->gameObject->SetActive(false);
+            retryText->gameObject->SetActive(false);
         }
 
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_W) == InputStatus::KEY_DOWN)
@@ -213,31 +197,31 @@ void GameController::ProcessInput()
         {
             postProcessData->chaos = false;
             state = GameState::GAME_MENU;
-            startText->gameObject->isActive = true;
-            levelSelectorText->gameObject->isActive = true;
-            winText->gameObject->isActive = false;
-            retryText->gameObject->isActive = false;
+            startText->gameObject->SetActive(true);
+            levelSelectorText->gameObject->SetActive(true);
+            winText->gameObject->SetActive(false);
+            retryText->gameObject->SetActive(false);
         }
         break;
     case GameState::GAME_ACTIVE:
         float velocity = PLAYER_VELOCITY * Time::GetDeltaTime();
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_A))
         {
-            if (playerController->gameObject->transform.GetPosition().x >= 0.0f)
+            if (playerController->gameObject->transform.GetLocalPosition().x >= 0.0f)
             {
-                playerController->gameObject->transform.AddPosition(glm::vec2(-velocity, 0.0f));
+                playerController->gameObject->transform.AddLocalPosition(glm::vec2(-velocity, 0.0f));
                 if (ballController->IsStuck())
-                    ballController->gameObject->transform.AddPosition(glm::vec2(-velocity, 0.0f));
+                    ballController->gameObject->transform.AddLocalPosition(glm::vec2(-velocity, 0.0f));
             }
         }
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_D))
         {
-            if (playerController->gameObject->transform.GetPosition().x <=
-                Game::mainCamera.GetResolution().GetWidth() - playerController->gameObject->transform.GetScale().x)
+            if (playerController->gameObject->transform.GetLocalPosition().x <=
+                Game::mainCamera.GetResolution().GetWidth() - playerController->gameObject->transform.GetLocalScale().x)
             {
-                playerController->gameObject->transform.AddPosition(glm::vec2(velocity, 0.0f));
+                playerController->gameObject->transform.AddLocalPosition(glm::vec2(velocity, 0.0f));
                 if (ballController->IsStuck())
-                    ballController->gameObject->transform.AddPosition(glm::vec2(velocity, 0.0f));
+                    ballController->gameObject->transform.AddLocalPosition(glm::vec2(velocity, 0.0f));
             }
         }
         if (Game::GetKeyboardButtonStatus(GLFW_KEY_SPACE))
@@ -258,17 +242,17 @@ void GameController::ShakeScreen()
 
 void GameController::IsLifeLost()
 {
-    if (ballController->gameObject->transform.GetPosition().y >= Game::mainCamera.GetResolution().GetHeight())
+    if (ballController->gameObject->transform.GetLocalPosition().y >= Game::mainCamera.GetResolution().GetHeight())
     {
         --lifes;
         if (lifes == 0)
         {
             ResetLevel();
             state = GameState::GAME_MENU;
-            startText->gameObject->isActive = true;
-            levelSelectorText->gameObject->isActive = true;
-            winText->gameObject->isActive = false;
-            retryText->gameObject->isActive = false;
+            startText->gameObject->SetActive(true);
+            levelSelectorText->gameObject->SetActive(true);
+            winText->gameObject->SetActive(false);
+            retryText->gameObject->SetActive(false);
         }
         else
         {
@@ -288,10 +272,10 @@ void GameController::IsLevelCompleted()
         ClearPowerUps();
         postProcessData->chaos = true;
         state = GameState::GAME_WIN;
-        startText->gameObject->isActive = false;
-        levelSelectorText->gameObject->isActive = false;
-        winText->gameObject->isActive = true;
-        retryText->gameObject->isActive = true;
+        startText->gameObject->SetActive(false);
+        levelSelectorText->gameObject->SetActive(false);
+        winText->gameObject->SetActive(true);
+        retryText->gameObject->SetActive(true);
     }
 }
 
@@ -371,8 +355,8 @@ void GameController::UpdatePowerUps()
 {
     for (PowerUpController* powerUp : powerUps)
     {
-        if (powerUp->gameObject->transform.GetPosition().y >= Game::mainCamera.GetResolution().GetHeight())
-            powerUp->gameObject->isActive = false;
+        if (powerUp->gameObject->transform.GetLocalPosition().y >= Game::mainCamera.GetResolution().GetHeight())
+            powerUp->gameObject->SetActive(false);
 
         if (powerUp->activated)
         {
@@ -420,7 +404,7 @@ void GameController::UpdatePowerUps()
     powerUps.erase(std::remove_if(powerUps.begin(), powerUps.end(),
         [&gameObjectManager](PowerUpController* powerUp)
         {
-            bool isDeletable = !powerUp->gameObject->isActive && !powerUp->activated;
+            bool isDeletable = !powerUp->gameObject->IsActive() && !powerUp->activated;
             if (isDeletable)
             {
                 gameObjectManager.DestroyGameObject(powerUp);
@@ -457,8 +441,8 @@ void GameController::ActivatePowerUp(PowerUpType powerUpType)
         ballController->renderer->data.color = glm::vec4(1.0f, 0.5f, 0.5f, 1.0f);
         break;
     case PowerUpType::PAD_SIZE_INCREASE:
-        playerController->gameObject->transform.AddScale(glm::vec2(50.0f, 0.0f));
-        playerController->collider->colliderSize = playerController->gameObject->transform.GetScale();
+        playerController->gameObject->transform.AddLocalScale(glm::vec2(50.0f, 0.0f));
+        playerController->collider->colliderSize = playerController->gameObject->transform.GetLocalScale();
         break;
     case PowerUpType::CONFUSE:
         // It will be activate only if chaos wasn't already active
@@ -486,8 +470,8 @@ void GameController::BallHitBrick(BrickController* brick)
 {
     if (!brick->IsSolid())
     {
-        brick->gameObject->isActive = false;
-        SpawnPowerUps(brick->gameObject->transform.GetPosition());
+		brick->gameObject->SetActive(false);
+        SpawnPowerUps(brick->gameObject->transform.GetLocalPosition());
         soundEngine->play2D("Assets/Sounds/bleep.mp3", false);
     }
     else

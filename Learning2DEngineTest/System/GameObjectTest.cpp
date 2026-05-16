@@ -113,6 +113,79 @@ namespace Learning2DEngine
 				manager.DestroyAllGameObjects();
 				ComponentManager::GetInstance().Clear();
 			}
+
+			TEST_METHOD(IsActive)
+			{
+				auto& manager = GameObjectManager::GetInstance();
+
+				auto gameObject1 = manager.CreateGameObject();
+				Assert::IsTrue(gameObject1->IsActive());
+
+				auto gameObject2 = manager.CreateGameObject(false);
+				Assert::IsFalse(gameObject2->IsActive());
+
+				manager.DestroyAllGameObjects();
+			}
+
+			TEST_METHOD(SetActive)
+			{
+				auto& manager = GameObjectManager::GetInstance();
+
+				auto parent = manager.CreateGameObject();
+				auto child = manager.CreateGameObject();
+				child->transform.SetParent(parent);
+
+				// Both of them are active.
+				Assert::IsTrue(parent->IsActive());
+				Assert::IsTrue(child->IsActive());
+
+				parent->SetActive(true);
+				child->SetActive(false);
+				Assert::IsTrue(parent->IsActive());
+				Assert::IsFalse(child->IsActive());
+
+				parent->SetActive(false);
+				child->SetActive(false);
+				Assert::IsFalse(parent->IsActive());
+				Assert::IsFalse(child->IsActive());
+
+				parent->SetActive(false);
+				child->SetActive(true);
+				Assert::IsFalse(parent->IsActive());
+				Assert::IsFalse(child->IsActive());
+
+				manager.DestroyAllGameObjects();
+			}
+
+			TEST_METHOD(GetActive)
+			{
+				auto& manager = GameObjectManager::GetInstance();
+
+				auto parent = manager.CreateGameObject();
+				auto child = manager.CreateGameObject();
+				child->transform.SetParent(parent);
+
+				// Both of them are active.
+				Assert::IsTrue(parent->GetActive());
+				Assert::IsTrue(child->GetActive());
+
+				parent->SetActive(true);
+				child->SetActive(false);
+				Assert::IsTrue(parent->GetActive());
+				Assert::IsFalse(child->GetActive());
+
+				parent->SetActive(false);
+				child->SetActive(false);
+				Assert::IsFalse(parent->GetActive());
+				Assert::IsFalse(child->GetActive());
+
+				parent->SetActive(false);
+				child->SetActive(true);
+				Assert::IsFalse(parent->GetActive());
+				Assert::IsTrue(child->GetActive());
+
+				manager.DestroyAllGameObjects();
+			}
 		};
 
 	}

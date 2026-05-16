@@ -14,7 +14,7 @@ PowerUpController::PowerUpController(GameObject* gameObject, const PowerUpObject
 	rigidbody(nullptr), renderer(nullptr), powerUpObject(powerUpObject), actualDuration(powerUpObject.duration), activated(false),
     activationEventHandler()
 {
-    gameObject->transform.SetScale(POWERUP_SIZE);
+    gameObject->transform.SetLocalScale(POWERUP_SIZE);
 }
 
 void PowerUpController::Init()
@@ -38,7 +38,7 @@ void PowerUpController::OnCollision(const Collision& collision)
     {
         activationEventHandler.Invoke(powerUpObject.type);
         activated = true;
-        gameObject->isActive = false;
+		gameObject->SetActive(false);
     }
 }
 
@@ -47,9 +47,7 @@ PowerUpController* PowerUpController::CreatePowerUp(
     glm::vec2 position, 
     PowerUpActivationEventItem& eventItem)
 {
-    auto powerUp = GameObjectManager::GetInstance().CreateGameObject(
-        Transform(position)
-    );
+    auto powerUp = GameObjectManager::GetInstance().CreateGameObject(position);
 
     PowerUpController* controller = powerUp->AddComponent<PowerUpController>(powerUpObject);
     controller->activationEventHandler.Add(&eventItem);

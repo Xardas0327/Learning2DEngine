@@ -1055,14 +1055,17 @@ namespace Learning2DEngine
                 return;
             }
 
-            Transform transform(
+            auto gameObject = GameObjectManager::GetInstance().CreateGameObject(
+                //position
                 glm::vec2(
                     static_cast<float>(itemData.column) * map.GetTileWidth() + itemData.offset.x + selectedTileset->tileOffset.x,
                     static_cast<float>(itemData.row + 1) * map.GetTileHeight()
                     + itemData.offset.y + selectedTileset->tileOffset.y - selectedTileset->tileSize.y),
-                selectedTileset->tileSize
+                //scale
+                selectedTileset->tileSize,
+                0.0f,
+                itemData.visible
             );
-            auto gameObject = GameObjectManager::GetInstance().CreateGameObject(transform, itemData.visible);
 
             auto color = itemData.tintColor;
             color.a *= itemData.opacity;
@@ -1104,7 +1107,7 @@ namespace Learning2DEngine
                         const ObjectPoint* point = static_cast<const ObjectPoint*>(object.GetData());
 
                         GameObject* objectGameObject = GameObjectManager::GetInstance().CreateGameObject(
-                            Transform(gameObject->transform.GetPosition() + point->position),
+                            gameObject->transform.GetLocalPosition() + point->position,
                             point->visible
                         );
 
@@ -1143,7 +1146,7 @@ namespace Learning2DEngine
                 const ObjectPoint* point = static_cast<const ObjectPoint*>(itemData.objectItem.GetData());
 
                 gameObject = GameObjectManager::GetInstance().CreateGameObject(
-                    Transform(point->position + itemData.offset),
+                    point->position + itemData.offset,
                     itemData.visible && point->visible
                 );
             }
@@ -1152,7 +1155,7 @@ namespace Learning2DEngine
             {
                 const ObjectBox* box = static_cast<const ObjectBox*>(itemData.objectItem.GetData());
                 gameObject = GameObjectManager::GetInstance().CreateGameObject(
-                    Transform(box->position + itemData.offset),
+                    box->position + itemData.offset,
                     itemData.visible
                 );
 
@@ -1163,7 +1166,7 @@ namespace Learning2DEngine
             {
                 const ObjectEllipse* ellipse = static_cast<const ObjectEllipse*>(itemData.objectItem.GetData());
                 gameObject = GameObjectManager::GetInstance().CreateGameObject(
-                    Transform(ellipse->position + itemData.offset),
+                    ellipse->position + itemData.offset,
                     itemData.visible
                 );
 
@@ -1184,12 +1187,16 @@ namespace Learning2DEngine
                     }
 
                     gameObject = GameObjectManager::GetInstance().CreateGameObject(
-                        Transform(image->position + itemData.offset, image->size),
+                        //position
+                        image->position + itemData.offset,
+						//scale
+                        image->size,
+                        0.0f,
                         itemData.visible
                     );
 
                     //The position in Tiled is bottom-left, but in Learning2DEngine is top-left.
-                    gameObject->transform.AddPosition(glm::vec2(0.0f, -image->size.y));
+                    gameObject->transform.AddLocalPosition(glm::vec2(0.0f, -image->size.y));
 
                     auto color = itemData.tintColor;
                     color.a *= itemData.opacity * image->opacity;
@@ -1199,7 +1206,7 @@ namespace Learning2DEngine
                         itemData.layerId,
                         color);
                     renderer->data.uvMatrix = selectedTileset->GetUV(image->gid);
-					renderer->isActive = image->visible;
+					renderer->SetActive(image->visible);
 
                     //it will have all tileset properties and the object properties.
                     std::map<std::string, System::Property> allProperties = selectedTileset->commonProperties;
@@ -1275,7 +1282,7 @@ namespace Learning2DEngine
                 bool addedCollider = false;
                 if (properties[TiledMapSmartCollider].GetString() == TiledMapSmartColliderValueBox)
                 {
-                    glm::vec2 size(gameObject->transform.GetScale());
+                    glm::vec2 size(gameObject->transform.GetLocalScale());
                     if (properties.count(TiledMapSmartColliderSizeX))
                     {
                         size.x = properties[TiledMapSmartColliderSizeX].GetFloat();
@@ -1293,7 +1300,7 @@ namespace Learning2DEngine
                 }
                 else if (properties[TiledMapSmartCollider].GetString() == TiledMapSmartColliderValueCircle)
                 {
-                    float radius = gameObject->transform.GetScale().x / 2.0f;
+                    float radius = gameObject->transform.GetLocalScale().x / 2.0f;
                     if (properties.count(TiledMapSmartColliderRadius))
                     {
                         radius = properties[TiledMapSmartColliderRadius].GetFloat();
@@ -1374,7 +1381,7 @@ namespace Learning2DEngine
             }
 
             auto collider = gameObject->AddComponent<BoxColliderComponent>(size, type, mode, offset, maskLayer);
-            collider->isActive = object.visible;
+			collider->SetActive(object.visible);
 
             //The L2DE_TILEDMAP_SMART_COLLIDER is not used here, because the object is box.
             properties.erase(TiledMapSmartColliderSizeX);
@@ -1434,7 +1441,7 @@ namespace Learning2DEngine
             }
 
             auto collider = gameObject->AddComponent<CircleColliderComponent>(radius, type, mode, offset, maskLayer);
-            collider->isActive = object.visible;
+            collider->SetActive(object.visible);
 
             //The L2DE_TILEDMAP_SMART_COLLIDER is not used here, because the object is box.
             properties.erase(TiledMapSmartColliderRadius);

@@ -38,7 +38,7 @@ void BallController::Init()
         ResourceManager::GetInstance().GetTexture(textureId)
     );
 
-    gameObject->transform.SetScale(glm::vec2(radius * 2.0f, radius * 2.0f));
+    gameObject->transform.SetLocalScale(glm::vec2(radius * 2.0f, radius * 2.0f));
     Reset();
 
     InitParticleSystem();
@@ -79,25 +79,25 @@ void BallController::Update()
     {
         int width = Game::mainCamera.GetResolution().GetWidth();
 
-        if (gameObject->transform.GetPosition().x <= 0.0f)
+        if (gameObject->transform.GetLocalPosition().x <= 0.0f)
         {
             rigidbody->velocity.x = -rigidbody->velocity.x;
-            gameObject->transform.SetPosition(
-                glm::vec2(0.0f, gameObject->transform.GetPosition().y)
+            gameObject->transform.SetLocalPosition(
+                glm::vec2(0.0f, gameObject->transform.GetLocalPosition().y)
             );
         }
-        else if (gameObject->transform.GetPosition().x + gameObject->transform.GetScale().x >= width)
+        else if (gameObject->transform.GetLocalPosition().x + gameObject->transform.GetLocalScale().x >= width)
         {
             rigidbody->velocity.x = -rigidbody->velocity.x;
-			gameObject->transform.SetPosition(
-				glm::vec2(width - gameObject->transform.GetScale().x, gameObject->transform.GetPosition().y)
+			gameObject->transform.SetLocalPosition(
+				glm::vec2(width - gameObject->transform.GetLocalScale().x, gameObject->transform.GetLocalPosition().y)
 			);
         }
-        if (gameObject->transform.GetPosition().y <= 0.0f)
+        if (gameObject->transform.GetLocalPosition().y <= 0.0f)
         {
             rigidbody->velocity.y = -rigidbody->velocity.y;
-			gameObject->transform.SetPosition(
-				glm::vec2(gameObject->transform.GetPosition().x, 0.0f)
+			gameObject->transform.SetLocalPosition(
+				glm::vec2(gameObject->transform.GetLocalPosition().x, 0.0f)
 			);
         }
     }
@@ -105,8 +105,8 @@ void BallController::Update()
 
 void BallController::Reset()
 {
-    gameObject->transform.SetPosition(
-        playerController->gameObject->transform.GetPosition() + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f)
+    gameObject->transform.SetLocalPosition(
+        playerController->gameObject->transform.GetLocalPosition() + glm::vec2(PLAYER_SIZE.x / 2.0f - BALL_RADIUS, -BALL_RADIUS * 2.0f)
 	);
     rigidbody->velocity = INITIAL_BALL_VELOCITY;
     renderer->data.color = glm::vec4(1.0f);
@@ -150,9 +150,9 @@ void BallController::OnCollision(const Collision& collision)
     if (player != nullptr && !isStuck)
     {
         // check where it hit the board, and change velocity based on where it hit the board
-        float centerBoard = collision.collidedObject->transform.GetPosition().x + collision.collidedObject->transform.GetScale().x / 2.0f;
-        float distance = (gameObject->transform.GetPosition().x + radius) - centerBoard;
-        float percentage = distance / (collision.collidedObject->transform.GetScale().x / 2.0f);
+        float centerBoard = collision.collidedObject->transform.GetLocalPosition().x + collision.collidedObject->transform.GetLocalScale().x / 2.0f;
+        float distance = (gameObject->transform.GetLocalPosition().x + radius) - centerBoard;
+        float percentage = distance / (collision.collidedObject->transform.GetLocalScale().x / 2.0f);
 
         // then move accordingly
         float strength = 2.0f;

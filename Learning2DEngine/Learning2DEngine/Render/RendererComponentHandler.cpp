@@ -155,7 +155,7 @@ namespace Learning2DEngine
 						size_t activeDataCount = 0;
 						for (const RenderData* renderData : layerData.second)
 						{
-							if (renderData->component->isActive && renderData->component->gameObject->isActive)
+							if (renderData->component->IsActive())
 								activeDataCount++;
 						}
 						if (activeDataCount > 0)
@@ -170,7 +170,7 @@ namespace Learning2DEngine
 								activeData[modeData.first][layerData.first].reserve(activeDataCount);
 								for (RenderData* renderData : layerData.second)
 								{
-									if (renderData->component->isActive && renderData->component->gameObject->isActive)
+									if (renderData->component->IsActive())
 										activeData[modeData.first][layerData.first].push_back(renderData);
 								}
 							}

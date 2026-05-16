@@ -3,111 +3,93 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <vector>
+
 namespace Learning2DEngine
 {
 	namespace System
 	{
-		class Transform
+		class GameObject;
+
+		class Transform final
 		{
+			friend class GameObject;
 		private:
-			glm::vec2 position;
-			glm::vec2 scale;
-			float rotation;
-			bool isModified;
-			glm::mat4 modelMatrix;
+			glm::vec2 localPosition;
+			glm::vec2 localScale;
+			float localRotation;
 
-			glm::mat4 CalculateModelMatrix() const
-			{
-				glm::mat4 model = glm::mat4(1.0f);
-				// first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
-				model = glm::translate(model, glm::vec3(position, 0.0f));
-				// move origin of rotation to center of quad
-				model = glm::translate(model, glm::vec3(0.5f * scale.x, 0.5f * scale.y, 0.0f));
-				// then rotate
-				model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-				// move origin back
-				model = glm::translate(model, glm::vec3(-0.5f * scale.x, -0.5f * scale.y, 0.0f));
-				// then rotate
-				model = glm::scale(model, glm::vec3(scale, 1.0f)); // last scale
+			mutable glm::vec2 globalPosition;
+			mutable glm::vec2 globalScale;
+			mutable float globalRotation;
+			mutable bool isModified;
+			mutable glm::mat4 modelMatrix;
 
-				return model;
-			}
+			GameObject* const gameObject;
+			GameObject* parent;
+			std::vector<GameObject*> children;
+
+			glm::mat4 CalculateLocalModelMatrix() const;
+			void UpdateCachedData() const;
+			void MarkAsModified();
+			bool IsChild(GameObject* potentialChild) const;
+			void RecalcLocalTransform(const glm::mat4& matrix);
+
+			Transform(
+				GameObject* gameObject,
+				glm::vec2 position = glm::vec2(0.0f, 0.0f),
+				glm::vec2 scale = glm::vec2(1.0f, 1.0f),
+				float rotation = 0.0f
+			);
 		public:
-			Transform(glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f)
-				: position(position), scale(scale), rotation(rotation), isModified(true), modelMatrix()
-			{
+			Transform(const Transform&) = delete;
+			Transform& operator=(const Transform&) = delete;
+			Transform(Transform&&) = delete;
+			Transform& operator=(Transform&&) = delete;
 
+			inline glm::vec2 GetLocalPosition() const
+			{
+				return localPosition;
 			}
 
-			inline glm::vec2 GetPosition() const
+			void SetLocalPosition(const glm::vec2& newPosition);
+
+			void AddLocalPosition(const glm::vec2& deltaPosition);
+
+			glm::vec2 GetGlobalPosition() const;
+
+			inline glm::vec2 GetLocalScale() const
 			{
-				return position;
+				return localScale;
 			}
 
-			void SetPosition(const glm::vec2& newPosition)
+			void SetLocalScale(const glm::vec2& newScale);
+
+			void AddLocalScale(const glm::vec2& deltaScale);
+
+			glm::vec2 GetGlobalScale() const;
+
+			inline float GetLocalRotation() const
 			{
-				position = newPosition;
-				isModified = true;
+				return localRotation;
 			}
 
-			void AddPosition(const glm::vec2& deltaPosition)
+			void SetLocalRotation(float newRotation);
+
+			void AddLocalRotation(float deltaRotation);
+
+			float GetGlobalRotation() const;
+
+			const glm::mat4& GetModelMatrix() const;
+
+			inline GameObject* GetParent() const
 			{
-				position += deltaPosition;
-				isModified = true;
+				return parent;
 			}
 
-			inline glm::vec2 GetScale() const
-			{
-				return scale;
-			}
+			void SetParent(GameObject* newParent, bool keepWorldTransform = true);
 
-			void SetScale(const glm::vec2& newScale)
-			{
-				scale = newScale;
-				isModified = true;
-			}
-
-			void AddScale(const glm::vec2& deltaScale)
-			{
-				scale += deltaScale;
-				isModified = true;
-			}
-
-			inline float GetRotation() const
-			{
-				return rotation;
-			}
-
-			void SetRotation(float newRotation)
-			{
-				rotation = newRotation;
-				isModified = true;
-			}
-
-			void AddRotation(float deltaRotation)
-			{
-				rotation += deltaRotation;
-				isModified = true;
-			}
-
-			const glm::mat4& GetModelMatrix()
-			{
-				if (isModified)
-				{
-					modelMatrix = CalculateModelMatrix();
-					isModified = false;
-				}
-
-				return modelMatrix;
-			}
-
-			glm::mat4 GetModelMatrix() const
-			{
-				if (isModified)
-					return CalculateModelMatrix();
-
-				return modelMatrix;
-			}
+			void ClearParent(bool keepWorldTransform = true);
 		};
 	}
 }

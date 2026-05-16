@@ -1,6 +1,6 @@
 # ParticleSimulator
 - [BasicParticleSettings](ParticleSimulator.md#basicparticlesettings)
-- [Particle](ParticleSimulator.md#particle)
+- [ParticleComponent](ParticleSimulator.md#particlecomponent)
 - [ParticleRenderData](ParticleSimulator.md#particlerenderdata)
 - [ParticleRenderer](ParticleSimulator.md#particlerenderer)
 - [ParticleSettings](ParticleSimulator.md#particlesettings)
@@ -77,25 +77,25 @@ BasicParticleSettings();
 
 **SpawnParticle**  
 ```cpp
-void SpawnParticle(Particle& particle, const System::GameObject& gameObject) override;
+void SpawnParticle(ParticleComponent* particle, const System::GameObject& gameObject) override;
 ```
 
 **UpdateParticle**  
 ```cpp
-void UpdateParticle(Particle& particle, const System::GameObject& gameObject) override;
+void UpdateParticle(ParticleComponent* particle, const System::GameObject& gameObject) override;
 ```
 
 ##
-## Particle
+## ParticleComponent
 ### Source Code:
-[Particle.h](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/Particle.h)
+[ParticleComponent.h](../../Learning2DEngine/Learning2DEngine/ParticleSimulator/ParticleComponent.h)
 
 ### Description:
-The particles representation in the Engine.
+It is the particle representation in the Engine.
 
 ### Header:
 ```cpp
-class Particle
+class ParticleComponent final : public virtual System::Component
 {...}
 ```
 
@@ -107,11 +107,6 @@ static constexpr const glm::mat4x2 DefaultUV = { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1
 ```
 
 **Public:**  
-**transform**  
-```cpp
-System::Transform transform;
-```
-
 **velocity**  
 ```cpp
 glm::vec2 velocity;
@@ -136,10 +131,10 @@ glm::mat4x2 uvMatrix;
 ```
 
 ### Functions:
-**Public:**  
-**Particle**  
+**Private:**  
+**ParticleComponent**  
 ```cpp
-Particle();
+ParticleComponent(System::GameObject* gameObject);
 ```
 
 ##
@@ -175,9 +170,9 @@ const size_t particleAmount;
 ```
 
 **particles**  
-The developer has to init it, when they didn't give the particleAmount
+Its length is particleAmount.
 ```cpp
-Particle* particles;
+ParticleComponent** particles;
 ```
 
 **Public:**  
@@ -193,6 +188,12 @@ bool isUseCameraView;
 ```
 
 ### Functions:
+**Private:**  
+**InitParticles**  
+```cpp
+void InitParticles();
+```
+
 **Public:**  
 **ParticleRenderData**  
 ```cpp
@@ -214,7 +215,7 @@ inline bool IsRenderable() const;
 
 **GetParticles**  
 ```cpp
-inline const Particle* GetParticles() const;
+inline ParticleComponent** GetParticles() const;
 ```
 
 **GetParticleAmount**  
@@ -349,7 +350,7 @@ The developer has to set the life time of the particles here and any other param
 which the developer want to initialize on the particle.  
 It will run in the `ParticleSystemComponent::TryToSpawnNewParticles()`, which is in `ParticleSystemComponent::Update()`.
 ```cpp
-virtual void SpawnParticle(Particle& particle, const System::GameObject& gameObject) = 0;
+virtual void SpawnParticle(ParticleComponent* particle, const System::GameObject& gameObject) = 0;
 ```
 
 **UpdateParticle**  
@@ -357,7 +358,7 @@ It is an abstract function, which the developer has to define.
 This function will be called with that particle, which life time is bigger than 0, after it was decreased.  
 It will run in the `ParticleSystemComponent::UpdateActiveParticles()`, which is in `ParticleSystemComponent::Update()`.
 ```cpp
-virtual void UpdateParticle(Particle& particle, const System::GameObject& gameObject) = 0;
+virtual void UpdateParticle(ParticleComponent* particle, const System::GameObject& gameObject) = 0;
 ```
 
 ##

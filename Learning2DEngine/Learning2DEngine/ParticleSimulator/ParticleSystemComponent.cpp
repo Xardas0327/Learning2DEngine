@@ -116,10 +116,14 @@ namespace Learning2DEngine
 		{
 			for (int i = 0; i < data.GetParticleAmount(); ++i)
 			{
-				data.particles[i].lifeTime -= Time::GetDeltaTime();
-				if (data.particles[i].lifeTime > 0.0f)
+				data.particles[i]->lifeTime -= Time::GetDeltaTime();
+				if (data.particles[i]->lifeTime > 0.0f)
 				{
 					particleSettings->UpdateParticle(data.particles[i], *gameObject);
+				}
+				else
+				{
+					data.particles[i]->gameObject->SetActive(false);
 				}
 			}
 		}
@@ -151,6 +155,7 @@ namespace Learning2DEngine
 			for (unsigned int i = 0; i < data.systemSettings.newParticlesPerSpawn; ++i)
 			{
 				unsigned int index = GetUnusedParticleIndex();
+				data.particles[index]->gameObject->SetActive(true);
 				particleSettings->SpawnParticle(data.particles[index], *gameObject);
 			}
 		}
@@ -158,14 +163,14 @@ namespace Learning2DEngine
 		unsigned int ParticleSystemComponent::GetUnusedParticleIndex()
 		{
 			for (unsigned int i = lastUsedParticleIndex; i < data.GetParticleAmount(); ++i) {
-				if (data.particles[i].lifeTime <= 0.0f) {
+				if (data.particles[i]->lifeTime <= 0.0f) {
 					lastUsedParticleIndex = i;
 					return i;
 				}
 			}
 
 			for (unsigned int i = 0; i < lastUsedParticleIndex; ++i) {
-				if (data.particles[i].lifeTime <= 0.0f) {
+				if (data.particles[i]->lifeTime <= 0.0f) {
 					lastUsedParticleIndex = i;
 					return i;
 				}

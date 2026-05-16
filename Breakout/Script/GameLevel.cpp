@@ -51,7 +51,7 @@ bool GameLevel::IsCompleted()
 {
     for (BrickController* brick : bricks)
     {
-        if (!brick->IsSolid() && brick->gameObject->isActive)
+        if (!brick->IsSolid() && brick->gameObject->IsActive())
             return false;
     }
 
@@ -111,8 +111,8 @@ void GameLevel::CalcBrickSize(const Resolution& resolution)
 
     for (BrickController* brick : bricks)
     {
-        brick->gameObject->transform.SetPosition(glm::vec2(unit_width * brick->mapCoorX, unit_height * brick->mapCoorY));
-        brick->gameObject->transform.SetScale(scale);
+        brick->gameObject->transform.SetLocalPosition(glm::vec2(unit_width * brick->mapCoorX, unit_height * brick->mapCoorY));
+        brick->gameObject->transform.SetLocalScale(scale);
         brick->collider->colliderSize = scale;
     }
 }
@@ -131,6 +131,6 @@ void GameLevel::SetBricksActive(bool isActive)
 {
     for (BrickController* brick : bricks)
     {
-        brick->gameObject->isActive = isActive;
+		brick->gameObject->SetActive(isActive);
     }
 }

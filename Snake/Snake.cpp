@@ -36,9 +36,6 @@ void Snake::Init()
     // Text
     TextCharacterSet::GetInstance().Load(fontSizePair);
 
-    // MSAA
-    ActivateMSAA(4);
-
     // Camera
     Game::mainCamera.SetResolution(RenderManager::GetInstance().GetResolution());
 

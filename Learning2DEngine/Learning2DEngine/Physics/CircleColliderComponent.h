@@ -18,6 +18,7 @@ namespace Learning2DEngine
         /// <summary>
         /// The CircleColliderComponent is really basic.
         /// It doesn't rotate, scale with the gameobject.
+		/// Please use carefully the collider when the gameobject is a child of another gameobject.
 		/// Please check for more information in the BaseColliderComponent.
         /// </summary>
         class CircleColliderComponent : public BaseColliderComponent
@@ -51,7 +52,7 @@ namespace Learning2DEngine
 
             glm::vec2 GetColliderCenter() const override
             {
-                glm::vec2 position = gameObject->transform.GetPosition() + colliderOffset;
+                glm::vec2 position = gameObject->transform.GetGlobalPosition() + colliderOffset;
                 position.x += colliderRadius;
                 position.y += colliderRadius;
 

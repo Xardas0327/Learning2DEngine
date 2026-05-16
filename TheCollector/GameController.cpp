@@ -62,7 +62,7 @@ void GameController::Init()
     }
 
     //Player
-    auto player = gameObjectManager.CreateGameObject(Transform(playerStartPosition));
+    auto player = gameObjectManager.CreateGameObject(playerStartPosition);
     playerController = player->AddComponent<PlayerController>(
         soundEngine
     );
@@ -92,20 +92,20 @@ void GameController::InitEnvironment()
     movingPlatforms.push_back(
         MovingPlatformController::Create(
 			map.groupedGameObjects["MovingPlatform1"][0],
-			map.groupedGameObjects["MovingPlatform1Start"][0]->transform.GetPosition(),
-            map.groupedGameObjects["MovingPlatform1End"][0]->transform.GetPosition()
+			map.groupedGameObjects["MovingPlatform1Start"][0]->transform.GetLocalPosition(),
+            map.groupedGameObjects["MovingPlatform1End"][0]->transform.GetLocalPosition()
         )
     );
     movingPlatforms.push_back(
         MovingPlatformController::Create(
             map.groupedGameObjects["MovingPlatform2"][0],
-            map.groupedGameObjects["MovingPlatform2Start"][0]->transform.GetPosition(),
-            map.groupedGameObjects["MovingPlatform2End"][0]->transform.GetPosition()
+            map.groupedGameObjects["MovingPlatform2Start"][0]->transform.GetLocalPosition(),
+            map.groupedGameObjects["MovingPlatform2End"][0]->transform.GetLocalPosition()
         )
     );
 
 	//Box
-    box = BoxController::Create(map.groupedGameObjects["Rock"][0]->transform.GetPosition());
+    box = BoxController::Create(map.groupedGameObjects["Rock"][0]->transform.GetLocalPosition());
 
     //Coin
     coins.reserve(map.groupedGameObjects["Coin"].size());
@@ -115,7 +115,7 @@ void GameController::InitEnvironment()
 	}
 
     //Player start position
-	playerStartPosition = map.groupedGameObjects["PlayerStart"][0]->transform.GetPosition();
+	playerStartPosition = map.groupedGameObjects["PlayerStart"][0]->transform.GetLocalPosition();
 }
 
 void GameController::InitTexts()
@@ -123,30 +123,15 @@ void GameController::InitTexts()
     auto& gameObjectManager = GameObjectManager::GetInstance();
 
     //Score
-    auto scoreGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(1.0f, 1.0f),
-            glm::vec2(0.2f, 0.2f)
-        )
-    );
+    auto scoreGameObject = gameObjectManager.CreateGameObject(glm::vec2(1.0f, 1.0f), glm::vec2(0.2f, 0.2f));
     scoreText = scoreGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
 
     //Play time
-    auto playTimeGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(35.0f, 1.0f),
-            glm::vec2(0.2f, 0.2f)
-        )
-    );
+    auto playTimeGameObject = gameObjectManager.CreateGameObject(glm::vec2(35.0f, 1.0f), glm::vec2(0.2f, 0.2f));
     playTimeText = playTimeGameObject->AddComponent<SimpleText2DRenderComponent>(RendererMode::LATERENDER, fontSizePair);
 
     //Description
-    auto descriptionGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(50.0f, 50.0f),
-            glm::vec2(0.15f, 0.15f)
-        )
-    );
+    auto descriptionGameObject = gameObjectManager.CreateGameObject(glm::vec2(50.0f, 50.0f), glm::vec2(0.15f, 0.15f));
     descriptionText = descriptionGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
         fontSizePair,
@@ -164,10 +149,8 @@ void GameController::InitTexts()
 
     // Start text
     auto startGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 10.0f, 70.0f),
-            glm::vec2(0.1f, 0.1f)
-        )
+        glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 10.0f, 70.0f),
+        glm::vec2(0.1f, 0.1f)
     );
     startText = startGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -185,10 +168,8 @@ void GameController::InitTexts()
 
     // Win text
     auto winGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 10.0f, 50.0f),
-            glm::vec2(0.15f, 0.15f)
-        )
+        glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 10.0f, 50.0f),
+        glm::vec2(0.15f, 0.15f)
     );
     winText = winGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -209,10 +190,8 @@ void GameController::InitTexts()
 
     // Lose text
     auto loseGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 12.0f, 50.0f),
-            glm::vec2(0.15f, 0.15f)
-        )
+        glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 12.0f, 50.0f),
+        glm::vec2(0.15f, 0.15f)
     );
     loseText = loseGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -233,10 +212,8 @@ void GameController::InitTexts()
 
     // End text
     auto endGameObject = gameObjectManager.CreateGameObject(
-        Transform(
-            glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 26.0f, 62.0f),
-            glm::vec2(0.1f, 0.1f)
-        )
+        glm::vec2(Game::mainCamera.GetResolution().GetWidth() / 2 - 26.0f, 62.0f),
+        glm::vec2(0.1f, 0.1f)
     );
     endText = endGameObject->AddComponent<SimpleText2DRenderComponent>(
         RendererMode::LATERENDER,
@@ -253,22 +230,21 @@ void GameController::InitTexts()
 	endBox->SetPadding(1.0f);
 
     FpsShower::CreateFpsShowerObject(
-        Transform(
-            glm::vec2(2.0f, Game::mainCamera.GetResolution().GetHeight() - 5),
-            glm::vec2(0.15f, 0.15f)
-        ),
         fontSizePair,
-        99);
+        99,
+        glm::vec2(2.0f, Game::mainCamera.GetResolution().GetHeight() - 5),
+        glm::vec2(0.15f, 0.15f)
+    );
 }
 
 void GameController::ShowMenu()
 {
-    descriptionText->isActive = true;
-    startText->isActive = true;
+	descriptionText->SetActive(true);
+    startText->SetActive(true);
 
-    winText->isActive = false;
-    loseText->isActive = false;
-    endText->isActive = false;
+    winText->SetActive(false);
+    loseText->SetActive(false);
+    endText->SetActive(false);
     gameStatus = GameStatus::Menu;
 }
 
@@ -276,14 +252,14 @@ void GameController::StartPlay()
 {
     for (auto& coin : coins)
     {
-        coin->gameObject->isActive = true;
+        coin->gameObject->SetActive(true);
     }
     for (auto& platform : movingPlatforms)
     {
         platform->Reset();
     }
 
-    playerController->gameObject->transform.SetPosition(playerStartPosition);
+    playerController->gameObject->transform.SetLocalPosition(playerStartPosition);
     playerController->rigidbody->isFrozen = false;
     playerController->rigidbody->velocity = glm::vec2(0.0f);
     playerController->coinNumber = 0;
@@ -292,8 +268,8 @@ void GameController::StartPlay()
 
     RefreshScoreText();
     RefreshPlayTimeText();
-    descriptionText->isActive = false;
-    startText->isActive = false;
+    descriptionText->SetActive(false);
+    startText->SetActive(false);
 
     gameStatus = GameStatus::Play;
 }
@@ -301,12 +277,12 @@ void GameController::StartPlay()
 void GameController::EndPlay()
 {
     playerController->rigidbody->isFrozen = true;
-    endText->isActive = true;
+    endText->SetActive(true);
 
     if (playerController->coinNumber == coins.size())
-        winText->isActive = true;
+        winText->SetActive(true);
     else
-        loseText->isActive = true;
+        loseText->SetActive(true);
 
     gameStatus = GameStatus::Ended;
 }
