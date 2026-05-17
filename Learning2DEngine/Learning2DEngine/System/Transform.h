@@ -91,6 +91,11 @@ namespace Learning2DEngine
 
 			float GetGlobalRotation() const;
 
+			void SetGlobalRotation(float newRotation);
+
+			void AddGlobalRotation(float deltaRotation);
+
+
 			const glm::mat4& GetModelMatrix() const;
 
 			inline GameObject* GetParent() const

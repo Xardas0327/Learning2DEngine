@@ -2003,6 +2003,16 @@ void AddLocalRotation(float deltaRotation);
 float GetGlobalRotation() const;
 ```
 
+**SetGlobalRotation**  
+```cpp
+void SetGlobalRotation(float newRotation);
+```
+
+**AddGlobalRotation**  
+```cpp
+void AddGlobalRotation(float deltaRotation);
+```
+
 **GetModelMatrix**  
 ```cpp
 const glm::mat4& GetModelMatrix() const;

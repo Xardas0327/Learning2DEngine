@@ -203,6 +203,23 @@ namespace Learning2DEngine
 			return globalRotation;
 		}
 
+		void Transform::SetGlobalRotation(float newRotation)
+		{
+			UpdateCachedData();
+			float deltaRotation = newRotation - globalRotation;
+			globalRotation = newRotation;
+			localRotation += deltaRotation;
+			MarkAsModified();
+		}
+
+		void Transform::AddGlobalRotation(float deltaRotation)
+		{
+			UpdateCachedData();
+			globalRotation += deltaRotation;
+			localRotation += deltaRotation;
+			MarkAsModified();
+		}
+
 		const glm::mat4& Transform::GetModelMatrix() const
 		{
 			UpdateCachedData();
