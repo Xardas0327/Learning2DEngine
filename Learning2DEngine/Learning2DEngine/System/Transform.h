@@ -54,9 +54,9 @@ namespace Learning2DEngine
 				return localPosition;
 			}
 
-			void SetLocalPosition(const glm::vec2& newPosition);
+			void SetLocalPosition(glm::vec2 newPosition);
 
-			void AddLocalPosition(const glm::vec2& deltaPosition);
+			void AddLocalPosition(glm::vec2 deltaPosition);
 
 			glm::vec2 GetGlobalPosition() const;
 
@@ -67,9 +67,9 @@ namespace Learning2DEngine
 				return localScale;
 			}
 
-			void SetLocalScale(const glm::vec2& newScale);
+			void SetLocalScale(glm::vec2 newScale);
 
-			void AddLocalScale(const glm::vec2& deltaScale);
+			void AddLocalScale(glm::vec2 deltaScale);
 
 			glm::vec2 GetGlobalScale() const;
 

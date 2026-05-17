@@ -1934,12 +1934,12 @@ inline glm::vec2 GetLocalPosition() const;
 
 **SetLocalPosition**  
 ```cpp
-void SetLocalPosition(const glm::vec2& newPosition);
+void SetLocalPosition(glm::vec2 newPosition);
 ```
 
 **AddLocalPosition**  
 ```cpp
-void AddLocalPosition(const glm::vec2& deltaPosition);
+void AddLocalPosition(glm::vec2 deltaPosition);
 ```
 
 **GetGlobalPosition**  
@@ -1954,12 +1954,12 @@ inline glm::vec2 GetLocalScale() const;
 
 **SetLocalScale**  
 ```cpp
-void SetLocalScale(const glm::vec2& newScale);
+void SetLocalScale(glm::vec2 newScale);
 ```
 
 **AddLocalScale**  
 ```cpp
-void AddLocalScale(const glm::vec2& deltaScale);
+void AddLocalScale(glm::vec2 deltaScale);
 ```
 
 **GetGlobalScale**  

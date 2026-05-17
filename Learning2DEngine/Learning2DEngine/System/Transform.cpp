@@ -105,13 +105,13 @@ namespace Learning2DEngine
 
 		// Position
 
-		void Transform::SetLocalPosition(const glm::vec2& newPosition)
+		void Transform::SetLocalPosition(glm::vec2 newPosition)
 		{
 			localPosition = newPosition;
 			MarkAsModified();
 		}
 
-		void Transform::AddLocalPosition(const glm::vec2& deltaPosition)
+		void Transform::AddLocalPosition(glm::vec2 deltaPosition)
 		{
 			localPosition += deltaPosition;
 			MarkAsModified();
@@ -126,13 +126,13 @@ namespace Learning2DEngine
 
 		// Scale
 
-		void Transform::SetLocalScale(const glm::vec2& newScale)
+		void Transform::SetLocalScale(glm::vec2 newScale)
 		{
 			localScale = newScale;
 			MarkAsModified();
 		}
 
-		void Transform::AddLocalScale(const glm::vec2& deltaScale)
+		void Transform::AddLocalScale(glm::vec2 deltaScale)
 		{
 			localScale += deltaScale;
 			MarkAsModified();
