@@ -124,6 +124,43 @@ namespace Learning2DEngine
 			return globalPosition;
 		}
 
+		void Transform::RefreshLocalPositionByGlobalPosition()
+		{
+			if (parent == nullptr)
+			{
+				localPosition = globalPosition;
+			}
+			else
+			{
+				glm::mat4 invParent = glm::inverse(parent->transform.GetModelMatrix());
+
+				auto globalMatrix = GetModelMatrix();
+				globalMatrix[3][0] = globalPosition.x;
+				globalMatrix[3][1] = globalPosition.y;
+
+				glm::mat4 newLocalMatix = invParent * globalMatrix;
+
+				RecalcLocalTransform(newLocalMatix);
+			}
+			MarkAsModified();
+		}
+
+		void Transform::SetGlobalPosition(glm::vec2 newPosition)
+		{
+			UpdateCachedData();
+			globalPosition = newPosition;
+
+			RefreshLocalPositionByGlobalPosition();
+		}
+
+		void Transform::AddGlobalPosition(glm::vec2 newPosition)
+		{
+			UpdateCachedData();
+			globalPosition += newPosition;
+
+			RefreshLocalPositionByGlobalPosition();
+		}
+
 		// Scale
 
 		void Transform::SetLocalScale(glm::vec2 newScale)

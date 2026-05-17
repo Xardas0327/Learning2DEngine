@@ -1921,6 +1921,12 @@ Recalculate the local transform, when the parent transform is changed.
 void RecalcLocalTransform(const glm::mat4& matrix);
 ```
 
+**RefreshLocalPositionByGlobalPosition**  
+It is a healper function for SetGlobalPosition and AddGlobalPosition functions.
+```cpp
+void RefreshLocalPositionByGlobalPosition();
+```
+
 **Transform**  
 ```cpp
 Transform(GameObject* gameObject, glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f);
@@ -1945,6 +1951,16 @@ void AddLocalPosition(glm::vec2 deltaPosition);
 **GetGlobalPosition**  
 ```cpp
 glm::vec2 GetGlobalPosition() const;
+```
+
+**SetGlobalPosition**  
+```cpp
+void SetGlobalPosition(glm::vec2 newPosition);
+```
+
+**AddGlobalPosition**  
+```cpp
+void AddGlobalPosition(glm::vec2 newPosition);
 ```
 
 **GetLocalScale**  
