@@ -47,6 +47,8 @@ namespace Learning2DEngine
 			Transform(Transform&&) = delete;
 			Transform& operator=(Transform&&) = delete;
 
+			// Position
+
 			inline glm::vec2 GetLocalPosition() const
 			{
 				return localPosition;
@@ -58,6 +60,8 @@ namespace Learning2DEngine
 
 			glm::vec2 GetGlobalPosition() const;
 
+			// Scale
+
 			inline glm::vec2 GetLocalScale() const
 			{
 				return localScale;
@@ -68,6 +72,8 @@ namespace Learning2DEngine
 			void AddLocalScale(const glm::vec2& deltaScale);
 
 			glm::vec2 GetGlobalScale() const;
+
+			// Rotation
 
 			inline float GetLocalRotation() const
 			{

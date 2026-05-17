@@ -103,6 +103,8 @@ namespace Learning2DEngine
 			localRotation = -glm::degrees(rad);
 		}
 
+		// Position
+
 		void Transform::SetLocalPosition(const glm::vec2& newPosition)
 		{
 			localPosition = newPosition;
@@ -122,6 +124,8 @@ namespace Learning2DEngine
 			return globalPosition;
 		}
 
+		// Scale
+
 		void Transform::SetLocalScale(const glm::vec2& newScale)
 		{
 			localScale = newScale;
@@ -140,6 +144,8 @@ namespace Learning2DEngine
 
 			return globalScale;
 		}
+
+		// Rotation
 
 		void Transform::SetLocalRotation(float newRotation)
 		{
