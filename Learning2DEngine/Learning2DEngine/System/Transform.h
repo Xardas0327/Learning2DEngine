@@ -35,6 +35,7 @@ namespace Learning2DEngine
 			bool IsChild(GameObject* potentialChild) const;
 			void RecalcLocalTransform(const glm::mat4& matrix);
 			void RefreshLocalPositionByGlobalPosition();
+			void RefreshLocalScaleByGlobalScale();
 
 			Transform(
 				GameObject* gameObject,
@@ -77,6 +78,10 @@ namespace Learning2DEngine
 			void AddLocalScale(glm::vec2 deltaScale);
 
 			glm::vec2 GetGlobalScale() const;
+
+			void SetGlobalScale(glm::vec2 newScale);
+
+			void AddGlobalScale(glm::vec2 deltaScale);
 
 			// Rotation
 

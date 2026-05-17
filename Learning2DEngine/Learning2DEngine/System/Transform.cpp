@@ -182,6 +182,35 @@ namespace Learning2DEngine
 			return globalScale;
 		}
 
+		void Transform::RefreshLocalScaleByGlobalScale()
+		{
+			if (parent == nullptr)
+			{
+				localScale = globalScale;
+			}
+			else
+			{
+				localScale = globalScale / parent->transform.GetGlobalScale();
+			}
+			MarkAsModified();
+		}
+
+		void Transform::SetGlobalScale(glm::vec2 newScale)
+		{
+			UpdateCachedData();
+			globalScale = newScale;
+
+			RefreshLocalScaleByGlobalScale();
+		}
+
+		void Transform::AddGlobalScale(glm::vec2 deltaScale)
+		{
+			UpdateCachedData();
+			globalScale += deltaScale;
+
+			RefreshLocalScaleByGlobalScale();
+		}
+
 		// Rotation
 
 		void Transform::SetLocalRotation(float newRotation)

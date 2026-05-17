@@ -1927,6 +1927,12 @@ It is a healper function for SetGlobalPosition and AddGlobalPosition functions.
 void RefreshLocalPositionByGlobalPosition();
 ```
 
+**RefreshLocalScaleByGlobalScale**  
+It is a healper function for SetGlobalScale and AddGlobalScale functions.
+```cpp
+void RefreshLocalScaleByGlobalScale();
+```
+
 **Transform**  
 ```cpp
 Transform(GameObject* gameObject, glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f);
@@ -1981,6 +1987,16 @@ void AddLocalScale(glm::vec2 deltaScale);
 **GetGlobalScale**  
 ```cpp
 glm::vec2 GetGlobalScale() const;
+```
+
+**SetGlobalScale**  
+```cpp
+void SetGlobalScale(glm::vec2 newScale);
+```
+
+**AddGlobalScale**  
+```cpp
+void AddGlobalScale(glm::vec2 deltaScale);
 ```
 
 **GetLocalRotation**  
