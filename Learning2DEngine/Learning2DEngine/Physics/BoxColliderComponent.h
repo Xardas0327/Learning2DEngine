@@ -18,7 +18,8 @@ namespace Learning2DEngine
         /// <summary>
         /// The BoxColliderComponent is really basic.
         /// It doesn't rotate, scale with the gameobject.
-		/// Please use carefully the collider when the gameobject is a child of another gameobject.
+		/// Please use carefully the collider when the gameobject is a child of another gameobject,
+        /// it may exhibit unexpected behavior.
         /// Please check for more information in the BaseColliderComponent.
         /// </summary>
         class BoxColliderComponent : public BaseColliderComponent

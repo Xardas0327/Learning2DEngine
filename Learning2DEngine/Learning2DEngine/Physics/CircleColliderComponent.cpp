@@ -29,6 +29,12 @@ namespace Learning2DEngine
         void CircleColliderComponent::Init()
         {
             System::ComponentManager::GetInstance().AddToCollider(this);
+#if L2DE_DEBUG
+            if (gameObject->transform.GetParent() != nullptr)
+            {
+                L2DE_LOG_WARNING("CircleColliderComponent: If the gameobject has parent, it may exhibit unexpected behavior.");
+            }
+#endif
 #if L2DE_DEBUG_SHOW_COLLIDER
             debugTool = gameObject->AddComponent<DebugTool::DebugCircleColliderRenderComponent>(this);
             debugTool->SetActive(L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_VALUE);
