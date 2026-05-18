@@ -1921,6 +1921,18 @@ Recalculate the local transform, when the parent transform is changed.
 void RecalcLocalTransform(const glm::mat4& matrix);
 ```
 
+**RefreshLocalPositionByGlobalPosition**  
+It is a healper function for SetGlobalPosition and AddGlobalPosition functions.
+```cpp
+void RefreshLocalPositionByGlobalPosition();
+```
+
+**RefreshLocalScaleByGlobalScale**  
+It is a healper function for SetGlobalScale and AddGlobalScale functions.
+```cpp
+void RefreshLocalScaleByGlobalScale();
+```
+
 **Transform**  
 ```cpp
 Transform(GameObject* gameObject, glm::vec2 position = glm::vec2(0.0f, 0.0f), glm::vec2 scale = glm::vec2(1.0f, 1.0f), float rotation = 0.0f);
@@ -1934,17 +1946,27 @@ inline glm::vec2 GetLocalPosition() const;
 
 **SetLocalPosition**  
 ```cpp
-void SetLocalPosition(const glm::vec2& newPosition);
+void SetLocalPosition(glm::vec2 newPosition);
 ```
 
 **AddLocalPosition**  
 ```cpp
-void AddLocalPosition(const glm::vec2& deltaPosition);
+void AddLocalPosition(glm::vec2 deltaPosition);
 ```
 
 **GetGlobalPosition**  
 ```cpp
 glm::vec2 GetGlobalPosition() const;
+```
+
+**SetGlobalPosition**  
+```cpp
+void SetGlobalPosition(glm::vec2 newPosition);
+```
+
+**AddGlobalPosition**  
+```cpp
+void AddGlobalPosition(glm::vec2 newPosition);
 ```
 
 **GetLocalScale**  
@@ -1954,17 +1976,27 @@ inline glm::vec2 GetLocalScale() const;
 
 **SetLocalScale**  
 ```cpp
-void SetLocalScale(const glm::vec2& newScale);
+void SetLocalScale(glm::vec2 newScale);
 ```
 
 **AddLocalScale**  
 ```cpp
-void AddLocalScale(const glm::vec2& deltaScale);
+void AddLocalScale(glm::vec2 deltaScale);
 ```
 
 **GetGlobalScale**  
 ```cpp
 glm::vec2 GetGlobalScale() const;
+```
+
+**SetGlobalScale**  
+```cpp
+void SetGlobalScale(glm::vec2 newScale);
+```
+
+**AddGlobalScale**  
+```cpp
+void AddGlobalScale(glm::vec2 deltaScale);
 ```
 
 **GetLocalRotation**  
@@ -1985,6 +2017,16 @@ void AddLocalRotation(float deltaRotation);
 **GetGlobalRotation**  
 ```cpp
 float GetGlobalRotation() const;
+```
+
+**SetGlobalRotation**  
+```cpp
+void SetGlobalRotation(float newRotation);
+```
+
+**AddGlobalRotation**  
+```cpp
+void AddGlobalRotation(float deltaRotation);
 ```
 
 **GetModelMatrix**  

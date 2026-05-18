@@ -34,6 +34,8 @@ namespace Learning2DEngine
 			void MarkAsModified();
 			bool IsChild(GameObject* potentialChild) const;
 			void RecalcLocalTransform(const glm::mat4& matrix);
+			void RefreshLocalPositionByGlobalPosition();
+			void RefreshLocalScaleByGlobalScale();
 
 			Transform(
 				GameObject* gameObject,
@@ -47,27 +49,41 @@ namespace Learning2DEngine
 			Transform(Transform&&) = delete;
 			Transform& operator=(Transform&&) = delete;
 
+			// Position
+
 			inline glm::vec2 GetLocalPosition() const
 			{
 				return localPosition;
 			}
 
-			void SetLocalPosition(const glm::vec2& newPosition);
+			void SetLocalPosition(glm::vec2 newPosition);
 
-			void AddLocalPosition(const glm::vec2& deltaPosition);
+			void AddLocalPosition(glm::vec2 deltaPosition);
 
 			glm::vec2 GetGlobalPosition() const;
+
+			void SetGlobalPosition(glm::vec2 newPosition);
+
+			void AddGlobalPosition(glm::vec2 newPosition);
+
+			// Scale
 
 			inline glm::vec2 GetLocalScale() const
 			{
 				return localScale;
 			}
 
-			void SetLocalScale(const glm::vec2& newScale);
+			void SetLocalScale(glm::vec2 newScale);
 
-			void AddLocalScale(const glm::vec2& deltaScale);
+			void AddLocalScale(glm::vec2 deltaScale);
 
 			glm::vec2 GetGlobalScale() const;
+
+			void SetGlobalScale(glm::vec2 newScale);
+
+			void AddGlobalScale(glm::vec2 deltaScale);
+
+			// Rotation
 
 			inline float GetLocalRotation() const
 			{
@@ -79,6 +95,11 @@ namespace Learning2DEngine
 			void AddLocalRotation(float deltaRotation);
 
 			float GetGlobalRotation() const;
+
+			void SetGlobalRotation(float newRotation);
+
+			void AddGlobalRotation(float deltaRotation);
+
 
 			const glm::mat4& GetModelMatrix() const;
 
