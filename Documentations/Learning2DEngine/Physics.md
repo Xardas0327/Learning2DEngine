@@ -117,7 +117,7 @@ inline Rigidbody* GetRigidbody() const;
 The `BoxColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
 Please use carefully the collider when the gameobject is a
-child of another gameobject.  
+child of another gameobject, it may exhibit unexpected behavior. 
 But it subscribes/unsubscribes for `ComponentManager`.  
 Please check for more info about `BaseColliderComponent`.
 
@@ -177,7 +177,7 @@ glm::vec2 GetColliderCenter() const override;
 The `CircleColliderComponent` is really basic. It doesn't rotate,
 scale with the gameobject.  
 Please use carefully the collider when the gameobject is a
-child of another gameobject.  
+child of another gameobject, it may exhibit unexpected behavior.  
 But it subscribes/unsubscribes for `ComponentManager`.  
 Please check for more info about `BaseColliderComponent`.
 
@@ -634,7 +634,10 @@ struct CollisionData
 [Rigidbody.cpp](../../Learning2DEngine/Learning2DEngine/Physics/Rigidbody.cpp)
 
 ### Description:
-A really basic Rigidbody for moving.
+A really basic Rigidbody for moving.  
+It is not recommended to use Rigidbody for children of gameobjects,
+which have Rigidbody, because the parent will move the children by
+their own Rigidbody too, and it may cause unexpected behavior.
 
 ### Header:
 ```cpp
