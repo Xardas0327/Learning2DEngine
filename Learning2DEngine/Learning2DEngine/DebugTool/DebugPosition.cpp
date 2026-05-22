@@ -91,7 +91,7 @@ namespace Learning2DEngine
 				oss << "X: " << lastPosition.x << " Y: " << lastPosition.y;
 
 				textComponent->data.SetText(oss.str());
-				textComponent->gameObject->transform.SetLocalPosition(lastPosition);
+				textComponent->gameObject->transform.SetGlobalPosition(lastPosition);
 			}
 		}
 
