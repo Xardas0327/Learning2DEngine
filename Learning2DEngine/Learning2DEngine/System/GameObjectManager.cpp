@@ -60,10 +60,10 @@ namespace Learning2DEngine
 			if (isThreadSafe)
 			{
 				std::lock_guard<std::mutex> lock(removeMutex);
-				removableGameObjects.push_back(gameObject);
+				MarkGameObjectForRemoval(gameObject);
 			}
 			else
-				removableGameObjects.push_back(gameObject);
+				MarkGameObjectForRemoval(gameObject);
 		}
 
 		void GameObjectManager::DestroyGameObject(Component* component)
@@ -71,10 +71,19 @@ namespace Learning2DEngine
 			if (isThreadSafe)
 			{
 				std::lock_guard<std::mutex> lock(removeMutex);
-				removableGameObjects.push_back(component->gameObject);
+				MarkGameObjectForRemoval(component->gameObject);
 			}
 			else
-				removableGameObjects.push_back(component->gameObject);
+				MarkGameObjectForRemoval(component->gameObject);
+		}
+
+		void GameObjectManager::MarkGameObjectForRemoval(GameObject* gameObject)
+		{
+			removableGameObjects.push_back(gameObject);
+			for(auto child : gameObject->transform.GetChildren())
+			{
+				MarkGameObjectForRemoval(child);
+			}
 		}
 
 		void GameObjectManager::DestroyMarkedGameObjects()

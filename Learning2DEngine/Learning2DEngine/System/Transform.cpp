@@ -249,6 +249,7 @@ namespace Learning2DEngine
 			MarkAsModified();
 		}
 
+
 		const glm::mat4& Transform::GetModelMatrix() const
 		{
 			UpdateCachedData();
@@ -298,6 +299,11 @@ namespace Learning2DEngine
 				parent = nullptr;
 				MarkAsModified();
 			}
+		}
+
+		std::vector<GameObject*> Transform::GetChildren() const
+		{
+			return children;
 		}
 	}
 }
