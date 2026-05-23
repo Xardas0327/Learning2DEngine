@@ -29,12 +29,13 @@ namespace Learning2DEngine
 			GameObject* parent;
 			std::vector<GameObject*> children;
 
-			glm::mat4 CalculateModelMatrix(glm::vec2 position, glm::vec2 scale, float rotation) const;
+			glm::mat4 CalculateLocalModelMatrix() const;
 			void UpdateCachedData() const;
 			void MarkAsModified();
 			bool IsChild(GameObject* potentialChild) const;
 			void RecalcLocalTransform(const glm::mat4& matrix);
-			void RefreshLocalsByGlobals();
+			void RefreshLocalPositionByGlobalPosition();
+			void RefreshLocalScaleByGlobalScale();
 
 			Transform(
 				GameObject* gameObject,
