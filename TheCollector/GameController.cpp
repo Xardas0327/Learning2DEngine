@@ -88,6 +88,8 @@ void GameController::InitEnvironment()
     auto map = TiledMapLoader::LoadFromFile("Assets/Maps/Map.tmx");
 
     //Moving Platform
+    map.groupedGameObjects["MovingPlatformChild1"][0]->transform.SetParent(map.groupedGameObjects["MovingPlatform1"][0]);
+
     movingPlatforms.reserve(2);
     movingPlatforms.push_back(
         MovingPlatformController::Create(
@@ -96,6 +98,7 @@ void GameController::InitEnvironment()
             map.groupedGameObjects["MovingPlatform1End"][0]->transform.GetLocalPosition()
         )
     );
+
     movingPlatforms.push_back(
         MovingPlatformController::Create(
             map.groupedGameObjects["MovingPlatform2"][0],
