@@ -358,6 +358,23 @@ namespace Learning2DEngine
 
 				manager.DestroyAllGameObjects();
 			}
+
+			TEST_METHOD(GetChildren)
+			{
+				auto& manager = GameObjectManager::GetInstance();
+
+				auto parent = manager.CreateGameObject();
+				auto child = manager.CreateGameObject();
+				child->transform.SetParent(parent);
+
+				Assert::IsTrue(child->transform.GetChildren().size() == 0);
+				Assert::IsTrue(parent->transform.GetChildren().size() == 1);
+
+				child->transform.ClearParent();
+				Assert::IsTrue(parent->transform.GetChildren().size() == 0);
+
+				manager.DestroyAllGameObjects();
+			}
 		};
 
 	}
