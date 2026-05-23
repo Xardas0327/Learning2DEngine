@@ -111,6 +111,8 @@ namespace Learning2DEngine
 			void SetParent(GameObject* newParent, bool keepWorldTransform = true);
 
 			void ClearParent(bool keepWorldTransform = true);
+
+			std::vector<GameObject*> GetChildren() const;
 		};
 	}
 }

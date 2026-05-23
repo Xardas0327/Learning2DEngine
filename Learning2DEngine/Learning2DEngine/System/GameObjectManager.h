@@ -27,6 +27,8 @@ namespace Learning2DEngine
 			bool isThreadSafe;
 
 			GameObjectManager();
+
+			void MarkGameObjectForRemoval(GameObject* gameObject);
 		public:
 
 			GameObject* CreateGameObject(
@@ -40,14 +42,14 @@ namespace Learning2DEngine
 			GameObject* CreateGameObject(bool isActive);
 
 			/// <summary>
-			/// The gameObject and its components will be destroyed.
-			/// The gameObject will be active and run in this frame, and it will be destroyed just end of the frame only.
+			/// The gameObject, their children and their components will be destroyed.
+			/// The gameObject(s) will be active and run in this frame, and it will be destroyed just end of the frame only.
 			/// </summary>
 			void DestroyGameObject(GameObject* gameObject);
 
 			/// <summary>
-			/// The gameObject of component and its components will be destroyed.
-			/// The gameObject will be active and run in this frame, and it will be destroyed just end of the frame only.
+			/// The gameObject of component, their children and their components will be destroyed.
+			/// The gameObject(s) will be active and run in this frame, and it will be destroyed just end of the frame only.
 			/// </summary>
 			void DestroyGameObject(Component* component);
 

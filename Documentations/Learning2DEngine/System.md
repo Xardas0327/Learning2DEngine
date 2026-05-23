@@ -1054,6 +1054,13 @@ bool isThreadSafe;
 GameObjectManager();
 ```
 
+**MarkGameObjectForRemoval**  
+It marks the `GameObject` and its children for removal,
+which will be destroyed at end of the frame.
+```cpp
+void MarkGameObjectForRemoval(GameObject* gameObject);
+```
+
 **Public:**  
 **CreateGameObject**  
 ```cpp
@@ -1067,10 +1074,11 @@ GameObject* CreateGameObject(bool isActive);
 ```
 
 **DestroyGameObject**  
-The `GameObject` and its components will be destroyed.  
+The `GameObject`, their children and their components will be destroyed.  
 If the developer give a `Component`, it will destroy the `GameObject` of the `Component`.  
-That's why all other `Components`,which the `GameObject` has, will be destroyed.  
-`GameObject` will be active and run in this frame, and it will be destroyed just end of the frame only.  
+That's why all other `Components`,which the `GameObject` has, and the children of the `GameObject`
+will be destroyed.  
+`GameObject`(s) will be active and run in this frame, and it will be destroyed just end of the frame only.  
 ```cpp
 void DestroyGameObject(GameObject* gameObject);
 ```
@@ -2047,6 +2055,11 @@ void SetParent(GameObject* newParent, bool keepWorldTransform = true);
 **ClearParent**  
 ```cpp
 void ClearParent(bool keepWorldTransform = true);
+```
+
+**GetChildren**  
+```cpp
+std::vector<GameObject*> GetChildren() const;
 ```
 
 **Deleted:**  
