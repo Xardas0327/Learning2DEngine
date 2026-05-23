@@ -1900,9 +1900,9 @@ std::vector<GameObject*> children;
 
 ### Functions:
 **Private:**  
-**CalculateLocalModelMatrix**  
+**CalculateModelMatrix**  
 ```cpp
-glm::mat4 CalculateLocalModelMatrix() const;
+glm::mat4 CalculateModelMatrix(glm::vec2 position, glm::vec2 scale, float rotation) const;
 ```
 
 **UpdateCachedData**  
@@ -1929,16 +1929,10 @@ Recalculate the local transform, when the parent transform is changed.
 void RecalcLocalTransform(const glm::mat4& matrix);
 ```
 
-**RefreshLocalPositionByGlobalPosition**  
-It is a healper function for SetGlobalPosition and AddGlobalPosition functions.
+**RefreshLocalsByGlobals**  
+Update the local position, scale and rotation by the global ones.
 ```cpp
-void RefreshLocalPositionByGlobalPosition();
-```
-
-**RefreshLocalScaleByGlobalScale**  
-It is a healper function for SetGlobalScale and AddGlobalScale functions.
-```cpp
-void RefreshLocalScaleByGlobalScale();
+void RefreshLocalsByGlobals();
 ```
 
 **Transform**  

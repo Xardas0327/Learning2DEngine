@@ -15,19 +15,19 @@ namespace Learning2DEngine
 
 		}
 
-		glm::mat4 Transform::CalculateLocalModelMatrix() const
+		glm::mat4 Transform::CalculateModelMatrix(glm::vec2 position, glm::vec2 scale, float rotation) const
 		{
 			glm::mat4 model = glm::mat4(1.0f);
 			// first translate (transformations are: scale happens first, then rotation, and then final translation happens; reversed order)
-			model = glm::translate(model, glm::vec3(localPosition, 0.0f));
+			model = glm::translate(model, glm::vec3(position, 0.0f));
 			// move origin of rotation to center of quad
-			model = glm::translate(model, glm::vec3(0.5f * localScale.x, 0.5f * localScale.y, 0.0f));
+			model = glm::translate(model, glm::vec3(0.5f * scale.x, 0.5f * scale.y, 0.0f));
 			// then rotate
-			model = glm::rotate(model, glm::radians(localRotation), glm::vec3(0.0f, 0.0f, 1.0f));
+			model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
 			// move origin back
-			model = glm::translate(model, glm::vec3(-0.5f * localScale.x, -0.5f * localScale.y, 0.0f));
+			model = glm::translate(model, glm::vec3(-0.5f * scale.x, -0.5f * scale.y, 0.0f));
 			// then rotate
-			model = glm::scale(model, glm::vec3(localScale, 1.0f)); // last scale
+			model = glm::scale(model, glm::vec3(scale, 1.0f)); // last scale
 			return model;
 		}
 
@@ -37,7 +37,7 @@ namespace Learning2DEngine
 			{
 				if (parent == nullptr)
 				{
-					modelMatrix = CalculateLocalModelMatrix();
+					modelMatrix = CalculateModelMatrix(localPosition, localScale, localRotation);
 
 					globalPosition = localPosition;
 					globalScale = localScale;
@@ -45,7 +45,7 @@ namespace Learning2DEngine
 				}
 				else
 				{
-					modelMatrix = parent->transform.GetModelMatrix() * CalculateLocalModelMatrix();
+					modelMatrix = parent->transform.GetModelMatrix() * CalculateModelMatrix(localPosition, localScale, localRotation);
 
 					globalPosition = glm::vec2(modelMatrix[3][0], modelMatrix[3][1]);
 
@@ -103,6 +103,24 @@ namespace Learning2DEngine
 			localRotation = -glm::degrees(rad);
 		}
 
+		void Transform::RefreshLocalsByGlobals()
+		{
+			if (parent == nullptr)
+			{
+				localPosition = globalPosition;
+				localScale = globalScale;
+				localRotation = globalRotation;
+			}
+			else
+			{
+				glm::mat4 invParent = glm::inverse(parent->transform.GetModelMatrix());
+				glm::mat4 newLocalMatrix = invParent * CalculateModelMatrix(globalPosition, globalScale, globalRotation);
+
+				RecalcLocalTransform(newLocalMatrix);
+			}
+			MarkAsModified();
+		}
+
 		// Position
 
 		void Transform::SetLocalPosition(glm::vec2 newPosition)
@@ -124,33 +142,12 @@ namespace Learning2DEngine
 			return globalPosition;
 		}
 
-		void Transform::RefreshLocalPositionByGlobalPosition()
-		{
-			if (parent == nullptr)
-			{
-				localPosition = globalPosition;
-			}
-			else
-			{
-				glm::mat4 invParent = glm::inverse(parent->transform.GetModelMatrix());
-
-				auto globalMatrix = GetModelMatrix();
-				globalMatrix[3][0] = globalPosition.x;
-				globalMatrix[3][1] = globalPosition.y;
-
-				glm::mat4 newLocalMatix = invParent * globalMatrix;
-
-				RecalcLocalTransform(newLocalMatix);
-			}
-			MarkAsModified();
-		}
-
 		void Transform::SetGlobalPosition(glm::vec2 newPosition)
 		{
 			UpdateCachedData();
 			globalPosition = newPosition;
 
-			RefreshLocalPositionByGlobalPosition();
+			RefreshLocalsByGlobals();
 		}
 
 		void Transform::AddGlobalPosition(glm::vec2 newPosition)
@@ -158,7 +155,7 @@ namespace Learning2DEngine
 			UpdateCachedData();
 			globalPosition += newPosition;
 
-			RefreshLocalPositionByGlobalPosition();
+			RefreshLocalsByGlobals();
 		}
 
 		// Scale
@@ -182,25 +179,12 @@ namespace Learning2DEngine
 			return globalScale;
 		}
 
-		void Transform::RefreshLocalScaleByGlobalScale()
-		{
-			if (parent == nullptr)
-			{
-				localScale = globalScale;
-			}
-			else
-			{
-				localScale = globalScale / parent->transform.GetGlobalScale();
-			}
-			MarkAsModified();
-		}
-
 		void Transform::SetGlobalScale(glm::vec2 newScale)
 		{
 			UpdateCachedData();
 			globalScale = newScale;
 
-			RefreshLocalScaleByGlobalScale();
+			RefreshLocalsByGlobals();
 		}
 
 		void Transform::AddGlobalScale(glm::vec2 deltaScale)
@@ -208,7 +192,7 @@ namespace Learning2DEngine
 			UpdateCachedData();
 			globalScale += deltaScale;
 
-			RefreshLocalScaleByGlobalScale();
+			RefreshLocalsByGlobals();
 		}
 
 		// Rotation
@@ -235,18 +219,17 @@ namespace Learning2DEngine
 		void Transform::SetGlobalRotation(float newRotation)
 		{
 			UpdateCachedData();
-			float deltaRotation = newRotation - globalRotation;
 			globalRotation = newRotation;
-			localRotation += deltaRotation;
-			MarkAsModified();
+
+			RefreshLocalsByGlobals();
 		}
 
 		void Transform::AddGlobalRotation(float deltaRotation)
 		{
 			UpdateCachedData();
 			globalRotation += deltaRotation;
-			localRotation += deltaRotation;
-			MarkAsModified();
+
+			RefreshLocalsByGlobals();
 		}
 
 
