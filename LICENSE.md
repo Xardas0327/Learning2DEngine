@@ -3,7 +3,7 @@ Learning2DEngine © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https:/
 
 ## Third-Party Licenses
 This project uses third-party libraries.
-Their licenses can be found [here](Documentations/Learning2DEngine.md#third-party-libraries).
+Their licenses can be found [here](Documentations/Architecture.md#third-party-libraries).
 
 ## Additional Project Licenses
 This repository contains demo projects, each with its own license.

@@ -1,4 +1,4 @@
-# Learning2DEngine
+# Architecture
 
 ## Introduction
 This is a 2D Game Engine, which I created for game development and learning.
@@ -102,15 +102,15 @@ Any helper for the testing will be in the Test namespace.
 
 ### Namespaces
 - Learning2DEngine
-  - [Animator](Learning2DEngine/Animator.md)
-  - [DebugTool](Learning2DEngine/DebugTool.md)
-  - [Editor](Learning2DEngine/Editor.md)
-  - [EventSystem](Learning2DEngine/EventSystem.md)
-  - [Object](Learning2DEngine/Object.md)
-  - [ParticleSimulator](Learning2DEngine/ParticleSimulator.md)
-  - [Physics](Learning2DEngine/Physics.md)
-  - [Render](Learning2DEngine/Render.md)
-  - [System](Learning2DEngine/System.md)
-  - [UI](Learning2DEngine/UI.md)
+  - [Animator](Architecture/Animator.md)
+  - [DebugTool](Architecture/DebugTool.md)
+  - [Editor](Architecture/Editor.md)
+  - [EventSystem](Architecture/EventSystem.md)
+  - [Object](Architecture/Object.md)
+  - [ParticleSimulator](Architecture/ParticleSimulator.md)
+  - [Physics](Architecture/Physics.md)
+  - [Render](Architecture/Render.md)
+  - [System](Architecture/System.md)
+  - [UI](Architecture/UI.md)
   ###
-  - [Test](Learning2DEngine/Test.md)
+  - [Test](Architecture/Test.md)
