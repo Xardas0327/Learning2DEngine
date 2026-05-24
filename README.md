@@ -34,7 +34,7 @@ Moreover, if I create a new version, maybe it won't be compatible with the older
   - [Documentation](https://doc.mapeditor.org/en/stable/)
 
 ## Documentation:
-It is recommended to use the documentation links in the released branches.
+It is recommended to use the documentation linked in the release branches.
 ### [Learning2DEngine](Documentations/Learning2DEngine.md)
 ### [Tiled Map Editor](Documentations/TiledMapEditor.md)
 
