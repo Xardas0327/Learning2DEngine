@@ -39,7 +39,7 @@ the Tiled Map Editor for map editing. (It is tested with v1.11.2 or newer)
 ## Documentation:
 It is recommended to use the documentation linked in the release branches.
 ### [Architecture](Documentations/Architecture.md)
-### [Tiled Map Editor](Documentations/TiledMapEditor.md)
+### [Tiled Map Editor Support](Documentations/TiledMapEditor.md)
 
 ### Demos
 - [Breakout](Documentations/Breakout.md)
