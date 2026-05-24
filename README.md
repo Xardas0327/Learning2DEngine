@@ -23,15 +23,18 @@ So, if you want to try Learning2DEngine, you can do it.
 But you should check the licenses first. Their licences are in their own documentation.  
 Moreover, if I create a new version, maybe it won't be compatible with the older versions.
 
-## Requirements:
-- Windows 64-bit (It is tested on Windows 11 only)
-- Visual Studio 2022
-- With "Desktop development with C++" Module
+## Getting Started:
+The repository contains third party libraries.
 
-#### Optional Requirements:
-- Tiled Map Editor (please check the documentation for more details) 
-  - [Download](https://www.mapeditor.org/)
-  - [Documentation](https://doc.mapeditor.org/en/stable/)
+- OS: Windows 64-bit (It is tested on Windows 11 only)
+- IDE: Visual Studio 2022 (or newer)
+	- "Desktop development with C++" Module
+- Download the repository and open the solution file in Visual Studio.
+- Build the solution and run the demos.
+
+### Optional
+- [Download](https://www.mapeditor.org/) and install
+the Tiled Map Editor for map editing. (It is tested with v1.11.2 or newer)
 
 ## Documentation:
 It is recommended to use the documentation linked in the release branches.
