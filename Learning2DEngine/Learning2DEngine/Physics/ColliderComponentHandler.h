@@ -1,6 +1,6 @@
 #pragma once
 
-#include <algorithm>
+#include <vector>
 #include <mutex>
 
 #include "../System/GameObject.h"
@@ -9,11 +9,11 @@
 #include "CircleColliderComponent.h"
 #include "CollisionHelper.h"
 
+
 namespace Learning2DEngine
 {
 	namespace Physics
 	{
-		//If it uses multiple threads, the order of OnCollision will not be deterministic.
 		class ColliderComponentHandler : public System::IComponentHandler
 		{
 		protected:
@@ -29,10 +29,6 @@ namespace Learning2DEngine
 
 			std::mutex boxMutex;
 			std::mutex circleMutex;
-
-			std::vector<std::thread> threads;
-			//If it is 0, the class will not use threads
-			unsigned int maxColliderPerThread;
 
 			// The function returns, that the collider is still active after the OnCollision
 			template<class T, class U>
@@ -73,24 +69,8 @@ namespace Learning2DEngine
 			void RefreshBoxColliders();
 			void RefreshCircleColliders();
 
-			/// <param name="startIndex">Inclusive</param>
-			/// <param name="endIndex">Exclusive</param>
-			void RunDynamicColliderPart(size_t startIndex, size_t endIndex);
-
-			/// <param name="startIndex">Inclusive</param>
-			/// <param name="endIndex">Exclusive</param>
-			void RunKinematicColliderPart(size_t startIndex, size_t endIndex);
-			void RunOnThreads();
-
-			inline size_t GetDynamicColliderNumber()
-			{
-				return dynamicBoxColliders.size() + dynamicCircleColliders.size();
-			}
-
-			inline size_t GetKinematicColliderNumber()
-			{
-				return kinematicBoxColliders.size() + kinematicCircleColliders.size();
-			}
+			void CheckCollisionWithDynamicBox();
+			void CheckCollisionWithDynamicCircle();
 
 		public:
 			ColliderComponentHandler();
@@ -103,19 +83,6 @@ namespace Learning2DEngine
 
 			void Clear() override;
 			void Run() override;
-
-			//If it is 0, the class will not use threads
-			//If it uses multiple threads, the order of OnCollision will not be deterministic.
-			inline void SetMaxColliderPerThread(unsigned int value)
-			{
-				maxColliderPerThread = value;
-			}
-
-			//If it is 0, the class will not use threads
-			inline unsigned int GetMaxColliderPerThread()
-			{
-				return maxColliderPerThread;
-			}
 		};
 	}
 }

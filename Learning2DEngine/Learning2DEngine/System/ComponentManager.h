@@ -121,17 +121,6 @@ namespace Learning2DEngine
                 colliderComponentHandler.Run();
             }
 
-            // If it is bigger then 0, than every component handlers and the GameObjectManager will be thread safe.
-            // But if it is 0, the thread safe will not be turn off automatically.
-            // If it uses multiple threads, the order of OnCollision will not be deterministic.
-            void SetMaxColliderPerThread(unsigned int value)
-            {
-                if (value > 0)
-                    SetThreadSafe(true);
-
-                colliderComponentHandler.SetMaxColliderPerThread(value);
-            }
-
             //Render
 
             inline bool IsRendererExist(const std::string& id)
@@ -190,7 +179,6 @@ namespace Learning2DEngine
                 if (!isThreadSafe && (
                     updaterComponentHandler.GetMaxComponentPerThread() > 0
                     || lateUpdaterComponentHandler.GetMaxComponentPerThread() > 0
-                    || colliderComponentHandler.GetMaxColliderPerThread() > 0
                     ))
                 {
                     L2DE_LOG_WARNING("COMPONENT MANAGER: The thread safe is turned off. But the component handlers still use threads.");

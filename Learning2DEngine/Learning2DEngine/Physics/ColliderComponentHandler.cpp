@@ -9,7 +9,7 @@ namespace Learning2DEngine
 		ColliderComponentHandler::ColliderComponentHandler()
 			: dynamicBoxColliders(), kinematicBoxColliders(), newBoxColliders(), removableBoxColliders(),
 			dynamicCircleColliders(), kinematicCircleColliders(), newCircleColliders(), removableCircleColliders(),
-			boxMutex(), circleMutex(), threads(), maxColliderPerThread()
+			boxMutex(), circleMutex()
 		{
 		}
 
@@ -97,75 +97,120 @@ namespace Learning2DEngine
 			}
 		}
 
-		void ColliderComponentHandler::Add(BoxColliderComponent* component, bool isThreadSafe)
+		void ColliderComponentHandler::CheckCollisionWithDynamicBox()
+		{
+			for (int i = 0; i < dynamicBoxColliders.size(); ++i)
+			{
+				if (!dynamicBoxColliders[i]->IsActive())
+					continue;
+
+				// dynamicBoxColliders
+				if (!CheckCollisions(dynamicBoxColliders[i], dynamicBoxColliders, i + 1))
+					continue;
+
+				// dynamicCircleColliders
+				if (!CheckCollisions(dynamicBoxColliders[i], dynamicCircleColliders, 0))
+					continue;
+
+				// kinematicBoxColliders
+				if (!CheckCollisions(dynamicBoxColliders[i], kinematicBoxColliders, 0))
+					continue;
+
+				// passiveCircleColliders
+				CheckCollisions(dynamicBoxColliders[i], kinematicCircleColliders, 0);
+			}
+		}
+
+		void ColliderComponentHandler::CheckCollisionWithDynamicCircle()
+		{
+			// All dynamic box colliders were checked in the CheckCollisionWithActiveBox loop
+			for (int i = 0; i < dynamicCircleColliders.size(); ++i)
+			{
+				if (!dynamicCircleColliders[i]->IsActive())
+					continue;
+
+				// dynamicCircleColliders
+				if (!CheckCollisions(dynamicCircleColliders[i], dynamicCircleColliders, i + 1))
+					continue;
+
+				// kinematicBoxColliders
+				if (!CheckCollisions(dynamicCircleColliders[i], kinematicBoxColliders, 0))
+					continue;
+
+				// passiveCircleColliders
+				CheckCollisions(dynamicCircleColliders[i], kinematicCircleColliders, 0);
+			}
+		}
+
+		void ColliderComponentHandler::Add(BoxColliderComponent* collider, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{
 				std::lock_guard<std::mutex> lock(boxMutex);
-				newBoxColliders.push_back(component);
+				newBoxColliders.push_back(collider);
 			}
 			else
 			{
-				newBoxColliders.push_back(component);
+				newBoxColliders.push_back(collider);
 			}
 		}
 
-		void ColliderComponentHandler::RemoveItem(BoxColliderComponent* component)
+		void ColliderComponentHandler::RemoveItem(BoxColliderComponent* collider)
 		{
 			//Check it, that it is a new one or not.
-			auto it = std::find(newBoxColliders.begin(), newBoxColliders.end(), component);
+			auto it = std::find(newBoxColliders.begin(), newBoxColliders.end(), collider);
 			if (it != newBoxColliders.end())
 				newBoxColliders.erase(it);
 			else
-				removableBoxColliders.push_back(component);
+				removableBoxColliders.push_back(collider);
 		}
 
-		void ColliderComponentHandler::Remove(BoxColliderComponent* component, bool isThreadSafe)
+		void ColliderComponentHandler::Remove(BoxColliderComponent* collider, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{
 				std::lock_guard<std::mutex> lock(boxMutex);
-				RemoveItem(component);
+				RemoveItem(collider);
 			}
 			else
 			{
-				RemoveItem(component);
+				RemoveItem(collider);
 			}
 		}
 
-		void ColliderComponentHandler::Add(CircleColliderComponent* component, bool isThreadSafe)
+		void ColliderComponentHandler::Add(CircleColliderComponent* collider, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{
 				std::lock_guard<std::mutex> lock(circleMutex);
-				newCircleColliders.push_back(component);
+				newCircleColliders.push_back(collider);
 			}
 			else
 			{
-				newCircleColliders.push_back(component);
+				newCircleColliders.push_back(collider);
 			}
 		}
 
-		void ColliderComponentHandler::RemoveItem(CircleColliderComponent* component)
+		void ColliderComponentHandler::RemoveItem(CircleColliderComponent* collider)
 		{
 			//Check it, that it is a new one or not.
-			auto it = std::find(newCircleColliders.begin(), newCircleColliders.end(), component);
+			auto it = std::find(newCircleColliders.begin(), newCircleColliders.end(), collider);
 			if (it != newCircleColliders.end())
 				newCircleColliders.erase(it);
 			else
-				removableCircleColliders.push_back(component);
+				removableCircleColliders.push_back(collider);
 		}
 
-		void ColliderComponentHandler::Remove(CircleColliderComponent* component, bool isThreadSafe)
+		void ColliderComponentHandler::Remove(CircleColliderComponent* collider, bool isThreadSafe)
 		{
 			if (isThreadSafe)
 			{
 				std::lock_guard<std::mutex> lock(circleMutex);
-				RemoveItem(component);
+				RemoveItem(collider);
 			}
 			else
 			{
-				RemoveItem(component);
+				RemoveItem(collider);
 			}
 		}
 
@@ -182,184 +227,13 @@ namespace Learning2DEngine
 			removableCircleColliders.clear();
 		}
 
-		void ColliderComponentHandler::RunDynamicColliderPart(size_t startIndex, size_t endIndex)
-		{
-			size_t end;
-			if (startIndex < dynamicBoxColliders.size())
-			{
-				end = endIndex > dynamicBoxColliders.size() ? dynamicBoxColliders.size() : endIndex;
-				for (size_t i = startIndex; i < end; ++i)
-				{
-					if (!dynamicBoxColliders[i]->IsActive())
-						continue;
-
-					// dynamicBoxColliders
-					if (!CheckCollisions(dynamicBoxColliders[i], dynamicBoxColliders, i + 1))
-						continue;
-
-					// dynamicCircleColliders
-					CheckCollisions(dynamicBoxColliders[i], dynamicCircleColliders, 0);
-				}
-
-				// decrease the indexes for another loop
-				startIndex = 0;
-				endIndex -= end;
-			}
-			else
-			{
-				// decrease the indexes for another loop
-				startIndex -= dynamicBoxColliders.size();
-				endIndex -= dynamicBoxColliders.size();
-			}
-
-			end = endIndex > dynamicCircleColliders.size() ? dynamicCircleColliders.size() : endIndex;
-			for (size_t i = startIndex; i < end; ++i)
-			{
-				// All active box colliders were checked in the previous loop
-				if (!dynamicCircleColliders[i]->IsActive())
-					continue;
-
-				// dynamicCircleColliders
-				CheckCollisions(dynamicCircleColliders[i], dynamicCircleColliders, i + 1);
-			}
-		}
-
-		void ColliderComponentHandler::RunKinematicColliderPart(size_t startIndex, size_t endIndex)
-		{
-			size_t end;
-			if (startIndex < kinematicBoxColliders.size())
-			{
-				end = endIndex > kinematicBoxColliders.size() ? kinematicBoxColliders.size() : endIndex;
-				for (size_t i = startIndex; i < end; ++i)
-				{
-					if (!kinematicBoxColliders[i]->IsActive())
-						continue;
-
-					// dynamicBoxColliders
-					if (!CheckCollisions(kinematicBoxColliders[i], dynamicBoxColliders, 0))
-						continue;
-
-					// dynamicCircleColliders
-					CheckCollisions(kinematicBoxColliders[i], dynamicCircleColliders, 0);
-				}
-
-				// decrease the indexes for another loop
-				startIndex = 0;
-				endIndex -= end;
-			}
-			else
-			{
-				// decrease the indexes for another loop
-				startIndex -= kinematicBoxColliders.size();
-				endIndex -= kinematicBoxColliders.size();
-			}
-
-			end = endIndex > kinematicCircleColliders.size() ? kinematicCircleColliders.size() : endIndex;
-			for (size_t i = startIndex; i < end; ++i)
-			{
-				if (!kinematicCircleColliders[i]->IsActive())
-					continue;
-
-				// activeBoxColliders
-				if (!CheckCollisions(kinematicCircleColliders[i], dynamicBoxColliders, 0))
-					continue;
-
-				// activeCircleColliders
-				CheckCollisions(kinematicCircleColliders[i], dynamicCircleColliders, 0);
-			}
-		}
-
-		void ColliderComponentHandler::RunOnThreads()
-		{
-			size_t oldCapacity = threads.capacity();
-			threads.clear();
-
-			size_t dynamicColliderNumber = GetDynamicColliderNumber();
-			size_t kinematicColliderNumber = GetKinematicColliderNumber();
-
-			size_t dynamicThreadNumber = dynamicColliderNumber / maxColliderPerThread;
-			//if remainder is not 0
-			if (dynamicColliderNumber % maxColliderPerThread)
-				++dynamicThreadNumber;
-
-			//the threads should work more or less with the same number of items
-			size_t dynamicItemsPerThread = dynamicColliderNumber / dynamicThreadNumber;
-
-			size_t kinematicThreadNumber = kinematicColliderNumber / maxColliderPerThread;
-			//if remainder is not 0
-			if (kinematicColliderNumber % maxColliderPerThread)
-				++kinematicThreadNumber;
-
-			//the threads should work more or less with the same number of items
-			size_t kinematicItemsPerThread = kinematicColliderNumber / kinematicThreadNumber;
-
-			// -1, because one thread is the main thread.
-			size_t allThreadNumber = dynamicThreadNumber + kinematicThreadNumber - 1;
-
-			//if the threads vector is too big, it will be reallocated.
-			if (oldCapacity > allThreadNumber * 2)
-				threads.shrink_to_fit();
-
-			threads.reserve(allThreadNumber);
-
-			for (size_t i = 0; i < allThreadNumber; ++i)
-			{
-				if (i < dynamicThreadNumber)
-				{
-					//If the kinematicThreadNumber is not 0, the last branch should run all remainder
-					size_t endIndex = i + 1 == dynamicThreadNumber ? dynamicThreadNumber : (i + 1) * dynamicItemsPerThread;
-
-					threads.emplace_back(
-						&ColliderComponentHandler::RunDynamicColliderPart,
-						this,
-						i * dynamicItemsPerThread,
-						endIndex
-					);
-				}
-				else
-					threads.emplace_back(
-						&ColliderComponentHandler::RunKinematicColliderPart,
-						this,
-						(i - dynamicThreadNumber) * kinematicItemsPerThread,
-						//if it is too big the RunKinematicColliderPart will fix it
-						(i - dynamicThreadNumber + 1) * kinematicItemsPerThread
-					);
-			}
-
-			// The main thread will run the last part
-			if (allThreadNumber < dynamicThreadNumber)
-				// This is possible if the kinematicThreadNumber is 0.
-				RunDynamicColliderPart(allThreadNumber * dynamicThreadNumber, dynamicColliderNumber);
-			else
-				RunKinematicColliderPart((kinematicThreadNumber -1) * kinematicItemsPerThread, kinematicColliderNumber);
-
-
-			for (std::thread& t : threads)
-				t.join();
-
-		}
-
 		void ColliderComponentHandler::Run()
 		{
 			RefreshBoxColliders();
 			RefreshCircleColliders();
 
-			size_t dynamicColliderNumber = GetDynamicColliderNumber();
-			size_t kinematicColliderNumber = GetKinematicColliderNumber();
-
-			if (dynamicColliderNumber == 0 && kinematicColliderNumber == 0)
-				return;
-
-			size_t allColliderChecking = dynamicColliderNumber * (dynamicColliderNumber - 1) / 2 + dynamicColliderNumber * kinematicColliderNumber;
-
-			if (maxColliderPerThread == 0 || allColliderChecking < maxColliderPerThread)
-			{
-				RunDynamicColliderPart(0, dynamicColliderNumber);
-				RunKinematicColliderPart(0, kinematicColliderNumber);
-			}
-			else
-				RunOnThreads();
+			CheckCollisionWithDynamicBox();
+			CheckCollisionWithDynamicCircle();
 		}
-
 	}
 }
