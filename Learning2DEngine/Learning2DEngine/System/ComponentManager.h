@@ -57,16 +57,6 @@ namespace Learning2DEngine
                 updaterComponentHandler.Run();
             }
 
-            // If it is bigger then 0, than every component handlers and the GameObjectManager will be thread safe.
-            // But if it is 0, the thread safe will not be turn off automatically.
-            void SetUpdateMaxComponentPerThread(unsigned int value)
-            {
-                if (value > 0)
-                    SetThreadSafe(true);
-
-                updaterComponentHandler.SetMaxComponentPerThread(value);
-            }
-
             //LateUpdate
 
             inline void AddToLateUpdate(LateUpdaterComponent* component)
@@ -82,16 +72,6 @@ namespace Learning2DEngine
             inline void LateUpdate()
             {
                 lateUpdaterComponentHandler.Run();
-            }
-
-            // If it is bigger then 0, than every component handlers and the GameObjectManager will be thread safe.
-            // But if it is 0, the thread safe will not be turn off automatically.
-            void SetLateUpdateMaxComponentPerThread(unsigned int value)
-            {
-                if (value > 0)
-                    SetThreadSafe(true);
-
-                lateUpdaterComponentHandler.SetMaxComponentPerThread(value);
             }
 
             //Collider
@@ -175,15 +155,6 @@ namespace Learning2DEngine
             {
                 isThreadSafe = value;
                 GameObjectManager::GetInstance().SetThreadSafe(value);
-#if L2DE_DEBUG
-                if (!isThreadSafe && (
-                    updaterComponentHandler.GetMaxComponentPerThread() > 0
-                    || lateUpdaterComponentHandler.GetMaxComponentPerThread() > 0
-                    ))
-                {
-                    L2DE_LOG_WARNING("COMPONENT MANAGER: The thread safe is turned off. But the component handlers still use threads.");
-                }
-#endif
             }
 
             inline bool GetThreadSafe()

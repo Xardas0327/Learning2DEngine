@@ -20,7 +20,6 @@
 - [Random](System.md#random)
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
-- [ThreadComponentHandler](System.md#threadcomponenthandler)
 - [Time](System.md#time)
 - [Transform](System.md#transform)
 - [UpdaterComponent](System.md#updatercomponent)
@@ -75,7 +74,7 @@ BaseComponentHandler();
 It removes the `removableComponents` and adds the `newComponents` to the `components`.
 After this, it clears the `newComponents` and the `removableComponents`.
 ```cpp
-virtual void RefreshComponents();
+void RefreshComponents();
 ```
 **RemoveItem**  
 It will remove the item from the new colliders or they will add the item into removable colliders.  
@@ -84,22 +83,34 @@ It is used by Remove function.
 void RemoveItem(T* component);
 ```
 
+**RunItem**  
+Only this function has to be implemented to run the components.
+```cpp
+virtual void RunItem(T* component) = 0;
+```
+
 **Public:**  
 **Add**  
 If the isThreadSafe is true, the mutex will be used.
 ```cpp
-virtual void Add(T* component, bool isThreadSafe);
+void Add(T* component, bool isThreadSafe);
 ```
 
 **Remove**  
 If the isThreadSafe is true, the mutex will be used.
 ```cpp
-virtual void Remove(T* component, bool isThreadSafe);
+void Remove(T* component, bool isThreadSafe);
 ```
 
 **Clear**  
 ```cpp
 virtual void Clear() override;
+```
+
+**Run**  
+Firstly it refresh the component vector and it will call `RunItem` for each component.
+```cpp
+virtual void Run() override;
 ```
 
 ##
@@ -395,14 +406,6 @@ inline void RemoveFromUpdate(UpdaterComponent* component);
 inline void Update();
 ```
 
-**SetUpdateMaxComponentPerThread**  
-If it is bigger then 0, than every component handlers and the `GameObjectManager`
-will be thread safe.  
-But if it is 0, the thread safe will not be turn off automatically.  
-```cpp
-void SetUpdateMaxComponentPerThread(unsigned int value);
-```
-
 **AddToLateUpdate**  
 ```cpp
 inline void AddToLateUpdate(LateUpdaterComponent* component);
@@ -416,14 +419,6 @@ inline void RemoveFromLateUpdate(LateUpdaterComponent* component);
 **LateUpdate**  
 ```cpp
 inline void LateUpdate();
-```
-
-**SetLateUpdateMaxComponentPerThread**  
-If it is bigger then 0, than every component handlers and the `GameObjectManager`
-will be thread safe.  
-But if it is 0, the thread safe will not be turn off automatically.  
-```cpp
-void SetLateUpdateMaxComponentPerThread(unsigned int value);
 ```
 
 **AddToCollider**  
@@ -1278,17 +1273,16 @@ The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class LateUpdaterComponentHandler : public ThreadComponentHandler<LateUpdaterComponent>
+class LateUpdaterComponentHandler : public BaseComponentHandler<LateUpdaterComponent>
 {...}
 ```
 
 ### Functions:
 **Protected:**  
-**RunPart** 
-It iterates on the components vector in [startIndex, endIndex) range.  
-If the component and its gameobject is active, its LateUpdate() function will be called.
+**RunItem** 
+If the component is active, its LateUpdate() function will be called.
 ```cpp
-void RunPart(size_t startIndex, size_t endIndex) override;
+virtual void RunItem(LateUpdaterComponent* component) override;
 ```
 
 **Public:**  
@@ -1663,72 +1657,6 @@ Singleton();
 **GetInstance**  
 ```cpp
 static T& GetInstance();
-```
-
-##
-## ThreadComponentHandler
-### Source Code:
-[ThreadComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/ThreadComponentHandler.h)  
-
-### Description: 
-It is a component handler, which can use threads.
-
-### Header:
-```cpp
-template<class T>
-class ThreadComponentHandler : public BaseComponentHandler<T>
-{...}
-```
-
-### Variables:
-**Protected:**  
-**maxComponentPerThread**  
-If it is 0, the class will not use threads.
-```cpp
-unsigned int maxComponentPerThread;
-```
-
-**threads**  
-```cpp
-std::vector<std::thread> threads;
-```
-
-### Functions:
-**Protected:**  
-**RunPart**  
-The threads will call this function with the component vector indexes.
-```cpp
-virtual void RunPart(size_t startIndex, size_t endIndex) = 0;
-```
-
-**RunOnThreads**  
-```cpp
-void RunOnThreads();
-```
-
-**Public:**  
-**ThreadComponentHandler**  
-```cpp
-ThreadComponentHandler();
-```
-
-**Run**  
-Firstly it refresh the component vector and it will call the RunPart and/or RunOnThreads functions.  
-How many threads will run, it is depend on the number of components and maxComponentPerThread.
-```cpp
-virtual void Run() override;
-```
-
-**SetMaxComponentPerThread**  
-If it is 0, the class will not use threads.
-```cpp
-inline void SetMaxComponentPerThread(unsigned int value);
-```
-
-**GetMaxComponentPerThread**  
-If it is 0, the class will not use threads.
-```cpp
-inline unsigned int GetMaxComponentPerThread();
 ```
 
 ##
@@ -2122,17 +2050,16 @@ The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class UpdaterComponentHandler : public ThreadComponentHandler<UpdaterComponent>
+class UpdaterComponentHandler : public BaseComponentHandler<UpdaterComponent>
 {...}
 ```
 
 ### Functions:
 **Protected:**  
-**RunPart** 
-It iterates on the components vector in [startIndex, endIndex) range.  
-If the component and its gameobject is active, its Update() function will be called.
+**RunItem** 
+If the component is active, its Update() function will be called.
 ```cpp
-void RunPart(size_t startIndex, size_t endIndex) override;
+virtual void RunItem(UpdaterComponent* component) override;
 ```
 
 **Public:**  

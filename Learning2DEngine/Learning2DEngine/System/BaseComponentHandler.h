@@ -24,7 +24,7 @@ namespace Learning2DEngine
 			{
 			}
 
-			virtual void RefreshComponents()
+			void RefreshComponents()
 			{
 				if (removableComponents.size() > 0)
 				{
@@ -55,8 +55,10 @@ namespace Learning2DEngine
 				else
 					removableComponents.push_back(component);
 			}
+			
+			virtual void RunItem(T* component) = 0;
 		public:
-			virtual void Add(T* component, bool isThreadSafe)
+			void Add(T* component, bool isThreadSafe)
 			{
 				if (isThreadSafe)
 				{
@@ -69,7 +71,7 @@ namespace Learning2DEngine
 				}
 			}
 
-			virtual void Remove(T* component, bool isThreadSafe)
+			void Remove(T* component, bool isThreadSafe)
 			{
 				if (isThreadSafe)
 				{
@@ -87,6 +89,16 @@ namespace Learning2DEngine
 				components.clear();
 				newComponents.clear();
 				removableComponents.clear();
+			}
+
+			virtual void Run() override
+			{
+				RefreshComponents();
+
+				for(auto item : components)
+				{
+					RunItem(item);
+				}
 			}
 		};
 	}

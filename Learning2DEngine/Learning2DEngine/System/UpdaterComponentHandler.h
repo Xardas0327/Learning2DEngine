@@ -1,32 +1,26 @@
 #pragma once
 
 #include "GameObject.h"
-#include "ThreadComponentHandler.h"
+#include "BaseComponentHandler.h"
 #include "UpdaterComponent.h"
 
 namespace Learning2DEngine
 {
 	namespace System
 	{
-		class UpdaterComponentHandler : public ThreadComponentHandler<UpdaterComponent>
+		class UpdaterComponentHandler : public BaseComponentHandler<UpdaterComponent>
 		{
-		private:
-			/// <param name="startIndex">Inclusive</param>
-			/// <param name="endIndex">Exclusive</param>
-			void RunPart(size_t startIndex, size_t endIndex) override
+		protected:
+			virtual void RunItem(UpdaterComponent* component) override
 			{
-				for (size_t i = startIndex; i < endIndex; ++i)
-				{
-					//A GameObject will only be destroyed at the end of the frame.
-					if (components[i]->IsActive())
-						components[i]->Update();
-				}
+				//A GameObject will only be destroyed at the end of the frame.
+				if (component->IsActive())
+					component->Update();
 			}
 		public:
 			UpdaterComponentHandler()
-				: ThreadComponentHandler<UpdaterComponent>()
+				: BaseComponentHandler<UpdaterComponent>()
 			{
-
 			}
 		};
 	}
