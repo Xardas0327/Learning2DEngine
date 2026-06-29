@@ -37,6 +37,14 @@ namespace Learning2DEngine
 					}
 				}
 
+				for (auto item : mainThreadOnlyComponents)
+				{
+					if (item->IsActive())
+					{
+						item->Update();
+					}
+				}
+
 				if (threadManager != nullptr)
 					threadManager->WaitAll();
 			}

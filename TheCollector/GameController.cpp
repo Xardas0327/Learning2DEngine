@@ -1,12 +1,14 @@
 #include "GameController.h"
 
 #include <Learning2DEngine/DebugTool/DebugMacro.h>
+//#include <Learning2DEngine/System/ComponentManager.h>
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/Time.h>
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Object/FpsShower.h>
 #include <Learning2DEngine/UI/TextBoxComponent.h>
+#include <Learning2DEngine/UI/TextCharacterSet.h>
 #include <Learning2DEngine/Editor/TiledMapLoader.h>
 #if L2DE_DEBUG
 #include <Learning2DEngine/DebugTool/DebugPosition.h>
@@ -73,6 +75,8 @@ void GameController::Init()
     auto cameraController = gameObjectManager.CreateGameObject();
     cameraController->AddComponent<CameraController>(playerController);
 
+    //ComponentManager::GetInstance().UseThreadsEverywhere();
+
     ShowMenu();
 }
 
@@ -124,6 +128,8 @@ void GameController::InitEnvironment()
 void GameController::InitTexts()
 {
     auto& gameObjectManager = GameObjectManager::GetInstance();
+
+    TextCharacterSet::GetInstance().Load(fontSizePair);
 
     //Score
     auto scoreGameObject = gameObjectManager.CreateGameObject(glm::vec2(1.0f, 1.0f), glm::vec2(0.2f, 0.2f));

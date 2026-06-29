@@ -78,9 +78,7 @@ namespace Learning2DEngine
 
         glm::vec2 Text2DRenderData::CalculateTextSize() const
         {
-            TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
-            textCharacterSet.Load(fontSizePair);
-            CharacterMap& characterMap = textCharacterSet[fontSizePair];
+            CharacterMap& characterMap = TextCharacterSet::GetInstance()[fontSizePair];
 
             glm::vec2 size(0.0f, characterMap['H'].bearing.y * component->gameObject->transform.GetGlobalScale().y);
             float x = 0.0f;
@@ -115,9 +113,7 @@ namespace Learning2DEngine
             glm::vec2 middlePosition = startPosition + glm::vec2(textLength.x / 2.0f, textLength.y / 2);
             glm::mat2 rotationMatrix = GetRotationMatrix();
 
-            TextCharacterSet& textCharacterSet = TextCharacterSet::GetInstance();
-            textCharacterSet.Load(fontSizePair);
-            CharacterMap& characterMap = textCharacterSet[fontSizePair];
+            CharacterMap& characterMap = TextCharacterSet::GetInstance()[fontSizePair];
 
             glm::vec2 firstCharacterPosition = startPosition;
             for (std::string::const_iterator c = text.begin(); c != text.end(); ++c)

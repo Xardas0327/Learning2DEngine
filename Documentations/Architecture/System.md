@@ -45,8 +45,15 @@ class BaseComponentHandler : public IComponentHandler
 ### Variables:
 **Protected:**  
 **components**  
+These components can run in any thread.
 ```cpp
 std::vector<T*> components;
+```
+
+**mainThreadOnlyComponents**  
+These components can run only in the main thread.
+```cpp
+std::vector<T*> mainThreadOnlyComponents;
 ```
 
 **newComponents**  
@@ -1302,11 +1309,19 @@ Please check for more info about `System::Component`.
 class LateUpdaterComponent : public virtual Component
 {...}
 ```
+
+### Variables:
+**Public:**  
+**isUseMainThreadOnly**  
+```cpp
+const bool isUseMainThreadOnly;
+```
+
 ### Functions:
 **Protected:**  
 **LateUpdaterComponent**  
 ```cpp
-LateUpdaterComponent(GameObject* gameObject);
+LateUpdaterComponent(GameObject* gameObject, bool isUseMainThreadOnly = false);
 ```
 
 **Init**  
@@ -2154,11 +2169,18 @@ class UpdaterComponent : public virtual Component
 {...}
 ```
 
+### Variables:
+**Public:**  
+**isUseMainThreadOnly**  
+```cpp
+const bool isUseMainThreadOnly;
+```
+
 ### Functions:
 **Protected:**  
 **UpdaterComponent**  
 ```cpp
-UpdaterComponent(GameObject* gameObject);
+UpdaterComponent(GameObject* gameObject, bool isUseMainThreadOnly = false);
 ```
 
 **Init**  

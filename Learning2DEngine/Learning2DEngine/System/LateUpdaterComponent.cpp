@@ -5,8 +5,8 @@ namespace Learning2DEngine
 {
 	namespace System
 	{
-		LateUpdaterComponent::LateUpdaterComponent(GameObject* gameObject)
-			: Component(gameObject)
+		LateUpdaterComponent::LateUpdaterComponent(GameObject* gameObject, bool isUseMainThreadOnly)
+			: Component(gameObject), isUseMainThreadOnly(isUseMainThreadOnly)
 		{
 		}
 

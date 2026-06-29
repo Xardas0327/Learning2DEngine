@@ -1,4 +1,7 @@
 # UI
+_**Recommended**: Before one of text renderer/render data is used,_
+_TextCharacterSet must be loaded._ 
+
 - [FontSizePair](UI.md#fontsizepair)
 - [FreeTypeCharacter](UI.md#freetypecharacter)
 - [MultiText2DRenderer](UI.md#multitext2drenderer)

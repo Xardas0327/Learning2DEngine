@@ -134,7 +134,6 @@ namespace Learning2DEngine
 						auto textData = static_cast<Text2DRenderData*>(data);
 						if (textData->GetText().size() > 0)
 						{
-							textCharacterSet.Load(textData->GetFontSizePair());
 							CharacterMap& characterMap = textCharacterSet[textData->GetFontSizePair()];
 
 							auto& textMap = textData->GetCharacterVertices();

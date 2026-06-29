@@ -16,13 +16,14 @@ namespace Learning2DEngine
 		{
 		protected:
 			std::vector<T*> components;
+			std::vector<T*> mainThreadOnlyComponents;
 			std::vector<T*> newComponents;
 			std::vector<T*> removableComponents;
 			std::mutex mutex;
 			ThreadManager* threadManager;
 
 			BaseComponentHandler()
-				: components(), newComponents(), removableComponents(), mutex(), threadManager(nullptr)
+				: components(), mainThreadOnlyComponents(), newComponents(), removableComponents(), mutex(), threadManager(nullptr)
 			{
 			}
 
@@ -38,14 +39,25 @@ namespace Learning2DEngine
 						});
 					components.erase(newEnd, components.end());
 
+					newEnd = remove_if(mainThreadOnlyComponents.begin(), mainThreadOnlyComponents.end(),
+						[this](T* component)
+						{
+							auto it = std::find(removableComponents.begin(), removableComponents.end(), component);
+							return it != removableComponents.end();
+						});
+					mainThreadOnlyComponents.erase(newEnd, mainThreadOnlyComponents.end());
+
 					removableComponents.clear();
 				}
 
-				if (newComponents.size() > 0)
+				for (auto newComponent : newComponents)
 				{
-					components.insert(components.end(), newComponents.begin(), newComponents.end());
-					newComponents.clear();
+					if (newComponent->isUseMainThreadOnly)
+						mainThreadOnlyComponents.push_back(newComponent);
+					else
+						components.push_back(newComponent);
 				}
+				newComponents.clear();
 			}
 
 			void RemoveItem(T* component)
@@ -102,6 +114,7 @@ namespace Learning2DEngine
 			virtual void Clear() override
 			{
 				components.clear();
+				mainThreadOnlyComponents.clear();
 				newComponents.clear();
 				removableComponents.clear();
 			}
