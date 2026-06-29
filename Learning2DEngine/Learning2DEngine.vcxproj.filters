@@ -150,6 +150,9 @@
     <ClCompile Include="Learning2DEngine\Physics\ColliderComponentHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Learning2DEngine\System\ThreadManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\Render\RenderManager.h">
@@ -495,6 +498,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Learning2DEngine\System\UpdaterComponentHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\ThreadManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

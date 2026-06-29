@@ -10,17 +10,35 @@ namespace Learning2DEngine
 	{
 		class LateUpdaterComponentHandler : public BaseComponentHandler<LateUpdaterComponent>
 		{
-		protected:
-			virtual void RunItem(LateUpdaterComponent* component) override
-			{
-				//A GameObject will only be destroyed at the end of the frame.
-				if (component->IsActive())
-					component->LateUpdate();
-			}
 		public:
 			LateUpdaterComponentHandler()
 				: BaseComponentHandler<LateUpdaterComponent>()
 			{
+			}
+
+			virtual void Run() override
+			{
+				RefreshComponents();
+
+				for (auto item : components)
+				{
+					if (item->IsActive())
+					{
+						if (threadManager != nullptr)
+						{
+							threadManager->Enqueue([item]
+								{
+									item->LateUpdate();
+								}
+							);
+						}
+						else
+							item->LateUpdate();
+					}
+				}
+
+				if (threadManager != nullptr)
+					threadManager->WaitAll();
 			}
 		};
 	}

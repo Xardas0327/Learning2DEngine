@@ -20,6 +20,7 @@
 - [Random](System.md#random)
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
+- [ThreadManager](System.md#threadmanager)
 - [Time](System.md#time)
 - [Transform](System.md#transform)
 - [UpdaterComponent](System.md#updatercomponent)
@@ -83,12 +84,6 @@ It is used by Remove function.
 void RemoveItem(T* component);
 ```
 
-**RunItem**  
-Only this function has to be implemented to run the components.
-```cpp
-virtual void RunItem(T* component) = 0;
-```
-
 **Public:**  
 **Add**  
 If the isThreadSafe is true, the mutex will be used.
@@ -102,15 +97,24 @@ If the isThreadSafe is true, the mutex will be used.
 void Remove(T* component, bool isThreadSafe);
 ```
 
+**SetThreadManager**  
+```cpp
+inline void SetThreadManager(ThreadManager* threadManager);
+```
+
+**ClearThreadManager**  
+```cpp
+inline void ClearThreadManager();
+```
+
+**IsUseThreads**  
+```cpp
+inline bool IsUseThreads() const;
+```
+
 **Clear**  
 ```cpp
 virtual void Clear() override;
-```
-
-**Run**  
-Firstly it refresh the component vector and it will call `RunItem` for each component.
-```cpp
-virtual void Run() override;
 ```
 
 ##
@@ -383,6 +387,11 @@ Render::RendererComponentHandler rendererComponentHandler;
 bool isThreadSafe;
 ```
 
+**threadManager**  
+```cpp
+ThreadManager* threadManager;
+```
+
 ### Functions:
 **Private:**  
 **ComponentManager**  
@@ -390,7 +399,29 @@ bool isThreadSafe;
 ComponentManager();
 ```
 
+**CreateThreadManager**  
+```cpp
+void CreateThreadManager();
+```
+
+**DestroyThreadManager**  
+```cpp
+void DestroyThreadManager();
+```
+
 **Public:**  
+**~ComponentManager**  
+It will destroy the threadManager, if it is exist.
+```cpp
+~ComponentManager();
+```
+
+**Clear**  
+Clear all handlers.
+```cpp
+void Clear();
+```
+
 **AddToUpdate**  
 ```cpp
 inline void AddToUpdate(UpdaterComponent* component);
@@ -406,6 +437,20 @@ inline void RemoveFromUpdate(UpdaterComponent* component);
 inline void Update();
 ```
 
+**UseUpdaterThreads**  
+The `UpdaterComponentHandler` will use the thread manager,
+and it turns on the thread safe mode to the `ComponentManager` and the `GameObjectManager` too.
+```cpp
+void UseUpdaterThreads();
+```
+
+**StopUpdaterThreads**  
+The `UpdaterComponentHandler` will not use the thread manager anymore,
+but the thread manager will not be destroyed and the thread safe mode will not be disabled.
+```cpp
+ void StopUpdaterThreads();
+```
+
 **AddToLateUpdate**  
 ```cpp
 inline void AddToLateUpdate(LateUpdaterComponent* component);
@@ -419,6 +464,20 @@ inline void RemoveFromLateUpdate(LateUpdaterComponent* component);
 **LateUpdate**  
 ```cpp
 inline void LateUpdate();
+```
+
+**UseLateUpdaterThreads**  
+The `LateUpdaterComponentHandler` will use the thread manager,
+and it turns on the thread safe mode to the `ComponentManager` and the `GameObjectManager` too.
+```cpp
+void UseLateUpdaterThreads();
+```
+
+**StopLateUpdaterThreads**  
+The `LateUpdaterComponentHandler` will not use the thread manager anymore,
+but the thread manager will not be destroyed and the thread safe mode will not be disabled.
+```cpp
+ void StopLateUpdaterThreads();
 ```
 
 **AddToCollider**  
@@ -488,21 +547,29 @@ inline void Render();
 inline void LateRender();
 ```
 
-**SetThreadSafe**  
-It set the thread safe mode the `ComponentManager` and the `GameObjectManager` too.
+**UseThreadsEverywhere**  
+It activates the threads for the `UpdaterComponentHandler` and the `LateUpdaterComponentHandler`,
+and it turns on the thread safe mode to the `ComponentManager` and the `GameObjectManager` too.
 ```cpp
-inline void SetThreadSafe(bool value);
+void UseThreadsEverywhere();
 ```
 
-**GetThreadSafe**  
+**StopThreads**  
+It deactivates the threads for the `UpdaterComponentHandler` and the `LateUpdaterComponentHandler`,
+and it turns off the thread safe mode to the `ComponentManager` and the `GameObjectManager` too.
 ```cpp
-inline bool GetThreadSafe();
+void StopThreads(bool destroyThreadManager = false);
 ```
 
-**Clear**  
-Clear all handlers.
+**SetThreadSafeMode**  
+It turns on/off the thread safe mode to the `ComponentManager` and the `GameObjectManager` too.
 ```cpp
-void Clear();
+void SetThreadSafeMode(bool value);
+```
+
+**IsThreadSafe**  
+```cpp
+inline bool IsThreadSafe() const;
 ```
 
 ##
@@ -1278,17 +1345,15 @@ class LateUpdaterComponentHandler : public BaseComponentHandler<LateUpdaterCompo
 ```
 
 ### Functions:
-**Protected:**  
-**RunItem** 
-If the component is active, its LateUpdate() function will be called.
-```cpp
-virtual void RunItem(LateUpdaterComponent* component) override;
-```
-
 **Public:**  
 **LateUpdaterComponentHandler**  
 ```cpp
 LateUpdaterComponentHandler();
+```
+
+**Run**  
+```cpp
+virtual void Run() override;
 ```
 
 ##
@@ -1657,6 +1722,83 @@ Singleton();
 **GetInstance**  
 ```cpp
 static T& GetInstance();
+```
+
+##
+## ThreadManager
+### Source Code:
+[ThreadManager.h](../../Learning2DEngine/Learning2DEngine/System/ThreadManager.h)  
+[ThreadManager.cpp](../../Learning2DEngine/Learning2DEngine/System/ThreadManager.cpp)  
+
+### Description: 
+It manages the threads in the Engine.
+
+### Header:
+```cpp
+class ThreadManager final
+{...}
+```
+
+### Variables:
+**Private:**  
+**threads**  
+```cpp
+std::vector<std::thread> threads;
+```
+
+**jobQueue**  
+```cpp
+std::queue<std::function<void()>> jobQueue;
+```
+
+**queueMutex**  
+```cpp
+std::mutex queueMutex;
+```
+
+**cv**  
+```cpp
+std::condition_variable cv;
+```
+
+**running**  
+```cpp
+std::atomic<bool> running;
+```
+
+**activeJobs**  
+```cpp
+std::atomic<int> activeJobs;
+```
+
+### Functions:
+**RunThread:**  
+**Time**  
+```cpp
+void RunThread();
+```
+
+**Public:**  
+**ThreadManager**  
+```cpp
+ThreadManager(unsigned int threadCount);
+```
+
+**~ThreadManager**  
+It will wait all running threads to finish before destruction.
+```cpp
+~ThreadManager();
+```
+
+**Enqueue**  
+```cpp
+void Enqueue(std::function<void()>&& job);
+```
+
+**WaitAll**  
+It will wait until all jobs is finished.
+```cpp
+void WaitAll();
 ```
 
 ##
@@ -2055,15 +2197,13 @@ class UpdaterComponentHandler : public BaseComponentHandler<UpdaterComponent>
 ```
 
 ### Functions:
-**Protected:**  
-**RunItem** 
-If the component is active, its Update() function will be called.
-```cpp
-virtual void RunItem(UpdaterComponent* component) override;
-```
-
 **Public:**  
 **UpdaterComponentHandler**  
 ```cpp
 UpdaterComponentHandler();
+```
+
+**Run**  
+```cpp
+virtual void Run() override;
 ```

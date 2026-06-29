@@ -188,6 +188,7 @@
     <ClCompile Include="Learning2DEngine\System\Component.cpp" />
     <ClCompile Include="Learning2DEngine\System\GameObjectManager.cpp" />
     <ClCompile Include="Learning2DEngine\System\LateUpdaterComponent.cpp" />
+    <ClCompile Include="Learning2DEngine\System\ThreadManager.cpp" />
     <ClCompile Include="Learning2DEngine\System\Time.cpp" />
     <ClCompile Include="Learning2DEngine\System\Transform.cpp" />
     <ClCompile Include="Learning2DEngine\System\UpdaterComponent.cpp" />
@@ -310,6 +311,7 @@
     <ClInclude Include="Learning2DEngine\Render\RenderManager.h" />
     <ClInclude Include="Learning2DEngine\System\Singleton.h" />
     <ClInclude Include="Learning2DEngine\Render\Texture2DSettings.h" />
+    <ClInclude Include="Learning2DEngine\System\ThreadManager.h" />
     <ClInclude Include="Learning2DEngine\System\Time.h" />
     <ClInclude Include="Learning2DEngine\System\Transform.h" />
     <ClInclude Include="Learning2DEngine\System\UpdaterComponent.h" />

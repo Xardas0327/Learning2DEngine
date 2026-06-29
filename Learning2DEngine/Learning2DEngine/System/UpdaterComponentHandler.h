@@ -10,17 +10,35 @@ namespace Learning2DEngine
 	{
 		class UpdaterComponentHandler : public BaseComponentHandler<UpdaterComponent>
 		{
-		protected:
-			virtual void RunItem(UpdaterComponent* component) override
-			{
-				//A GameObject will only be destroyed at the end of the frame.
-				if (component->IsActive())
-					component->Update();
-			}
 		public:
 			UpdaterComponentHandler()
 				: BaseComponentHandler<UpdaterComponent>()
 			{
+			}
+
+			virtual void Run() override
+			{
+				RefreshComponents();
+
+				for (auto item : components)
+				{
+					if (item->IsActive())
+					{
+						if (threadManager != nullptr)
+						{
+							threadManager->Enqueue([item]
+								{
+									item->Update();
+								}
+							);
+						}
+						else
+							item->Update();
+					}
+				}
+
+				if (threadManager != nullptr)
+					threadManager->WaitAll();
 			}
 		};
 	}

@@ -5,6 +5,7 @@
 #include <mutex>
 
 #include "IComponentHandler.h"
+#include "ThreadManager.h"
 
 namespace Learning2DEngine
 {
@@ -18,9 +19,10 @@ namespace Learning2DEngine
 			std::vector<T*> newComponents;
 			std::vector<T*> removableComponents;
 			std::mutex mutex;
+			ThreadManager* threadManager;
 
 			BaseComponentHandler()
-				: components(), newComponents(), removableComponents(), mutex()
+				: components(), newComponents(), removableComponents(), mutex(), threadManager(nullptr)
 			{
 			}
 
@@ -55,8 +57,6 @@ namespace Learning2DEngine
 				else
 					removableComponents.push_back(component);
 			}
-			
-			virtual void RunItem(T* component) = 0;
 		public:
 			void Add(T* component, bool isThreadSafe)
 			{
@@ -84,21 +84,26 @@ namespace Learning2DEngine
 				}
 			}
 
+			inline void SetThreadManager(ThreadManager* threadManager)
+			{
+				this->threadManager = threadManager;
+			}
+
+			inline void ClearThreadManager()
+			{
+				threadManager = nullptr;
+			}
+
+			inline bool IsUseThreads() const
+			{
+				return threadManager != nullptr;
+			}
+
 			virtual void Clear() override
 			{
 				components.clear();
 				newComponents.clear();
 				removableComponents.clear();
-			}
-
-			virtual void Run() override
-			{
-				RefreshComponents();
-
-				for(auto item : components)
-				{
-					RunItem(item);
-				}
 			}
 		};
 	}

@@ -8,6 +8,7 @@
 #include "LateUpdaterComponentHandler.h"
 #include "UpdaterComponent.h"
 #include "LateUpdaterComponent.h"
+#include "ThreadManager.h"
 #include "../DebugTool/Log.h"
 #include "../Render/IRenderer.h"
 #include "../Render/RenderData.h"
@@ -32,14 +33,47 @@ namespace Learning2DEngine
             Render::RendererComponentHandler rendererComponentHandler;
 
             bool isThreadSafe;
+			ThreadManager* threadManager;
 
             ComponentManager()
                 : updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
-                rendererComponentHandler(), isThreadSafe(false)
+				rendererComponentHandler(), isThreadSafe(false), threadManager(nullptr)
             {
 
             }
+
+            void CreateThreadManager()
+            {
+                if (threadManager == nullptr)
+                {
+                    auto threadCount = std::max(1u, std::thread::hardware_concurrency() - 1u);
+                    threadManager = new ThreadManager(threadCount);
+                }
+            }
+
+            void DestroyThreadManager()
+            {
+                if (threadManager != nullptr)
+                {
+                    delete threadManager;
+                    threadManager = nullptr;
+                }
+            }
+
         public:
+            ~ComponentManager()
+            {
+                DestroyThreadManager();
+            }
+
+            void Clear()
+            {
+                updaterComponentHandler.Clear();
+                lateUpdaterComponentHandler.Clear();
+                colliderComponentHandler.Clear();
+                rendererComponentHandler.Clear();
+            }
+
             //Update
 
             inline void AddToUpdate(UpdaterComponent* component)
@@ -57,6 +91,23 @@ namespace Learning2DEngine
                 updaterComponentHandler.Run();
             }
 
+            //The UpdaterComponentHandler will use the thread manager,
+            //and it turns on the thread safe mode to the ComponentManager and the GameObjectManager too.
+            void UseUpdaterThreads()
+            {
+                SetThreadSafeMode(true);
+                CreateThreadManager();
+
+                updaterComponentHandler.SetThreadManager(threadManager);
+			}
+
+			//The UpdaterComponentHandler will not use the thread manager anymore,
+			//but the thread manager will not be destroyed and the thread safe mode will not be disabled.
+            void StopUpdaterThreads()
+            {
+                updaterComponentHandler.ClearThreadManager();
+            }
+
             //LateUpdate
 
             inline void AddToLateUpdate(LateUpdaterComponent* component)
@@ -72,6 +123,23 @@ namespace Learning2DEngine
             inline void LateUpdate()
             {
                 lateUpdaterComponentHandler.Run();
+            }
+
+            //The LateUpdaterComponentHandler will use the thread manager,
+            //and it turns on the thread safe mode to the ComponentManager and the GameObjectManager too.
+            void UseLateUpdaterThreads()
+            {
+                SetThreadSafeMode(true);
+                CreateThreadManager();
+
+                lateUpdaterComponentHandler.SetThreadManager(threadManager);
+            }
+
+            //The LateUpdaterComponentHandler will not use the thread manager anymore,
+            //but the thread manager will not be destroyed and the thread safe mode will not be disabled.
+            void StopLateUpdaterThreads()
+            {
+                lateUpdaterComponentHandler.ClearThreadManager();
             }
 
             //Collider
@@ -148,26 +216,56 @@ namespace Learning2DEngine
                 rendererComponentHandler.Run(Render::RendererMode::LATERENDER);
             }
 
-            //All
+            //Thread
 
-            //It set the thread safe mode the ComponentManager and the GameObjectManager too.
-            inline void SetThreadSafe(bool value)
+			//It activates the threads for the UpdaterComponentHandler and the LateUpdaterComponentHandler,
+            //and it turns on the thread safe mode to the ComponentManager and the GameObjectManager too.
+            void UseThreadsEverywhere()
+            {
+                SetThreadSafeMode(true);
+                CreateThreadManager();
+
+				updaterComponentHandler.SetThreadManager(threadManager);
+                lateUpdaterComponentHandler.SetThreadManager(threadManager);
+            }
+
+            //It deactivates the threads for the UpdaterComponentHandler and the LateUpdaterComponentHandler,
+            //and it turns off the thread safe mode to the ComponentManager and the GameObjectManager too.
+            void StopThreads(bool destroyThreadManager = false)
+            {
+				updaterComponentHandler.ClearThreadManager();
+				lateUpdaterComponentHandler.ClearThreadManager();
+
+                if (destroyThreadManager)
+                    DestroyThreadManager();
+
+                SetThreadSafeMode(false);
+			}
+
+            inline bool IsUseThreads() const
+            {
+                return updaterComponentHandler.IsUseThreads() || lateUpdaterComponentHandler.IsUseThreads();
+			}
+
+            //It turns on/off the thread safe mode to the ComponentManager and the GameObjectManager too.
+            void SetThreadSafeMode(bool value)
             {
                 isThreadSafe = value;
                 GameObjectManager::GetInstance().SetThreadSafe(value);
+#if L2DE_DEBUG
+                if (!isThreadSafe && (
+                    updaterComponentHandler.IsUseThreads()
+                    || lateUpdaterComponentHandler.IsUseThreads()
+                    ))
+                {
+                    L2DE_LOG_WARNING("COMPONENT MANAGER: The thread safe is turned off. But the component handlers still use threads.");
+                }
+#endif
             }
 
-            inline bool GetThreadSafe()
+            inline bool IsThreadSafe() const
             {
                 return isThreadSafe;
-            }
-
-            void Clear()
-            {
-                updaterComponentHandler.Clear();
-                lateUpdaterComponentHandler.Clear();
-                colliderComponentHandler.Clear();
-                rendererComponentHandler.Clear();
             }
         };
     }
