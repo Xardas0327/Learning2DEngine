@@ -1,4 +1,7 @@
 # Render
+Do not forget, the OpenGL works only in its own thread,
+which is the main thread in this Engine.
+
 - [BaseColorDynamicData](Render.md#basecolordynamicdata)
 - [BaseMultiRenderer](Render.md#basemultirenderer)
 - [BaseRenderer](Render.md#baserenderer)

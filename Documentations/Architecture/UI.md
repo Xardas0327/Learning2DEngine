@@ -1,6 +1,8 @@
 # UI
-_**Recommended**: Before one of text renderer/render data is used,_
-_TextCharacterSet must be loaded._ 
+Do not forget, the OpenGL works only in its own thread,
+which is the main thread in this Engine.
+**Recommended**: Before one of text renderer/render data is used,
+TextCharacterSet must be loaded.
 
 - [FontSizePair](UI.md#fontsizepair)
 - [FreeTypeCharacter](UI.md#freetypecharacter)

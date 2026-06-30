@@ -1746,7 +1746,9 @@ static T& GetInstance();
 [ThreadManager.cpp](../../Learning2DEngine/Learning2DEngine/System/ThreadManager.cpp)  
 
 ### Description: 
-It manages the threads in the Engine.
+It manages the threads in the Engine.  
+Note: Do not forget, the OpenGL works only in its own thread,
+which is the main thread in this Engine.
 
 ### Header:
 ```cpp
