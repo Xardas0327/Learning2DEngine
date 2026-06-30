@@ -34,7 +34,7 @@ jobs:
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
       
     - name: Install VSTest Platform
-      uses: microsoft/vstest@v1
+      run: dotnet tool install --global dotnet-vstest
 
     - name: Execute Unit Tests
       run: vstest.console.exe x64\${{env.BUILD_CONFIGURATION}}\Learning2DEngineTest.dll
