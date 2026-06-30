@@ -8,6 +8,7 @@
 #include "LateUpdaterComponentHandler.h"
 #include "UpdaterComponent.h"
 #include "LateUpdaterComponent.h"
+#include "ThreadManager.h"
 #include "../DebugTool/Log.h"
 #include "../Render/IRenderer.h"
 #include "../Render/RenderData.h"
@@ -32,14 +33,47 @@ namespace Learning2DEngine
             Render::RendererComponentHandler rendererComponentHandler;
 
             bool isThreadSafe;
+			ThreadManager* threadManager;
 
             ComponentManager()
                 : updaterComponentHandler(), lateUpdaterComponentHandler(), colliderComponentHandler(),
-                rendererComponentHandler(), isThreadSafe(false)
+				rendererComponentHandler(), isThreadSafe(false), threadManager(nullptr)
             {
 
             }
+
+            void CreateThreadManager()
+            {
+                if (threadManager == nullptr)
+                {
+                    auto threadCount = std::max(1u, std::thread::hardware_concurrency() - 1u);
+                    threadManager = new ThreadManager(threadCount);
+                }
+            }
+
+            void DestroyThreadManager()
+            {
+                if (threadManager != nullptr)
+                {
+                    delete threadManager;
+                    threadManager = nullptr;
+                }
+            }
+
         public:
+            ~ComponentManager()
+            {
+                DestroyThreadManager();
+            }
+
+            void Clear()
+            {
+                updaterComponentHandler.Clear();
+                lateUpdaterComponentHandler.Clear();
+                colliderComponentHandler.Clear();
+                rendererComponentHandler.Clear();
+            }
+
             //Update
 
             inline void AddToUpdate(UpdaterComponent* component)
@@ -57,14 +91,21 @@ namespace Learning2DEngine
                 updaterComponentHandler.Run();
             }
 
-            // If it is bigger then 0, than every component handlers and the GameObjectManager will be thread safe.
-            // But if it is 0, the thread safe will not be turn off automatically.
-            void SetUpdateMaxComponentPerThread(unsigned int value)
+            //The UpdaterComponentHandler will use the thread manager,
+            //and it turns on the thread safe mode to the ComponentManager and the GameObjectManager too.
+            void UseUpdaterThreads()
             {
-                if (value > 0)
-                    SetThreadSafe(true);
+                SetThreadSafeMode(true);
+                CreateThreadManager();
 
-                updaterComponentHandler.SetMaxComponentPerThread(value);
+                updaterComponentHandler.SetThreadManager(threadManager);
+			}
+
+			//The UpdaterComponentHandler will not use the thread manager anymore,
+			//but the thread manager will not be destroyed and the thread safe mode will not be disabled.
+            void StopUpdaterThreads()
+            {
+                updaterComponentHandler.ClearThreadManager();
             }
 
             //LateUpdate
@@ -84,14 +125,21 @@ namespace Learning2DEngine
                 lateUpdaterComponentHandler.Run();
             }
 
-            // If it is bigger then 0, than every component handlers and the GameObjectManager will be thread safe.
-            // But if it is 0, the thread safe will not be turn off automatically.
-            void SetLateUpdateMaxComponentPerThread(unsigned int value)
+            //The LateUpdaterComponentHandler will use the thread manager,
+            //and it turns on the thread safe mode to the ComponentManager and the GameObjectManager too.
+            void UseLateUpdaterThreads()
             {
-                if (value > 0)
-                    SetThreadSafe(true);
+                SetThreadSafeMode(true);
+                CreateThreadManager();
 
-                lateUpdaterComponentHandler.SetMaxComponentPerThread(value);
+                lateUpdaterComponentHandler.SetThreadManager(threadManager);
+            }
+
+            //The LateUpdaterComponentHandler will not use the thread manager anymore,
+            //but the thread manager will not be destroyed and the thread safe mode will not be disabled.
+            void StopLateUpdaterThreads()
+            {
+                lateUpdaterComponentHandler.ClearThreadManager();
             }
 
             //Collider
@@ -119,17 +167,6 @@ namespace Learning2DEngine
             inline void CheckCollision()
             {
                 colliderComponentHandler.Run();
-            }
-
-            // If it is bigger then 0, than every component handlers and the GameObjectManager will be thread safe.
-            // But if it is 0, the thread safe will not be turn off automatically.
-            // If it uses multiple threads, the order of OnCollision will not be deterministic.
-            void SetMaxColliderPerThread(unsigned int value)
-            {
-                if (value > 0)
-                    SetThreadSafe(true);
-
-                colliderComponentHandler.SetMaxColliderPerThread(value);
             }
 
             //Render
@@ -179,18 +216,46 @@ namespace Learning2DEngine
                 rendererComponentHandler.Run(Render::RendererMode::LATERENDER);
             }
 
-            //All
+            //Thread
 
-            //It set the thread safe mode the ComponentManager and the GameObjectManager too.
-            inline void SetThreadSafe(bool value)
+			//It activates the threads for the UpdaterComponentHandler and the LateUpdaterComponentHandler,
+            //and it turns on the thread safe mode to the ComponentManager and the GameObjectManager too.
+            void UseThreadsEverywhere()
+            {
+                SetThreadSafeMode(true);
+                CreateThreadManager();
+
+				updaterComponentHandler.SetThreadManager(threadManager);
+                lateUpdaterComponentHandler.SetThreadManager(threadManager);
+            }
+
+            //It deactivates the threads for the UpdaterComponentHandler and the LateUpdaterComponentHandler,
+            //and it turns off the thread safe mode to the ComponentManager and the GameObjectManager too.
+            void StopThreads(bool destroyThreadManager = false)
+            {
+				updaterComponentHandler.ClearThreadManager();
+				lateUpdaterComponentHandler.ClearThreadManager();
+
+                if (destroyThreadManager)
+                    DestroyThreadManager();
+
+                SetThreadSafeMode(false);
+			}
+
+            inline bool IsUseThreads() const
+            {
+                return updaterComponentHandler.IsUseThreads() || lateUpdaterComponentHandler.IsUseThreads();
+			}
+
+            //It turns on/off the thread safe mode to the ComponentManager and the GameObjectManager too.
+            void SetThreadSafeMode(bool value)
             {
                 isThreadSafe = value;
                 GameObjectManager::GetInstance().SetThreadSafe(value);
 #if L2DE_DEBUG
                 if (!isThreadSafe && (
-                    updaterComponentHandler.GetMaxComponentPerThread() > 0
-                    || lateUpdaterComponentHandler.GetMaxComponentPerThread() > 0
-                    || colliderComponentHandler.GetMaxColliderPerThread() > 0
+                    updaterComponentHandler.IsUseThreads()
+                    || lateUpdaterComponentHandler.IsUseThreads()
                     ))
                 {
                     L2DE_LOG_WARNING("COMPONENT MANAGER: The thread safe is turned off. But the component handlers still use threads.");
@@ -198,17 +263,9 @@ namespace Learning2DEngine
 #endif
             }
 
-            inline bool GetThreadSafe()
+            inline bool IsThreadSafe() const
             {
                 return isThreadSafe;
-            }
-
-            void Clear()
-            {
-                updaterComponentHandler.Clear();
-                lateUpdaterComponentHandler.Clear();
-                colliderComponentHandler.Clear();
-                rendererComponentHandler.Clear();
             }
         };
     }

@@ -20,7 +20,7 @@
 - [Random](System.md#random)
 - [ResourceManager](System.md#resourcemanager)
 - [Singleton](System.md#singleton)
-- [ThreadComponentHandler](System.md#threadcomponenthandler)
+- [ThreadManager](System.md#threadmanager)
 - [Time](System.md#time)
 - [Transform](System.md#transform)
 - [UpdaterComponent](System.md#updatercomponent)
@@ -45,8 +45,15 @@ class BaseComponentHandler : public IComponentHandler
 ### Variables:
 **Protected:**  
 **components**  
+These components can run in any thread.
 ```cpp
 std::vector<T*> components;
+```
+
+**mainThreadOnlyComponents**  
+These components can run only in the main thread.
+```cpp
+std::vector<T*> mainThreadOnlyComponents;
 ```
 
 **newComponents**  
@@ -75,7 +82,7 @@ BaseComponentHandler();
 It removes the `removableComponents` and adds the `newComponents` to the `components`.
 After this, it clears the `newComponents` and the `removableComponents`.
 ```cpp
-virtual void RefreshComponents();
+void RefreshComponents();
 ```
 **RemoveItem**  
 It will remove the item from the new colliders or they will add the item into removable colliders.  
@@ -88,13 +95,28 @@ void RemoveItem(T* component);
 **Add**  
 If the isThreadSafe is true, the mutex will be used.
 ```cpp
-virtual void Add(T* component, bool isThreadSafe);
+void Add(T* component, bool isThreadSafe);
 ```
 
 **Remove**  
 If the isThreadSafe is true, the mutex will be used.
 ```cpp
-virtual void Remove(T* component, bool isThreadSafe);
+void Remove(T* component, bool isThreadSafe);
+```
+
+**SetThreadManager**  
+```cpp
+inline void SetThreadManager(ThreadManager* threadManager);
+```
+
+**ClearThreadManager**  
+```cpp
+inline void ClearThreadManager();
+```
+
+**IsUseThreads**  
+```cpp
+inline bool IsUseThreads() const;
 ```
 
 **Clear**  
@@ -372,6 +394,11 @@ Render::RendererComponentHandler rendererComponentHandler;
 bool isThreadSafe;
 ```
 
+**threadManager**  
+```cpp
+ThreadManager* threadManager;
+```
+
 ### Functions:
 **Private:**  
 **ComponentManager**  
@@ -379,7 +406,29 @@ bool isThreadSafe;
 ComponentManager();
 ```
 
+**CreateThreadManager**  
+```cpp
+void CreateThreadManager();
+```
+
+**DestroyThreadManager**  
+```cpp
+void DestroyThreadManager();
+```
+
 **Public:**  
+**~ComponentManager**  
+It will destroy the threadManager, if it is exist.
+```cpp
+~ComponentManager();
+```
+
+**Clear**  
+Clear all handlers.
+```cpp
+void Clear();
+```
+
 **AddToUpdate**  
 ```cpp
 inline void AddToUpdate(UpdaterComponent* component);
@@ -395,12 +444,18 @@ inline void RemoveFromUpdate(UpdaterComponent* component);
 inline void Update();
 ```
 
-**SetUpdateMaxComponentPerThread**  
-If it is bigger then 0, than every component handlers and the `GameObjectManager`
-will be thread safe.  
-But if it is 0, the thread safe will not be turn off automatically.  
+**UseUpdaterThreads**  
+The `UpdaterComponentHandler` will use the thread manager,
+and it turns on the thread safe mode to the `ComponentManager` and the `GameObjectManager` too.
 ```cpp
-void SetUpdateMaxComponentPerThread(unsigned int value);
+void UseUpdaterThreads();
+```
+
+**StopUpdaterThreads**  
+The `UpdaterComponentHandler` will not use the thread manager anymore,
+but the thread manager will not be destroyed and the thread safe mode will not be disabled.
+```cpp
+ void StopUpdaterThreads();
 ```
 
 **AddToLateUpdate**  
@@ -418,12 +473,18 @@ inline void RemoveFromLateUpdate(LateUpdaterComponent* component);
 inline void LateUpdate();
 ```
 
-**SetLateUpdateMaxComponentPerThread**  
-If it is bigger then 0, than every component handlers and the `GameObjectManager`
-will be thread safe.  
-But if it is 0, the thread safe will not be turn off automatically.  
+**UseLateUpdaterThreads**  
+The `LateUpdaterComponentHandler` will use the thread manager,
+and it turns on the thread safe mode to the `ComponentManager` and the `GameObjectManager` too.
 ```cpp
-void SetLateUpdateMaxComponentPerThread(unsigned int value);
+void UseLateUpdaterThreads();
+```
+
+**StopLateUpdaterThreads**  
+The `LateUpdaterComponentHandler` will not use the thread manager anymore,
+but the thread manager will not be destroyed and the thread safe mode will not be disabled.
+```cpp
+ void StopLateUpdaterThreads();
 ```
 
 **AddToCollider**  
@@ -445,15 +506,6 @@ inline void RemoveFromCollider(Physics::CircleColliderComponent* component);
 **CheckCollision**  
 ```cpp
 inline void CheckCollision();
-```
-
-**SetMaxColliderPerThread**  
-If it is bigger then 0, than every component handlers and the `GameObjectManager`
-will be thread safe.  
-But if it is 0, the thread safe will not be turn off automatically.  
-Note: If it uses multiple threads, the order of OnCollision will not be deterministic.
-```cpp
-void SetMaxColliderPerThread(unsigned int value);
 ```
 
 **IsRendererExist**  
@@ -502,21 +554,29 @@ inline void Render();
 inline void LateRender();
 ```
 
-**SetThreadSafe**  
-It set the thread safe mode the `ComponentManager` and the `GameObjectManager` too.
+**UseThreadsEverywhere**  
+It activates the threads for the `UpdaterComponentHandler` and the `LateUpdaterComponentHandler`,
+and it turns on the thread safe mode to the `ComponentManager` and the `GameObjectManager` too.
 ```cpp
-inline void SetThreadSafe(bool value);
+void UseThreadsEverywhere();
 ```
 
-**GetThreadSafe**  
+**StopThreads**  
+It deactivates the threads for the `UpdaterComponentHandler` and the `LateUpdaterComponentHandler`,
+and it turns off the thread safe mode to the `ComponentManager` and the `GameObjectManager` too.
 ```cpp
-inline bool GetThreadSafe();
+void StopThreads(bool destroyThreadManager = false);
 ```
 
-**Clear**  
-Clear all handlers.
+**SetThreadSafeMode**  
+It turns on/off the thread safe mode to the `ComponentManager` and the `GameObjectManager` too.
 ```cpp
-void Clear();
+void SetThreadSafeMode(bool value);
+```
+
+**IsThreadSafe**  
+```cpp
+inline bool IsThreadSafe() const;
 ```
 
 ##
@@ -1249,11 +1309,19 @@ Please check for more info about `System::Component`.
 class LateUpdaterComponent : public virtual Component
 {...}
 ```
+
+### Variables:
+**Public:**  
+**isUseMainThreadOnly**  
+```cpp
+const bool isUseMainThreadOnly;
+```
+
 ### Functions:
 **Protected:**  
 **LateUpdaterComponent**  
 ```cpp
-LateUpdaterComponent(GameObject* gameObject);
+LateUpdaterComponent(GameObject* gameObject, bool isUseMainThreadOnly = false);
 ```
 
 **Init**  
@@ -1287,23 +1355,20 @@ The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class LateUpdaterComponentHandler : public ThreadComponentHandler<LateUpdaterComponent>
+class LateUpdaterComponentHandler : public BaseComponentHandler<LateUpdaterComponent>
 {...}
 ```
 
 ### Functions:
-**Protected:**  
-**RunPart** 
-It iterates on the components vector in [startIndex, endIndex) range.  
-If the component and its gameobject is active, its LateUpdate() function will be called.
-```cpp
-void RunPart(size_t startIndex, size_t endIndex) override;
-```
-
 **Public:**  
 **LateUpdaterComponentHandler**  
 ```cpp
 LateUpdaterComponentHandler();
+```
+
+**Run**  
+```cpp
+virtual void Run() override;
 ```
 
 ##
@@ -1675,69 +1740,82 @@ static T& GetInstance();
 ```
 
 ##
-## ThreadComponentHandler
+## ThreadManager
 ### Source Code:
-[ThreadComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/ThreadComponentHandler.h)  
+[ThreadManager.h](../../Learning2DEngine/Learning2DEngine/System/ThreadManager.h)  
+[ThreadManager.cpp](../../Learning2DEngine/Learning2DEngine/System/ThreadManager.cpp)  
 
 ### Description: 
-It is a component handler, which can use threads.
+It manages the threads in the Engine.  
+Note: Do not forget, the OpenGL works only in its own thread,
+which is the main thread in this Engine.
 
 ### Header:
 ```cpp
-template<class T>
-class ThreadComponentHandler : public BaseComponentHandler<T>
+class ThreadManager final
 {...}
 ```
 
 ### Variables:
-**Protected:**  
-**maxComponentPerThread**  
-If it is 0, the class will not use threads.
-```cpp
-unsigned int maxComponentPerThread;
-```
-
+**Private:**  
 **threads**  
 ```cpp
 std::vector<std::thread> threads;
 ```
 
-### Functions:
-**Protected:**  
-**RunPart**  
-The threads will call this function with the component vector indexes.
+**jobQueue**  
 ```cpp
-virtual void RunPart(size_t startIndex, size_t endIndex) = 0;
+std::queue<std::function<void()>> jobQueue;
 ```
 
-**RunOnThreads**  
+**queueMutex**  
 ```cpp
-void RunOnThreads();
+std::mutex queueMutex;
+```
+
+**cv**  
+```cpp
+std::condition_variable cv;
+```
+
+**running**  
+```cpp
+std::atomic<bool> running;
+```
+
+**activeJobs**  
+```cpp
+std::atomic<int> activeJobs;
+```
+
+### Functions:
+**RunThread:**  
+**Time**  
+```cpp
+void RunThread();
 ```
 
 **Public:**  
-**ThreadComponentHandler**  
+**ThreadManager**  
 ```cpp
-ThreadComponentHandler();
+ThreadManager(unsigned int threadCount);
 ```
 
-**Run**  
-Firstly it refresh the component vector and it will call the RunPart and/or RunOnThreads functions.  
-How many threads will run, it is depend on the number of components and maxComponentPerThread.
+**~ThreadManager**  
+It will wait all running threads to finish before destruction.
 ```cpp
-virtual void Run() override;
+~ThreadManager();
 ```
 
-**SetMaxComponentPerThread**  
-If it is 0, the class will not use threads.
+**Enqueue**  
 ```cpp
-inline void SetMaxComponentPerThread(unsigned int value);
+void Enqueue(std::function<void()>&& job);
 ```
 
-**GetMaxComponentPerThread**  
-If it is 0, the class will not use threads.
+**WaitAll**  
+It will wait until all jobs is finished.
 ```cpp
-inline unsigned int GetMaxComponentPerThread();
+void WaitAll();
 ```
 
 ##
@@ -2093,11 +2171,18 @@ class UpdaterComponent : public virtual Component
 {...}
 ```
 
+### Variables:
+**Public:**  
+**isUseMainThreadOnly**  
+```cpp
+const bool isUseMainThreadOnly;
+```
+
 ### Functions:
 **Protected:**  
 **UpdaterComponent**  
 ```cpp
-UpdaterComponent(GameObject* gameObject);
+UpdaterComponent(GameObject* gameObject, bool isUseMainThreadOnly = false);
 ```
 
 **Init**  
@@ -2131,21 +2216,18 @@ The `ComponentManager` has one from it.
 
 ### Header:
 ```cpp
-class UpdaterComponentHandler : public ThreadComponentHandler<UpdaterComponent>
+class UpdaterComponentHandler : public BaseComponentHandler<UpdaterComponent>
 {...}
 ```
 
 ### Functions:
-**Protected:**  
-**RunPart** 
-It iterates on the components vector in [startIndex, endIndex) range.  
-If the component and its gameobject is active, its Update() function will be called.
-```cpp
-void RunPart(size_t startIndex, size_t endIndex) override;
-```
-
 **Public:**  
 **UpdaterComponentHandler**  
 ```cpp
 UpdaterComponentHandler();
+```
+
+**Run**  
+```cpp
+virtual void Run() override;
 ```

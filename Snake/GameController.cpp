@@ -1,6 +1,7 @@
 #include "GameController.h"
 
 #include <Learning2DEngine/DebugTool/DebugMacro.h>
+//#include <Learning2DEngine/System/ComponentManager.h>
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/GameObjectManager.h>
 #include <Learning2DEngine/System/InputStatus.h>
@@ -65,6 +66,8 @@ void GameController::Init()
 #if L2DE_DEBUG
     FpsShower::CreateFpsShowerObject(fontSizePair, 99, glm::vec2(5.0f, resolution.GetHeight() - 30));
 #endif
+
+    //ComponentManager::GetInstance().UseThreadsEverywhere();
 
     ResetLevel();
 }

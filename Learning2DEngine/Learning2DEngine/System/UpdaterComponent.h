@@ -15,7 +15,7 @@ namespace Learning2DEngine
 		{
 			friend class GameObject;
 		protected:
-			UpdaterComponent(GameObject* gameObject);
+			UpdaterComponent(GameObject* gameObject, bool isUseMainThreadOnly = false);
 
 			/// <summary>
 			/// If this function is override, it must call the UpdaterComponent::Init() in the first line.
@@ -28,6 +28,8 @@ namespace Learning2DEngine
 			virtual void Destroy() override;
 
 		public:
+			const bool isUseMainThreadOnly;
+
 			virtual void Update() = 0;
 		};
 	}

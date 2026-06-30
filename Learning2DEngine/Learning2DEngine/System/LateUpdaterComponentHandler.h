@@ -1,31 +1,52 @@
 #pragma once
 
 #include "GameObject.h"
-#include "ThreadComponentHandler.h"
+#include "BaseComponentHandler.h"
 #include "LateUpdaterComponent.h"
 
 namespace Learning2DEngine
 {
 	namespace System
 	{
-		class LateUpdaterComponentHandler : public ThreadComponentHandler<LateUpdaterComponent>
+		class LateUpdaterComponentHandler : public BaseComponentHandler<LateUpdaterComponent>
 		{
-		protected:
-			/// <param name="startIndex">Inclusive</param>
-			/// <param name="endIndex">Exclusive</param>
-			void RunPart(size_t startIndex, size_t endIndex) override
-			{
-				for (size_t i = startIndex; i < endIndex; ++i)
-				{
-					//A GameObject will only be destroyed at the end of the frame.
-					if (components[i]->IsActive())
-						components[i]->LateUpdate();
-				}
-			}
 		public:
 			LateUpdaterComponentHandler()
-				: ThreadComponentHandler<LateUpdaterComponent>()
+				: BaseComponentHandler<LateUpdaterComponent>()
 			{
+			}
+
+			virtual void Run() override
+			{
+				RefreshComponents();
+
+				for (auto item : components)
+				{
+					if (item->IsActive())
+					{
+						if (threadManager != nullptr)
+						{
+							threadManager->Enqueue([item]
+								{
+									item->LateUpdate();
+								}
+							);
+						}
+						else
+							item->LateUpdate();
+					}
+				}
+
+				for (auto item : mainThreadOnlyComponents)
+				{
+					if (item->IsActive())
+					{
+						item->LateUpdate();
+					}
+				}
+
+				if (threadManager != nullptr)
+					threadManager->WaitAll();
 			}
 		};
 	}

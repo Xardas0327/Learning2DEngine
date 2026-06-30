@@ -40,7 +40,7 @@ namespace Learning2DEngine
 		public:
 			virtual void Init() override
 			{
-				if (System::ComponentManager::GetInstance().GetThreadSafe())
+				if (System::ComponentManager::GetInstance().IsThreadSafe())
 				{
 					std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
 					InitShader();
@@ -55,7 +55,7 @@ namespace Learning2DEngine
 
 			virtual void Destroy() override
 			{
-				if (System::ComponentManager::GetInstance().GetThreadSafe())
+				if (System::ComponentManager::GetInstance().IsThreadSafe())
 				{
 					std::lock_guard<std::mutex> lock(RenderManager::GetInstance().mutex);
 					DestroyObject();

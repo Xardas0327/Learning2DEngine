@@ -35,6 +35,8 @@ jobs:
       
     - name: Execute Unit Tests
       working-directory: ${{env.GITHUB_WORKSPACE}}
+      shell: powershell
       run: |
-        $vstest = Get-ChildItem "C:\Program Files\Microsoft Visual Studio\2022" -Recurse -Filter vstest.console.exe | Select-Object -First 1
-        & $vstest.FullName x64\${{env.BUILD_CONFIGURATION}}\Learning2DEngineTest.dll
+        $vsPath = vswhere -latest -property installationPath
+        $vstest = Join-Path $vsPath "Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"
+        & $vstest "x64\${{env.BUILD_CONFIGURATION}}\Learning2DEngineTest.dll"

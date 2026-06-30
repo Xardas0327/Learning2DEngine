@@ -236,7 +236,6 @@ glm::vec2 GetColliderCenter() const override;
 It can handle the collision between the `BoxColliderComponent`
 and the `CircleColliderComponent` objects.  
 The `ComponentManager` has one from it.  
-Note: If it uses multiple threads, the order of OnCollision will not be deterministic.
 
 ### Header:
 ```cpp
@@ -296,17 +295,6 @@ std::mutex boxMutex;
 std::mutex circleMutex;
 ```
 
-**threads**  
-```cpp
-std::vector<std::thread> threads;
-```
-
-**maxColliderPerThread**  
-If it is 0, the class will not use threads.
-```cpp
-unsigned int maxColliderPerThread;
-```
-
 ### Functions:
 **Protected:**  
 **CheckCollisions**  
@@ -354,39 +342,19 @@ After this, it clears the `newCircleColliders` and the `removableCircleColliders
 void RefreshCircleColliders();
 ```
 
-**RunDynamicColliderPart**  
-It iterates on the all dynamic box and circle colliders in [startIndex, endIndex) range
-and check these colliders have collision(s) with other dynamic colliders.  
-Note: Firstly the function checks the box colliders and after the circle colliders.  
-For example: If there are 5 box colliders and 2 circle colliders. The box colliders' index is [0..4] and
-the circle colliders' index is [5..6].
+**CheckCollisionWithDynamicBox**  
+It iterates on the all dynamic box and checks
+these colliders have collision(s) with other dynamic and kinematic colliders.
 ```cpp
-void RunDynamicColliderPart(size_t startIndex, size_t endIndex);
+void CheckCollisionWithDynamicBox();
 ```
 
-**RunKinematicColliderPart**  
-It iterates on the all kinematic box and circle colliders in [startIndex, endIndex) range
-and check these colliders have collision(s) with dynamic colliders.  
-Note: Firstly the function checks the box colliders and after the circle colliders.  
-For example: If there are 5 box colliders and 2 circle colliders. The box colliders' index is [0..4] and
-the circle colliders' index is [5..6].
+**CheckCollisionWithDynamicCircle**  
+It iterates on the all dynamic circle and checks
+these colliders have collision(s) with other dynamic circle and kinematic colliders.  
+Note: All dynamic box colliders were checked in the `CheckCollisionWithActiveBox` loop
 ```cpp
-void RunKinematicColliderPart(size_t startIndex, size_t endIndex);
-```
-
-**RunOnThreads**  
-```cpp
-void RunOnThreads();
-```
-
-**GetDynamicColliderNumber**  
-```cpp
-inline size_t GetDynamicColliderNumber();
-```
-
-**GetKinematicColliderNumber**  
-```cpp
-inline size_t GetKinematicColliderNumber();
+void CheckCollisionWithDynamicCircle();
 ```
 
 **Public:**  
@@ -419,24 +387,10 @@ void Clear() override;
 ```
 
 **Run**  
-Firstly it calls the RefreshBoxColliders() and RefreshCircleColliders()
-functions and it will call the RunActiveColliderPart, RunPassiveColliderPart and/or RunOnThreads functions.  
-How many threads will run, it is depend on the number of colliders and maxColliderPerThread.
+Firstly it calls the `RefreshBoxColliders` and `RefreshCircleColliders` functions.
+After this, it checks the collisions between the dynamic colliders and the kinematic colliders.
 ```cpp
 void Run() override;
-```
-
-**SetMaxColliderPerThread**  
-If it is 0, the class will not use threads.  
-Note: If it uses multiple threads, the order of OnCollision will not be deterministic.
-```cpp
-inline void SetMaxColliderPerThread(unsigned int value);
-```
-
-**GetMaxColliderPerThread**  
-If it is 0, the class will not use threads.
-```cpp
-inline unsigned int GetMaxColliderPerThread();
 ```
 
 ##

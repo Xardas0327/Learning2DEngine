@@ -14,14 +14,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Snake", "Snake\Snake.vcxpro
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B9BE6FF5-D4AF-4DD3-99F8-783D68A0D15D}"
 	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
 		LICENSE.md = LICENSE.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentations", "Documentations", "{7D0103D8-E9BE-40E0-AFE3-E14A6F3B9CAC}"
 	ProjectSection(SolutionItems) = preProject
-		Documentations\Breakout.md = Documentations\Breakout.md
 		Documentations\Architecture.md = Documentations\Architecture.md
+		Documentations\Breakout.md = Documentations\Breakout.md
 		Documentations\Snake.md = Documentations\Snake.md
 		Documentations\TheCollector.md = Documentations\TheCollector.md
 		Documentations\TiledMapEditor.md = Documentations\TiledMapEditor.md
@@ -29,17 +29,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentations", "Documenta
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Architecture", "Architecture", "{0CC89BBB-1730-4365-AE78-CA6FF717F7EC}"
 	ProjectSection(SolutionItems) = preProject
-		Documentations\Learning2DEngine\Animator.md = Documentations\Learning2DEngine\Animator.md
-		Documentations\Learning2DEngine\DebugTool.md = Documentations\Learning2DEngine\DebugTool.md
-		Documentations\Learning2DEngine\Editor.md = Documentations\Learning2DEngine\Editor.md
-		Documentations\Learning2DEngine\EventSystem.md = Documentations\Learning2DEngine\EventSystem.md
-		Documentations\Learning2DEngine\Object.md = Documentations\Learning2DEngine\Object.md
-		Documentations\Learning2DEngine\ParticleSimulator.md = Documentations\Learning2DEngine\ParticleSimulator.md
-		Documentations\Learning2DEngine\Physics.md = Documentations\Learning2DEngine\Physics.md
-		Documentations\Learning2DEngine\Render.md = Documentations\Learning2DEngine\Render.md
-		Documentations\Learning2DEngine\System.md = Documentations\Learning2DEngine\System.md
-		Documentations\Learning2DEngine\Test.md = Documentations\Learning2DEngine\Test.md
-		Documentations\Learning2DEngine\UI.md = Documentations\Learning2DEngine\UI.md
+		Documentations\Architecture\Animator.md = Documentations\Architecture\Animator.md
+		Documentations\Architecture\DebugTool.md = Documentations\Architecture\DebugTool.md
+		Documentations\Architecture\Editor.md = Documentations\Architecture\Editor.md
+		Documentations\Architecture\EventSystem.md = Documentations\Architecture\EventSystem.md
+		Documentations\Architecture\Object.md = Documentations\Architecture\Object.md
+		Documentations\Architecture\ParticleSimulator.md = Documentations\Architecture\ParticleSimulator.md
+		Documentations\Architecture\Physics.md = Documentations\Architecture\Physics.md
+		Documentations\Architecture\Render.md = Documentations\Architecture\Render.md
+		Documentations\Architecture\System.md = Documentations\Architecture\System.md
+		Documentations\Architecture\Test.md = Documentations\Architecture\Test.md
+		Documentations\Architecture\UI.md = Documentations\Architecture\UI.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{33829A3E-458D-4C41-9730-5F8CF17A3A33}"

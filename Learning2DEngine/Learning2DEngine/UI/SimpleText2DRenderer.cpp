@@ -107,7 +107,6 @@ namespace Learning2DEngine
 				shader->SetVector4f("characterColor", textData->color);
 				shader->SetInteger("useView", textData->isUseCameraView ? GL_TRUE : GL_FALSE);
 
-				textCharacterSet.Load(textData->GetFontSizePair());
 				CharacterMap& characterMap = textCharacterSet[textData->GetFontSizePair()];
 
 				auto& textMap = textData->GetCharacterVertices();

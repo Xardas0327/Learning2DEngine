@@ -64,7 +64,7 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Init() override
 			{
-				if (System::ComponentManager::GetInstance().GetThreadSafe())
+				if (System::ComponentManager::GetInstance().IsThreadSafe())
 				{
 					std::lock_guard<std::mutex> lock(mutex);
 					InitObject();
@@ -80,7 +80,7 @@ namespace Learning2DEngine
 			/// </summary>
 			virtual void Destroy() override
 			{
-				if (System::ComponentManager::GetInstance().GetThreadSafe())
+				if (System::ComponentManager::GetInstance().IsThreadSafe())
 				{
 					std::lock_guard<std::mutex> lock(mutex);
 					DestroyObject();

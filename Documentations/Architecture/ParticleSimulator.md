@@ -1,4 +1,7 @@
 # ParticleSimulator
+Do not forget, the OpenGL works only in its own thread,
+which is the main thread in this Engine.
+
 - [BasicParticleSettings](ParticleSimulator.md#basicparticlesettings)
 - [ParticleComponent](ParticleSimulator.md#particlecomponent)
 - [ParticleRenderData](ParticleSimulator.md#particlerenderdata)
