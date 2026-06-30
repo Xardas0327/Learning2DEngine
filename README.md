@@ -23,6 +23,21 @@ So, if you want to try Learning2DEngine, you can do it.
 But you should check the licenses first. Their licences are in their own documentation.  
 Moreover, if I create a new version, maybe it won't be compatible with the older versions.
 
+## Features:
+- GameObject-Component Architecture
+- Fixed Game Loop
+- Centralized GameObject Management
+- 2D rendering pipeline: OpenGL support, sprite and texture rendering, instanced rendering
+- Input Management: keyboard, mouse
+- Basic Physics: collision detection, gravity
+- Basic User Interface: text and text-box support
+- Basic Particle System
+- Sprite Animation System
+- Multithreading Support
+- Debug features: logging, collider visualization
+- High flexibility: user-defined components, shaders, renderers
+- Tiled Map Editor Support 
+
 ## Getting Started:
 The repository contains third party libraries.
 
