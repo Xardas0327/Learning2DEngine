@@ -351,35 +351,35 @@ FontSizePair fontSizePair;
 std::string text;
 ```
 
-**shouldRecalcSize**
-```cpp
-bool shouldRecalcSize;
-```
-
-**shouldRecalcVertices**
-```cpp
-bool shouldRecalcVertices;
-```
-
-**previousModelMatrix**
-```cpp
-glm::mat4 previousModelMatrix;
-```
-
-**characterVertices**
-```cpp
-std::map<char, std::vector<glm::mat4x2>> characterVertices;
-```
-
-**textSize**
-```cpp
-glm::vec2 textSize;
-```
-
 **lineSpacing**  
 Its default value is 5.0f.
 ```cpp
 float lineSpacing;
+```
+
+**textSize**
+```cpp
+mutable glm::vec2 textSize;
+```
+
+**previousModelMatrix**
+```cpp
+mutable glm::mat4 previousModelMatrix;
+```
+
+**characterVertices**
+```cpp
+mutable std::map<char, std::vector<glm::mat4x2>> characterVertices;
+```
+
+**shouldRecalcSize**
+```cpp
+mutable bool shouldRecalcSize;
+```
+
+**shouldRecalcVertices**
+```cpp
+mutable bool shouldRecalcVertices;
 ```
 
 **Public:**  
@@ -461,26 +461,17 @@ void SetLineSpacing(float lineSpacing);
 
 **GetCharacterVertices**  
 If the shouldRecalcVertices is true or the previousModelMatrix is not the same as
-the current modelMatrix, the non const version save the new calculated character vertices,
+the current modelMatrix, it will save the new calculated character vertices,
 that's why it will not recalculate the character vertices again.  
-In same situation the const version will always recalculate the character vertices.  
-Note: The previous model matrix is used to track the gameobject's transform has changed or not.
 ```cpp
-const std::map<char, std::vector<glm::mat4x2>>& GetCharacterVertices();
-```
-```cpp
-std::map<char, std::vector<glm::mat4x2>> GetCharacterVertices() const;
+const std::map<char, std::vector<glm::mat4x2>>& GetCharacterVertices() const;
 ```
 
 **GetTextSize**  
-If the shouldRecalcSize is true the non const version save the new calculated text size,
+If the shouldRecalcSize is true, it will save the new calculated text size,
 that's why it will not recalculate the text size again.  
-In same situation the const version will always recalculate the text size.
 ```cpp
-glm::vec2 GetTextSize();
-```
-```cpp
-glm::vec2 GetTextSize() const;
+const glm::vec2& GetTextSize() const;
 ```
 
 ##

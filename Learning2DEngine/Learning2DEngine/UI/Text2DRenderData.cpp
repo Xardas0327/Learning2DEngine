@@ -162,7 +162,7 @@ namespace Learning2DEngine
             return textMap;
         }
 
-        const std::map<char, std::vector<glm::mat4x2>>& Text2DRenderData::GetCharacterVertices()
+        const std::map<char, std::vector<glm::mat4x2>>& Text2DRenderData::GetCharacterVertices() const
         {
             auto& actualModelMatrix = component->gameObject->transform.GetModelMatrix();
             if (shouldRecalcVertices || previousModelMatrix != actualModelMatrix)
@@ -178,30 +178,13 @@ namespace Learning2DEngine
             return characterVertices;
         }
 
-        std::map<char, std::vector<glm::mat4x2>> Text2DRenderData::GetCharacterVertices() const
-        {
-            auto& actualModelMatrix = component->gameObject->transform.GetModelMatrix();
-            if (shouldRecalcVertices || previousModelMatrix != actualModelMatrix)
-                return CalculateCharacterVertices();
-
-            return characterVertices;
-        }
-
-        glm::vec2 Text2DRenderData::GetTextSize()
+        const glm::vec2& Text2DRenderData::GetTextSize() const
         {
             if (shouldRecalcSize)
             {
                 textSize = CalculateTextSize();
                 shouldRecalcSize = false;
             }
-            return textSize;
-        }
-
-        glm::vec2 Text2DRenderData::GetTextSize() const
-        {
-            if (shouldRecalcSize)
-                return CalculateTextSize();
-
             return textSize;
         }
     }
