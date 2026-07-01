@@ -25,10 +25,11 @@ namespace Learning2DEngine
         void Rigidbody::Init()
         {
             UpdaterComponent::Init();
-            if(gameObject->transform.GetParent() != nullptr)
-            {
-                L2DE_LOG_WARNING("Rigidbody: If the gameobject has parent, rigidbodys may exhibit unexpected behavior.");
-			}
+
+            L2DE_LOG_IF_WARNING(
+                gameObject->transform.GetParent() != nullptr,
+                "Rigidbody: If the gameobject has parent, rigidbodys may exhibit unexpected behavior."
+            )
         }
 #endif // L2DE_DEBUG
 

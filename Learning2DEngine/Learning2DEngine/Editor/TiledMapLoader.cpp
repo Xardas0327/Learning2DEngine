@@ -81,11 +81,11 @@ namespace Learning2DEngine
                 if (strcmp(attr->name(), TiledMapAttrVersion) == 0)
                 {
                     map.version = attr->value();
-                    if (map.version != TiledMapSupportedVersion)
-                    {
-                        L2DE_LOG_WARNING("TiledMapLoader: the map version is not supported: "
-                            + map.version + "\n Supported version: " + TiledMapSupportedVersion);
-                    }
+
+                    L2DE_LOG_IF_WARNING(
+                        map.version != TiledMapSupportedVersion,
+                        "TiledMapLoader: the map version is not supported: " + map.version + "\n Supported version: " + TiledMapSupportedVersion
+                    )
                 }
                 else if (strcmp(attr->name(), TiledMapAttrTiledVersion) == 0)
                 {
@@ -94,47 +94,60 @@ namespace Learning2DEngine
                 else if (strcmp(attr->name(), TiledMapAttrOrientation) == 0)
                 {
                     map.orientation = attr->value();
-                    if (map.orientation != TiledMapSupportedOrientation)
-                    {
-                        L2DE_LOG_WARNING("TiledMapLoader: the map orientation is not supported: "
-                            + map.orientation + "\n Supported version: " + TiledMapSupportedOrientation);
-                    }
+
+                    L2DE_LOG_IF_WARNING(
+                        map.orientation != TiledMapSupportedOrientation,
+                        "TiledMapLoader: the map orientation is not supported: " + map.orientation + "\n Supported version: " + TiledMapSupportedOrientation
+                    )
                 }
                 else if (strcmp(attr->name(), TiledMapAttrWidth) == 0)
                 {
                     map.width = std::atoi(attr->value());
                     foundWidth = true;
 
-                    if (map.width <= 0)
-                        L2DE_LOG_ERROR("TiledMapLoader: the map width should be bigger then 0: " + std::to_string(map.width));
+                    L2DE_LOG_IF_ERROR(
+                        map.width <= 0,
+						"TiledMapLoader: the map width should be bigger then 0: " + std::to_string(map.width)
+                    )
                 }
                 else if (strcmp(attr->name(), TiledMapAttrHeight) == 0)
                 {
                     map.height = std::atoi(attr->value());
                     foundHeight = true;
 
-                    if (map.height <= 0)
-                        L2DE_LOG_ERROR("TiledMapLoader: the map height should be bigger then 0: " + std::to_string(map.height));
+                    L2DE_LOG_IF_ERROR(
+                        map.height <= 0,
+						"TiledMapLoader: the map height should be bigger then 0: " + std::to_string(map.height)
+                    )
                 }
                 else if (strcmp(attr->name(), TiledMapAttrTileWidth) == 0)
                 {
                     map.tileWidth = std::atoi(attr->value());
                     foundTileWidth = true;
-                    if (map.tileWidth <= 0)
-                        L2DE_LOG_ERROR("TiledMapLoader: the map tile width should be bigger then 0: " + std::to_string(map.tileWidth));
+
+                    L2DE_LOG_IF_ERROR(
+                        map.tileWidth <= 0,
+                        "TiledMapLoader: the map tile width should be bigger then 0: " + std::to_string(map.tileWidth)
+                    )
                 }
                 else if (strcmp(attr->name(), TiledMapAttrTileHeight) == 0)
                 {
                     map.tileHeight = std::atoi(attr->value());
                     foundTileHeight = true;
-                    if (map.tileHeight <= 0)
-                        L2DE_LOG_ERROR("TiledMapLoader: the map tile height should be bigger then 0: " + std::to_string(map.tileWidth));
+
+                    L2DE_LOG_IF_ERROR(
+                        map.tileHeight <= 0,
+                        "TiledMapLoader: the map tile height should be bigger then 0: " + std::to_string(map.tileHeight)
+                    )
                 }
                 else if (strcmp(attr->name(), TiledMapAttrInfinite) == 0)
                 {
                     map.infinite = strcmp(attr->value(), "1") == 0 ? true : false;
-                    if (map.infinite)
-                        L2DE_LOG_WARNING("TiledMapLoader: the map is infinite. This is not supported.");
+
+                    L2DE_LOG_IF_WARNING(
+                        map.infinite,
+                        "TiledMapLoader: the map is infinite. This is not supported."
+                    )
                 }
                 else if (strcmp(attr->name(), TiledMapAttrBackgroundColor) == 0)
                 {
@@ -142,14 +155,10 @@ namespace Learning2DEngine
                 }
             }
 
-            if (!foundWidth)
-                L2DE_LOG_ERROR("TiledMapLoader: the map width is missing.");
-            if (!foundHeight)
-                L2DE_LOG_ERROR("TiledMapLoader: the map height is missing.");
-            if (!foundTileWidth)
-                L2DE_LOG_ERROR("TiledMapLoader: the map tile width is missing.");
-            if (!foundTileHeight)
-                L2DE_LOG_ERROR("TiledMapLoader: the map tile height is missing.");
+            L2DE_LOG_IF_ERROR(!foundWidth, "TiledMapLoader: the map width is missing.")
+            L2DE_LOG_IF_ERROR(!foundHeight, "TiledMapLoader: the map height is missing.")
+            L2DE_LOG_IF_ERROR(!foundTileWidth, "TiledMapLoader: the map tile width is missing.")
+            L2DE_LOG_IF_ERROR(!foundTileHeight, "TiledMapLoader: the map tile height is missing.")
 
             if (TiledMapLoader::LoadMapBackground(mapNode))
             {
@@ -275,43 +284,51 @@ namespace Learning2DEngine
                     std::string version = attr->value();
                     foundVersion = true;
 
-                    if (version != TiledMapSupportedVersion)
-                    {
-                        L2DE_LOG_WARNING("TiledMapLoader: the " + sourceName + " tileset version is not supported: "
-                            + version + "\n Supported version: " + TiledMapSupportedVersion);
-                    }
+                    L2DE_LOG_IF_WARNING(
+                        version != TiledMapSupportedVersion,
+                        "TiledMapLoader: the " + sourceName + " tileset version is not supported: "
+                        + version + "\n Supported version: " + TiledMapSupportedVersion
+                    )
                 }
                 else if (strcmp(attr->name(), TiledMapAttrTileWidth) == 0)
                 {
                     tiledMapObject.tileSize.x = static_cast<float>(std::atoi(attr->value()));
                     foundTileWidth = true;
 
-                    if (tiledMapObject.tileSize.x <= 0.0f)
-                        L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile width should be bigger then 0.");
+                    L2DE_LOG_IF_ERROR(
+                        tiledMapObject.tileSize.x <= 0.0f,
+						"TiledMapLoader: the " + sourceName + " tileset tile width should be bigger then 0."
+                    )
                 }
                 else if (strcmp(attr->name(), TiledMapAttrTileHeight) == 0)
                 {
                     tiledMapObject.tileSize.y = static_cast<float>(std::atoi(attr->value()));
                     foundTileHeight = true;
 
-                    if (tiledMapObject.tileSize.y <= 0.0f)
-                        L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile height should be bigger then 0.");
+                    L2DE_LOG_IF_ERROR(
+						tiledMapObject.tileSize.y <= 0.0f,
+                        "TiledMapLoader: the " + sourceName + " tileset tile height should be bigger then 0."
+					)
                 }
                 else if (strcmp(attr->name(), TiledMapAttrColumns) == 0)
                 {
                     tiledMapObject.columns = std::atoi(attr->value());
                     foundColumns = true;
 
-                    if (tiledMapObject.columns <= 0)
-                        L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset columns should be bigger then 0.");
+                    L2DE_LOG_IF_ERROR(
+                        tiledMapObject.columns <= 0,
+                        "TiledMapLoader: the " + sourceName + " tileset columns should be bigger then 0."
+					)
                 }
                 else if (strcmp(attr->name(), TiledMapAttrTileCount) == 0)
                 {
                     tiledMapObject.tileCount = std::atoi(attr->value());
                     foundTileCount = true;
 
-                    if (tiledMapObject.tileCount <= 0)
-                        L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tilecount should be bigger then 0.");
+                    L2DE_LOG_IF_ERROR(
+                        tiledMapObject.tileCount <= 0,
+						"TiledMapLoader: the " + sourceName + " tileset tilecount should be bigger then 0."
+                    )
                 }
                 else if (strcmp(attr->name(), TiledMapAttrName) == 0)
                 {
@@ -327,16 +344,11 @@ namespace Learning2DEngine
                 }
             }
 
-            if (!foundVersion)
-                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset version is missing.");
-            if (!foundTileWidth)
-                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile width is missing.");
-            if (!foundTileHeight)
-                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tile height is missing.");
-            if (!foundColumns)
-                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset columns is missing.");
-            if (!foundTileCount)
-                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset tilecount is missing.");
+			L2DE_LOG_IF_ERROR(!foundVersion, "TiledMapLoader: the " + sourceName + " tileset version is missing.")
+			L2DE_LOG_IF_ERROR(!foundTileWidth, "TiledMapLoader: the " + sourceName + " tileset tile width is missing.")
+			L2DE_LOG_IF_ERROR(!foundTileHeight, "TiledMapLoader: the " + sourceName + " tileset tile height is missing.")
+			L2DE_LOG_IF_ERROR(!foundColumns, "TiledMapLoader: the " + sourceName + " tileset columns is missing.")
+			L2DE_LOG_IF_ERROR(!foundTileCount, "TiledMapLoader: the " + sourceName + " tileset tilecount is missing.")
 
             if (imageName.empty())
             {
@@ -384,22 +396,25 @@ namespace Learning2DEngine
                     tiledMapObject.imageSize.x = static_cast<float>(std::atoi(attr->value()));
                     foundWidth = true;
 
-                    if (tiledMapObject.imageSize.x <= 0)
-                        L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " image width should be bigger then 0.");
+                    L2DE_LOG_IF_ERROR(
+                        tiledMapObject.imageSize.x <= 0,
+                        "TiledMapLoader: the " + sourceName + " image width should be bigger then 0."
+					)
                 }
                 else if (strcmp(attr->name(), TiledMapAttrHeight) == 0)
                 {
                     tiledMapObject.imageSize.y = static_cast<float>(std::atoi(attr->value()));
                     foundHeight = true;
 
-                    if (tiledMapObject.imageSize.y <= 0)
-                        L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " image height should be bigger then 0.");
+                    L2DE_LOG_IF_ERROR(
+                        tiledMapObject.imageSize.y <= 0,
+						"TiledMapLoader: the " + sourceName + " image height should be bigger then 0."
+                    )
                 }
             }
-            if (!foundWidth)
-                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " image width is missing.");
-            if (!foundHeight)
-                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " image height is missing.");
+
+			L2DE_LOG_IF_ERROR(!foundWidth, "TiledMapLoader: the " + sourceName + " image width is missing.")
+			L2DE_LOG_IF_ERROR(!foundHeight, "TiledMapLoader: the " + sourceName + " image height is missing.")
 
             auto& resourceManager = ResourceManager::GetInstance();
             if (textureMap.find(imageName) != textureMap.end())
@@ -455,18 +470,20 @@ namespace Learning2DEngine
                     if (strcmp(attr->name(), TiledMapAttrWidth) == 0)
                     {
                         foundWidth = true;
-                        if (std::atoi(attr->value()) != map.GetWidth())
-                        {
-                            L2DE_LOG_WARNING("TiledMapLoader: the layer width is not equal to the map width.");
-                        }
+
+                        L2DE_LOG_IF_WARNING(
+                            std::atoi(attr->value()) != map.GetWidth(),
+							"TiledMapLoader: the layer width is not equal to the map width."
+                        )
                     }
                     else if (strcmp(attr->name(), TiledMapAttrHeight) == 0)
                     {
                         foundHeight = true;
-                        if (std::atoi(attr->value()) != map.GetHeight())
-                        {
-                            L2DE_LOG_WARNING("TiledMapLoader: the layer width is not equal to the map width.");
-                        }
+
+                        L2DE_LOG_IF_WARNING(
+                            std::atoi(attr->value()) != map.GetHeight(),
+							"TiledMapLoader: the layer height is not equal to the map height."
+                        )
                     }
                     else if (strcmp(attr->name(), TiledMapAttrVisible) == 0)
                     {
@@ -492,14 +509,9 @@ namespace Learning2DEngine
 
                 if (!foundWidth || !foundHeight)
                 {
-                    if (!foundWidth)
-                    {
-                        L2DE_LOG_ERROR("TiledMapLoader: the layer data width attribute is missing.");
-                    }
-                    if (!foundHeight)
-                    {
-                        L2DE_LOG_ERROR("TiledMapLoader: the layer data height attribute is missing.");
-                    }
+					L2DE_LOG_IF_ERROR(!foundWidth, "TiledMapLoader: the layer data width attribute is missing.")
+					L2DE_LOG_IF_ERROR(!foundHeight, "TiledMapLoader: the layer data height attribute is missing.")
+
                     continue;
                 }
 
@@ -879,16 +891,14 @@ namespace Learning2DEngine
                         size.x = static_cast<float>(std::atof(attr->value()));
                         foundWidth = true;
 
-                        if (size.x <= 0)
-                            L2DE_LOG_ERROR("TiledMapLoader: an object width should be bigger then 0: " + std::to_string(size.x));
+						L2DE_LOG_IF_ERROR(size.x <= 0, "TiledMapLoader: an object width should be bigger then 0: " + std::to_string(size.x))
                     }
                     else if (strcmp(attr->name(), TiledMapAttrHeight) == 0)
                     {
                         size.y = static_cast<float>(std::atof(attr->value()));
                         foundHeight = true;
 
-                        if (size.y <= 0)
-                            L2DE_LOG_ERROR("TiledMapLoader: an object height should be bigger then 0: " + std::to_string(size.y));
+						L2DE_LOG_IF_ERROR(size.y <= 0, "TiledMapLoader: an object height should be bigger then 0: " + std::to_string(size.y))
                     }
                     else if (strcmp(attr->name(), TiledMapAttrGid) == 0)
                     {
@@ -989,12 +999,11 @@ namespace Learning2DEngine
                 }
             }
 
-#if L2DE_DEBUG
-            if (properties.size() >= tooMuchProperties)
-            {
-                L2DE_LOG_WARNING((std::string)"TiledMapLoader: The Map's properties won't be processed. Except: " + TiledMapSmartLoadBackground);
-            }
-#endif
+			L2DE_LOG_IF_WARNING(
+                properties.size() > tooMuchProperties,
+                (std::string)"TiledMapLoader: the map properties won't be processed. Except: " + TiledMapSmartLoadBackground
+            )
+
             return false;
         }
 
@@ -1023,13 +1032,11 @@ namespace Learning2DEngine
                 }
             }
 
-#if L2DE_DEBUG
-            if (properties.size() >= tooMuchProperties)
-            {
-                L2DE_LOG_WARNING((std::string)"TiledMapLoader: The Layer's and Object Layer's properties won't be processed. Except: " +
-                    TiledMapSmartLayer);
-            }
-#endif
+            L2DE_LOG_IF_WARNING(
+                properties.size() > tooMuchProperties,
+				(std::string)"TiledMapLoader: the Layer's and Object Layer's properties won't be processed. Except: " + TiledMapSmartLayer
+            )
+
             return false;
         }
 

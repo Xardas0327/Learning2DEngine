@@ -252,15 +252,13 @@ namespace Learning2DEngine
             {
                 isThreadSafe = value;
                 GameObjectManager::GetInstance().SetThreadSafe(value);
-#if L2DE_DEBUG
-                if (!isThreadSafe && (
-                    updaterComponentHandler.IsUseThreads()
-                    || lateUpdaterComponentHandler.IsUseThreads()
-                    ))
-                {
-                    L2DE_LOG_WARNING("COMPONENT MANAGER: The thread safe is turned off. But the component handlers still use threads.");
-                }
-#endif
+
+                L2DE_LOG_IF_WARNING(
+                    !isThreadSafe && (
+                        updaterComponentHandler.IsUseThreads()
+                        || lateUpdaterComponentHandler.IsUseThreads()),
+                    "COMPONENT MANAGER: The thread safe is turned off. But the component handlers still use threads."
+                )
             }
 
             inline bool IsThreadSafe() const
