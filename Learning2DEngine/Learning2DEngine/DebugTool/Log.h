@@ -17,10 +17,18 @@ namespace Learning2DEngine
 #define L2DE_LOG_INFO(message) Learning2DEngine::DebugTool::Log::Info(message,__FILE__, __LINE__)
 #define L2DE_LOG_WARNING(message) Learning2DEngine::DebugTool::Log::Warning(message,__FILE__, __LINE__)
 #define L2DE_LOG_ERROR(message) Learning2DEngine::DebugTool::Log::Error(message,__FILE__, __LINE__)
+
+#define L2DE_LOG_IF_INFO(condition, message) if (condition) { L2DE_LOG_INFO(message); }
+#define L2DE_LOG_IF_WARNING(condition, message) if (condition) { L2DE_LOG_WARNING(message); }
+#define L2DE_LOG_IF_ERROR(condition, message) if (condition) { L2DE_LOG_ERROR(message); }
 #else
 #define L2DE_LOG_INFO(message)
 #define L2DE_LOG_WARNING(message)
 #define L2DE_LOG_ERROR(message)
+
+#define L2DE_LOG_IF_INFO(condition, message)
+#define L2DE_LOG_IF_WARNING(condition, message)
+#define L2DE_LOG_IF_ERROR(condition, message)
 #endif
 
 

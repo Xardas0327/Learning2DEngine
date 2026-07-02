@@ -30,12 +30,11 @@ namespace Learning2DEngine
         {
             ComponentManager::GetInstance().AddToCollider(this);
 
-#if L2DE_DEBUG
-            if (gameObject->transform.GetParent() != nullptr)
-             {
-                 L2DE_LOG_WARNING("BoxColliderComponent: If the gameobject has parent, it may exhibit unexpected behavior.");
-			}
-#endif
+            L2DE_LOG_IF_WARNING(
+                gameObject->transform.GetParent() != nullptr,
+                "BoxColliderComponent: If the gameobject has parent, it may exhibit unexpected behavior."
+            )
+
 #if L2DE_DEBUG_SHOW_COLLIDER
             debugTool = gameObject->AddComponent<DebugTool::DebugBoxColliderRenderComponent>(this);
             debugTool->SetActive(L2DE_DEBUG_SHOW_COLLIDER_DEFAULT_VALUE);

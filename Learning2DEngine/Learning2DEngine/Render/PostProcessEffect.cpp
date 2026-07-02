@@ -29,10 +29,9 @@ namespace Learning2DEngine
 			glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 			texture.Create(resolution.GetWidth(), resolution.GetHeight(), NULL);
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture.GetId(), 0);
-			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-			{
-				L2DE_LOG_ERROR("POSTPROCESSEFFECT: Failed to initialize framebuffer.");
-			}
+
+			L2DE_LOG_IF_ERROR(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "POSTPROCESSEFFECT: Failed to initialize framebuffer.")
+
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 			InitVao();

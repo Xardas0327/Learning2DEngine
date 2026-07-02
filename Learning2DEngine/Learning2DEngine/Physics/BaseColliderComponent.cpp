@@ -22,10 +22,8 @@ namespace Learning2DEngine
         void  BaseColliderComponent::InitRigidbody()
         {
             rigidbody = gameObject->GetComponent<Rigidbody>();
-            if (rigidbody == nullptr)
-            {
-                L2DE_LOG_ERROR("COLLIDER: The Rigidbody is not found.");
-            }
+
+			L2DE_LOG_IF_ERROR(rigidbody == nullptr, "COLLIDER: The Rigidbody is not found.")
         }
     }
 }

@@ -24,10 +24,9 @@ namespace Learning2DEngine
 			glBindRenderbuffer(GL_RENDERBUFFER, rbo);
 			glRenderbufferStorageMultisample(GL_RENDERBUFFER, sampleNumber, GL_RGB, resolution.GetWidth(), resolution.GetHeight());
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, rbo);
-			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-			{
-				L2DE_LOG_ERROR("MSAA: Failed to initialize framebuffer.");
-			}
+
+			L2DE_LOG_IF_ERROR(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE, "MSAA: Failed to initialize framebuffer.")
+
 			glBindRenderbuffer(GL_RENDERBUFFER, 0);
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}

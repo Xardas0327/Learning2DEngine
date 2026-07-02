@@ -17,10 +17,7 @@ void BallParticleSettings::Init(const GameObject& gameObject)
 {
 	rigidbody = gameObject.GetComponent<Rigidbody>();
 
-	if (rigidbody == nullptr)
-	{
-		L2DE_LOG_ERROR("BallParticleSettings: Rigidbody is missing.");
-	}
+	L2DE_LOG_IF_ERROR(rigidbody == nullptr, "BallParticleSettings: Rigidbody is missing.")
 }
 void BallParticleSettings::SpawnParticle(ParticleComponent* particle, const GameObject& gameObject)
 {

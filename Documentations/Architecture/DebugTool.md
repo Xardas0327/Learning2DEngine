@@ -529,7 +529,7 @@ struct DebugRenderData : public Render::RenderData
 The class contains static info, warning, and error log functions.
 These functions are similar, just they use different colors and the text message is a bit different
 in the console. But it is not recommended to use this function.
-The `L2DE_LOG_INFO`, `L2DE_LOG_WARNING`, `L2DE_LOG_ERROR` macros are much better options for 2 reasons:
+The macros are much better options for 2 reasons:
 1. The developer does not have to care with the filePath and the fileLine parameters.
    The macros use the `__FILE__`, `__LINE__` by default.
 2. If the `L2DE_DEBUG` is not defined
@@ -568,6 +568,27 @@ L2DE_LOG_WARNING(message)
 It writes a Error message to terminal if the debug is activated.
 ```cpp
 L2DE_LOG_ERROR(message)
+```
+
+**L2DE_LOG_IF_INFO**  
+It writes a Info message to terminal if the condition is true
+and the debug is activated.
+```cpp
+L2DE_LOG_IF_INFO(condition, message)
+```
+
+**L2DE_LOG_IF_WARNING**  
+It writes a Warning message to terminal if the condition is true
+and the debug is activated.
+```cpp
+L2DE_LOG_IF_WARNING(condition, message)
+```
+
+**L2DE_LOG_IF_ERROR**  
+It writes a Error message to terminal if the condition is true
+and the debug is activated.
+```cpp
+L2DE_LOG_IF_ERROR(condition, message)
 ```
 
 ### Functions:
