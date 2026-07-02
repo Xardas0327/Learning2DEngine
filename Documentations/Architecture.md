@@ -98,7 +98,8 @@ A couple functions/variables will not really be described,
 because I think their names and/or their comments can explain simple, what they are.  
 The unit tests of a class will not really be described here, but their files will be added to the class's
 documentation.  
-Any helper for the testing will be in the Test namespace.
+Any helper for the testing will be in the Test namespace.  
+Note: the code use C++20.
 
 ### Namespaces
 - Learning2DEngine
