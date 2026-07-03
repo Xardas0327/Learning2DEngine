@@ -73,12 +73,12 @@ Learning2DEngine © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https:/
 ## Third-Party Libraries:
 The most project can't really be started from zero, so I also use some libraries,
 but I tried to keep them minimum.
-- GLAD for OpenGL [License](https://github.com/Dav1dde/glad?tab=License-1-ov-file)
-- GLFW for OpenGL [License](https://www.glfw.org/license.html)
-- GLM for OpenGL math [License](https://github.com/g-truc/glm?tab=License-1-ov-file)
-- stb_image for load images into textures [License](https://github.com/nothings/stb?tab=License-1-ov-file)
-- Freetype for write texts on the screen [License](https://freetype.org/license.html)
-- RapidXML for Tiled Map Editor support (MIT) [License](https://rapidxml.sourceforge.net/license.txt)
+- GLAD v0.1.36 for OpenGL [License](https://github.com/Dav1dde/glad?tab=License-1-ov-file)
+- GLFW v3.4 for OpenGL [License](https://www.glfw.org/license.html)
+- GLM v1.0.0 for OpenGL math [License](https://github.com/g-truc/glm?tab=License-1-ov-file)
+- stb_image v2.28 for load images into textures [License](https://github.com/nothings/stb?tab=License-1-ov-file)
+- Freetype v2.13.2 for write texts on the screen [License](https://freetype.org/license.html)
+- RapidXML v1.13 for Tiled Map Editor support (MIT) [License](https://rapidxml.sourceforge.net/license.txt)
 
 ## Properties
 - Configuration Type:  

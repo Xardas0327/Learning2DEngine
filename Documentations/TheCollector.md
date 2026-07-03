@@ -9,7 +9,7 @@ The map of the game is created by [Tiled Map Editor v1.11.2](https://www.mapedit
 ## License:
 The Collector © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  
 
-For sounds, there is the irrKlang, which I use it with
+For sounds, there is the irrKlang v1.6.0, which I use it with
 its non pro license, which is [here](https://www.ambiera.com/irrklang/license.html).
 
 ## Control
