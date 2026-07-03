@@ -477,7 +477,8 @@ namespace Learning2DEngine
 				ObjectItem objectItem(std::move(object));
 
 #if !L2DE_DEBUG
-				TiledMapLoader::CreateColliderFromObjectItem<ObjectEllipse>(map, objectItem, gameObject, std::map<std::string, Property>());
+				std::map<std::string, Property> properties2;
+				TiledMapLoader::CreateColliderFromObjectItem<ObjectEllipse>(map, objectItem, gameObject, properties2);
 
 				auto collider = gameObject->GetComponent<CircleColliderComponent>();
 
