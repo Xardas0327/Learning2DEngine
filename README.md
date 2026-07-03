@@ -42,7 +42,7 @@ Moreover, if I create a new version, maybe it won't be compatible with the older
 The repository contains third party libraries.
 
 - OS: Windows 64-bit (It is tested on Windows 11 only)
-- IDE: Visual Studio 2022 (or newer)
+- IDE: Visual Studio 2026 (or newer)
 	- "Desktop development with C++" Module
 - Download the repository and open the solution file in Visual Studio.
 - Build the solution and run the demos.

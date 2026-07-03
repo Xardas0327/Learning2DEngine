@@ -399,3 +399,6 @@ FodyWeavers.xsd
 
 # Tiled Map Editor
 *.tiled-session
+
+# libs
+!Plugins/Engine/lib/freetype/vs2026/x64/
