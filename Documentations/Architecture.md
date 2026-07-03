@@ -77,7 +77,7 @@ but I tried to keep them minimum.
 - GLFW v3.4 for OpenGL [License](https://www.glfw.org/license.html)
 - GLM v1.0.3 for OpenGL math [License](https://github.com/g-truc/glm?tab=License-1-ov-file)
 - stb_image v2.30 for load images into textures [License](https://github.com/nothings/stb?tab=License-1-ov-file)
-- Freetype v2.13.2 for write texts on the screen [License](https://freetype.org/license.html)
+- Freetype v2.14.3 for write texts on the screen [License](https://freetype.org/license.html)
 - RapidXML v1.13 for Tiled Map Editor support (MIT) [License](https://rapidxml.sourceforge.net/license.txt)
 
 ## Properties
@@ -85,7 +85,7 @@ but I tried to keep them minimum.
   - Static library (.lib)
 - VC++ Directories => Library Directories:  
   - $(SolutionDir)Plugins\Engine\lib\GLFW\lib-vc2022
-  - $(SolutionDir)Plugins\Engine\lib\freetype\vs2015-2022\win64
+  - $(SolutionDir)Plugins\Engine\lib\freetype\vs2026\win64
 - C/C++ => General => Additional Include Directories:  
   - $(SolutionDir)Plugins\Engine\include
 - Linker => Input => Additional Dependencies:

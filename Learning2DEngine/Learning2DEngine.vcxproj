@@ -80,7 +80,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PublicIncludeDirectories>$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <LibraryPath>$(SolutionDir)Plugins\Engine\lib\GLFW\lib-vc2022;$(SolutionDir)Plugins\Engine\lib\freetype\vs2015-2022\win64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)Plugins\Engine\lib\GLFW\lib-vc2022;$(SolutionDir)Plugins\Engine\lib\freetype\vs2026\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PublicIncludeDirectories>$(PublicIncludeDirectories)</PublicIncludeDirectories>
