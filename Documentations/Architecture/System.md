@@ -1302,7 +1302,10 @@ enum InputStatus
 ### Description:  
 The developer have to inherit from this class, if they want to do something
 in LateUpdate section, after the collision checking.    
-Please check for more info about `System::Component`.
+Please check for more info about `System::Component`.  
+Note: Even if the `isUseMainThreadOnly` is true,
+the `Init()` function will be called immediately in the actual thread.
+Only the `LateUpdate()` function will be called in the main thread only.
 
 ### Header:
 ```cpp
@@ -2163,7 +2166,10 @@ Transform& operator=(Transform&&) = delete;
 ### Description:
 The developer have to inherit from this class, if they want to do something
 in Update section, before the collision checking.    
-Please check for more info about `System::Component`.
+Please check for more info about `System::Component`.  
+Note: Even if the `isUseMainThreadOnly` is true,
+the `Init()` function will be called immediately in the actual thread.
+Only the `Update()` function will be called in the main thread only.
 
 ### Header:
 ```cpp
