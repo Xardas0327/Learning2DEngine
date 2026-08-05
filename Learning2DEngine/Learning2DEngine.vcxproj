@@ -213,6 +213,7 @@
     <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp" />
     <ClCompile Include="Learning2DEngine\System\Random.cpp" />
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
+    <ClCompile Include="Plugins\miniaudio.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\Animator\AnimationController.h" />
