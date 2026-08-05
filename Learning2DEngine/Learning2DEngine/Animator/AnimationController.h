@@ -17,8 +17,8 @@ namespace Learning2DEngine
 		protected:
 			Render::UVTexture2DContainer* textureContainer;
 			std::vector<AnimationFrame> frames;
-			size_t currentIndex;
-			float currentTime;
+			size_t currentFrameIndex;
+			float currentFrameTime;
 			bool isPlaying;
 
 			AnimationController(System::GameObject* gameObject, Render::UVTexture2DContainer* textureContainer, bool isLoop = false);
@@ -28,8 +28,8 @@ namespace Learning2DEngine
 
 			inline void SetFrameByIndex()
 			{
-				textureContainer->SetTexture(*frames[currentIndex].texture);
-				textureContainer->uvMatrix = frames[currentIndex].uvMatrix;
+				textureContainer->SetTexture(*frames[currentFrameIndex].texture);
+				textureContainer->uvMatrix = frames[currentFrameIndex].uvMatrix;
 			}
 
 		public:
@@ -50,17 +50,17 @@ namespace Learning2DEngine
 
 			inline const AnimationFrame& GetCurrentFrame() const
 			{
-				return frames[currentIndex];
+				return frames[currentFrameIndex];
 			}
 
-			inline size_t GetCurrentIndex() const
+			inline size_t GetCurrentFrameIndex() const
 			{
-				return currentIndex;
+				return currentFrameIndex;
 			}
 
-			inline float GetCurrentTime() const
+			inline float GetCurrentFrameTime() const
 			{
-				return currentTime;
+				return currentFrameTime;
 			}
 
 			inline size_t GetFrameCount() const

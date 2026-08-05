@@ -185,8 +185,8 @@ void PlayerController::RefreshAnimation(PlayerAnimatioState newState)
         if (currentState == PlayerAnimatioState::RIGHT_RUN)
         {
             leftRunAnimation->JumpToFrame(
-                rightRunAnimation->GetCurrentIndex(),
-                rightRunAnimation->GetCurrentTime()
+                rightRunAnimation->GetCurrentFrameIndex(),
+                rightRunAnimation->GetCurrentFrameTime()
             );
         }
         break;
@@ -199,8 +199,8 @@ void PlayerController::RefreshAnimation(PlayerAnimatioState newState)
         if (currentState == PlayerAnimatioState::LEFT_RUN)
         {
             rightRunAnimation->JumpToFrame(
-                leftRunAnimation->GetCurrentIndex(),
-                leftRunAnimation->GetCurrentTime()
+                leftRunAnimation->GetCurrentFrameIndex(),
+                leftRunAnimation->GetCurrentFrameTime()
             );
         }
         break;

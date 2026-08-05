@@ -126,14 +126,14 @@ void JumpToFrame(size_t index, float time = -1.0f);
 inline const AnimationFrame& GetCurrentFrame() const;
 ```
 
-**GetCurrentIndex**  
+**GetCurrentFrameIndex**  
 ```cpp
-inline size_t GetCurrentIndex() const;
+inline size_t GetCurrentFrameIndex() const;
 ```
 
-**GetCurrentTime**  
+**GetCurrentFrameTime**  
 ```cpp
-inline float GetCurrentTime() const;
+inline float GetCurrentFrameTime() const;
 ```
 
 **GetFrameCount**  
