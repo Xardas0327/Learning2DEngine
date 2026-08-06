@@ -15,7 +15,6 @@ using namespace Learning2DEngine::System;
 using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::UI;
 using namespace Learning2DEngine::Object;
-using namespace irrklang;
 
 GameController::GameController(GameObject* gameObject, const FontSizePair& fontSizePair, PostProcessData* postProcessData)
 	: UpdaterComponent(gameObject), LateUpdaterComponent(gameObject, true), Component(gameObject),
@@ -23,8 +22,7 @@ GameController::GameController(GameObject* gameObject, const FontSizePair& fontS
     state(GameState::GAME_MENU), powerUps(), levels(), selectedLevel(0), lifes(3),
     backgroundController(nullptr), playerController(nullptr), ballController(nullptr),
     shakeTime(0.0f), lifeText(nullptr), startText(nullptr), levelSelectorText(nullptr), winText(nullptr), retryText(nullptr),
-    powerUpActivationEventItem(this), ballHitPlayerEventItem(this), ballHitBrickEventItem(this)
-    , soundEngine(nullptr)
+    powerUpActivationEventItem(this), ballHitPlayerEventItem(this), ballHitBrickEventItem(this), backgroundMusic()
 {
 
 }
@@ -128,8 +126,12 @@ void GameController::Init()
 #endif
 
     // Sounds
-    soundEngine = createIrrKlangDevice();
-    soundEngine->play2D("Assets/Sounds/breakout.mp3", true);
+	auto audioEngine = AudioManager::GetInstance().Init();
+
+    ma_sound_init_from_file(audioEngine, "Assets/Sounds/breakout.mp3", 0, NULL, NULL, &backgroundMusic);
+
+    ma_sound_set_looping(&backgroundMusic, MA_TRUE);
+    ma_sound_start(&backgroundMusic);
 
     //ComponentManager::GetInstance().UseThreadsEverywhere();
 }
@@ -138,7 +140,7 @@ void GameController::Destroy()
 {
     UpdaterComponent::Destroy();
     LateUpdaterComponent::Destroy();
-    soundEngine->drop();
+	ma_sound_uninit(&backgroundMusic);
 }
 
 void GameController::Update()
@@ -461,12 +463,12 @@ void GameController::ActivatePowerUp(PowerUpType powerUpType)
         break;
     }
 
-    soundEngine->play2D("Assets/Sounds/powerup.wav", false);
+    ma_engine_play_sound(AudioManager::GetInstance().GetEngine(), "Assets/Sounds/powerup.wav", nullptr);
 }
 
 void GameController::BallHitPlayer()
 {
-    soundEngine->play2D("Assets/Sounds/bleep.wav", false);
+    ma_engine_play_sound(AudioManager::GetInstance().GetEngine(), "Assets/Sounds/bleep.wav", nullptr);
 }
 
 void GameController::BallHitBrick(BrickController* brick)
@@ -475,12 +477,12 @@ void GameController::BallHitBrick(BrickController* brick)
     {
 		brick->gameObject->SetActive(false);
         SpawnPowerUps(brick->gameObject->transform.GetLocalPosition());
-        soundEngine->play2D("Assets/Sounds/bleep.mp3", false);
+        ma_engine_play_sound(AudioManager::GetInstance().GetEngine(), "Assets/Sounds/bleep.mp3", nullptr);
     }
     else
     {
         shakeTime = 0.05f;
         postProcessData->shake = true;
-        soundEngine->play2D("Assets/Sounds/solid.wav", false);
+        ma_engine_play_sound(AudioManager::GetInstance().GetEngine(), "Assets/Sounds/solid.wav", nullptr);
     }
 }

@@ -2,7 +2,6 @@
 
 #include <glm/glm.hpp>
 #include <vector>
-#include <irrklang/irrKlang.h>
 
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
@@ -39,7 +38,6 @@ protected:
     Learning2DEngine::UI::SimpleText2DRenderComponent* winText;
     Learning2DEngine::UI::SimpleText2DRenderComponent* loseText;
     Learning2DEngine::UI::SimpleText2DRenderComponent* endText;
-    irrklang::ISoundEngine* soundEngine;
 
     GameController(Learning2DEngine::System::GameObject* gameObject);
 

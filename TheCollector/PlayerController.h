@@ -1,8 +1,6 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <irrklang/irrKlang.h>
-#include <vector>
 
 #include <Learning2DEngine/Physics/Rigidbody.h>
 #include <Learning2DEngine/System/GameObject.h>
@@ -47,9 +45,8 @@ protected:
     Learning2DEngine::Animator::AnimationController* rightRunAnimation;
     Learning2DEngine::Animator::AnimationController* leftRunAnimation;
     PlayerAnimatioState currentState;
-    irrklang::ISoundEngine* soundEngine;
 
-    PlayerController(Learning2DEngine::System::GameObject* gameObject, irrklang::ISoundEngine* soundEngine);
+    PlayerController(Learning2DEngine::System::GameObject* gameObject);
 
     void Init() override;
     void Destroy() override;
