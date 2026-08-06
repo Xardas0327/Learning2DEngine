@@ -24,7 +24,7 @@ namespace Learning2DEngine
 
 			ma_engine* Init(const ma_engine_config& config = ma_engine_config_init());
 
-			// If the AudioManager is initialized, it will be terminated in Game::Terminate()
+			// If the AudioManager was initialized, this terminate will be called in Game::Terminate().
             void Terminate();
 
             inline ma_engine* GetEngine()

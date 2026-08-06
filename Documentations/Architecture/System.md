@@ -1,4 +1,5 @@
 # System
+- [AudioManager](System.md#audiomanager)
 - [BaseComponentHandler](System.md#basecomponenthandler)
 - [Camera](System.md#camera)
 - [Component](System.md#component)
@@ -25,6 +26,70 @@
 - [Transform](System.md#transform)
 - [UpdaterComponent](System.md#updatercomponent)
 - [UpdaterComponentHandler](System.md#updatercomponenthandler)
+
+##
+## AudioManager
+### Source Code:
+[AudioManager.h](../../Learning2DEngine/Learning2DEngine/System/AudioManager.h)  
+[AudioManager.cpp](../../Learning2DEngine/Learning2DEngine/System/AudioManager.cpp)  
+
+### Description:
+The `AudioManager` is a really basic class, which can contain only one `ma_engine`.
+If it is initialized, it can be used and the `Game::Terminate` function will clean it up.
+The `Game::Terminate` garantee, the `AudioManager` will be destroyed after all GameObjects.  
+For more info about the miniaudio, please check [here](https://github.com/mackron/miniaudio).
+
+### Header:
+```cpp
+class AudioManager final : public Singleton<AudioManager>
+{...}
+```
+
+### Variables:
+**Private:**  
+**isInited**  
+```cpp
+bool isInited;
+```
+
+**engine**  
+```cpp
+ma_engine engine;
+```
+
+### Functions:
+**Private:**  
+**AudioManager**  
+```cpp
+AudioManager();
+```
+
+**Public:**  
+**~AudioManager()**  
+```cpp
+~AudioManager() = default;
+```
+
+**Init**  
+```cpp
+ma_engine* Init(const ma_engine_config& config = ma_engine_config_init());
+```
+
+**Terminate**  
+If the `AudioManager` was initialized, this terminate will be called in `Game::Terminate()`.
+```cpp
+ void Terminate();
+```
+
+**GetEngine**  
+```cpp
+inline ma_engine* GetEngine();
+```
+
+**IsInited**  
+```cpp
+inline bool IsInited() const;
+```
 
 ##
 ## BaseComponentHandler
