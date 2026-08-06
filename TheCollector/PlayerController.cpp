@@ -1,6 +1,7 @@
 #include "PlayerController.h"
 
-#include <Learning2DEngine/DebugTool/Log.h>
+#include <Learning2DEngine/DebugTool/DebugMacro.h>
+#include <Learning2DEngine/System/AudioManager.h>
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/InputStatus.h>
 #include <Learning2DEngine/System/ResourceManager.h>
@@ -18,16 +19,15 @@ using namespace Learning2DEngine::Render;
 using namespace Learning2DEngine::Physics;
 using namespace Learning2DEngine::Animator;
 using namespace Learning2DEngine::DebugTool;
-using namespace irrklang;
 
 constexpr float JUMP_FORCE = -150.0f;
 
-PlayerController::PlayerController(GameObject* gameObject, ISoundEngine* soundEngine)
+PlayerController::PlayerController(GameObject* gameObject)
     : UpdaterComponent(gameObject), Component(gameObject),
     BoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
     onGround(true), detector(nullptr), eventItem(this),
     rightIdleAnimation(nullptr), leftIdleAnimation(nullptr), rightRunAnimation(nullptr), leftRunAnimation(nullptr),
-    currentState(PlayerAnimatioState::RIGHT_IDLE), rigidbody(nullptr), coinNumber(0), coinCollected(), soundEngine(soundEngine)
+    currentState(PlayerAnimatioState::RIGHT_IDLE), rigidbody(nullptr), coinNumber(0), coinCollected()
 {
 }
 
@@ -121,7 +121,7 @@ void PlayerController::Update()
     {
         rigidbody->velocity.y += JUMP_FORCE;
         onGround = false;
-        soundEngine->play2D("Assets/Sounds/jump.wav");
+		ma_engine_play_sound(AudioManager::GetInstance().GetEngine(), "Assets/Sounds/jump.wav", NULL);
     }
 
     if (Game::GetKeyboardButtonStatus(GLFW_KEY_A) == InputStatus::KEY_HOLD)
@@ -159,7 +159,7 @@ void PlayerController::OnCollision(const Collision& collision)
     {
         ++coinNumber;
         coin->gameObject->SetActive(false);
-        soundEngine->play2D("Assets/Sounds/coin.wav");
+        ma_engine_play_sound(AudioManager::GetInstance().GetEngine(), "Assets/Sounds/coin.wav", NULL);
         coinCollected.Invoke();
     }
 }
@@ -185,8 +185,8 @@ void PlayerController::RefreshAnimation(PlayerAnimatioState newState)
         if (currentState == PlayerAnimatioState::RIGHT_RUN)
         {
             leftRunAnimation->JumpToFrame(
-                rightRunAnimation->GetCurrentIndex(),
-                rightRunAnimation->GetCurrentTime()
+                rightRunAnimation->GetCurrentFrameIndex(),
+                rightRunAnimation->GetCurrentFrameTime()
             );
         }
         break;
@@ -199,8 +199,8 @@ void PlayerController::RefreshAnimation(PlayerAnimatioState newState)
         if (currentState == PlayerAnimatioState::LEFT_RUN)
         {
             rightRunAnimation->JumpToFrame(
-                leftRunAnimation->GetCurrentIndex(),
-                leftRunAnimation->GetCurrentTime()
+                leftRunAnimation->GetCurrentFrameIndex(),
+                leftRunAnimation->GetCurrentFrameTime()
             );
         }
         break;

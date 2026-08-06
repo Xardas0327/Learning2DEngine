@@ -1,8 +1,8 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <irrklang/irrKlang.h>
 
+#include <Learning2DEngine/System/AudioManager.h>
 #include <Learning2DEngine/System/GameObject.h>
 #include <Learning2DEngine/System/UpdaterComponent.h>
 #include <Learning2DEngine/System/LateUpdaterComponent.h>
@@ -40,7 +40,7 @@ class GameController final : public Learning2DEngine::System::UpdaterComponent,
 private:
     const Learning2DEngine::UI::FontSizePair fontSizePair;
     PostProcessData* postProcessData;
-    irrklang::ISoundEngine* soundEngine;
+	ma_sound backgroundMusic;
 
     GameState state;
     std::vector<PowerUpController*> powerUps;

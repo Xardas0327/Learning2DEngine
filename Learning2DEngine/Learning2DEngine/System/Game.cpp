@@ -6,6 +6,7 @@
 #include "../Render/RenderManager.h"
 #include "../DebugTool/DebugMacro.h"
 #include "../DebugTool/Log.h"
+#include "AudioManager.h"
 #include "ResourceManager.h"
 #include "ComponentManager.h"
 #include "GameObjectManager.h"
@@ -70,6 +71,7 @@ namespace Learning2DEngine
             ComponentManager::GetInstance().Clear();
             ResourceManager::GetInstance().Clear();
             RenderManager::GetInstance().Terminate();
+            AudioManager::GetInstance().Terminate();
         }
 
         void Game::Run()

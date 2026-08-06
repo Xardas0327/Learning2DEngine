@@ -188,6 +188,7 @@
     <ClCompile Include="Learning2DEngine\Render\SimpleSpriteRenderer.cpp" />
     <ClCompile Include="Learning2DEngine\Render\SpriteRenderComponent.cpp" />
     <ClCompile Include="Learning2DEngine\Render\MultiSpriteRenderer.cpp" />
+    <ClCompile Include="Learning2DEngine\System\AudioManager.cpp" />
     <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
     <ClCompile Include="Learning2DEngine\System\Component.cpp" />
     <ClCompile Include="Learning2DEngine\System\GameObjectManager.cpp" />
@@ -213,6 +214,7 @@
     <ClCompile Include="Learning2DEngine\Render\Texture2D.cpp" />
     <ClCompile Include="Learning2DEngine\System\Random.cpp" />
     <ClCompile Include="Learning2DEngine\System\ResourceManager.cpp" />
+    <ClCompile Include="Plugins\miniaudio.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Learning2DEngine\Animator\AnimationController.h" />
@@ -284,6 +286,7 @@
     <ClInclude Include="Learning2DEngine\Render\Texture2DContainer.h" />
     <ClInclude Include="Learning2DEngine\Render\UVTexture2DContainer.h" />
     <ClInclude Include="Learning2DEngine\Render\WindowType.h" />
+    <ClInclude Include="Learning2DEngine\System\AudioManager.h" />
     <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\Camera.h" />

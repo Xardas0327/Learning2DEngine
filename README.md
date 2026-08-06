@@ -36,6 +36,7 @@ Moreover, if I create a new version, maybe it won't be compatible with the older
 - Multithreading Support
 - Debug features: logging, collider visualization
 - High flexibility: user-defined components, shaders, renderers
+- Audio Support by miniaudio library
 - Tiled Map Editor Support 
 
 ## Getting Started:

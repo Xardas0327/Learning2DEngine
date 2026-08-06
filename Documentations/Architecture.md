@@ -78,6 +78,7 @@ but I tried to keep them minimum.
 - GLM v1.0.3 for OpenGL math [License](https://github.com/g-truc/glm?tab=License-1-ov-file)
 - stb_image v2.30 for load images into textures [License](https://github.com/nothings/stb?tab=License-1-ov-file)
 - Freetype v2.14.3 for write texts on the screen [License](https://freetype.org/license.html)
+- Miniaudio v0.11.25 for audio playback [License](https://github.com/mackron/miniaudio?tab=License-1-ov-file)
 - RapidXML v1.13 for Tiled Map Editor support (MIT) [License](https://rapidxml.sourceforge.net/license.txt)
 
 ## Properties
