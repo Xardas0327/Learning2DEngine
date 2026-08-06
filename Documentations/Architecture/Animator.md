@@ -31,14 +31,14 @@ Render::UVTexture2DContainer* textureContainer;
 std::vector<AnimationFrame> frames;
 ``` 
 
-**currentIndex**  
+**currentFrameIndex**  
 ```cpp
-size_t currentIndex;
+size_t currentFrameIndex;
 ``` 
 
-**currentTime**  
+**currentFrameTime**  
 ```cpp
-float currentTime;
+float currentFrameTime;
 ``` 
 
 **isPlaying**  
