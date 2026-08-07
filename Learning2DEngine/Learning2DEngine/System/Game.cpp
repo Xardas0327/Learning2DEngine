@@ -217,6 +217,7 @@ namespace Learning2DEngine
                     break;
                 default:
                     L2DE_LOG_ERROR("GAME: Unknown input action: " + std::to_string(action))
+                    break;
                 }
             }
         }
@@ -238,6 +239,7 @@ namespace Learning2DEngine
                     break;
                 default:
                     L2DE_LOG_ERROR("GAME: Unknown input action: " + std::to_string(action))
+                    break;
                 }
             }
         }

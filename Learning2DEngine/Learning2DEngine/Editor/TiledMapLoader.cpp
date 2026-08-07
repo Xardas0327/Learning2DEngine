@@ -904,10 +904,10 @@ namespace Learning2DEngine
                     {
                         gid = std::atoi(attr->value());
                         type = ObjectType::IMAGE;
-                        if (gid <= 0)
-                            L2DE_LOG_ERROR("TiledMapLoader: an object gid should be bigger then 0: " + std::to_string(gid))
-                        else
+                        if (gid > 0)
                             foundGid = true;
+                        
+                        L2DE_LOG_IF_ERROR(gid <= 0, "TiledMapLoader: an object gid should be bigger then 0: " + std::to_string(gid))
                     }
                     else if (strcmp(attr->name(), TiledMapAttrVisible) == 0)
                     {
