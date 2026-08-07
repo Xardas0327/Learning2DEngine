@@ -7,6 +7,7 @@
 #include "IKeyboardRefresher.h"
 #include "ICursorRefresher.h"
 #include "Camera.h"
+#include "GameConfig.h"
 #include "../EventSystem/KeyboardEventItem.h"
 #include "../EventSystem/MouseButtonEventItem.h"
 #include "../EventSystem/CursorPositionEventItem.h"
@@ -80,6 +81,8 @@ namespace Learning2DEngine
         protected:
             Game();
 
+            virtual void Init() = 0;
+
             void ActivateMSAA(unsigned int sampleNumber);
             void StopMSAA();
             inline bool IsMsaaActive()
@@ -127,17 +130,13 @@ namespace Learning2DEngine
             static Camera mainCamera;
 
             /// <summary>
-            /// It will initialize the RenderManager.
-            /// After that, the Init() will be called.
-            /// </summary>
-            void InitWithRender(int majorRenderVersion, int minorRenderVersion, Render::Resolution resolution, const char* title, Render::WindowType windowType);
-            /// <summary>
-            /// The RenderManager have to be initialized before this.
-            /// If this function is override, it must call the Game::Init() in the first line.
+            /// It will initialize the RenderManager and the AudioManager (if the config specifies).
             /// The Blend is enable by default with Source: SRC_ALPHA, Destination: ONE_MINUS_SRC_ALPHA,
             /// because it is used for some features.
+            /// After that, the Init() will be called.
             /// </summary>
-            virtual void Init();
+            void InitByConfig(const GameConfig& config);
+
             /// <summary>
             /// If this function is override, it must call the Game::Terminate() in the last line.
             /// </summary>

@@ -6,6 +6,7 @@
 - [ComponentManager](System.md#componentmanager)
 - [Cursor](System.md#cursor)
 - [Game](System.md#game)
+- [GameConfig](System.md#gameconfig)
 - [GameObject](System.md#gameobject)
 - [GameObjectManager](System.md#gameobjectmanager)
 - [IComponentHandler](System.md#icomponenthandler)
@@ -846,6 +847,13 @@ void RefreshScroll(double xoffset, double yoffset) override;
  Game();
 ```  
 
+**Init**  
+It will be called after the `RenderManager` and the `AudioManager`
+(if the config specifies) are initialized.
+```cpp
+virtual void Init() = 0;
+``` 
+
 **ActivateMSAA**  
 It activates the MSAA.
 ```cpp
@@ -928,22 +936,14 @@ virtual void RefreshResolution(const Render::Resolution& resolution) override;
 virtual ~Game();
 ```  
 
-**InitWithRender**  
-It initializes the `RenderManager`. After that, the `Init()` will be called.
+**InitByConfig**  
+It will initialize the `RenderManager` and the `AudioManager` (if the config specifies).  
+The Blend is enable by default with Source: *SRC_ALPHA*, Destination: *ONE_MINUS_SRC_ALPHA*,
+because it is used by some features.  
+After that, the Init() will be called.  
 ```cpp
-void InitWithRender(int majorRenderVersion, int minorRenderVersion, Render::Resolution resolution, const char* title, Render::WindowType windowType);
-``` 
-
-**Init**  
-It initializes the `Game`, but the `RenderManager` have to be initialized
-before this. If this function is override, it must call the `Game::Init()`
-in the first line.  
-The Blend is enable
-by default with Source: *SRC_ALPHA*, Destination: *ONE_MINUS_SRC_ALPHA*,
-because it is used for some features.
-```cpp
-virtual void Init();
-``` 
+void InitByConfig(const GameConfig& config);
+```
 
 **Terminate**  
 It terminates the `Game`.  
@@ -990,6 +990,67 @@ It returns the scroll's position.
 ```cpp
 static glm::vec2 GetScroll();
 ``` 
+
+##
+## GameConfig
+### Source Code:
+[GameConfig.h](../../Learning2DEngine/Learning2DEngine/System/GameConfig.h)  
+
+### Description:
+This is the config class for the `Game`.  
+It contains the Render and Audio settings.
+
+### Header:
+```cpp
+struct GameConfig
+{...}
+```
+
+### Variables:
+**Public:**  
+**title**  
+```cpp
+const char* title;
+```
+
+**openGLMajorVersion**  
+```cpp
+int openGLMajorVersion;
+```
+
+**openGLMinorVersion**  
+```cpp
+int openGLMinorVersion;
+```
+
+**resolution**  
+```cpp
+Render::Resolution resolution;
+```
+
+**windowType**  
+```cpp
+Render::WindowType windowType;
+```
+
+**initAudioManager**  
+```cpp
+bool initAudioManager;
+```
+
+**audioManagerConfig**  
+```cpp
+ma_engine_config audioManagerConfig;
+```
+
+### Functions:
+**Public:**  
+**GameConfig**  
+```cpp
+GameConfig(const char* title, const Render::Resolution& resolution,
+	int openGLMajorVersion = 3, int openGLMinorVersion = 3, Render::WindowType windowType = Render::WindowType::RESIZABLE,
+	bool initAudioManager = true, const ma_engine_config& audioManagerConfig = ma_engine_config_init());
+```
 
 ##
 ## GameObject

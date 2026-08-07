@@ -8,8 +8,6 @@ using namespace Learning2DEngine::System;
 
 void TheCollector::Init()
 {
-    Game::Init();
-
     // MSAA
     ActivateMSAA(4);
 

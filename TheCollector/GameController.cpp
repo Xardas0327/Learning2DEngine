@@ -1,7 +1,6 @@
 #include "GameController.h"
 
 #include <Learning2DEngine/DebugTool/DebugMacro.h>
-#include <Learning2DEngine/System/AudioManager.h>
 //#include <Learning2DEngine/System/ComponentManager.h>
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/GameObjectManager.h>
@@ -50,9 +49,6 @@ void GameController::Init()
 
     InitEnvironment();
     InitTexts();
-
-    // Sounds
-    AudioManager::GetInstance().Init();
 
     //Player
     auto player = gameObjectManager.CreateGameObject(playerStartPosition);

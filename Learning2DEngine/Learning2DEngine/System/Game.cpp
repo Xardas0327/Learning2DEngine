@@ -1,10 +1,8 @@
 #include "Game.h"
 
 #include <string>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include "../Render/RenderManager.h"
-#include "../DebugTool/DebugMacro.h"
 #include "../DebugTool/Log.h"
 #include "AudioManager.h"
 #include "ResourceManager.h"
@@ -34,15 +32,10 @@ namespace Learning2DEngine
 
         }
 
-        void Game::InitWithRender(int majorRenderVersion, int minorRenderVersion, Resolution resolution, const char* title, WindowType windowType)
-        {
-            RenderManager::GetInstance().Init(majorRenderVersion, minorRenderVersion, resolution, title, windowType);
-            Init();
-        }
-
-        void Game::Init()
+        void Game::InitByConfig(const GameConfig& config)
         {
             auto& renderManager = RenderManager::GetInstance();
+            renderManager.Init(config.openGLMajorVersion, config.openGLMinorVersion, config.resolution, config.title, config.windowType);
             renderManager.AddFramebufferSizeEvent(&resolutionEventItem);
             renderManager.AddKeyboardEvent(&keyboardEventItem);
             renderManager.AddMouseButtonEvent(&mouseButtonEventItem);
@@ -52,6 +45,12 @@ namespace Learning2DEngine
             //Because of images' alpha channel
             renderManager.EnableBlend();
             renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            if(config.initAudioManager)
+			    AudioManager::GetInstance().Init(config.audioManagerConfig);
+
+			Init();
+
         }
 
         void Game::Terminate()

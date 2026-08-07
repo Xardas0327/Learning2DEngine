@@ -1,7 +1,5 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/UI/FontSizePair.h>
 
@@ -13,10 +11,12 @@ private:
     const Learning2DEngine::UI::FontSizePair fontSizePair;
 
     GameController* gameController;
+protected:
+    void Init() override;
+
 public:
     Snake();
     ~Snake();
 
-    void Init() override;
     void Terminate() override;
 };
