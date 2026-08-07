@@ -16,7 +16,7 @@ namespace Learning2DEngine
 			{
 				std::string errorMessage = "Random::GetNumber: The minInclusive ("+std::to_string(minInclusive)
 					+ ") is not lesser than maxExclusive ("+ std::to_string(maxExclusive) + ").";
-				L2DE_LOG_ERROR(errorMessage);
+				L2DE_LOG_ERROR(errorMessage)
 				throw std::exception(errorMessage.c_str());
 			}
 
@@ -36,7 +36,7 @@ namespace Learning2DEngine
 			{
 				std::string errorMessage = "Random::GetNumber: The minInclusive (" + std::to_string(minInclusive) 
 					+ ") is not lesser than maxInclusive (" + std::to_string(maxInclusive) + ").";
-				L2DE_LOG_ERROR(errorMessage);
+				L2DE_LOG_ERROR(errorMessage)
 				throw std::exception(errorMessage.c_str());
 			}
 

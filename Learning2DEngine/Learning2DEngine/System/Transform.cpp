@@ -261,7 +261,7 @@ namespace Learning2DEngine
 		{
 			if(gameObject == newParent || IsChild(newParent))
 			{
-				L2DE_LOG_ERROR("The GameObject can not be a child of itself or its descendants.");
+				L2DE_LOG_ERROR("The GameObject can not be a child of itself or its descendants.")
 				return;
 			}
 

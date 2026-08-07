@@ -43,7 +43,7 @@ namespace Learning2DEngine
                 auto mapNode = doc->first_node(TiledMapNodeMap);
                 if (mapNode == nullptr)
                 {
-                    L2DE_LOG_ERROR("TiledMapLoader: the map node is missing.");
+                    L2DE_LOG_ERROR("TiledMapLoader: the map node is missing.")
                     return map;
                 }
 
@@ -56,14 +56,14 @@ namespace Learning2DEngine
 
 #if L2DE_DEBUG
                 float loadingTime = static_cast<float>(glfwGetTime()) - startTime;
-                L2DE_LOG_INFO("TiledMapLoader: " + filePath + " file's loading time: " + std::to_string(loadingTime) + "s");
+                L2DE_LOG_INFO("TiledMapLoader: " + filePath + " file's loading time: " + std::to_string(loadingTime) + "s")
 #endif
 
                 return map;
             }
             catch (std::exception& e)
             {
-                L2DE_LOG_ERROR((std::string)"TiledMapLoader: " + e.what());
+                L2DE_LOG_ERROR((std::string)"TiledMapLoader: " + e.what())
                 throw e;
             }
         }
@@ -179,7 +179,7 @@ namespace Learning2DEngine
 
             if (hex.length() != 7 && hex.length() != 9)
             {
-                L2DE_LOG_WARNING("TiledMapLoader: the background color is not valid: " + hex);
+                L2DE_LOG_WARNING("TiledMapLoader: the background color is not valid: " + hex)
                 return color;
             }
 
@@ -194,7 +194,7 @@ namespace Learning2DEngine
                 }
                 catch (const std::exception&)
                 {
-                    L2DE_LOG_WARNING("TiledMapLoader: the background color - alpha is not valid: " + hex);
+                    L2DE_LOG_WARNING("TiledMapLoader: the background color - alpha is not valid: " + hex)
                     return color;
                 }
             }
@@ -212,7 +212,7 @@ namespace Learning2DEngine
             }
             catch (const std::exception&)
             {
-                L2DE_LOG_WARNING("TiledMapLoader: the background color - RGB is not valid: " + hex);
+                L2DE_LOG_WARNING("TiledMapLoader: the background color - RGB is not valid: " + hex)
                 return color;
             }
 
@@ -235,14 +235,14 @@ namespace Learning2DEngine
                 tileset.firstGid = std::atoi(mapTileset->first_attribute(TiledMapAttrFirstGid)->value());
                 if (tileset.firstGid <= 0)
                 {
-                    L2DE_LOG_ERROR("TiledMapLoader: the tileset firstgid should be bigger then 0.");
+                    L2DE_LOG_ERROR("TiledMapLoader: the tileset firstgid should be bigger then 0.")
                     continue;
                 }
 
                 std::string sourceName = mapTileset->first_attribute(TiledMapAttrSource)->value();
                 if (sourceName.empty())
                 {
-                    L2DE_LOG_ERROR("TiledMapLoader: the tileset source is empty.");
+                    L2DE_LOG_ERROR("TiledMapLoader: the tileset source is empty.")
                     continue;
                 }
 
@@ -264,7 +264,7 @@ namespace Learning2DEngine
             auto tilesetNode = doc->first_node(TiledMapNodeTileset);
             if (tilesetNode == nullptr)
             {
-                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset node is missing.");
+                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset node is missing.")
                 return false;
             }
 
@@ -352,7 +352,7 @@ namespace Learning2DEngine
 
             if (imageName.empty())
             {
-                L2DE_LOG_ERROR("TiledMapLoader: the tileset name is empty.");
+                L2DE_LOG_ERROR("TiledMapLoader: the tileset name is empty.")
                 return false;
             }
 
@@ -375,7 +375,7 @@ namespace Learning2DEngine
             auto imageNode = tilesetNode->first_node(TiledMapNodeImage);
             if (imageNode == nullptr)
             {
-                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset image node is missing.");
+                L2DE_LOG_ERROR("TiledMapLoader: the " + sourceName + " tileset image node is missing.")
                 return false;
             }
 
@@ -430,7 +430,7 @@ namespace Learning2DEngine
 
                 if (imageSource.empty())
                 {
-                    L2DE_LOG_ERROR("TiledMapLoader: the tileset image source is empty.");
+                    L2DE_LOG_ERROR("TiledMapLoader: the tileset image source is empty.")
                     return false;
                 }
 
@@ -521,14 +521,14 @@ namespace Learning2DEngine
                 auto dataNode = layerNode->first_node(TiledMapNodeData);
                 if (dataNode == nullptr)
                 {
-                    L2DE_LOG_ERROR("TiledMapLoader: the layer data node is missing.");
+                    L2DE_LOG_ERROR("TiledMapLoader: the layer data node is missing.")
                     continue;
                 }
 
                 auto encodingAttr = dataNode->first_attribute(TiledMapAttrEncoding);
                 if (encodingAttr == nullptr)
                 {
-                    L2DE_LOG_ERROR("TiledMapLoader: the layer data encoding attribute is missing.");
+                    L2DE_LOG_ERROR("TiledMapLoader: the layer data encoding attribute is missing.")
                     continue;
                 }
 
@@ -536,7 +536,7 @@ namespace Learning2DEngine
                 if (encoding != TiledMapSupportedEncoding)
                 {
                     L2DE_LOG_ERROR("TiledMapLoader: the layer data encoding is not supported: "
-                        + encoding + "\n Supported encoding: " + TiledMapSupportedEncoding);
+                        + encoding + "\n Supported encoding: " + TiledMapSupportedEncoding)
                     continue;
                 }
 
@@ -697,7 +697,7 @@ namespace Learning2DEngine
                         type = PropertyType::STRING;
                     else
                     {
-                        L2DE_LOG_WARNING("TiledMapLoader: the property type is not valid: " + typeStr);
+                        L2DE_LOG_WARNING("TiledMapLoader: the property type is not valid: " + typeStr)
                         continue;
                     }
                 }
@@ -705,14 +705,14 @@ namespace Learning2DEngine
                 auto nameAttr = property->first_attribute(TiledMapAttrName);
                 if (nameAttr == nullptr)
                 {
-                    L2DE_LOG_WARNING("TiledMapLoader: the property name attribute is missing.");
+                    L2DE_LOG_WARNING("TiledMapLoader: the property name attribute is missing.")
                     continue;
                 }
 
                 auto valueAttr = property->first_attribute(TiledMapAttrValue);
                 if (valueAttr == nullptr)
                 {
-                    L2DE_LOG_WARNING("TiledMapLoader: the property value attribute is missing.");
+                    L2DE_LOG_WARNING("TiledMapLoader: the property value attribute is missing.")
                     continue;
                 }
 
@@ -758,14 +758,14 @@ namespace Learning2DEngine
                 auto idAttr = tile->first_attribute(TiledMapAttrId);
                 if (idAttr == nullptr)
                 {
-                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id attribute is missing.");
+                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id attribute is missing.")
                     continue;
                 }
 
                 int id = std::atoi(idAttr->value());
                 if (loadedProperties.count(id))
                 {
-                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id is duplicated: " + std::to_string(id));
+                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id is duplicated: " + std::to_string(id))
                     continue;
                 }
 
@@ -793,14 +793,14 @@ namespace Learning2DEngine
                 auto idAttr = tile->first_attribute(TiledMapAttrId);
                 if (idAttr == nullptr)
                 {
-                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id attribute is missing.");
+                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id attribute is missing.")
                     continue;
                 }
 
                 int id = std::atoi(idAttr->value());
                 if (loadedObjects.count(id))
                 {
-                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id is duplicated: " + std::to_string(id));
+                    L2DE_LOG_WARNING("TiledMapLoader: " + sourceName + " the tile id is duplicated: " + std::to_string(id))
                     continue;
                 }
 
@@ -844,12 +844,12 @@ namespace Learning2DEngine
                 }
                 else if (strcmp(child->name(), TiledMapNodePolygon) == 0)
                 {
-                    L2DE_LOG_WARNING("TiledMapLoader: polygon object type is not supported.");
+                    L2DE_LOG_WARNING("TiledMapLoader: polygon object type is not supported.")
                     continue;
                 }
                 else if (strcmp(child->name(), TiledMapNodeText) == 0)
                 {
-                    L2DE_LOG_WARNING("TiledMapLoader: text object type is not supported.");
+                    L2DE_LOG_WARNING("TiledMapLoader: text object type is not supported.")
                     continue;
                 }
                 else if (strcmp(child->name(), TiledMapNodePoint) == 0)
@@ -904,10 +904,10 @@ namespace Learning2DEngine
                     {
                         gid = std::atoi(attr->value());
                         type = ObjectType::IMAGE;
-                        if (gid <= 0)
-                            L2DE_LOG_ERROR("TiledMapLoader: an object gid should be bigger then 0: " + std::to_string(gid));
-                        else
+                        if (gid > 0)
                             foundGid = true;
+                        
+                        L2DE_LOG_IF_ERROR(gid <= 0, "TiledMapLoader: an object gid should be bigger then 0: " + std::to_string(gid))
                     }
                     else if (strcmp(attr->name(), TiledMapAttrVisible) == 0)
                     {
@@ -927,7 +927,7 @@ namespace Learning2DEngine
                 case ObjectType::POINT:
                     if (!foundX || !foundY)
                     {
-                        L2DE_LOG_ERROR("TiledMapLoader: a point object can't be created, because some data is missing.");
+                        L2DE_LOG_ERROR("TiledMapLoader: a point object can't be created, because some data is missing.")
                         continue;
                     }
                     loadedObjects.push_back(ObjectItem(std::move(
@@ -937,7 +937,7 @@ namespace Learning2DEngine
                 case ObjectType::BOX:
                     if (!foundX || !foundY || !foundWidth || !foundHeight)
                     {
-                        L2DE_LOG_ERROR("TiledMapLoader: a box object can't be created, because some data is missing.");
+                        L2DE_LOG_ERROR("TiledMapLoader: a box object can't be created, because some data is missing.")
                         continue;
                     }
                     loadedObjects.push_back(ObjectItem(std::move(
@@ -947,7 +947,7 @@ namespace Learning2DEngine
                 case ObjectType::ELLIPSE:
                     if (!foundX || !foundY || !foundWidth || !foundHeight)
                     {
-                        L2DE_LOG_ERROR("TiledMapLoader: a ellipse object can't be created, because some data is missing.");
+                        L2DE_LOG_ERROR("TiledMapLoader: a ellipse object can't be created, because some data is missing.")
                         continue;
                     }
                     //We want radius instead of diameter.
@@ -955,7 +955,7 @@ namespace Learning2DEngine
                     //At the moment, there is circle, not ellipse collider.
                     if (size.x != size.y)
                     {
-                        L2DE_LOG_WARNING("TiledMapLoader: an ellipse object should have the same width and height. Only the width will be used.");
+                        L2DE_LOG_WARNING("TiledMapLoader: an ellipse object should have the same width and height. Only the width will be used.")
                         size.y = size.x;
                     }
                     loadedObjects.push_back(ObjectItem(std::move(
@@ -965,7 +965,7 @@ namespace Learning2DEngine
                 case ObjectType::IMAGE:
                     if (!foundX || !foundY || !foundWidth || !foundHeight || !foundGid)
                     {
-                        L2DE_LOG_ERROR("TiledMapLoader: a image object can't be created, because some data is missing.");
+                        L2DE_LOG_ERROR("TiledMapLoader: a image object can't be created, because some data is missing.")
                         continue;
                     }
                     loadedObjects.push_back(ObjectItem(std::move(
@@ -995,7 +995,7 @@ namespace Learning2DEngine
                 }
                 else
                 {
-                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the " + TiledMapSmartLoadBackground + " property type is not valid. It should be Bool.");
+                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the " + TiledMapSmartLoadBackground + " property type is not valid. It should be Bool.")
                 }
             }
 
@@ -1028,7 +1028,7 @@ namespace Learning2DEngine
                 }
                 else
                 {
-                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the " + TiledMapSmartLayer + " property type is not valid. It should be Int.");
+                    L2DE_LOG_ERROR((std::string)"TiledMapLoader: the " + TiledMapSmartLayer + " property type is not valid. It should be Int.")
                 }
             }
 
@@ -1058,7 +1058,7 @@ namespace Learning2DEngine
 
             if (selectedTileset == nullptr)
             {
-                L2DE_LOG_WARNING("TiledMapLoader: the tile id " + std::to_string(itemData.gid) + " is not valid.");
+                L2DE_LOG_WARNING("TiledMapLoader: the tile id " + std::to_string(itemData.gid) + " is not valid.")
                 return;
             }
 
@@ -1189,7 +1189,7 @@ namespace Learning2DEngine
 
                     if (selectedTileset == nullptr)
                     {
-                        L2DE_LOG_WARNING("TiledMapLoader: the tile id " + std::to_string(image->gid) + " is not valid.");
+                        L2DE_LOG_WARNING("TiledMapLoader: the tile id " + std::to_string(image->gid) + " is not valid.")
                         return;
                     }
 
@@ -1250,7 +1250,7 @@ namespace Learning2DEngine
             {
                 if (properties[TiledMapSmartCollider].GetType() != PropertyType::STRING)
                 {
-                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartCollider + " should be string.");
+                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartCollider + " should be string.")
                     return;
                 }
 
@@ -1320,7 +1320,7 @@ namespace Learning2DEngine
                 else
                 {
                     L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartCollider + " has invalid value. Supported values: "
-                        + TiledMapSmartColliderValueBox + ", " + TiledMapSmartColliderValueCircle);
+                        + TiledMapSmartColliderValueBox + ", " + TiledMapSmartColliderValueCircle)
                 }
 
                 if (addedCollider)
@@ -1469,7 +1469,7 @@ namespace Learning2DEngine
             {
                 if (properties[TiledMapSmartGroupName].GetType() != PropertyType::STRING)
                 {
-                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.");
+                    L2DE_LOG_WARNING((std::string)"TiledMapLoader: the " + TiledMapSmartGroupName + " should be string.")
                 }
                 else
                 {
