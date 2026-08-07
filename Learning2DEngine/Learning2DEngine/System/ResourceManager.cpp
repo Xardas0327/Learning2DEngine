@@ -37,7 +37,7 @@ namespace Learning2DEngine
                 if (shaderFile.is_open())
                     shaderFile.close();
 
-                L2DE_LOG_ERROR(std::string("SHADER: Failed to read shader file.\n File: ") + filePath + "\n Message: " + e.what());
+                L2DE_LOG_ERROR(std::string("SHADER: Failed to read shader file.\n File: ") + filePath + "\n Message: " + e.what())
                 return false;
             }
 
@@ -52,7 +52,7 @@ namespace Learning2DEngine
             //it was inited before
             if (shader.GetId() > 0)
             {
-                L2DE_LOG_WARNING(std::string("TEXTURE: this id was already used: ") + id);
+                L2DE_LOG_WARNING(std::string("SHADER: this id was already used: ") + id)
                 return shader;
             }
 
@@ -84,7 +84,7 @@ namespace Learning2DEngine
             //it was inited before
             if (shader.GetId() > 0)
             {
-                L2DE_LOG_WARNING(std::string("TEXTURE: this id was already used: ") + id);
+                L2DE_LOG_WARNING(std::string("SHADER: this id was already used: ") + id)
                 return shader;
             }
 
@@ -113,7 +113,7 @@ namespace Learning2DEngine
             auto response = textures.emplace(id, settings);
             if (!response.second)
             {
-                L2DE_LOG_WARNING(std::string("TEXTURE: this id was already used: ") + id);
+                L2DE_LOG_WARNING(std::string("TEXTURE: this id was already used: ") + id)
                 return response.first->second;
             }
 

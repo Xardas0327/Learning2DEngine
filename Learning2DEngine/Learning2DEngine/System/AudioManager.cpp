@@ -15,14 +15,14 @@ namespace Learning2DEngine
         {
 			if (isInited)
 			{
-				L2DE_LOG_WARNING("AudioManager::Init: AudioManager is already initialized and it will not be re-initialized");
+				L2DE_LOG_WARNING("AudioManager::Init: AudioManager is already initialized and it will not be re-initialized")
 				return &engine;
 			}
 
 			ma_result result = ma_engine_init(&config, &engine);
 			if (result != MA_SUCCESS)
 			{
-				L2DE_LOG_ERROR("AudioManager::Init: Failed to initialize audio engine");
+				L2DE_LOG_ERROR("AudioManager::Init: Failed to initialize audio engine")
 				return nullptr;
 			}
 

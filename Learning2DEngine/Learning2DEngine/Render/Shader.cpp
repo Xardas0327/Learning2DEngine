@@ -84,7 +84,7 @@ namespace Learning2DEngine
             if (!success)
             {
                 glGetShaderInfoLog(shaderId, 1024, NULL, infoLog);
-                L2DE_LOG_ERROR("SHADER::" + Shader::ToString(type) + ": " + infoLog);
+                L2DE_LOG_ERROR("SHADER::" + Shader::ToString(type) + ": " + infoLog)
             }
         }
 
@@ -96,7 +96,7 @@ namespace Learning2DEngine
             if (!success)
             {
                 glGetProgramInfoLog(programId, 1024, NULL, infoLog);
-                L2DE_LOG_ERROR(std::string("SHADER::PROGRAM: ") + infoLog);
+                L2DE_LOG_ERROR(std::string("SHADER::PROGRAM: ") + infoLog)
             }
         }
 
