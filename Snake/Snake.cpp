@@ -22,8 +22,6 @@ Snake::~Snake()
 
 void Snake::Init()
 {
-	Game::Init();
-
     auto& resourceManager = ResourceManager::GetInstance();
 
     // Textures

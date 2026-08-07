@@ -15,10 +15,12 @@ private:
     PostProcessData* postProcessData;
     GameController* gameController;
 
+protected:
+    void Init() override;
+
 public:
     Breakout();
     ~Breakout();
 
-    void Init() override;
     void Terminate() override;
 };

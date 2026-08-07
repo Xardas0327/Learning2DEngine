@@ -26,8 +26,6 @@ Breakout::~Breakout()
 
 void Breakout::Init()
 {
-    Game::Init();
-
     auto& resourceManager = ResourceManager::GetInstance();
 
     // Shaders

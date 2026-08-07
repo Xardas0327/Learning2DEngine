@@ -126,9 +126,7 @@ void GameController::Init()
 #endif
 
     // Sounds
-	auto audioEngine = AudioManager::GetInstance().Init();
-
-    ma_sound_init_from_file(audioEngine, "Assets/Sounds/breakout.mp3", 0, NULL, NULL, &backgroundMusic);
+    ma_sound_init_from_file(AudioManager::GetInstance().GetEngine(), "Assets/Sounds/breakout.mp3", 0, NULL, NULL, &backgroundMusic);
 
     ma_sound_set_looping(&backgroundMusic, MA_TRUE);
     ma_sound_start(&backgroundMusic);

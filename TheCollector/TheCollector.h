@@ -6,9 +6,10 @@
 
 class TheCollector : public Learning2DEngine::System::Game
 {
+protected:
+    void Init() override;
+
 public:
     TheCollector() = default;
     ~TheCollector() = default;
-
-    void Init() override;
 };
