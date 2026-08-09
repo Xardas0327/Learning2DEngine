@@ -1305,7 +1305,7 @@ virtual void RefreshKeyboard(int key, int scancode, int action, int mode) = 0;
 ##
 ## InputManager
 ### Source Code:
-[InputManager.h](../../Learning2DEngine/Learning2DEngine/System/InputManager.h)
+[InputManager.h](../../Learning2DEngine/Learning2DEngine/System/InputManager.h)  
 [InputManager.cpp](../../Learning2DEngine/Learning2DEngine/System/InputManager.cpp)
 
 ### Description:  
