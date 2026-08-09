@@ -2,8 +2,7 @@
 
 #include <Learning2DEngine/DebugTool/DebugMacro.h>
 #include <Learning2DEngine/System/AudioManager.h>
-#include <Learning2DEngine/System/Game.h>
-#include <Learning2DEngine/System/InputStatus.h>
+#include <Learning2DEngine/System/InputManager.h>
 #include <Learning2DEngine/System/ResourceManager.h>
 #include <Learning2DEngine/System/Math.h>
 #include <Learning2DEngine/Render/SpriteRenderComponent.h>
@@ -117,19 +116,21 @@ void PlayerController::Destroy()
 
 void PlayerController::Update()
 {
-    if (onGround && Game::GetKeyboardButtonStatus(GLFW_KEY_SPACE) == InputStatus::KEY_DOWN)
+    auto& inputManager = InputManager::GetInstance();
+
+    if (onGround && inputManager.GetKeyboardButtonStatus(GLFW_KEY_SPACE) == InputStatus::KEY_DOWN)
     {
         rigidbody->velocity.y += JUMP_FORCE;
         onGround = false;
 		ma_engine_play_sound(AudioManager::GetInstance().GetEngine(), "Assets/Sounds/jump.wav", NULL);
     }
 
-    if (Game::GetKeyboardButtonStatus(GLFW_KEY_A) == InputStatus::KEY_HOLD)
+    if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_A) == InputStatus::KEY_HOLD)
     {
         rigidbody->velocity.x = -60.0f;
         RefreshAnimation(PlayerAnimatioState::LEFT_RUN);
     }
-    else if (Game::GetKeyboardButtonStatus(GLFW_KEY_D) == InputStatus::KEY_HOLD)
+    else if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_D) == InputStatus::KEY_HOLD)
     {
         rigidbody->velocity.x = 60.0f;
         RefreshAnimation(PlayerAnimatioState::RIGHT_RUN);

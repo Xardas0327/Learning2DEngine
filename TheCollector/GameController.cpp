@@ -4,6 +4,7 @@
 //#include <Learning2DEngine/System/ComponentManager.h>
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/GameObjectManager.h>
+#include <Learning2DEngine/System/InputManager.h>
 #include <Learning2DEngine/System/Time.h>
 #include <Learning2DEngine/Render/RenderManager.h>
 #include <Learning2DEngine/Object/FpsShower.h>
@@ -282,7 +283,9 @@ void GameController::EndPlay()
 
 void GameController::Update()
 {
-    if (Game::GetKeyboardButtonStatus(GLFW_KEY_ESCAPE) == InputStatus::KEY_DOWN)
+    auto& inputManager = InputManager::GetInstance();
+
+    if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ESCAPE) == InputStatus::KEY_DOWN)
     {
         RenderManager::GetInstance().CloseWindow();
         return;
@@ -291,7 +294,7 @@ void GameController::Update()
     switch (gameStatus)
     {
     case GameStatus::Menu:
-        if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
+        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
         {
             StartPlay();
         }
@@ -310,7 +313,7 @@ void GameController::Update()
         RefreshPlayTimeText();
         break;
     case GameStatus::Ended:
-        if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
+        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
         {
             ShowMenu();
         }

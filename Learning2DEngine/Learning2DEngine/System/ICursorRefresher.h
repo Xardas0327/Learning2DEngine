@@ -7,7 +7,7 @@ namespace Learning2DEngine
 		class ICursorRefresher
 		{
 		public:
-			virtual ~ICursorRefresher() {}
+			virtual ~ICursorRefresher() = default;
 
 			virtual void RefreshMouseButton(int button, int action, int mods) = 0;
 

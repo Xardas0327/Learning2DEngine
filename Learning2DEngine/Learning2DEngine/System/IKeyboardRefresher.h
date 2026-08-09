@@ -7,7 +7,7 @@ namespace Learning2DEngine
 		class IKeyboardRefresher
 		{
 		public:
-			virtual ~IKeyboardRefresher() {}
+			virtual ~IKeyboardRefresher() = default;
 
 			virtual void RefreshKeyboard(int key, int scancode, int action, int mode) = 0;
 		};

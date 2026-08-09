@@ -192,6 +192,7 @@
     <ClCompile Include="Learning2DEngine\System\Camera.cpp" />
     <ClCompile Include="Learning2DEngine\System\Component.cpp" />
     <ClCompile Include="Learning2DEngine\System\GameObjectManager.cpp" />
+    <ClCompile Include="Learning2DEngine\System\InputManager.cpp" />
     <ClCompile Include="Learning2DEngine\System\LateUpdaterComponent.cpp" />
     <ClCompile Include="Learning2DEngine\System\ThreadManager.cpp" />
     <ClCompile Include="Learning2DEngine\System\Time.cpp" />
@@ -289,6 +290,7 @@
     <ClInclude Include="Learning2DEngine\System\AudioManager.h" />
     <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\GameConfig.h" />
+    <ClInclude Include="Learning2DEngine\System\InputManager.h" />
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\Camera.h" />
     <ClInclude Include="Learning2DEngine\System\Component.h" />
