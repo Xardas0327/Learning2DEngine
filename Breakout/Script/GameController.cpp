@@ -7,6 +7,7 @@
 //#include <Learning2DEngine/System/ComponentManager.h>
 #include <Learning2DEngine/System/Game.h>
 #include <Learning2DEngine/System/GameObjectManager.h>
+#include <Learning2DEngine/System/InputManager.h>
 #include <Learning2DEngine/System/Random.h>
 #include <Learning2DEngine/System/Time.h>
 #include <Learning2DEngine/Object/FpsShower.h>
@@ -157,7 +158,9 @@ void GameController::LateUpdate()
 
 void GameController::ProcessInput()
 {
-    if (Game::GetKeyboardButtonStatus(GLFW_KEY_ESCAPE) == InputStatus::KEY_DOWN)
+    auto& inputManager = InputManager::GetInstance();
+
+    if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ESCAPE) == InputStatus::KEY_DOWN)
     {
         RenderManager::GetInstance().CloseWindow();
         return;
@@ -166,7 +169,7 @@ void GameController::ProcessInput()
     switch (state)
     {
     case GameState::GAME_MENU:
-        if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
+        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
         {
             state = GameState::GAME_ACTIVE;
 			startText->gameObject->SetActive(false);
@@ -175,7 +178,7 @@ void GameController::ProcessInput()
             retryText->gameObject->SetActive(false);
         }
 
-        if (Game::GetKeyboardButtonStatus(GLFW_KEY_W) == InputStatus::KEY_DOWN)
+        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_W) == InputStatus::KEY_DOWN)
         {
             size_t oldLevel = selectedLevel;
             selectedLevel = (selectedLevel + 1) % levels.size();
@@ -183,7 +186,7 @@ void GameController::ProcessInput()
             levels[oldLevel].SetBricksActive(false);
             levels[selectedLevel].SetBricksActive(true);
         }
-        if (Game::GetKeyboardButtonStatus(GLFW_KEY_S) == InputStatus::KEY_DOWN)
+        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_S) == InputStatus::KEY_DOWN)
         {
             size_t oldLevel = selectedLevel;
             if (selectedLevel > 0)
@@ -196,7 +199,7 @@ void GameController::ProcessInput()
         }
         break;
     case GameState::GAME_WIN:
-        if (Game::GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
+        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
         {
             postProcessData->chaos = false;
             state = GameState::GAME_MENU;
@@ -208,7 +211,7 @@ void GameController::ProcessInput()
         break;
     case GameState::GAME_ACTIVE:
         float velocity = PLAYER_VELOCITY * Time::GetDeltaTime();
-        if (Game::GetKeyboardButtonStatus(GLFW_KEY_A))
+        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_A))
         {
             if (playerController->gameObject->transform.GetLocalPosition().x >= 0.0f)
             {
@@ -217,7 +220,7 @@ void GameController::ProcessInput()
                     ballController->gameObject->transform.AddLocalPosition(glm::vec2(-velocity, 0.0f));
             }
         }
-        if (Game::GetKeyboardButtonStatus(GLFW_KEY_D))
+        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_D))
         {
             if (playerController->gameObject->transform.GetLocalPosition().x <=
                 Game::mainCamera.GetResolution().GetWidth() - playerController->gameObject->transform.GetLocalScale().x)
@@ -227,7 +230,7 @@ void GameController::ProcessInput()
                     ballController->gameObject->transform.AddLocalPosition(glm::vec2(velocity, 0.0f));
             }
         }
-        if (Game::GetKeyboardButtonStatus(GLFW_KEY_SPACE))
+        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_SPACE))
             ballController->SetStuck(false);
         break;
     }

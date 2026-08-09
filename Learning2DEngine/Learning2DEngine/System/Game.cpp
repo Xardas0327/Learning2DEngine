@@ -5,6 +5,7 @@
 #include "../Render/RenderManager.h"
 #include "../DebugTool/Log.h"
 #include "AudioManager.h"
+#include "InputManager.h"
 #include "ResourceManager.h"
 #include "ComponentManager.h"
 #include "GameObjectManager.h"
@@ -17,13 +18,10 @@ namespace Learning2DEngine
     namespace System
     {
         Camera Game::mainCamera = Camera();
-        InputStatus Game::keyboardButtons[Game::KeyboardButtonNumber] = { InputStatus::KEY_UP };
-        Cursor Game::cursor = Cursor();
 
         Game::Game()
             : isMsaaActive(false), isPostProcessEffectActive(false), isPostProcessEffectUsed(false), msaaRender(),
-            ppeRender(), keyboardEventItem(this), resolutionEventItem(this),
-            mouseButtonEventItem(this), cursorPositionEventItem(this), cursorEnterEventItem(this), scrollEventItem(this)
+            ppeRender(), resolutionEventItem(this)
         {
         }
 
@@ -37,14 +35,11 @@ namespace Learning2DEngine
             auto& renderManager = RenderManager::GetInstance();
             renderManager.Init(config.openGLMajorVersion, config.openGLMinorVersion, config.resolution, config.title, config.windowType);
             renderManager.AddFramebufferSizeEvent(&resolutionEventItem);
-            renderManager.AddKeyboardEvent(&keyboardEventItem);
-            renderManager.AddMouseButtonEvent(&mouseButtonEventItem);
-            renderManager.AddCursorPositonEvent(&cursorPositionEventItem);
-            renderManager.AddCursorEnterEvent(&cursorEnterEventItem);
-            renderManager.AddScrollEvent(&scrollEventItem);
             //Because of images' alpha channel
             renderManager.EnableBlend();
             renderManager.SetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			InputManager::GetInstance().Init();
 
             if(config.initAudioManager)
 			    AudioManager::GetInstance().Init(config.audioManagerConfig);
@@ -60,11 +55,8 @@ namespace Learning2DEngine
 
             auto& renderManager = RenderManager::GetInstance();
             renderManager.RemoveFramebufferSizeEvent(&resolutionEventItem);
-            renderManager.RemoveKeyboardEvent(&keyboardEventItem);
-            renderManager.RemoveMouseButtonEvent(&mouseButtonEventItem);
-            renderManager.RemoveCursorPositonEvent(&cursorPositionEventItem);
-            renderManager.RemoveCursorEnterEvent(&cursorEnterEventItem);
-            renderManager.RemoveScrollEvent(&scrollEventItem);
+
+			InputManager::GetInstance().Terminate();
 
             GameObjectManager::GetInstance().DestroyAllGameObjects();
             ComponentManager::GetInstance().Clear();
@@ -80,11 +72,14 @@ namespace Learning2DEngine
                 auto& renderManager = RenderManager::GetInstance();
                 auto& gameObjectManager = GameObjectManager::GetInstance();
                 auto& componentManager = ComponentManager::GetInstance();
+                auto& inputManager = InputManager::GetInstance();
+
+
                 while (!renderManager.IsWindowClosed())
                 {
                     Time::CalcDeltaTime();
 
-                    UpdateEvents();
+                    inputManager.UpdateEvents();
 
                     componentManager.Update();
                     componentManager.CheckCollision();
@@ -192,74 +187,6 @@ namespace Learning2DEngine
             ppeRender.ClearShader();
         }
 
-        void Game::UpdateEvents()
-        {
-            FixKeyboardButtons();
-            FixCursor();
-            glfwPollEvents();
-        }
-
-        void Game::RefreshKeyboard(int key, int scancode, int action, int mode)
-        {
-            if (key > GLFW_KEY_UNKNOWN && key < Game::KeyboardButtonNumber)
-            {
-                switch (action)
-                {
-                case GLFW_RELEASE:
-                    keyboardButtons[key] = InputStatus::KEY_UP;
-                    break;
-                case GLFW_PRESS:
-                    keyboardButtons[key] = InputStatus::KEY_DOWN;
-                    break;
-                case GLFW_REPEAT:
-                    keyboardButtons[key] = InputStatus::KEY_HOLD;
-                    break;
-                default:
-                    L2DE_LOG_ERROR("GAME: Unknown input action: " + std::to_string(action))
-                    break;
-                }
-            }
-        }
-
-        void Game::RefreshMouseButton(int button, int action, int mods)
-        {
-            if (button >= 0 && button < Cursor::MouseButtonNumber)
-            {
-                switch (action)
-                {
-                case GLFW_RELEASE:
-                    cursor.mouseButtons[button] = InputStatus::KEY_UP;
-                    break;
-                case GLFW_PRESS:
-                    cursor.mouseButtons[button] = InputStatus::KEY_DOWN;
-                    break;
-                case GLFW_REPEAT:
-                    cursor.mouseButtons[button] = InputStatus::KEY_HOLD;
-                    break;
-                default:
-                    L2DE_LOG_ERROR("GAME: Unknown input action: " + std::to_string(action))
-                    break;
-                }
-            }
-        }
-
-        void Game::RefreshCursorPosition(double xpos, double ypos)
-        {
-            cursor.position.x = static_cast<float>(xpos);
-            cursor.position.y = static_cast<float>(ypos);
-        }
-
-        void Game::RefreshCursorInWindows(bool entered)
-        {
-            cursor.isInWindow = entered;
-        }
-
-        void Game::RefreshScroll(double xoffset, double yoffset)
-        {
-            cursor.scroll.x = static_cast<float>(xoffset);
-            cursor.scroll.y = static_cast<float>(yoffset);
-        }
-
         void Game::RefreshResolution(const Resolution& resolution)
         {
             if (resolution.GetWidth() <= 0 || resolution.GetHeight() <= 0)
@@ -277,27 +204,6 @@ namespace Learning2DEngine
                 ppeRender.Destroy();
                 ppeRender.Init(resolution);
             }
-        }
-
-        void Game::FixKeyboardButtons()
-        {
-            for (int i = 0; i < Game::KeyboardButtonNumber; ++i)
-            {
-                if (Game::keyboardButtons[i] == InputStatus::KEY_DOWN)
-                    Game::keyboardButtons[i] = InputStatus::KEY_HOLD;
-            }
-        }
-
-        void Game::FixCursor()
-        {
-            for (int i = 0; i < Cursor::MouseButtonNumber; ++i)
-            {
-                if (Game::cursor.mouseButtons[i] == InputStatus::KEY_DOWN)
-                    Game::cursor.mouseButtons[i] = InputStatus::KEY_HOLD;
-            }
-
-            cursor.scroll.x = 0.0f;
-            cursor.scroll.y = 0.0f;
         }
     }
 }

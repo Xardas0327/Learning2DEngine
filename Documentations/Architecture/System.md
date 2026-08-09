@@ -12,6 +12,7 @@
 - [IComponentHandler](System.md#icomponenthandler)
 - [ICursorRefresher](System.md#icursorrefresher)
 - [IKeyboardRefresher](System.md#ikeyboardrefresher)
+- [InputManager](System.md#inputmanager)
 - [InputStatus](System.md#inputstatus)
 - [LateUpdaterComponent](System.md#lateupdatercomponent)
 - [LateUpdaterComponentHandler](System.md#lateupdatercomponenthandler)
@@ -656,14 +657,47 @@ cursor is in the window.
 
 ### Header:
 ```cpp
-struct Cursor {
-    static constexpr const int MouseButtonNumber = 8;
+struct Cursor
+{...}
+```
 
-	InputStatus mouseButtons[Cursor::MouseButtonNumber];
-	glm::vec2 position;
-	glm::vec2 scroll;
-	bool isInWindow;
-};
+### Variables:
+**Public:**  
+**MouseButtonNumber**  
+```cpp
+static constexpr int MouseButtonNumber = GLFW_MOUSE_BUTTON_LAST + 1;
+```
+
+**mouseButtons**  
+```cpp
+InputStatus mouseButtons[Cursor::MouseButtonNumber];
+```
+
+**position**  
+```cpp
+glm::vec2 position;
+```
+
+**scroll**  
+```cpp
+glm::vec2 scroll;
+```
+
+**isInWindow**  
+```cpp
+bool isInWindow;
+```
+
+### Functions:
+**Public:**  
+**Cursor**  
+```cpp
+Cursor();
+```
+
+**Reset**  
+```cpp
+void Reset();
 ```
 
 ##
@@ -691,17 +725,12 @@ The Function order in the Run() (in a frame):
 
 ### Header:
 ```cpp
-class Game : private IKeyboardRefresher, private ICursorRefresher, public protected::IResolutionRefresher
+class Game : protected Render::IResolutionRefresher
 {...}
 ```
 
-### Variables:
+### Variables:  
 **Private:**  
-**KeyboardButtonNumber**  
-```cpp
-static constexpr const int KeyboardButtonNumber = 512;
-```
- 
 **isMsaaActive**  
 ```cpp
 bool isMsaaActive;
@@ -730,45 +759,9 @@ Render::MSAA msaaRender;
 Render::PostProcessEffect ppeRender;
 ```
 
-**keyboardEventItem**  
-```cpp
-EventSystem::KeyboardEventItem keyboardEventItem;
-```
-
-**mouseButtonEventItem**  
-```cpp
- EventSystem::MouseButtonEventItem mouseButtonEventItem;
-```
-
-**cursorPositionEventItem**  
-```cpp
-EventSystem::CursorPositionEventItem cursorPositionEventItem;
-```
-
-**cursorEnterEventItem**  
-```cpp
-EventSystem::CursorEnterEventItem cursorEnterEventItem;
-```
-
-**scrollEventItem**  
-```cpp
-EventSystem::ScrollEventItem scrollEventItem;
-```
-
 **resolutionEventItem** 
 ```cpp
 EventSystem::ResolutionEventItem resolutionEventItem;
-```
-
-**keyboardButtons**  
-This array contains, which keyboard button is up, down or hold.
-```cpp
-static InputStatus keyboardButtons[Game::KeyboardButtonNumber];
-```
-
-**cursor**  
-```cpp
-static Cursor cursor;
 ```
 
 **Public:**  
@@ -783,64 +776,6 @@ static Camera mainCamera;
 ```
 
 ### Functions:
-**Private:**  
-**UpdateEvents**  
-```cpp
-void UpdateEvents();
-```
-
-**FixCursor**  
-The *glfwPollEvents* does have InputStatus::KEY_HOLD for Mouse buttons.
-Moreover it doesn't refresh the scroll values to 0.0f.  
-So this function do it.
-```cpp
-void FixCursor();
-```
-
-**FixKeyboardButtons**  
-The *glfwPollEvents* does not refresh the data on every frame.
-That's why this function update the `InputStatus::KEY_DOWN`
-to `InputStatus::KEY_HOLD`.
-```cpp
-void FixKeyboardButtons();
-```
-
-**RefreshKeyboard**  
-The `Game` subscribes for keyboard events and the `RenderManager` call
-this function by an event.
-```cpp
-void RefreshKeyboard(int key, int scancode, int action, int mode) override;
-``` 
-
-**RefreshMouseButton**  
-The `Game` subscribes for mouse button events and the `RenderManager` call
-this function by an event.
-```cpp
-void RefreshMouseButton(int button, int action, int mods) override;
-``` 
-
-**RefreshCursorPosition**  
-The `Game` subscribes for cursor position events and the `RenderManager` call
-this function by an event.
-```cpp
-void RefreshCursorPosition(double xpos, double ypos) override;
-``` 
-
-**RefreshCursorInWindows**  
-The `Game` subscribes for cursor enter and the `RenderManager` call
-this function by an event.
-```cpp
-void RefreshCursorInWindows(bool entered) override;
-``` 
-
-**RefreshScroll**  
-The developer should not use this function.
-The `Game` subscribes for scroll events and the `RenderManager` call
-this function by an event.
-```cpp
-void RefreshScroll(double xoffset, double yoffset) override;
-``` 
-
 **Protected:**  
 **Game**  
 ```cpp
@@ -960,36 +895,6 @@ Please check the Game's Description for the function order.
 ```cpp
 void Run();
 ```
-
-**GetKeyboardButtonStatus**  
-It returns the status of a keyboard button.  
-```cpp
-static InputStatus GetKeyboardButtonStatus(int key);
-``` 
-
-**GetMouseButtonStatus**  
-It returns the status of a mouse button.  
-```cpp
-static InputStatus GetMouseButtonStatus(int key);
-``` 
-
-**GetCursorPosition**  
-It returns the cursor's position.  
-```cpp
-static glm::vec2 GetCursorPosition();
-``` 
-
-**IsCursorInWindow**  
-It returns, that the cursor is in the window or not.  
-```cpp
-static bool IsCursorInWindow();
-``` 
-
-**GetScroll**  
-It returns the scroll's position. 
-```cpp
-static glm::vec2 GetScroll();
-``` 
 
 ##
 ## GameConfig
@@ -1348,7 +1253,7 @@ class ICursorRefresher
 **Public:**  
 **~ICursorRefresher**  
 ```cpp
-virtual ~ICursorRefresher();
+virtual ~ICursorRefresher() = default;
 ```
 
 **RefreshMouseButton**  
@@ -1389,13 +1294,187 @@ class IKeyboardRefresher
 **Public:**  
 **~IKeyboardRefresher**  
 ```cpp
-virtual ~IKeyboardRefresher();
+virtual ~IKeyboardRefresher() = default;
 ```
 
 **RefreshKeyboard**  
 ```cpp
 virtual void RefreshKeyboard(int key, int scancode, int action, int mode) = 0;
 ```
+
+##
+## InputManager
+### Source Code:
+[InputManager.h](../../Learning2DEngine/Learning2DEngine/System/InputManager.h)  
+[InputManager.cpp](../../Learning2DEngine/Learning2DEngine/System/InputManager.cpp)
+
+### Description:  
+This class is a singleton, which can handle the keyboard and mouse events.
+
+### Header:
+```cpp
+class InputManager final : public Singleton<InputManager>, private IKeyboardRefresher, private ICursorRefresher
+{...}
+```
+
+### Variables:
+**Private:**  
+**KeyboardButtonNumber**  
+```cpp
+static constexpr int KeyboardButtonNumber = GLFW_KEY_LAST + 1;
+```
+
+**keyboardButtons**  
+This array contains, which keyboard button is up, down or hold.
+```cpp
+InputStatus keyboardButtons[InputManager::KeyboardButtonNumber];
+```
+
+**cursor**  
+```cpp
+Cursor cursor;
+```
+
+**keyboardEventItem**  
+```cpp
+EventSystem::KeyboardEventItem keyboardEventItem;
+```
+
+**mouseButtonEventItem**  
+```cpp
+ EventSystem::MouseButtonEventItem mouseButtonEventItem;
+```
+
+**cursorPositionEventItem**  
+```cpp
+EventSystem::CursorPositionEventItem cursorPositionEventItem;
+```
+
+**cursorEnterEventItem**  
+```cpp
+EventSystem::CursorEnterEventItem cursorEnterEventItem;
+```
+
+**scrollEventItem**  
+```cpp
+EventSystem::ScrollEventItem scrollEventItem;
+```
+
+### Functions:
+**Private:**  
+**InputManager**  
+```cpp
+InputManager();
+```
+
+**Init**  
+```cpp
+void Init();
+```
+
+**Terminate**  
+```cpp
+void Terminate();
+```
+
+**UpdateEvents**  
+```cpp
+void UpdateEvents();
+```
+
+**FixCursor**  
+The *glfwPollEvents* does have InputStatus::KEY_HOLD for Mouse buttons.
+Moreover it doesn't refresh the scroll values to 0.0f.  
+So this function do it.
+```cpp
+void FixCursor();
+```
+
+**FixKeyboardButtons**  
+The *glfwPollEvents* does not refresh the data on every frame.
+That's why this function update the `InputStatus::KEY_DOWN`
+to `InputStatus::KEY_HOLD`.
+```cpp
+void FixKeyboardButtons();
+```
+
+**RefreshKeyboard**  
+It subscribes for keyboard events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshKeyboard(int key, int scancode, int action, int mode) override;
+``` 
+
+**RefreshMouseButton**  
+It subscribes for mouse button events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshMouseButton(int button, int action, int mods) override;
+``` 
+
+**RefreshCursorPosition**  
+It subscribes for cursor position events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshCursorPosition(double xpos, double ypos) override;
+``` 
+
+**RefreshCursorInWindows**  
+It subscribes for cursor enter events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshCursorInWindows(bool entered) override;
+``` 
+
+**RefreshScroll**  
+The developer should not use this function.
+It subscribes for scroll events and the `RenderManager` call
+this function by an event.
+```cpp
+void RefreshScroll(double xoffset, double yoffset) override;
+```
+
+**Public:**  
+**~InputManager**  
+```cpp
+~InputManager() = default;
+```
+
+**GetKeyboardButtonStatus**  
+It returns the status of a keyboard button.  
+```cpp
+inline InputStatus GetKeyboardButtonStatus(int key) const;
+``` 
+
+**GetCursor**  
+It returns the cursor object.  
+```cpp
+inline const Cursor& GetCursor() const;
+``` 
+
+**GetMouseButtonStatus**  
+It returns the status of a mouse button.  
+```cpp
+inline InputStatus GetMouseButtonStatus(int key) const;
+``` 
+
+**GetCursorPosition**  
+It returns the cursor's position.  
+```cpp
+inline glm::vec2 GetCursorPosition() const;
+``` 
+
+**IsCursorInWindow**  
+It returns, that the cursor is in the window or not.  
+```cpp
+inline bool IsCursorInWindow() const;
+``` 
+
+**GetCursorScroll**  
+It returns the scroll's position. 
+```cpp
+inline glm::vec2 GetCursorScroll() const;
+``` 
 
 ##
 ## InputStatus
