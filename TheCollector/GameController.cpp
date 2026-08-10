@@ -285,7 +285,8 @@ void GameController::Update()
 {
     auto& inputManager = InputManager::GetInstance();
 
-    if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ESCAPE) == InputStatus::KEY_DOWN)
+    if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ESCAPE) == InputStatus::KEY_DOWN
+        || (inputManager.IsGamepadConnected(GLFW_JOYSTICK_1) && inputManager.GetGamepadButtonStatus(GLFW_JOYSTICK_1, GLFW_GAMEPAD_BUTTON_BACK) == InputStatus::KEY_DOWN))
     {
         RenderManager::GetInstance().CloseWindow();
         return;
@@ -294,7 +295,8 @@ void GameController::Update()
     switch (gameStatus)
     {
     case GameStatus::Menu:
-        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
+        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN
+            || (inputManager.IsGamepadConnected(GLFW_JOYSTICK_1) && inputManager.GetGamepadButtonStatus(GLFW_JOYSTICK_1, GLFW_GAMEPAD_BUTTON_START) == InputStatus::KEY_DOWN))
         {
             StartPlay();
         }
@@ -313,7 +315,8 @@ void GameController::Update()
         RefreshPlayTimeText();
         break;
     case GameStatus::Ended:
-        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN)
+        if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_ENTER) == InputStatus::KEY_DOWN
+            || (inputManager.IsGamepadConnected(GLFW_JOYSTICK_1) && inputManager.GetGamepadButtonStatus(GLFW_JOYSTICK_1, GLFW_GAMEPAD_BUTTON_START) == InputStatus::KEY_DOWN))
         {
             ShowMenu();
         }

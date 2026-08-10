@@ -290,6 +290,7 @@
     <ClInclude Include="Learning2DEngine\System\AudioManager.h" />
     <ClInclude Include="Learning2DEngine\System\BaseComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\GameConfig.h" />
+    <ClInclude Include="Learning2DEngine\System\Gamepad.h" />
     <ClInclude Include="Learning2DEngine\System\InputManager.h" />
     <ClInclude Include="Learning2DEngine\System\LateUpdaterComponentHandler.h" />
     <ClInclude Include="Learning2DEngine\System\Camera.h" />

@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Cursor.h"
+#include "Gamepad.h"
 #include "ICursorRefresher.h"
 #include "IKeyboardRefresher.h"
 #include "InputStatus.h"
@@ -20,16 +21,19 @@ namespace Learning2DEngine
     namespace System
     {
         class InputManager final : public Singleton<InputManager>,
-                                    private IKeyboardRefresher,
-                                    private ICursorRefresher
+                                    private ICursorRefresher,
+                                    private IKeyboardRefresher
         {
             friend class Singleton<InputManager>;
             friend class Game;
         private:
             static constexpr int KeyboardButtonNumber = GLFW_KEY_LAST + 1;
+            static constexpr int GamepadNumber = GLFW_JOYSTICK_LAST + 1;
 
             InputStatus keyboardButtons[InputManager::KeyboardButtonNumber];
             Cursor cursor;
+            Gamepad gamepads[InputManager::GamepadNumber];
+
             EventSystem::KeyboardEventItem keyboardEventItem;
             EventSystem::MouseButtonEventItem mouseButtonEventItem;
             EventSystem::CursorPositionEventItem cursorPositionEventItem;
@@ -53,6 +57,11 @@ namespace Learning2DEngine
             /// So this function do it.
             /// </summary>
             void FixCursor();
+            /// <summary>
+            /// The GLFW doesn't have InputStatus::KEY_HOLD for Gamepad buttons.
+            /// Moreover it has to ask all connected gamepad states one by one.
+            /// </summary>
+			void FixGamepad();
 
             void RefreshKeyboard(int key, int scancode, int action, int mode) override;
             void RefreshMouseButton(int button, int action, int mods) override;
@@ -90,6 +99,31 @@ namespace Learning2DEngine
             inline glm::vec2 GetCursorScroll() const
             {
                 return cursor.scroll;
+            }
+
+			inline bool IsGamepadConnected(int joystickId) const
+			{
+				return glfwJoystickPresent(joystickId);
+			}
+
+			inline const char* GetGamepadName(int joystickId) const
+			{
+				return glfwGetGamepadName(joystickId);
+			}
+
+			inline const Gamepad& GetGamepad(int joystickId) const
+			{
+				return gamepads[joystickId];
+			}
+
+			inline InputStatus GetGamepadButtonStatus(int joystickId, int button) const
+			{
+				return gamepads[joystickId].gamepadButtons[button];
+			}
+
+            inline float GetGamepadAxisStatus(int joystickId, int axis) const
+            {
+				return gamepads[joystickId].gamepadAxes[axis];
             }
         };
     }

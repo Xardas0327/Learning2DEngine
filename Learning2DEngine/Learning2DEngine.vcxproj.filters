@@ -521,5 +521,8 @@
     <ClInclude Include="Learning2DEngine\System\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Learning2DEngine\System\Gamepad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
