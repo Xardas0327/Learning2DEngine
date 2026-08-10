@@ -53,13 +53,13 @@ namespace Learning2DEngine
             void FixKeyboardButtons();
             /// <summary>
             /// The glfwPollEvents doesn't have InputStatus::KEY_HOLD for Mouse buttons.
-            /// Moreover it doesn't refresh the scroll values to 0.0f.
+            /// Moreover, it doesn't refresh the scroll values to 0.0f.
             /// So this function do it.
             /// </summary>
             void FixCursor();
             /// <summary>
             /// The GLFW doesn't have InputStatus::KEY_HOLD for Gamepad buttons.
-            /// Moreover it has to ask all connected gamepad states one by one.
+            /// Moreover, all connected gamepad states have to be asked one by one.
             /// </summary>
 			void FixGamepad();
 

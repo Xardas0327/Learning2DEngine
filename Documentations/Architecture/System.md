@@ -1455,7 +1455,7 @@ void FixKeyboardButtons();
 
 **FixGamepad**  
 The *GLFW* does not have `InputStatus::KEY_HOLD` for Gamepad buttons.  
-Moreover it has to ask all connected gamepad states one by one.
+Moreover, all connected gamepad states have to be asked one by one.
 ```cpp
 void FixGamepad();
 ```
