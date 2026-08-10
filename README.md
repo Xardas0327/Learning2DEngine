@@ -28,7 +28,7 @@ Moreover, if I create a new version, maybe it won't be compatible with the older
 - Fixed Game Loop
 - Centralized GameObject Management
 - 2D rendering pipeline: OpenGL support, sprite and texture rendering, instanced rendering
-- Input Management: keyboard, mouse
+- Input Management: keyboard, mouse, gamepad
 - Basic Physics: collision detection, gravity
 - Basic User Interface: text and text-box support
 - Basic Particle System

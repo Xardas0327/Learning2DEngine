@@ -10,9 +10,10 @@ The map of the game is created by [Tiled Map Editor v1.11.2](https://www.mapedit
 The Collector © 2025 by Zsolt Sziráczki is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).  
 
 ## Control
-- Start: Press Enter
-- Close Window: Press Esc or use your mouse.
-- Player control: Press A and D and Jump with Space
+- Start: Press Enter or Start button of the gamepad.
+- Close Window: Press Esc, Back button of the gamepad or use your mouse.
+- Player control: Press A and D and Jump with Space or use the gamepad's left stick and A button to jump.  
+_It was tested with Xbox controller, but other controllers should work as well._
 
 ## Assets:
 The assets came form [here](https://brackeysgames.itch.io/brackeys-platformer-bundle) from Brackeys.

@@ -20,11 +20,14 @@ using namespace Learning2DEngine::Animator;
 using namespace Learning2DEngine::DebugTool;
 
 constexpr float JUMP_FORCE = -150.0f;
+constexpr float RIGHT_MOVE_FORCE = 60.0f;
+constexpr float MIN_MOVE_FORCE_BY_AXIS = 0.25f;
+constexpr float MAX_MOVE_FORCE_BY_AXIS = 1.0f;
 
 PlayerController::PlayerController(GameObject* gameObject)
     : UpdaterComponent(gameObject), Component(gameObject),
     BoxColliderComponent(gameObject, PLAYER_SIZE, ColliderType::DYNAMIC, ColliderMode::COLLIDER),
-    onGround(true), detector(nullptr), eventItem(this),
+    onGround(false), detector(nullptr), eventItem(this),
     rightIdleAnimation(nullptr), leftIdleAnimation(nullptr), rightRunAnimation(nullptr), leftRunAnimation(nullptr),
     currentState(PlayerAnimatioState::RIGHT_IDLE), rigidbody(nullptr), coinNumber(0), coinCollected()
 {
@@ -118,21 +121,46 @@ void PlayerController::Update()
 {
     auto& inputManager = InputManager::GetInstance();
 
-    if (onGround && inputManager.GetKeyboardButtonStatus(GLFW_KEY_SPACE) == InputStatus::KEY_DOWN)
+    if (onGround && (inputManager.GetKeyboardButtonStatus(GLFW_KEY_SPACE) == InputStatus::KEY_DOWN
+        || (inputManager.IsGamepadConnected(GLFW_JOYSTICK_1) && inputManager.GetGamepadButtonStatus(GLFW_JOYSTICK_1, GLFW_GAMEPAD_BUTTON_A) == InputStatus::KEY_DOWN)))
     {
         rigidbody->velocity.y += JUMP_FORCE;
         onGround = false;
 		ma_engine_play_sound(AudioManager::GetInstance().GetEngine(), "Assets/Sounds/jump.wav", NULL);
     }
 
-    if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_A) == InputStatus::KEY_HOLD)
+    float leftXAxis = inputManager.GetGamepadAxisStatus(GLFW_JOYSTICK_1, GLFW_GAMEPAD_AXIS_LEFT_X);
+
+    if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_A) >= InputStatus::KEY_DOWN
+        || (inputManager.IsGamepadConnected(GLFW_JOYSTICK_1) && (
+            inputManager.GetGamepadButtonStatus(GLFW_JOYSTICK_1, GLFW_GAMEPAD_BUTTON_DPAD_LEFT) >= InputStatus::KEY_DOWN
+			|| leftXAxis < -MIN_MOVE_FORCE_BY_AXIS
+            )))
     {
-        rigidbody->velocity.x = -60.0f;
+        if (leftXAxis < -MIN_MOVE_FORCE_BY_AXIS)
+        {
+            float force = (leftXAxis + MIN_MOVE_FORCE_BY_AXIS) / -(MAX_MOVE_FORCE_BY_AXIS - MIN_MOVE_FORCE_BY_AXIS);
+            rigidbody->velocity.x = -RIGHT_MOVE_FORCE * force;
+        }
+        else
+            rigidbody->velocity.x = -RIGHT_MOVE_FORCE;
+
         RefreshAnimation(PlayerAnimatioState::LEFT_RUN);
     }
-    else if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_D) == InputStatus::KEY_HOLD)
+    else if (inputManager.GetKeyboardButtonStatus(GLFW_KEY_D) >= InputStatus::KEY_DOWN
+        || (inputManager.IsGamepadConnected(GLFW_JOYSTICK_1) && (
+            inputManager.GetGamepadButtonStatus(GLFW_JOYSTICK_1, GLFW_GAMEPAD_BUTTON_DPAD_RIGHT) >= InputStatus::KEY_DOWN
+			|| leftXAxis > MIN_MOVE_FORCE_BY_AXIS
+            )))
     {
-        rigidbody->velocity.x = 60.0f;
+        if (leftXAxis < -MIN_MOVE_FORCE_BY_AXIS)
+        {
+            float force = (leftXAxis - MIN_MOVE_FORCE_BY_AXIS) / (MAX_MOVE_FORCE_BY_AXIS - MIN_MOVE_FORCE_BY_AXIS);
+            rigidbody->velocity.x = RIGHT_MOVE_FORCE * force;
+        }
+        else
+            rigidbody->velocity.x = RIGHT_MOVE_FORCE;
+
         RefreshAnimation(PlayerAnimatioState::RIGHT_RUN);
     }
     else

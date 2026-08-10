@@ -9,6 +9,7 @@
 - [GameConfig](System.md#gameconfig)
 - [GameObject](System.md#gameobject)
 - [GameObjectManager](System.md#gameobjectmanager)
+- [Gamepad](System.md#gamepad)
 - [IComponentHandler](System.md#icomponenthandler)
 - [ICursorRefresher](System.md#icursorrefresher)
 - [IKeyboardRefresher](System.md#ikeyboardrefresher)
@@ -1204,6 +1205,55 @@ inline bool GetThreadSafe();
 
 
 ##
+## Gamepad
+### Source Code:
+[Gamepad.h](../../Learning2DEngine/Learning2DEngine/System/Gamepad.h)
+
+### Description:
+It represents a gamepad, which can be used by the `InputManager`.
+
+### Header:
+```cpp
+struct Gamepad
+{...}
+```
+
+### Variables:
+**Public:**  
+**GamepadButtonNumber**  
+```cpp
+static constexpr int GamepadButtonNumber = GLFW_GAMEPAD_BUTTON_LAST + 1;
+```
+
+**GamepadAxisNumber**  
+```cpp
+static constexpr int GamepadAxisNumber = GLFW_GAMEPAD_AXIS_LAST + 1;
+```
+
+**gamepadButtons**  
+```cpp
+InputStatus gamepadButtons[Gamepad::GamepadButtonNumber];
+```
+
+**gamepadAxes**  
+```cpp
+float gamepadAxes[Gamepad::GamepadAxisNumber];
+```
+
+### Functions:
+**Public:**  
+**Gamepad**  
+```cpp
+Gamepad();
+```
+
+**Reset**  
+```cpp
+void Reset();
+```
+
+
+##
 ## IComponentHandler
 ### Source Code:
 [IComponentHandler.h](../../Learning2DEngine/Learning2DEngine/System/IComponentHandler.h)
@@ -1313,7 +1363,7 @@ This class is a singleton, which can handle the keyboard and mouse events.
 
 ### Header:
 ```cpp
-class InputManager final : public Singleton<InputManager>, private IKeyboardRefresher, private ICursorRefresher
+class InputManager final : public Singleton<InputManager>, private ICursorRefresher, private IKeyboardRefresher
 {...}
 ```
 
@@ -1322,6 +1372,11 @@ class InputManager final : public Singleton<InputManager>, private IKeyboardRefr
 **KeyboardButtonNumber**  
 ```cpp
 static constexpr int KeyboardButtonNumber = GLFW_KEY_LAST + 1;
+```
+
+**GamepadNumber**  
+```cpp
+static constexpr int GamepadNumber = GLFW_JOYSTICK_LAST + 1;
 ```
 
 **keyboardButtons**  
@@ -1383,7 +1438,7 @@ void UpdateEvents();
 ```
 
 **FixCursor**  
-The *glfwPollEvents* does have InputStatus::KEY_HOLD for Mouse buttons.
+The *glfwPollEvents* does have `InputStatus::KEY_HOLD` for Mouse buttons.
 Moreover it doesn't refresh the scroll values to 0.0f.  
 So this function do it.
 ```cpp
@@ -1396,6 +1451,13 @@ That's why this function update the `InputStatus::KEY_DOWN`
 to `InputStatus::KEY_HOLD`.
 ```cpp
 void FixKeyboardButtons();
+```
+
+**FixGamepad**  
+The *GLFW* does not have `InputStatus::KEY_HOLD` for Gamepad buttons.  
+Moreover, all connected gamepad states have to be asked one by one.
+```cpp
+void FixGamepad();
 ```
 
 **RefreshKeyboard**  
@@ -1474,7 +1536,32 @@ inline bool IsCursorInWindow() const;
 It returns the scroll's position. 
 ```cpp
 inline glm::vec2 GetCursorScroll() const;
-``` 
+```
+
+**IsGamepadConnected**  
+```cpp
+inline bool IsGamepadConnected(int joystickId) const;
+```
+
+**GetGamepadName**  
+```cpp
+inline const char* GetGamepadName(int joystickId) const;
+```
+
+**GetGamepad**  
+```cpp
+inline const Gamepad& GetGamepad(int joystickId) const;
+```
+
+**GetGamepadButtonStatus**  
+```cpp
+inline InputStatus GetGamepadButtonStatus(int joystickId, int button) const;
+```
+
+**GetGamepadAxisStatus**  
+```cpp
+inline float GetGamepadAxisStatus(int joystickId, int axis) const;
+```
 
 ##
 ## InputStatus

@@ -10,8 +10,9 @@ namespace Learning2DEngine
     namespace System
     {
         InputManager::InputManager()
-			: keyboardButtons{ InputStatus::KEY_UP }, cursor(), keyboardEventItem(this), mouseButtonEventItem(this),
-			cursorPositionEventItem(this), cursorEnterEventItem(this), scrollEventItem(this)
+			: keyboardButtons{ InputStatus::KEY_UP }, cursor(), gamepads(),
+            keyboardEventItem(this), mouseButtonEventItem(this), cursorPositionEventItem(this),
+			cursorEnterEventItem(this), scrollEventItem(this)
         {
         }
 
@@ -21,6 +22,9 @@ namespace Learning2DEngine
 				keyboardButtons[i] = InputStatus::KEY_UP;
 
 			cursor.Reset();
+
+			for (int i = 0; i < InputManager::GamepadNumber; ++i)
+                gamepads[i].Reset();
 
             auto& renderManager = RenderManager::GetInstance();
             renderManager.AddKeyboardEvent(&keyboardEventItem);
@@ -45,6 +49,8 @@ namespace Learning2DEngine
             FixKeyboardButtons();
             FixCursor();
             glfwPollEvents();
+
+            FixGamepad();
         }
 
         void InputManager::FixKeyboardButtons()
@@ -66,6 +72,45 @@ namespace Learning2DEngine
 
             cursor.scroll.x = 0.0f;
             cursor.scroll.y = 0.0f;
+        }
+
+        void InputManager::FixGamepad()
+        {
+			for (int i = 0; i < InputManager::GamepadNumber; ++i)
+			{
+				if (glfwJoystickPresent(i))
+				{
+					GLFWgamepadstate state;
+					if (glfwGetGamepadState(i, &state))
+					{
+						for (int j = 0; j < Gamepad::GamepadButtonNumber; ++j)
+						{
+							switch (state.buttons[j])
+							{
+							case GLFW_RELEASE:
+								gamepads[i].gamepadButtons[j] = InputStatus::KEY_UP;
+								break;
+							case GLFW_PRESS:
+                                if(gamepads[i].gamepadButtons[j] == InputStatus::KEY_UP)
+								    gamepads[i].gamepadButtons[j] = InputStatus::KEY_DOWN;
+                                else
+                                    gamepads[i].gamepadButtons[j] = InputStatus::KEY_HOLD;
+								break;
+							default:
+								L2DE_LOG_ERROR("InputManager: Unknown gamepad button state: " + std::to_string(state.buttons[j]))
+									break;
+							}
+						}
+
+						for (int j = 0; j < Gamepad::GamepadAxisNumber; ++j)
+						{
+							gamepads[i].gamepadAxes[j] = state.axes[j];
+						}
+					}
+				}
+				else
+                    gamepads[i].Reset();
+			}
         }
 
         void InputManager::RefreshKeyboard(int key, int scancode, int action, int mode)
